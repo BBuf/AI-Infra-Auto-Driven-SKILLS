@@ -1,4 +1,4 @@
 interface:
   display_name: "SGLang Diffusion Auto-Optimize"
-  short_description: "Search full diffusion optimizations with one agent"
-  default_prompt: "Use $sglang-diffusion-auto-optimize to search the bundled optimization space plus SGLang and KDA kernel knowledge in this root-agent conversation until the measured target or a reviewed terminal result."
+  short_description: "Own a remote SGLang Diffusion speedup campaign"
+  default_prompt: "Autonomously optimize this SGLang Diffusion model on the named GPU machine from my baseline command, persist until the measured target or a valid terminal result, and keep me updated with token and end-to-end speedup progress."

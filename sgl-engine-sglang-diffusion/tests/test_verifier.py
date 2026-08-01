@@ -11,7 +11,6 @@ import pytest
 from sgl_engine_sglang_diffusion.models import BaselineRecord
 from sgl_engine_sglang_diffusion.process import run
 from sgl_engine_sglang_diffusion.request import FrozenBenchmarkCommand
-from sgl_engine_sglang_diffusion.resources import TECHNIQUE_REGISTRY
 from sgl_engine_sglang_diffusion.techniques import TechniqueRegistry
 from sgl_engine_sglang_diffusion.verifier import (
     DeliveryVerifier,
@@ -36,11 +35,14 @@ class QualitySpy:
 
     def assess(self, **kwargs: Any) -> dict[str, Any]:
         self.calls += 1
+        verdict = kwargs["run_dir"] / "visual_verdict.json"
         return {
             "aligned": True,
             "lpips_mean": 0.1,
             "lpips_max": 0.2,
             "prompt_scores": [{"prompt": index, "lpips": 0.1} for index in range(5)],
+            "visual_overall": "pass",
+            "visual_verdict_sha256": hashlib.sha256(verdict.read_bytes()).hexdigest(),
         }
 
 
@@ -51,7 +53,8 @@ class ForbiddenQualityEvaluator:
 
 @pytest.fixture
 def registry() -> TechniqueRegistry:
-    return TechniqueRegistry.load(TECHNIQUE_REGISTRY)
+    root = Path(__file__).parents[1]
+    return TechniqueRegistry.load(root / "techniques/registry.toml")
 
 
 @pytest.fixture
@@ -67,33 +70,6 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
     run(["git", "add", "README.md"], cwd=worktree)
     run(["git", "commit", "-m", "base"], cwd=worktree)
     base_commit = run(["git", "rev-parse", "HEAD"], cwd=worktree).stdout.strip()
-    knowledge_sha = hashlib.sha256(b"base\n").hexdigest()
-    knowledge_index = campaign / "knowledge/sglang" / base_commit / "index.json"
-    knowledge_index.parent.mkdir(parents=True)
-    knowledge_index.write_text(
-        json.dumps(
-            {
-                "schema_version": 1,
-                "source": "sglang",
-                "commit": base_commit,
-                "entries": [
-                    {
-                        "path": "README.md",
-                        "sha256": knowledge_sha,
-                        "reference_sha256": knowledge_sha,
-                    }
-                ],
-            }
-        )
-    )
-    (campaign / "KNOWLEDGE.json").write_text(
-        json.dumps(
-            {
-                "schema_version": 1,
-                "snapshots": {"sglang": str(knowledge_index)},
-            }
-        )
-    )
     baseline_run = campaign / "baseline" / "run"
     baseline_run.mkdir(parents=True)
     baseline_frames = campaign / "baseline" / "frames"
@@ -147,14 +123,7 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
         "candidate_commit": candidate_commit,
         "activation": {"enable_agent_kernel": True},
         "eval_profile": {"timing_scope": "frozen_e2e"},
-        "knowledge_origin": [
-            {
-                "source": "sglang",
-                "commit": base_commit,
-                "path": "README.md",
-                "sha256": knowledge_sha,
-            }
-        ],
+        "knowledge_origin": [],
     }
     (run_dir / "implementation-manifest.json").write_text(json.dumps(manifest))
     source_hashes = {relative_source: digest}
@@ -294,7 +263,7 @@ def test_valid_lossless_never_calls_quality_evaluator(
     result = verifier.verify(
         evidence["delivery_path"],
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert result.accepted, result.findings
     assert result.lossless_required is True
@@ -372,7 +341,7 @@ def test_launched_campaign_rejects_candidate_command_drift(
     accepted = verifier.verify(
         delivery_path,
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert accepted.accepted, accepted.findings
 
@@ -381,7 +350,7 @@ def test_launched_campaign_rejects_candidate_command_drift(
     rejected = verifier.verify(
         delivery_path,
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not rejected.accepted
     assert "baseline_command_mismatch" in {
@@ -401,7 +370,7 @@ def test_resolve_inside_and_verifier_reject_path_escape(
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert {finding.code for finding in result.findings} == {"invalid_run_dir"}
@@ -415,7 +384,7 @@ def test_recomputes_speedup_and_rejects_tamper(
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "speedup_tamper" in {finding.code for finding in result.findings}
@@ -435,7 +404,7 @@ def test_raw_benchmark_must_match_normalized_performance(
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "benchmark_performance_mismatch" in {
@@ -465,7 +434,7 @@ def test_rejects_missing_real_run_evidence(
     result = make_verifier(evidence, registry).verify(
         evidence["delivery_path"],
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert expected in {finding.code for finding in result.findings}
@@ -479,46 +448,10 @@ def test_rejects_source_hash_mismatch(
     result = make_verifier(evidence, registry).verify(
         evidence["delivery_path"],
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "invalid_source_hash" in {finding.code for finding in result.findings}
-
-
-@pytest.mark.parametrize(
-    ("field", "value", "message"),
-    [
-        ("source", "unknown", "unknown knowledge source"),
-        ("commit", "f" * 40, "knowledge commit mismatch"),
-        ("path", "missing.py", "unknown knowledge path"),
-        ("sha256", "f" * 64, "knowledge hash mismatch"),
-    ],
-)
-def test_rejects_fabricated_knowledge_provenance(
-    evidence: dict[str, Any],
-    registry: TechniqueRegistry,
-    field: str,
-    value: str,
-    message: str,
-) -> None:
-    delivery = deepcopy(evidence["delivery"])
-    manifest = delivery["frontier_points"][0]["implementation_manifest"]
-    manifest["knowledge_origin"][0][field] = value
-    (evidence["run_dir"] / "implementation-manifest.json").write_text(
-        json.dumps(manifest)
-    )
-
-    result = make_verifier(evidence, registry).verify(
-        write_delivery(evidence, delivery),
-        technique="kernel",
-        candidate_worktree=evidence["worktree"],
-    )
-
-    assert not result.accepted
-    finding = next(
-        item for item in result.findings if item.code == "invalid_knowledge_origin"
-    )
-    assert message in finding.message
 
 
 def test_rejects_zero_engagement_as_noop(
@@ -531,7 +464,7 @@ def test_rejects_zero_engagement_as_noop(
     result = make_verifier(evidence, registry).verify(
         evidence["delivery_path"],
         technique="kernel",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "invalid_engagement" in {finding.code for finding in result.findings}
@@ -556,7 +489,7 @@ def make_quality_delivery(evidence: dict[str, Any]) -> Path:
     verdict = {
         "candidate_id": "candidate-1",
         "overall": "pass",
-        "producer": "interactive-root-agent",
+        "producer": "coding-agent-built-in-vision",
         "external_api": False,
         "prompt_evidence": [{"prompt": index, "verdict": "pass"} for index in range(5)],
     }
@@ -580,7 +513,7 @@ def test_quality_path_calls_locked_evaluator_and_visual_gate(
     result = make_verifier(evidence, registry, quality=quality).verify(
         make_quality_delivery(evidence),
         technique="cache",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert result.accepted, result.findings
     assert result.lossless_required is False
@@ -597,7 +530,7 @@ def test_quality_path_rejects_missing_lpips_after_calling_evaluator(
     result = make_verifier(evidence, registry, quality=quality).verify(
         write_delivery(evidence, delivery),
         technique="cache",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert quality.calls == 1
@@ -613,7 +546,7 @@ def test_quality_path_reports_lpips_tamper_without_crashing(
     result = make_verifier(evidence, registry, quality=QualitySpy()).verify(
         write_delivery(evidence, delivery),
         technique="cache",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not result.accepted
     assert "lpips_tamper" in {finding.code for finding in result.findings}
@@ -669,7 +602,7 @@ def test_topology_requires_consistent_durable_artifacts(
     accepted = verifier.verify(
         delivery_path,
         technique="topology",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert accepted.accepted, accepted.findings
 
@@ -680,7 +613,7 @@ def test_topology_requires_consistent_durable_artifacts(
     rejected = verifier.verify(
         delivery_path,
         technique="topology",
-        candidate_worktree=evidence["worktree"],
+        executor_worktree=evidence["worktree"],
     )
     assert not rejected.accepted
     assert "topology_run_mismatch" in {finding.code for finding in rejected.findings}

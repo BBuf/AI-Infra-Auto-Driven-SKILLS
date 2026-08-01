@@ -6,10 +6,13 @@ import math
 import os
 import re
 import statistics
+import sys
 from collections.abc import Mapping, Sequence
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from .agents import AgentRunner, build_agent_argv, redact_argv
 from .baseline import BaselineRunner
 from .config import load_goal
 from .controller import CampaignController, StepResult
@@ -22,8 +25,9 @@ from .integrator import (
     IntegrationVerificationRequest,
     VerifiedCandidate,
 )
+from .knowledge import check_contract_hashes
 from .knowledge import load_registry as load_knowledge_registry
-from .knowledge import sync_source
+from .knowledge import read_source_lock, sync_source
 from .models import (
     CampaignGoal,
     CampaignStatus,
@@ -34,32 +38,33 @@ from .models import (
     QualityRecord,
     SourceLock,
 )
+from .orchestration import (
+    ExecutorHandle,
+    ExecutorManager,
+    ExecutorPrompt,
+    PromptSection,
+)
 from .patcher import PatchPackager, sha256_file
+from .placement import detect_placement_contract
 from .process import run
 from .profiler import Profiler, TechniqueRouter
-from .quality import MetricUnavailable, score_frame_pairs
 from .request import FrozenBenchmarkCommand
-from .resources import KNOWLEDGE_REGISTRY, TECHNIQUE_REGISTRY
-from .review import SameAgentReviewValidator
-from .search_space import build_search_space_catalog
-from .sources import SourceManager, derive_submodule_sources
+from .sources import SourceManager
 from .state import LeaseUnavailable, RECOVERABLE_STATUSES, StateStore
 from .techniques import TechniqueRegistry
-from .work_orders import WorkOrderManager
 
 
 class CampaignRuntimeError(RuntimeError):
     """The durable campaign cannot safely advance in its current state."""
 
 
-_PRIMARY_SOURCE_NAMES = ("sglang", "fastvideo", "kda_pilot")
-_KDA_SKILL_SUBMODULES = {
-    "external/KernelWiki": "kernel_wiki",
-    "external/ncu-report-skill": "ncu_report_skill",
-    "external/warp-specialization-report-skill": "warp_specialization_report_skill",
-}
-_SOURCE_NAMES = _PRIMARY_SOURCE_NAMES + tuple(_KDA_SKILL_SUBMODULES.values())
+_PACKAGE_ROOT = Path(__file__).resolve().parents[2]
+_SOURCE_NAMES = ("sglang", "sol_engine", "fastvideo", "kda_pilot")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_LOSSLESS_FORBIDDEN_ADDITIONS = re.compile(
+    r"(?i)\b(?:step[-_ ]?skip|token[-_ ]?prun|spars|rank[-_ ]?reduc|"
+    r"fp8|int8|nvfp4|int4|approximate)\b"
+)
 
 
 def _atomic_json(path: Path, payload: Mapping[str, Any]) -> None:
@@ -82,73 +87,6 @@ def _read_object(path: Path) -> dict[str, Any]:
     return value
 
 
-def _attach_search_space_evidence(
-    evidence: dict[str, dict[str, Any]],
-    *,
-    catalog: Mapping[str, Any],
-    routes: Sequence[str],
-) -> None:
-    families = catalog.get("families")
-    if not isinstance(families, dict):
-        raise CampaignRuntimeError("SEARCH-SPACE.json has no family catalog")
-    for route in routes:
-        family = families.get(route)
-        if not isinstance(family, dict):
-            raise CampaignRuntimeError(
-                f"SEARCH-SPACE.json has no routed family {route!r}"
-            )
-        methods = family.get("methods")
-        candidates = family.get("candidates")
-        review_items = family.get("review_items")
-        if (
-            not isinstance(methods, list)
-            or not methods
-            or not isinstance(candidates, list)
-            or not isinstance(review_items, list)
-            or not review_items
-        ):
-            raise CampaignRuntimeError(
-                f"SEARCH-SPACE.json has incomplete family {route!r}"
-            )
-        evidence.setdefault(route, {})["search_space"] = {
-            "method_ids": [
-                str(item["id"])
-                for item in methods
-                if isinstance(item, dict) and item.get("id")
-            ],
-            "candidate_ids": [
-                str(item["id"])
-                for item in candidates
-                if isinstance(item, dict) and item.get("id")
-            ],
-            "review_items": [str(item) for item in review_items],
-        }
-
-
-def _reject_legacy_agent_campaign(
-    campaign: Path,
-    manifest: Mapping[str, Any],
-) -> None:
-    markers = [
-        campaign / "executors",
-        *campaign.glob("search/*/EXECUTORS.json"),
-        *campaign.glob("search/*/MASTER*.json"),
-    ]
-    reasons: list[str] = []
-    if manifest.get("schema_version") != 2:
-        reasons.append("CAMPAIGN.json is not schema version 2")
-    if manifest.get("execution_mode") != "interactive_single_agent":
-        reasons.append("execution_mode is not interactive_single_agent")
-    if any(path.exists() for path in markers):
-        reasons.append("legacy executor or Master artifacts are present")
-    if reasons:
-        raise CampaignRuntimeError(
-            "legacy multi-agent campaign cannot be resumed by the interactive "
-            "single-agent runtime; start a new schema-v2 campaign: "
-            + "; ".join(reasons)
-        )
-
-
 def _model_slug(model_id: str) -> str:
     slug = re.sub(r"[^a-z0-9_-]+", "-", model_id.lower()).strip("-_")
     if not slug:
@@ -159,6 +97,10 @@ def _model_slug(model_id: str) -> str:
 def _source_specs(goal: CampaignGoal) -> dict[str, tuple[str, str]]:
     return {
         "sglang": (goal.source.sglang_repo, goal.source.sglang_ref),
+        "sol_engine": (
+            goal.source.sol_engine_repo,
+            goal.source.sol_engine_ref,
+        ),
         "fastvideo": (goal.source.fastvideo_repo, goal.source.fastvideo_ref),
         "kda_pilot": (
             goal.source.kda_pilot_repo,
@@ -167,15 +109,229 @@ def _source_specs(goal: CampaignGoal) -> dict[str, tuple[str, str]]:
     }
 
 
-class LPIPSQualityEvaluator:
-    """Recompute aligned LPIPS with the controller's local implementation."""
+def _validate_sol_contract(lock: SourceLock, checkout: Path | None = None) -> None:
+    source_lock = _PACKAGE_ROOT / "contracts" / "sol_engine" / "source-lock.json"
+    expected_hashes = _PACKAGE_ROOT / "contracts" / "sol_engine" / "source-hashes.json"
+    reviewed = read_source_lock(source_lock)
+    if lock.commit != reviewed["commit"]:
+        raise CampaignRuntimeError(
+            "campaign Sol-Engine commit differs from the reviewed correctness "
+            f"contract: {lock.commit} != {reviewed['commit']}"
+        )
+    if checkout is not None:
+        issues = check_contract_hashes(source_lock, checkout, expected_hashes)
+        if issues:
+            raise CampaignRuntimeError(
+                "locked Sol-Engine contract drift: " + "; ".join(issues)
+            )
+
+
+def _serialize_handle(handle: ExecutorHandle) -> dict[str, Any]:
+    value = asdict(handle)
+    for name in ("root", "worktree", "prompt", "delivery", "receipt"):
+        value[name] = str(value[name])
+    return value
+
+
+def _load_handle(path: Path) -> ExecutorHandle:
+    value = _read_object(path)
+    handle = ExecutorHandle(
+        executor_id=str(value["executor_id"]),
+        campaign_id=str(value["campaign_id"]),
+        technique=str(value["technique"]),
+        root=Path(value["root"]).resolve(),
+        worktree=Path(value["worktree"]).resolve(),
+        prompt=Path(value["prompt"]).resolve(),
+        delivery=Path(value["delivery"]).resolve(),
+        receipt=Path(value["receipt"]).resolve(),
+        pid=int(value["pid"]),
+        attempt=int(value["attempt"]),
+        lease_resource=str(value["lease_resource"]),
+        lease_owner=str(value["lease_owner"]),
+    )
+    if path.resolve() != handle.root / "executor.json":
+        raise CampaignRuntimeError(f"executor manifest has an unsafe root: {path}")
+    if handle.worktree != handle.root / "worktree":
+        raise CampaignRuntimeError(f"executor worktree escapes its root: {path}")
+    if handle.delivery != handle.worktree / "DELIVERY.json":
+        raise CampaignRuntimeError(f"executor delivery path changed: {path}")
+    return handle
+
+
+class IndependentMasterMethodAuditor:
+    """Combine deterministic checks with a separate coding-agent code audit."""
 
     def __init__(
         self,
         *,
         campaign_dir: Path,
+        registry: TechniqueRegistry,
+        agent_command: Sequence[str],
+        agent_model: str | None,
     ) -> None:
         self.campaign_dir = campaign_dir.resolve()
+        self.registry = registry
+        self.agent_command = tuple(agent_command)
+        self.agent_model = agent_model
+
+    def audit(
+        self,
+        *,
+        technique: str,
+        executor_worktree: Path,
+        manifest: Any,
+        equivalence: Mapping[str, Any],
+    ) -> bool | str | Sequence[str]:
+        worktree = executor_worktree.resolve()
+        head = run(["git", "rev-parse", "HEAD"], cwd=worktree).stdout.strip()
+        if head != manifest.candidate_commit:
+            return "candidate_commit is not the executor worktree HEAD"
+        ancestor = run(
+            [
+                "git",
+                "merge-base",
+                "--is-ancestor",
+                manifest.base_commit,
+                manifest.candidate_commit,
+            ],
+            cwd=worktree,
+            check=False,
+        )
+        if ancestor.returncode != 0:
+            return "candidate commit is not descended from its declared base"
+        patch = run(
+            [
+                "git",
+                "diff",
+                "--no-ext-diff",
+                "--unified=0",
+                f"{manifest.base_commit}..{manifest.candidate_commit}",
+            ],
+            cwd=worktree,
+        ).stdout
+        additions = "\n".join(
+            line[1:]
+            for line in patch.splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        )
+        if not additions.strip():
+            return "candidate has no added implementation content"
+        forbidden = _LOSSLESS_FORBIDDEN_ADDITIONS.search(additions)
+        if forbidden is not None:
+            return (
+                "lossless candidate adds a forbidden approximation marker: "
+                f"{forbidden.group(0)}"
+            )
+        if equivalence.get("logical_work_unchanged") is not True:
+            return "lossless method argument does not preserve logical work"
+        if technique not in {"kernel", "topology"}:
+            return f"{technique} is not a registered lossless audit lane"
+
+        method_argument = str(equivalence.get("method_argument", ""))
+        method_digest = hashlib.sha256(method_argument.encode()).hexdigest()
+        review_dir = (
+            self.campaign_dir / "master-method-audits" / manifest.candidate_commit
+        )
+        review_dir.mkdir(parents=True, exist_ok=True)
+        diff_path = review_dir / "candidate.patch"
+        equivalence_path = review_dir / "equivalence.json"
+        assessment_path = review_dir / "assessment.json"
+        if not diff_path.is_file():
+            diff_path.write_text(patch, encoding="utf-8")
+        if not equivalence_path.is_file():
+            _atomic_json(equivalence_path, dict(equivalence))
+        if not assessment_path.is_file():
+            prompt = review_dir / "master-method-prompt.md"
+            prompt.write_text(
+                "# Independent lossless method-equivalence audit\n\n"
+                "You are the independent master, not the optimization executor. "
+                "Read the actual candidate diff and the binding Sol-Engine "
+                "contract/scope. Reject approximation, skipped/reduced logical "
+                "work, sparsity, sub-16-bit behavior, rank reduction, changed "
+                "global denoising steps or DiT calls, and unsupported method "
+                "claims. Numeric output similarity is not a correctness gate.\n\n"
+                f"Candidate worktree: {worktree}\n"
+                f"Base commit: {manifest.base_commit}\n"
+                f"Candidate commit: {manifest.candidate_commit}\n"
+                f"Technique: {technique}\n"
+                f"Diff: {diff_path}\n"
+                f"Equivalence evidence: {equivalence_path}\n"
+                "Binding master contract: "
+                f"{_PACKAGE_ROOT / 'contracts/sol_engine/master.md'}\n"
+                f"Binding technique scope: {self.registry[technique].scope}\n\n"
+                f"Write only {assessment_path} as JSON with fields: "
+                "accepted (boolean), findings (array of strings), "
+                "producer='coding-agent-built-in-reasoning', external_api=false, "
+                "technique, base_commit, candidate_commit, and "
+                f"method_argument_sha256='{method_digest}'.\n",
+                encoding="utf-8",
+            )
+            argv = build_agent_argv(self.agent_command, self.agent_model, prompt)
+            stdout_path = review_dir / "stdout.log"
+            _atomic_json(
+                review_dir / "MASTER-METHOD-COMMAND.json",
+                {
+                    "schema_version": 1,
+                    "argv": redact_argv(argv),
+                    "cwd": str(review_dir),
+                    "prompt_sha256": sha256_file(prompt),
+                    "campaign_id": self.campaign_dir.name,
+                    "agent_role": "master_method",
+                    "technique": technique,
+                    "invocation_id": (f"master-method:{manifest.candidate_commit}"),
+                    "stdout": str(stdout_path),
+                },
+            )
+            result = run(argv, cwd=review_dir, check=False)
+            stdout_path.write_text(result.stdout, encoding="utf-8")
+            (review_dir / "stderr.log").write_text(result.stderr, encoding="utf-8")
+            if result.returncode != 0 or not assessment_path.is_file():
+                return (
+                    "independent coding-agent method audit failed to produce "
+                    "a durable assessment"
+                )
+
+        assessment = _read_object(assessment_path)
+        expected = {
+            "producer": "coding-agent-built-in-reasoning",
+            "external_api": False,
+            "technique": technique,
+            "base_commit": manifest.base_commit,
+            "candidate_commit": manifest.candidate_commit,
+            "method_argument_sha256": method_digest,
+        }
+        mismatches = [
+            name for name, value in expected.items() if assessment.get(name) != value
+        ]
+        if mismatches:
+            return "independent method audit provenance mismatch: " + ", ".join(
+                mismatches
+            )
+        findings = assessment.get("findings")
+        if assessment.get("accepted") is not True:
+            if isinstance(findings, list) and findings:
+                return [str(item) for item in findings]
+            return "independent master rejected method equivalence"
+        if not isinstance(findings, list):
+            return "independent method audit findings must be an array"
+        return True
+
+
+class LockedSolQualityEvaluator:
+    """Independently recompute locked Sol LPIPS and run a master visual review."""
+
+    def __init__(
+        self,
+        *,
+        sol_checkout: Path,
+        campaign_dir: Path,
+        agent_command: Sequence[str],
+        agent_model: str | None,
+    ) -> None:
+        self.sol_checkout = sol_checkout.resolve()
+        self.campaign_dir = campaign_dir.resolve()
+        self.agent_command = tuple(agent_command)
+        self.agent_model = agent_model
 
     def assess(
         self,
@@ -184,6 +340,11 @@ class LPIPSQualityEvaluator:
         candidate_frames: Path,
         run_dir: Path,
     ) -> Mapping[str, Any]:
+        lpips_judge = self.sol_checkout / "tools/vision/lpips_judge.py"
+        if not lpips_judge.is_file():
+            raise CampaignRuntimeError(
+                f"locked Sol LPIPS evaluator is missing: {lpips_judge}"
+            )
         run_dir = run_dir.resolve()
         prompt_pairs = self._aligned_prompt_pairs(
             baseline_frames.resolve(),
@@ -204,7 +365,7 @@ class LPIPSQualityEvaluator:
             json.dumps(input_manifest, sort_keys=True, separators=(",", ":")).encode()
         ).hexdigest()
         key = hashlib.sha256(f"{run_dir}\0{input_digest}".encode()).hexdigest()[:20]
-        review_dir = self.campaign_dir / "quality-metrics" / key
+        review_dir = self.campaign_dir / "master-quality" / key
         review_dir.mkdir(parents=True, exist_ok=True)
         _atomic_json(
             review_dir / "INPUTS.json",
@@ -218,18 +379,46 @@ class LPIPSQualityEvaluator:
         prompt_scores: list[dict[str, Any]] = []
         all_scores: list[float] = []
         for index, pairs in enumerate(prompt_pairs):
-            try:
-                raw_scores = score_frame_pairs(pairs)
-            except MetricUnavailable as error:
-                raise CampaignRuntimeError(
-                    f"LPIPS is unavailable for prompt {index}: {error}"
-                ) from error
-            if len(raw_scores) != len(pairs) or any(
-                not math.isfinite(float(value)) or float(value) < 0
-                for value in raw_scores
+            prompt_output = review_dir / f"lpips-prompt-{index:02d}.json"
+            argv = [sys.executable, str(lpips_judge)]
+            for baseline, candidate in pairs:
+                argv.extend(
+                    [
+                        "--baseline-frame",
+                        str(baseline),
+                        "--candidate-frame",
+                        str(candidate),
+                    ]
+                )
+            argv.extend(["--out", str(prompt_output)])
+            if not prompt_output.is_file():
+                result = run(argv, cwd=self.sol_checkout, check=False)
+                (review_dir / f"lpips-prompt-{index:02d}.stdout.log").write_text(
+                    result.stdout, encoding="utf-8"
+                )
+                (review_dir / f"lpips-prompt-{index:02d}.stderr.log").write_text(
+                    result.stderr, encoding="utf-8"
+                )
+                if result.returncode != 0 or not prompt_output.is_file():
+                    raise CampaignRuntimeError(
+                        f"locked Sol LPIPS failed for prompt {index}"
+                    )
+            payload = _read_object(prompt_output)
+            raw_scores = payload.get("per_frame")
+            if (
+                payload.get("status") != "ok"
+                or not isinstance(raw_scores, list)
+                or len(raw_scores) != len(pairs)
+                or any(
+                    not isinstance(value, (int, float))
+                    or isinstance(value, bool)
+                    or not math.isfinite(float(value))
+                    or float(value) < 0
+                    for value in raw_scores
+                )
             ):
                 raise CampaignRuntimeError(
-                    f"LPIPS returned invalid scores for prompt {index}"
+                    f"locked Sol LPIPS is unavailable for prompt {index}"
                 )
             scores = [float(value) for value in raw_scores]
             all_scores.extend(scores)
@@ -251,11 +440,77 @@ class LPIPSQualityEvaluator:
             "frame_count": len(all_scores),
         }
         _atomic_json(review_dir / "lpips-assessment.json", lpips_summary)
+
+        visual_verdict = run_dir / "visual_verdict.json"
+        if not visual_verdict.is_file():
+            raise CampaignRuntimeError(
+                "quality-gated delivery lacks visual_verdict.json"
+            )
+        verdict_digest = sha256_file(visual_verdict)
+        master_assessment = review_dir / "master-visual-assessment.json"
+        if not master_assessment.is_file():
+            prompt = review_dir / "master-visual-prompt.md"
+            prompt.write_text(
+                "# Independent SGLang Diffusion visual review\n\n"
+                f"Baseline aligned frames: {baseline_frames.resolve()}\n"
+                f"Candidate frames/media: {candidate_frames.resolve()}\n"
+                f"Executor visual verdict: {visual_verdict}\n"
+                f"Executor verdict SHA-256: {verdict_digest}\n"
+                f"Aligned input manifest: {review_dir / 'INPUTS.json'}\n"
+                f"Independent LPIPS summary: "
+                f"{review_dir / 'lpips-assessment.json'}\n"
+                f"Write only {master_assessment} as JSON. Inspect all five "
+                "prompts with your built-in multimodal vision. Do not use an "
+                "external vision API. Required fields: overall ('pass' or "
+                "'fail'), producer='coding-agent-built-in-vision', "
+                "external_api=false, reviewed_verdict_sha256, and "
+                "prompt_evidence with at least five entries.\n",
+                encoding="utf-8",
+            )
+            argv = build_agent_argv(self.agent_command, self.agent_model, prompt)
+            stdout_path = review_dir / "master-visual.stdout.log"
+            _atomic_json(
+                review_dir / "MASTER-VISUAL-COMMAND.json",
+                {
+                    "schema_version": 1,
+                    "argv": redact_argv(argv),
+                    "cwd": str(review_dir),
+                    "prompt_sha256": sha256_file(prompt),
+                    "campaign_id": self.campaign_dir.name,
+                    "agent_role": "master_visual",
+                    "technique": None,
+                    "invocation_id": f"master-visual:{key}",
+                    "stdout": str(stdout_path),
+                },
+            )
+            result = run(argv, cwd=review_dir, check=False)
+            stdout_path.write_text(result.stdout, encoding="utf-8")
+            (review_dir / "master-visual.stderr.log").write_text(
+                result.stderr, encoding="utf-8"
+            )
+            if result.returncode != 0 or not master_assessment.is_file():
+                raise CampaignRuntimeError(
+                    "independent coding-agent visual review failed"
+                )
+
+        master = _read_object(master_assessment)
+        if (
+            master.get("producer") != "coding-agent-built-in-vision"
+            or master.get("external_api") is not False
+            or master.get("reviewed_verdict_sha256") != verdict_digest
+            or not isinstance(master.get("prompt_evidence"), list)
+            or len(master["prompt_evidence"]) < 5
+        ):
+            raise CampaignRuntimeError(
+                "independent visual assessment has invalid provenance"
+            )
         return {
             "aligned": True,
             "prompt_scores": prompt_scores,
             "lpips_mean": lpips_summary["lpips_mean"],
             "lpips_max": lpips_summary["lpips_max"],
+            "visual_overall": master.get("overall"),
+            "visual_verdict_sha256": verdict_digest,
         }
 
     @staticmethod
@@ -264,33 +519,33 @@ class LPIPSQualityEvaluator:
         candidate_frames: Path,
         run_dir: Path,
     ) -> list[list[tuple[Path, Path]]]:
-        baseline_prompts = LPIPSQualityEvaluator._safe_prompt_dirs(
+        baseline_prompts = LockedSolQualityEvaluator._safe_prompt_dirs(
             baseline_frames, baseline_frames
         )
         candidate_root = run_dir / "outputs" / "frames"
         if not candidate_root.is_dir():
             candidate_root = candidate_frames
-        candidate_prompts = LPIPSQualityEvaluator._safe_prompt_dirs(
+        candidate_prompts = LockedSolQualityEvaluator._safe_prompt_dirs(
             candidate_root, run_dir
         )
         if len(baseline_prompts) != 5 or len(candidate_prompts) != 5:
             raise CampaignRuntimeError(
-                "locked LPIPS requires exactly five aligned prompt directories"
+                "independent LPIPS requires exactly five aligned prompt directories"
             )
         suffixes = {".png", ".jpg", ".jpeg", ".webp"}
         result: list[list[tuple[Path, Path]]] = []
         for index, (baseline_prompt, candidate_prompt) in enumerate(
             zip(baseline_prompts, candidate_prompts, strict=True)
         ):
-            baseline = LPIPSQualityEvaluator._safe_frames(
+            baseline = LockedSolQualityEvaluator._safe_frames(
                 baseline_prompt, baseline_frames, suffixes
             )
-            candidate = LPIPSQualityEvaluator._safe_frames(
+            candidate = LockedSolQualityEvaluator._safe_frames(
                 candidate_prompt, run_dir, suffixes
             )
             if not baseline or len(baseline) != len(candidate):
                 raise CampaignRuntimeError(
-                    "locked LPIPS frame alignment failed for prompt "
+                    "independent LPIPS frame alignment failed for prompt "
                     f"{index}: {len(baseline)} != {len(candidate)}"
                 )
             result.append(list(zip(baseline, candidate, strict=True)))
@@ -356,7 +611,7 @@ class LPIPSQualityEvaluator:
 class RuntimeIntegrationVerifier:
     """Reapply engagement and correctness gates to the composed full run."""
 
-    def __init__(self, quality_evaluator: LPIPSQualityEvaluator | None) -> None:
+    def __init__(self, quality_evaluator: LockedSolQualityEvaluator | None) -> None:
         self.quality_evaluator = quality_evaluator
 
     def verify_integrated(
@@ -537,6 +792,22 @@ def _has_fallback(value: Any) -> bool:
     return False
 
 
+def _process_actually_alive(pid: int) -> bool:
+    """Reap our exited child or reject a zombie recovered from a prior runner."""
+
+    try:
+        waited, _ = os.waitpid(pid, os.WNOHANG)
+    except ChildProcessError:
+        status = run(
+            ["ps", "-o", "stat=", "-p", str(pid)],
+            cwd=Path.cwd(),
+            check=False,
+        )
+        state = status.stdout.strip()
+        return status.returncode == 0 and bool(state) and not state.startswith("Z")
+    return waited == 0
+
+
 def _validate_lossless_equivalence(value: Mapping[str, Any]) -> None:
     baseline = value.get("baseline")
     candidate = value.get("candidate")
@@ -580,7 +851,16 @@ class FileCampaignHooks:
         self.source_manager = SourceManager(
             self.campaign_dir.parent / ".sgl-diffusion-source-cache"
         )
-        self.registry = TechniqueRegistry.load(TECHNIQUE_REGISTRY)
+        self.registry = TechniqueRegistry.load(
+            _PACKAGE_ROOT / "techniques" / "registry.toml"
+        )
+        self.runner = AgentRunner(goal.agent.command, goal.agent.model)
+        self.executors = ExecutorManager(
+            self.campaign_dir,
+            state=store,
+            sources=self.source_manager,
+            runner=self.runner,
+        )
 
     def _driver(self, checkout: Path) -> SGLangDiffusionDriver:
         template = self.campaign_dir / "BASELINE-COMMAND.json"
@@ -600,7 +880,6 @@ class FileCampaignHooks:
         locks = self._ensure_source_locks()
         worktrees = self._ensure_source_worktrees(locks)
         self._sync_knowledge(locks, worktrees)
-        build_search_space_catalog(output_path=self.campaign_dir / "SEARCH-SPACE.json")
 
         baseline_path = self.campaign_dir / "BASELINE.json"
         if baseline_path.is_file():
@@ -657,12 +936,6 @@ class FileCampaignHooks:
             raise CampaignRuntimeError(
                 "router selected unregistered techniques: " + ", ".join(sorted(unknown))
             )
-        catalog = _read_object(self.campaign_dir / "SEARCH-SPACE.json")
-        _attach_search_space_evidence(
-            router.last_evidence,
-            catalog=catalog,
-            routes=routes,
-        )
         _atomic_json(
             route_path,
             {
@@ -678,177 +951,128 @@ class FileCampaignHooks:
             payload={"routes": routes, "route_artifact": str(route_path)},
         )
 
-    def enter_agent_wait(self, epoch: int) -> StepResult:
-        return StepResult(
-            CampaignStatus.AWAITING_AGENT,
-            payload={
+    def start_search_epoch(self, epoch: int) -> StepResult:
+        routes = self._routes()
+        locks = self._load_locks()
+        search_root = self.campaign_dir / "search" / str(epoch)
+        manifest_path = search_root / "EXECUTORS.json"
+        handles: dict[str, ExecutorHandle] = {}
+        for technique in routes:
+            prompt = self._executor_prompt(technique, epoch)
+            handle = self.executors.spawn(
+                campaign_id=self.campaign_id,
+                technique=technique,
+                source_lock=locks["sglang"],
+                prompt=prompt,
+                idempotency_key=(f"{self.campaign_id}:{epoch}:executor:{technique}"),
+            )
+            handles[technique] = handle
+        _atomic_json(
+            manifest_path,
+            {
+                "schema_version": 1,
                 "epoch": epoch,
-                "reason": "profile_ready_for_interactive_claim",
-                "routes": self._routes(),
+                "routes": routes,
+                "executors": {
+                    name: _serialize_handle(handle) for name, handle in handles.items()
+                },
             },
         )
+        return StepResult(
+            CampaignStatus.SEARCHING,
+            payload={"executors": str(manifest_path), "routes": routes},
+        )
 
-    def verify_submitted_delivery(self, epoch: int) -> StepResult:
+    def poll_and_verify_executors(self, epoch: int) -> StepResult:
         from .verifier import DeliveryVerifier
 
-        work_orders = WorkOrderManager(
-            self.campaign_dir,
-            campaign_id=self.campaign_id,
-            store=self.store,
-            source_manager=self.source_manager,
-            registry=self.registry,
-        )
-        order = work_orders.active_work_order()
-        if order.epoch != epoch:
-            raise CampaignRuntimeError(
-                f"active work order epoch {order.epoch} differs from state epoch {epoch}"
-            )
-        submitted = [
-            event
-            for event in self.store.events(
-                self.campaign_id, event_type="candidate_submitted"
-            )
-            if event["payload"].get("epoch") == epoch
-        ]
-        if not submitted:
-            return StepResult(
-                None,
-                payload={
-                    "reason": "awaiting_explicit_submit",
-                    "technique": order.technique,
-                    "delivery": str(order.delivery_path),
-                },
-            )
-        if not order.delivery_path.is_file() or order.delivery_path.is_symlink():
-            return StepResult(
-                CampaignStatus.AWAITING_AGENT,
-                payload={
-                    "reason": "submitted_delivery_missing",
-                    "technique": order.technique,
-                },
-            )
-        submitted_digest = str(submitted[-1]["payload"].get("delivery_sha256", ""))
-        if sha256_file(order.delivery_path) != submitted_digest:
-            return StepResult(
-                CampaignStatus.AWAITING_AGENT,
-                payload={
-                    "reason": "delivery_changed_after_submit",
-                    "technique": order.technique,
-                },
-            )
-
+        routes = self._routes()
+        handles = self._epoch_handles(epoch)
         verified = self._load_verified(epoch)
         baseline = BaselineRunner.load(self.campaign_dir / "BASELINE.json")
-        quality = LPIPSQualityEvaluator(
+        quality = LockedSolQualityEvaluator(
+            sol_checkout=self.campaign_dir / "source-worktrees" / "sol_engine",
             campaign_dir=self.campaign_dir,
+            agent_command=self.goal.agent.command,
+            agent_model=self.goal.agent.model,
         )
         verifier = DeliveryVerifier(
             registry=self.registry,
             baseline=baseline,
             campaign_artifact_root=self.campaign_dir,
-            review_validator=SameAgentReviewValidator(
-                campaign_id=self.campaign_id,
-                epoch=epoch,
-                review_path=order.review_path,
+            method_auditor=IndependentMasterMethodAuditor(
+                campaign_dir=self.campaign_dir,
+                registry=self.registry,
+                agent_command=self.goal.agent.command,
+                agent_model=self.goal.agent.model,
             ),
             quality_evaluator=quality,
             command_template=self._command_template(),
         )
-        result = verifier.verify(
-            order.delivery_path,
-            technique=order.technique,
-            candidate_worktree=order.worktree,
-        )
-        if not result.accepted or not result.verified_points:
-            findings = [
-                {
-                    "code": finding.code,
-                    "message": finding.message,
-                    "candidate_id": finding.candidate_id,
-                }
-                for finding in result.findings
-            ]
-            if not findings:
-                findings.append(
-                    {
-                        "code": "empty_verified_frontier",
-                        "message": "verifier accepted no durable frontier point",
-                        "candidate_id": None,
-                    }
+
+        for technique in routes:
+            if technique in verified:
+                continue
+            handle = handles[technique]
+            polled = self.executors.poll(handle)
+            if polled.alive and _process_actually_alive(handle.pid):
+                return StepResult(
+                    None,
+                    payload={"reason": "agent_running", "technique": technique},
                 )
-            self.store.record_event(
-                self.campaign_id,
-                "work_rejected",
-                f"{self.campaign_id}:verify:{epoch}:rejected",
-                {
-                    "epoch": epoch,
-                    "technique": order.technique,
-                    "findings": findings,
-                },
+            if not polled.delivered or polled.delivery is None:
+                return self._resume_or_exhaust(
+                    handle,
+                    "The process exited without a regular DELIVERY.json inside "
+                    "its assigned worktree.",
+                )
+
+            result = verifier.verify(
+                polled.delivery,
+                technique=technique,
+                executor_worktree=handle.worktree,
             )
-            return StepResult(
-                CampaignStatus.AWAITING_AGENT,
-                payload={
-                    "reason": "candidate_rejected",
-                    "technique": order.technique,
-                    "findings": findings,
-                },
+            if not result.accepted:
+                feedback = "\n".join(
+                    f"{index}. [{finding.code}] {finding.message}"
+                    for index, finding in enumerate(result.findings, start=1)
+                )
+                return self._resume_or_exhaust(handle, feedback)
+            if not result.verified_points:
+                return self._resume_or_exhaust(
+                    handle, "Verifier accepted no durable frontier point."
+                )
+            point = max(
+                result.verified_points,
+                key=lambda item: item.authoritative_speedup,
             )
-        point = max(
-            result.verified_points,
-            key=lambda item: item.authoritative_speedup,
-        )
-        manifest = point.implementation_manifest
-        candidate = VerifiedCandidate(
-            candidate_id=point.candidate_id,
-            technique=order.technique,
-            base_commit=manifest.base_commit,
-            candidate_commit=manifest.candidate_commit,
-            correctness=CorrectnessMode(self.registry[order.technique].correctness),
-            activation=CandidateActivation(
-                env=dict(point.activation.get("env", {})),
-                server_args=list(point.activation.get("server_args", [])),
-            ),
-            source_hashes=point.source_hashes,
-            compatibility_notes=[
-                f"verified from interactive {order.technique} work order",
-                f"authoritative speedup {point.authoritative_speedup:.8g}x",
-            ],
-            verified_speedup=point.authoritative_speedup,
-            verified=True,
-        )
-        verified[order.technique] = candidate
-        self._write_verified(epoch, verified)
-        self.store.record_event(
-            self.campaign_id,
-            "work_accepted",
-            f"{self.campaign_id}:verify:{epoch}:accepted",
-            {
-                "epoch": epoch,
-                "technique": order.technique,
-                "candidate_id": candidate.candidate_id,
-                "verified_speedup": candidate.verified_speedup,
-            },
-        )
-        if candidate.verified_speedup <= 1.0:
-            return StepResult(
-                CampaignStatus.AWAITING_AGENT,
-                payload={
-                    "reason": "verified_non_latency_frontier",
-                    "technique": order.technique,
-                    "candidate_id": candidate.candidate_id,
-                },
+            manifest = point.implementation_manifest
+            candidate = VerifiedCandidate(
+                candidate_id=point.candidate_id,
+                technique=technique,
+                base_commit=manifest.base_commit,
+                candidate_commit=manifest.candidate_commit,
+                correctness=CorrectnessMode(self.registry[technique].correctness),
+                activation=CandidateActivation(
+                    env=dict(point.activation.get("env", {})),
+                    server_args=list(point.activation.get("server_args", [])),
+                ),
+                source_hashes=point.source_hashes,
+                compatibility_notes=[
+                    f"verified in isolated {technique} executor",
+                    f"authoritative speedup {point.authoritative_speedup:.8g}x",
+                ],
+                verified_speedup=point.authoritative_speedup,
+                verified=True,
             )
+            verified[technique] = candidate
+            self._write_verified(epoch, verified)
 
         return StepResult(
             CampaignStatus.INTEGRATING,
             payload={
                 "verified_candidates": str(self._verified_path(epoch)),
-                "candidate_ids": [
-                    item.candidate_id
-                    for item in verified.values()
-                    if item.verified_speedup > 1.0
-                ],
+                "candidate_ids": [verified[name].candidate_id for name in routes],
             },
         )
 
@@ -869,23 +1093,17 @@ class FileCampaignHooks:
         locks = self._load_locks()
         baseline = BaselineRunner.load(self.campaign_dir / "BASELINE.json")
         verified = self._load_verified(epoch)
-        closed = self._closed_techniques()
-        selected = {
-            name: candidate
-            for name, candidate in verified.items()
-            if (
-                candidate.verified
-                and candidate.verified_speedup > 1.0
-                and name not in closed
-            )
-        }
-        if not selected:
+        routes = self._routes()
+        if set(verified) != set(routes):
             return StepResult(
-                CampaignStatus.AWAITING_AGENT,
-                payload={"reason": "no_verified_latency_positive_candidate"},
+                CampaignStatus.SEARCHING,
+                payload={"reason": "verified_candidate_set_changed"},
             )
-        quality = LPIPSQualityEvaluator(
+        quality = LockedSolQualityEvaluator(
+            sol_checkout=self.campaign_dir / "source-worktrees" / "sol_engine",
             campaign_dir=self.campaign_dir,
+            agent_command=self.goal.agent.command,
+            agent_model=self.goal.agent.model,
         )
         manager = IntegrationManager(
             self.source_manager,
@@ -901,69 +1119,62 @@ class FileCampaignHooks:
             result = manager.integrate(
                 self.goal,
                 baseline,
-                [selected[name].candidate_id for name in sorted(selected)],
-                {item.candidate_id: item for item in selected.values()},
+                [verified[name].candidate_id for name in routes],
+                {item.candidate_id: item for item in verified.values()},
                 epoch_root / f"attempt-{attempt:03d}",
             )
         except IntegrationError as error:
-            signature = hashlib.sha256(str(error).encode()).hexdigest()
-            self.store.record_failure(
-                self.campaign_id,
-                "integration",
-                signature,
-                {
-                    "epoch": epoch,
-                    "candidate_ids": [
-                        selected[name].candidate_id for name in sorted(selected)
-                    ],
-                    "detail": str(error),
-                },
+            feedback = (
+                "Independent combined full-workload integration gate failed: "
+                f"{error}"
             )
-            self.store.record_event(
-                self.campaign_id,
-                "integration_rejected",
-                f"{self.campaign_id}:integration:{epoch}:rejected",
-                {
-                    "epoch": epoch,
-                    "candidate_ids": [
-                        selected[name].candidate_id for name in sorted(selected)
-                    ],
-                    "detail": str(error),
-                    "failure_signature": signature,
-                },
-            )
+            handles = self._epoch_handles(epoch)
+            for technique in routes:
+                self._remove_verified(epoch, technique)
+                outcome = self._resume_or_exhaust(handles[technique], feedback)
+                if outcome.next_status is CampaignStatus.SEARCH_SPACE_EXHAUSTED:
+                    return outcome
             return StepResult(
-                CampaignStatus.AWAITING_AGENT,
+                CampaignStatus.SEARCHING,
                 payload={
                     "reason": "integrated_gate_rejected",
-                    "detail": str(error),
-                    "failure_signature": signature,
+                    "feedback": feedback,
                 },
             )
-        if result.status == "needs_agent_revision":
+        if result.status == "needs_executor_revision":
             assert result.failed_candidate_id is not None
             failed_technique = next(
                 name
-                for name, candidate in selected.items()
+                for name, candidate in verified.items()
                 if candidate.candidate_id == result.failed_candidate_id
             )
+            handle = self._epoch_handles(epoch)[failed_technique]
+            feedback = (
+                "Canonical integration conflict. Rebase the candidate on the "
+                "locked SGLang base and make it composition-compatible. "
+                f"Diagnostics: {result.diagnostics_path}"
+            )
+            rounds = self._technique_rounds(failed_technique)
+            if rounds >= self.registry[failed_technique].round_budget:
+                return StepResult(
+                    CampaignStatus.SEARCH_SPACE_EXHAUSTED,
+                    payload={
+                        "reason": "technique_round_budget_exhausted",
+                        "technique": failed_technique,
+                        "rounds": rounds,
+                    },
+                )
             self._remove_verified(epoch, failed_technique)
-            self.store.record_event(
-                self.campaign_id,
-                "integration_conflict",
-                (
-                    f"{self.campaign_id}:integration:{epoch}:conflict:"
-                    f"{failed_technique}"
+            self.executors.resume(
+                handle,
+                feedback=feedback,
+                idempotency_key=(
+                    f"{self.campaign_id}:{epoch}:integration-conflict:"
+                    f"{failed_technique}:{handle.attempt}"
                 ),
-                {
-                    "epoch": epoch,
-                    "technique": failed_technique,
-                    "candidate_id": result.failed_candidate_id,
-                    "diagnostics": str(result.diagnostics_path),
-                },
             )
             return StepResult(
-                CampaignStatus.AWAITING_AGENT,
+                CampaignStatus.SEARCHING,
                 payload={
                     "reason": "integration_conflict",
                     "technique": failed_technique,
@@ -1002,14 +1213,23 @@ class FileCampaignHooks:
         )
         speedup = max(point.performance.speedup for point in delivery.frontier_points)
         if speedup < self.goal.goal.target_speedup:
+            if self._has_search_budget(epoch):
+                return StepResult(
+                    CampaignStatus.PROFILED,
+                    payload={
+                        "reason": "target_not_reached",
+                        "verified_speedup": speedup,
+                    },
+                    verified_speedup=speedup,
+                    new_hypothesis=True,
+                )
             return StepResult(
-                CampaignStatus.AWAITING_AGENT,
+                CampaignStatus.SEARCH_SPACE_EXHAUSTED,
                 payload={
-                    "reason": "target_not_reached",
+                    "reason": "technique_round_budgets_exhausted",
                     "verified_speedup": speedup,
                 },
                 verified_speedup=speedup,
-                new_hypothesis=True,
             )
 
         locks = self._load_locks()
@@ -1018,7 +1238,7 @@ class FileCampaignHooks:
         profile = packager.validate(model_slug=_model_slug(self.goal.model.id))
         if not math.isclose(profile.speedup, speedup, rel_tol=1e-6, abs_tol=1e-9):
             raise CampaignRuntimeError(
-                "packaged profile speedup differs from integrated measurement"
+                "agent profile speedup differs from integrated measurement"
             )
         patch_dir = self.campaign_dir / "patch"
         package_receipt = self.campaign_dir / "PACKAGE.json"
@@ -1073,13 +1293,7 @@ class FileCampaignHooks:
         locks: dict[str, SourceLock] = {}
         for name, (repository, requested_ref) in _source_specs(self.goal).items():
             locks[name] = self.source_manager.lock(name, repository, requested_ref)
-        derived = derive_submodule_sources(
-            self.source_manager,
-            locks["kda_pilot"],
-            _KDA_SKILL_SUBMODULES,
-        )
-        for name, spec in derived.items():
-            locks[name] = self.source_manager.lock(name, spec.repository, spec.commit)
+        _validate_sol_contract(locks["sol_engine"])
         _atomic_json(
             path,
             {
@@ -1091,34 +1305,14 @@ class FileCampaignHooks:
 
     def _load_locks(self) -> dict[str, SourceLock]:
         value = _read_object(self.campaign_dir / "SOURCE-LOCKS.json")
-        missing = [name for name in _SOURCE_NAMES if name not in value]
-        if missing:
-            raise CampaignRuntimeError(
-                "SOURCE-LOCKS.json is missing required sources: " + ", ".join(missing)
-            )
         locks = {name: SourceLock.model_validate(value[name]) for name in _SOURCE_NAMES}
+        _validate_sol_contract(locks["sol_engine"])
         expected = _source_specs(self.goal)
-        for name in _PRIMARY_SOURCE_NAMES:
-            lock = locks[name]
+        for name, lock in locks.items():
             repository, requested_ref = expected[name]
             if lock.repository != repository or lock.requested_ref != requested_ref:
                 raise CampaignRuntimeError(
                     f"source lock {name} differs from frozen GOAL.yaml"
-                )
-        derived = derive_submodule_sources(
-            self.source_manager,
-            locks["kda_pilot"],
-            _KDA_SKILL_SUBMODULES,
-        )
-        for name, spec in derived.items():
-            lock = locks[name]
-            if (
-                lock.repository != spec.repository
-                or lock.requested_ref != spec.commit
-                or lock.commit != spec.commit
-            ):
-                raise CampaignRuntimeError(
-                    f"source lock {name} differs from the locked KDA gitlink"
                 )
         return locks
 
@@ -1137,6 +1331,7 @@ class FileCampaignHooks:
             else:
                 self.source_manager.create_worktree(lock, destination)
             roots[name] = destination.resolve()
+        _validate_sol_contract(locks["sol_engine"], roots["sol_engine"])
         return roots
 
     def _sync_knowledge(
@@ -1144,7 +1339,9 @@ class FileCampaignHooks:
         locks: Mapping[str, SourceLock],
         worktrees: Mapping[str, Path],
     ) -> None:
-        registry = load_knowledge_registry(KNOWLEDGE_REGISTRY)
+        registry = load_knowledge_registry(
+            _PACKAGE_ROOT / "knowledge" / "registry.toml"
+        )
         snapshots: dict[str, str] = {}
         for name, patterns in registry.items():
             lock = locks[name]
@@ -1173,9 +1370,86 @@ class FileCampaignHooks:
             raise CampaignRuntimeError("ROUTES.json is empty or has duplicates")
         return routes
 
+    def _executor_prompt(self, technique: str, epoch: int) -> ExecutorPrompt:
+        placement = detect_placement_contract(
+            self.campaign_dir / "source-worktrees" / "sglang"
+        ).render(model_slug=_model_slug(self.goal.model.id))
+        knowledge_manifest = _read_object(self.campaign_dir / "KNOWLEDGE.json")
+        knowledge = tuple(
+            PromptSection.from_path(
+                f"Locked {name} optimization knowledge",
+                Path(index),
+            )
+            for name, index in sorted(knowledge_manifest["snapshots"].items())
+        )
+        baseline = (self.campaign_dir / "BASELINE.json").read_text(encoding="utf-8")
+        command_template = self.campaign_dir / "BASELINE-COMMAND.json"
+        if command_template.is_file():
+            baseline += (
+                "\n\nFrozen user baseline command template (binding):\n"
+                "Materialize this template for your assigned worktree and "
+                "candidate run directory. Preserve every frozen workload flag, "
+                "append only your declared activation, and retain the generated "
+                "COMMAND.json. The independent Master compares its full argv, "
+                "cwd, environment, and template SHA-256; another benchmark "
+                "command is rejected.\n" + command_template.read_text(encoding="utf-8")
+            )
+        profile = (
+            self.campaign_dir / "profiles" / "0" / "PROFILE-DIGEST.json"
+        ).read_text(encoding="utf-8")
+        contract = (
+            (_PACKAGE_ROOT / "contracts" / "sol_engine" / "loop-and-gate.md").read_text(
+                encoding="utf-8"
+            )
+            + "\n"
+            + (_PACKAGE_ROOT / "contracts" / "sol_engine" / "master.md").read_text(
+                encoding="utf-8"
+            )
+        )
+        return ExecutorPrompt(
+            correctness_contract=PromptSection(
+                "Sol-Engine correctness and master contract",
+                contract,
+                "checked-in:contracts/sol_engine",
+            ),
+            technique_scope=PromptSection.from_path(
+                f"{technique} technique scope",
+                self.registry[technique].scope,
+            ),
+            placement_rules=PromptSection(
+                "SGLang generated-kernel placement and registration",
+                placement,
+                "detected:locked-SGLang-layout",
+            ),
+            knowledge=knowledge,
+            baseline=PromptSection(
+                "Frozen baseline and profile evidence",
+                baseline + "\n" + profile,
+                str(self.campaign_dir / "BASELINE.json"),
+            ),
+            search_state={
+                "campaign_id": self.campaign_id,
+                "epoch": epoch,
+                "technique": technique,
+                "round_budget": self.registry[technique].round_budget,
+                "prior_failures": self.store.failures(self.campaign_id),
+            },
+            rejected_signatures=tuple(
+                item["signature"] for item in self.store.failures(self.campaign_id)
+            ),
+        )
+
+    def _epoch_handles(self, epoch: int) -> dict[str, ExecutorHandle]:
+        root = self.campaign_dir / "search" / str(epoch)
+        manifest = _read_object(root / "EXECUTORS.json")
+        handles: dict[str, ExecutorHandle] = {}
+        for technique, value in manifest["executors"].items():
+            executor_root = Path(value["root"])
+            handles[str(technique)] = _load_handle(executor_root / "executor.json")
+        return handles
+
     def _verified_path(self, epoch: int) -> Path:
-        del epoch
-        return self.campaign_dir / "VERIFIED-CANDIDATES.json"
+        return self.campaign_dir / "search" / str(epoch) / "VERIFIED-CANDIDATES.json"
 
     def _load_verified(self, epoch: int) -> dict[str, VerifiedCandidate]:
         path = self._verified_path(epoch)
@@ -1207,18 +1481,84 @@ class FileCampaignHooks:
         candidates.pop(technique, None)
         self._write_verified(epoch, candidates)
 
-    def _closed_techniques(self) -> set[str]:
-        path = self.campaign_dir / "TECHNIQUE-DISPOSITIONS.json"
-        if not path.is_file():
-            return set()
-        techniques = _read_object(path).get("techniques")
-        if not isinstance(techniques, dict):
-            raise CampaignRuntimeError("TECHNIQUE-DISPOSITIONS.json is malformed")
-        return {
-            str(name)
-            for name, disposition in techniques.items()
-            if isinstance(disposition, dict) and disposition.get("closed") is True
+    def _resume_or_exhaust(self, handle: ExecutorHandle, feedback: str) -> StepResult:
+        budget = self.registry[handle.technique].round_budget
+        rounds = self._technique_rounds(handle.technique)
+        if rounds >= budget:
+            return StepResult(
+                CampaignStatus.SEARCH_SPACE_EXHAUSTED,
+                payload={
+                    "reason": "technique_round_budget_exhausted",
+                    "technique": handle.technique,
+                    "attempt": handle.attempt,
+                    "rounds": rounds,
+                },
+            )
+        signature = hashlib.sha256(
+            f"{handle.technique}\0{feedback}".encode()
+        ).hexdigest()
+        resume_key = (
+            f"{self.campaign_id}:executor-resume:{handle.executor_id}:"
+            f"{handle.attempt + 1}:{signature}"
+        )
+        resume_already_recorded = any(
+            event["idempotency_key"] == resume_key
+            for event in self.store.events(self.campaign_id)
+        )
+        if self.store.has_failure(signature) and not resume_already_recorded:
+            return StepResult(
+                CampaignStatus.SEARCH_SPACE_EXHAUSTED,
+                payload={
+                    "reason": "repeated_failure_signature",
+                    "technique": handle.technique,
+                    "attempt": handle.attempt,
+                    "failure_signature": signature,
+                },
+            )
+        resumed = self.executors.resume(
+            handle,
+            feedback=feedback,
+            idempotency_key=resume_key,
+        )
+        if not self.store.has_failure(signature):
+            self.store.record_failure(
+                self.campaign_id,
+                handle.technique,
+                signature,
+                {"feedback": feedback, "attempt": handle.attempt},
+            )
+        return StepResult(
+            None,
+            payload={
+                "reason": "executor_resumed",
+                "technique": handle.technique,
+                "attempt": resumed.attempt,
+                "failure_signature": signature,
+            },
+        )
+
+    def _technique_rounds(self, technique: str) -> int:
+        """Count all executor process launches against one global Sol budget."""
+        events = self.store.events(self.campaign_id)
+        executor_ids = {
+            str(event["payload"]["executor_id"])
+            for event in events
+            if event["event_type"] == "executor_spawned"
+            and event["payload"].get("technique") == technique
         }
+        return sum(
+            1
+            for event in events
+            if event["event_type"] in {"executor_spawned", "executor_resumed"}
+            and event["payload"].get("executor_id") in executor_ids
+        )
+
+    def _has_search_budget(self, epoch: int) -> bool:
+        del epoch
+        return all(
+            self._technique_rounds(name) < self.registry[name].round_budget
+            for name in self._routes()
+        )
 
     @staticmethod
     def _gpu_validation_command(delivery: IntegratedDelivery) -> list[str]:
@@ -1279,7 +1619,6 @@ def run_campaign_command(command: str, campaign: Path) -> dict[str, Any]:
         raise ValueError(f"unsupported campaign command: {command}")
     campaign = campaign.resolve()
     manifest = _read_object(campaign / "CAMPAIGN.json")
-    _reject_legacy_agent_campaign(campaign, manifest)
     campaign_id = str(manifest["campaign_id"])
     goal = load_goal(campaign / "GOAL.yaml")
     with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
@@ -1328,7 +1667,7 @@ def run_campaign_command(command: str, campaign: Path) -> dict[str, Any]:
                     CampaignStatus.WAITING_RESOURCE,
                     idempotency_key=(f"{campaign_id}:waiting-resource:{ordinal}"),
                     payload={
-                        "reason": "campaign_resource_unavailable",
+                        "reason": "executor_lease_unavailable",
                         "detail": str(error),
                     },
                 )

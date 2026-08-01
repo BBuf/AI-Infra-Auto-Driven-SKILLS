@@ -1,4 +1,4 @@
-# Kernel work-order scope
+# Kernel executor scope
 
 ## Identity and correctness
 
@@ -32,33 +32,17 @@ include:
 - launch and synchronization reduction; and
 - warm `torch.compile` or other compiler fusion for stable repeated regions.
 
-The root agent must first audit SGLang's existing fast paths. Auxiliary SGLang,
+The executor must first audit SGLang's existing fast paths. Auxiliary SGLang,
 KDA-Pilot, and FastVideo knowledge may suggest implementations, but cannot
 expand correctness or evidence policy.
-
-## Knowledge and candidate coverage
-
-Read the `kernel` projection in the bound `SEARCH-SPACE.json`, then query the
-locked SGLang root kernel skills, SGLang Diffusion skills and source,
-KDA-Pilot's diffusion kernel corpus, KernelWiki, NCU/warp-specialization
-guidance, and FastVideo kernel material. Start with exact live shapes and
-hotspots; a kernel that was successful on another model or GPU is only a
-reference until its SGLang dispatch and end-to-end gain are measured.
-
-Cover all applicable bundled kernel directions before declaring the lane exhausted:
-GEMM epilogues, norm/modulation/residual fusion, attention-adjacent fusion,
-compile/graph capture, layout/copy elimination, launch reduction,
-stream/communication overlap, and decode/VAE/postprocess work. Every
-implementation manifest cites exact source, commit, path, and SHA-256 knowledge
-origins.
 
 ## Ownership boundaries
 
 Topology owns CP/SP/TP/EP/FSDP/CFG degrees, process groups, rank maps,
 collectives, placement, and multi-device scheduling. Kernel candidates preserve
-the frozen topology. Cache owns approximate cross-step reuse; sparse attention
-owns attention approximation; quantization owns sub-16-bit behavior; token
-pruning owns reduced token work. Do not claim their gains in this lane.
+the frozen topology. Cache owns approximate cross-step reuse; PISA owns
+approximate attention; quantization owns sub-16-bit behavior; token pruning owns
+reduced token work. Do not claim their gains in this lane.
 
 Exact dead-computation or common-subexpression elimination is allowed only with
 a method argument proving identical inputs/results and a provably zero removed

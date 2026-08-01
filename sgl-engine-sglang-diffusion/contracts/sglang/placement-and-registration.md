@@ -84,7 +84,7 @@ can establish campaign speedup.
 ## Correctness precedence
 
 These rules add implementation placement and optimization knowledge. They do
-not weaken the bundled verification contract:
+not weaken the locked Sol-Engine correctness contract:
 
 - lossless kernel/topology work must preserve logical denoising work and pass
   independent method/code audit;

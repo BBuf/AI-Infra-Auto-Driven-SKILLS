@@ -102,7 +102,7 @@ def test_profile_routes_attention_and_glue_hotspots(tmp_path: Path) -> None:
     assert routed == [
         "kernel",
         "cache",
-        "sparse_attention",
+        "pisa",
         "quantization",
         "token_pruning",
     ]

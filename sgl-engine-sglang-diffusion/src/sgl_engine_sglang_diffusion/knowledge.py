@@ -35,7 +35,9 @@ _SECRET_ASSIGNMENT_RE = re.compile(
     r"API_KEY|ACCESS_TOKEN|SECRET|PASSWORD"
     r")\b(\s*[:=]\s*)([^\s`\"']+)"
 )
-_PRIVATE_PATH_RE = re.compile(r"(?<![\w.-])/(?:Users|home)/[^/\s`\"']+(?:/[^\s`\"']*)?")
+_PRIVATE_PATH_RE = re.compile(
+    r"(?<![\w.-])/(?:Users|home)/[^/\s`\"']+(?:/[^\s`\"']*)?"
+)
 _MARKDOWN_HEADING_RE = re.compile(r"(?m)^#{1,6}\s+(.+?)\s*$")
 _DECLARATION_RE = re.compile(
     r"(?m)^\s*(?:async\s+def|def|class|struct|enum|namespace)\s+"
@@ -77,8 +79,8 @@ class KnowledgeSnapshot:
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> "KnowledgeSnapshot":
         raw_entries = data.get("entries")
-        if not isinstance(raw_entries, list) or not raw_entries:
-            raise KnowledgeSyncError("knowledge index entries must be a nonempty list")
+        if not isinstance(raw_entries, list):
+            raise KnowledgeSyncError("knowledge index entries must be a list")
         entries = tuple(
             KnowledgeEntry(
                 path=str(item["path"]),
@@ -248,11 +250,6 @@ def sync_source(
             )
         )
 
-    if not entries:
-        raise KnowledgeSyncError(
-            f"knowledge source {name!r} matched no allowlisted text files"
-        )
-
     snapshot = KnowledgeSnapshot(
         schema_version=1,
         source=name,
@@ -266,3 +263,73 @@ def sync_source(
     )
     temporary_index.replace(index_path)
     return snapshot
+
+
+def compute_contract_hashes(
+    checkout: Path, authoritative_paths: Iterable[str]
+) -> dict[str, str]:
+    """Hash reviewed Sol-Engine contract inputs without copying their content."""
+    root = checkout.resolve()
+    result: dict[str, str] = {}
+    for relative_text in sorted(set(authoritative_paths)):
+        relative = Path(relative_text)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise KnowledgeSyncError(f"unsafe contract path: {relative}")
+        source = (root / relative).resolve()
+        try:
+            source.relative_to(root)
+        except ValueError as exc:
+            raise KnowledgeSyncError(f"contract path escapes checkout: {relative}") from exc
+        if not source.is_file():
+            raise KnowledgeSyncError(f"missing Sol-Engine contract: {relative}")
+        result[relative.as_posix()] = hashlib.sha256(source.read_bytes()).hexdigest()
+    return result
+
+
+def read_source_lock(path: Path) -> dict[str, object]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    required = {"repository", "commit", "authoritative_paths"}
+    if not required.issubset(data):
+        missing = sorted(required - set(data))
+        raise KnowledgeSyncError(f"source lock is missing: {missing}")
+    if not re.fullmatch(r"[0-9a-f]{40}", str(data["commit"])):
+        raise KnowledgeSyncError("Sol-Engine source lock must use a full commit")
+    if not isinstance(data["authoritative_paths"], list):
+        raise KnowledgeSyncError("authoritative_paths must be a list")
+    return data
+
+
+def write_contract_hashes(
+    source_lock_path: Path, checkout: Path, output_path: Path
+) -> dict[str, str]:
+    lock = read_source_lock(source_lock_path)
+    hashes = compute_contract_hashes(checkout, lock["authoritative_paths"])
+    payload = {
+        "schema_version": 1,
+        "repository": lock["repository"],
+        "commit": lock["commit"],
+        "hashes": hashes,
+    }
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = output_path.with_suffix(output_path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    temporary.replace(output_path)
+    return hashes
+
+
+def check_contract_hashes(
+    source_lock_path: Path, checkout: Path, expected_path: Path
+) -> list[str]:
+    lock = read_source_lock(source_lock_path)
+    expected = json.loads(expected_path.read_text(encoding="utf-8"))
+    actual = compute_contract_hashes(checkout, lock["authoritative_paths"])
+    issues: list[str] = []
+    if expected.get("commit") != lock["commit"]:
+        issues.append("contract hash commit does not match source lock")
+    expected_hashes = expected.get("hashes", {})
+    for path in sorted(set(actual) | set(expected_hashes)):
+        if actual.get(path) != expected_hashes.get(path):
+            issues.append(f"contract drift: {path}")
+    return issues

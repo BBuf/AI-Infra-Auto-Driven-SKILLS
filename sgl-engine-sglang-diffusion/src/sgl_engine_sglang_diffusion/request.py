@@ -103,21 +103,10 @@ class LaunchRequest(StrictModel):
     target_speedup: float = Field(gt=1.0)
     allow_quality_gated: bool = True
     baseline: BaselineCommandRequest
-    agent: AgentSpec | None = Field(
-        default=None,
-        description=(
-            "Legacy compatibility input; ignored because campaigns are owned by "
-            "the current interactive root agent"
-        ),
+    agent: AgentSpec = Field(
+        default_factory=lambda: AgentSpec(command=["codex", "exec"])
     )
-    token_budget: int | None = Field(
-        default=None,
-        gt=0,
-        description=(
-            "Legacy compatibility input; ignored because the controller cannot "
-            "observe current-conversation token usage"
-        ),
-    )
+    token_budget: int | None = Field(default=None, gt=0)
     run_root: Path = Path("runs/sglang-diffusion-auto-optimize")
     idempotency_key: str | None = None
     source: SourceSpec | None = None
@@ -244,7 +233,7 @@ def normalize_launch_request(
             f"{request.model!r} != {flags['--model-path']!r}"
         )
     if flags.get("--dataset") != "vbench":
-        raise RequestError("quality-reviewed campaigns require --dataset vbench")
+        raise RequestError("Sol-compatible campaigns require --dataset vbench")
     prompt_path = Path(flags["--dataset-path"])
     if not prompt_path.is_absolute():
         prompt_path = (cwd / prompt_path).resolve()
@@ -256,7 +245,7 @@ def normalize_launch_request(
     prompt_count = int(flags["--num-prompts"])
     if prompt_count != 5 or len(prompts) < 5:
         raise RequestError(
-            "quality-reviewed campaigns require --num-prompts 5 and at least "
+            "Sol-compatible campaigns require --num-prompts 5 and at least "
             "five non-empty prompts"
         )
 
@@ -318,8 +307,7 @@ def normalize_launch_request(
         sglang_ref=request.sglang_ref,
     )
     goal = CampaignGoal(
-        schema_version=2,
-        execution_mode="interactive_single_agent",
+        schema_version=1,
         model=ModelSpec(id=request.model),
         hardware=HardwareSpec(
             environment=request.machine,
@@ -343,6 +331,7 @@ def normalize_launch_request(
             allow_quality_gated=request.allow_quality_gated,
         ),
         source=source,
+        agent=request.agent,
     )
     return goal, command
 

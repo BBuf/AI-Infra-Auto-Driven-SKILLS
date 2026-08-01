@@ -39,9 +39,9 @@ class CampaignHooks(Protocol):
 
     def profile_and_route(self) -> StepResult: ...
 
-    def enter_agent_wait(self, epoch: int) -> StepResult: ...
+    def start_search_epoch(self, epoch: int) -> StepResult: ...
 
-    def verify_submitted_delivery(self, epoch: int) -> StepResult: ...
+    def poll_and_verify_executors(self, epoch: int) -> StepResult: ...
 
     def integrate_and_gate(self, epoch: int) -> StepResult: ...
 
@@ -77,9 +77,13 @@ class CampaignController:
         elif status is CampaignStatus.BASELINE_LOCKED:
             result = self.hooks.profile_and_route()
         elif status is CampaignStatus.PROFILED:
-            result = self.hooks.enter_agent_wait(epoch)
+            epoch = self.store.increment_epoch(
+                self.campaign_id,
+                idempotency_key=f"{self.campaign_id}:epoch:{epoch + 1}",
+            )
+            result = self.hooks.start_search_epoch(epoch)
         elif status is CampaignStatus.SEARCHING:
-            result = self.hooks.verify_submitted_delivery(epoch)
+            result = self.hooks.poll_and_verify_executors(epoch)
         elif status is CampaignStatus.INTEGRATING:
             result = self.hooks.integrate_and_gate(epoch)
         elif status is CampaignStatus.FINAL_VERIFYING:
@@ -116,8 +120,6 @@ class CampaignController:
         steps = 0
         while max_steps is None or steps < max_steps:
             previous = self.store.status(self.campaign_id)
-            if previous is CampaignStatus.AWAITING_AGENT:
-                return previous
             if previous not in {
                 CampaignStatus.NEW,
                 CampaignStatus.BASELINE_LOCKED,
@@ -130,7 +132,6 @@ class CampaignController:
             current = self.run_once()
             steps += 1
             if current in {
-                CampaignStatus.AWAITING_AGENT,
                 CampaignStatus.WAITING_RESOURCE,
                 CampaignStatus.INFRA_BLOCKED,
                 CampaignStatus.PAUSED_BUDGET,
@@ -149,7 +150,7 @@ class CampaignController:
         failure_signature: str | None,
         payload: Mapping[str, Any],
     ) -> bool:
-        """Record a repeated hypothesis signature without ending the campaign."""
+        """Reject globally repeated failures before spending another GPU run."""
         if failure_signature is None:
             return True
         return self.store.record_failure(
@@ -172,11 +173,19 @@ class CampaignController:
                 or result.verified_speedup < self.goal.goal.target_speedup
                 or not result.clean_room_verified
             ):
+                if result.new_hypothesis:
+                    return StepResult(
+                        CampaignStatus.PROFILED,
+                        payload={
+                            **dict(result.payload),
+                            "reason": "target_not_reached",
+                        },
+                    )
                 return StepResult(
-                    CampaignStatus.AWAITING_AGENT,
+                    CampaignStatus.SEARCH_SPACE_EXHAUSTED,
                     payload={
                         **dict(result.payload),
-                        "reason": "target_not_reached",
+                        "reason": "unverified_or_below_target",
                     },
                 )
         if target is CampaignStatus.UNREACHABLE_CERTIFIED:
@@ -184,7 +193,7 @@ class CampaignController:
                 result.unreachable_certificate
             ):
                 return StepResult(
-                    CampaignStatus.AWAITING_AGENT,
+                    CampaignStatus.SEARCH_SPACE_EXHAUSTED,
                     payload={
                         **dict(result.payload),
                         "reason": "missing_or_invalid_lower_bound_certificate",
@@ -196,11 +205,19 @@ class CampaignController:
                 "next_status=None to wait"
             )
         if result.failure_signature:
-            self.admit_hypothesis(
+            admitted = self.admit_hypothesis(
                 technique=str(result.payload.get("technique", "unknown")),
                 failure_signature=result.failure_signature,
                 payload=result.payload,
             )
+            if not admitted and result.new_hypothesis:
+                return StepResult(
+                    CampaignStatus.SEARCH_SPACE_EXHAUSTED,
+                    payload={
+                        **dict(result.payload),
+                        "reason": "repeated_failure_signature",
+                    },
+                )
         return result
 
     def _valid_unreachable(self, path: Path) -> bool:

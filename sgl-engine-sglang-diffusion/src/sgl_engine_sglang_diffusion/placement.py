@@ -27,7 +27,7 @@ class PlacementContract:
     benchmark_root: str
 
     def render(self, *, model_slug: str) -> str:
-        """Render work-order rules whose paths match the locked checkout."""
+        """Render executor rules whose paths match the locked checkout."""
         profile_root = f"{self.profile_root}/{model_slug}"
         wrapper_root = f"{self.wrapper_root}/{model_slug}"
         jit_source_root = f"{self.jit_source_root}/{model_slug}"

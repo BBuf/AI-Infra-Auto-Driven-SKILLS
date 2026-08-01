@@ -46,7 +46,7 @@ find it.
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`model-pr-diff-dossier`](skills/model-optimization/model-pr-diff-dossier/) | You need to create or revise model PR history docs with manual diff-reviewed cards instead of shallow PR-title summaries. |
 | [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | You need to turn a new SGLang model architecture into a public Day-0 PR DAG, parallel/kernel adaptation plan, seven-gate validation matrix, release lock, and sanitized evidence bundle. |
-| [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/) | You want the current root agent to own a serial diffusion optimization campaign while a deterministic controller locks evidence, verifies submissions, integrates measured candidates, and packages the patch without spawning nested AI processes. |
+| [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/) | You want to name a GPU machine, diffusion model, baseline command, and end-to-end speedup target, then let one persistent agent campaign own SGLang/kernel optimization, Sol-compatible validation, token accounting, progress, recovery, and patch packaging. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
@@ -70,30 +70,17 @@ Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
 
 ## SGL-Engine for SGLang Diffusion
 
-[`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) is a persistent
-evidence controller for one serial interactive campaign. It combines a
-self-contained six-family optimization catalog with commit-bound SGLang
-Diffusion skills, SGLang runtime source, KDA-Pilot diffusion kernels,
-KernelWiki, NCU guidance, and FastVideo knowledge. The current root agent
-chooses hypotheses and edits code; the controller locks the SGLang revision and
-workload, issues one work order, deterministically verifies real GPU evidence,
-integrates the latency-positive subset, and emits a clean-room-checked
-`sglang.patch`.
-
-Its taxonomy and verification design acknowledge the
-[Sol-Engine code](https://github.com/NVlabs/Sana/tree/sol-engine) and
-[paper](https://arxiv.org/abs/2606.23743), but the controller does not clone,
-import, or read Sol-Engine at runtime.
-
-The controller is not another AI agent. It never starts an executor, reviewer,
-nested Codex process, or Claude process. Its `AWAITING_AGENT` state means the
-current conversation should inspect evidence and continue.
+[`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) is an executable,
+persistent Sol-Engine-compatible optimization controller. It locks an SGLang
+revision, runs isolated technique agents, independently verifies their real GPU
+evidence, integrates accepted candidates, and emits a clean-room-checked
+`sglang.patch` with an `--agent-optimization` runtime profile.
 
 The recommended entrypoint is the installable
 [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/)
-skill. You do not need to write a campaign YAML or install the controller by
-hand on the GPU machine. The same root-agent conversation remains the only AI
-owner throughout the campaign.
+skill. You do not need to write a campaign YAML, install the controller by
+hand on the GPU machine, keep an SSH terminal open, or manually resume failed
+agent rounds.
 
 ### Install
 
@@ -118,7 +105,7 @@ Restart Codex after installing. For Claude Code, install the complete plugin:
 The Claude Code skill name is
 `ai-infra-auto-driven-skills:sglang-diffusion-auto-optimize`.
 
-### Start one serial campaign
+### Start one autonomous campaign
 
 Tell the agent only the machine, model, exact native SGLang Diffusion baseline
 command, and measured end-to-end target:
@@ -143,13 +130,11 @@ exhausted, or a checkable unreachable certificate is produced.
 ```
 
 The prompt file must contain exactly five non-empty validation prompts. The
-root agent discovers the named host instructions, enters its container, locks
-the latest fetched SGLang `main` commit, freezes the supplied command, and
-launches deterministic setup. The watchdog stops at `AWAITING_AGENT`. The root
-agent then claims one technique, edits one detached worktree, measures one
-complete candidate, reviews its own diff and evidence, and submits it for
-deterministic verification. Rejections return to `AWAITING_AGENT`; they do not
-kill the campaign.
+agent discovers the named host instructions, enters its container, locks the
+latest fetched SGLang `main` commit, freezes the supplied command, runs the
+authoritative baseline, and starts a detached idempotent campaign. It then owns
+profiling, SGLang and kernel changes, Sol-compatible correctness checks,
+recovery, integration, and final `sglang.patch` packaging.
 
 ### Progress display
 
@@ -160,34 +145,33 @@ campaign also maintains `PROGRESS.json` and renders a live view like this:
 Wan-AI/Wan2.2-T2V-A14B-Diffusers · gpu-host · TARGET 2.00x
 
 performance [██████████████░░░░░░] 1.68x / 2.00x
-search      [███████░░░░░░░░░░░░░] 4 / 12 rounds
-phase       AWAITING_AGENT · epoch 4 · elapsed 06:14:09
+search      [███████░░░░░░░░░░░░░] 43 / 120 rounds
+phase       SEARCHING · epoch 3 · elapsed 06:14:09
 latency     128.4000s baseline -> 76.4286s integrated
+tokens      182,430 total · 151,201 input · 31,229 output
+            [██████░░░░░░░░░░░░░░] 182,430 / 600,000
+            by role: executor=146,118, master=36,312
 
-technique          state       gate          rounds  isolated e2e
-kernel             integrated  passed             2         1.27x
-cache              verified    passed             1         1.18x
-quantization       unsupported pending            0             -
+technique          state       gate           tries  isolated e2e
+kernel             integrated  passed             8         1.27x
+cache              verified    passed             3         1.18x
+quantization       attempted   rejected_last      2             -
 -------------------------------------------------------------------
 integrated stack                                  1.68x
 
-current: awaiting the root agent's next claim or skip
+current: optimizing attention and fused normalization kernels
 ```
 
-The search counter includes only explicitly submitted full-workload
-measurements. Technique rows show independently verified results, while
-`integrated stack` is measured again after composition. Isolated speedups are
-never added together. The CLI marks current-conversation token usage
-unavailable instead of inventing a per-role ledger.
+Token counts are recorded only when the agent runtime emits exact usage; they
+are never estimated from text size. Technique rows show independently verified
+full-workload results, while `integrated stack` is measured again after
+composition. Isolated speedups are never added together.
 
-Inspect and continue the same durable campaign with:
+The agent owns monitoring, but an operator can attach to the same durable
+campaign when needed:
 
 ```bash
-sgl-diffusion-engine work --campaign <campaign-dir> --json
-sgl-diffusion-engine claim --campaign <campaign-dir> --technique <name>
-sgl-diffusion-engine submit --campaign <campaign-dir> \
-  --delivery <worktree>/DELIVERY.json
-sgl-diffusion-engine progress --campaign <campaign-dir>
+sgl-diffusion-engine progress --campaign <campaign-dir> --watch
 ```
 
 The workflow finishes only as `TARGET_REACHED`, `SEARCH_SPACE_EXHAUSTED`, or

@@ -1,98 +1,125 @@
 ---
 name: sglang-diffusion-auto-optimize
-description: Autonomously optimize one SGLang Diffusion model on a named GPU machine from a frozen baseline command until a measured end-to-end target or reviewed terminal boundary. Use when the current interactive root agent should directly own profiling, serial SGLang or kernel changes, self-contained verification, integration, progress, recovery, and patch packaging without spawning subagents or nested AI processes.
+description: Autonomously optimize an SGLang Diffusion model on a named GPU machine from a user-supplied baseline command until a requested measured end-to-end speedup is reached or the reviewed search terminates. Use when Codex should take remote ownership of baseline freezing, profiling, SGLang/kernel changes, Sol-Engine-compatible correctness checks, persistent recovery, token accounting, progress reporting, patch packaging, or resume/monitoring for an existing SGLang Diffusion optimization campaign.
 ---
 
 # SGLang Diffusion Auto-Optimize
 
 ## Contract
 
-Own one campaign in the current conversation. Require only:
+Turn one natural-language request into one durable remote campaign. Require only:
 
-- target machine or SSH alias;
+- target machine name or SSH alias;
 - model ID or checkpoint;
-- exact native SGLang Diffusion baseline command; and
+- exact SGLang Diffusion baseline command; and
 - target measured end-to-end speedup.
 
-Use exactly one AI owner: the current root agent. Never call `spawn_agent`,
-launch `codex exec` or Claude, create an AI reviewer, or delegate a technique
-to another conversation. Never run candidate GPU measurements in parallel.
+Infer the SGLang checkout, container, GPU IDs, and artifact root from the
+matching host skill and the command when possible. Do not ask the user to write
+`goal.yaml`, run controller subcommands, keep a terminal alive, or manually
+resume executors.
 
-The Python controller is a deterministic evidence tool. It may lock sources,
-run benchmarks and profilers, create one worktree, verify artifacts, integrate
-candidates, and package a patch. It must not choose hypotheses or launch AI.
-
-Keep the bundled correctness and quality rules binding. Additional SGLang,
-FastVideo, KDA-Pilot, KernelWiki, profiler, or model-history evidence may
-suggest a hypothesis but may not relax a gate.
-
-Use the complete bundled method and candidate space. Distinguish a documented
-or referenced method from one that is SGLang-adapted or end-to-end validated.
+Keep Sol-Engine correctness and quality gates binding. Additional SGLang,
+FastVideo, KDA-Pilot, KernelWiki, profiler, or model-history knowledge may
+generate hypotheses but may not relax those gates.
 
 ## Read Before Acting
 
-Read:
-
-- [references/remote-ownership.md](references/remote-ownership.md);
-- [references/progress-contract.md](references/progress-contract.md); and
-- [references/work-order-protocol.md](references/work-order-protocol.md); and
-- [references/search-space-and-knowledge.md](references/search-space-and-knowledge.md).
-
-Start from
-[references/request-template.yaml](references/request-template.yaml).
+Read [references/remote-ownership.md](references/remote-ownership.md) and
+[references/progress-contract.md](references/progress-contract.md).
 
 Read the installed skill whose name exactly matches the requested machine when
-one exists. Follow its access, container, repository, GPU-allocation, and
-cleanup rules. Never invent an endpoint.
+one exists. Follow its SSH, container, repository, GPU-allocation, and cleanup
+rules. If no host skill exists, use only a real SSH alias/configuration supplied
+by the user or discoverable in the active environment; never invent an
+endpoint.
 
-Read `sglang-diffusion-benchmark-profile`,
-`sglang-diffusion-performance`, and `model-pr-history-knowledge` when
-available. Read kernel-specific skills only after evidence selects a kernel
-hypothesis.
+Read these installed skills when available:
 
-## Phase 1: Resolve And Freeze
+- `sglang-diffusion-benchmark-profile`;
+- `sglang-diffusion-performance`;
+- `model-pr-history-knowledge`.
 
-Connect through the matching host skill. Determine:
+Read `KernelWiki`, `kernel-knowledge`, `ncu-report`, `ncu-report-skill`,
+`add-jit-kernel`, or `add-sgl-kernel` only when a routed candidate actually
+touches a GPU kernel or needs NCU evidence. The controller already snapshots
+its checked-in Sol, SGLang, FastVideo, and KDA-Pilot knowledge; do not replace
+those immutable inputs with memory.
 
-- persistent campaign and tool roots;
-- the SGLang checkout, origin, and fetched full commit;
-- the fixed GPU IDs and their UUIDs;
-- the active Python, CUDA, and PyTorch environment; and
-- whether another user owns a process on the fixed GPUs.
+## Phase 1: Resolve The Remote Environment
 
-Preserve dirty user work. Do not reset, clean, kill, or overwrite it. The
-controller creates detached campaign worktrees from its bare cache.
+Connect using the matching host skill. Determine:
 
-Validate paths, imports, benchmark help, and the five-prompt file without
-running a second full baseline. The controller owns the one authoritative
-baseline.
+- the container or isolated runtime;
+- the SGLang checkout;
+- usable GPU IDs without killing or preempting another user's processes;
+- Python 3.11+ and the active CUDA/PyTorch environment;
+- the exact SGLang origin URL and latest requested main commit; and
+- a campaign root on persistent storage.
 
-## Phase 2: Install The Evidence Tool
+Run read-only GPU and process checks before launch. Fetch the target SGLang main
+ref without resetting, cleaning, or overwriting the user's worktree. Resolve the
+fetched ref to a full commit and place the origin URL plus that commit in the
+launch request. A dirty user checkout is not an optimization worktree; the
+controller creates detached worktrees from its own bare cache.
 
-Prefer the package beside this skill:
+Do not run the complete baseline as a separate preflight. Check paths, prompt
+count, command syntax, benchmark `--help`, and imports only. The controller owns
+the single authoritative baseline run.
+
+## Phase 2: Bootstrap The Controller
+
+Prefer the controller shipped beside this skill:
 
 ```text
-<repository-root>/sgl-engine-sglang-diffusion
+<plugin-or-repository-root>/sgl-engine-sglang-diffusion
 ```
 
-Install it into an isolated environment on the target machine:
+Install it into an isolated virtual environment on the target machine:
 
 ```bash
 python3 -m venv <persistent-tool-root>/.venv
 <persistent-tool-root>/.venv/bin/python -m pip install \
-  <repository-root>/sgl-engine-sglang-diffusion
+  <plugin-or-repository-root>/sgl-engine-sglang-diffusion
 ```
 
-If only the skill was installed, use the package from the same immutable
-repository revision. Do not silently use another branch.
+If only this skill directory was installed and the controller source is absent,
+install the package from the same immutable repository revision as the skill:
 
-## Phase 3: Launch Deterministic Setup
+```text
+git+https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git@<revision>#subdirectory=sgl-engine-sglang-diffusion
+```
 
-Write the request under a campaign-owned directory. Preserve the exact model,
-workload flags, ordering, non-secret environment, absolute checkout, source
-origin, and fetched commit. Do not add an `agent` command.
+Do not silently install from an unrelated branch or copy.
 
-Launch:
+## Phase 3: Create The Request
+
+Start from
+[references/request-template.yaml](references/request-template.yaml). Write it
+under a campaign-owned request directory, not inside the SGLang checkout.
+
+Translate the baseline command to the request without changing its workload:
+
+- preserve the user's flags and ordering;
+- preserve leading non-secret environment assignments;
+- use an absolute working directory;
+- keep exactly five non-empty validation prompts for the Sol contract;
+- pass credentials through the inherited process environment, never YAML;
+- set the source SGLang repository to the verified origin URL;
+- set the source SGLang ref to the fetched full main commit;
+- default the agent command to `codex exec`;
+- use the user's requested Agent model when supplied;
+- add a token budget only when the user gave one.
+
+The launcher rejects shell pipelines, redirects, substitutions, ambiguous
+duplicate workload flags, and baseline/model mismatch. Do not work around those
+failures by weakening validation. Convert a safe command into explicit
+`baseline.argv` and `baseline.env`, or obtain a reviewed wrapper when shell
+behavior is genuinely required.
+
+## Phase 4: Launch And Hand Off
+
+Run inside the selected remote container/environment:
 
 ```bash
 sgl-diffusion-engine launch \
@@ -100,153 +127,68 @@ sgl-diffusion-engine launch \
   --detach
 ```
 
-The watchdog may run source locking, baseline, and profiling. It stops at
-`AWAITING_AGENT`. That status is not terminal: it means this root agent must
-choose the next action.
+Capture the returned campaign ID, campaign path, watchdog PID,
+`progress_command`, and `status_command`. Verify `WATCHDOG.json`,
+`controller-heartbeat.json` after the first controller tick, and
+`PROGRESS.json`. The detached watchdog owns recovery after the interactive
+agent or SSH session exits.
 
-Record the campaign ID/path and returned `work_command`. Reuse an idempotent
-campaign instead of launching a duplicate.
+Do not start a second campaign for the same request. The launch request is
+idempotent; reuse the returned campaign when `reused: true`.
 
-## Phase 4: Run The Serial Search Loop
+## Phase 5: Monitor Without Micromanaging
 
-Repeat this loop until a terminal state:
-
-1. Read current evidence:
-
-   ```bash
-   sgl-diffusion-engine work --campaign <campaign> --json
-   ```
-
-2. Inspect the frozen baseline, profile, prior failures, verified frontier,
-   hardware capability, technique dispositions, bound `SEARCH-SPACE.json`, and
-   `KNOWLEDGE.json`.
-
-3. Read the routed family's complete method/candidate projection. Query the
-   SGLang, KDA-Pilot, KernelWiki, NCU, and FastVideo snapshots using the
-   knowledge protocol. Choose one evidence-backed hypothesis. Routes are
-   suggestions, not mandatory lanes. Exclude known-inapplicable methods; for
-   example, do not attempt NVFP4 on Hopper.
-
-4. Claim exactly one technique:
-
-   ```bash
-   sgl-diffusion-engine claim \
-     --campaign <campaign> \
-     --technique <technique>
-   ```
-
-5. Work directly in the returned `worktree`. Before every candidate run,
-   verify the fixed GPU UUIDs, ownership, memory, utilization, and rendezvous
-   port. Treat resource contention as `WAITING_RESOURCE`, not a failed
-   hypothesis.
-
-6. Implement one hypothesis, commit it, and run one complete frozen workload.
-   Preserve the timing scope, prompt set, seed, shape, steps, guidance, dtype,
-   GPU set, native backend, command receipt, engagement receipt, source hashes,
-   and real media.
-
-   Cite exact snapshot source, commit, relative path, and raw SHA-256 values in
-   the implementation manifest's nonempty `knowledge_origin`.
-
-7. Review the actual diff and evidence yourself. Write the required
-   `AGENT-REVIEW.json` and, for quality-changing work, review all five prompt
-   outputs with built-in vision. Do not claim independent review.
-
-8. Submit:
-
-   ```bash
-   sgl-diffusion-engine submit \
-     --campaign <campaign> \
-     --delivery <worktree>/DELIVERY.json
-   ```
-
-9. Read the verifier findings. A rejection returns to `AWAITING_AGENT`; it
-   rejects that candidate, not the campaign. Choose a changed hypothesis and
-   claim a new work order.
-
-The verifier recomputes latency, speedup, hashes, command equivalence,
-backend/fallback state, engagement, LPIPS, and review bindings. Never edit
-evidence after `submit`.
-
-## Scientific Round And Skip Rules
-
-Count one scientific round only after one distinct candidate completes a full
-frozen-workload measurement and is explicitly submitted.
-
-Do not count:
-
-- GPU or port contention;
-- disconnects or root-agent interruption;
-- dependency failure found in preflight;
-- launch failure before model execution; or
-- malformed metadata that references no measured run.
-
-A repeated failure signature closes only that hypothesis.
-
-Use `skip` only after reviewing evidence:
-
-```bash
-sgl-diffusion-engine skip \
-  --campaign <campaign> \
-  --technique <technique> \
-  --classification <unsupported|no_gain|blocked> \
-  --reason <specific-evidence-backed-reason>
-```
-
-`unsupported` and `no_gain` close the technique. `blocked` remains recoverable.
-Closing a technique that already has a verified candidate excludes that
-candidate and triggers a serial remeasurement of the remaining verified
-subset; this selection-only epoch consumes no scientific round.
-`SEARCH_SPACE_EXHAUSTED` is valid only after every suggested technique is
-explicitly closed or has consumed its scientific budget and the best verified
-integrated subset remains below target. Before closing a technique, satisfy its
-full bundled candidate-coverage requirements; a PISA-only sparse search or a
-three-family-only cache search is incomplete.
-
-## Integration And Progress
-
-The tool integrates only verified latency-positive candidates. It does not
-wait for every suggested technique and never adds isolated speedups.
-Composition conflicts return to this root agent for a changed candidate.
-
-Package every deployable profile through SGLang Diffusion's
-`--quality off|auto|<profile-id>` contract. Keep the detailed generated
-implementation manifest under the model-scoped kernel subtree, and add the
-matching strict runtime manifest under
-`sglang.multimodal_gen.quality_profiles.profiles`. The two profile IDs,
-model IDs, workload, activation arguments, and evidence bindings must agree.
-Emit `status: validated` only after the integrated five-prompt quality gate,
-native-backend/no-fallback verification, and positive end-to-end measurement
-pass. Do not create a second profile CLI.
-
-Use:
+Use the returned progress command. For machine-readable polling:
 
 ```bash
 sgl-diffusion-engine progress --campaign <campaign> --json
 ```
 
-Report baseline and integrated end-to-end latency, best isolated speedup,
-gate/findings, integrated stack speedup, epoch, scientific rounds, active work
-order, and disposition. CLI token accounting is unavailable because the AI
-owner is this conversation, not a spawned process.
+For an attached terminal:
 
-Send concise updates at meaningful transitions and continue acting. Do not
-stop merely because the tool yielded at `AWAITING_AGENT`.
+```bash
+sgl-diffusion-engine progress --campaign <campaign> --watch
+```
 
-## Finish
+While the conversation remains active, poll periodically and send concise
+updates at meaningful transitions or at least once per long-running interval.
+Do not reinterpret an executor's microbenchmark claim as progress. Report only:
 
-Finish only at:
+- frozen-baseline and integrated full-workload end-to-end speedup;
+- best independently verified isolated end-to-end speedup by technique;
+- correctness/quality gate result and failure reason;
+- integrated-stack speedup separately from isolated gains;
+- exact emitted token totals and unavailable runtimes;
+- current phase, epoch, round-budget consumption, and active technique.
+
+Never add technique speedups together. `marginal_attribution: not_measured`
+means no leave-one-out measurement exists.
+
+If the watchdog is stale, inspect its receipt, heartbeat, logs, recorded PID,
+and process ownership. Restart only the exact campaign-owned watchdog command.
+Use `resume` only for an existing recoverable campaign. Do not refresh
+`BASELINE.json`.
+
+## Phase 6: Finish
+
+Continue until the campaign reaches one of:
 
 - `TARGET_REACHED`;
-- `SEARCH_SPACE_EXHAUSTED`; or
-- `UNREACHABLE_CERTIFIED`.
+- `UNREACHABLE_CERTIFIED`; or
+- `SEARCH_SPACE_EXHAUSTED`.
 
-Do not call a plateau impossible. `UNREACHABLE_CERTIFIED` requires a
-deterministically checkable lower-bound certificate.
+Do not describe search exhaustion as theoretical impossibility.
+`UNREACHABLE_CERTIFIED` is valid only with the controller's independently
+checkable lower-bound certificate.
 
-For `TARGET_REACHED`, report the locked commit and workload, baseline/final
-latency, measured speedup, selected techniques, verification result, patch
-path and SHA-256, application command, and GPU revalidation command.
+For `TARGET_REACHED`, report:
 
-Leave campaign evidence and detached worktrees available for audit. Clean only
-campaign-owned processes and temporary paths.
+- locked SGLang commit and exact workload;
+- baseline, final latency, and measured speedup;
+- each technique's isolated measurement and gate result;
+- integrated stack result;
+- total exact tokens by role/technique when available;
+- patch path, SHA-256, application command, and GPU revalidation command.
+
+Leave the remote artifacts and detached worktrees available for audit. Clean up
+only processes and temporary paths recorded as owned by this campaign.

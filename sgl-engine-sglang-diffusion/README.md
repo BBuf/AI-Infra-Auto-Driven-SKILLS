@@ -1,323 +1,375 @@
 # SGL-Engine for SGLang Diffusion
 
-`sgl-engine-sglang-diffusion` is a deterministic evidence controller for a
-serial, interactive optimization campaign. The current root agent owns every
-hypothesis, code change, benchmark decision, visual review, and integration
-decision. The controller locks inputs, runs the authoritative baseline and
-profile, issues one work order, verifies submitted evidence, composes verified
-candidates, records progress, and packages the final patch.
+`sgl-engine-sglang-diffusion` is an executable, restartable optimization
+controller for one frozen SGLang Diffusion model/workload. You provide a goal
+such as `target_speedup: 2.0`; the controller locks source revisions, freezes
+one real baseline, profiles the native SGLang backend, runs isolated technique
+agents, independently verifies their evidence, composes accepted candidates,
+and emits a clean-room-checked `sglang.patch`.
 
-The controller never starts an AI process. It has no executor agents, Master
-agent, AI reviewer, nested Codex or Claude command, or per-agent token budget.
-Its `AWAITING_AGENT` state is a deliberate boundary at which the current
-conversation reads evidence and continues the campaign.
+The workflow preserves Sol-Engine's executor/Master split, loop budgets,
+correctness branches, and full-workload evidence rules. It expands the
+optimizer's implementation knowledge with current SGLang Diffusion and kernel
+placement rules, selected KDA-Pilot kernel skills, and allowlisted FastVideo
+optimization sources. Those additions can suggest hypotheses; they cannot
+weaken Sol-Engine's acceptance contract.
 
-The controller is self-contained: it does not clone, import, or read another
-optimization engine at runtime. Its bundled six-family catalog covers kernel,
-cache, sparse attention, quantization, token pruning, and topology. Locked
-SGLang, FastVideo, KDA-Pilot, KernelWiki, NCU, warp-specialization, profiler,
-or model-history evidence may suggest a hypothesis but cannot weaken a gate.
+This is a controller, not a promise that every requested speedup exists.
+`TARGET_REACHED` means the integrated patch achieved the target on the exact
+locked workload and passed clean-room revalidation. A search plateau produces
+`SEARCH_SPACE_EXHAUSTED`, not a theoretical claim. The stronger
+`UNREACHABLE_CERTIFIED` state requires an independently checkable lower-bound
+certificate showing that the target latency is below the scoped achievable
+bound.
 
-## Why the flow is serial
-
-Several technique processes sharing one GPU can contaminate timings, contend
-for memory and ports, and turn one slow or blocked lane into a global
-integration barrier. This implementation instead permits:
-
-- one interactive root agent;
-- one active work order and detached SGLang worktree;
-- one candidate GPU measurement at a time;
-- one explicit submission boundary per scientific round; and
-- integration of the verified latency-positive subset.
-
-Routes are suggestions rather than required parallel lanes. A rejection
-returns to `AWAITING_AGENT`; it does not terminate the campaign. Repeated
-failure signatures close only the affected hypothesis.
-
-## Search space and knowledge
-
-Deterministic setup creates two bound artifacts before the baseline:
-
-- `SEARCH-SPACE.json` materializes the versioned catalog bundled with this
-  package. It preserves method directions, candidate capability requirements,
-  review items, and portable composition recipes.
-- `KNOWLEDGE.json` points to commit-locked, per-file-hashed text snapshots from
-  SGLang, FastVideo, KDA-Pilot, KernelWiki, the NCU report skill, and the
-  warp-specialization skill.
-
-KDA's three skill submodules receive independent locks at the exact gitlink
-commits stored by the locked KDA revision. They are not treated as files owned
-by the parent commit.
-
-The catalog records opportunities, not results. A method moves through
-`documented -> referenced -> adapted -> validated`; only the last state has a
-passing SGLang end-to-end result.
-
-## Install
+## Quick start: install the conversational skill
 
 Most users should install
 [`sglang-diffusion-auto-optimize`](../skills/sglang-diffusion-auto-optimize/)
-and let the current conversation operate the controller.
+and let the agent own this controller. The controller does not need to be
+installed manually on the local machine.
 
-For controller development:
-
-```bash
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -e './sgl-engine-sglang-diffusion[dev]'
-sgl-diffusion-engine --help
-python -m pytest sgl-engine-sglang-diffusion/tests -q
-```
-
-## Start a campaign
-
-Provide the machine, model, exact native SGLang Diffusion baseline command,
-and measured end-to-end speedup target. The validation prompt file must have
-exactly five non-empty prompts.
-
-The skill writes the launch request and invokes:
+For Codex:
 
 ```bash
-sgl-diffusion-engine launch \
-  --request /absolute/path/campaign-request.yaml \
-  --detach
+git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
+cd AI-Infra-Auto-Driven-SKILLS
+mkdir -p ~/.codex/skills
+ln -s "$PWD/skills/sglang-diffusion-auto-optimize" \
+  ~/.codex/skills/sglang-diffusion-auto-optimize
 ```
 
-The request has no `agent` command. Launch is idempotent for the same frozen
-request. The watchdog may lock sources, run the single authoritative baseline,
-and collect the initial profile. It then stops at `AWAITING_AGENT`; it does not
-continue in a background AI loop.
+Restart Codex after installing. For Claude Code:
 
-For a lower-level start, edit
-[`examples/goal.yaml`](examples/goal.yaml) and run:
-
-```bash
-sgl-diffusion-engine init --goal examples/goal.yaml --run-root runs/
-sgl-diffusion-engine run --campaign runs/<campaign-id>
+```text
+/plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
+/plugin install ai-infra-auto-driven-skills@ai-infra-auto-driven-skills
+/reload-plugins
 ```
 
-The frozen goal uses schema version 2 and
-`execution_mode: interactive_single_agent`.
+The Claude Code skill is named
+`ai-infra-auto-driven-skills:sglang-diffusion-auto-optimize`.
 
-Resume a recoverable deterministic state with:
+## Start a campaign with one request
 
-```bash
-sgl-diffusion-engine resume --campaign runs/<campaign-id>
+Provide four inputs: the target machine, model, exact native SGLang Diffusion
+baseline command, and measured end-to-end speedup target.
+
+```text
+Use sglang-diffusion-auto-optimize.
+
+Machine: <machine skill or SSH alias>
+Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+Baseline command:
+CUDA_VISIBLE_DEVICES=0 python
+python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py
+--model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers
+--dataset vbench
+--dataset-path /persistent/benchmarks/validation-prompts.txt
+--num-prompts 5
+--output-dir /persistent/benchmarks/wan22-baseline
+
+Target: 2x measured end-to-end speedup.
+Own the campaign until the target is verified, the reviewed search space is
+exhausted, or a checkable unreachable certificate is produced.
 ```
 
-At `AWAITING_AGENT`, use `work` and `claim` instead; `resume` never starts an
-AI process.
+The prompt file must contain exactly five non-empty validation prompts. The
+baseline command must be a native SGLang Diffusion offline benchmark command;
+shell pipelines, redirects, command substitutions, secret assignments, model
+mismatches, and ambiguous duplicate workload flags are rejected rather than
+silently rewritten.
 
-## Interactive work-order loop
+The skill resolves the matching host instructions or SSH alias, finds the
+container and persistent storage, locks the latest fetched SGLang `main`
+commit, bootstraps this controller remotely, freezes the command, and invokes
+the detached launcher. It owns profiling, candidate routing, Executor/Master
+rounds, correctness checks, integration, monitoring, recovery, and patch
+packaging. The conversation and SSH connection do not need to remain open.
 
-Inspect the current state:
+Submitting the same request again is idempotent: it reuses the existing
+campaign and restarts only a missing or stale campaign-owned watchdog. It does
+not rerun or refresh the frozen baseline.
 
-```bash
-sgl-diffusion-engine work --campaign runs/<campaign-id> --json
-```
+## Progress display
 
-At `AWAITING_AGENT`, choose one evidence-backed routed technique:
-
-```bash
-sgl-diffusion-engine claim \
-  --campaign runs/<campaign-id> \
-  --technique kernel
-```
-
-`claim` creates exactly one detached worktree and returns:
-
-- `search/<epoch>/AGENT-WORK.json`;
-- the absolute worktree and required `DELIVERY.json` path;
-- the required `AGENT-REVIEW.json` path;
-- hashes of the frozen source, baseline, profile, and technique contract; and
-- bound paths and hashes for `KNOWLEDGE.json` and `SEARCH-SPACE.json`; and
-- scientific rounds used and remaining.
-
-The current root agent edits the returned worktree, commits the candidate,
-runs the complete frozen workload, inspects the diff and evidence, and writes
-the same-agent review. Every implementation manifest cites at least one exact
-source, commit, path, and raw SHA-256 from a bound knowledge index. It then
-submits the exact delivery path:
-
-```bash
-sgl-diffusion-engine submit \
-  --campaign runs/<campaign-id> \
-  --delivery /absolute/worktree/DELIVERY.json
-```
-
-`submit` is the scientific-round boundary. The controller binds the delivery
-digest, recomputes verification, and either integrates the candidate or
-returns actionable findings at `AWAITING_AGENT`. Editing a delivery after
-submission fails closed.
-
-If evidence rules out a route:
-
-```bash
-sgl-diffusion-engine skip \
-  --campaign runs/<campaign-id> \
-  --technique quantization \
-  --classification unsupported \
-  --reason 'NVFP4 requires Blackwell; the locked machine is Hopper'
-```
-
-`unsupported` and `no_gain` close a technique. `blocked` records a recoverable
-environmental issue. If a closed technique already has a verified candidate in
-the current stack, the controller preserves its evidence, excludes it from
-selection, advances to a new non-scientific epoch, and remeasures the remaining
-verified subset.
-
-## Same-agent review
-
-The current agent is both implementer and reviewer; the flow does not pretend
-those roles are independent. `AGENT-REVIEW.json` binds:
-
-- the baseline and candidate commits;
-- the exact binary full-index diff SHA-256;
-- the lossless method argument or quality-gated activation SHA-256;
-- the review decision and findings; and
-- the authenticity or five-prompt visual-verdict SHA-256.
-
-The controller verifies those bindings deterministically. Quality-gated
-candidates additionally require aligned locally computed LPIPS evidence and
-five reviewed prompt outputs. External VLM verdict services are not used.
-
-## Scientific rounds and failures
-
-A round is consumed only when a distinct candidate finishes the complete
-frozen workload and is explicitly submitted. GPU or port contention,
-disconnects, preflight dependency failures, launch failures before model
-execution, and malformed metadata without a measured run consume no round.
-
-The search reaches `SEARCH_SPACE_EXHAUSTED` only after every routed suggestion
-is explicitly closed or consumes its scientific budget and its complete
-family-level catalog coverage requirement was reviewed. A PISA-only sparse search
-or a three-family-only cache search is incomplete. A performance plateau is
-not a proof of impossibility. `UNREACHABLE_CERTIFIED` requires a
-deterministically checkable lower-bound certificate.
-
-## Verification and integration
-
-For every isolated and integrated run, the verifier recomputes:
-
-- baseline and candidate full-workload latency and speedup;
-- source, command, workload, output, and review hashes;
-- native backend, engagement, and fallback receipts;
-- lossless method equivalence; or
-- aligned LPIPS plus the five-prompt visual binding.
-
-The correctness branches are deliberately asymmetric:
-
-| Technique | Mode | Required gate |
-| --- | --- | --- |
-| kernel, topology | lossless | Unchanged global steps and DiT calls, unchanged logical work, method/code review, authentic real media. |
-| cache, sparse attention, quantization, token pruning | quality-gated | Full workload, positive engagement, no fallback, aligned LPIPS, and five-prompt same-agent visual review. |
-
-## Acknowledgements
-
-The optimization taxonomy and verification ideas were informed by the
-[Sol-Engine code](https://github.com/NVlabs/Sana/tree/sol-engine) and the
-[Sol Video Inference Engine paper](https://arxiv.org/abs/2606.23743). The
-necessary portable ideas are implemented locally; neither source is a runtime
-dependency.
-
-Only verified candidates with measured speedup greater than `1.0x` enter the
-integration subset. Integration remeasures the composed stack; isolated
-speedups are never added. A conflict removes or revises the conflicting
-candidate instead of waiting for every routed technique.
-
-## Progress
-
-```bash
-sgl-diffusion-engine progress --campaign runs/<campaign-id>
-sgl-diffusion-engine progress --campaign runs/<campaign-id> --json
-sgl-diffusion-engine progress --campaign runs/<campaign-id> --watch
-```
-
-`--watch` returns when the campaign becomes terminal or yields at
-`AWAITING_AGENT`. A typical projection is:
+The agent sends concise updates at meaningful transitions. Every update comes
+from persisted campaign evidence rather than an executor's projected
+microbenchmark claim. A live campaign renders like this:
 
 ```text
 Wan-AI/Wan2.2-T2V-A14B-Diffusers · gpu-host · TARGET 2.00x
 
 performance [██████████████░░░░░░] 1.68x / 2.00x
-search      [███████░░░░░░░░░░░░░] 4 / 12 rounds
-phase       AWAITING_AGENT · epoch 4 · elapsed 06:14:09
+search      [███████░░░░░░░░░░░░░] 43 / 120 rounds
+phase       SEARCHING · epoch 3 · elapsed 06:14:09
 latency     128.4000s baseline -> 76.4286s integrated
+tokens      182,430 total · 151,201 input · 31,229 output
+            [██████░░░░░░░░░░░░░░] 182,430 / 600,000
+            by role: executor=146,118, master=36,312
 
-technique          state       gate          rounds  isolated e2e
-kernel             integrated  passed             2         1.27x
-cache              verified    passed             1         1.18x
-quantization       unsupported pending            0             -
+technique          state       gate           tries  isolated e2e
+kernel             integrated  passed             8         1.27x
+cache              verified    passed             3         1.18x
+quantization       attempted   rejected_last      2             -
 -------------------------------------------------------------------
 integrated stack                                  1.68x
+
+current: optimizing attention and fused normalization kernels
 ```
 
-Progress reports submitted scientific rounds, current work order, explicit
-dispositions, verified isolated measurements, and the remeasured integrated
-stack. The CLI reports current-conversation token usage as unavailable; it
-does not estimate tokens from text or elapsed time.
+The performance bar measures progress from `1.00x` to the requested target.
+The search bar measures consumed reviewed technique rounds, not an estimated
+completion time. Token totals are exact only when the agent runtime emits
+usage; missing usage is marked unavailable and is never estimated from text,
+bytes, or elapsed time.
 
-## State model
+Each technique row reports its best independently verified end-to-end result on
+the frozen workload. `integrated stack` is measured again after accepted
+changes are composed. The controller never adds isolated speedups together.
+
+The durable files are:
+
+- `PROGRESS.json`: current atomic progress projection;
+- `TOKEN-USAGE.jsonl`: append-only normalized Agent token ledger;
+- `events.jsonl`: campaign state transitions and attempt history; and
+- `controller-heartbeat.json` and `WATCHDOG.json`: liveness and recovery
+  receipts.
+
+The agent owns polling. An operator may attach without changing campaign state:
+
+```bash
+sgl-diffusion-engine progress --campaign <campaign-dir>
+sgl-diffusion-engine progress --campaign <campaign-dir> --watch
+sgl-diffusion-engine progress --campaign <campaign-dir> --json
+```
+
+The workflow stops only at:
+
+| Terminal state | Meaning |
+| --- | --- |
+| `TARGET_REACHED` | The integrated patch reached the requested speedup and passed clean-room revalidation. |
+| `SEARCH_SPACE_EXHAUSTED` | All reviewed routed budgets ended without reaching the target. This is not a theoretical impossibility claim. |
+| `UNREACHABLE_CERTIFIED` | An independently checkable lower-bound certificate proves the target is outside the scoped achievable bound. |
+
+The final report includes the locked SGLang commit, frozen workload, baseline
+and integrated latency, isolated technique measurements, exact available token
+usage, patch path and SHA-256, application command, and GPU revalidation
+command.
+
+## Advanced: install and operate the controller directly
+
+The Skill normally performs these steps remotely. Controller developers and
+automation systems can install it directly with Python 3.11 or newer:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -e ./sgl-engine-sglang-diffusion
+sgl-diffusion-engine --help
+```
+
+For development:
+
+```bash
+python -m pip install -e './sgl-engine-sglang-diffusion[dev]'
+python -m pytest sgl-engine-sglang-diffusion/tests -q
+```
+
+The configured agent command must be installed separately. It is always
+launched as an argv vector without shell interpolation.
+
+The Skill's underlying one-shot command is:
+
+```bash
+sgl-diffusion-engine launch \
+  --request campaign-request.yaml \
+  --detach
+```
+
+It prints the campaign ID and path, watchdog PID, progress command, and status
+command. The request is indexed by a stable idempotency key and content digest.
+
+## Advanced: manual goal
+
+```yaml
+schema_version: 1
+model:
+  id: Wan-AI/Wan2.2-T2V-A14B-Diffusers
+hardware:
+  environment: b200
+  gpu_count: 1
+workload:
+  prompts: validation-prompts.txt
+  prompt_count: 5
+  seed: 42
+  height: 720
+  width: 1280
+  frames: 81
+  fps: 24
+  steps: 50
+  guidance: 5.0
+  dtype: bfloat16
+  timing_scope: load_excluded_end_to_end
+goal:
+  target_speedup: 2.0
+  allow_quality_gated: true
+source:
+  sglang_repo: https://github.com/sgl-project/sglang.git
+  sglang_ref: main
+agent:
+  command: [codex, exec]
+```
+
+Exactly five non-empty validation prompts are required for Sol-Engine
+compatibility. The campaign copies them into its immutable run directory.
+
+## Advanced: manual lifecycle
+
+```bash
+sgl-diffusion-engine init --goal goal.yaml --run-root runs/
+sgl-diffusion-engine run --campaign runs/<campaign-id>
+sgl-diffusion-engine status --campaign runs/<campaign-id>
+sgl-diffusion-engine status --campaign runs/<campaign-id> --json
+sgl-diffusion-engine resume --campaign runs/<campaign-id>
+sgl-diffusion-engine package --campaign runs/<campaign-id>
+```
+
+To keep advancing without manually issuing `resume`, run the watchdog in a
+long-lived terminal or service:
+
+```bash
+sgl-diffusion-engine watchdog --campaign runs/<campaign-id>
+```
+
+It starts only the frozen controller command, notices when each one-shot
+controller process exits, and advances again on the next poll. It stops
+launching work after a terminal state. SQLite idempotency, process receipts,
+and leases make restarting the watchdog safe.
+
+Supporting maintenance commands are:
+
+```bash
+sgl-diffusion-engine sync-knowledge --campaign runs/<campaign-id>
+sgl-diffusion-engine check-contracts \
+  --sol-checkout runs/<campaign-id>/source-worktrees/sol_engine
+sgl-diffusion-engine watchdog --campaign runs/<campaign-id>
+```
+
+`run` advances the persisted state machine. `resume` opens the same SQLite WAL,
+leases, worktrees, attempts, feedback, and delivery files. It never refreshes
+`BASELINE.json` and never double-spawns an executor whose lease and process
+receipt are live. The watchdog may restart only the exact controller argv
+recorded in `CAMPAIGN.json`; it does not rewrite scientific state or relaunch a
+terminal campaign.
+
+## Correctness and quality
+
+The following rule is deliberately asymmetric:
+
+| Lane | Correctness | Gate |
+| --- | --- | --- |
+| kernel, topology | lossless | Method/code audit, unchanged global denoising steps and DiT calls, no approximation or reduced logical work. Output frames prove run authenticity only. No output diff, tolerance, PSNR, LPIPS, or visual-quality rejection is allowed. |
+| cache, PISA, quantization, token pruning | quality-gated | Complete frozen workload, real engagement, aligned LPIPS, and the coding agent's built-in multimodal review. External Gemini/VLM verdict services are not used. |
+
+The Master reads real run directories, hashes, benchmark rows, frames,
+implementation manifests, engagement/fallback receipts, and candidate commits.
+It recomputes:
 
 ```text
-NEW -> BASELINE_LOCKED -> PROFILED -> AWAITING_AGENT
-AWAITING_AGENT -> SEARCHING -> INTEGRATING -> FINAL_VERIFYING
-FINAL_VERIFYING -> AWAITING_AGENT | TARGET_REACHED
+speedup = frozen_baseline_total_s / candidate_total_s
 ```
 
-Recoverable resource states preserve the durable campaign. The terminal
-states are:
+It rejects projected microbenchmark gains, altered timing scopes, fallback
+backends, no-op flags, baseline resubmissions, path escapes, fabricated
+artifacts, and delivery claims that disagree with measured files. Cache
+compatibility compares TeaCache, EasyCache, and TaylorSeer at matched measured
+end-to-end time. PISA retains exact critical-block attention plus its Taylor
+approximate remainder.
 
-| State | Meaning |
-| --- | --- |
-| `TARGET_REACHED` | The integrated patch reached the target and passed clean-room revalidation. |
-| `SEARCH_SPACE_EXHAUSTED` | Every routed technique was reviewed or exhausted without reaching the target. |
-| `UNREACHABLE_CERTIFIED` | A checkable lower bound proves the target is outside the scoped achievable region. |
+## Knowledge precedence
 
-The watchdog advances deterministic setup and verification bursts, but stops
-at `AWAITING_AGENT`. `resume` never launches an AI command.
+When sources disagree, the controller and prompts apply this order:
 
-## Artifacts
+1. locked Sol-Engine loop/Master correctness contract;
+2. the selected Sol-Engine technique scope;
+3. current SGLang placement, registration, runtime, and test rules;
+4. allowlisted KDA-Pilot, SGLang Diffusion, and FastVideo knowledge snapshots;
+5. current profile and model/PR history;
+6. the optimization agent's hypothesis.
+
+Remote documentation is treated as untrusted data, never executable
+instructions. Every knowledge entry records repository, full commit, path,
+source SHA-256, and sanitized reference SHA-256. Credential assignments and
+machine-local home paths are redacted.
+
+Generated model kernels must live below:
+
+```text
+python/sglang/kernels/agent/diffusion/<model-slug>/          # profiles/dispatch/receipts
+python/sglang/kernels/ops/diffusion/agent/<model-slug>/      # callable wrappers
+python/sglang/kernels/jit/csrc/diffusion/agent/<model-slug>/
+python/sglang/kernels/aot/csrc/diffusion/agent/<model-slug>/
+python/sglang/kernels/aot/include/diffusion/agent/<model-slug>/
+python/sglang/kernels/aot/python/sgl_kernel/diffusion/agent/<model-slug>/
+test/registered/kernels/ops/diffusion/agent/<model-slug>/
+test/registered/kernels/benchmark/diffusion/agent/<model-slug>/
+```
+
+JIT CUDA sources stay under `python/sglang/kernels/jit/csrc` because SGLang's
+JIT loader resolves sources relative to that tree. Callable operators remain
+in the canonical `sglang.kernels.ops` namespace; shared agent profile
+registration lives under `python/sglang/kernels/agent/`. Heavyweight
+AOT/CUTLASS implementation files use the corresponding
+`python/sglang/kernels/aot/{csrc,include,python}/.../agent/<model-slug>/`
+subtrees and must complete the shared declaration, torch-op registration,
+build, Python export, test, benchmark, and wheel-validation steps.
+
+The controller derives these locations from the locked checkout. It supports
+the current unified kernel tree and an explicit legacy `sglang.jit_kernel`
+compatibility lane, and fails closed for an unknown layout. The full contract
+is in `contracts/sglang/placement-and-registration.md`.
+
+## Campaign artifacts
 
 ```text
 runs/<campaign-id>/
 ├── CAMPAIGN.json
 ├── GOAL.yaml
+├── validation-prompts.txt
 ├── SOURCE-LOCKS.json
-├── KNOWLEDGE.json
-├── SEARCH-SPACE.json
-├── BASELINE-COMMAND.json
 ├── BASELINE.json
-├── ROUTES.json
-├── VERIFIED-CANDIDATES.json
-├── TECHNIQUE-DISPOSITIONS.json
-├── PROGRESS.json
+├── controller-heartbeat.json
 ├── state.sqlite
 ├── events.jsonl
+├── baseline/
+│   ├── attempt-001/COMMAND.json
+│   ├── attempt-001/PERFORMANCE.json
+│   └── attempt-001/frames/prompt-*/
+├── profiles/<epoch>/attempt-*/
 ├── knowledge/<source>/<commit>/
-│   ├── index.json
-│   └── references/
-├── profiles/0/PROFILE-DIGEST.json
-├── search/<epoch>/
-│   ├── AGENT-WORK.json
-│   └── worktree/
-│       ├── AGENT-REVIEW.json
-│       └── DELIVERY.json
-├── integration/<epoch>/attempt-*/
+├── executors/<epoch>/<technique>/
+│   ├── PROCESS.json
+│   ├── FEEDBACK.json
+│   └── DELIVERY.json
+├── integration/<epoch>/
+│   └── INTEGRATED-DELIVERY.json
 └── patch/
     ├── sglang.patch
     ├── manifest.json
     ├── SHA256SUMS
+    ├── evidence/
     └── apply_and_verify.sh
 ```
 
-Legacy multi-agent campaign directories are not resumed by this execution
-mode. Start a new schema-v2 campaign so old executor state cannot be silently
-interpreted as a root-agent work order.
+Executor attempts use detached worktrees rooted at the locked SGLang commit.
+Candidate agents never write the source cache, another executor's worktree, or
+the integration worktree. Process groups are launched with their own session,
+and resumes carry the Master's exact findings back to the same executor.
 
-## Applying a result
+## Applying the result
 
-The patch targets the exact SGLang commit locked at campaign start:
+The patch targets the exact SGLang main commit locked at campaign start:
 
 ```bash
 cd /path/to/sglang
@@ -325,15 +377,40 @@ git checkout <locked-sglang-sha>
 /path/to/runs/<campaign-id>/patch/apply_and_verify.sh
 ```
 
-The script checks `HEAD`, validates and applies `sglang.patch`, runs packaged
-CPU checks, and prints the exact GPU revalidation command.
+The script checks `HEAD`, runs `git apply --check`, applies `sglang.patch`, and
+runs the packaged CPU validation commands. It prints the exact GPU command;
+pass `--run-gpu-validation` to execute it. The resulting SGLang runtime exposes:
 
-Quantized candidates that require derived weights must include an immutable
-URI, revision, byte size, and SHA-256. Credentials stay in the execution
-environment and are redacted from receipts. Preserve campaign evidence and
-clean only campaign-owned processes and temporary paths.
+```text
+--agent-optimization off
+--agent-optimization auto
+--agent-optimization <profile-id>
+```
 
-When the packaged SGLang change exposes an optimization profile, its runtime
-entry is `--quality off|auto|<profile-id>`. The validated manifest lives under
-`sglang.multimodal_gen.quality_profiles.profiles`; generated kernels may remain
-model-scoped under `sglang.kernels.agent`.
+`off` preserves source-current behavior. `auto` activates a profile only when
+model, hardware, workload shape, source hashes, and fallback policy match; an
+unsupported shape follows the profile's declared native fallback or hard-error
+policy. Every inference writes an engagement receipt, so a nominal flag cannot
+be mistaken for an accelerated path.
+
+## Quantized weights and release validation
+
+A quantized candidate that needs derived weights is not a self-contained patch.
+It can be released only when its profile includes an immutable URI, revision,
+byte size, and SHA-256. A mutable local checkpoint or unavailable artifact
+remains experimental even when its benchmark is fast.
+
+Before publishing a result, rerun on the locked GPU class and workload:
+
+1. apply the bundle in a new detached worktree;
+2. run all packaged import/unit checks;
+3. run the exact five-prompt native SGLang benchmark;
+4. confirm no Diffusers fallback marker appears;
+5. confirm every selected technique has positive engagement;
+6. rerun the applicable lossless or quality gate; and
+7. compare the measured result with the bundled integrated delivery.
+
+Do not place tokens in goal files, prompts, agent argv, patches, or evidence.
+Pass credentials through the execution environment; receipts redact common
+secret names. Use isolated worktrees and dedicated GPU hosts for autonomous
+agent commands.

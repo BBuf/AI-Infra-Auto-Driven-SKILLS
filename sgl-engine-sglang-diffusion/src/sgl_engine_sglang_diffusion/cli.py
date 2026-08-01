@@ -15,9 +15,11 @@ import yaml
 
 from .config import load_goal
 from .models import CampaignGoal
-from .resources import KNOWLEDGE_REGISTRY
 from .state import StateStore
 from .watchdog import CampaignWatchdog
+
+
+PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _campaign_store(campaign: Path) -> StateStore:
@@ -56,9 +58,8 @@ def initialize_goal(goal: CampaignGoal, run_root: Path) -> Path:
         yaml.safe_dump(goal_payload, sort_keys=False), encoding="utf-8"
     )
     manifest = {
-        "schema_version": 2,
+        "schema_version": 1,
         "campaign_id": identifier,
-        "execution_mode": "interactive_single_agent",
         "created_at": datetime.now(UTC).isoformat(),
         "goal_sha256": hashlib.sha256(frozen_goal.read_bytes()).hexdigest(),
         "controller_command": [
@@ -86,7 +87,6 @@ def status_payload(campaign: Path) -> dict[str, Any]:
     with _campaign_store(campaign) as store:
         return {
             "campaign_id": manifest["campaign_id"],
-            "execution_mode": "interactive_single_agent",
             "status": store.status(manifest["campaign_id"]).value,
             "epoch": store.epoch(manifest["campaign_id"]),
             "campaign": str(campaign),
@@ -101,7 +101,7 @@ def status_payload(campaign: Path) -> dict[str, Any]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="sgl-diffusion-engine",
-        description="Persistent self-contained SGLang Diffusion optimizer",
+        description="Persistent Sol-Engine-compatible SGLang Diffusion optimizer",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -112,28 +112,6 @@ def build_parser() -> argparse.ArgumentParser:
     launch = subparsers.add_parser("launch")
     launch.add_argument("--request", type=Path, required=True)
     launch.add_argument("--detach", action="store_true")
-
-    work = subparsers.add_parser("work")
-    work.add_argument("--campaign", type=Path, required=True)
-    work.add_argument("--json", action="store_true")
-
-    claim = subparsers.add_parser("claim")
-    claim.add_argument("--campaign", type=Path, required=True)
-    claim.add_argument("--technique", required=True)
-
-    submit = subparsers.add_parser("submit")
-    submit.add_argument("--campaign", type=Path, required=True)
-    submit.add_argument("--delivery", type=Path, required=True)
-
-    skip = subparsers.add_parser("skip")
-    skip.add_argument("--campaign", type=Path, required=True)
-    skip.add_argument("--technique", required=True)
-    skip.add_argument(
-        "--classification",
-        choices=("unsupported", "no_gain", "blocked"),
-        required=True,
-    )
-    skip.add_argument("--reason", required=True)
 
     for name in (
         "run",
@@ -154,6 +132,18 @@ def build_parser() -> argparse.ArgumentParser:
         if name == "watchdog":
             command.add_argument("--once", action="store_true")
 
+    contracts = subparsers.add_parser("check-contracts")
+    contracts.add_argument("--sol-checkout", type=Path, required=True)
+    contracts.add_argument(
+        "--source-lock",
+        type=Path,
+        default=PACKAGE_ROOT / "contracts/sol_engine/source-lock.json",
+    )
+    contracts.add_argument(
+        "--hashes",
+        type=Path,
+        default=PACKAGE_ROOT / "contracts/sol_engine/source-hashes.json",
+    )
     return parser
 
 
@@ -199,56 +189,6 @@ def main(argv: list[str] | None = None) -> int:
 
                 print(render_progress(projection))
         return 0
-    if args.command in {"work", "claim", "submit", "skip"}:
-        from .work_orders import WorkOrderManager
-
-        campaign = args.campaign.resolve()
-        manifest = _load_manifest(campaign)
-        campaign_id = str(manifest["campaign_id"])
-        with _campaign_store(campaign) as store:
-            manager = WorkOrderManager(
-                campaign,
-                campaign_id=campaign_id,
-                store=store,
-            )
-            if args.command == "work":
-                payload = manager.work()
-            elif args.command == "claim":
-                order = manager.claim(args.technique)
-                payload = manager.work()
-                payload["claimed_work_order"] = order.model_dump(mode="json")
-            elif args.command == "skip":
-                disposition = manager.skip(
-                    args.technique,
-                    classification=args.classification,
-                    reason=args.reason,
-                )
-                payload = manager.work()
-                payload["disposition"] = disposition.model_dump(mode="json")
-            else:
-                submission = manager.submit(args.delivery)
-                payload = {
-                    "campaign_id": campaign_id,
-                    "execution_mode": "interactive_single_agent",
-                    "status": store.status(campaign_id).value,
-                    "submission": submission,
-                }
-        should_advance = args.command == "submit" or (
-            args.command == "skip" and payload["status"] == "INTEGRATING"
-        )
-        if should_advance:
-            from .runtime import run_campaign_command
-
-            payload["verification"] = run_campaign_command("resume", campaign)
-            with _campaign_store(campaign) as store:
-                manager = WorkOrderManager(
-                    campaign,
-                    campaign_id=campaign_id,
-                    store=store,
-                )
-                payload.update(manager.work())
-        print(json.dumps(payload, indent=2, sort_keys=True))
-        return 0
     if args.command == "watchdog":
         campaign = args.campaign.resolve()
         with _campaign_store(campaign) as store:
@@ -263,7 +203,7 @@ def main(argv: list[str] | None = None) -> int:
         from .knowledge import load_registry, sync_source
 
         campaign = args.campaign.resolve()
-        registry = load_registry(KNOWLEDGE_REGISTRY)
+        registry = load_registry(PACKAGE_ROOT / "knowledge/registry.toml")
         locks = json.loads((campaign / "SOURCE-LOCKS.json").read_text())
         snapshots: dict[str, str] = {}
         for name, patterns in registry.items():
@@ -280,6 +220,17 @@ def main(argv: list[str] | None = None) -> int:
             snapshots[name] = str(output / "index.json")
         print(json.dumps({"campaign": str(campaign), "snapshots": snapshots}))
         return 0
+    if args.command == "check-contracts":
+        from .knowledge import check_contract_hashes
+
+        issues = check_contract_hashes(
+            args.source_lock.resolve(),
+            args.sol_checkout.resolve(),
+            args.hashes.resolve(),
+        )
+        for issue in issues:
+            print(issue, file=sys.stderr)
+        return 1 if issues else 0
     if args.command in {"run", "resume", "package"}:
         # The default runtime is imported lazily so status/init remain CPU-only.
         from .runtime import run_campaign_command

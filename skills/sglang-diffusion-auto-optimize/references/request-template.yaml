@@ -22,10 +22,13 @@ baseline:
 source:
   sglang_repo: <verified-sglang-origin-url>
   sglang_ref: <full-fetched-main-commit>
-  fastvideo_repo: https://github.com/hao-ai-lab/FastVideo.git
-  fastvideo_ref: main
-  kda_pilot_repo: https://github.com/BBuf/KDA-Pilot.git
-  kda_pilot_ref: main
+
+agent:
+  command: [codex, exec]
+  model: <requested-model-or-null>
 
 run_root: <absolute-persistent-campaign-root>
 idempotency_key: <stable-machine-model-workload-target-key>
+
+# Include only when the user supplied a positive budget.
+# token_budget: 10000000
