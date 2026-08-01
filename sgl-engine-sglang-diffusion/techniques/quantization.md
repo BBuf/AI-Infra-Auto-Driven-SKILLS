@@ -1,22 +1,17 @@
-# Quantization work-order scope
+# Quantization executor scope
 
 ## Adaptation status and identity
 
-`quantization` is a standalone SGLang work-order lane covering the complete
-bundled quantization family. The **20-round hard budget is an SGLang campaign
-default**.
+`quantization` brings Sol-Engine's full quantization technique family into a
+standalone SGLang executor. Sol-Engine's paper and technique documentation
+contain this family, but its reviewed lightweight registry does not assign it a
+standalone executor. The **20-round hard budget is an SGLang adaptation
+default**, not an upstream lightweight setting.
 
 This is a quality-gated lane. It may explore selective low-precision weights,
 activations, attention, and linear paths, including NVFP4, diffusion-aware PTQ,
 SVDQuant/Nunchaku, SageAttention, and ModelOpt FP8. Uniform low-bit conversion
 without profiling and sensitivity evidence is not the objective.
-
-Read the `quantization` projection in the bound `SEARCH-SPACE.json`. Its
-structured candidates include native low-precision linear paths, while locked
-SGLang knowledge also exposes diffusion PTQ, ModelOpt FP8,
-SVDQuant/Nunchaku, and SageAttention directions. Preserve the distinction
-between documented, referenced, SGLang-adapted, and end-to-end validated
-methods. Cite exact knowledge origins in every implementation manifest.
 
 ## Search and ownership
 
@@ -32,7 +27,7 @@ padding, calibration, recipe flags, and fused epilogues. Early and late
 denoising steps and model boundary layers are expected sensitivity probes, not
 preselected answers.
 
-Do not claim unrelated cache, sparse-attention, token-pruning, topology, scheduler,
+Do not claim unrelated cache, PISA, token-pruning, topology, scheduler,
 step-count, resolution, or prompt gains. Kernel work may implement the
 quantized primitive, but the quality/performance claim and activation remain
 owned by this lane.

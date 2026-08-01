@@ -1,0 +1,63 @@
+{
+  "$defs": {
+    "ProfileTraceArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "format": "path",
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "size_bytes",
+        "sha256"
+      ],
+      "title": "ProfileTraceArtifact",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "event_count": {
+      "exclusiveMinimum": 0,
+      "title": "Event Count",
+      "type": "integer"
+    },
+    "parser_version": {
+      "const": "chrome-trace-v1",
+      "title": "Parser Version"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version"
+    },
+    "traces": {
+      "items": {
+        "$ref": "#/$defs/ProfileTraceArtifact"
+      },
+      "minItems": 1,
+      "title": "Traces",
+      "type": "array"
+    }
+  },
+  "required": [
+    "parser_version",
+    "event_count",
+    "traces"
+  ],
+  "title": "ProfileInventory",
+  "type": "object"
+}

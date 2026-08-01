@@ -1,5 +1,35 @@
 {
   "$defs": {
+    "AgentSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Command",
+          "type": "array"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "title": "AgentSpec",
+      "type": "object"
+    },
     "GoalTarget": {
       "additionalProperties": false,
       "properties": {
@@ -87,6 +117,16 @@
         "sglang_repo": {
           "title": "Sglang Repo",
           "type": "string"
+        },
+        "sol_engine_ref": {
+          "default": "cee25847afdd34bc656abcca126262200b088dc8",
+          "title": "Sol Engine Ref",
+          "type": "string"
+        },
+        "sol_engine_repo": {
+          "default": "https://github.com/NVlabs/Sana.git",
+          "title": "Sol Engine Repo",
+          "type": "string"
         }
       },
       "required": [
@@ -170,10 +210,8 @@
   },
   "additionalProperties": false,
   "properties": {
-    "execution_mode": {
-      "const": "interactive_single_agent",
-      "default": "interactive_single_agent",
-      "title": "Execution Mode"
+    "agent": {
+      "$ref": "#/$defs/AgentSpec"
     },
     "goal": {
       "$ref": "#/$defs/GoalTarget"
@@ -185,8 +223,7 @@
       "$ref": "#/$defs/ModelSpec"
     },
     "schema_version": {
-      "const": 2,
-      "default": 2,
+      "const": 1,
       "title": "Schema Version"
     },
     "source": {
@@ -197,11 +234,13 @@
     }
   },
   "required": [
+    "schema_version",
     "model",
     "hardware",
     "workload",
     "goal",
-    "source"
+    "source",
+    "agent"
   ],
   "title": "CampaignGoal",
   "type": "object"

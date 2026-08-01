@@ -2,7 +2,7 @@ schema_version = 1
 default_order = [
   "kernel",
   "cache",
-  "sparse_attention",
+  "pisa",
   "quantization",
   "token_pruning",
 ]
@@ -12,40 +12,53 @@ workflow_uid = "kernel_aw"
 scope = "techniques/kernel.md"
 correctness = "lossless"
 round_budget = 40
-origin = "bundled-search-space"
+origin = "sol-engine-lightweight"
+coverage = [
+  "layout-copy-launch",
+  "normalization-activation-projection-fusion",
+  "attention-shape-specialization",
+  "gemm-quantization-epilogue",
+  "communication-layout-overlap",
+  "custom-or-upstream-kernel",
+]
 
 [techniques.cache]
 workflow_uid = "cache_ca"
 scope = "techniques/cache.md"
 correctness = "quality_gated"
 round_budget = 20
-origin = "bundled-search-space"
+origin = "sol-engine-lightweight"
+coverage = ["exact-cache", "approximate-cache", "compiler-cache"]
 
-[techniques.sparse_attention]
+[techniques.pisa]
 workflow_uid = "attention_pa"
-scope = "techniques/sparse_attention.md"
+scope = "techniques/pisa.md"
 correctness = "quality_gated"
 round_budget = 20
-origin = "bundled-search-space"
+origin = "sol-engine-lightweight"
+coverage = ["pisa", "sparse-attention", "attention-reuse"]
 
 [techniques.topology]
 workflow_uid = "topology_ta"
 scope = "techniques/topology.md"
 correctness = "lossless"
 round_budget = 20
-origin = "bundled-search-space"
+origin = "sol-engine-lightweight"
 optional = true
+coverage = ["parallel-degrees", "collective-layout", "communication-overlap"]
 
 [techniques.quantization]
 workflow_uid = "quantization_sglang"
 scope = "techniques/quantization.md"
 correctness = "quality_gated"
 round_budget = 20
-origin = "bundled-search-space"
+origin = "sol-engine-full-adaptation"
+coverage = ["fp8", "int8", "nvfp4-or-inapplicable"]
 
 [techniques.token_pruning]
 workflow_uid = "token_pruning_sglang"
 scope = "techniques/token_pruning.md"
 correctness = "quality_gated"
 round_budget = 20
-origin = "bundled-search-space"
+origin = "sol-engine-full-adaptation"
+coverage = ["static-pruning", "dynamic-pruning", "schedule-aware-pruning"]

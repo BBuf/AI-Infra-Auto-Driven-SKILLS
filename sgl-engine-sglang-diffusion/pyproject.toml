@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sgl-engine-sglang-diffusion"
 version = "0.1.0"
-description = "Deterministic evidence controller for serial SGLang Diffusion optimization"
+description = "Sol-Engine-compatible optimization controller for SGLang Diffusion"
 requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.7,<3",
@@ -20,10 +20,3 @@ sgl-diffusion-engine = "sgl_engine_sglang_diffusion.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-sgl_engine_sglang_diffusion = [
-  "resources/knowledge/*.toml",
-  "resources/techniques/*.md",
-  "resources/techniques/*.toml",
-]

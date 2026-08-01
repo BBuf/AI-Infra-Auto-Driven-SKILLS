@@ -20,10 +20,11 @@ class Technique:
     round_budget: int
     origin: str
     optional: bool = False
+    coverage: tuple[str, ...] = ()
 
 
 class TechniqueRegistry:
-    """Load and expose the bundled SGLang Diffusion technique registry."""
+    """Load and expose the reviewed Sol-Engine technique registry."""
 
     def __init__(self, entries: dict[str, Technique], default_order: list[str]):
         self._entries = entries
@@ -51,7 +52,9 @@ class TechniqueRegistry:
 
             correctness = str(raw["correctness"])
             if correctness not in _CORRECTNESS_MODES:
-                raise ValueError(f"invalid correctness mode for {name}: {correctness}")
+                raise ValueError(
+                    f"invalid correctness mode for {name}: {correctness}"
+                )
             round_budget = int(raw["round_budget"])
             if round_budget <= 0:
                 raise ValueError(f"round_budget must be positive for {name}")
@@ -64,7 +67,12 @@ class TechniqueRegistry:
                 round_budget=round_budget,
                 origin=str(raw["origin"]),
                 optional=bool(raw.get("optional", False)),
+                coverage=tuple(str(item) for item in raw.get("coverage", ())),
             )
+            if not entries[name].coverage or len(entries[name].coverage) != len(
+                set(entries[name].coverage)
+            ):
+                raise ValueError(f"technique {name} requires unique coverage IDs")
 
         raw_default_order = data.get("default_order")
         if not isinstance(raw_default_order, list):

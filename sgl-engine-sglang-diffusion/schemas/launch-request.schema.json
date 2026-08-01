@@ -115,6 +115,16 @@
         "sglang_repo": {
           "title": "Sglang Repo",
           "type": "string"
+        },
+        "sol_engine_ref": {
+          "default": "cee25847afdd34bc656abcca126262200b088dc8",
+          "title": "Sol Engine Ref",
+          "type": "string"
+        },
+        "sol_engine_repo": {
+          "default": "https://github.com/NVlabs/Sana.git",
+          "title": "Sol Engine Repo",
+          "type": "string"
         }
       },
       "required": [
@@ -127,16 +137,7 @@
   "additionalProperties": false,
   "properties": {
     "agent": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/AgentSpec"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null,
-      "description": "Legacy compatibility input; ignored because campaigns are owned by the current interactive root agent"
+      "$ref": "#/$defs/AgentSpec"
     },
     "allow_quality_gated": {
       "default": true,
@@ -222,7 +223,6 @@
         }
       ],
       "default": null,
-      "description": "Legacy compatibility input; ignored because the controller cannot observe current-conversation token usage",
       "title": "Token Budget"
     }
   },

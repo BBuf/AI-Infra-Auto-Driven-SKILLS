@@ -8,8 +8,6 @@ import pytest
 import yaml
 
 from sgl_engine_sglang_diffusion.launcher import LaunchError, launch_campaign
-from sgl_engine_sglang_diffusion.models import CampaignStatus
-from sgl_engine_sglang_diffusion.state import StateStore
 
 
 def write_request(tmp_path: Path) -> Path:
@@ -29,8 +27,6 @@ def write_request(tmp_path: Path) -> Path:
         "sglang_ref": "main",
         "gpu_count": 1,
         "target_speedup": 2.0,
-        "agent": {"command": ["legacy-agent"]},
-        "token_budget": 1000,
         "baseline": {
             "cwd": str(checkout),
             "command": (
@@ -70,13 +66,7 @@ def test_launch_is_one_shot_detached_and_idempotent(tmp_path: Path) -> None:
     assert (campaign / "validation-prompts.txt").is_file()
     frozen_request = (campaign / "REQUEST.yaml").read_text()
     assert "CUDA_VISIBLE_DEVICES" not in frozen_request
-    assert "agent:" not in frozen_request
-    assert "token_budget:" not in frozen_request
-    launch_request = json.loads((campaign / "LAUNCH-REQUEST.json").read_text())
-    assert "token_budget" not in launch_request
     assert second["progress_command"][-1] == "--watch"
-    assert second["execution_mode"] == "interactive_single_agent"
-    assert second["work_command"][-1] == "--json"
 
 
 def test_reused_launch_recovers_missing_watchdog_and_rejects_key_conflict(
@@ -99,40 +89,3 @@ def test_reused_launch_recovers_missing_watchdog_and_rejects_key_conflict(
     request.write_text(yaml.safe_dump(value, sort_keys=False))
     with pytest.raises(LaunchError, match="another request"):
         launch_campaign(request, detach=False)
-
-
-def test_reused_launch_does_not_restart_watchdog_at_agent_boundary(
-    tmp_path: Path,
-) -> None:
-    request = write_request(tmp_path)
-    first = launch_campaign(request, detach=False)
-    campaign = Path(first["campaign"])
-    manifest = json.loads((campaign / "CAMPAIGN.json").read_text())
-    with StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl") as store:
-        campaign_id = manifest["campaign_id"]
-        store.transition(
-            campaign_id,
-            CampaignStatus.BASELINE_LOCKED,
-            idempotency_key="baseline",
-        )
-        store.transition(
-            campaign_id,
-            CampaignStatus.PROFILED,
-            idempotency_key="profile",
-        )
-        store.transition(
-            campaign_id,
-            CampaignStatus.AWAITING_AGENT,
-            idempotency_key="await",
-        )
-    calls: list[Path] = []
-
-    reused = launch_campaign(
-        request,
-        detach=True,
-        watchdog_spawner=lambda value: calls.append(value) or os.getpid(),
-    )
-
-    assert reused["reused"] is True
-    assert reused["watchdog_pid"] is None
-    assert calls == []

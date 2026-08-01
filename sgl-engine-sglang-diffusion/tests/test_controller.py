@@ -21,11 +21,11 @@ class ScriptedHooks:
     def profile_and_route(self) -> StepResult:
         return self.results["profile"]
 
-    def enter_agent_wait(self, epoch: int) -> StepResult:
-        return self.results["await"]
+    def start_search_epoch(self, epoch: int) -> StepResult:
+        return self.results["start"]
 
-    def verify_submitted_delivery(self, epoch: int) -> StepResult:
-        return self.results["verify"]
+    def poll_and_verify_executors(self, epoch: int) -> StepResult:
+        return self.results["poll"]
 
     def integrate_and_gate(self, epoch: int) -> StepResult:
         return self.results["integrate"]
@@ -60,8 +60,8 @@ def default_results() -> dict[str, StepResult]:
     return {
         "freeze": StepResult(CampaignStatus.BASELINE_LOCKED),
         "profile": StepResult(CampaignStatus.PROFILED),
-        "await": StepResult(CampaignStatus.AWAITING_AGENT),
-        "verify": StepResult(CampaignStatus.INTEGRATING),
+        "start": StepResult(CampaignStatus.SEARCHING),
+        "poll": StepResult(CampaignStatus.INTEGRATING),
         "integrate": StepResult(CampaignStatus.FINAL_VERIFYING),
         "package": StepResult(
             CampaignStatus.TARGET_REACHED,
@@ -71,23 +71,10 @@ def default_results() -> dict[str, StepResult]:
     }
 
 
-def claim_work(store: StateStore) -> int:
-    epoch = store.increment_epoch("c1", idempotency_key="claim:1:epoch")
-    store.transition(
-        "c1",
-        CampaignStatus.SEARCHING,
-        idempotency_key="claim:1:searching",
-        payload={"technique": "kernel", "epoch": epoch},
-    )
-    return epoch
-
-
 def test_target_requires_verified_speedup_and_clean_room(tmp_path: Path) -> None:
     goal = make_goal(tmp_path)
     results = default_results()
     controller, store = make_controller(tmp_path, goal, ScriptedHooks(results))
-    assert controller.run_until_wait() is CampaignStatus.AWAITING_AGENT
-    claim_work(store)
     assert controller.run_until_wait() is CampaignStatus.TARGET_REACHED
     store.close()
 
@@ -101,20 +88,16 @@ def test_target_requires_verified_speedup_and_clean_room(tmp_path: Path) -> None
         clean_room_verified=True,
     )
     controller, store = make_controller(other, other_goal, ScriptedHooks(below))
-    assert controller.run_until_wait() is CampaignStatus.AWAITING_AGENT
-    claim_work(store)
-    assert controller.run_until_wait() is CampaignStatus.AWAITING_AGENT
+    assert controller.run_until_wait() is CampaignStatus.SEARCH_SPACE_EXHAUSTED
     store.close()
 
 
 def test_plateau_is_not_an_unreachable_proof(tmp_path: Path) -> None:
     goal = make_goal(tmp_path)
     results = default_results()
-    results["verify"] = StepResult(CampaignStatus.UNREACHABLE_CERTIFIED)
+    results["poll"] = StepResult(CampaignStatus.UNREACHABLE_CERTIFIED)
     controller, store = make_controller(tmp_path, goal, ScriptedHooks(results))
-    assert controller.run_until_wait() is CampaignStatus.AWAITING_AGENT
-    claim_work(store)
-    assert controller.run_until_wait() is CampaignStatus.AWAITING_AGENT
+    assert controller.run_until_wait() is CampaignStatus.SEARCH_SPACE_EXHAUSTED
     store.close()
 
 
@@ -151,7 +134,7 @@ def test_valid_lower_bound_certificate_can_end_campaign(tmp_path: Path) -> None:
         )
     )
     results = default_results()
-    results["verify"] = StepResult(
+    results["poll"] = StepResult(
         CampaignStatus.UNREACHABLE_CERTIFIED,
         unreachable_certificate=certificate_path,
     )
@@ -165,8 +148,6 @@ def test_valid_lower_bound_certificate_can_end_campaign(tmp_path: Path) -> None:
         campaign_dir=campaign,
         allowed_methods=("kernel",),
     )
-    assert controller.run_until_wait() is CampaignStatus.AWAITING_AGENT
-    claim_work(store)
     assert controller.run_until_wait() is CampaignStatus.UNREACHABLE_CERTIFIED
     store.close()
 
@@ -185,17 +166,16 @@ def test_failure_signatures_are_not_retried(tmp_path: Path) -> None:
     store.close()
 
 
-def test_delivery_verifier_can_wait_without_mutating_state(tmp_path: Path) -> None:
+def test_poll_can_wait_without_mutating_state(tmp_path: Path) -> None:
     goal = make_goal(tmp_path)
     results = default_results()
-    results["verify"] = StepResult(None, payload={"reason": "delivery_missing"})
+    results["poll"] = StepResult(None, payload={"reason": "agent_running"})
     controller, store = make_controller(tmp_path, goal, ScriptedHooks(results))
     assert controller.run_once() is CampaignStatus.BASELINE_LOCKED
     assert controller.run_once() is CampaignStatus.PROFILED
-    assert controller.run_once() is CampaignStatus.AWAITING_AGENT
-    claim_work(store)
     assert controller.run_once() is CampaignStatus.SEARCHING
-    assert len(store.events("c1", event_type="transition")) == 4
+    assert controller.run_once() is CampaignStatus.SEARCHING
+    assert len(store.events("c1", event_type="transition")) == 3
     store.close()
 
 

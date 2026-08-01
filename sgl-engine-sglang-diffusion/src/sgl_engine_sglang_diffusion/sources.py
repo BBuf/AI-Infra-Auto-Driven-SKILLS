@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-import configparser
 import re
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
 
 from .models import SourceLock
 from .process import run
@@ -163,88 +160,3 @@ class SourceManager:
             return value.removesuffix("/")
 
         return normalize(left) == normalize(right)
-
-
-@dataclass(frozen=True)
-class DerivedSourceSpec:
-    """An independently materializable source pinned by a parent gitlink."""
-
-    name: str
-    path: str
-    repository: str
-    commit: str
-
-
-def derive_submodule_sources(
-    manager: SourceManager,
-    parent: SourceLock,
-    names_by_path: Mapping[str, str],
-) -> dict[str, DerivedSourceSpec]:
-    """Resolve reviewed submodules from one locked parent without checking them out."""
-    cache = manager.checkout_path(parent)
-    modules = run(
-        ["git", "show", f"{parent.commit}:.gitmodules"],
-        cwd=cache,
-        check=False,
-    )
-    if modules.returncode != 0:
-        raise RuntimeError(
-            f"locked source {parent.name!r} has no readable .gitmodules"
-        )
-    parser = configparser.ConfigParser()
-    try:
-        parser.read_string(modules.stdout)
-    except configparser.Error as error:
-        raise RuntimeError(
-            f"locked source {parent.name!r} has invalid .gitmodules: {error}"
-        ) from error
-
-    repositories: dict[str, str] = {}
-    for section in parser.sections():
-        if not section.startswith('submodule "') or not parser.has_option(
-            section, "path"
-        ):
-            continue
-        path = parser.get(section, "path").strip()
-        repository = parser.get(section, "url", fallback="").strip()
-        if path and repository:
-            repositories[path] = _normalize_public_git_repository(repository)
-
-    specs: dict[str, DerivedSourceSpec] = {}
-    for path, name in names_by_path.items():
-        repository = repositories.get(path)
-        if not repository:
-            raise RuntimeError(
-                f"locked source {parent.name!r} does not define submodule {path!r}"
-            )
-        tree = run(
-            ["git", "ls-tree", parent.commit, "--", path],
-            cwd=cache,
-            check=False,
-        )
-        match = re.fullmatch(
-            rf"160000 commit ([0-9a-f]{{40}})\t{re.escape(path)}\n?",
-            tree.stdout,
-        )
-        if tree.returncode != 0 or match is None:
-            raise RuntimeError(
-                f"locked source {parent.name!r} has no exact gitlink for {path!r}"
-            )
-        commit = match.group(1)
-        specs[name] = DerivedSourceSpec(
-            name=name,
-            path=path,
-            repository=repository,
-            commit=commit,
-        )
-    return specs
-
-
-def _normalize_public_git_repository(repository: str) -> str:
-    if repository.startswith("git@github.com:"):
-        return "https://github.com/" + repository.removeprefix("git@github.com:")
-    if repository.startswith("ssh://git@github.com/"):
-        return "https://github.com/" + repository.removeprefix(
-            "ssh://git@github.com/"
-        )
-    return repository

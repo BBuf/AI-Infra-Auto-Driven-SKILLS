@@ -1,0 +1,220 @@
+{
+  "$defs": {
+    "EvidenceFile": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "format": "path",
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "title": "EvidenceFile",
+      "type": "object"
+    },
+    "KernelWikiEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "queries": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Queries",
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/EvidenceFile"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "queries",
+        "sources"
+      ],
+      "title": "KernelWikiEvidence",
+      "type": "object"
+    },
+    "NcuEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "after_report": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceFile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "before_report": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceFile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "metrics_digest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceFile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "applicable",
+        "reason"
+      ],
+      "title": "NcuEvidence",
+      "type": "object"
+    },
+    "WarpSpecializationEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "reconciliation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceFile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "timeline_report": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EvidenceFile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "applicable",
+        "reason"
+      ],
+      "title": "WarpSpecializationEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidate_family": {
+      "minLength": 1,
+      "title": "Candidate Family",
+      "type": "string"
+    },
+    "candidate_id": {
+      "minLength": 1,
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "correctness_shapes": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Correctness Shapes",
+      "type": "array"
+    },
+    "hotspot": {
+      "minLength": 1,
+      "title": "Hotspot",
+      "type": "string"
+    },
+    "implementation_kind": {
+      "enum": [
+        "layout_only",
+        "torch_compile",
+        "triton",
+        "cuda_cute",
+        "upstream_reuse"
+      ],
+      "title": "Implementation Kind",
+      "type": "string"
+    },
+    "kernelwiki": {
+      "$ref": "#/$defs/KernelWikiEvidence"
+    },
+    "microbenchmark": {
+      "$ref": "#/$defs/EvidenceFile"
+    },
+    "ncu": {
+      "$ref": "#/$defs/NcuEvidence"
+    },
+    "profile_digest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Profile Digest Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version"
+    },
+    "warp_specialization": {
+      "$ref": "#/$defs/WarpSpecializationEvidence"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "candidate_family",
+    "implementation_kind",
+    "hotspot",
+    "profile_digest_sha256",
+    "kernelwiki",
+    "ncu",
+    "warp_specialization",
+    "correctness_shapes",
+    "microbenchmark"
+  ],
+  "title": "KernelEvidence",
+  "type": "object"
+}

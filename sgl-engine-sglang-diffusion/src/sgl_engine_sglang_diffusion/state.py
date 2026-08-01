@@ -55,32 +55,21 @@ ACTIVE_STATUSES = frozenset(
 _FORWARD_TRANSITIONS: dict[CampaignStatus, frozenset[CampaignStatus]] = {
     CampaignStatus.NEW: frozenset({CampaignStatus.BASELINE_LOCKED}),
     CampaignStatus.BASELINE_LOCKED: frozenset({CampaignStatus.PROFILED}),
-    CampaignStatus.PROFILED: frozenset({CampaignStatus.AWAITING_AGENT}),
-    CampaignStatus.AWAITING_AGENT: frozenset(
-        {
-            CampaignStatus.SEARCHING,
-            CampaignStatus.INTEGRATING,
-            CampaignStatus.SEARCH_SPACE_EXHAUSTED,
-            CampaignStatus.UNREACHABLE_CERTIFIED,
-        }
-    ),
+    CampaignStatus.PROFILED: frozenset({CampaignStatus.SEARCHING}),
     CampaignStatus.SEARCHING: frozenset(
         {
-            CampaignStatus.AWAITING_AGENT,
             CampaignStatus.INTEGRATING,
             CampaignStatus.SEARCH_SPACE_EXHAUSTED,
             CampaignStatus.UNREACHABLE_CERTIFIED,
         }
     ),
     CampaignStatus.INTEGRATING: frozenset(
-        {
-            CampaignStatus.AWAITING_AGENT,
-            CampaignStatus.FINAL_VERIFYING,
-        }
+        {CampaignStatus.SEARCHING, CampaignStatus.FINAL_VERIFYING}
     ),
     CampaignStatus.FINAL_VERIFYING: frozenset(
         {
-            CampaignStatus.AWAITING_AGENT,
+            CampaignStatus.PROFILED,
+            CampaignStatus.SEARCHING,
             CampaignStatus.TARGET_REACHED,
             CampaignStatus.SEARCH_SPACE_EXHAUSTED,
             CampaignStatus.UNREACHABLE_CERTIFIED,
