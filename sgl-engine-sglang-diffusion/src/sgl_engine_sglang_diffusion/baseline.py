@@ -50,7 +50,9 @@ class BaselineRunner:
             )
             record = BaselineRecord(
                 model_id=goal.model.id,
-                total_s=benchmark.normalized["total_s"],
+                mean_e2e_s=benchmark.normalized["mean_e2e_s"],
+                workload_total_s=benchmark.normalized["workload_total_s"],
+                request_count=benchmark.normalized["request_count"],
                 peak_memory_mib=benchmark.normalized["peak_memory_mib"],
                 timing_scope=goal.workload.timing_scope,
                 run_dir=benchmark.run_dir,

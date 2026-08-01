@@ -40,8 +40,8 @@ and failure mode.
 Compare quality only at matched measured end-to-end time:
 
 ```text
-time_ratio = candidate_total_s / frozen_baseline_total_s
-speedup = frozen_baseline_total_s / candidate_total_s
+time_ratio = candidate_mean_e2e_s / frozen_baseline_mean_e2e_s
+speedup = frozen_baseline_mean_e2e_s / candidate_mean_e2e_s
 ```
 
 Two family points are matched only when their measured `time_ratio` differs by

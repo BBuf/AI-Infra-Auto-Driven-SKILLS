@@ -504,16 +504,21 @@ class IntegrationManager:
                 "integrated benchmark timing scope differs from frozen baseline: "
                 f"{timing_scope!r} != {baseline.timing_scope!r}"
             )
-        candidate_total_s = float(benchmark.normalized["total_s"])
-        if not math.isfinite(candidate_total_s) or candidate_total_s <= 0:
+        candidate_mean_e2e_s = float(benchmark.normalized["mean_e2e_s"])
+        candidate_workload_total_s = float(benchmark.normalized["workload_total_s"])
+        request_count = int(benchmark.normalized["request_count"])
+        if not math.isfinite(candidate_mean_e2e_s) or candidate_mean_e2e_s <= 0:
             raise IntegrationError(
                 "integrated benchmark latency must be finite and positive"
             )
         return PerformanceRecord(
             frontier_axis="latency",
-            baseline_total_s=baseline.total_s,
-            candidate_total_s=candidate_total_s,
-            speedup=baseline.total_s / candidate_total_s,
+            baseline_mean_e2e_s=baseline.mean_e2e_s,
+            candidate_mean_e2e_s=candidate_mean_e2e_s,
+            baseline_workload_total_s=baseline.workload_total_s,
+            candidate_workload_total_s=candidate_workload_total_s,
+            request_count=request_count,
+            speedup=baseline.mean_e2e_s / candidate_mean_e2e_s,
         )
 
     @staticmethod

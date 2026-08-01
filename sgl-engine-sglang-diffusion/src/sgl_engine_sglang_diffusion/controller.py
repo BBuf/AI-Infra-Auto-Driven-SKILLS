@@ -233,7 +233,7 @@ class CampaignController:
         prompt_hash = hashlib.sha256(
             self.goal.workload.prompts.read_bytes()
         ).hexdigest()
-        target_latency = baseline.total_s / self.goal.goal.target_speedup
+        target_latency = baseline.mean_e2e_s / self.goal.goal.target_speedup
         return (
             certificate.frozen_workload_sha256 == prompt_hash
             and certificate.hardware == self.goal.hardware.model_dump(mode="json")

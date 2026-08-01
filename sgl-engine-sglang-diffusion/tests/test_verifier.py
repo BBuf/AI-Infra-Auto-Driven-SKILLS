@@ -86,10 +86,12 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
 
     run_dir.mkdir(parents=True)
     performance = {
-        "schema_version": 1,
+        "schema_version": 2,
         "candidate_id": "candidate-1",
         "run_id": "run-1",
-        "total_s": 5.0,
+        "mean_e2e_s": 5.0,
+        "workload_total_s": 25.0,
+        "request_count": 5,
         "peak_memory_mib": 900.0,
         "timing_scope": "frozen_e2e",
         "fallback_count": 0,
@@ -103,7 +105,8 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
                 "results": {
                     "successful_requests": 5,
                     "failed_requests": 0,
-                    "total_s": 5.0,
+                    "total_duration_seconds": 25.0,
+                    "latency_per_request_seconds": 5.0,
                     "peak_memory_mib": 900.0,
                 }
             }
@@ -269,9 +272,13 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
         "activation": {"enable_agent_kernel": True},
         "implementation_manifest": manifest,
         "performance": {
+            "schema_version": 2,
             "frontier_axis": "latency",
-            "baseline_total_s": 10.0,
-            "candidate_total_s": 5.0,
+            "baseline_mean_e2e_s": 10.0,
+            "candidate_mean_e2e_s": 5.0,
+            "baseline_workload_total_s": 50.0,
+            "candidate_workload_total_s": 25.0,
+            "request_count": 5,
             "speedup": 2.0,
         },
         # Deliberately non-null: lossless verification must ignore LPIPS movement.
@@ -290,7 +297,12 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
         "status": "complete",
         "component": "kernel",
         "model_id": "test/model",
-        "baseline": {"total_s": 10.0},
+        "baseline": {
+            "schema_version": 2,
+            "mean_e2e_s": 10.0,
+            "workload_total_s": 50.0,
+            "request_count": 5,
+        },
         "frontier_points": [point],
         "pareto_assessment": "latency improvement",
     }
@@ -298,7 +310,9 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
     delivery_path.write_text(json.dumps(delivery))
     baseline = BaselineRecord(
         model_id="test/model",
-        total_s=10.0,
+        mean_e2e_s=10.0,
+        workload_total_s=50.0,
+        request_count=5,
         peak_memory_mib=1024.0,
         timing_scope="frozen_e2e",
         run_dir=baseline_run,
@@ -487,11 +501,13 @@ def test_raw_benchmark_must_match_normalized_performance(
 ) -> None:
     performance_path = evidence["run_dir"] / "PERFORMANCE.json"
     performance = json.loads(performance_path.read_text())
-    performance["total_s"] = 4.0
+    performance["mean_e2e_s"] = 4.0
+    performance["workload_total_s"] = 20.0
     performance_path.write_text(json.dumps(performance))
     delivery = deepcopy(evidence["delivery"])
     point = delivery["frontier_points"][0]["performance"]
-    point["candidate_total_s"] = 4.0
+    point["candidate_mean_e2e_s"] = 4.0
+    point["candidate_workload_total_s"] = 20.0
     point["speedup"] = 2.5
     result = make_verifier(evidence, registry).verify(
         write_delivery(evidence, delivery),

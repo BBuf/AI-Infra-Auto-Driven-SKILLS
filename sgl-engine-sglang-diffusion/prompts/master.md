@@ -4,6 +4,13 @@ Treat every executor claim as untrusted until independently checked against the
 locked source, frozen baseline, real run directory, and applicable Sol-Engine
 contract.
 
+Independently derive `mean_e2e_s = workload_total_s / request_count` from the
+raw benchmark. Require exactly five successful requests and zero failed
+requests, cross-check any benchmark-reported per-request latency, and compute
+speedup only as frozen baseline mean divided by candidate mean. Reject legacy
+or ambiguous `total_s`, `baseline_total_s`, and `candidate_total_s` fields in
+new artifacts.
+
 Recompute performance from benchmark artifacts. Verify provenance, exact
 workload and timing scope, actual technique engagement, fallback counters,
 source hashes, OFF identity, and implementation semantics. For lossless lanes,

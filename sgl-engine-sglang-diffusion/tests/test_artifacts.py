@@ -6,7 +6,7 @@ import pytest
 from pydantic import ValidationError
 
 from sgl_engine_sglang_diffusion.artifacts import SCHEMA_MODELS, write_schemas
-from sgl_engine_sglang_diffusion.models import Delivery
+from sgl_engine_sglang_diffusion.models import BaselineRecord, Delivery
 
 
 EXPECTED_SCHEMAS = {
@@ -43,6 +43,28 @@ def test_delivery_rejects_unknown_fields() -> None:
                 "frontier_points": [],
                 "pareto_assessment": "empty",
                 "fabricated": True,
+            }
+        )
+
+
+def test_baseline_rejects_ambiguous_or_inconsistent_timing() -> None:
+    common = {
+        "model_id": "test/model",
+        "peak_memory_mib": 1024.0,
+        "timing_scope": "frozen_e2e",
+        "run_dir": "baseline/run",
+        "baseline_frames": "baseline/frames",
+        "sglang_commit": "a" * 40,
+    }
+    with pytest.raises(ValidationError):
+        BaselineRecord.model_validate({**common, "total_s": 50.0})
+    with pytest.raises(ValidationError, match=r"mean_e2e_s \* request_count"):
+        BaselineRecord.model_validate(
+            {
+                **common,
+                "mean_e2e_s": 10.0,
+                "workload_total_s": 49.0,
+                "request_count": 5,
             }
         )
 

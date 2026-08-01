@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import sys
 from collections.abc import Callable, Mapping, Sequence
@@ -311,14 +312,20 @@ class SGLangDiffusionDriver:
 
         successful = results.get("successful_requests")
         failed = results.get("failed_requests")
-        if successful is not None and int(successful) != expected_requests:
+        if not isinstance(successful, int) or isinstance(successful, bool):
+            raise DriverError(
+                "benchmark successful request count is missing or invalid"
+            )
+        if successful != expected_requests:
             raise DriverError(
                 f"expected {expected_requests} successful requests, got {successful}"
             )
-        if failed is not None and int(failed) != 0:
+        if not isinstance(failed, int) or isinstance(failed, bool):
+            raise DriverError("benchmark failed request count is missing or invalid")
+        if failed != 0:
             raise DriverError(f"benchmark reported {failed} failed requests")
 
-        total = SGLangDiffusionDriver._first_number(
+        workload_total = SGLangDiffusionDriver._first_number(
             results,
             ("total_duration_seconds", "total_s", "latency"),
         )
@@ -326,13 +333,35 @@ class SGLangDiffusionDriver:
             results,
             ("peak_memory_mb", "peak_memory_mib"),
         )
-        if total is None or total <= 0:
-            raise DriverError("benchmark latency must be positive")
+        if (
+            workload_total is None
+            or not math.isfinite(workload_total)
+            or workload_total <= 0
+        ):
+            raise DriverError("benchmark workload duration must be finite and positive")
         if peak is None or peak <= 0:
             raise DriverError("benchmark peak memory must be present and positive")
+        mean_e2e = workload_total / successful
+        if not math.isfinite(mean_e2e) or mean_e2e <= 0:
+            raise DriverError("benchmark per-request mean must be finite and positive")
+        reported_mean = SGLangDiffusionDriver._first_number(
+            results,
+            ("latency_per_request_seconds",),
+        )
+        if reported_mean is not None and not math.isclose(
+            reported_mean,
+            mean_e2e,
+            rel_tol=1e-9,
+            abs_tol=1e-9,
+        ):
+            raise DriverError(
+                "benchmark per-request latency disagrees with workload total/count"
+            )
         return {
-            "schema_version": 1,
-            "total_s": total,
+            "schema_version": 2,
+            "mean_e2e_s": mean_e2e,
+            "workload_total_s": workload_total,
+            "request_count": successful,
             "peak_memory_mib": peak,
             "timing_scope": timing_scope,
             "raw_result": raw,

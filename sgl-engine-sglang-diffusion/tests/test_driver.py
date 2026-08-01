@@ -78,7 +78,8 @@ class FakeRunner:
                     "results": {
                         "successful_requests": 5,
                         "failed_requests": 0,
-                        "total_duration_seconds": 1.0,
+                        "total_duration_seconds": 400.0,
+                        "latency_per_request_seconds": 80.0,
                         "peak_memory_mb": 1024.0,
                     }
                 }
@@ -154,7 +155,9 @@ def test_baseline_is_frozen_once(tmp_path: Path) -> None:
     campaign = tmp_path / "campaign"
 
     record = baseline.freeze(goal, campaign, sglang_commit=COMMIT)
-    assert record.total_s == 1.0
+    assert record.mean_e2e_s == 80.0
+    assert record.workload_total_s == 400.0
+    assert record.request_count == 5
     assert len(list(record.baseline_frames.glob("prompt-*"))) == 5
     assert runner.calls == 1
 
@@ -207,6 +210,82 @@ def test_normalizer_rejects_failed_requests(tmp_path: Path) -> None:
         + "\n"
     )
     with pytest.raises(DriverError, match="successful requests"):
+        SGLangDiffusionDriver.normalize_output(
+            result, timing_scope="end_to_end", expected_requests=5
+        )
+
+
+def test_normalizer_uses_per_request_mean_as_authoritative_latency(
+    tmp_path: Path,
+) -> None:
+    result = tmp_path / "benchmark.jsonl"
+    result.write_text(
+        json.dumps(
+            {
+                "results": {
+                    "successful_requests": 5,
+                    "failed_requests": 0,
+                    "total_duration_seconds": 400.0,
+                    "latency_per_request_seconds": 80.0,
+                    "peak_memory_mb": 1024.0,
+                }
+            }
+        )
+        + "\n"
+    )
+
+    normalized = SGLangDiffusionDriver.normalize_output(
+        result, timing_scope="end_to_end", expected_requests=5
+    )
+
+    assert normalized["schema_version"] == 2
+    assert normalized["mean_e2e_s"] == 80.0
+    assert normalized["workload_total_s"] == 400.0
+    assert normalized["request_count"] == 5
+    assert "total_s" not in normalized
+
+
+def test_normalizer_rejects_inconsistent_reported_request_mean(
+    tmp_path: Path,
+) -> None:
+    result = tmp_path / "benchmark.jsonl"
+    result.write_text(
+        json.dumps(
+            {
+                "results": {
+                    "successful_requests": 5,
+                    "failed_requests": 0,
+                    "total_duration_seconds": 400.0,
+                    "latency_per_request_seconds": 79.0,
+                    "peak_memory_mb": 1024.0,
+                }
+            }
+        )
+        + "\n"
+    )
+
+    with pytest.raises(DriverError, match="per-request latency disagrees"):
+        SGLangDiffusionDriver.normalize_output(
+            result, timing_scope="end_to_end", expected_requests=5
+        )
+
+
+def test_normalizer_requires_successful_request_count(tmp_path: Path) -> None:
+    result = tmp_path / "benchmark.jsonl"
+    result.write_text(
+        json.dumps(
+            {
+                "results": {
+                    "failed_requests": 0,
+                    "total_duration_seconds": 400.0,
+                    "peak_memory_mb": 1024.0,
+                }
+            }
+        )
+        + "\n"
+    )
+
+    with pytest.raises(DriverError, match="successful request count"):
         SGLangDiffusionDriver.normalize_output(
             result, timing_scope="end_to_end", expected_requests=5
         )

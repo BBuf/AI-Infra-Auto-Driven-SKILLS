@@ -34,16 +34,19 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     attempts = _technique_attempts(events)
     scientific_rounds = _scientific_rounds(events)
     isolated = _isolated_speedups(campaign)
-    integrated_speedup, integrated_total_s, integrated_techniques = _integrated(
-        campaign
-    )
+    (
+        integrated_speedup,
+        integrated_mean_e2e_s,
+        integrated_workload_total_s,
+        integrated_request_count,
+        integrated_techniques,
+    ) = _integrated(campaign)
     baseline_record = _read_object_optional(campaign / "BASELINE.json") or {}
-    raw_baseline_total = baseline_record.get("total_s")
-    baseline_total_s = (
-        float(raw_baseline_total)
-        if isinstance(raw_baseline_total, (int, float))
-        and not isinstance(raw_baseline_total, bool)
-        else None
+    baseline_mean_e2e_s = _number(baseline_record.get("mean_e2e_s"))
+    baseline_workload_total_s = _number(baseline_record.get("workload_total_s"))
+    raw_baseline_count = baseline_record.get("request_count")
+    baseline_request_count = (
+        raw_baseline_count if type(raw_baseline_count) is int else None
     )
     rows: list[dict[str, Any]] = []
     for technique in routes:
@@ -104,7 +107,7 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     patch = campaign / "patch" / "sglang.patch"
     certificate = campaign / "UNREACHABLE.json"
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "campaign_id": campaign_id,
         "campaign": str(campaign),
         "model": str(goal["model"]["id"]),
@@ -116,8 +119,12 @@ def build_progress(campaign: Path) -> dict[str, Any]:
         "updated_at": now.isoformat(),
         "elapsed_seconds": elapsed,
         "target_speedup": target,
-        "baseline_total_s": baseline_total_s,
-        "integrated_total_s": integrated_total_s,
+        "baseline_mean_e2e_s": baseline_mean_e2e_s,
+        "baseline_workload_total_s": baseline_workload_total_s,
+        "baseline_request_count": baseline_request_count,
+        "integrated_mean_e2e_s": integrated_mean_e2e_s,
+        "integrated_workload_total_s": integrated_workload_total_s,
+        "integrated_request_count": integrated_request_count,
         "best_verified_speedup": best,
         "integrated_stack_speedup": integrated_speedup,
         "performance_progress": performance_fraction,
@@ -208,11 +215,30 @@ def render_progress(progress: dict[str, Any]) -> str:
             "technique          state       gate           tries  isolated e2e",
         ]
     )
-    if progress["baseline_total_s"] is not None:
-        latency = f"latency     {progress['baseline_total_s']:.4f}s baseline"
-        if progress["integrated_total_s"] is not None:
-            latency += f" -> {progress['integrated_total_s']:.4f}s integrated"
+    if progress["baseline_mean_e2e_s"] is not None:
+        latency = f"latency     {progress['baseline_mean_e2e_s']:.4f}s/request baseline"
+        if progress["integrated_mean_e2e_s"] is not None:
+            latency += (
+                f" -> {progress['integrated_mean_e2e_s']:.4f}s/request integrated"
+            )
         lines.insert(5, latency)
+    if (
+        progress["baseline_workload_total_s"] is not None
+        and progress["baseline_request_count"] is not None
+    ):
+        workload = (
+            f"workload    {progress['baseline_workload_total_s']:.4f}s/"
+            f"{progress['baseline_request_count']} requests baseline"
+        )
+        if (
+            progress["integrated_workload_total_s"] is not None
+            and progress["integrated_request_count"] is not None
+        ):
+            workload += (
+                f" -> {progress['integrated_workload_total_s']:.4f}s/"
+                f"{progress['integrated_request_count']} requests integrated"
+            )
+        lines.insert(6, workload)
     for row in progress["techniques"]:
         speedup = row["best_isolated_e2e_speedup"]
         speedup_text = f"{speedup:.2f}x" if speedup is not None else "-"
@@ -326,9 +352,11 @@ def _isolated_speedups(campaign: Path) -> dict[str, float]:
 
 def _integrated(
     campaign: Path,
-) -> tuple[float | None, float | None, set[str]]:
+) -> tuple[float | None, float | None, float | None, int | None, set[str]]:
     speedup: float | None = None
-    candidate_total_s: float | None = None
+    candidate_mean_e2e_s: float | None = None
+    candidate_workload_total_s: float | None = None
+    request_count: int | None = None
     techniques: set[str] = set()
     for path in sorted(
         campaign.glob("integration/*/attempt-*/INTEGRATED-DELIVERY.json")
@@ -364,13 +392,27 @@ def _integrated(
                     if speedup is None or measured >= speedup:
                         speedup = measured
                         techniques = point_techniques
-                        candidate_total_s = None
-                        raw_total = performance.get("candidate_total_s")
-                        if isinstance(raw_total, (int, float)) and not isinstance(
-                            raw_total, bool
-                        ):
-                            candidate_total_s = float(raw_total)
-    return speedup, candidate_total_s, techniques
+                        candidate_mean_e2e_s = _number(
+                            performance.get("candidate_mean_e2e_s")
+                        )
+                        candidate_workload_total_s = _number(
+                            performance.get("candidate_workload_total_s")
+                        )
+                        raw_count = performance.get("request_count")
+                        request_count = raw_count if type(raw_count) is int else None
+    return (
+        speedup,
+        candidate_mean_e2e_s,
+        candidate_workload_total_s,
+        request_count,
+        techniques,
+    )
+
+
+def _number(value: Any) -> float | None:
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    return None
 
 
 def _current_work(status: CampaignStatus, events: list[dict[str, Any]]) -> str:

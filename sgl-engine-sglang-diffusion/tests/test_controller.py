@@ -106,9 +106,11 @@ def test_valid_lower_bound_certificate_can_end_campaign(tmp_path: Path) -> None:
     campaign = tmp_path / "campaign"
     campaign.mkdir()
     baseline = {
-        "schema_version": 1,
+        "schema_version": 2,
         "model_id": goal.model.id,
-        "total_s": 10.0,
+        "mean_e2e_s": 10.0,
+        "workload_total_s": 50.0,
+        "request_count": 5,
         "peak_memory_mib": 1.0,
         "timing_scope": goal.workload.timing_scope,
         "run_dir": str(campaign / "baseline/run"),

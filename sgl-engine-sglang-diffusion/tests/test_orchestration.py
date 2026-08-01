@@ -63,7 +63,8 @@ def _prompt() -> ExecutorPrompt:
         ),
         baseline=PromptSection(
             "Frozen baseline",
-            '{"total_s": 10.0}\n',
+            '{"schema_version": 2, "mean_e2e_s": 10.0, '
+            '"workload_total_s": 50.0, "request_count": 5}\n',
             "campaign:BASELINE.json",
         ),
         search_state={"round": 1, "frontier": []},

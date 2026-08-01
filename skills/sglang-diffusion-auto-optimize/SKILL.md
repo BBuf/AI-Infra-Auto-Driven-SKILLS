@@ -81,6 +81,12 @@ Do not run the complete baseline as a separate preflight. Check paths, prompt
 count, command syntax, benchmark `--help`, and imports only. The controller owns
 the single authoritative baseline run.
 
+For that baseline and every later candidate, the controller independently
+computes the arithmetic mean E2E seconds per successful request from the exact
+five-request workload total. This mean is the only optimization, speedup, and
+target-completion basis. The five-request total is retained separately for
+audit and is never presented as single-request latency.
+
 ## Phase 2: Bootstrap The Controller
 
 Prefer the controller shipped beside this skill:
@@ -192,6 +198,8 @@ updates at meaningful transitions or at least once per long-running interval.
 Do not reinterpret an executor's microbenchmark claim as progress. Report only:
 
 - frozen-baseline and integrated full-workload end-to-end speedup;
+- frozen-baseline and integrated arithmetic-mean E2E seconds per successful
+  request, with the five-request workload total shown separately for audit;
 - best independently verified isolated end-to-end speedup by technique;
 - correctness/quality gate result and failure reason;
 - integrated-stack speedup separately from isolated gains;
@@ -233,7 +241,8 @@ checkable lower-bound certificate.
 For `TARGET_REACHED`, report:
 
 - locked SGLang commit and exact workload;
-- baseline, final latency, and measured speedup;
+- baseline and final arithmetic-mean E2E seconds per successful request,
+  five-request audit totals, and measured speedup;
 - each technique's isolated measurement and gate result;
 - integrated stack result;
 - total exact tokens by role/technique when available;

@@ -106,7 +106,7 @@ class VerifiedFrontierPoint:
     candidate_id: str
     run_dir: Path
     authoritative_speedup: float
-    candidate_total_s: float
+    candidate_mean_e2e_s: float
     peak_memory_mib: float
     activation: dict[str, Any]
     implementation_manifest: CandidateManifest
@@ -415,12 +415,12 @@ class DeliveryVerifier:
 
         if issues or authoritative is None or manifest is None:
             return issues, None
-        speedup, candidate_total, peak_memory = authoritative
+        speedup, candidate_mean, peak_memory = authoritative
         return issues, VerifiedFrontierPoint(
             candidate_id=candidate_id,
             run_dir=run_dir,
             authoritative_speedup=speedup,
-            candidate_total_s=candidate_total,
+            candidate_mean_e2e_s=candidate_mean,
             peak_memory_mib=peak_memory,
             activation=dict(point.activation),
             implementation_manifest=manifest,
@@ -725,38 +725,71 @@ class DeliveryVerifier:
         benchmark: Mapping[str, Any],
         issue: Any,
     ) -> tuple[float, float, float] | None:
-        candidate_total = self._positive_number(performance.get("total_s"))
+        candidate_mean = self._positive_number(performance.get("mean_e2e_s"))
+        candidate_workload_total = self._positive_number(
+            performance.get("workload_total_s")
+        )
+        request_count = performance.get("request_count")
         peak_memory = self._positive_number(performance.get("peak_memory_mib"))
-        if candidate_total is None or peak_memory is None:
+        if (
+            candidate_mean is None
+            or candidate_workload_total is None
+            or type(request_count) is not int
+            or request_count != 5
+            or peak_memory is None
+        ):
             issue(
                 "invalid_performance",
-                "PERFORMANCE.json requires positive total_s and peak_memory_mib",
+                "PERFORMANCE.json requires explicit mean_e2e_s, "
+                "workload_total_s, request_count=5, and peak_memory_mib",
             )
             return None
-        benchmark_total = self._positive_number(benchmark.get("total_s"))
+        benchmark_mean = self._positive_number(benchmark.get("mean_e2e_s"))
+        benchmark_workload_total = self._positive_number(
+            benchmark.get("workload_total_s")
+        )
+        benchmark_request_count = benchmark.get("request_count")
         benchmark_peak = self._positive_number(benchmark.get("peak_memory_mib"))
-        if benchmark_total is None or benchmark_peak is None:
+        if (
+            benchmark_mean is None
+            or benchmark_workload_total is None
+            or type(benchmark_request_count) is not int
+            or benchmark_request_count != 5
+            or benchmark_peak is None
+        ):
             issue(
                 "invalid_benchmark_metrics",
-                "benchmark requires positive latency and peak memory",
+                "benchmark requires five requests with positive mean, total, and "
+                "peak memory",
             )
             return None
-        if not math.isclose(
-            candidate_total,
-            benchmark_total,
-            rel_tol=1e-9,
-            abs_tol=1e-12,
-        ) or not math.isclose(
-            peak_memory,
-            benchmark_peak,
-            rel_tol=1e-9,
-            abs_tol=1e-9,
+        if (
+            not math.isclose(
+                candidate_mean,
+                benchmark_mean,
+                rel_tol=1e-9,
+                abs_tol=1e-12,
+            )
+            or not math.isclose(
+                candidate_workload_total,
+                benchmark_workload_total,
+                rel_tol=1e-9,
+                abs_tol=1e-12,
+            )
+            or not math.isclose(
+                peak_memory,
+                benchmark_peak,
+                rel_tol=1e-9,
+                abs_tol=1e-9,
+            )
         ):
             issue(
                 "benchmark_performance_mismatch",
                 "PERFORMANCE.json differs from the raw benchmark result",
             )
-        candidate_total = benchmark_total
+        candidate_mean = benchmark_mean
+        candidate_workload_total = benchmark_workload_total
+        request_count = benchmark_request_count
         peak_memory = benchmark_peak
         timing_scope = performance.get("timing_scope")
         if timing_scope != self.baseline.timing_scope:
@@ -765,26 +798,44 @@ class DeliveryVerifier:
                 "candidate timing_scope differs from the frozen baseline",
             )
         if not math.isclose(
-            point.performance.baseline_total_s,
-            self.baseline.total_s,
+            point.performance.baseline_mean_e2e_s,
+            self.baseline.mean_e2e_s,
             rel_tol=1e-12,
             abs_tol=1e-12,
         ):
             issue(
                 "baseline_tamper",
-                "reported baseline_total_s differs from the frozen baseline",
+                "reported baseline_mean_e2e_s differs from the frozen baseline",
+            )
+        if (
+            not math.isclose(
+                point.performance.baseline_workload_total_s,
+                self.baseline.workload_total_s,
+                rel_tol=1e-12,
+                abs_tol=1e-12,
+            )
+            or point.performance.request_count != self.baseline.request_count
+        ):
+            issue(
+                "baseline_tamper",
+                "reported baseline workload timing differs from the frozen baseline",
             )
         if not math.isclose(
-            point.performance.candidate_total_s,
-            candidate_total,
+            point.performance.candidate_mean_e2e_s,
+            candidate_mean,
+            rel_tol=1e-9,
+            abs_tol=1e-12,
+        ) or not math.isclose(
+            point.performance.candidate_workload_total_s,
+            candidate_workload_total,
             rel_tol=1e-9,
             abs_tol=1e-12,
         ):
             issue(
                 "candidate_tamper",
-                "reported candidate_total_s differs from PERFORMANCE.json",
+                "reported candidate timing differs from PERFORMANCE.json",
             )
-        speedup = self.baseline.total_s / candidate_total
+        speedup = self.baseline.mean_e2e_s / candidate_mean
         if not math.isclose(
             speedup,
             point.performance.speedup,
@@ -796,7 +847,7 @@ class DeliveryVerifier:
                 "reported speedup does not match durable benchmark",
             )
         if point.performance.frontier_axis == "latency":
-            if candidate_total >= self.baseline.total_s:
+            if candidate_mean >= self.baseline.mean_e2e_s:
                 issue(
                     "no_improvement",
                     "latency frontier point does not improve frozen baseline latency",
@@ -806,7 +857,7 @@ class DeliveryVerifier:
                 "dominated_memory",
                 "memory frontier point does not improve frozen baseline memory",
             )
-        return speedup, candidate_total, peak_memory
+        return speedup, candidate_mean, peak_memory
 
     def _verify_lossless(
         self,
@@ -1201,7 +1252,7 @@ class DeliveryVerifier:
         raise VerificationError("required benchmark artifact is missing")
 
     @staticmethod
-    def _validate_benchmark(path: Path) -> dict[str, float]:
+    def _validate_benchmark(path: Path) -> dict[str, float | int]:
         if not path.is_file() or path.stat().st_size == 0:
             raise VerificationError("benchmark artifact is empty or not a file")
         text = path.read_text(encoding="utf-8")
@@ -1225,11 +1276,11 @@ class DeliveryVerifier:
             raise VerificationError("benchmark results must be an object")
         successful = results.get("successful_requests")
         failed = results.get("failed_requests")
-        if successful is not None and successful != 5:
+        if type(successful) is not int or successful != 5:
             raise VerificationError(
                 f"benchmark has {successful!r} successful requests, expected 5"
             )
-        if failed is not None and failed != 0:
+        if type(failed) is not int or failed != 0:
             raise VerificationError(f"benchmark reports {failed!r} failed requests")
         total = DeliveryVerifier._first_positive(
             results, ("total_duration_seconds", "total_s", "latency")
@@ -1241,7 +1292,22 @@ class DeliveryVerifier:
             raise VerificationError(
                 "benchmark lacks positive latency or peak-memory metrics"
             )
-        return {"total_s": total, "peak_memory_mib": peak}
+        mean = total / successful
+        reported_mean = DeliveryVerifier._first_positive(
+            results, ("latency_per_request_seconds",)
+        )
+        if reported_mean is not None and not math.isclose(
+            reported_mean, mean, rel_tol=1e-9, abs_tol=1e-9
+        ):
+            raise VerificationError(
+                "benchmark per-request latency is inconsistent with total/count"
+            )
+        return {
+            "mean_e2e_s": mean,
+            "workload_total_s": total,
+            "request_count": successful,
+            "peak_memory_mib": peak,
+        }
 
     @staticmethod
     def _required_media(run_dir: Path, artifacts: Sequence[Path]) -> Path:

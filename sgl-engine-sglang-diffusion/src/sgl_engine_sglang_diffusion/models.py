@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from enum import StrEnum
 from pathlib import Path
 from typing import Any, Literal
@@ -101,21 +102,52 @@ class SourceLock(StrictModel):
 
 
 class BaselineRecord(StrictModel):
-    schema_version: Literal[1] = 1
+    schema_version: Literal[2] = 2
     model_id: str
-    total_s: float = Field(gt=0)
+    mean_e2e_s: float = Field(gt=0)
+    workload_total_s: float = Field(gt=0)
+    request_count: Literal[5] = 5
     peak_memory_mib: float = Field(gt=0)
     timing_scope: str
     run_dir: Path
     baseline_frames: Path
     sglang_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
 
+    @model_validator(mode="after")
+    def require_consistent_timing(self) -> BaselineRecord:
+        expected_total = self.mean_e2e_s * self.request_count
+        if not math.isclose(
+            self.workload_total_s, expected_total, rel_tol=1e-9, abs_tol=1e-9
+        ):
+            raise ValueError("workload_total_s must equal mean_e2e_s * request_count")
+        return self
+
 
 class PerformanceRecord(StrictModel):
+    schema_version: Literal[2] = 2
     frontier_axis: Literal["latency", "peak_memory"]
-    baseline_total_s: float = Field(gt=0)
-    candidate_total_s: float = Field(gt=0)
+    baseline_mean_e2e_s: float = Field(gt=0)
+    candidate_mean_e2e_s: float = Field(gt=0)
+    baseline_workload_total_s: float = Field(gt=0)
+    candidate_workload_total_s: float = Field(gt=0)
+    request_count: Literal[5] = 5
     speedup: float = Field(gt=0)
+
+    @model_validator(mode="after")
+    def require_consistent_timing(self) -> PerformanceRecord:
+        pairs = (
+            (self.baseline_workload_total_s, self.baseline_mean_e2e_s),
+            (self.candidate_workload_total_s, self.candidate_mean_e2e_s),
+        )
+        for workload_total, mean_e2e in pairs:
+            if not math.isclose(
+                workload_total,
+                mean_e2e * self.request_count,
+                rel_tol=1e-9,
+                abs_tol=1e-9,
+            ):
+                raise ValueError("workload total must equal mean_e2e_s * request_count")
+        return self
 
 
 class QualityRecord(StrictModel):

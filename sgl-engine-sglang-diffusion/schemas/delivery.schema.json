@@ -50,14 +50,24 @@
     "PerformanceRecord": {
       "additionalProperties": false,
       "properties": {
-        "baseline_total_s": {
+        "baseline_mean_e2e_s": {
           "exclusiveMinimum": 0.0,
-          "title": "Baseline Total S",
+          "title": "Baseline Mean E2E S",
           "type": "number"
         },
-        "candidate_total_s": {
+        "baseline_workload_total_s": {
           "exclusiveMinimum": 0.0,
-          "title": "Candidate Total S",
+          "title": "Baseline Workload Total S",
+          "type": "number"
+        },
+        "candidate_mean_e2e_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Candidate Mean E2E S",
+          "type": "number"
+        },
+        "candidate_workload_total_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Candidate Workload Total S",
           "type": "number"
         },
         "frontier_axis": {
@@ -68,6 +78,16 @@
           "title": "Frontier Axis",
           "type": "string"
         },
+        "request_count": {
+          "const": 5,
+          "default": 5,
+          "title": "Request Count"
+        },
+        "schema_version": {
+          "const": 2,
+          "default": 2,
+          "title": "Schema Version"
+        },
         "speedup": {
           "exclusiveMinimum": 0.0,
           "title": "Speedup",
@@ -76,8 +96,10 @@
       },
       "required": [
         "frontier_axis",
-        "baseline_total_s",
-        "candidate_total_s",
+        "baseline_mean_e2e_s",
+        "candidate_mean_e2e_s",
+        "baseline_workload_total_s",
+        "candidate_workload_total_s",
         "speedup"
       ],
       "title": "PerformanceRecord",

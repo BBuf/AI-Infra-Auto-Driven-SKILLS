@@ -101,11 +101,17 @@ class FakeDriver:
         receipt = run_dir / "COMMAND.json"
         output_file.parent.mkdir(parents=True)
         media_dir.mkdir()
-        output_file.write_text('{"results": {"total_s": 5.0}}\n')
+        output_file.write_text(
+            '{"results": {"successful_requests": 5, "failed_requests": 0, '
+            '"total_duration_seconds": 25.0, "latency_per_request_seconds": 5.0}}\n'
+        )
         normalized_file.write_text(
             json.dumps(
                 {
-                    "total_s": 5.0,
+                    "schema_version": 2,
+                    "mean_e2e_s": 5.0,
+                    "workload_total_s": 25.0,
+                    "request_count": 5,
                     "peak_memory_mib": 80.0,
                     "timing_scope": goal.workload.timing_scope,
                 }
@@ -127,7 +133,10 @@ class FakeDriver:
             media_dir=media_dir,
             command_receipt=receipt,
             normalized={
-                "total_s": 5.0,
+                "schema_version": 2,
+                "mean_e2e_s": 5.0,
+                "workload_total_s": 25.0,
+                "request_count": 5,
                 "peak_memory_mib": 80.0,
                 "timing_scope": goal.workload.timing_scope,
             },
@@ -229,7 +238,9 @@ def _goal(prompt_file: Path) -> CampaignGoal:
 def _baseline(tmp_path: Path, base: str) -> BaselineRecord:
     return BaselineRecord(
         model_id="fake/model",
-        total_s=10.0,
+        mean_e2e_s=10.0,
+        workload_total_s=50.0,
+        request_count=5,
         peak_memory_mib=100.0,
         timing_scope="load_excluded_end_to_end",
         run_dir=tmp_path / "baseline-run",

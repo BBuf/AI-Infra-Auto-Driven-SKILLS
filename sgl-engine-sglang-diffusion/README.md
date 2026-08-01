@@ -305,8 +305,15 @@ implementation manifests, engagement/fallback receipts, and candidate commits.
 It recomputes:
 
 ```text
-speedup = frozen_baseline_total_s / candidate_total_s
+baseline_mean_e2e_s = baseline_workload_total_s / 5
+candidate_mean_e2e_s = candidate_workload_total_s / 5
+speedup = baseline_mean_e2e_s / candidate_mean_e2e_s
 ```
+
+The per-successful-request arithmetic mean is the sole optimization and target
+metric throughout the campaign. The complete five-request wall time and the
+request count remain in every durable record as audit evidence; they are never
+used as ambiguously named latency fields.
 
 It rejects projected microbenchmark gains, altered timing scopes, fallback
 backends, no-op flags, baseline resubmissions, path escapes, fabricated
@@ -460,7 +467,8 @@ Before publishing a result, rerun on the locked GPU class and workload:
 
 1. apply the bundle in a new detached worktree;
 2. run all packaged import/unit checks;
-3. run the exact five-prompt native SGLang benchmark;
+3. run the exact five-prompt native SGLang benchmark and independently compute
+   its per-successful-request arithmetic mean;
 4. confirm no Diffusers fallback marker appears;
 5. confirm every selected technique has positive engagement;
 6. rerun the applicable lossless or quality gate; and

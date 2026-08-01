@@ -63,7 +63,10 @@ def test_executor_prompt_injects_only_active_lane_history_rules(
     (campaign / "KNOWLEDGE.json").write_text(
         json.dumps({"schema_version": 1, "snapshots": {}})
     )
-    (campaign / "BASELINE.json").write_text('{"total_s": 10.0}\n')
+    (campaign / "BASELINE.json").write_text(
+        '{"schema_version": 2, "mean_e2e_s": 10.0, '
+        '"workload_total_s": 50.0, "request_count": 5}\n'
+    )
     (campaign / "profiles/0/PROFILE-DIGEST.json").write_text(
         '{"profile": "bound"}\n'
     )

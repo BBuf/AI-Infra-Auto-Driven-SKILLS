@@ -14,6 +14,19 @@ performance_progress =
 integrated full-workload result. Projected kernel gains and unverified
 executor claims do not move the bar.
 
+Every baseline, isolated candidate, and integrated candidate is optimized and
+compared using the arithmetic mean E2E seconds per successful request:
+
+```text
+mean_e2e_s = workload_total_s / request_count
+speedup = baseline_mean_e2e_s / candidate_mean_e2e_s
+```
+
+`request_count` must be exactly five and failed requests must be zero. Keep
+`workload_total_s` as a separately labelled audit metric. Never treat the
+five-request total as a single-request latency or expose ambiguous `total_s`
+fields in new campaign artifacts.
+
 ## Search
 
 Search progress is consumed routed-technique rounds divided by their total

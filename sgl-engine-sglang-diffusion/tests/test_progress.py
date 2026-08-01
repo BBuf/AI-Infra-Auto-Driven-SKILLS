@@ -83,7 +83,16 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
     )
     integrated = campaign / "integration" / "1" / "attempt-001"
     integrated.mkdir(parents=True)
-    (campaign / "BASELINE.json").write_text(json.dumps({"total_s": 10.0}))
+    (campaign / "BASELINE.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 2,
+                "mean_e2e_s": 10.0,
+                "workload_total_s": 50.0,
+                "request_count": 5,
+            }
+        )
+    )
     (integrated / "INTEGRATED-DELIVERY.json").write_text(
         json.dumps(
             {
@@ -91,7 +100,9 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
                     {
                         "performance": {
                             "speedup": 1.68,
-                            "candidate_total_s": 5.95238095,
+                            "candidate_mean_e2e_s": 5.95238095,
+                            "candidate_workload_total_s": 29.76190475,
+                            "request_count": 5,
                         },
                         "implementation_manifest": {
                             "recipe": {"techniques": ["kernel"]}
@@ -134,8 +145,12 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
     assert progress["best_verified_speedup"] == 1.68
     assert progress["performance_progress"] == 0.68
     assert progress["integrated_stack_speedup"] == 1.68
-    assert progress["baseline_total_s"] == 10.0
-    assert progress["integrated_total_s"] == 5.95238095
+    assert progress["baseline_mean_e2e_s"] == 10.0
+    assert progress["baseline_workload_total_s"] == 50.0
+    assert progress["baseline_request_count"] == 5
+    assert progress["integrated_mean_e2e_s"] == 5.95238095
+    assert progress["integrated_workload_total_s"] == 29.76190475
+    assert progress["integrated_request_count"] == 5
     assert progress["tokens"]["total_tokens"] == 120
     assert progress["tokens"]["by_role"] == {"executor": 120}
     assert progress["tokens"]["by_technique"] == {"kernel": 120}
@@ -153,5 +168,8 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
     assert "120 total" in rendered
     assert "executor=120" in rendered
     assert "integrated stack" in rendered
-    assert "10.0000s baseline" in rendered
+    assert "10.0000s/request baseline" in rendered
+    assert "5.9524s/request integrated" in rendered
+    assert "50.0000s/5 requests baseline" in rendered
+    assert "29.7619s/5 requests integrated" in rendered
     assert (campaign / "PROGRESS.json").is_file()

@@ -94,7 +94,9 @@ def _hooks_and_baseline(tmp_path: Path) -> tuple[FileCampaignHooks, BaselineReco
         (run_dir / f"prompt-{index}.png").write_bytes(b"image")
     baseline = BaselineRecord(
         model_id=goal.model.id,
-        total_s=10.0,
+        mean_e2e_s=10.0,
+        workload_total_s=50.0,
+        request_count=5,
         peak_memory_mib=100.0,
         timing_scope=goal.workload.timing_scope,
         run_dir=run_dir,

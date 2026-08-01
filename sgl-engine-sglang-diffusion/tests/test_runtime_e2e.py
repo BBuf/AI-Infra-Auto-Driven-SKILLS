@@ -45,7 +45,7 @@ run_dir = output_file.parent.parent
 output_file.parent.mkdir(parents=True, exist_ok=True)
 media.mkdir(parents=True, exist_ok=True)
 optimized = (checkout / "python/sglang/kernels/agent/runtime.py").is_file()
-total = 9.0 if optimized else 10.0
+total = 45.0 if optimized else 50.0
 result = {
     "results": {
         "successful_requests": 5,
@@ -385,7 +385,8 @@ raw = {
     "results": {
         "successful_requests": 5,
         "failed_requests": 0,
-        "total_duration_seconds": 9.0,
+        "total_duration_seconds": 45.0,
+        "latency_per_request_seconds": 9.0,
         "peak_memory_mb": 90.0,
     }
 }
@@ -395,8 +396,10 @@ for index in range(5):
         b"candidate-" + bytes([index])
     )
 (run_dir / "PERFORMANCE.json").write_text(json.dumps({
-    "schema_version": 1,
-    "total_s": 9.0,
+    "schema_version": 2,
+    "mean_e2e_s": 9.0,
+    "workload_total_s": 45.0,
+    "request_count": 5,
     "peak_memory_mib": 90.0,
     "timing_scope": "load_excluded_end_to_end",
 }))
@@ -491,7 +494,12 @@ delivery = {
     "status": "complete",
     "component": "kernel",
     "model_id": "fake-model",
-    "baseline": {"total_s": 10.0},
+    "baseline": {
+        "schema_version": 2,
+        "mean_e2e_s": 10.0,
+        "workload_total_s": 50.0,
+        "request_count": 5,
+    },
     "frontier_points": [{
         "candidate_id": "fake-kernel",
         "run_dir": str(run_dir),
@@ -501,9 +509,13 @@ delivery = {
         },
         "implementation_manifest": implementation,
         "performance": {
+            "schema_version": 2,
             "frontier_axis": "latency",
-            "baseline_total_s": 10.0,
-            "candidate_total_s": reported_total,
+            "baseline_mean_e2e_s": 10.0,
+            "candidate_mean_e2e_s": reported_total,
+            "baseline_workload_total_s": 50.0,
+            "candidate_workload_total_s": reported_total * 5,
+            "request_count": 5,
             "speedup": 10.0 / reported_total,
         },
         "quality": {

@@ -9,6 +9,13 @@ baseline, workload, timing scope, real-run artifacts, source hashes, activation
 evidence, and OFF identity. One round is one hypothesis, one candidate, one
 real run, and one applicable gate.
 
+The authoritative performance metric is always the arithmetic mean E2E time
+per successful request over the exact five-request workload. Preserve all
+three explicit values in every result: `mean_e2e_s`, `workload_total_s`, and
+`request_count: 5`. Compute speedup from baseline mean divided by candidate
+mean. Never optimize against, compare, or report the five-request total as if
+it were a single-request latency.
+
 The active-lane historical rule section contains manually diff-reviewed SGLang
 PR patterns. Use it to generate hypotheses only. Do not copy its GPU threshold,
 layer count, rank count, shape, or speed claim as applicability or acceptance

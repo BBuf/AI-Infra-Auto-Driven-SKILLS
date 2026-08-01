@@ -2134,7 +2134,11 @@ class FileCampaignHooks:
                 "technique": handle.technique,
                 "candidate_id": candidate_id,
                 "delivery_sha256": sha256_file(delivery_path),
-                "candidate_total_s": performance.get("candidate_total_s"),
+                "candidate_mean_e2e_s": performance.get("candidate_mean_e2e_s"),
+                "candidate_workload_total_s": performance.get(
+                    "candidate_workload_total_s"
+                ),
+                "request_count": performance.get("request_count"),
                 "outcome": outcome,
             },
         )

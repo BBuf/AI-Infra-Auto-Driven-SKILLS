@@ -6,6 +6,11 @@
       "title": "Baseline Frames",
       "type": "string"
     },
+    "mean_e2e_s": {
+      "exclusiveMinimum": 0.0,
+      "title": "Mean E2E S",
+      "type": "number"
+    },
     "model_id": {
       "title": "Model Id",
       "type": "string"
@@ -15,14 +20,19 @@
       "title": "Peak Memory Mib",
       "type": "number"
     },
+    "request_count": {
+      "const": 5,
+      "default": 5,
+      "title": "Request Count"
+    },
     "run_dir": {
       "format": "path",
       "title": "Run Dir",
       "type": "string"
     },
     "schema_version": {
-      "const": 1,
-      "default": 1,
+      "const": 2,
+      "default": 2,
       "title": "Schema Version"
     },
     "sglang_commit": {
@@ -34,15 +44,16 @@
       "title": "Timing Scope",
       "type": "string"
     },
-    "total_s": {
+    "workload_total_s": {
       "exclusiveMinimum": 0.0,
-      "title": "Total S",
+      "title": "Workload Total S",
       "type": "number"
     }
   },
   "required": [
     "model_id",
-    "total_s",
+    "mean_e2e_s",
+    "workload_total_s",
     "peak_memory_mib",
     "timing_scope",
     "run_dir",
