@@ -51,6 +51,11 @@ class ForbiddenQualityEvaluator:
         raise AssertionError("lossless verification invoked a quality evaluator")
 
 
+class ForbiddenMethodAuditor:
+    def audit(self, **_: Any) -> bool:
+        raise AssertionError("static preflight invoked a method auditor")
+
+
 @pytest.fixture
 def registry() -> TechniqueRegistry:
     root = Path(__file__).parents[1]
@@ -376,7 +381,27 @@ def test_valid_lossless_never_calls_quality_evaluator(
     assert result.verified_points[0].authoritative_speedup == 2.0
     assert result.verified_points[0].activation == {"enable_agent_kernel": True}
     assert result.verified_points[0].source_hashes == evidence["source_hashes"]
+    assert len(result.authenticated_measurements) == 1
     assert auditor.calls == 1
+
+
+def test_static_preflight_reuses_verifier_without_independent_auditor(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    verifier = make_verifier(
+        evidence,
+        registry,
+        auditor=ForbiddenMethodAuditor(),  # type: ignore[arg-type]
+    )
+
+    result = verifier.verify(
+        evidence["delivery_path"],
+        technique="kernel",
+        executor_worktree=evidence["worktree"],
+        independent_gates=False,
+    )
+
+    assert result.accepted, result.findings
 
 
 def test_launched_campaign_rejects_candidate_command_drift(
@@ -462,6 +487,7 @@ def test_launched_campaign_rejects_candidate_command_drift(
     assert "baseline_command_mismatch" in {
         finding.code for finding in rejected.findings
     }
+    assert rejected.authenticated_measurements == ()
 
 
 def test_resolve_inside_and_verifier_reject_path_escape(
@@ -593,6 +619,8 @@ def test_kernel_delivery_requires_all_three_kda_evidence_paths(
     )
     assert not result.accepted
     assert "invalid_kernel_evidence" in {finding.code for finding in result.findings}
+    assert len(result.authenticated_measurements) == 1
+    assert result.authenticated_measurements[0].candidate_mean_e2e_s == 5.0
 
 
 def test_implemented_kernel_requires_before_after_ncu_reports(

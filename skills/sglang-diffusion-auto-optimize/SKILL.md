@@ -60,6 +60,11 @@ not replace immutable inputs with memory. Warp timeline instrumentation is
 conditional on an actually warp-specialized CUDA/CuTe candidate, but the
 applicability audit is always required.
 
+The KDA-Pilot checkout is incomplete until its pinned KernelWiki, NCU, and
+warp-specialization gitlinks are initialized and verified. Do not start search
+from an empty or partially reused knowledge snapshot. The controller validates
+the copied references and their hashes before spawning a kernel Executor.
+
 ## Phase 1: Resolve The Remote Environment
 
 Connect using the matching host skill. Determine:
@@ -154,6 +159,12 @@ output, scheduler/exact precomputation/synchronization, communication layout
 under the frozen topology, and custom/upstream kernels. Precision changes and
 approximate reuse stay in quality-gated lanes.
 
+For a quality-gated target of at least 3x, use the controller's large-gap route:
+`residency`, then `cache`, `pisa`, `quantization`, `token_pruning`, and finally
+the remaining `kernel` tail. For smaller or lossless-only targets, keep
+lossless-first routing. Every required lane remains in the route; ordering only
+prevents a low-impact lane from blocking methods capable of closing the gap.
+
 The launcher rejects shell pipelines, redirects, substitutions, ambiguous
 duplicate workload flags, and baseline/model mismatch. Do not work around those
 failures by weakening validation. Convert a safe command into explicit
@@ -211,12 +222,26 @@ headroom, peak-memory delta, and H2D count/time delta. Do not report “high VRA
 as a result by itself.
 
 The detached controller launches and resumes Executor/Master agents itself.
+For `codex exec`, it persists the exact `thread.started` ID and resumes with
+`codex exec resume <thread-id>`; it never uses `--last` and never rebuilds a
+fresh conversation from the full prompt. Each Executor receives a
+controller-generated `DELIVERY-CONTRACT.json` and must pass its static
+preflight command before returning. Static preflight cannot self-approve the
+independent method or quality gate.
+
 Only one GPU-capable Executor is active at a time. A scientific round means one
 authenticated complete frozen-workload candidate measurement—not a process
-launch, retry, microbenchmark, malformed delivery, or infrastructure failure.
+launch, retry, microbenchmark, pre-measurement malformed delivery, or
+infrastructure failure. If the complete measurement is authentic but a later
+evidence field is malformed, the measurement consumes one idempotent round.
 A rejected hypothesis feeds the same lane; it does not close the lane or the
 campaign. Retain every independently verified positive candidate for combined
 remeasurement.
+
+The same verifier signature may be resumed at most three times and one
+Executor generation at most six times. After that, defer the lane for the
+current epoch and continue other routes. A deferral is not search exhaustion;
+if no productive route remains, report the exact infrastructure block.
 
 Never add technique speedups together. `marginal_attribution: not_measured`
 means no leave-one-out measurement exists.

@@ -80,6 +80,13 @@ manifest and source hashes, engagement/fallback counters, warmup policy, timing
 scope, compile/init cost, and a real full-workload run.
 
 Microbenchmarks screen implementations but cannot establish end-to-end speedup.
+Use the current target gap to avoid spending a five-prompt run on a candidate
+whose targeted screen shows negligible impact, unless it is essentially free,
+is needed as a composable primitive, or closes required coverage. Record the
+screened hypothesis instead of repeatedly measuring equivalent flag variants.
+The candidate commit must change production-consumed source; run artifacts,
+evidence JSON, or a configuration file that is not wired into execution cannot
+serve as the implementation patch.
 Retain only measurable latency improvements or non-dominated peak-memory points.
 Maintain a cumulative ON stack and periodically rerun its full-DiT and complete
 frozen-workload gate. Delivery contains the fastest measured exact composed
@@ -88,3 +95,7 @@ stack plus its method-equivalence argument and unchanged logical counts.
 Deliver at round 60, after a genuine multi-hypothesis plateau, or after a target
 is reached and fully gated. A target is search pressure, not an acceptance rule
 or proof of reachability.
+
+Use the controller-generated `DELIVERY-CONTRACT.json` for exact schemas,
+required artifacts, profile/baseline bindings, and pinned KernelWiki citation
+paths. Run its static preflight command before returning control.

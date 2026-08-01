@@ -17,6 +17,7 @@ from .agents import AgentRunner, build_agent_argv, redact_argv
 from .baseline import BaselineRunner
 from .config import load_goal
 from .controller import CampaignController, StepResult
+from .delivery_contract import build_delivery_contract
 from .driver import SGLangDiffusionDriver
 from .integrator import (
     CandidateActivation,
@@ -27,7 +28,7 @@ from .integrator import (
     VerifiedCandidate,
 )
 from .history_rules import HistoryRuleCatalog
-from .knowledge import check_contract_hashes
+from .knowledge import KnowledgeSyncError, check_contract_hashes
 from .knowledge import load_registry as load_knowledge_registry
 from .knowledge import read_source_lock, sync_source
 from .models import (
@@ -67,6 +68,14 @@ class CampaignRuntimeError(RuntimeError):
 
 _PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 _SOURCE_NAMES = ("sglang", "sol_engine", "fastvideo", "kda_pilot")
+_KDA_REQUIRED_SUBMODULES = (
+    "external/KernelWiki",
+    "external/ncu-report-skill",
+    "external/warp-specialization-report-skill",
+)
+_KNOWLEDGE_REQUIRED_PREFIXES = {
+    "kda_pilot": tuple(f"{path}/" for path in _KDA_REQUIRED_SUBMODULES),
+}
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _LOSSLESS_FORBIDDEN_ADDITIONS = re.compile(
     r"(?i)\b(?:step[-_ ]?skip|token[-_ ]?prun|spars|rank[-_ ]?reduc|"
@@ -1040,6 +1049,10 @@ class FileCampaignHooks:
             value = _read_object(route_path)
             profile_artifact = Path(value["profile_digest"])
             try:
+                if value.get("schema_version") != 2:
+                    raise ProfileError("route manifest predates target-aware routing")
+                if value.get("target_speedup") != self.goal.goal.target_speedup:
+                    raise ProfileError("route manifest target differs from frozen goal")
                 cached = ProfileDigest.model_validate_json(
                     profile_artifact.read_text(encoding="utf-8")
                 )
@@ -1075,6 +1088,7 @@ class FileCampaignHooks:
             digest,
             allow_quality_gated=self.goal.goal.allow_quality_gated,
             gpu_count=self.goal.hardware.gpu_count,
+            target_speedup=self.goal.goal.target_speedup,
         )
         unknown = set(routes) - set(self.registry.names())
         if unknown:
@@ -1084,8 +1098,10 @@ class FileCampaignHooks:
         _atomic_json(
             route_path,
             {
-                "schema_version": 1,
+                "schema_version": 2,
                 "routes": routes,
+                "route_policy": router.route_policy,
+                "target_speedup": self.goal.goal.target_speedup,
                 "evidence": router.last_evidence,
                 "profile_digest": str(profile_path),
                 "sglang_commit": locks["sglang"].commit,
@@ -1129,6 +1145,7 @@ class FileCampaignHooks:
         handles = self._epoch_handles(epoch)
         verified = self._load_verified(epoch)
         dispositions = self._load_dispositions()
+        deferred = self._load_deferred_lanes(epoch)
         baseline = BaselineRunner.load(self.campaign_dir / "BASELINE.json")
         quality = LockedSolQualityEvaluator(
             sol_checkout=self.campaign_dir / "source-worktrees" / "sol_engine",
@@ -1151,7 +1168,7 @@ class FileCampaignHooks:
         )
 
         for technique in routes:
-            if technique in verified or technique in dispositions:
+            if technique in verified or technique in dispositions or technique in deferred:
                 continue
             if technique not in handles:
                 active = self._ensure_next_executor(epoch)
@@ -1180,13 +1197,14 @@ class FileCampaignHooks:
                         )
                     except (OSError, ValueError, CampaignRuntimeError) as error:
                         return self._resume_or_exhaust(
-                            handle, f"Invalid DISPOSITION.json: {error}"
+                            handle, f"Invalid DISPOSITION.json: {error}", epoch=epoch
                         )
                     if disposition.classification == "blocked":
                         return self._resume_or_exhaust(
                             handle,
                             "A blocked disposition is recoverable and cannot close "
                             "the lane; repair the blocker or keep searching.",
+                            epoch=epoch,
                         )
                     self._store_disposition(disposition, disposition_path)
                     active = self._ensure_next_executor(epoch)
@@ -1201,6 +1219,7 @@ class FileCampaignHooks:
                     handle,
                     "The process exited without a regular DELIVERY.json inside "
                     "its assigned worktree.",
+                    epoch=epoch,
                 )
 
             result = verifier.verify(
@@ -1209,23 +1228,27 @@ class FileCampaignHooks:
                 executor_worktree=handle.worktree,
             )
             if not result.accepted:
-                if result.findings and all(
-                    finding.code in {"no_improvement", "dominated_memory"}
-                    for finding in result.findings
-                ):
+                for measurement in result.authenticated_measurements:
                     self._record_scientific_round(
                         handle,
                         polled.delivery,
-                        outcome="regressed",
+                        outcome=(
+                            "improved"
+                            if measurement.authoritative_speedup > 1.0
+                            else "regressed"
+                        ),
+                        measurement=measurement,
                     )
                 feedback = "\n".join(
                     f"{index}. [{finding.code}] {finding.message}"
                     for index, finding in enumerate(result.findings, start=1)
                 )
-                return self._resume_or_exhaust(handle, feedback)
+                return self._resume_or_exhaust(handle, feedback, epoch=epoch)
             if not result.verified_points:
                 return self._resume_or_exhaust(
-                    handle, "Verifier accepted no durable frontier point."
+                    handle,
+                    "Verifier accepted no durable frontier point.",
+                    epoch=epoch,
                 )
             point = max(
                 result.verified_points,
@@ -1235,6 +1258,14 @@ class FileCampaignHooks:
                 handle,
                 polled.delivery,
                 outcome="improved",
+                measurement=next(
+                    (
+                        item
+                        for item in result.authenticated_measurements
+                        if item.candidate_id == point.candidate_id
+                    ),
+                    None,
+                ),
             )
             manifest = point.implementation_manifest
             candidate = VerifiedCandidate(
@@ -1270,6 +1301,14 @@ class FileCampaignHooks:
 
         selected = self._selected_candidates(epoch)
         if not selected:
+            if self._load_deferred_lanes(epoch):
+                return StepResult(
+                    CampaignStatus.INFRA_BLOCKED,
+                    payload={
+                        "reason": "all_productive_lanes_finished_with_deferred_executors",
+                        "deferred_lanes": sorted(self._load_deferred_lanes(epoch)),
+                    },
+                )
             return StepResult(
                 CampaignStatus.SEARCH_SPACE_EXHAUSTED,
                 payload={"reason": "all_lanes_dispositioned_without_positive_candidate"},
@@ -1354,7 +1393,7 @@ class FileCampaignHooks:
             if handle is None:
                 self._ensure_next_executor(epoch, preferred=failed_technique)
             else:
-                outcome = self._resume_or_exhaust(handle, feedback)
+                outcome = self._resume_or_exhaust(handle, feedback, epoch=epoch)
                 if outcome.next_status is CampaignStatus.INFRA_BLOCKED:
                     return outcome
             return StepResult(
@@ -1788,8 +1827,20 @@ class FileCampaignHooks:
                     raise CampaignRuntimeError(
                         f"source worktree {name} is not at its locked commit"
                     )
+                if name == "kda_pilot":
+                    self.source_manager.ensure_submodules(
+                        destination,
+                        required=_KDA_REQUIRED_SUBMODULES,
+                    )
             else:
-                self.source_manager.create_worktree(lock, destination)
+                self.source_manager.create_worktree(
+                    lock,
+                    destination,
+                    initialize_submodules=name == "kda_pilot",
+                    required_submodules=(
+                        _KDA_REQUIRED_SUBMODULES if name == "kda_pilot" else ()
+                    ),
+                )
             roots[name] = destination.resolve()
         _validate_sol_contract(locks["sol_engine"], roots["sol_engine"])
         return roots
@@ -1806,13 +1857,33 @@ class FileCampaignHooks:
         for name, patterns in registry.items():
             lock = locks[name]
             output = self.campaign_dir / "knowledge" / name / lock.commit
-            snapshot = sync_source(
-                name=name,
-                checkout=worktrees[name],
-                commit=lock.commit,
-                patterns=patterns,
-                output_dir=output,
-            )
+            kwargs = {
+                "name": name,
+                "checkout": worktrees[name],
+                "commit": lock.commit,
+                "patterns": patterns,
+                "output_dir": output,
+                "required_prefixes": _KNOWLEDGE_REQUIRED_PREFIXES.get(name, ()),
+            }
+            try:
+                snapshot = sync_source(**kwargs)
+            except KnowledgeSyncError:
+                if not output.exists():
+                    raise
+                rejected_root = self.campaign_dir / "knowledge" / "rejected" / name
+                rejected_root.mkdir(parents=True, exist_ok=True)
+                digest = hashlib.sha256(
+                    (output / "index.json").read_bytes()
+                    if (output / "index.json").is_file()
+                    else str(output).encode()
+                ).hexdigest()[:12]
+                rejected = rejected_root / f"{lock.commit}-{digest}"
+                if rejected.exists():
+                    raise CampaignRuntimeError(
+                        f"knowledge recovery target already exists: {rejected}"
+                    )
+                output.replace(rejected)
+                snapshot = sync_source(**kwargs)
             if snapshot.commit != lock.commit:
                 raise CampaignRuntimeError(
                     f"knowledge snapshot {name} has the wrong commit"
@@ -1922,12 +1993,40 @@ class FileCampaignHooks:
                 "epoch": epoch,
                 "technique": technique,
                 "round_budget": self.registry[technique].round_budget,
+                "target_speedup": self.goal.goal.target_speedup,
+                "best_verified_speedup": self._best_verified_speedup(),
+                "remaining_multiplier": (
+                    self.goal.goal.target_speedup / self._best_verified_speedup()
+                ),
                 "prior_failures": self.store.failures(self.campaign_id),
             },
             rejected_signatures=tuple(
                 item["signature"] for item in self.store.failures(self.campaign_id)
             ),
+            delivery_contract=build_delivery_contract(
+                campaign=self.campaign_dir,
+                technique=technique,
+                registry=self.registry,
+                baseline=BaselineRunner.load(self.campaign_dir / "BASELINE.json"),
+                command_template=self._command_template(),
+            ),
         )
+
+    def _best_verified_speedup(self) -> float:
+        best = 1.0
+        path = self._candidate_registry_path()
+        if not path.is_file():
+            return best
+        for item in _read_object(path).get("history", []):
+            candidate = item.get("candidate") if isinstance(item, dict) else None
+            speedup = (
+                candidate.get("verified_speedup")
+                if isinstance(candidate, dict)
+                else None
+            )
+            if isinstance(speedup, (int, float)) and not isinstance(speedup, bool):
+                best = max(best, float(speedup))
+        return best
 
     def _epoch_handles(self, epoch: int) -> dict[str, ExecutorHandle]:
         root = self.campaign_dir / "search" / str(epoch)
@@ -1947,12 +2046,14 @@ class FileCampaignHooks:
         handles = self._epoch_handles(epoch)
         verified = self._load_verified(epoch)
         dispositions = self._load_dispositions()
+        deferred = self._load_deferred_lanes(epoch)
         active = manifest.get("active_technique")
         if (
             isinstance(active, str)
             and active in handles
             and active not in verified
             and active not in dispositions
+            and active not in deferred
         ):
             return active
 
@@ -1963,7 +2064,7 @@ class FileCampaignHooks:
             ordered.insert(0, preferred)
         selected: str | None = None
         for technique in ordered:
-            if technique in verified or technique in dispositions:
+            if technique in verified or technique in dispositions or technique in deferred:
                 continue
             rounds = self._technique_rounds(technique)
             if rounds >= self.registry[technique].round_budget:
@@ -2110,35 +2211,60 @@ class FileCampaignHooks:
         delivery_path: Path,
         *,
         outcome: str,
+        measurement: Any | None = None,
     ) -> str:
-        payload = _read_object(delivery_path)
-        points = payload.get("frontier_points")
-        if not isinstance(points, list) or not points or not isinstance(points[0], dict):
-            raise CampaignRuntimeError(
-                "cannot authenticate a scientific round without a frontier point"
-            )
-        point = points[0]
-        candidate_id = str(point.get("candidate_id", ""))
-        performance = point.get("performance")
-        if not candidate_id or not isinstance(performance, dict):
-            raise CampaignRuntimeError("scientific round delivery is incomplete")
+        if measurement is None:
+            payload = _read_object(delivery_path)
+            points = payload.get("frontier_points")
+            if (
+                not isinstance(points, list)
+                or not points
+                or not isinstance(points[0], dict)
+            ):
+                raise CampaignRuntimeError(
+                    "cannot authenticate a scientific round without a frontier point"
+                )
+            point = points[0]
+            candidate_id = str(point.get("candidate_id", ""))
+            performance = point.get("performance")
+            if not candidate_id or not isinstance(performance, dict):
+                raise CampaignRuntimeError("scientific round delivery is incomplete")
+            candidate_mean = performance.get("candidate_mean_e2e_s")
+            workload_total = performance.get("candidate_workload_total_s")
+            request_count = performance.get("request_count")
+            measurement_digest = sha256_file(delivery_path)
+            measurement_run = str(point.get("run_dir", ""))
+        else:
+            candidate_id = measurement.candidate_id
+            candidate_mean = measurement.candidate_mean_e2e_s
+            workload_total = measurement.candidate_workload_total_s
+            request_count = measurement.request_count
+            performance_path = measurement.run_dir / "PERFORMANCE.json"
+            measurement_digest = sha256_file(performance_path)
+            measurement_run = str(measurement.run_dir.resolve())
         round_id = hashlib.sha256(
-            f"{handle.technique}\0{candidate_id}\0{sha256_file(delivery_path)}".encode()
+            f"{handle.technique}\0{candidate_id}\0{measurement_run}\0"
+            f"{measurement_digest}".encode()
         ).hexdigest()[:20]
+        idempotency_key = f"{self.campaign_id}:scientific-round:{round_id}"
+        if any(
+            event["idempotency_key"] == idempotency_key
+            for event in self.store.events(self.campaign_id)
+        ):
+            return round_id
         self.store.record_event(
             self.campaign_id,
             "scientific_round_completed",
-            f"{self.campaign_id}:scientific-round:{round_id}",
+            idempotency_key,
             {
                 "round_id": round_id,
                 "technique": handle.technique,
                 "candidate_id": candidate_id,
                 "delivery_sha256": sha256_file(delivery_path),
-                "candidate_mean_e2e_s": performance.get("candidate_mean_e2e_s"),
-                "candidate_workload_total_s": performance.get(
-                    "candidate_workload_total_s"
-                ),
-                "request_count": performance.get("request_count"),
+                "candidate_mean_e2e_s": candidate_mean,
+                "candidate_workload_total_s": workload_total,
+                "request_count": request_count,
+                "measurement_sha256": measurement_digest,
                 "outcome": outcome,
             },
         )
@@ -2251,7 +2377,60 @@ class FileCampaignHooks:
         candidates.pop(technique, None)
         self._write_verified(epoch, candidates)
 
-    def _resume_or_exhaust(self, handle: ExecutorHandle, feedback: str) -> StepResult:
+    def _deferred_lanes_path(self, epoch: int) -> Path:
+        return self.campaign_dir / "search" / str(epoch) / "DEFERRED-LANES.json"
+
+    def _load_deferred_lanes(self, epoch: int) -> dict[str, dict[str, Any]]:
+        path = self._deferred_lanes_path(epoch)
+        if not path.is_file():
+            return {}
+        value = _read_object(path).get("lanes", {})
+        if not isinstance(value, dict):
+            raise CampaignRuntimeError("DEFERRED-LANES.json has invalid lanes")
+        return {
+            str(name): dict(payload)
+            for name, payload in value.items()
+            if isinstance(payload, dict)
+        }
+
+    def _defer_lane(
+        self,
+        epoch: int,
+        handle: ExecutorHandle,
+        *,
+        signature: str,
+        feedback: str,
+    ) -> None:
+        path = self._deferred_lanes_path(epoch)
+        payload = _read_object(path) if path.is_file() else {
+            "schema_version": 1,
+            "epoch": epoch,
+            "lanes": {},
+        }
+        payload["lanes"].setdefault(
+            handle.technique,
+            {
+                "executor_id": handle.executor_id,
+                "attempt": handle.attempt,
+                "failure_signature": signature,
+                "feedback": feedback,
+                "classification": "executor_protocol_deferred",
+            },
+        )
+        _atomic_json(path, payload)
+        manifest_path = self.campaign_dir / "search" / str(epoch) / "EXECUTORS.json"
+        manifest = _read_object(manifest_path)
+        if manifest.get("active_technique") == handle.technique:
+            manifest["active_technique"] = None
+            _atomic_json(manifest_path, manifest)
+
+    def _resume_or_exhaust(
+        self,
+        handle: ExecutorHandle,
+        feedback: str,
+        *,
+        epoch: int,
+    ) -> StepResult:
         budget = self.registry[handle.technique].round_budget
         rounds = self._technique_rounds(handle.technique)
         if rounds >= budget:
@@ -2276,14 +2455,35 @@ class FileCampaignHooks:
             event["idempotency_key"] == resume_key
             for event in self.store.events(self.campaign_id)
         )
-        if handle.attempt >= max(6, budget * 3) and not resume_already_recorded:
+        feedback_sha256 = hashlib.sha256(feedback.encode()).hexdigest()
+        same_signature_resumes = sum(
+            1
+            for event in self.store.events(
+                self.campaign_id,
+                event_type="executor_resumed",
+            )
+            if event["payload"].get("executor_id") == handle.executor_id
+            and event["payload"].get("feedback_sha256") == feedback_sha256
+        )
+        if (
+            (same_signature_resumes >= 2 or handle.attempt >= 6)
+            and not resume_already_recorded
+        ):
+            self._defer_lane(
+                epoch,
+                handle,
+                signature=signature,
+                feedback=feedback,
+            )
+            next_technique = self._ensure_next_executor(epoch)
             return StepResult(
-                CampaignStatus.INFRA_BLOCKED,
+                None,
                 payload={
-                    "reason": "executor_infrastructure_attempt_limit",
+                    "reason": "executor_lane_deferred",
                     "technique": handle.technique,
                     "attempt": handle.attempt,
                     "failure_signature": signature,
+                    "next_technique": next_technique,
                 },
             )
         resumed = self.executors.resume(

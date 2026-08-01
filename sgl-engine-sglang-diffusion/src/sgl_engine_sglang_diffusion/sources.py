@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from pathlib import Path
 
 from .models import SourceLock
@@ -92,7 +93,14 @@ class SourceManager:
             )
         return cache
 
-    def create_worktree(self, lock: SourceLock, destination: Path) -> Path:
+    def create_worktree(
+        self,
+        lock: SourceLock,
+        destination: Path,
+        *,
+        initialize_submodules: bool = False,
+        required_submodules: Sequence[str] = (),
+    ) -> Path:
         cache = self.checkout_path(lock)
         if destination.exists() or destination.is_symlink():
             raise FileExistsError(f"worktree destination already exists: {destination}")
@@ -119,8 +127,85 @@ class SourceManager:
             ],
             cwd=cache,
         )
-        self.assert_clean_worktree(resolved_destination)
+        try:
+            if initialize_submodules or required_submodules:
+                self.ensure_submodules(
+                    resolved_destination,
+                    required=required_submodules,
+                )
+            self.assert_clean_worktree(resolved_destination)
+        except BaseException:
+            run(
+                ["git", "worktree", "remove", "--force", str(resolved_destination)],
+                cwd=cache,
+                check=False,
+            )
+            raise
         return resolved_destination
+
+    def ensure_submodules(
+        self,
+        worktree: Path,
+        *,
+        required: Sequence[str],
+    ) -> None:
+        """Materialize and authenticate required submodules at pinned gitlinks."""
+        worktree = worktree.resolve()
+        normalized: list[str] = []
+        for value in required:
+            relative = Path(value)
+            if (
+                relative.is_absolute()
+                or ".." in relative.parts
+                or not relative.parts
+            ):
+                raise ValueError(f"unsafe required submodule path: {value!r}")
+            normalized.append(relative.as_posix())
+
+        if not normalized:
+            return
+        gitmodules = worktree / ".gitmodules"
+        if not gitmodules.is_file():
+            raise RuntimeError("required submodule metadata is missing: .gitmodules")
+        run(["git", "submodule", "sync", "--recursive"], cwd=worktree)
+        run(
+            [
+                "git",
+                "-c",
+                "protocol.file.allow=always",
+                "submodule",
+                "update",
+                "--init",
+                "--recursive",
+                "--",
+                *normalized,
+            ],
+            cwd=worktree,
+        )
+        for relative in normalized:
+            tree = run(
+                ["git", "ls-tree", "HEAD", "--", relative],
+                cwd=worktree,
+            ).stdout.strip()
+            match = re.fullmatch(
+                rf"160000 commit ([0-9a-f]{{40}})\t{re.escape(relative)}",
+                tree,
+            )
+            if match is None:
+                raise RuntimeError(
+                    f"required submodule is not a pinned gitlink: {relative}"
+                )
+            checkout = worktree / relative
+            if not checkout.is_dir():
+                raise RuntimeError(f"required submodule is missing: {relative}")
+            actual = run(["git", "rev-parse", "HEAD"], cwd=checkout).stdout.strip()
+            if actual != match.group(1):
+                raise RuntimeError(
+                    f"required submodule {relative} is at {actual}, "
+                    f"expected pinned gitlink {match.group(1)}"
+                )
+            if not any(path.name != ".git" for path in checkout.iterdir()):
+                raise RuntimeError(f"required submodule is empty: {relative}")
 
     def assert_clean_worktree(self, worktree: Path) -> None:
         status = run(

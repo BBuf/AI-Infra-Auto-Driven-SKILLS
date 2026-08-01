@@ -320,6 +320,7 @@ class TechniqueRouter:
 
     def __init__(self) -> None:
         self.last_evidence: dict[str, dict[str, Any]] = {}
+        self.route_policy = "lossless-first-v1"
 
     def route(
         self,
@@ -327,9 +328,11 @@ class TechniqueRouter:
         *,
         allow_quality_gated: bool,
         gpu_count: int,
+        target_speedup: float = 2.0,
     ) -> list[str]:
         if gpu_count < 1:
             raise ValueError("gpu_count must be positive")
+        self.route_policy = "lossless-first-v1"
         Profiler.validate_digest(digest)
         hotspots = [
             {
@@ -356,8 +359,14 @@ class TechniqueRouter:
         # Multi-GPU profiles still feed collective/layout candidates to kernel.
         routes = ["residency", "kernel"]
         if allow_quality_gated:
-            for technique in ("cache", "pisa", "quantization", "token_pruning"):
-                routes.append(technique)
+            quality_lanes = ("cache", "pisa", "quantization", "token_pruning")
+            if target_speedup >= 3.0:
+                self.route_policy = "large-gap-quality-first-v1"
+                routes = ["residency", *quality_lanes, "kernel"]
+            else:
+                self.route_policy = "lossless-first-v1"
+                routes.extend(quality_lanes)
+            for technique in quality_lanes:
                 self.last_evidence[technique] = {
                     "hotspots": hotspots,
                     "knowledge": [

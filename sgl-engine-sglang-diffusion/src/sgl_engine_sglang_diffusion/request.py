@@ -42,6 +42,9 @@ _PLACEHOLDERS = {
     "prompts": "{{prompts}}",
 }
 _VALUE_FLAGS = {
+    "--backend",
+    "--batch-size",
+    "--performance-mode",
     "--model-path",
     "--dataset",
     "--dataset-path",
@@ -70,9 +73,16 @@ _VALUE_FLAGS = {
     "--dp-size",
     "--dp",
     "--gpu-ids",
+    "--num-gpus",
+    "--minimax-h3-task",
+    "--minimax-h3-conditions-json",
+    "--minimax-h3-target-json",
+    "--flow-shift",
+    "--audio-flow-shift",
 }
 _PARALLEL_FLAGS = frozenset(
     {
+        "--num-gpus",
         "--tensor-parallel-size",
         "--pipeline-parallel-size",
         "--context-parallel-size",
@@ -91,6 +101,9 @@ _PARALLEL_FLAGS = frozenset(
 )
 _PARALLEL_SWITCH_FLAGS = frozenset({"--enable-cfg-parallel"})
 _FROZEN_FLAGS = {
+    "--backend",
+    "--batch-size",
+    "--performance-mode",
     "--model-path",
     "--dataset",
     "--dataset-path",
@@ -103,7 +116,20 @@ _FROZEN_FLAGS = {
     "--num-inference-steps",
     "--guidance-scale",
     "--dtype",
+    "--minimax-h3-task",
+    "--minimax-h3-conditions-json",
+    "--minimax-h3-target-json",
+    "--flow-shift",
+    "--audio-flow-shift",
 }
+_FROZEN_SWITCH_FLAGS = frozenset(
+    {
+        "--disable-safety-checker",
+        "--profile",
+        "--profile-all-stages",
+        "--skip-warmup",
+    }
+)
 
 
 class BaselineCommandRequest(StrictModel):
@@ -204,6 +230,16 @@ class FrozenBenchmarkCommand(StrictModel):
                 + ", ".join(conflicts)
             )
         environment.update(requested_environment)
+        changed_switches = sorted(
+            flag
+            for flag in _FROZEN_SWITCH_FLAGS
+            if _flag_count(activation_args, flag)
+        )
+        if changed_switches:
+            raise RequestError(
+                "candidate activation changes frozen workload switches: "
+                + ", ".join(changed_switches)
+            )
         if profile:
             if "--profile" not in argv:
                 argv.extend(["--profile", "--num-profiled-timesteps", "5"])
@@ -283,9 +319,9 @@ def normalize_launch_request(
     if "--num-prompts" not in flags:
         raise RequestError("baseline command is missing --num-prompts 5")
     prompt_count = int(flags["--num-prompts"])
-    if prompt_count != 5 or len(prompts) < 5:
+    if prompt_count != 5 or len(prompts) != 5:
         raise RequestError(
-            "Sol-compatible campaigns require --num-prompts 5 and at least "
+            "Sol-compatible campaigns require --num-prompts 5 and exactly "
             "five non-empty prompts"
         )
 
@@ -305,6 +341,9 @@ def normalize_launch_request(
     workload_values = {
         name: str(flags.get(name, default))
         for name, default in {
+            "--backend": "sglang",
+            "--batch-size": "1",
+            "--performance-mode": "<absent>",
             "--seed": "42",
             "--width": "32",
             "--height": "32",
@@ -322,6 +361,19 @@ def normalize_launch_request(
         "--num-prompts": "5",
         **workload_values,
     }
+    frozen_flags.update(
+        {
+            name: flags[name]
+            for name in _FROZEN_FLAGS
+            if name in flags and name not in frozen_flags
+        }
+    )
+    frozen_flags.update(
+        {
+            "--output-file": _PLACEHOLDERS["output_file"],
+            "--output-path": _PLACEHOLDERS["media_dir"],
+        }
+    )
     parallel_flags = _parallel_projection(template)
     frozen_flags.update(parallel_flags)
     digest_payload = {

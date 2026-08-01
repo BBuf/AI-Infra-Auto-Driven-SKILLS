@@ -34,6 +34,13 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     attempts = _technique_attempts(events)
     scientific_rounds = _scientific_rounds(events)
     isolated = _isolated_speedups(campaign)
+    active_technique = _active_technique(campaign, epoch)
+    dispositions = _technique_names(
+        campaign / "TECHNIQUE-DISPOSITIONS.json", "techniques"
+    )
+    deferred = _technique_names(
+        campaign / "search" / str(epoch) / "DEFERRED-LANES.json", "lanes"
+    )
     (
         integrated_speedup,
         integrated_mean_e2e_s,
@@ -55,8 +62,17 @@ def build_progress(campaign: Path) -> dict[str, Any]:
             state = "integrated"
         elif technique in isolated:
             state = "verified"
+        elif technique in dispositions:
+            state = "dispositioned"
+        elif technique in deferred:
+            state = "deferred"
+        elif (
+            status is CampaignStatus.SEARCHING
+            and technique == active_technique
+        ):
+            state = "running"
         elif attempts.get(technique, 0) > 0:
-            state = "running" if status is CampaignStatus.SEARCHING else "attempted"
+            state = "attempted"
         else:
             state = "pending"
         rows.append(
@@ -288,6 +304,20 @@ def _routes(campaign: Path, defaults: list[str]) -> list[str]:
     if value is None or not isinstance(value.get("routes"), list):
         return list(defaults)
     return [str(item) for item in value["routes"]]
+
+
+def _active_technique(campaign: Path, epoch: int) -> str | None:
+    value = _read_object_optional(
+        campaign / "search" / str(epoch) / "EXECUTORS.json"
+    )
+    active = value.get("active_technique") if value is not None else None
+    return active if isinstance(active, str) and active else None
+
+
+def _technique_names(path: Path, field: str) -> set[str]:
+    value = _read_object_optional(path)
+    raw = value.get(field) if value is not None else None
+    return {str(name) for name in raw} if isinstance(raw, dict) else set()
 
 
 def _token_breakdown(records: list[dict[str, Any]], field: str) -> dict[str, int]:

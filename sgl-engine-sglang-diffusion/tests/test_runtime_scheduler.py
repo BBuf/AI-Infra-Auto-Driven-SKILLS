@@ -63,9 +63,25 @@ def test_executor_prompt_injects_only_active_lane_history_rules(
     (campaign / "KNOWLEDGE.json").write_text(
         json.dumps({"schema_version": 1, "snapshots": {}})
     )
+    baseline_run = campaign / "baseline/run"
+    baseline_frames = campaign / "baseline/frames"
+    baseline_run.mkdir(parents=True)
+    baseline_frames.mkdir(parents=True)
     (campaign / "BASELINE.json").write_text(
-        '{"schema_version": 2, "mean_e2e_s": 10.0, '
-        '"workload_total_s": 50.0, "request_count": 5}\n'
+        json.dumps(
+            {
+                "schema_version": 2,
+                "model_id": "test/model",
+                "mean_e2e_s": 10.0,
+                "workload_total_s": 50.0,
+                "request_count": 5,
+                "peak_memory_mib": 1024.0,
+                "timing_scope": "frozen_e2e",
+                "run_dir": str(baseline_run),
+                "baseline_frames": str(baseline_frames),
+                "sglang_commit": "a" * 40,
+            }
+        )
     )
     (campaign / "profiles/0/PROFILE-DIGEST.json").write_text(
         '{"profile": "bound"}\n'
@@ -79,7 +95,10 @@ def test_executor_prompt_injects_only_active_lane_history_rules(
     hooks = object.__new__(FileCampaignHooks)
     hooks.campaign_dir = campaign
     hooks.campaign_id = "campaign-1"
-    hooks.goal = SimpleNamespace(model=SimpleNamespace(id="test/model"))
+    hooks.goal = SimpleNamespace(
+        model=SimpleNamespace(id="test/model"),
+        goal=SimpleNamespace(target_speedup=5.0),
+    )
     hooks.store = store
     hooks.registry = TechniqueRegistry.load(
         Path(__file__).resolve().parents[1] / "techniques/registry.toml"
@@ -286,5 +305,73 @@ def test_lane_disposition_requires_complete_coverage_not_one_failed_hypothesis(
         disposition.write_text(json.dumps(payload))
         with pytest.raises(CampaignRuntimeError, match="exact required"):
             hooks._validate_disposition(disposition, "kernel")
+    finally:
+        store.close()
+
+
+def test_repeated_executor_protocol_failure_defers_lane_and_advances(
+    tmp_path: Path,
+) -> None:
+    campaign = tmp_path / "campaign"
+    search = campaign / "search/1"
+    search.mkdir(parents=True)
+    (search / "EXECUTORS.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 2,
+                "epoch": 1,
+                "routes": ["kernel", "cache"],
+                "executors": {},
+                "active_technique": "kernel",
+            }
+        )
+    )
+    store = StateStore.open(campaign / "state.sqlite", campaign / "events.jsonl")
+    store.create_campaign("campaign-1")
+    feedback = "[invalid_kernel_evidence] citation is outside pinned knowledge"
+    feedback_sha256 = hashlib.sha256(feedback.encode()).hexdigest()
+    for attempt in (2, 3):
+        store.record_event(
+            "campaign-1",
+            "executor_resumed",
+            f"resume-{attempt}",
+            {
+                "executor_id": "executor-kernel",
+                "attempt": attempt,
+                "feedback_sha256": feedback_sha256,
+            },
+        )
+    worktree = campaign / "executor/worktree"
+    worktree.mkdir(parents=True)
+    handle = ExecutorHandle(
+        executor_id="executor-kernel",
+        campaign_id="campaign-1",
+        technique="kernel",
+        root=worktree.parent,
+        worktree=worktree,
+        prompt=worktree.parent / "goal.md",
+        delivery=worktree / "DELIVERY.json",
+        receipt=worktree.parent / "process-003.json",
+        pid=123,
+        attempt=3,
+        lease_resource="executor:campaign-1:kernel",
+        lease_owner="agent:executor-kernel",
+    )
+    hooks = object.__new__(FileCampaignHooks)
+    hooks.campaign_dir = campaign
+    hooks.campaign_id = "campaign-1"
+    hooks.store = store
+    hooks.registry = TechniqueRegistry.load(
+        Path(__file__).resolve().parents[1] / "techniques/registry.toml"
+    )
+    hooks._ensure_next_executor = lambda epoch: "cache"  # type: ignore[method-assign]
+    try:
+        result = hooks._resume_or_exhaust(handle, feedback, epoch=1)
+        assert result.payload["reason"] == "executor_lane_deferred"
+        assert result.payload["next_technique"] == "cache"
+        deferred = json.loads((search / "DEFERRED-LANES.json").read_text())
+        assert deferred["lanes"]["kernel"]["attempt"] == 3
+        manifest = json.loads((search / "EXECUTORS.json").read_text())
+        assert manifest["active_technique"] is None
     finally:
         store.close()

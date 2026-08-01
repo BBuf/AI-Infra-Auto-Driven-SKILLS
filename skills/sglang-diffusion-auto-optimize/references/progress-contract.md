@@ -31,10 +31,13 @@ fields in new campaign artifacts.
 
 Search progress is consumed routed-technique rounds divided by their total
 reviewed round budgets. It measures budget consumption, not time remaining.
-A round is counted only after the controller authenticates a distinct complete
+A round is counted after the controller authenticates a distinct complete
 frozen-workload candidate measurement. Agent launches/resumes, crashes,
-preflight, profile capture, NCU/microbenchmarks, malformed submissions, and
-unmeasured hypotheses consume no scientific round.
+preflight, profile capture, NCU/microbenchmarks, pre-measurement malformed
+submissions, and unmeasured hypotheses consume no scientific round. If a full
+measurement passes the frozen command/native backend/5-request checks but a
+later evidence or audit field is malformed, that measurement consumes one
+round. Resubmitting the same run is idempotent.
 
 ## Technique Rows
 
@@ -46,7 +49,10 @@ unmeasured hypotheses consume no scientific round.
 
 Never sum isolated speedups.
 
-The default lossless search begins with `residency`, then `kernel`. Multi-GPU
+The lossless-only search begins with `residency`, then `kernel`. A quality-gated
+target of at least 3x uses `residency`, `cache`, `pisa`, `quantization`,
+`token_pruning`, then `kernel` so high-leverage methods are not blocked by a
+marginal kernel tail. Multi-GPU
 does not automatically add a topology-changing lane: GPU UUIDs, rank map, and
 parallel degrees are frozen by the user baseline. Collective and layout
 implementations may still be optimized under that frozen topology.

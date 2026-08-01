@@ -3,7 +3,25 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from sgl_engine_sglang_diffusion.cli import main
+from sgl_engine_sglang_diffusion.cli import build_parser, main
+
+
+def test_preflight_delivery_cli_requires_explicit_campaign_and_worktree() -> None:
+    args = build_parser().parse_args(
+        [
+            "preflight-delivery",
+            "--campaign",
+            "/tmp/campaign",
+            "--technique",
+            "kernel",
+            "--executor-worktree",
+            "/tmp/worktree",
+            "--delivery",
+            "/tmp/worktree/DELIVERY.json",
+        ]
+    )
+    assert args.command == "preflight-delivery"
+    assert args.technique == "kernel"
 
 
 def test_init_and_status_are_cpu_only(tmp_path: Path, capsys: object) -> None:

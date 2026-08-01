@@ -151,6 +151,54 @@ def test_normalize_rejects_model_or_prompt_contract_drift(tmp_path: Path) -> Non
     with pytest.raises(RequestError, match="five"):
         normalize_launch_request(request)
 
+    request = make_request(tmp_path, native_command())
+    prompts = tmp_path / "sglang" / "prompts.txt"
+    prompts.write_text("\n".join(f"prompt {index}" for index in range(6)) + "\n")
+    with pytest.raises(RequestError, match="exactly five"):
+        normalize_launch_request(request)
+
+
+def test_h3_canonical_workload_and_gpu_count_are_frozen(tmp_path: Path) -> None:
+    command = (
+        native_command()
+        + " --backend sglang --batch-size 1 --num-gpus 4 --ulysses-degree 4"
+        + " --minimax-h3-task t2va --minimax-h3-conditions-json '[]'"
+        + " --minimax-h3-target-json "
+        + "'{\"short_edge\":768,\"aspect_ratio\":\"16:9\","
+        + "\"duration_seconds\":5.0}'"
+        + " --flow-shift 12.0 --audio-flow-shift 3.0"
+    )
+    goal, template = normalize_launch_request(make_request(tmp_path, command))
+
+    assert template.parallel_flags == {
+        "--num-gpus": "4",
+        "--ulysses-degree": "4",
+    }
+    assert template.frozen_flags["--backend"] == "sglang"
+    assert template.frozen_flags["--batch-size"] == "1"
+    assert template.frozen_flags["--minimax-h3-task"] == "t2va"
+    assert template.frozen_flags["--minimax-h3-conditions-json"] == "[]"
+    assert template.frozen_flags["--flow-shift"] == "12.0"
+    assert template.frozen_flags["--audio-flow-shift"] == "3.0"
+
+    for activation_args in (
+        ("--backend", "diffusers"),
+        ("--batch-size", "2"),
+        ("--num-gpus", "2"),
+        ("--minimax-h3-task", "ref2va"),
+        ("--flow-shift", "8.0"),
+        ("--performance-mode", "speed"),
+        ("--skip-warmup",),
+    ):
+        with pytest.raises(RequestError, match="frozen|parallel"):
+            template.render(
+                checkout=tmp_path / "sglang",
+                prompts=goal.workload.prompts,
+                output_file=tmp_path / "output.jsonl",
+                media_dir=tmp_path / "media",
+                activation_args=activation_args,
+            )
+
 
 def test_module_entrypoint_is_supported(tmp_path: Path) -> None:
     command = native_command().replace(

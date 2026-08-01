@@ -106,3 +106,61 @@ def test_old_lock_remains_materializable_after_a_new_lock(
     assert run(["git", "rev-parse", "HEAD"], cwd=old_worktree).stdout.strip() == (
         old_lock.commit
     )
+
+
+def test_create_worktree_materializes_required_pinned_submodule(
+    fake_git_repo: Path, tmp_path: Path
+) -> None:
+    submodule = tmp_path / "kernel-wiki"
+    submodule.mkdir()
+    run(["git", "init", "-b", "main"], cwd=submodule)
+    run(["git", "config", "user.name", "Test"], cwd=submodule)
+    run(["git", "config", "user.email", "test@example.com"], cwd=submodule)
+    (submodule / "SKILL.md").write_text("# KernelWiki\n")
+    run(["git", "add", "SKILL.md"], cwd=submodule)
+    run(["git", "commit", "-m", "knowledge"], cwd=submodule)
+    expected = run(["git", "rev-parse", "HEAD"], cwd=submodule).stdout.strip()
+
+    run(
+        [
+            "git",
+            "-c",
+            "protocol.file.allow=always",
+            "submodule",
+            "add",
+            str(submodule),
+            "external/KernelWiki",
+        ],
+        cwd=fake_git_repo,
+    )
+    run(["git", "commit", "-am", "pin knowledge"], cwd=fake_git_repo)
+
+    manager = SourceManager(tmp_path / "sources")
+    lock = manager.lock("kda_pilot", str(fake_git_repo), "main")
+    worktree = manager.create_worktree(
+        lock,
+        tmp_path / "candidate",
+        initialize_submodules=True,
+        required_submodules=("external/KernelWiki",),
+    )
+
+    assert (worktree / "external/KernelWiki/SKILL.md").is_file()
+    actual = run(
+        ["git", "rev-parse", "HEAD"], cwd=worktree / "external/KernelWiki"
+    ).stdout.strip()
+    assert actual == expected
+
+
+def test_required_submodule_must_be_a_pinned_gitlink(
+    fake_git_repo: Path, tmp_path: Path
+) -> None:
+    manager = SourceManager(tmp_path / "sources")
+    lock = manager.lock("kda_pilot", str(fake_git_repo), "main")
+
+    with pytest.raises(RuntimeError, match="required submodule"):
+        manager.create_worktree(
+            lock,
+            tmp_path / "candidate",
+            initialize_submodules=True,
+            required_submodules=("external/KernelWiki",),
+        )
