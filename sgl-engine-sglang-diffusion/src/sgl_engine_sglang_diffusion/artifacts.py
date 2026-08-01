@@ -10,10 +10,14 @@ from .models import (
     CandidateManifest,
     Delivery,
     EngagementReceipt,
+    FinalQualityEvidence,
     IntegratedDelivery,
+    KernelEvidence,
     ProfileDigest,
+    ProfileInventory,
     SourceLock,
     TechniqueContract,
+    TechniqueDisposition,
     UnreachableCertificate,
 )
 from .request import LaunchRequest
@@ -29,7 +33,11 @@ SCHEMA_MODELS = {
     "integrated-delivery": IntegratedDelivery,
     "agent-profile": AgentProfile,
     "engagement-receipt": EngagementReceipt,
+    "quality-evidence": FinalQualityEvidence,
     "profile-digest": ProfileDigest,
+    "profile-inventory": ProfileInventory,
+    "kernel-evidence": KernelEvidence,
+    "technique-disposition": TechniqueDisposition,
     "unreachable-certificate": UnreachableCertificate,
     "launch-request": LaunchRequest,
 }

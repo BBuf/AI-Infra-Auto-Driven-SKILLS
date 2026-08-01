@@ -1,0 +1,329 @@
+{
+  "$defs": {
+    "AudioQualityEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "channels": {
+          "minimum": 0,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "clipping_ratio": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Clipping Ratio",
+          "type": "number"
+        },
+        "duration_s": {
+          "minimum": 0.0,
+          "title": "Duration S",
+          "type": "number"
+        },
+        "present": {
+          "title": "Present",
+          "type": "boolean"
+        },
+        "sample_rate": {
+          "minimum": 0,
+          "title": "Sample Rate",
+          "type": "integer"
+        },
+        "silence_ratio": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Silence Ratio",
+          "type": "number"
+        }
+      },
+      "required": [
+        "present",
+        "duration_s",
+        "sample_rate",
+        "channels",
+        "silence_ratio",
+        "clipping_ratio"
+      ],
+      "title": "AudioQualityEvidence",
+      "type": "object"
+    },
+    "EvidenceFile": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "format": "path",
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "title": "EvidenceFile",
+      "type": "object"
+    },
+    "FinalPromptQuality": {
+      "additionalProperties": false,
+      "properties": {
+        "audio": {
+          "$ref": "#/$defs/AudioQualityEvidence"
+        },
+        "av_sync_drift_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Av Sync Drift Ms"
+        },
+        "lpips": {
+          "minimum": 0.0,
+          "title": "Lpips",
+          "type": "number"
+        },
+        "media": {
+          "$ref": "#/$defs/MediaContractEvidence"
+        },
+        "prompt_index": {
+          "exclusiveMaximum": 5,
+          "minimum": 0,
+          "title": "Prompt Index",
+          "type": "integer"
+        },
+        "vbench_baseline": {
+          "$ref": "#/$defs/VBenchDimensions"
+        },
+        "vbench_candidate": {
+          "$ref": "#/$defs/VBenchDimensions"
+        },
+        "visual": {
+          "enum": [
+            "pass",
+            "fail"
+          ],
+          "title": "Visual",
+          "type": "string"
+        }
+      },
+      "required": [
+        "prompt_index",
+        "lpips",
+        "vbench_baseline",
+        "vbench_candidate",
+        "audio",
+        "av_sync_drift_ms",
+        "media",
+        "visual"
+      ],
+      "title": "FinalPromptQuality",
+      "type": "object"
+    },
+    "FinalQualityThresholds": {
+      "additionalProperties": false,
+      "properties": {
+        "av_sync_drift_ms_max": {
+          "default": 80,
+          "exclusiveMinimum": 0.0,
+          "title": "Av Sync Drift Ms Max",
+          "type": "number"
+        },
+        "clipping_ratio_max": {
+          "default": 0.01,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Clipping Ratio Max",
+          "type": "number"
+        },
+        "lpips_max": {
+          "exclusiveMinimum": 0.0,
+          "title": "Lpips Max",
+          "type": "number"
+        },
+        "silence_ratio_max": {
+          "default": 0.98,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Silence Ratio Max",
+          "type": "number"
+        },
+        "vbench_max_mean_regression": {
+          "default": 0,
+          "minimum": 0.0,
+          "title": "Vbench Max Mean Regression",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lpips_max"
+      ],
+      "title": "FinalQualityThresholds",
+      "type": "object"
+    },
+    "MediaContractEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_codec": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio Codec"
+        },
+        "container": {
+          "minLength": 1,
+          "title": "Container",
+          "type": "string"
+        },
+        "fps": {
+          "exclusiveMinimum": 0.0,
+          "title": "Fps",
+          "type": "number"
+        },
+        "frame_count": {
+          "exclusiveMinimum": 0,
+          "title": "Frame Count",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "video_codec": {
+          "minLength": 1,
+          "title": "Video Codec",
+          "type": "string"
+        },
+        "video_duration_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Video Duration S",
+          "type": "number"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "container",
+        "video_codec",
+        "width",
+        "height",
+        "fps",
+        "frame_count",
+        "video_duration_s"
+      ],
+      "title": "MediaContractEvidence",
+      "type": "object"
+    },
+    "VBenchDimensions": {
+      "additionalProperties": false,
+      "properties": {
+        "aesthetic_quality": {
+          "title": "Aesthetic Quality",
+          "type": "number"
+        },
+        "background_consistency": {
+          "title": "Background Consistency",
+          "type": "number"
+        },
+        "imaging_quality": {
+          "title": "Imaging Quality",
+          "type": "number"
+        },
+        "motion_smoothness": {
+          "title": "Motion Smoothness",
+          "type": "number"
+        },
+        "subject_consistency": {
+          "title": "Subject Consistency",
+          "type": "number"
+        },
+        "temporal_flickering": {
+          "title": "Temporal Flickering",
+          "type": "number"
+        }
+      },
+      "required": [
+        "subject_consistency",
+        "background_consistency",
+        "motion_smoothness",
+        "temporal_flickering",
+        "aesthetic_quality",
+        "imaging_quality"
+      ],
+      "title": "VBenchDimensions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "audio_required": {
+      "title": "Audio Required",
+      "type": "boolean"
+    },
+    "command_receipts": {
+      "items": {
+        "$ref": "#/$defs/EvidenceFile"
+      },
+      "minItems": 4,
+      "title": "Command Receipts",
+      "type": "array"
+    },
+    "external_api": {
+      "const": false,
+      "title": "External Api"
+    },
+    "integrated_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Integrated Commit",
+      "type": "string"
+    },
+    "producer": {
+      "const": "independent-master",
+      "title": "Producer"
+    },
+    "prompts": {
+      "items": {
+        "$ref": "#/$defs/FinalPromptQuality"
+      },
+      "maxItems": 5,
+      "minItems": 5,
+      "title": "Prompts",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version"
+    },
+    "thresholds": {
+      "$ref": "#/$defs/FinalQualityThresholds"
+    }
+  },
+  "required": [
+    "producer",
+    "external_api",
+    "integrated_commit",
+    "audio_required",
+    "thresholds",
+    "prompts",
+    "command_receipts"
+  ],
+  "title": "FinalQualityEvidence",
+  "type": "object"
+}

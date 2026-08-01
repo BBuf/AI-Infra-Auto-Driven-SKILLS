@@ -66,7 +66,10 @@ if not optimized and "baseline" in run_dir.parts:
 if args.profile:
     trace_root = Path(os.environ["SGLANG_DIFFUSION_TORCH_PROFILER_DIR"])
     trace_root.mkdir(parents=True, exist_ok=True)
-    (trace_root / "fake.trace.json").write_text('{"traceEvents": []}\n')
+    (trace_root / "fake.trace.json").write_text(json.dumps({"traceEvents": [
+        {"ph": "X", "cat": "kernel", "name": "fake_attention", "dur": 8000},
+        {"ph": "X", "cat": "cuda_runtime", "name": "cudaMemcpyAsync", "dur": 1000},
+    ]}) + "\n")
 
 if optimized:
     base = subprocess.run(
@@ -129,6 +132,77 @@ from pathlib import Path
 prompt_path = Path(sys.argv[-1])
 prompt = prompt_path.read_text()
 
+if prompt.startswith("# Independent final media quality gate"):
+    def value(name):
+        match = re.search(rf"^{name}: (.+)$", prompt, re.MULTILINE)
+        if match is None:
+            raise RuntimeError(name)
+        return match.group(1).strip()
+
+    output = Path(value("Required output"))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    receipts = []
+    for name in ("lpips", "vbench", "audio", "media-avsync"):
+        path = output.parent / f"{name}-command.json"
+        path.write_text(json.dumps({"tool": name, "returncode": 0}))
+        receipts.append({
+            "path": str(path),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        })
+    dimensions = {
+        "subject_consistency": 0.5,
+        "background_consistency": 0.5,
+        "motion_smoothness": 0.5,
+        "temporal_flickering": 0.5,
+        "aesthetic_quality": 0.5,
+        "imaging_quality": 0.5,
+    }
+    prompts = []
+    for index in range(5):
+        prompts.append({
+            "prompt_index": index,
+            "lpips": 0.0,
+            "vbench_baseline": dimensions,
+            "vbench_candidate": dimensions,
+            "audio": {
+                "present": False,
+                "duration_s": 0.0,
+                "sample_rate": 0,
+                "channels": 0,
+                "silence_ratio": 0.0,
+                "clipping_ratio": 0.0,
+            },
+            "av_sync_drift_ms": None,
+            "media": {
+                "container": "png",
+                "video_codec": "png",
+                "audio_codec": None,
+                "width": int(value("Expected width")),
+                "height": int(value("Expected height")),
+                "fps": float(value("Expected fps")),
+                "frame_count": int(value("Expected frames")),
+                "video_duration_s": 1.0 / float(value("Expected fps")),
+            },
+            "visual": "pass",
+        })
+    output.write_text(json.dumps({
+        "schema_version": 1,
+        "producer": "independent-master",
+        "external_api": False,
+        "integrated_commit": value("Integrated commit"),
+        "audio_required": False,
+        "thresholds": {
+            "lpips_max": 0.1,
+            "vbench_max_mean_regression": 0.0,
+            "silence_ratio_max": 0.98,
+            "clipping_ratio_max": 0.01,
+            "av_sync_drift_ms_max": 80.0,
+        },
+        "prompts": prompts,
+        "command_receipts": receipts,
+    }))
+    raise SystemExit(0)
+
 if prompt.startswith("# Independent lossless method-equivalence audit"):
     def field(name):
         match = re.search(rf"^{name}: (.+)$", prompt, re.MULTILINE)
@@ -159,6 +233,7 @@ if delivery_match is None:
     raise RuntimeError("delivery path")
 delivery_path = Path(delivery_match.group(1).strip())
 executor_root = worktree.parent
+campaign = executor_root.parent.parent
 attempt_path = executor_root / "fake-agent-attempt.txt"
 attempt = int(attempt_path.read_text()) + 1 if attempt_path.is_file() else 1
 attempt_path.write_text(str(attempt))
@@ -180,7 +255,7 @@ if attempt == 1:
     profile_root.mkdir(parents=True, exist_ok=True)
     (shared / "__init__.py").write_text("")
     (shared / "registry.py").write_text(
-        'OPTION = "--agent-optimization"\nMODES = ("off", "auto")\n'
+        'OPTION = "--quality"\nMODES = ("off", "auto")\n'
     )
     (shared / "manifest.py").write_text("SCHEMA_VERSION = 1\n")
     (shared / "runtime.py").write_text(
@@ -199,14 +274,44 @@ if attempt == 1:
         "hardware": {"environment": "cpu-test", "gpu_count": 1},
         "workload": {"prompt_count": 5},
         "techniques": {"kernel": {"enabled": True}},
-        "server_args": {"agent_optimization": "fake-kernel"},
+        "server_args": {"quality": "fake-kernel"},
         "fallback_policy": "native",
         "source_hashes": {"python/sglang/kernels/agent/runtime.py": runtime_hash},
         "integrated_delivery_sha256": "0" * 64,
         "speedup": 10.0 / 9.0,
         "derived_checkpoint": None,
     }, sort_keys=True))
-    subprocess.run(["git", "add", "python/sglang/kernels/agent"], cwd=worktree, check=True)
+    quality_root = worktree / "python/sglang/multimodal_gen/quality_profiles/profiles"
+    quality_root.mkdir(parents=True, exist_ok=True)
+    (quality_root / "fake-kernel.json").write_text(json.dumps({
+        "schema_version": 1,
+        "profile_id": "fake-kernel",
+        "status": "validated",
+        "model_ids": ["fake-model"],
+        "evidence": {
+            "prompt_count": 5,
+            "visual_overall": "pass",
+            "native_backend": True,
+            "fallback_count": 0,
+            "vbench_baseline_mean": 0.5,
+            "vbench_candidate_mean": 0.5,
+            "vbench_dimensions": {
+                "subject_consistency": 0.5,
+                "background_consistency": 0.5,
+                "motion_smoothness": 0.5,
+                "temporal_flickering": 0.5,
+                "aesthetic_quality": 0.5,
+                "imaging_quality": 0.5
+            },
+            "artifact_sha256": {"fixture": "0" * 64},
+            "baseline_e2e_seconds": 10.0,
+            "candidate_e2e_seconds": 9.0
+        }
+    }, sort_keys=True))
+    subprocess.run([
+        "git", "add", "python/sglang/kernels/agent",
+        "python/sglang/multimodal_gen/quality_profiles/profiles/fake-kernel.json"
+    ], cwd=worktree, check=True)
     subprocess.run(
         [
             "git",
@@ -291,6 +396,45 @@ for index in range(5):
     "overall": "authenticity_only",
     "authentic": True,
 }))
+knowledge_manifest = json.loads((campaign / "KNOWLEDGE.json").read_text())
+kda_index_path = Path(knowledge_manifest["snapshots"]["kda_pilot"])
+kda_index = json.loads(kda_index_path.read_text())
+kernelwiki_entry = next(
+    item for item in kda_index["entries"]
+    if item["path"].startswith("external/KernelWiki/")
+)
+kernelwiki = kda_index_path.parent / "references" / kernelwiki_entry["path"]
+microbenchmark = run_dir / "kernel-microbenchmark.json"
+microbenchmark.write_text('{"before_us": 10.0, "after_us": 9.0}\n')
+profile_digest = campaign / "profiles/0/PROFILE-DIGEST.json"
+(run_dir / "KERNEL-EVIDENCE.json").write_text(json.dumps({
+    "schema_version": 1,
+    "candidate_id": "fake-kernel",
+    "candidate_family": "layout-copy-launch",
+    "implementation_kind": "layout_only",
+    "hotspot": "fake_attention",
+    "profile_digest_sha256": hashlib.sha256(profile_digest.read_bytes()).hexdigest(),
+    "kernelwiki": {
+        "queries": ["layout copy launch"],
+        "sources": [{
+            "path": str(kernelwiki),
+            "sha256": hashlib.sha256(kernelwiki.read_bytes()).hexdigest()
+        }]
+    },
+    "ncu": {
+        "applicable": False,
+        "reason": "fixture changes dispatch and has no standalone CUDA kernel"
+    },
+    "warp_specialization": {
+        "applicable": False,
+        "reason": "fixture is not a CUDA/CuTe warp-specialized kernel"
+    },
+    "correctness_shapes": ["fixture-shape"],
+    "microbenchmark": {
+        "path": str(microbenchmark),
+        "sha256": hashlib.sha256(microbenchmark.read_bytes()).hexdigest()
+    }
+}))
 implementation = {
     "schema_version": 1,
     "candidate_id": "fake-kernel",
@@ -300,7 +444,7 @@ implementation = {
     "candidate_commit": head,
     "activation": {
         "env": {},
-        "server_args": ["--agent-optimization", "fake-kernel"],
+        "server_args": ["--quality", "fake-kernel"],
     },
     "eval_profile": {
         "prompt_count": 5,
@@ -323,7 +467,7 @@ delivery = {
         "run_dir": str(run_dir),
         "activation": {
             "env": {},
-            "server_args": ["--agent-optimization", "fake-kernel"],
+            "server_args": ["--quality", "fake-kernel"],
         },
         "implementation_manifest": implementation,
         "performance": {
@@ -349,6 +493,8 @@ delivery = {
             "equivalence.json",
             "authenticity.json",
             "implementation-manifest.json",
+            "KERNEL-EVIDENCE.json",
+            "kernel-microbenchmark.json",
         ],
     }],
     "pareto_assessment": "Measured CPU fixture frontier.",
@@ -379,6 +525,11 @@ def _prepare_fake_source(repository: Path, tmp_path: Path) -> Path:
     (repository / "docs/inference/optimizations.md").write_text("fake optimization\n")
     (repository / "diffusion/docs").mkdir(parents=True)
     (repository / "diffusion/docs/optimization.md").write_text("fake KDA note\n")
+    (repository / "external/KernelWiki/wiki/techniques").mkdir(parents=True)
+    (repository / "external/KernelWiki/SKILL.md").write_text("# KernelWiki fixture\n")
+    (repository / "external/KernelWiki/wiki/techniques/kernel-fusion.md").write_text(
+        "# Kernel fusion fixture\n"
+    )
     (repository / "search").mkdir()
     (repository / "search/plan_eval.py").write_text(
         "raise SystemExit('quality evaluator is not used by this lossless test')\n"
@@ -512,7 +663,7 @@ def test_independent_lpips_rejects_candidate_prompt_symlink(tmp_path: Path) -> N
         )
 
 
-def test_sol_round_budget_counts_all_executors_and_resumes(tmp_path: Path) -> None:
+def test_scientific_round_budget_ignores_process_launches(tmp_path: Path) -> None:
     store = StateStore.open(tmp_path / "state.sqlite", tmp_path / "events.jsonl")
     store.create_campaign("campaign-1")
     try:
@@ -540,11 +691,18 @@ def test_sol_round_budget_counts_all_executors_and_resumes(tmp_path: Path) -> No
             "other-lane",
             {"executor_id": "cache-one", "technique": "cache"},
         )
+        for index, technique in enumerate(("kernel", "kernel", "cache"), start=1):
+            store.record_event(
+                "campaign-1",
+                "scientific_round_completed",
+                f"round-{index}",
+                {"round_id": f"round-{index}", "technique": technique},
+            )
         hooks = object.__new__(FileCampaignHooks)
         hooks.store = store
         hooks.campaign_id = "campaign-1"
 
-        assert hooks._technique_rounds("kernel") == 3
+        assert hooks._technique_rounds("kernel") == 2
         assert hooks._technique_rounds("cache") == 1
     finally:
         store.close()

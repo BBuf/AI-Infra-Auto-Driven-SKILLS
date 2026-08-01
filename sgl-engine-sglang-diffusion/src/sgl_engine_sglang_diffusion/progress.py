@@ -32,6 +32,7 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     registry = TechniqueRegistry.load(_PACKAGE_ROOT / "techniques" / "registry.toml")
     routes = _routes(campaign, registry.default_order)
     attempts = _technique_attempts(events)
+    scientific_rounds = _scientific_rounds(events)
     isolated = _isolated_speedups(campaign)
     integrated_speedup, integrated_total_s, integrated_techniques = _integrated(
         campaign
@@ -60,6 +61,7 @@ def build_progress(campaign: Path) -> dict[str, Any]:
                 "technique": technique,
                 "status": state,
                 "attempts": attempts.get(technique, 0),
+                "scientific_rounds": scientific_rounds.get(technique, 0),
                 "round_budget": registry[technique].round_budget,
                 "best_isolated_e2e_speedup": isolated.get(technique),
                 "gate": (
@@ -77,7 +79,7 @@ def build_progress(campaign: Path) -> dict[str, Any]:
     target = float(goal["goal"]["target_speedup"])
     best = max([1.0, integrated_speedup or 0.0, *isolated.values()])
     performance_fraction = round(_clamp((best - 1.0) / (target - 1.0)), 8)
-    search_used = sum(attempts.get(name, 0) for name in routes)
+    search_used = sum(scientific_rounds.get(name, 0) for name in routes)
     search_budget = sum(registry[name].round_budget for name in routes)
 
     token_records = refresh_token_usage(campaign)
@@ -292,6 +294,17 @@ def _technique_attempts(events: list[dict[str, Any]]) -> dict[str, int]:
             if technique is not None:
                 attempts[technique] = attempts.get(technique, 0) + 1
     return attempts
+
+
+def _scientific_rounds(events: list[dict[str, Any]]) -> dict[str, int]:
+    rounds: dict[str, int] = {}
+    for event in events:
+        if event["event_type"] != "scientific_round_completed":
+            continue
+        technique = event["payload"].get("technique")
+        if isinstance(technique, str) and technique:
+            rounds[technique] = rounds.get(technique, 0) + 1
+    return rounds
 
 
 def _isolated_speedups(campaign: Path) -> dict[str, float]:

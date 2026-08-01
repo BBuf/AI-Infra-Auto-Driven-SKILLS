@@ -56,7 +56,40 @@ _VALUE_FLAGS = {
     "--dtype",
     "--output-path",
     "--output-file",
+    "--tensor-parallel-size",
+    "--pipeline-parallel-size",
+    "--context-parallel-size",
+    "--sequence-parallel-size",
+    "--ulysses-degree",
+    "--ulysses-size",
+    "--ring-degree",
+    "--cfg-parallel-size",
+    "--tp-size",
+    "--sp-degree",
+    "--data-parallel-size",
+    "--dp-size",
+    "--dp",
+    "--gpu-ids",
 }
+_PARALLEL_FLAGS = frozenset(
+    {
+        "--tensor-parallel-size",
+        "--pipeline-parallel-size",
+        "--context-parallel-size",
+        "--sequence-parallel-size",
+        "--ulysses-degree",
+        "--ulysses-size",
+        "--ring-degree",
+        "--cfg-parallel-size",
+        "--tp-size",
+        "--sp-degree",
+        "--data-parallel-size",
+        "--dp-size",
+        "--dp",
+        "--gpu-ids",
+    }
+)
+_PARALLEL_SWITCH_FLAGS = frozenset({"--enable-cfg-parallel"})
 _FROZEN_FLAGS = {
     "--model-path",
     "--dataset",
@@ -122,6 +155,7 @@ class FrozenBenchmarkCommand(StrictModel):
     original_command_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     template_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     frozen_flags: dict[str, str]
+    parallel_flags: dict[str, str] = Field(default_factory=dict)
 
     def render(
         self,
@@ -186,6 +220,12 @@ class FrozenBenchmarkCommand(StrictModel):
             rendered_frozen,
             template=self.argv_template,
         )
+        actual_parallel = _parallel_projection(argv)
+        if actual_parallel != self.parallel_flags:
+            raise RequestError(
+                "candidate activation changes frozen parallel topology: "
+                f"{actual_parallel!r} != {self.parallel_flags!r}"
+            )
         return tuple(argv), environment
 
 
@@ -282,11 +322,14 @@ def normalize_launch_request(
         "--num-prompts": "5",
         **workload_values,
     }
+    parallel_flags = _parallel_projection(template)
+    frozen_flags.update(parallel_flags)
     digest_payload = {
         "argv_template": template,
         "env": environment,
         "frozen_flags": frozen_flags,
         "mode": mode,
+        "parallel_flags": parallel_flags,
     }
     template_digest = hashlib.sha256(
         json.dumps(digest_payload, sort_keys=True, separators=(",", ":")).encode()
@@ -300,6 +343,7 @@ def normalize_launch_request(
         original_command_sha256=original_digest,
         template_sha256=template_digest,
         frozen_flags=frozen_flags,
+        parallel_flags=parallel_flags,
     )
 
     source = request.source or SourceSpec(
@@ -504,6 +548,21 @@ def _flag_values(argv: Sequence[str]) -> dict[str, str]:
             continue
         index += 1
     return values
+
+
+def _parallel_projection(argv: Sequence[str]) -> dict[str, str]:
+    projection = {
+        name: value
+        for name, value in _flag_values(argv).items()
+        if name in _PARALLEL_FLAGS
+    }
+    for item in argv:
+        for flag in _PARALLEL_SWITCH_FLAGS:
+            if item == flag:
+                projection[flag] = "present"
+            elif item.startswith(f"{flag}="):
+                projection[flag] = item.split("=", 1)[1]
+    return dict(sorted(projection.items()))
 
 
 def _assert_frozen_flags(

@@ -61,6 +61,12 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
             "resume-kernel",
             {"executor_id": "kernel-1", "attempt": 2},
         )
+        store.record_event(
+            campaign_id,
+            "scientific_round_completed",
+            "round-kernel-1",
+            {"round_id": "round-kernel-1", "technique": "kernel"},
+        )
 
     verified = campaign / "search" / "1"
     verified.mkdir(parents=True)
@@ -137,6 +143,8 @@ def test_progress_reports_tokens_techniques_and_nonadditive_stack(
         item for item in progress["techniques"] if item["technique"] == "kernel"
     )
     assert kernel["attempts"] == 2
+    assert kernel["scientific_rounds"] == 1
+    assert progress["search"]["rounds_used"] == 1
     assert kernel["best_isolated_e2e_speedup"] == 1.27
     assert kernel["integrated"] is True
     assert kernel["marginal_attribution"] == "not_measured"

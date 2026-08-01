@@ -19,8 +19,12 @@ EXPECTED_SCHEMAS = {
     "integrated-delivery.schema.json",
     "launch-request.schema.json",
     "profile-digest.schema.json",
+    "profile-inventory.schema.json",
+    "quality-evidence.schema.json",
+    "kernel-evidence.schema.json",
     "source-lock.schema.json",
     "technique.schema.json",
+    "technique-disposition.schema.json",
     "unreachable-certificate.schema.json",
 }
 

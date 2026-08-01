@@ -1,12 +1,21 @@
 {
   "additionalProperties": false,
   "properties": {
+    "event_count": {
+      "exclusiveMinimum": 0,
+      "title": "Event Count",
+      "type": "integer"
+    },
     "hotspots": {
       "items": {
         "type": "object"
       },
       "title": "Hotspots",
       "type": "array"
+    },
+    "parser_version": {
+      "const": "chrome-trace-v1",
+      "title": "Parser Version"
     },
     "run_dir": {
       "format": "path",
@@ -36,6 +45,14 @@
       },
       "title": "Trace Paths",
       "type": "array"
+    },
+    "trace_sha256": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1,
+      "title": "Trace Sha256",
+      "type": "object"
     }
   },
   "required": [
@@ -43,7 +60,10 @@
     "timing_scope",
     "stage_ms",
     "hotspots",
-    "trace_paths"
+    "trace_paths",
+    "trace_sha256",
+    "parser_version",
+    "event_count"
   ],
   "title": "ProfileDigest",
   "type": "object"

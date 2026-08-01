@@ -4,7 +4,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class StrictModel(BaseModel):
@@ -156,6 +156,166 @@ class TechniqueContract(StrictModel):
     scope_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class CoverageItem(StrictModel):
+    id: str = Field(min_length=1)
+    status: Literal["measured", "inapplicable", "blocked"]
+    evidence: list[Path] = Field(min_length=1)
+    scientific_round_ids: list[str] = Field(default_factory=list)
+
+
+class TechniqueDisposition(StrictModel):
+    schema_version: Literal[1] = 1
+    technique: str = Field(min_length=1)
+    classification: Literal["unsupported", "no_gain", "blocked", "budget_exhausted"]
+    reason: str = Field(min_length=1)
+    coverage: list[CoverageItem] = Field(min_length=1)
+    profile_digest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class EvidenceFile(StrictModel):
+    path: Path
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class KernelWikiEvidence(StrictModel):
+    queries: list[str] = Field(min_length=1)
+    sources: list[EvidenceFile] = Field(min_length=1)
+
+
+class NcuEvidence(StrictModel):
+    applicable: bool
+    reason: str = Field(min_length=1)
+    before_report: EvidenceFile | None = None
+    after_report: EvidenceFile | None = None
+    metrics_digest: EvidenceFile | None = None
+
+    @model_validator(mode="after")
+    def require_reports_when_applicable(self) -> NcuEvidence:
+        if self.applicable and not all(
+            (self.before_report, self.after_report, self.metrics_digest)
+        ):
+            raise ValueError(
+                "applicable NCU evidence requires before, after, and metrics reports"
+            )
+        return self
+
+
+class WarpSpecializationEvidence(StrictModel):
+    applicable: bool
+    reason: str = Field(min_length=1)
+    timeline_report: EvidenceFile | None = None
+    reconciliation: EvidenceFile | None = None
+
+    @model_validator(mode="after")
+    def require_timeline_when_applicable(self) -> WarpSpecializationEvidence:
+        if self.applicable and not all((self.timeline_report, self.reconciliation)):
+            raise ValueError(
+                "warp-specialized candidates require timeline and reconciliation"
+            )
+        return self
+
+
+class KernelEvidence(StrictModel):
+    schema_version: Literal[1] = 1
+    candidate_id: str = Field(min_length=1)
+    candidate_family: str = Field(min_length=1)
+    implementation_kind: Literal[
+        "layout_only",
+        "torch_compile",
+        "triton",
+        "cuda_cute",
+        "upstream_reuse",
+    ]
+    hotspot: str = Field(min_length=1)
+    profile_digest_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    kernelwiki: KernelWikiEvidence
+    ncu: NcuEvidence
+    warp_specialization: WarpSpecializationEvidence
+    correctness_shapes: list[str] = Field(min_length=1)
+    microbenchmark: EvidenceFile
+
+    @model_validator(mode="after")
+    def require_ncu_for_implemented_kernel(self) -> KernelEvidence:
+        if self.implementation_kind in {
+            "triton",
+            "cuda_cute",
+            "upstream_reuse",
+        } and not self.ncu.applicable:
+            raise ValueError(
+                "implemented kernel candidates require before/after NCU evidence"
+            )
+        if self.warp_specialization.applicable and self.implementation_kind != "cuda_cute":
+            raise ValueError(
+                "warp-specialization evidence applies only to CUDA/CuTe candidates"
+            )
+        return self
+
+
+class VBenchDimensions(StrictModel):
+    subject_consistency: float
+    background_consistency: float
+    motion_smoothness: float
+    temporal_flickering: float
+    aesthetic_quality: float
+    imaging_quality: float
+
+
+class AudioQualityEvidence(StrictModel):
+    present: bool
+    duration_s: float = Field(ge=0)
+    sample_rate: int = Field(ge=0)
+    channels: int = Field(ge=0)
+    silence_ratio: float = Field(ge=0, le=1)
+    clipping_ratio: float = Field(ge=0, le=1)
+
+
+class MediaContractEvidence(StrictModel):
+    container: str = Field(min_length=1)
+    video_codec: str = Field(min_length=1)
+    audio_codec: str | None = None
+    width: int = Field(gt=0)
+    height: int = Field(gt=0)
+    fps: float = Field(gt=0)
+    frame_count: int = Field(gt=0)
+    video_duration_s: float = Field(gt=0)
+
+
+class FinalPromptQuality(StrictModel):
+    prompt_index: int = Field(ge=0, lt=5)
+    lpips: float = Field(ge=0)
+    vbench_baseline: VBenchDimensions
+    vbench_candidate: VBenchDimensions
+    audio: AudioQualityEvidence
+    av_sync_drift_ms: float | None
+    media: MediaContractEvidence
+    visual: Literal["pass", "fail"]
+
+
+class FinalQualityThresholds(StrictModel):
+    lpips_max: float = Field(gt=0)
+    vbench_max_mean_regression: float = Field(default=0, ge=0)
+    silence_ratio_max: float = Field(default=0.98, ge=0, le=1)
+    clipping_ratio_max: float = Field(default=0.01, ge=0, le=1)
+    av_sync_drift_ms_max: float = Field(default=80, gt=0)
+
+
+class FinalQualityEvidence(StrictModel):
+    schema_version: Literal[1] = 1
+    producer: Literal["independent-master"]
+    external_api: Literal[False]
+    integrated_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    audio_required: bool
+    thresholds: FinalQualityThresholds
+    prompts: list[FinalPromptQuality] = Field(min_length=5, max_length=5)
+    command_receipts: list[EvidenceFile] = Field(min_length=4)
+
+    @model_validator(mode="after")
+    def require_exact_prompt_indices(self) -> FinalQualityEvidence:
+        if {item.prompt_index for item in self.prompts} != set(range(5)):
+            raise ValueError("final quality evidence requires prompt indices 0..4")
+        return self
+
+
 class CandidateManifest(StrictModel):
     schema_version: Literal[1] = 1
     candidate_id: str
@@ -213,6 +373,22 @@ class ProfileDigest(StrictModel):
     stage_ms: dict[str, float]
     hotspots: list[dict[str, Any]]
     trace_paths: list[Path]
+    trace_sha256: dict[str, str] = Field(min_length=1)
+    parser_version: Literal["chrome-trace-v1"]
+    event_count: int = Field(gt=0)
+
+
+class ProfileTraceArtifact(StrictModel):
+    path: Path
+    size_bytes: int = Field(gt=0)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class ProfileInventory(StrictModel):
+    schema_version: Literal[1] = 1
+    parser_version: Literal["chrome-trace-v1"]
+    event_count: int = Field(gt=0)
+    traces: list[ProfileTraceArtifact] = Field(min_length=1)
 
 
 class UnreachableCertificate(StrictModel):

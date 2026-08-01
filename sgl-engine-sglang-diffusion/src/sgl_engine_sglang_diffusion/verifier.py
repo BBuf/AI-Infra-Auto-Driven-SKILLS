@@ -17,6 +17,7 @@ from .models import (
     Delivery,
     EngagementReceipt,
     FrontierPoint,
+    KernelEvidence,
 )
 from .process import run
 from .request import FrozenBenchmarkCommand
@@ -55,6 +56,7 @@ _ENGAGEMENT_NAMES = (
     "engagement_receipt.json",
     "ENGAGEMENT.json",
 )
+_KERNEL_EVIDENCE_NAMES = ("KERNEL-EVIDENCE.json", "kernel-evidence.json")
 
 
 class VerificationError(RuntimeError):
@@ -388,6 +390,14 @@ class DeliveryVerifier:
                 source_hashes=source_hashes,
                 issue=issue,
             )
+        if technique == "kernel":
+            self._verify_kernel_evidence(
+                run_dir,
+                artifacts,
+                candidate_id=candidate_id,
+                executor_worktree=executor_worktree,
+                issue=issue,
+            )
 
         if issues or authoritative is None or manifest is None:
             return issues, None
@@ -402,6 +412,150 @@ class DeliveryVerifier:
             implementation_manifest=manifest,
             source_hashes=dict(source_hashes),
         )
+
+    def _verify_kernel_evidence(
+        self,
+        run_dir: Path,
+        artifacts: Sequence[Path],
+        *,
+        candidate_id: str,
+        executor_worktree: Path,
+        issue: Any,
+    ) -> None:
+        try:
+            evidence_path = self._required_artifact(
+                run_dir, artifacts, _KERNEL_EVIDENCE_NAMES
+            )
+            evidence = KernelEvidence.model_validate(self._json_object(evidence_path))
+            if evidence.candidate_id != candidate_id:
+                raise VerificationError(
+                    "kernel evidence candidate_id differs from the delivery"
+                )
+            if evidence.candidate_family not in self.registry["kernel"].coverage:
+                raise VerificationError(
+                    "kernel evidence candidate_family is outside the reviewed coverage"
+                )
+            profile = (
+                self.campaign_artifact_root
+                / "profiles"
+                / "0"
+                / "PROFILE-DIGEST.json"
+            )
+            if not profile.is_file():
+                raise VerificationError("campaign raw profile digest is missing")
+            if self._sha256_file(profile) != evidence.profile_digest_sha256:
+                raise VerificationError(
+                    "kernel evidence is not bound to the active profile digest"
+                )
+
+            knowledge_root = self.campaign_artifact_root / "knowledge" / "kda_pilot"
+            pinned_kernelwiki = self._pinned_kernelwiki_files(knowledge_root)
+            for source in evidence.kernelwiki.sources:
+                resolved = self._verify_evidence_file(
+                    source.path,
+                    source.sha256,
+                    roots=(knowledge_root,),
+                )
+                pinned_digest = pinned_kernelwiki.get(resolved)
+                if pinned_digest is None:
+                    raise VerificationError(
+                        "KernelWiki citation is absent from the pinned knowledge index"
+                    )
+                if pinned_digest != source.sha256:
+                    raise VerificationError(
+                        "KernelWiki citation hash differs from the pinned index"
+                    )
+
+            roots = (run_dir, executor_worktree, self.campaign_artifact_root)
+            files = [evidence.microbenchmark]
+            files.extend(
+                item
+                for item in (
+                    evidence.ncu.before_report,
+                    evidence.ncu.after_report,
+                    evidence.ncu.metrics_digest,
+                    evidence.warp_specialization.timeline_report,
+                    evidence.warp_specialization.reconciliation,
+                )
+                if item is not None
+            )
+            resolved_files = [
+                self._verify_evidence_file(item.path, item.sha256, roots=roots)
+                for item in files
+            ]
+            if evidence.ncu.applicable:
+                assert evidence.ncu.before_report is not None
+                assert evidence.ncu.after_report is not None
+                before = self._resolve_allowed(evidence.ncu.before_report.path, roots)
+                after = self._resolve_allowed(evidence.ncu.after_report.path, roots)
+                if before == after or before.suffix != ".ncu-rep" or after.suffix != ".ncu-rep":
+                    raise VerificationError(
+                        "NCU before/after evidence must be distinct .ncu-rep files"
+                    )
+            if any(path.stat().st_size <= 0 for path in resolved_files):
+                raise VerificationError("kernel evidence references an empty artifact")
+        except (ValidationError, VerificationError) as error:
+            issue("invalid_kernel_evidence", str(error))
+
+    def _verify_evidence_file(
+        self,
+        path: Path,
+        expected_sha256: str,
+        *,
+        roots: Sequence[Path],
+    ) -> Path:
+        resolved = self._resolve_allowed(path, roots)
+        if not resolved.is_file() or resolved.is_symlink():
+            raise VerificationError(f"evidence is not a regular file: {path}")
+        if self._sha256_file(resolved) != expected_sha256:
+            raise VerificationError(f"evidence SHA-256 mismatch: {path}")
+        return resolved
+
+    def _pinned_kernelwiki_files(self, knowledge_root: Path) -> dict[Path, str]:
+        manifest_path = self.campaign_artifact_root / "KNOWLEDGE.json"
+        try:
+            manifest = self._json_object(manifest_path)
+            snapshots = manifest.get("snapshots")
+            if not isinstance(snapshots, Mapping):
+                raise VerificationError("campaign knowledge manifest is malformed")
+            raw_index = snapshots.get("kda_pilot")
+            if not isinstance(raw_index, str):
+                raise VerificationError("campaign has no pinned KDA-Pilot snapshot")
+            index_path = self._resolve_allowed(Path(raw_index), (knowledge_root,))
+            index = self._json_object(index_path)
+            entries = index.get("entries")
+            if not isinstance(entries, list):
+                raise VerificationError("KDA-Pilot knowledge index has no entries")
+        except (OSError, VerificationError) as error:
+            raise VerificationError(f"cannot load pinned KernelWiki index: {error}") from error
+        result: dict[Path, str] = {}
+        for entry in entries:
+            if not isinstance(entry, Mapping):
+                continue
+            relative = entry.get("path")
+            digest = entry.get("reference_sha256")
+            if (
+                not isinstance(relative, str)
+                or not relative.startswith("external/KernelWiki/")
+                or not isinstance(digest, str)
+            ):
+                continue
+            reference = self._resolve_allowed(
+                index_path.parent / "references" / relative,
+                (knowledge_root,),
+            )
+            result[reference] = digest
+        if not result:
+            raise VerificationError("pinned KDA-Pilot snapshot contains no KernelWiki files")
+        return result
+
+    @staticmethod
+    def _sha256_file(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
 
     def _verify_frozen_command(
         self,

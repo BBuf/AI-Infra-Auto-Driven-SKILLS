@@ -160,6 +160,78 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
         "overall": "authenticity_only",
     }
     (run_dir / "authenticity.json").write_text(json.dumps(authenticity))
+    profile_digest = campaign / "profiles/0/PROFILE-DIGEST.json"
+    profile_digest.parent.mkdir(parents=True)
+    profile_digest.write_text('{"profile": "raw-trace-bound"}\n')
+    kernelwiki = (
+        campaign
+        / "knowledge/kda_pilot/locked/references/external/KernelWiki/wiki/techniques/kernel-fusion.md"
+    )
+    kernelwiki.parent.mkdir(parents=True)
+    kernelwiki.write_text("# Kernel fusion\n")
+    kda_index = campaign / "knowledge/kda_pilot/locked/index.json"
+    kda_index.parent.mkdir(parents=True, exist_ok=True)
+    kda_index.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "source": "kda_pilot",
+                "commit": "d" * 40,
+                "entries": [
+                    {
+                        "path": "external/KernelWiki/wiki/techniques/kernel-fusion.md",
+                        "media_type": "text/markdown",
+                        "sha256": hashlib.sha256(kernelwiki.read_bytes()).hexdigest(),
+                        "reference_sha256": hashlib.sha256(kernelwiki.read_bytes()).hexdigest(),
+                        "headings": ["Kernel fusion"],
+                        "symbols": [],
+                        "executable": False,
+                    }
+                ],
+            }
+        )
+    )
+    (campaign / "KNOWLEDGE.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "snapshots": {"kda_pilot": str(kda_index)},
+            }
+        )
+    )
+    microbenchmark = run_dir / "kernel-microbenchmark.json"
+    microbenchmark.write_text('{"before_us": 12.0, "after_us": 8.0}\n')
+    kernel_evidence = {
+        "schema_version": 1,
+        "candidate_id": "candidate-1",
+        "candidate_family": "normalization-activation-projection-fusion",
+        "implementation_kind": "torch_compile",
+        "hotspot": "fused normalization",
+        "profile_digest_sha256": hashlib.sha256(profile_digest.read_bytes()).hexdigest(),
+        "kernelwiki": {
+            "queries": ["fusion normalization activation Hopper"],
+            "sources": [
+                {
+                    "path": str(kernelwiki),
+                    "sha256": hashlib.sha256(kernelwiki.read_bytes()).hexdigest(),
+                }
+            ],
+        },
+        "ncu": {
+            "applicable": False,
+            "reason": "torch.compile candidate has no stable standalone kernel handle",
+        },
+        "warp_specialization": {
+            "applicable": False,
+            "reason": "candidate is not a CUDA/CuTe warp-specialized kernel",
+        },
+        "correctness_shapes": ["batch=1, hidden=64"],
+        "microbenchmark": {
+            "path": str(microbenchmark),
+            "sha256": hashlib.sha256(microbenchmark.read_bytes()).hexdigest(),
+        },
+    }
+    (run_dir / "KERNEL-EVIDENCE.json").write_text(json.dumps(kernel_evidence))
 
     artifact_names = [
         "PERFORMANCE.json",
@@ -170,6 +242,8 @@ def evidence(tmp_path: Path) -> dict[str, Any]:
         "engagement-receipt.json",
         "equivalence.json",
         "authenticity.json",
+        "KERNEL-EVIDENCE.json",
+        "kernel-microbenchmark.json",
     ]
     point = {
         "candidate_id": "candidate-1",
@@ -469,6 +543,40 @@ def test_rejects_zero_engagement_as_noop(
     assert not result.accepted
     assert "invalid_engagement" in {finding.code for finding in result.findings}
     assert "zero engagement" in " ".join(f.message for f in result.findings)
+
+
+def test_kernel_delivery_requires_all_three_kda_evidence_paths(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    path = evidence["run_dir"] / "KERNEL-EVIDENCE.json"
+    payload = json.loads(path.read_text())
+    payload["kernelwiki"]["queries"] = []
+    path.write_text(json.dumps(payload))
+    result = make_verifier(evidence, registry).verify(
+        evidence["delivery_path"],
+        technique="kernel",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not result.accepted
+    assert "invalid_kernel_evidence" in {finding.code for finding in result.findings}
+
+
+def test_implemented_kernel_requires_before_after_ncu_reports(
+    evidence: dict[str, Any], registry: TechniqueRegistry
+) -> None:
+    path = evidence["run_dir"] / "KERNEL-EVIDENCE.json"
+    payload = json.loads(path.read_text())
+    payload["implementation_kind"] = "triton"
+    path.write_text(json.dumps(payload))
+    result = make_verifier(evidence, registry).verify(
+        evidence["delivery_path"],
+        technique="kernel",
+        executor_worktree=evidence["worktree"],
+    )
+    assert not result.accepted
+    assert "implemented kernel candidates require" in " ".join(
+        finding.message for finding in result.findings
+    )
 
 
 def make_quality_delivery(evidence: dict[str, Any]) -> Path:

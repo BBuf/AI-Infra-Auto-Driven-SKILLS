@@ -20,6 +20,7 @@ class Technique:
     round_budget: int
     origin: str
     optional: bool = False
+    coverage: tuple[str, ...] = ()
 
 
 class TechniqueRegistry:
@@ -66,7 +67,12 @@ class TechniqueRegistry:
                 round_budget=round_budget,
                 origin=str(raw["origin"]),
                 optional=bool(raw.get("optional", False)),
+                coverage=tuple(str(item) for item in raw.get("coverage", ())),
             )
+            if not entries[name].coverage or len(entries[name].coverage) != len(
+                set(entries[name].coverage)
+            ):
+                raise ValueError(f"technique {name} requires unique coverage IDs")
 
         raw_default_order = data.get("default_order")
         if not isinstance(raw_default_order, list):

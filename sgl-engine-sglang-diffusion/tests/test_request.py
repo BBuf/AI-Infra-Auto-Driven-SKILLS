@@ -78,6 +78,45 @@ def test_normalize_command_extracts_goal_and_relocatable_template(
     assert "--enable-fast-path" in argv
     assert environment["SGLANG_AGENT_PROFILE"] == "candidate"
     assert environment["PYTHONPATH"].startswith(str(other_checkout / "python"))
+    assert "--performance-mode" not in argv
+
+
+def test_baseline_parallel_topology_is_user_selected_and_frozen(tmp_path: Path) -> None:
+    request = make_request(
+        tmp_path,
+        native_command()
+        + " --ulysses-degree 4 --tp-size 1 --sp-degree 4 "
+        "--cfg-parallel-size 1 --enable-cfg-parallel=false",
+    )
+    goal, template = normalize_launch_request(request)
+    assert template.parallel_flags == {
+        "--cfg-parallel-size": "1",
+        "--enable-cfg-parallel": "false",
+        "--sp-degree": "4",
+        "--tp-size": "1",
+        "--ulysses-degree": "4",
+    }
+    assert "--performance-mode" not in template.argv_template
+    with pytest.raises(RequestError, match="parallel topology|frozen flag"):
+        template.render(
+            checkout=tmp_path / "sglang",
+            prompts=goal.workload.prompts,
+            output_file=tmp_path / "output.jsonl",
+            media_dir=tmp_path / "media",
+            activation_args=("--ulysses-degree", "2"),
+        )
+
+
+def test_absent_parallel_topology_cannot_be_added_by_candidate(tmp_path: Path) -> None:
+    goal, template = normalize_launch_request(make_request(tmp_path, native_command()))
+    with pytest.raises(RequestError, match="parallel topology"):
+        template.render(
+            checkout=tmp_path / "sglang",
+            prompts=goal.workload.prompts,
+            output_file=tmp_path / "output.jsonl",
+            media_dir=tmp_path / "media",
+            activation_args=("--context-parallel-size", "2"),
+        )
 
 
 @pytest.mark.parametrize(

@@ -32,9 +32,23 @@ include:
 - launch and synchronization reduction; and
 - warm `torch.compile` or other compiler fusion for stable repeated regions.
 
+The coverage ledger must disposition all six registry IDs. In particular,
+`layout-copy-launch` includes permute/contiguous/reshape traffic around
+distributed attention, and `custom-or-upstream-kernel` requires an active
+search for a Triton, CUDA/CuTe, JIT, AOT, or pinned upstream implementation.
+Trying `torch.compile` once does not exhaust this lane.
+
 The executor must first audit SGLang's existing fast paths. Auxiliary SGLang,
 KDA-Pilot, and FastVideo knowledge may suggest implementations, but cannot
 expand correctness or evidence policy.
+
+Use KernelWiki, NCU report analysis, and the warp-specialization report skill
+according to `KERNEL-EVIDENCE.json`. NCU is mandatory for an implemented
+Triton, CUDA/CuTe, or upstream kernel. Warp-specialization timeline
+instrumentation is mandatory only when the CUDA/CuTe candidate actually uses
+warp specialization; otherwise record why it does not apply.
+On Hopper, preserve the NCU workflow but query architecture-valid metrics
+instead of reusing Blackwell-only metric identifiers.
 
 ## Ownership boundaries
 
