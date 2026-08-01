@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from sgl_engine_sglang_diffusion.agents import AgentRunner
+from sgl_engine_sglang_diffusion.agents import AgentRunner, build_agent_argv
 from sgl_engine_sglang_diffusion.orchestration import (
     ExecutorManager,
     ExecutorPrompt,
@@ -70,6 +70,21 @@ def _prompt() -> ExecutorPrompt:
         search_state={"round": 1, "frontier": []},
         rejected_signatures=("prior-failure",),
     )
+
+
+def test_codex_exec_is_noninteractive_and_writable(tmp_path: Path) -> None:
+    prompt = tmp_path / "goal.md"
+    prompt.write_text("do the task\n")
+
+    argv = build_agent_argv(["codex", "exec"], None, prompt)
+
+    assert argv == [
+        "codex",
+        "exec",
+        "--json",
+        "--dangerously-bypass-approvals-and-sandbox",
+        str(prompt),
+    ]
 
 
 def _manager(

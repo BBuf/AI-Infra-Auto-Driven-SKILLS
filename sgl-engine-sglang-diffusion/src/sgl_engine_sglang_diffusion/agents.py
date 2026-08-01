@@ -86,8 +86,18 @@ def build_agent_argv(
     prompt: Path,
 ) -> list[str]:
     argv = [*command]
-    if is_codex_exec(command) and "--json" not in argv:
-        argv.append("--json")
+    if is_codex_exec(command):
+        if "--json" not in argv:
+            argv.append("--json")
+        if not any(
+            item in {"--dangerously-bypass-approvals-and-sandbox", "--sandbox", "-s"}
+            or item.startswith("--sandbox=")
+            for item in argv
+        ):
+            # Executor worktrees live inside an already isolated campaign
+            # container. Non-interactive Codex otherwise defaults to a
+            # read-only sandbox and cannot produce the required delivery.
+            argv.append("--dangerously-bypass-approvals-and-sandbox")
     if model:
         argv.extend(["--model", model])
     argv.append(str(prompt))
