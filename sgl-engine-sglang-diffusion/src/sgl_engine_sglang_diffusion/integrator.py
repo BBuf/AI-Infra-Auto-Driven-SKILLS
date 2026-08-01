@@ -311,6 +311,10 @@ class IntegrationManager:
             result = run(
                 ["git", "cherry-pick", candidate_commit],
                 cwd=worktree,
+                env={
+                    "GIT_COMMITTER_NAME": "SGL Diffusion Engine",
+                    "GIT_COMMITTER_EMAIL": "sgl-diffusion-engine@localhost",
+                },
                 check=False,
             )
             if result.returncode == 0:

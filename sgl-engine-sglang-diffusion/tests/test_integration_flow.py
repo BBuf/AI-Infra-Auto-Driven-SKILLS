@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -267,8 +268,10 @@ def test_unverified_candidate_is_rejected_before_worktree_creation(
 
 
 def test_composition_is_canonical_and_does_not_modify_candidate_repository(
-    tmp_path: Path, fake_git_repo: Path
+    tmp_path: Path, fake_git_repo: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
     kernel_commit = _commit(
         fake_git_repo, "kernel-candidate", {"kernel.txt": "kernel\n"}
     )
