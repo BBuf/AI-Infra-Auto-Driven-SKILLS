@@ -1,13 +1,10 @@
 # Model Optimization Skills and Standards
 
-This directory stores shared model-optimization workflows rather than
+This directory stores a shared model-optimization workflow rather than
 per-model skills. Model-specific optimization records live as PR-driven
 documentation under
 [`model-pr-optimization-history/`](../../model-pr-optimization-history/).
 
-- `model-pr-diff-dossier/`: shared production standard for manual,
-  diff-backed model PR histories across SGLang, vLLM, and future serving
-  frameworks.
 - `sglang-model-day0-support/`: evidence-driven workflow for architecture gap
   maps, parallel/kernel adaptation, public PR DAGs, seven release gates, and
   sanitized Day-0 support bundles.

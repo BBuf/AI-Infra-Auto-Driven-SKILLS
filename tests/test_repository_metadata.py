@@ -16,8 +16,8 @@ def test_readme_uses_current_claude_and_codex_launch_commands() -> None:
     assert "codex --yolo" not in readme
     assert "`opus`" in readme and "current Opus" in readme
     assert "bypassPermissions" in readme and "isolated" in readme
-    assert "core_skills-12" in readme
-    assert "After reload, the 12 skills appear" in readme
+    assert "core_skills-11" in readme
+    assert "After reload, the 11 skills appear" in readme
 
 
 def test_sglang_day0_skill_is_discoverable_and_installable() -> None:
@@ -49,8 +49,8 @@ def test_marketplace_has_top_level_description() -> None:
     assert marketplace["description"]
     assert "LLM serving" in marketplace["description"]
     assert marketplace["plugins"][0]["description"]
-    assert marketplace["plugins"][0]["version"] == "0.4.0"
-    assert plugin["version"] == "0.4.0"
+    assert marketplace["plugins"][0]["version"] == "0.5.0"
+    assert plugin["version"] == "0.5.0"
     assert marketplace["plugins"][0]["version"] == plugin["version"]
     assert "Day-0" in marketplace["description"]
     assert "Day-0" in plugin["description"]
