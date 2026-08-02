@@ -1,6 +1,6 @@
 ---
 name: sol-engine-sglang-diffusion
-description: Run the complete upstream NVlabs Sol Engine optimization flow on an SGLang Diffusion workload while adding pinned KDA-Pilot and SGLang Diffusion implementation/history knowledge through existing Sol Executor seed goals, then return an apply-checked patch against the SGLang main commit frozen at launch. Use when optimizing an SGLang Diffusion model with Sol's unchanged Master/Executor strategy, correctness modes, quality gates, verification, integration, recovery, and termination rather than a custom controller.
+description: Run the complete upstream NVlabs Sol Engine optimization flow on an SGLang Diffusion workload while adding pinned KDA-Pilot and SGLang Diffusion implementation knowledge through existing Sol Executor seed goals, then return an apply-checked patch against the SGLang main commit frozen at launch. Use when optimizing an SGLang Diffusion model with Sol's unchanged Master/Executor strategy, correctness modes, quality gates, verification, integration, recovery, and termination rather than a custom controller.
 ---
 
 # Sol Engine SGLang Diffusion
@@ -22,9 +22,6 @@ Keep these upstream Sol behaviors authoritative and unchanged:
 Add only what is necessary to present an SGLang Diffusion workload as a Sol
 model, route immutable KDA-Pilot/SGLang knowledge into existing Executor seed
 goals, and export the accepted integrated SGLang tree as `sglang.patch`.
-
-Do not invoke the repository-local `sgl-engine-sglang-diffusion` package. It is
-a separate legacy controller and is outside this flow.
 
 ## Required Inputs
 
@@ -68,9 +65,6 @@ Fetch and resolve full commits for:
 2. the SGLang repository, branch `main`;
 3. KDA-Pilot and its KernelWiki, NCU-report, and warp-specialization
    submodules;
-4. this skill/history repository when its reviewed SGLang Diffusion history is
-   used.
-
 "Patch against latest SGLang main" means the latest fetched `main` commit at
 campaign launch. Freeze it for the entire baseline/candidate campaign. Record
 all URLs and commits in campaign-owned `SOURCE-LOCKS.json`.
@@ -134,7 +128,6 @@ Build the immutable manifest in the campaign root:
 python <skill-dir>/scripts/build_knowledge_pack.py \
   --kda-root <frozen-kda-worktree> \
   --sglang-root <frozen-sglang-main-worktree> \
-  --history-root <frozen-skill-history-worktree> \
   --output-dir <campaign-root>/knowledge
 ```
 

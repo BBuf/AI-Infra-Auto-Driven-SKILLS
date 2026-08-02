@@ -140,11 +140,6 @@ knowledge eligible for each registered lane, and launches
 knowledge-only unless that pinned Sol revision exposes a compatible
 quality-gated technique; it is never smuggled into a lossless kernel lane.
 
-The repository still contains the earlier standalone
-[`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) controller for
-historical/direct use. The new skill neither invokes nor modifies its
-implementation.
-
 ## Model PR History Catalog
 
 The model optimization layer is now one knowledge base:

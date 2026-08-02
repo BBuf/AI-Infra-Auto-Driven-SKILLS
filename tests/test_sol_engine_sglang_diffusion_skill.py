@@ -39,7 +39,7 @@ def init_repo(path: Path, files: dict[str, str | bytes]) -> str:
     return run("git", "rev-parse", "HEAD", cwd=path).stdout.strip()
 
 
-def create_knowledge_sources(tmp_path: Path) -> tuple[Path, Path, Path]:
+def create_knowledge_sources(tmp_path: Path) -> tuple[Path, Path]:
     kda = tmp_path / "KDA-Pilot"
     init_repo(
         kda,
@@ -70,36 +70,10 @@ def create_knowledge_sources(tmp_path: Path) -> tuple[Path, Path, Path]:
         },
     )
 
-    history = tmp_path / "knowledge-history"
-    init_repo(
-        history,
-        {
-            "docs/references/sglang-diffusion-pr-rule-audit.md": "reviewed PR rules\n",
-            "sgl-engine-sglang-diffusion/knowledge/history-rules.toml": (
-                "[[rules]]\n"
-                "id = 'kernel.fusion'\n"
-                "technique = 'kernel'\n"
-                "correctness = 'lossless'\n"
-                "summary = 'historical kernel idea'\n"
-                "[[rules]]\n"
-                "id = 'cache.reuse'\n"
-                "technique = 'cache'\n"
-                "correctness = 'quality_gated'\n"
-                "summary = 'historical cache idea'\n"
-                "[[rules]]\n"
-                "id = 'quantization.nvfp4'\n"
-                "technique = 'quantization'\n"
-                "correctness = 'quality_gated'\n"
-                "summary = 'historical quantization idea'\n"
-            ),
-        },
-    )
-    return kda, sglang, history
+    return kda, sglang
 
 
-def build_pack(
-    tmp_path: Path, kda: Path, sglang: Path, history: Path, name: str
-) -> Path:
+def build_pack(tmp_path: Path, kda: Path, sglang: Path, name: str) -> Path:
     output = tmp_path / name
     run(
         sys.executable,
@@ -108,8 +82,6 @@ def build_pack(
         kda,
         "--sglang-root",
         sglang,
-        "--history-root",
-        history,
         "--output-dir",
         output,
     )
@@ -119,9 +91,9 @@ def build_pack(
 def test_knowledge_pack_is_deterministic_and_conservatively_routed(
     tmp_path: Path,
 ) -> None:
-    kda, sglang, history = create_knowledge_sources(tmp_path)
-    first = build_pack(tmp_path, kda, sglang, history, "first")
-    second = build_pack(tmp_path, kda, sglang, history, "second")
+    kda, sglang = create_knowledge_sources(tmp_path)
+    first = build_pack(tmp_path, kda, sglang, "first")
+    second = build_pack(tmp_path, kda, sglang, "second")
 
     first_bytes = (first / "KNOWLEDGE-MANIFEST.json").read_bytes()
     assert first_bytes == (second / "KNOWLEDGE-MANIFEST.json").read_bytes()
@@ -148,21 +120,12 @@ def test_knowledge_pack_is_deterministic_and_conservatively_routed(
     ]
     assert quant["eligible_techniques"] == []
     assert quant["status"] == "knowledge_only_outside_current_sol_registry"
-    assert by_path[
-        "sgl-engine-sglang-diffusion/knowledge/history-rules.toml#kernel.fusion"
-    ]["eligible_techniques"] == ["kernel"]
-    assert by_path[
-        "sgl-engine-sglang-diffusion/knowledge/history-rules.toml#cache.reuse"
-    ]["eligible_techniques"] == ["cache"]
-    assert by_path[
-        "sgl-engine-sglang-diffusion/knowledge/history-rules.toml#quantization.nvfp4"
-    ]["eligible_techniques"] == []
     assert manifest["sglang_history"]
 
 
 def test_executor_injection_is_lane_specific_and_idempotent(tmp_path: Path) -> None:
-    kda, sglang, history = create_knowledge_sources(tmp_path)
-    pack = build_pack(tmp_path, kda, sglang, history, "pack")
+    kda, sglang = create_knowledge_sources(tmp_path)
+    pack = build_pack(tmp_path, kda, sglang, "pack")
     goal = tmp_path / "goal.md"
     goal.write_text("# Frozen Sol seed goal\n", encoding="utf-8")
 

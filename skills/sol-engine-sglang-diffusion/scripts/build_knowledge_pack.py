@@ -8,7 +8,6 @@ import hashlib
 import json
 import re
 import subprocess
-import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -99,14 +98,8 @@ def sglang_include(path: str) -> bool:
     )
 
 
-def history_include(path: str) -> bool:
-    return path == "docs/references/sglang-diffusion-pr-rule-audit.md"
-
-
 def route(path: str) -> tuple[str, list[str], str]:
     lower = path.lower().replace("-", "_")
-    if "sglang_diffusion_pr_rule_audit" in lower:
-        return "mixed_history_audit", [], "knowledge_only_index"
     if any(
         token in lower
         for token in ("quant", "nvfp4", "fp8", "int8", "nunchaku", "modelopt")
@@ -146,28 +139,8 @@ def route(path: str) -> tuple[str, list[str], str]:
     return "lossless_kernel", ["kernel"], "hypothesis_only"
 
 
-def route_history_rule(rule: dict[str, object]) -> tuple[str, list[str], str]:
-    technique = str(rule.get("technique") or "").lower()
-    correctness = str(rule.get("correctness") or "").lower()
-    if technique in {"kernel", "residency"} and correctness == "lossless":
-        return "lossless_kernel", ["kernel"], "hypothesis_only"
-    if technique == "cache":
-        return "cache", ["cache"], "hypothesis_only"
-    if technique == "pisa":
-        return "sparse_attention", ["pisa"], "hypothesis_only"
-    if technique == "topology" and correctness == "lossless":
-        return "distributed_topology", ["topology"], "hypothesis_only"
-    return (
-        technique or "mixed_history_rule",
-        [],
-        "knowledge_only_outside_current_sol_registry",
-    )
-
-
 def entry_priority(path: str) -> int:
     lower = path.lower()
-    if "#" in path:
-        return 0
     if "/apps/" in lower:
         return 6
     if lower.endswith("readme.md") or "/docs/" in lower:
@@ -219,42 +192,6 @@ def digest(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             sha.update(chunk)
     return sha.hexdigest()
-
-
-def history_rule_entries(source: Source) -> list[dict[str, object]]:
-    relative = Path("sgl-engine-sglang-diffusion/knowledge/history-rules.toml")
-    path = source.root / relative
-    if not path.is_file():
-        return []
-    try:
-        payload = tomllib.loads(path.read_text(encoding="utf-8"))
-    except (OSError, tomllib.TOMLDecodeError) as exc:
-        raise SystemExit(f"cannot parse SGLang Diffusion history rules: {exc}") from exc
-    rules = payload.get("rules", [])
-    if not isinstance(rules, list):
-        raise SystemExit(f"history rules must be an array of tables: {path}")
-    entries = []
-    for rule in rules:
-        if not isinstance(rule, dict) or not str(rule.get("id") or "").strip():
-            raise SystemExit(f"history rule is missing a stable id: {path}")
-        rule_id = str(rule["id"])
-        topic, techniques, status = route_history_rule(rule)
-        encoded = json.dumps(
-            rule, sort_keys=True, ensure_ascii=False, separators=(",", ":")
-        ).encode("utf-8")
-        entries.append(
-            {
-                "source_id": source.source_id,
-                "path": f"{relative.as_posix()}#{rule_id}",
-                "sha256": hashlib.sha256(encoded).hexdigest(),
-                "bytes": len(encoded),
-                "topic": topic,
-                "eligible_techniques": techniques,
-                "status": status,
-                "priority": entry_priority(f"{relative.as_posix()}#{rule_id}"),
-            }
-        )
-    return entries
 
 
 def sglang_history(root: Path) -> list[dict[str, str]]:
@@ -334,7 +271,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--kda-root", required=True, type=Path)
     parser.add_argument("--sglang-root", required=True, type=Path)
-    parser.add_argument("--history-root", type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     return parser.parse_args()
 
@@ -358,13 +294,6 @@ def main() -> int:
         ),
         Source("sglang-main", sglang, sglang_include),
     ]
-    if args.history_root is not None:
-        sources.append(
-            Source(
-                "sglang-diffusion-history", args.history_root.resolve(), history_include
-            )
-        )
-
     source_rows = []
     entries = []
     for source in sources:
@@ -394,9 +323,6 @@ def main() -> int:
                     "priority": entry_priority(relative),
                 }
             )
-        if source.source_id == "sglang-diffusion-history":
-            entries.extend(history_rule_entries(source))
-
     entries.sort(key=lambda entry: (entry["source_id"], entry["path"]))
     manifest = {
         "schema_version": 1,

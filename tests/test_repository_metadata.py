@@ -126,24 +126,3 @@ def test_refresh_prompt_is_pr_agnostic_and_preserves_evidence_gates() -> None:
         "CI 状态已核对",
     ]:
         assert required in prompt
-
-
-def test_legacy_sglang_diffusion_engine_is_documented_but_not_the_skill_backend() -> None:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    engine_readme = (ROOT / "sgl-engine-sglang-diffusion" / "README.md").read_text(
-        encoding="utf-8"
-    )
-
-    assert "[`sgl-engine-sglang-diffusion`]" in readme
-    for required in [
-        "sgl-diffusion-engine init",
-        "sgl-diffusion-engine run",
-        "sgl-diffusion-engine resume",
-        "sglang.patch",
-        "Sol-Engine",
-        "KDA-Pilot",
-        "FastVideo",
-        "sol-engine-sglang-diffusion",
-        "does not\ninvoke this package",
-    ]:
-        assert required in engine_readme

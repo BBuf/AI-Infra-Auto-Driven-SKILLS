@@ -1,9 +1,0 @@
-runs/
-*.sqlite
-*.sqlite-shm
-*.sqlite-wal
-__pycache__/
-.pytest_cache/
-*.egg-info/
-dist/
-build/
