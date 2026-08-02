@@ -202,7 +202,7 @@ def test_readme_installs_model_pr_diff_dossier_skill() -> None:
     assert "[`model-pr-diff-dossier`]" in readme
     assert f'ln -s "$PWD/{skill_path}" ~/.claude/skills/model-pr-diff-dossier' in readme
     assert f"cp -R {skill_path} <agent-skill-dir>/model-pr-diff-dossier" in readme
-    assert "After reload, the 13 skills appear" in readme
+    assert "After reload, the 12 skills appear" in readme
 
 
 def test_rebuild_history_dry_run_does_not_update_indexes(tmp_path) -> None:

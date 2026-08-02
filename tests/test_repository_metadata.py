@@ -16,8 +16,8 @@ def test_readme_uses_current_claude_and_codex_launch_commands() -> None:
     assert "codex --yolo" not in readme
     assert "`opus`" in readme and "current Opus" in readme
     assert "bypassPermissions" in readme and "isolated" in readme
-    assert "core_skills-13" in readme
-    assert "After reload, the 13 skills appear" in readme
+    assert "core_skills-12" in readme
+    assert "After reload, the 12 skills appear" in readme
 
 
 def test_sglang_day0_skill_is_discoverable_and_installable() -> None:
@@ -49,27 +49,18 @@ def test_marketplace_has_top_level_description() -> None:
     assert marketplace["description"]
     assert "LLM serving" in marketplace["description"]
     assert marketplace["plugins"][0]["description"]
-    assert marketplace["plugins"][0]["version"] == "0.3.0"
-    assert plugin["version"] == "0.3.0"
+    assert marketplace["plugins"][0]["version"] == "0.4.0"
+    assert plugin["version"] == "0.4.0"
     assert marketplace["plugins"][0]["version"] == plugin["version"]
     assert "Day-0" in marketplace["description"]
     assert "Day-0" in plugin["description"]
 
 
-def test_sol_engine_sglang_diffusion_skill_is_discoverable() -> None:
-    skill = ROOT / "skills" / "sol-engine-sglang-diffusion" / "SKILL.md"
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert skill.is_file()
-    assert not list((ROOT / "skills").glob("*diffusion*auto*optimize*"))
-    text = skill.read_text(encoding="utf-8")
-    assert "name: sol-engine-sglang-diffusion" in text
-    assert "orchestration/run_orchestrated_experiment.py" in text
-    assert "sol-engine-sglang-diffusion" in readme
-    assert "core_skills-13" in readme
-
-
-def test_retired_diffusion_skill_name_is_absent_from_current_tree() -> None:
-    retired_name = "-".join(("sglang", "diffusion", "auto", "optimize"))
+def test_retired_diffusion_skill_names_are_absent_from_current_tree() -> None:
+    retired_names = {
+        "-".join(("sglang", "diffusion", "auto", "optimize")),
+        "-".join(("sol", "engine", "sglang", "diffusion")),
+    }
     text_suffixes = {".json", ".md", ".py", ".toml", ".yaml", ".yml"}
     for path in ROOT.rglob("*"):
         if (
@@ -77,7 +68,9 @@ def test_retired_diffusion_skill_name_is_absent_from_current_tree() -> None:
             and path.suffix in text_suffixes
             and ".git" not in path.parts
         ):
-            assert retired_name not in path.read_text(encoding="utf-8")
+            text = path.read_text(encoding="utf-8")
+            for retired_name in retired_names:
+                assert retired_name not in text
 
 
 def test_precommit_versions_are_current_verified_tags() -> None:

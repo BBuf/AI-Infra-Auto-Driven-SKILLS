@@ -1,6 +1,6 @@
 {
   "name": "ai-infra-auto-driven-skills",
-  "description": "Agent-ready LLM serving, autonomous SGLang Diffusion optimization, SGLang model Day-0 support, profiling, capacity, SOTA optimization, incident triage, architecture, and PR-history skills.",
+  "description": "Agent-ready LLM serving, SGLang model Day-0 support, profiling, capacity, SOTA optimization, incident triage, architecture, and PR-history skills.",
   "owner": {
     "name": "BBuf",
     "url": "https://github.com/BBuf"
@@ -9,8 +9,8 @@
     {
       "name": "ai-infra-auto-driven-skills",
       "source": "./",
-      "description": "LLM serving benchmarks, autonomous SGLang Diffusion optimization, SGLang model Day-0 support, profiling, SGLang/vLLM SOTA loops, code review, prod incident triage, and PR-history dossiers.",
-      "version": "0.3.0",
+      "description": "LLM serving benchmarks, SGLang model Day-0 support, profiling, SGLang/vLLM SOTA loops, code review, prod incident triage, and PR-history dossiers.",
+      "version": "0.4.0",
       "category": "ai-infra",
       "tags": ["sglang", "day0", "vllm", "tensorrt-llm", "benchmarks", "profiler", "kernel", "moe", "llm-serving"]
     }

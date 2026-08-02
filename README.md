@@ -10,7 +10,7 @@ and model PR intelligence.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-13-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-12-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-66-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
@@ -46,7 +46,6 @@ find it.
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`model-pr-diff-dossier`](skills/model-optimization/model-pr-diff-dossier/) | You need to create or revise model PR history docs with manual diff-reviewed cards instead of shallow PR-title summaries. |
 | [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | You need to turn a new SGLang model architecture into a public Day-0 PR DAG, parallel/kernel adaptation plan, seven-gate validation matrix, release lock, and sanitized evidence bundle. |
-| [`sol-engine-sglang-diffusion`](skills/sol-engine-sglang-diffusion/) | You want the complete upstream Sol Engine Master/Executor flow to optimize an SGLang Diffusion workload with pinned KDA-Pilot and SGLang knowledge, then emit an apply-checked patch against the latest main commit frozen at launch. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
@@ -67,78 +66,6 @@ Use sglang-sota-humanize-loop for <model>.
 comparison_frameworks: [vllm]
 Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
 ```
-
-## Upstream Sol Engine for SGLang Diffusion
-
-[`sol-engine-sglang-diffusion`](skills/sol-engine-sglang-diffusion/) runs the
-complete upstream [Sol Engine](https://github.com/NVlabs/Sana/tree/sol-engine)
-campaign for an SGLang Diffusion workload. It does not implement a competing
-controller: Sol's Master/Executor strategy, technique registry, correctness
-modes, quality judgments, verifier, integration, recovery, and termination all
-remain unchanged.
-
-The skill adds only a campaign-local SGLang model adapter, a pinned knowledge
-manifest, lane-specific knowledge in Sol's existing Executor seed goals, and a
-final patch exporter. KDA-Pilot diffusion kernels, KernelWiki/NCU evidence,
-SGLang Diffusion source, recent Git history, and reviewed PR rules generate
-hypotheses; upstream Sol alone accepts or rejects them. The final
-`sglang.patch` is checked against the SGLang `main` commit fetched and frozen at
-campaign launch.
-
-### Install
-
-For Codex, clone this repository and expose the one skill:
-
-```bash
-git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
-cd AI-Infra-Auto-Driven-SKILLS
-mkdir -p ~/.codex/skills
-ln -s "$PWD/skills/sol-engine-sglang-diffusion" \
-  ~/.codex/skills/sol-engine-sglang-diffusion
-```
-
-Restart Codex after installing. For Claude Code, install the complete plugin:
-
-```text
-/plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
-/plugin install ai-infra-auto-driven-skills@ai-infra-auto-driven-skills
-/reload-plugins
-```
-
-The Claude Code skill name is
-`ai-infra-auto-driven-skills:sol-engine-sglang-diffusion`.
-
-### Start one autonomous campaign
-
-Tell the agent the machine, model, exact native SGLang Diffusion baseline
-command, and requested target or Sol technique selection:
-
-```text
-Use sol-engine-sglang-diffusion.
-
-Machine: <machine skill or SSH alias>
-Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
-Baseline command:
-CUDA_VISIBLE_DEVICES=0 python
-python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py
---model-path Wan-AI/Wan2.2-T2V-A14B-Diffusers
---dataset vbench
---dataset-path /persistent/benchmarks/validation-prompts.txt
---num-prompts 5
---output-dir /persistent/benchmarks/wan22-baseline
-
-Target: 2x measured end-to-end speedup.
-Run the complete upstream Sol Engine flow and return an apply-checked patch
-against the SGLang main commit frozen at launch.
-```
-
-At launch the agent pins the latest fetched upstream Sol `sol-engine` branch,
-SGLang `main`, KDA-Pilot, and its evidence submodules. It derives a model
-overlay from the pinned Sol schemas, pre-creates Sol experiments, injects only
-knowledge eligible for each registered lane, and launches
-`orchestration/run_orchestrated_experiment.py`. Sub-16-bit quantization remains
-knowledge-only unless that pinned Sol revision exposes a compatible
-quality-gated technique; it is never smuggled into a lossless kernel lane.
 
 ## Model PR History Catalog
 
@@ -240,7 +167,7 @@ installed as a single Claude Code plugin via the built-in marketplace flow:
 /reload-plugins
 ```
 
-After reload, the 13 skills appear namespaced as
+After reload, the 12 skills appear namespaced as
 `ai-infra-auto-driven-skills:<skill-name>` (for example
 `ai-infra-auto-driven-skills:sglang-sota-humanize-loop`). Update later with
 `/plugin marketplace update ai-infra-auto-driven-skills`.
@@ -263,7 +190,6 @@ ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
 ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
 ln -s "$PWD/skills/model-optimization/model-pr-diff-dossier" ~/.claude/skills/model-pr-diff-dossier
 ln -s "$PWD/skills/model-optimization/sglang-model-day0-support" ~/.claude/skills/sglang-model-day0-support
-ln -s "$PWD/skills/sol-engine-sglang-diffusion" ~/.claude/skills/sol-engine-sglang-diffusion
 ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
 ln -s "$PWD/skills/vllm-sota-humanize-loop" ~/.claude/skills/vllm-sota-humanize-loop
 ln -s "$PWD/skills/sglang-prod-incident-triage" ~/.claude/skills/sglang-prod-incident-triage
@@ -276,7 +202,6 @@ for example `[$llm-serving-auto-benchmark]`,
 `[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
 `[$llm-pipeline-analysis]`, `[$model-compute-simulation]`,
 `[$model-pr-diff-dossier]`, `[$sglang-model-day0-support]`,
-`[$sol-engine-sglang-diffusion]`,
 `[$sglang-sota-humanize-loop]`, or `[$vllm-sota-humanize-loop]`.
 
 If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
@@ -297,7 +222,6 @@ cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
 cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
 cp -R skills/model-optimization/model-pr-diff-dossier <agent-skill-dir>/model-pr-diff-dossier
 cp -R skills/model-optimization/sglang-model-day0-support <agent-skill-dir>/sglang-model-day0-support
-cp -R skills/sol-engine-sglang-diffusion <agent-skill-dir>/sol-engine-sglang-diffusion
 cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
 cp -R skills/vllm-sota-humanize-loop <agent-skill-dir>/vllm-sota-humanize-loop
 cp -R skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
@@ -340,7 +264,6 @@ skills/
 ├── llm-torch-profiler-analysis/     # profiler capture and trace triage
 ├── llm-pipeline-analysis/           # forward/layer/kernel trace analysis
 ├── model-compute-simulation/        # operator FLOPs, tensor shapes, and MFU
-├── sol-engine-sglang-diffusion/     # upstream Sol Engine + SGLang Diffusion knowledge
 ├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
 ├── vllm-sota-humanize-loop/         # Humanize-governed vLLM SOTA loop
 ├── sglang-prod-incident-triage/     # replay-first serving incident workflow
