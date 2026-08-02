@@ -32,12 +32,15 @@ locked workload and passed clean-room revalidation. A search plateau produces
 certificate showing that the target latency is below the scoped achievable
 bound.
 
-## Quick start: install the conversational skill
+## Legacy status and current recommended skill
 
-Most users should install
-[`sglang-diffusion-auto-optimize`](../skills/sglang-diffusion-auto-optimize/)
-and let the agent own this controller. The controller does not need to be
-installed manually on the local machine.
+This standalone controller remains available for direct and historical use,
+but it is no longer the implementation behind the recommended conversational
+flow. Install
+[`sol-engine-sglang-diffusion`](../skills/sol-engine-sglang-diffusion/) when
+you want the complete upstream Sol Engine campaign. The new skill does not
+invoke this package or reuse its controller, verifier, scheduling, quality, or
+termination logic.
 
 For Codex:
 
@@ -45,8 +48,8 @@ For Codex:
 git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
 cd AI-Infra-Auto-Driven-SKILLS
 mkdir -p ~/.codex/skills
-ln -s "$PWD/skills/sglang-diffusion-auto-optimize" \
-  ~/.codex/skills/sglang-diffusion-auto-optimize
+ln -s "$PWD/skills/sol-engine-sglang-diffusion" \
+  ~/.codex/skills/sol-engine-sglang-diffusion
 ```
 
 Restart Codex after installing. For Claude Code:
@@ -58,15 +61,15 @@ Restart Codex after installing. For Claude Code:
 ```
 
 The Claude Code skill is named
-`ai-infra-auto-driven-skills:sglang-diffusion-auto-optimize`.
+`ai-infra-auto-driven-skills:sol-engine-sglang-diffusion`.
 
-## Start a campaign with one request
+## Start the upstream Sol campaign with one request
 
 Provide four inputs: the target machine, model, exact native SGLang Diffusion
 baseline command, and measured end-to-end speedup target.
 
 ```text
-Use sglang-diffusion-auto-optimize.
+Use sol-engine-sglang-diffusion.
 
 Machine: <machine skill or SSH alias>
 Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
@@ -80,33 +83,14 @@ python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py
 --output-dir /persistent/benchmarks/wan22-baseline
 
 Target: 2x measured end-to-end speedup.
-Own the campaign until the target is verified, the reviewed search space is
-exhausted, or a checkable unreachable certificate is produced.
+Run the full upstream Sol Engine campaign and return an apply-checked patch
+against the SGLang main commit frozen at launch.
 ```
 
-The prompt file must contain exactly five non-empty validation prompts. The
-baseline command must be a native SGLang Diffusion offline benchmark command;
-shell pipelines, redirects, command substitutions, secret assignments, model
-mismatches, and ambiguous duplicate workload flags are rejected rather than
-silently rewritten.
+The remainder of this document describes direct operation of the legacy
+`sgl-diffusion-engine` package, not the upstream-Sol skill above.
 
-The user-selected command also freezes the parallel topology. The controller
-does not add `--performance-mode speed`, and candidates cannot add or change
-TP/PP/CP/SP/Ulysses/ring/CFG degrees. Profiling instrumentation and relocated
-output paths are recorded separately from the frozen invocation.
-
-The skill resolves the matching host instructions or SSH alias, finds the
-container and persistent storage, locks the latest fetched SGLang `main`
-commit, bootstraps this controller remotely, freezes the command, and invokes
-the detached launcher. It owns profiling, candidate routing, Executor/Master
-rounds, correctness checks, integration, monitoring, recovery, and patch
-packaging. The conversation and SSH connection do not need to remain open.
-
-Submitting the same request again is idempotent: it reuses the existing
-campaign and restarts only a missing or stale campaign-owned watchdog. It does
-not rerun or refresh the frozen baseline.
-
-## Progress display
+## Legacy controller progress display
 
 The agent sends concise updates at meaningful transitions. Every update comes
 from persisted campaign evidence rather than an executor's projected

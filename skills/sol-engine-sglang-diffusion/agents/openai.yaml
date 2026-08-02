@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sol Engine SGLang Diffusion"
+  short_description: "Run upstream Sol Engine with SGLang Diffusion knowledge"
+  default_prompt: "Use $sol-engine-sglang-diffusion to optimize this SGLang Diffusion workload with the full upstream Sol Engine and return a patch against the frozen latest main."

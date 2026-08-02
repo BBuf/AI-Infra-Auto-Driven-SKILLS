@@ -176,7 +176,7 @@
       "type": "string"
     },
     "run_root": {
-      "default": "runs/sglang-diffusion-auto-optimize",
+      "default": "runs/sgl-engine-sglang-diffusion",
       "format": "path",
       "title": "Run Root",
       "type": "string"

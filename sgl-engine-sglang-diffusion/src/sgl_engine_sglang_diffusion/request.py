@@ -166,7 +166,7 @@ class LaunchRequest(StrictModel):
         default_factory=lambda: AgentSpec(command=["codex", "exec"])
     )
     token_budget: int | None = Field(default=None, gt=0)
-    run_root: Path = Path("runs/sglang-diffusion-auto-optimize")
+    run_root: Path = Path("runs/sgl-engine-sglang-diffusion")
     idempotency_key: str | None = None
     source: SourceSpec | None = None
 

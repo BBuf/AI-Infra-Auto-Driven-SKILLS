@@ -46,7 +46,7 @@ find it.
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`model-pr-diff-dossier`](skills/model-optimization/model-pr-diff-dossier/) | You need to create or revise model PR history docs with manual diff-reviewed cards instead of shallow PR-title summaries. |
 | [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | You need to turn a new SGLang model architecture into a public Day-0 PR DAG, parallel/kernel adaptation plan, seven-gate validation matrix, release lock, and sanitized evidence bundle. |
-| [`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/) | You want to name a GPU machine, diffusion model, baseline command, and end-to-end speedup target, then let one persistent agent campaign own SGLang/kernel optimization, Sol-compatible validation, token accounting, progress, recovery, and patch packaging. |
+| [`sol-engine-sglang-diffusion`](skills/sol-engine-sglang-diffusion/) | You want the complete upstream Sol Engine Master/Executor flow to optimize an SGLang Diffusion workload with pinned KDA-Pilot and SGLang knowledge, then emit an apply-checked patch against the latest main commit frozen at launch. |
 | [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
@@ -68,26 +68,22 @@ comparison_frameworks: [vllm]
 Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
 ```
 
-## SGL-Engine for SGLang Diffusion
+## Upstream Sol Engine for SGLang Diffusion
 
-[`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) is an executable,
-persistent Sol-Engine-compatible optimization controller. It locks an SGLang
-revision, runs isolated technique agents, independently verifies their real GPU
-evidence, integrates accepted candidates, and emits a clean-room-checked
-`sglang.patch` with a `--quality off|auto|<profile-id>` runtime profile.
+[`sol-engine-sglang-diffusion`](skills/sol-engine-sglang-diffusion/) runs the
+complete upstream [Sol Engine](https://github.com/NVlabs/Sana/tree/sol-engine)
+campaign for an SGLang Diffusion workload. It does not implement a competing
+controller: Sol's Master/Executor strategy, technique registry, correctness
+modes, quality judgments, verifier, integration, recovery, and termination all
+remain unchanged.
 
-The controller is agentic but remains the sole outer state machine: it launches
-serial GPU-active Executor/Master rounds, can reuse pinned Sol components
-without invoking Sol's full campaign, parses raw traces, actively writes and
-profiles kernels with KernelWiki/NCU/warp-specialization evidence, composes all
-positive candidates, and fails closed on the five-prompt video/audio quality
-gate.
-
-The recommended entrypoint is the installable
-[`sglang-diffusion-auto-optimize`](skills/sglang-diffusion-auto-optimize/)
-skill. You do not need to write a campaign YAML, install the controller by
-hand on the GPU machine, keep an SSH terminal open, or manually resume failed
-agent rounds.
+The skill adds only a campaign-local SGLang model adapter, a pinned knowledge
+manifest, lane-specific knowledge in Sol's existing Executor seed goals, and a
+final patch exporter. KDA-Pilot diffusion kernels, KernelWiki/NCU evidence,
+SGLang Diffusion source, recent Git history, and reviewed PR rules generate
+hypotheses; upstream Sol alone accepts or rejects them. The final
+`sglang.patch` is checked against the SGLang `main` commit fetched and frozen at
+campaign launch.
 
 ### Install
 
@@ -97,8 +93,8 @@ For Codex, clone this repository and expose the one skill:
 git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
 cd AI-Infra-Auto-Driven-SKILLS
 mkdir -p ~/.codex/skills
-ln -s "$PWD/skills/sglang-diffusion-auto-optimize" \
-  ~/.codex/skills/sglang-diffusion-auto-optimize
+ln -s "$PWD/skills/sol-engine-sglang-diffusion" \
+  ~/.codex/skills/sol-engine-sglang-diffusion
 ```
 
 Restart Codex after installing. For Claude Code, install the complete plugin:
@@ -110,15 +106,15 @@ Restart Codex after installing. For Claude Code, install the complete plugin:
 ```
 
 The Claude Code skill name is
-`ai-infra-auto-driven-skills:sglang-diffusion-auto-optimize`.
+`ai-infra-auto-driven-skills:sol-engine-sglang-diffusion`.
 
 ### Start one autonomous campaign
 
-Tell the agent only the machine, model, exact native SGLang Diffusion baseline
-command, and measured end-to-end target:
+Tell the agent the machine, model, exact native SGLang Diffusion baseline
+command, and requested target or Sol technique selection:
 
 ```text
-Use sglang-diffusion-auto-optimize.
+Use sol-engine-sglang-diffusion.
 
 Machine: <machine skill or SSH alias>
 Model: Wan-AI/Wan2.2-T2V-A14B-Diffusers
@@ -132,60 +128,22 @@ python/sglang/multimodal_gen/benchmarks/bench_offline_throughput.py
 --output-dir /persistent/benchmarks/wan22-baseline
 
 Target: 2x measured end-to-end speedup.
-Own the campaign until the target is verified, the reviewed search space is
-exhausted, or a checkable unreachable certificate is produced.
+Run the complete upstream Sol Engine flow and return an apply-checked patch
+against the SGLang main commit frozen at launch.
 ```
 
-The prompt file must contain exactly five non-empty validation prompts. The
-agent discovers the named host instructions, enters its container, locks the
-latest fetched SGLang `main` commit, freezes the supplied command, runs the
-authoritative baseline, and starts a detached idempotent campaign. It then owns
-profiling, SGLang and kernel changes, Sol-compatible correctness checks,
-recovery, integration, and final `sglang.patch` packaging.
+At launch the agent pins the latest fetched upstream Sol `sol-engine` branch,
+SGLang `main`, KDA-Pilot, and its evidence submodules. It derives a model
+overlay from the pinned Sol schemas, pre-creates Sol experiments, injects only
+knowledge eligible for each registered lane, and launches
+`orchestration/run_orchestrated_experiment.py`. Sub-16-bit quantization remains
+knowledge-only unless that pinned Sol revision exposes a compatible
+quality-gated technique; it is never smuggled into a lossless kernel lane.
 
-### Progress display
-
-The agent reports meaningful state changes in the conversation. The durable
-campaign also maintains `PROGRESS.json` and renders a live view like this:
-
-```text
-Wan-AI/Wan2.2-T2V-A14B-Diffusers · gpu-host · TARGET 2.00x
-
-performance [██████████████░░░░░░] 1.68x / 2.00x
-search      [███████░░░░░░░░░░░░░] 43 / 120 rounds
-phase       SEARCHING · epoch 3 · elapsed 06:14:09
-latency     128.4000s baseline -> 76.4286s integrated
-tokens      182,430 total · 151,201 input · 31,229 output
-            [██████░░░░░░░░░░░░░░] 182,430 / 600,000
-            by role: executor=146,118, master=36,312
-
-technique          state       gate           tries  isolated e2e
-kernel             integrated  passed             8         1.27x
-cache              verified    passed             3         1.18x
-quantization       attempted   rejected_last      2             -
--------------------------------------------------------------------
-integrated stack                                  1.68x
-
-current: optimizing attention and fused normalization kernels
-```
-
-Token counts are recorded only when the agent runtime emits exact usage; they
-are never estimated from text size. Technique rows show independently verified
-full-workload results, while `integrated stack` is measured again after
-composition. Isolated speedups are never added together.
-
-The agent owns monitoring, but an operator can attach to the same durable
-campaign when needed:
-
-```bash
-sgl-diffusion-engine progress --campaign <campaign-dir> --watch
-```
-
-The workflow finishes only as `TARGET_REACHED`, `SEARCH_SPACE_EXHAUSTED`, or
-`UNREACHABLE_CERTIFIED`. Search exhaustion is not presented as a theoretical
-impossibility. See the
-[engineering README](sgl-engine-sglang-diffusion/README.md) for the evidence
-contract, low-level controller interface, artifacts, and patch application.
+The repository still contains the earlier standalone
+[`sgl-engine-sglang-diffusion`](sgl-engine-sglang-diffusion/) controller for
+historical/direct use. The new skill neither invokes nor modifies its
+implementation.
 
 ## Model PR History Catalog
 
@@ -310,7 +268,7 @@ ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
 ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
 ln -s "$PWD/skills/model-optimization/model-pr-diff-dossier" ~/.claude/skills/model-pr-diff-dossier
 ln -s "$PWD/skills/model-optimization/sglang-model-day0-support" ~/.claude/skills/sglang-model-day0-support
-ln -s "$PWD/skills/sglang-diffusion-auto-optimize" ~/.claude/skills/sglang-diffusion-auto-optimize
+ln -s "$PWD/skills/sol-engine-sglang-diffusion" ~/.claude/skills/sol-engine-sglang-diffusion
 ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
 ln -s "$PWD/skills/vllm-sota-humanize-loop" ~/.claude/skills/vllm-sota-humanize-loop
 ln -s "$PWD/skills/sglang-prod-incident-triage" ~/.claude/skills/sglang-prod-incident-triage
@@ -323,7 +281,7 @@ for example `[$llm-serving-auto-benchmark]`,
 `[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
 `[$llm-pipeline-analysis]`, `[$model-compute-simulation]`,
 `[$model-pr-diff-dossier]`, `[$sglang-model-day0-support]`,
-`[$sglang-diffusion-auto-optimize]`,
+`[$sol-engine-sglang-diffusion]`,
 `[$sglang-sota-humanize-loop]`, or `[$vllm-sota-humanize-loop]`.
 
 If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
@@ -344,7 +302,7 @@ cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
 cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
 cp -R skills/model-optimization/model-pr-diff-dossier <agent-skill-dir>/model-pr-diff-dossier
 cp -R skills/model-optimization/sglang-model-day0-support <agent-skill-dir>/sglang-model-day0-support
-cp -R skills/sglang-diffusion-auto-optimize <agent-skill-dir>/sglang-diffusion-auto-optimize
+cp -R skills/sol-engine-sglang-diffusion <agent-skill-dir>/sol-engine-sglang-diffusion
 cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
 cp -R skills/vllm-sota-humanize-loop <agent-skill-dir>/vllm-sota-humanize-loop
 cp -R skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
@@ -387,7 +345,7 @@ skills/
 ├── llm-torch-profiler-analysis/     # profiler capture and trace triage
 ├── llm-pipeline-analysis/           # forward/layer/kernel trace analysis
 ├── model-compute-simulation/        # operator FLOPs, tensor shapes, and MFU
-├── sglang-diffusion-auto-optimize/  # remote autonomous diffusion speedup campaigns
+├── sol-engine-sglang-diffusion/     # upstream Sol Engine + SGLang Diffusion knowledge
 ├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
 ├── vllm-sota-humanize-loop/         # Humanize-governed vLLM SOTA loop
 ├── sglang-prod-incident-triage/     # replay-first serving incident workflow
