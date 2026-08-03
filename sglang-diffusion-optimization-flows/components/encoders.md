@@ -21,6 +21,8 @@ workflow 草稿
 
 5. （并行）针对真实 sequence/hidden/head shape 调研 Transformers、SGLang、FlashInfer、FlashAttention、PyTorch 和 CUTLASS/Triton 已有 kernel，并用 ncu-report skill判断优化空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 encoder/input/mask/dtype/shape/device guard、cache 测试和 fallback 的 kernel。
 
+   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+
 6. （并行）研究 compile 后仍未解决的等价 fuse，优先减少 global memory 读写、token/condition packing、reshape/shuffle、mask materialize、projection copy 和 CPU/GPU 往返；重点检查 QKV+norm+RoPE、MLP、projection+packing、批量 encoder 与重复条件消除。cache key 必须覆盖所有改变 embedding 的输入。
 
 7. 用独立 prompt、图片/音频和动态 session 验收 embedding、E2E、p50/p95、显存和 cache。encoder output cosine 至少 0.98、normalized MSE 在预设容差内，无 NaN/Inf、stale cache 或语义串扰；20 次 warmup、100 次计时且 encoder 与完整 E2E 均超过方差才接受，否则回到第 4 步。

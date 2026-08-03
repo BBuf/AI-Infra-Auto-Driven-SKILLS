@@ -27,6 +27,8 @@ workflow 草稿
 
 5. （并行）针对真实 shape 调研 SGLang、FlashInfer、FlashAttention、SDPA、xFormers、PyTorch、CUTLASS/Triton 已有 kernel，并用 ncu-report skill判断 compute、memory、occupancy 或 launch bound。head_dim 等盲区仍是关键热点时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带严格 guard、测试与 fallback 的 kernel。
 
+   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+
 6. （并行）研究 compile 后仍未融合好的等价操作，优先减少 global memory 读写、reshape/shuffle、repeat、cat、permute、packed layout materialize 和全量 gather；重点检查 QKV+norm+RoPE、attention output projection、scale-shift-gate、residual、MLP activation 与通信 overlap，一次只合入一个可归因改动。
 
 7. 使用独立 latent/timestep/context 和 E2E prompt 验收精度、组件速度、E2E 与多卡通信。DiT/block cosine 至少 0.995、normalized MSE 不超过 1e-4，最终 PSNR/SSIM 在预设容差内；20 次 warmup、100 次计时且组件与 E2E 都超过方差才接受，否则回到第 4 步。

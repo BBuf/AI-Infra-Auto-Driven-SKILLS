@@ -22,6 +22,8 @@ workflow 草稿
 
 5. （并行）针对真实 H3 VAE shape 调研 SGLang、Diffusers、PyTorch/cuDNN、FlashAttention 和 CUTLASS/Triton 已有实现，用 ncu-report skill判断 memory、compute、occupancy 或 launch bound。需要新实现时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 H3 config/dtype/channels/frames/tile/device guard、exact test 和 fallback 的 kernel。
 
+   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+
 6. （并行）研究 eager/compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、reshape/shuffle、temporal/spatial layout 转换、tile materialize 和 overlap 重复计算；重点证明 norm+activation、bias/residual、upsample+conv、attention output projection 和 tile blend 的等价条件。不得为了速度绕过 released tile contract。
 
 7. 用独立 T2VA、FL2VA、Ref2VA latent 和联合音视频 E2E 验收。component cosine 至少 0.999、normalized MSE 不超过 1e-4，逐帧 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002，无 seam/flicker且 A/V sync 不变；组件和 E2E 收益超过方差才接受，否则回到第 4 步继续执行第 5、6 步。

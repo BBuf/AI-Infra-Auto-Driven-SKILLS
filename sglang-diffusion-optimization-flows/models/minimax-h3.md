@@ -31,6 +31,8 @@ workflow 草稿
 
 5. （并行）针对真实 H3 热点 shape 先检查源码已有的 indexed modulation、head_dim 128 fused QK norm+RoPE、packed Ulysses QKV、usp_merge_heads、IPC A2A、batched TP AdaLN 和 dead-row removal 是否命中，再调研 SGLang、FlashInfer、FlashAttention、PyTorch 和 CUTLASS/Triton 是否有更快实现；用 ncu-report skill确认 compute、memory、occupancy、launch 或通信瓶颈。需要新 kernel 时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 H3 config/dtype/shape/topology guard、exact test 与 fallback 的实现。
 
+   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+
 6. （并行）研究 eager/compile 后仍不理想的数学等价 fuse，优先减少 global memory 读写、reshape/shuffle、packed/unpacked QKV、scale-shift-gate materialize、跨 rank gather、tile overlap/blend 和 audio/video 中间张量；重点检查 QK norm+RoPE、modulation、residual、norm/activation、causal Conv、upsample+conv、vocoder/resample 与 mux 前 copy。Cache-DiT、online FP8 和少步数均作为近似路线单独验收，一次只合入一个可归因改动。
 
 7. 用开发阶段未使用的 prompt、首尾帧和 reference 资产独立验收 T2VA、FL2VA、Ref2VA，并分别测试 TP2+Ulysses2、Ulysses4；B200/B300 可追加 Ulysses8。component cosine 至少 0.999、normalized MSE 不超过 1e-4，视频 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且无 seam/flicker，音频 sample/channel/duration/A-V sync 完全满足合同；20 次 warmup、100 次计时且目标组件和 E2E 都超过方差才接受，否则回到第 4 步继续执行第 5、6 步。

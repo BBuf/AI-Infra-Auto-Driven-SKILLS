@@ -22,6 +22,8 @@ workflow 草稿
 
 5. （并行）针对真实 audio shape 调研 PyTorch、TorchAudio、TorchCodec、Diffusers、SGLang、cuDNN 和 CUTLASS/Triton 已有 kernel，并用 ncu-report skill判断空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 implementation/sample-rate/window/dtype/shape/device guard、测试和 fallback 的 kernel。
 
+   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+
 6. （并行）研究 compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、重复 resample/cast/permute、mel/window materialize、overlap-add 临时张量和 mux 前 copy；重点检查 conv+bias+activation、norm+activation、vocoder、resample 批量化和 layout 消除，保持 padding/causal 语义。
 
 7. 用独立 latent 和联合音视频样本验收 component、waveform 和 E2E。audio cosine 至少 0.999、normalized MSE 不超过 1e-4，sample rate/channels/sample count/duration/A-V sync 完全符合合同；20 次 warmup、100 次计时和 1000 次 soak 均稳定且组件/E2E 收益超过方差才接受，否则回到第 4 步。

@@ -27,6 +27,8 @@ workflow 草稿
 
 5. （并行）针对真实热点 shape 调研 SGLang、FlashInfer、FlashAttention、Diffusers、PyTorch 和 CUTLASS/Triton 现有 kernel，再用 ncu-report skill确认优化空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发 attention、upsampler 或 VAE 专用 kernel，并保留严格 guard 和 fallback。
 
+   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+
 6. （并行）研究 compile 后仍未解决的 fuse，优先减少 global memory 读写、reshape/shuffle、permute、tile materialize 和通信等待；重点验证 QKV/RoPE/norm、modulation、residual、GroupNorm+SiLU、upsample+conv 和 tile overlap/blend 的数学等价融合。
 
 7. 用独立 prompt、视频和 topology 验收原模型与 Fast 版本的精度、速度、显存和 scaling。component cosine 至少 0.999、normalized MSE 不超过 1e-4，逐帧 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002并且无 seam/flicker；20 次 warmup、100 次计时且收益超过方差才接受，否则回到第 4 步。
