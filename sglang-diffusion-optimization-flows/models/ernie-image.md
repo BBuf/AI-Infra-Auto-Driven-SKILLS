@@ -13,21 +13,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model ernie-image-turbo --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 固定 prompt、seed、1024px 分辨率、steps、guidance、dtype 和 GPU topology，保存 eager 输出与进入 VAE decoder 的 latent。使用固定图像重建集比较 PSNR、SSIM、LPIPS、颜色和文字细节；Turbo 与 Base 分开建立质量和性能 reference。
+2. 使用固定输入建立模型端到端精度基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。
 
-3. 分析 ERNIE-Image native pipeline，拆分 condition encoder、DiT attention/MLP/modulation、scheduler、AutoencoderKLFlux2 encode/decode 和 postprocess；记录 latent scaling、patch/config、batch norm、tile 参数和各阶段真实 shape。
+3. 分析模型架构。
 
-4. profile torch.compile 后的完整 E2E、denoise 和 VAE stage，按组件及 kernel 汇总耗时，定位 joint attention、GEMM、norm、RoPE、batch norm、resblock、upsample、tile blend、layout copy 与 graph break；保留相同输入的 eager trace用于对照。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-   ~~~bash
-   PYTHONPATH=python python3 "$BENCH_PY" --model ernie-image-turbo --label compile-baseline --output-dir "$BENCH_DIR"
-   # 将 helper 打印的 sglang generate 命令原样重跑，并追加：--profile --profile-all-stages
-   ~~~
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。如果 profile 明确确认模型受 attention 限制，则 fork 当前 SGLang 使用的 FlashAttention，针对真实 shape 修改并验证。
 
-5. （并行）针对 profile 的关键 shape 调研 SGLang、FlashInfer、FlashAttention、Diffusers、PyTorch、CUTLASS/Triton 已有实现，并用 ncu-report skill 分析瓶颈。已有 kernel 不够快时启动 kernel design sub agent，使用 ultra 模式和 KernelWiki、ncu-report skill 开发专用 kernel，保留 dtype、channels、stride、tile 和设备 guard 以及原实现 fallback。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
-
-6. （并行）研究 compile 后仍未融合好的数学等价路径，优先消除 global memory 往返、reshape/shuffle、permute/cat 和重复标准化；重点检查 modulation、norm+activation、residual、upsample+conv、tile overlap/blend 与 latent scaling 的融合。量化、少步数和 cache 路线单独记为近似优化。
-
-7. 使用独立 prompt 与重建样本复验 Turbo 和 Base 的精度、速度与显存。component cosine 至少 0.999、normalized MSE 不超过 1e-4，PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002；20 次 warmup、100 次计时并确认 native backend 无 fallback，收益超过方差才接受，否则回到第 4 步继续优化。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

@@ -12,16 +12,14 @@ workflow 草稿
    pytest -q python/sglang/multimodal_gen/test/server/test_server_1_gpu.py -k lingbot_world_realtime_plastic_beach -s
    ~~~
 
-2. 固定 chunk、camera、prompt events、seed、resolution、fps、steps、dtype 和 topology，分别保存 V1/V2 首 chunk 与 steady-state reference。检查逐帧 PSNR/SSIM、chunk seam、prompt/camera 切换、stale frame、运动连续性、cache reset、长时显存和 steady-state FPS。
+2. 使用固定输入建立模型端到端精度基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。
 
-3. 分析 realtime pipeline，拆分 condition encoder、camera conditioner、DiT、bounded sink-window KV cache、dynamic condition/cross-attention cache、Wan-style causal VAE、lazy black-frame encode、预分配 writer、scheduler 和 postprocess，记录 cache key、窗口、shape 与事件状态机。
+3. 分析模型架构。
 
-4. profile torch.compile 后首 chunk、steady-state chunk 和事件切换的组件/kernel 耗时，重点定位 attention、cache copy、A2A、camera packing、causal Conv3d、tile blend、writer、CPU sync 与 graph break；报告首帧延迟和稳定 FPS。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 chunk shape 调研 SGLang、FlashInfer、FlashAttention、Diffusers、PyTorch 和 CUTLASS/Triton 已有实现，用 ncu-report skill分析热点。需要新 kernel 时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 window/cache/event/dtype/device guard 与 fallback 的实现。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。如果 profile 明确确认模型受 attention 限制，则 fork 当前 SGLang 使用的 FlashAttention，针对真实 shape 修改并验证。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-6. （并行）研究 compile 后仍未解决的等价 fuse，优先减少 global memory 读写、cache materialize、reshape/shuffle、condition packing、跨 rank gather 与帧缓冲复制；重点检查 modulation、norm/activation、residual、causal Conv3d、upsample+conv 和 tile blend，保持 bounded cache 与事件语义。
-
-7. 用独立长时间交互序列验收 V1/V2 的首 chunk 延迟、steady-state FPS、显存和输出正确性。component cosine 至少 0.999、normalized MSE 不超过 1e-4，视频 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002，任何 stale frame、串扰、无界 cache 或 seam 都直接拒绝；性能不够则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

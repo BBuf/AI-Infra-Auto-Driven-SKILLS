@@ -14,14 +14,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model minimax-h3-t2va --label eager-baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 用 H3 eager T2VA 保存最终 video latent，并从 FL2VA/Ref2VA 保存 encode 输入，建立唯一 lossless reference；当前 torch.compile 结果不能充当 reference。固定 1344x768、124 帧、24 fps、tile/overlap、BF16、TP2+Ulysses2，比较 component cosine/MSE、逐帧 PSNR/SSIM、最差帧、seam、flicker、帧数和时间戳。
+2. 测试固定视频重建数据集上的 PSNR，建立优化前的精度基线。
 
-3. 分析 MiniMaxH3VideoVAE 架构，拆分 encode、默认 overlapping tiled decode、conv、resblock、attention、norm/activation、upsample、tile blend 和 postprocess，并从 MiniMaxH3VAEDecodingStage 中剥离 audio VAE 与 mux。记录 channels、frames、stride、padding、dtype、layout 和 tile recipe；released contract 禁止 spatial、spatial-shard 和 patch decode。
+3. 分析 decoder 架构。
 
-4. 用保存的 latent 建 VAE-only harness，先 profile eager，再用相同输入单独 profile torch.compile 候选，按组件和 kernel 定位 causal/spatial conv、resblock、attention、norm/activation、upsample、tile overlap/blend、layout copy 和 graph break；compile 数值变化单独记录，20 次 warmup、100 次计时。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 H3 VAE shape 调研 SGLang、Diffusers、PyTorch/cuDNN、FlashAttention 和 CUTLASS/Triton 已有实现，用 ncu-report skill判断 memory、compute、occupancy 或 launch bound。需要新实现时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 H3 config/dtype/channels/frames/tile/device guard、exact test 和 fallback 的 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）研究 eager/compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、reshape/shuffle、temporal/spatial layout 转换、tile materialize 和 overlap 重复计算；重点证明 norm+activation、bias/residual、upsample+conv、attention output projection 和 tile blend 的等价条件。不得为了速度绕过 released tile contract。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 用独立 T2VA、FL2VA、Ref2VA latent 和联合音视频 E2E 验收。component cosine 至少 0.999、normalized MSE 不超过 1e-4，逐帧 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002，无 seam/flicker且 A/V sync 不变；组件和 E2E 收益超过方差才接受，否则回到第 4 步继续执行第 5、6 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

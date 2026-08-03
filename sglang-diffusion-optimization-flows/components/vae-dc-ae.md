@@ -13,14 +13,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model sana-1.5-1.6b --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 保存 512px 和 1024px 的真实 latent，在 ImageNet-val 或固定重建集上建立 eager reference。记录 output cosine、normalized MSE、PSNR、SSIM、LPIPS，并重点检查 32x compression 下的细线、文字、小物体、颜色和 tile seam；600M、1.6B、4.8B 的代表 config 分别验收。
+2. 测试 ImageNet-val 数据集上的 PSNR，建立优化前的精度基线。
 
-3. 分析 AutoencoderDC wrapper 与 Diffusers inner model，拆分 encode/decode、conv、channel mixing、norm/activation、upsample、tiling 和 postprocess；记录真实 channels、stride、compression ratio、tile、dtype、layout 和 wrapper copy。
+3. 分析 decoder 架构。
 
-4. 用保存的 latent 建 decode-only harness，profile torch.compile 后 wrapper、inner model、各层和 kernel 耗时，定位 conv、channel mixing、upsample、layout conversion、tile blend、graph break 和 launch overhead；20 次 warmup、100 次计时并保留 eager trace。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 DC-AE shape 调研 Diffusers、PyTorch/cuDNN、SGLang、CUTLASS/Triton 已有实现，并用 ncu-report skill判断优化空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 config/dtype/channels/stride/tile/device guard、测试和 fallback 的 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）研究 compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、wrapper copy、reshape/shuffle、layout 转换和 tile 临时张量；重点检查 channel mixing、norm+activation、residual、upsample+conv 和 tile overlap/blend，不能假设与其他 VAE 的 tiling 语义相同。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 用独立 ImageNet-val/重建样本和 SANA 600M/1.6B E2E 验收精度、速度和显存。component cosine 至少 0.999、normalized MSE 不超过 1e-4，PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且细节/颜色无回归；组件和 E2E 都超过方差才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

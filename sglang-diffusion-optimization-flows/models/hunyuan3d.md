@@ -13,21 +13,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model hunyuan3d-shape --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 固定输入图、seed、point 数、steps、dtype 和 topology，保存 eager point/latent/mesh reference。检查 latent、顶点/面数量、有限值、包围盒、抽样 Chamfer、mesh 可加载性和明显拓扑破损；shape 稳定后再开启 paint，并对 paint 输出另做 PSNR/SSIM/LPIPS。
+2. 使用固定输入建立模型端到端精度基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。
 
-3. 分析 pipeline 架构，拆分图像 condition encoder、shape DiT、ShapeVAE decode、surface extraction、mesh export、可选 paint 的 multiview UNet/AutoencoderKL 和 postprocess，记录各阶段 shape、dtype、CPU/GPU 边界和调用次数。
+3. 分析模型架构。
 
-4. profile torch.compile 后各组件与 kernel 耗时，分清 attention/GEMM/scatter、ShapeVAE 和 marching-cubes 类后处理，定位 layout、indexing、空 tensor、CPU sync、mesh export 和 graph break；保持相同 eager trace作为对照。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-   ~~~bash
-   PYTHONPATH=python python3 "$BENCH_PY" --model hunyuan3d-shape --label compile-baseline --output-dir "$BENCH_DIR"
-   # 将 helper 打印的 sglang generate 命令原样重跑，并追加：--profile --profile-all-stages
-   ~~~
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。如果 profile 明确确认模型受 attention 限制，则 fork 当前 SGLang 使用的 FlashAttention，针对真实 shape 修改并验证。
 
-5. （并行）针对真实点数和 latent shape 调研 SGLang、PyTorch、Diffusers、Kaolin、CUTLASS/Triton 中已有高性能实现，并用 ncu-report skill分析热点 kernel。需要新实现时启动 kernel design sub agent，使用 ultra 模式和 KernelWiki、ncu-report skill开发带 point-count、dtype、layout、device guard 与 fallback 的 kernel。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
-
-6. （并行）研究 compile 后仍未处理好的等价 fuse，优先减少 global memory 读写、重复 gather/scatter、reshape/shuffle、index materialize 和 CPU/GPU 往返；重点检查 projection、norm/activation、residual、point packing 与 surface 后处理批量化。不得用改变网格拓扑的近似替换冒充 lossless fuse。
-
-7. 用独立输入图和 mesh 样本验收精度、速度、显存及输出可用性。component cosine 至少 0.999、normalized MSE 不超过 1e-4，顶点/面、包围盒和 Chamfer 在预设容差内且无拓扑破损；20 次 warmup、100 次计时，shape stage 与完整 mesh E2E 都超过方差才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

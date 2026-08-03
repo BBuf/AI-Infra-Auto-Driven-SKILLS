@@ -14,14 +14,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model flux --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 从真实 pipeline 保存 latent，并在 ImageNet-val 或对应视频/音频/shape 重建集上建立 eager reference。记录 component cosine、normalized MSE、PSNR、SSIM、LPIPS 或领域指标；固定 checkpoint、shape、dtype、tile/cache、seed 和 topology，不要求 bit-identical，但先定义合理容差。
+2. 测试对应重建数据集上的精度，建立优化前的精度基线。
 
-3. 分析 decoder 架构并为每个候选写等价式和适用前提：nearest 2x upsample+3x3 Conv 到 ConvTranspose2d、causal Conv3d 单帧到 Conv2d、attention output projection 折叠进 value projection、bias/residual 到 GroupNorm statistics，以及 attention head_dim 盲区。记录 dtype/layout/device/shape/cache/train guard 和可回滚的原路径。
+3. 分析 decoder 架构。
 
-4. profile torch.compile 后各组件和 kernel 耗时，确认候选位于真实热点且收益上限值得实现；用 decode-only harness 做 20 次 warmup、100 次计时，记录 global memory traffic、launch、layout、tile overlap、graph break 和 E2E 占比。torch.compile 已经完成的优化不重复包装。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）对关键 shape 调研 PyTorch、Diffusers、SGLang、cuDNN、FlashInfer、FlashAttention、CUTLASS/Triton 的现有实现，并用 ncu-report skill证明剩余空间。需要新 kernel 时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带完整 guard、幂等安装、restore/rollback、测试和 fallback 的实现。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）优先实现数学等价且能移除大中间张量的 rewrite，再研究 kernel 内 fuse；重点减少 global memory 读写、reshape/shuffle、layout conversion、tile materialize 和重复统计。离线合成权重使用 FP32，并记录 checkpoint/source/shape/dtype/topology 指纹；一次只提交一个候选。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 使用未参与开发的重建样本独立验收精度、组件速度、E2E 和 1000-call soak。component cosine 至少 0.999、normalized MSE 不超过 1e-4，图像/视频 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且边界/缓存语义正确；收益或精度不达标就拒绝候选并回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

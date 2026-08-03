@@ -14,14 +14,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model minimax-h3-t2va --label eager-baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 从真实 pipeline 保存进入 audio decoder 的 latent，并固定 sample rate、duration、channels、mel bins/hop、dtype 和 chunk/window，建立 eager waveform reference。比较 waveform cosine、normalized MSE、sample count、采样率、声道、峰值、响度、频谱以及 A/V duration/sync；覆盖静音、短音频、非整 chunk 和连续请求。
+2. 测试固定音频重建数据集上的精度，建立优化前的精度基线。
 
-3. 分析选中实现的架构，拆分 audio VAE、vocoder、mel preprocess、Conv1d/transpose conv、norm/activation、overlap-add、resample、layout、CPU I/O 和 mux；记录真实 tensor shape、padding/causal 语义、调用次数与 codec contract，不跨实现复用数值结论。
+3. 分析 decoder 架构。
 
-4. 对 isolate harness 和完整 E2E 分别 profile eager 与 torch.compile，按组件和 kernel 汇总耗时，定位 Conv1d、transpose conv、norm、activation、overlap-add、layout conversion、resample、mux、CPU sync 和 graph break；H3 保持 eager 为唯一 lossless reference。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 audio shape 调研 PyTorch、TorchAudio、TorchCodec、Diffusers、SGLang、cuDNN 和 CUTLASS/Triton 已有 kernel，并用 ncu-report skill判断空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 implementation/sample-rate/window/dtype/shape/device guard、测试和 fallback 的 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）研究 compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、重复 resample/cast/permute、mel/window materialize、overlap-add 临时张量和 mux 前 copy；重点检查 conv+bias+activation、norm+activation、vocoder、resample 批量化和 layout 消除，保持 padding/causal 语义。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 用独立 latent 和联合音视频样本验收 component、waveform 和 E2E。audio cosine 至少 0.999、normalized MSE 不超过 1e-4，sample rate/channels/sample count/duration/A-V sync 完全符合合同；20 次 warmup、100 次计时和 1000 次 soak 均稳定且组件/E2E 收益超过方差才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

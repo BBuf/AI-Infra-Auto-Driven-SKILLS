@@ -13,14 +13,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model hunyuan3d-shape --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 保存真实 point、latent、ShapeVAE 输出和 mesh reference，固定输入图、seed、point 数、dtype 和 topology。比较 latent cosine/MSE、顶点/面数量、有限值、包围盒、抽样 Chamfer、mesh 可加载性和拓扑；不能用图像 PSNR 代替 shape correctness。
+2. 测试固定 shape 重建数据集上的精度，建立优化前的精度基线。
 
-3. 分析 ShapeVAE 架构，拆分 point/latent packing、attention、GEMM、norm、projection、scatter/gather、decode、surface extraction 与 mesh export；记录真实 point count、hidden shape、dtype、padding、index layout、空 tensor 和 CPU/GPU 边界。
+3. 分析 decoder 架构。
 
-4. 用保存的 point/latent 建 component harness，profile torch.compile 后 ShapeVAE 各层与 kernel 耗时，并将 surface/mesh 后处理单独归因；定位 attention、GEMM、scatter/gather、index materialize、layout copy、CPU sync 和 graph break，20 次 warmup、100 次计时。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 point/latent shape 调研 PyTorch、SGLang、Kaolin、PyTorch3D、CUTLASS/Triton 已有 kernel，并用 ncu-report skill判断优化空间。需要新实现时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 point-count/index/dtype/shape/device guard、测试和 fallback 的 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）研究 compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、重复 scatter/gather、reshape/shuffle、index materialize 和 CPU/GPU 往返；重点检查 projection、norm/activation、residual、point packing 与可批量的 surface postprocess，不改变 mesh topology。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 用独立输入图、point cloud 和 mesh 样本验收精度、速度、显存与输出可用性。component cosine 至少 0.999、normalized MSE 不超过 1e-4，顶点/面、包围盒和 Chamfer 在预设容差内且无拓扑破损；ShapeVAE stage 与完整 mesh E2E 均超过方差才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

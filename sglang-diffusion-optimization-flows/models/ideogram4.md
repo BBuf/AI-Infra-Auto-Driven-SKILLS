@@ -14,21 +14,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model ideogram4-fp8 --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 固定含小字号文字、复杂布局和普通照片的 prompt 集、seed、分辨率、steps、dtype 和 topology，保存 eager output 与 latent。比较 PSNR、SSIM、LPIPS、OCR 字符准确率、拼写、布局和人工 artifact；FP8/NF4、Fast/Instant 分别建立质量预算。
+2. 使用固定输入建立模型端到端精度基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。
 
-3. 分析 native pipeline，拆分长 prompt encoder、DiT joint attention/MLP/modulation、FlashAttention backend、scheduler、AutoencoderKLFlux2 batch norm/resblock/upsample/tile、postprocess 和多卡通信，记录真实 shape 与量化 dtype。
+3. 分析模型架构。
 
-4. profile torch.compile 后的完整 E2E 和所有 stage，按组件及 kernel 汇总耗时，重点定位长 prompt encoder、attention head shape、GEMM、modulation、batch norm、upsample、tile blend、A2A、dequant 和 graph break；保留 eager trace对照。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-   ~~~bash
-   PYTHONPATH=python python3 "$BENCH_PY" --model ideogram4-fp8 --label compile-baseline --output-dir "$BENCH_DIR"
-   # 将 helper 打印的 sglang generate 命令原样重跑，并追加：--profile --profile-all-stages
-   ~~~
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。如果 profile 明确确认模型受 attention 限制，则 fork 当前 SGLang 使用的 FlashAttention，针对真实 shape 修改并验证。
 
-5. （并行）针对热点 shape 调研 SGLang、FlashInfer、FlashAttention、Diffusers、PyTorch 和 CUTLASS/Triton 已有 kernel，并使用 ncu-report skill确认性能空间。必要时启动 kernel design sub agent，使用 ultra 模式和 KernelWiki、ncu-report skill开发带 dtype/quant/config/device guard、fallback 及文字样本测试的关键 kernel。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
-
-6. （并行）研究 compile 后仍未完成的等价 fuse，优先减少 global memory 读写、reshape/shuffle、permute/cat、dequant materialize 和 tile 临时张量；重点检查 QKV/RoPE/norm、modulation、residual、batch norm/activation、upsample+conv 与 tile blend。
-
-7. 用独立文字和照片 prompt 验收各 variant 的精度、速度、显存和多卡 scaling。component cosine 至少 0.999、normalized MSE 不超过 1e-4，PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002，OCR/拼写和布局不得超出既定质量预算；20 次 warmup、100 次计时且 E2E 稳定获益才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

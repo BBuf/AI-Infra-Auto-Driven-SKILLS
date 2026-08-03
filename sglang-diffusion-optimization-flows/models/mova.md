@@ -13,21 +13,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model mova-720p --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 固定人物输入、prompt、seed、360p/720p、帧数、fps、steps、dtype 和 topology，保存 eager 视频与音频 reference。分别检查身份保持、逐帧 PSNR/SSIM、最差帧、waveform cosine/MSE、sample rate/channels、duration 和 A/V sync，禁止只验证容器可播放。
+2. 使用固定输入建立模型端到端精度基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。
 
-3. 分析 MOVA pipeline，拆分人物 condition encoder、DiT、video/audio branches、Wan-style causal 3D VAE、DAC audio VAE、scheduler、postprocess、mux 和分布式通信，记录 360p/720p 每阶段真实 shape、dtype、调用次数和条件 packing。
+3. 分析模型架构。
 
-4. profile torch.compile 后完整 E2E、video/audio stage 与所有 kernel，重点定位 attention、GEMM、A2A、人物条件、causal Conv3d、tile blend、DAC Conv1d、resample、mux、CPU sync 与 graph break；保留 eager trace对照。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-   ~~~bash
-   PYTHONPATH=python python3 "$BENCH_PY" --model mova-720p --label compile-baseline --output-dir "$BENCH_DIR"
-   # 将 helper 打印的 sglang generate 命令原样重跑，并追加：--profile --profile-all-stages
-   ~~~
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。如果 profile 明确确认模型受 attention 限制，则 fork 当前 SGLang 使用的 FlashAttention，针对真实 shape 修改并验证。
 
-5. （并行）对真实热点 shape 调研 SGLang、FlashInfer、FlashAttention、Diffusers、PyTorch、audio codec 和 CUTLASS/Triton 的已有实现，并用 ncu-report skill判断优化空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 resolution/audio/dtype/shape/device guard 与 fallback 的关键 kernel。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
-
-6. （并行）研究 compile 后仍未融合好的数学等价路径，优先减少 global memory 读写、人物条件 packing、reshape/shuffle、audio/video layout 转换、tile 临时张量和 mux 前 copy；重点检查 modulation、norm/activation、residual、causal Conv、upsample+conv、DAC/resample 与 tile blend。
-
-7. 用独立人物输入和 prompt 验收 360p/720p 的精度、速度、显存和 scaling。视频 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且身份不回归，audio normalized MSE 不超过 1e-4并保持 A/V sync；20 次 warmup、100 次计时且 video/audio 组件与 E2E 都超过方差才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

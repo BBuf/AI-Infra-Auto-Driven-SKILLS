@@ -14,14 +14,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model flux2 --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 从 FLUX.2、Ideogram 4 和 ERNIE-Image 各保存一个真实 latent shape，在固定重建集上分别建立 eager reference。记录 output cosine、normalized MSE、PSNR、SSIM、LPIPS、颜色和 tile seam；FP8/NVFP4 checkpoint 也记录 VAE 的实际 dtype，不能跨 config 复用数值结论。
+2. 测试 ImageNet-val 数据集上的 PSNR，建立优化前的精度基线。
 
-3. 分析 AutoencoderKLFlux2 架构，拆分 encode/decode、batch norm、resblock、attention、upsample、parallel tiling、tile blend 和 postprocess；记录每个 config 的 latent/patch、channels、stride、tile、dtype、layout 与调用次数。
+3. 分析 decoder 架构。
 
-4. 用保存的 latent 建 decode-only harness，profile torch.compile 后各组件与 kernel 耗时，定位 batch norm、conv、attention、resblock、upsample、tile blend、layout conversion、graph break 和 launch overhead；20 次 warmup、100 次计时并保留 eager trace。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 shape 调研 SGLang、Diffusers、PyTorch/cuDNN、FlashAttention、CUTLASS/Triton 已有 kernel，并用 ncu-report skill分析优化空间。需要新实现时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 model/config/dtype/channels/stride/tile/device guard、测试和 fallback 的 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）研究 compile 后仍未融合好的数学等价路径，优先减少 global memory 读写、reshape/shuffle、layout 转换和 tile 临时张量；重点检查 batch norm/activation、residual、upsample+conv、attention output projection 与 tile overlap/blend，一次只合入一个可归因改动。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 使用独立重建样本和 FLUX.2、Ideogram、ERNIE 固定 seed E2E 验收。component cosine 至少 0.999、normalized MSE 不超过 1e-4，PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且无 seam/色偏；组件与三种 config 的 E2E 收益都超过方差才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

@@ -13,14 +13,14 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model hunyuanvideo --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 保存生产分辨率和帧数的真实 latent，在固定视频重建集上建立 eager reference。记录 latent/output cosine、normalized MSE、逐帧 PSNR/SSIM、最差帧、首尾、seam 和 flicker；HunyuanVideo 与 FastHunyuan 分别验收，少步数质量变化不能归因给 VAE。
+2. 测试固定视频重建数据集上的 PSNR，建立优化前的精度基线。
 
-3. 分析 AutoencoderKLHunyuanVideo 架构，拆分 decoder conv、resblock、attention、upsampler GroupNorm+SiLU、temporal/spatial tiling、tile blend 与 decode postprocess；记录 channels、stride、padding、tile/overlap、dtype、layout、调用次数和 causal 边界。
+3. 分析 decoder 架构。
 
-4. 用保存的 latent 建 decode-only harness，profile torch.compile 后各组件与 kernel 耗时，先确认已有 Hunyuan/LTX upsampler fusion 是否命中，再定位 conv、resblock、attention、GroupNorm+SiLU、upsample、tile blend、layout copy 和 graph break；20 次 warmup、100 次计时。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实视频 shape 调研 SGLang、Diffusers、PyTorch/cuDNN、FlashAttention、CUTLASS/Triton 已有 kernel，并用 ncu-report skill确认优化空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 dtype/channels/frames/tile/device guard、测试和 fallback 的 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。
 
-6. （并行）研究 compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、reshape/shuffle、temporal/spatial layout 转换和 tile 临时张量；重点检查 GroupNorm+SiLU、residual、upsample+conv、attention output projection 与 tile overlap/blend，保持边界和时间语义。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 用独立 latent、视频和 FastHunyuan E2E 验收精度、速度与峰值显存。component cosine 至少 0.999、normalized MSE 不超过 1e-4，逐帧 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且无 seam/flicker；component 与 E2E 均稳定获益才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。

@@ -13,16 +13,14 @@ workflow 草稿
    sglang generate --backend sglang --model-path "$MODEL_DIR" --prompt "A long continuous walk through a city" --width 832 --height 480 --num-frames 61 --num-inference-steps 4 --guidance-scale 1.0 --seed 42 --save-output --enable-torch-compile --warmup --perf-dump-path "$BENCH_DIR/baseline.json"
    ~~~
 
-2. 固定 prompt、seed、分辨率、fps、steps、num_frames_per_block、dtype 和 topology，保存 eager reference；latent frame 数必须可被 block size 整除。检查逐帧 PSNR/SSIM、chunk seam、运动连续、首帧条件、cache reset、长程漂移和显存有界，官方/转换 layout 分别验收。
+2. 使用固定输入建立模型端到端精度基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。
 
-3. 分析 native pipeline，拆分 condition encoder、causal DiT、block cache、4-step DMD scheduler、I2V 首帧 encode、跨 chunk memory、Wan-style causal 3D VAE decode、postprocess 和通信，记录每阶段 shape、dtype、cache key 与调用次数。
+3. 分析模型架构。
 
-4. profile torch.compile 后首 chunk 和 steady-state 的完整 E2E、组件与 kernel，重点定位 attention、cache copy、A2A、causal Conv3d、resblock、upsample、tile blend、layout materialize、CPU sync 和 graph break；保留 eager trace对照。
+4. profile torch.compile 后各组件耗时和各种 kernel 耗时，定位关键 kernel 和可以 fuse 的部分。
 
-5. （并行）针对真实 chunk shape 调研 SGLang、FlashInfer、FlashAttention、Diffusers、PyTorch 和 CUTLASS/Triton 的已有实现，再用 ncu-report skill判断优化空间。必要时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 block/cache/dtype/shape/device guard 与 fallback 的关键 kernel。
+5. （并行）对于关键 kernel，首先调研是否已经存在对应 GPU 架构和参数下的高性能实现，之后使用 ncu-report skill profile 是否还有优化空间。需要开发时启动 kernel design sub agent，使用 ultra 模式，并结合 KernelWiki 和 ncu-report skill。如果 profile 明确确认模型受 attention 限制，则 fork 当前 SGLang 使用的 FlashAttention，针对真实 shape 修改并验证。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
+6. （并行）研究 compile 后仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-6. （并行）研究 compile 后仍未完成的等价 fuse，优先减少 global memory 读写、cache materialize、reshape/shuffle、layout copy 和跨 chunk gather；重点检查 modulation、norm/activation、residual、causal Conv3d、upsample+conv 与 tile overlap/blend，保持 DMD 和 causal 边界。
-
-7. 用独立长视频和连续 session 验收性能、显存、cache 与正确性。component cosine 至少 0.999、normalized MSE 不超过 1e-4，逐帧 PSNR 下降不超过 0.10 dB、SSIM 下降不超过 0.002且无 seam/flicker；20 次 warmup、100 次计时，首 chunk 和 steady-state 都稳定获益才接受，否则回到第 4 步。
+7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。
