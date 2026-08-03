@@ -31,6 +31,12 @@ model-family optimization history close to the code that actually changed.
 For standalone kernel campaigns and kernel evidence tools, see the sibling
 project **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)**.
 
+For model-by-model image, video, audio, and 3D optimization runs, see the
+Markdown-only **[SGLang Diffusion optimization flow
+library](sglang-diffusion-optimization-flows/)**. Every model and component
+flow is self-contained and intentionally repeats its environment, download,
+benchmark, profiling, optimization, and acceptance instructions.
+
 If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
 find it.
