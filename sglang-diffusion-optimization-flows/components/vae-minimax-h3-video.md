@@ -14,7 +14,7 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model minimax-h3-t2va --label eager-baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 测试固定视频重建数据集上的 PSNR，建立优化前的精度基线。
+2. 使用固定输入建立 VAE 组件质量基线。保存基线输出，并按 Sol Engine 的 quality-gated 方式记录与输出模态匹配的质量指标（图像和视频使用对齐 LPIPS）和 Agent 内置质量评审结果。
 
 3. 分析 decoder 架构。
 
@@ -24,4 +24,4 @@ workflow 草稿
 
 6. （并行）研究当前执行模式下仍未处理好的 fuse 机会，重点减少 global memory 读写、reshape 和 shuffle。优先研究数学等价操作的融合，例如 upsampling 与 convolution；其次研究 kernel 内部融合以减少访存。
 
-7. 用独立输入验收改进后的精度和速度。精度验收不要求 bit-identical，使用合理误差范围。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。
+7. 用独立输入验收改进后的质量和速度，并重复与基线相同的 Sol Engine quality-gated 评测。不要求 bitwise match；只要质量指标和 Agent 内置质量评审都在预先设定的可接受范围内，就认为精度通过。如果结果还不够好就回到第 4 步，再次执行第 5、6 步。
