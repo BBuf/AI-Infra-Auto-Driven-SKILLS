@@ -14,7 +14,7 @@ workflow 草稿
    PYTHONPATH=python python3 "$BENCH_PY" --model hunyuanvideo --label baseline --output-dir "$BENCH_DIR"
    ~~~
 
-2. 使用固定输入建立模型端到端质量基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。保存基线输出，并按 Sol Engine 的 quality-gated 方式记录与输出模态匹配的质量指标（图像和视频使用对齐 LPIPS）和 Agent 内置质量评审结果。
+2. 使用固定输入建立模型端到端质量基线。从 SGLang Diffusion 的 `sglang-diffusion-benchmark-profile` skill 中查找并执行该模型的 benchmark 命令；如果没有现成 preset，则按该 skill 的命令格式建立基线。保存基线输出，并按 Sol Engine（[NVlabs/Sana `sol-engine` 分支](https://github.com/NVlabs/Sana/tree/sol-engine)）的 quality-gated 方式记录与输出模态匹配的质量指标（图像和视频使用对齐 LPIPS）和 Agent 内置质量评审结果。
 
 3. 分析模型架构。
 
