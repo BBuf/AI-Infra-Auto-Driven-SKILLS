@@ -21,8 +21,6 @@ workflow 草稿
 
 5. （并行）针对真实 point/latent shape 调研 PyTorch、SGLang、Kaolin、PyTorch3D、CUTLASS/Triton 已有 kernel，并用 ncu-report skill判断优化空间。需要新实现时启动 kernel design sub agent，以 ultra 模式结合 KernelWiki 和 ncu-report skill开发带 point-count/index/dtype/shape/device guard、测试和 fallback 的 kernel。
 
-   如果 trace/NCU 明确证明 attention-bound，则必须立即 fork 当前 SGLang 所依赖版本的 FlashAttention，在 fork 中针对真实 head_dim、token、layout 和 GPU 架构修改 kernel 与 dispatch；特别覆盖 FlashAttention/cuDNN 当前不支持的 head_dim 384/512 等盲区，并让 SGLang 显式指向该 fork。不得只停留在调研或另写旁路原型；所有非目标 shape 保持 fail-closed 回退，最后用原模型、相同输入、NCU 与端到端精度/性能共同验收。
-
 6. （并行）研究 compile 后仍未融合好的数学等价操作，优先减少 global memory 读写、重复 scatter/gather、reshape/shuffle、index materialize 和 CPU/GPU 往返；重点检查 projection、norm/activation、residual、point packing 与可批量的 surface postprocess，不改变 mesh topology。
 
 7. 用独立输入图、point cloud 和 mesh 样本验收精度、速度、显存与输出可用性。component cosine 至少 0.999、normalized MSE 不超过 1e-4，顶点/面、包围盒和 Chamfer 在预设容差内且无拓扑破损；ShapeVAE stage 与完整 mesh E2E 均超过方差才接受，否则回到第 4 步。
