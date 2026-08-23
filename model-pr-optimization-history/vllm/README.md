@@ -1,6 +1,6 @@
 # vLLM Model PR Optimization History
 
-Refresh: `2026-07-28`. Source head: `vllm-project/vllm@b5bcb3ce881e1d324ff7f6176ef27606558dbd74`.
+Refresh: `2026-08-23`. Source head: `vllm-project/vllm@bbe8b23e1a2b32a96240b27f63255170d09ef144`.
 
 Current model families:
 

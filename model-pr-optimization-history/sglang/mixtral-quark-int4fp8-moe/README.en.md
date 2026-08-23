@@ -5,11 +5,11 @@
 | File | Git-traced PRs |
 | --- | --- |
 | `python/sglang/srt/layers/quantization/quark/__init__.py` | no direct PR-number commit |
-| `python/sglang/srt/layers/quantization/quark/quark.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#13147](https://github.com/sgl-project/sglang/pull/13147), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#25467](https://github.com/sgl-project/sglang/pull/25467), [#25694](https://github.com/sgl-project/sglang/pull/25694), [#27057](https://github.com/sgl-project/sglang/pull/27057), [#27204](https://github.com/sgl-project/sglang/pull/27204), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `python/sglang/srt/layers/quantization/quark/quark.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#13147](https://github.com/sgl-project/sglang/pull/13147), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#25467](https://github.com/sgl-project/sglang/pull/25467), [#25694](https://github.com/sgl-project/sglang/pull/25694), [#27057](https://github.com/sgl-project/sglang/pull/27057), [#27204](https://github.com/sgl-project/sglang/pull/27204), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291), [#35200](https://github.com/sgl-project/sglang/pull/35200) |
 | `python/sglang/srt/layers/quantization/quark/schemes/__init__.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#27204](https://github.com/sgl-project/sglang/pull/27204) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_scheme.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#19422](https://github.com/sgl-project/sglang/pull/19422), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
-| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` | [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#18684](https://github.com/sgl-project/sglang/pull/18684), [#21040](https://github.com/sgl-project/sglang/pull/21040), [#21067](https://github.com/sgl-project/sglang/pull/21067), [#21097](https://github.com/sgl-project/sglang/pull/21097), [#23585](https://github.com/sgl-project/sglang/pull/23585), [#23597](https://github.com/sgl-project/sglang/pull/23597), [#23760](https://github.com/sgl-project/sglang/pull/23760), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291) |
+| `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` | [#18005](https://github.com/sgl-project/sglang/pull/18005), [#18182](https://github.com/sgl-project/sglang/pull/18182), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#18684](https://github.com/sgl-project/sglang/pull/18684), [#21040](https://github.com/sgl-project/sglang/pull/21040), [#21067](https://github.com/sgl-project/sglang/pull/21067), [#21097](https://github.com/sgl-project/sglang/pull/21097), [#23585](https://github.com/sgl-project/sglang/pull/23585), [#23597](https://github.com/sgl-project/sglang/pull/23597), [#23760](https://github.com/sgl-project/sglang/pull/23760), [#28213](https://github.com/sgl-project/sglang/pull/28213), [#28291](https://github.com/sgl-project/sglang/pull/28291), ... (13 total) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a8_mxfp4_moe.py` | [#27204](https://github.com/sgl-project/sglang/pull/27204) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10485](https://github.com/sgl-project/sglang/pull/10485), [#18252](https://github.com/sgl-project/sglang/pull/18252), [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` | [#18252](https://github.com/sgl-project/sglang/pull/18252), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30786](https://github.com/sgl-project/sglang/pull/30786) |
@@ -24,9 +24,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 38
+- Git-traced PRs: 40
 - Extra PRs preserved from existing docs: 9
-- Total PRs in this document: 47
+- Total PRs in this document: 49
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -81,6 +81,8 @@
 | 2026-07-09 | [#25694](https://github.com/sgl-project/sglang/pull/25694) | merged | [Quantization][Bugfix]: Join multi-arg RuntimeError in Quark _check_scheme_supported | `test/registered/unit/layers/quantization/test_quark_config.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
 | 2026-07-14 | [#30786](https://github.com/sgl-project/sglang/pull/30786) | merged | [Kernel] Migrate scattered MoE kernels to sglang.kernels (RFC #29630, Phase 2.5, 2/7) | `python/sglang/srt/layers/quantization/quark/schemes/quark_w8a8_fp8_moe.py` |
 | 2026-07-21 | [#28291](https://github.com/sgl-project/sglang/pull/28291) | merged | [AMD][MXFP4] Reland "Online MXFP4 quantization 2/N - FP8 to MXFP4 requantization on AMD GPUs" | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
+| 2026-08-01 | [#33090](https://github.com/sgl-project/sglang/pull/33090) | merged | [AMD][Fix] Restore aiter-padded MoE weight dims for serialized checkpoints | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` |
+| 2026-08-18 | [#35200](https://github.com/sgl-project/sglang/pull/35200) | merged | [AMD] Fix Quark Shared Experts Fusion Gate after load-time-override Removal | `python/sglang/srt/layers/quantization/quark/quark.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1584,6 +1586,60 @@ diff -- python/sglang/srt/layers/quantization/quark/quark.py
   - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +375/-28; `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4.py` modified +214/-33; `python/sglang/srt/layers/quantization/quark/quark.py` modified +83/-15; `python/sglang/srt/layers/quantization/quark/utils.py` modified +4/-0; `python/sglang/srt/layers/quantization/fp8_utils.py` modified +2/-0; `python/sglang/srt/model_loader/utils.py` modified +15/-1
   - tests: `test/registered/quant/test_quark_mxfp4.py` modified +134/-0
 - Risk and verification: The diff ships test coverage in `test/registered/quant/test_quark_mxfp4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33090 - [AMD][Fix] Restore aiter-padded MoE weight dims for serialized checkpoints
+
+- Link: https://github.com/sgl-project/sglang/pull/33090
+- Status/date: merged / 2026-08-01
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; associated commits `0d186f49be34`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +11/-2, 29 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD][Fix] Restore aiter-padded MoE weight dims for serialized checkpoints"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; technical summary: Covers "[AMD][Fix] Restore aiter-padded MoE weight dims for serialized checkpoints"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +11/-2 (13 lines); hunks: -196,9 +196,18 @@ def create_weights(; -217,7 +226,7 @@ def create_weights(; symbols: create_weights, touching `create_weights`.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +11/-2 (13 lines); hunks: -196,9 +196,18 @@ def create_weights(; -217,7 +226,7 @@ def create_weights(; symbols: create_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py
+@@ -196,9 +196,18 @@ def create_weights(
++        # Serialized MXFP4 must keep the aiter-aligned dims from
++        # get_moe_weight_sizes(): w13_weight_scale / w2_weight_scale below are
++        # still sized off w13_up_dim / w2_down_dim, and `weight_padded` is
++        # advertised to the loader, so allocating the raw (unpadded) dims here
++        # desyncs the weights from their scales.
+-            2 * intermediate_size_per_partition,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py` modified +11/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #35200 - [AMD] Fix Quark Shared Experts Fusion Gate after load-time-override Removal
+
+- Link: https://github.com/sgl-project/sglang/pull/35200
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/quantization/quark/quark.py`; associated commits `ea27e3ddab12`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +70/-23, 149 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Fix Quark Shared Experts Fusion Gate after load-time-override Removal"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `python/sglang/srt/layers/quantization/quark/quark.py`; technical summary: Covers "[AMD] Fix Quark Shared Experts Fusion Gate after load-time-override Removal"; the main implementation surface is `python/sglang/srt/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/quark/quark.py` modified +0/-23 (23 lines); hunks: -336,29 +336,6 @@ def __init__(; symbols: __init__, _maybe_disable_shared_experts_fusion, quantized_layers, touching `__init__, _maybe_disable_shared_experts_fusion, quantized_layers`.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/quark/quark.py` modified +0/-23 (23 lines); hunks: -336,29 +336,6 @@ def __init__(; symbols: __init__, _maybe_disable_shared_experts_fusion, quantized_layers
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/quark/quark.py
+@@ -336,29 +336,6 @@ def __init__(
+-        self._maybe_disable_shared_experts_fusion()
+-    def _maybe_disable_shared_experts_fusion(self) -> None:
+-        """Turn off shared-expert fusion when the producer keeps shared experts
+-        in a higher precision than the routed experts.
+-        """
+-        if self.can_fuse_shared_expert():
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/quantization/quark/quark.py` modified +0/-23
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py`, `test/registered/unit/models/test_shared_experts_fusion_gates.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

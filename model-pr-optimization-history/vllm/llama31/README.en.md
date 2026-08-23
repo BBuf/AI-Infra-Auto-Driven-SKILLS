@@ -29,8 +29,8 @@
 | 2026-03-12 | [#35086](https://github.com/vllm-project/vllm/pull/35086) | merged | more models for vLLM Benchmark Suite | `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
 | 2026-03-31 | [#38576](https://github.com/vllm-project/vllm/pull/38576) | merged | vLLM Benchmark Suite perf regression after PR#32723 | `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` |
 | 2026-04-26 | [#38373](https://github.com/vllm-project/vllm/pull/38373) | merged | [torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation | `tests/compile/test_config.py`, `vllm/config/vllm.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py` |
-| 2026-05-10 | [#41882](https://github.com/vllm-project/vllm/pull/41882) | merged | Add NVFP4 all-gather GEMM fusion for AsyncTP | `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py` |
 | 2026-05-10 | [#33322](https://github.com/vllm-project/vllm/pull/33322) | merged | [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling | `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py` |
+| 2026-05-10 | [#41882](https://github.com/vllm-project/vllm/pull/41882) | merged | Add NVFP4 all-gather GEMM fusion for AsyncTP | `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py` |
 | 2026-05-10 | [#42197](https://github.com/vllm-project/vllm/pull/42197) | merged | Fix mypy failure on main | `tests/compile/correctness_e2e/test_sequence_parallel.py` |
 | 2026-05-15 | [#42607](https://github.com/vllm-project/vllm/pull/42607) | merged | Update Intel Xeon model list and vLLM Benchmark Suite BKMs | `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
 | 2026-05-21 | [#43262](https://github.com/vllm-project/vllm/pull/43262) | merged | update GPU json file based on h200 recipes | `.buildkite/performance-benchmarks/tests/serving-tests.json` |
@@ -44,6 +44,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/8343
 - Status/date: merged / 2024-09-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/8343 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama3.1_json.jinja`; associated commits `344cd2b6f4c2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +576/-27, 741 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Add support for Llama 3.1 and 3.2 tool use"; model line: Llama 3.1; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; technical summary: Covers "[Feature] Add support for Llama 3.1 and 3.2 tool use"; the main implementation surface is `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -86,6 +87,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/10164
 - Status/date: merged / 2024-11-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/10164 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +110/-36, 240 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use"; model line: Llama 3.1; category: bug fix; main diff: `tests/entrypoints/test_chat_utils.py`, `examples/tool_chat_template_llama3.2_json.jinja`, `examples/tool_chat_template_llama3.1_json.jinja`; technical summary: Covers "[Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use"; the main implementation surface is `tests/entrypoints/test_chat_utils.py`, `examples/tool_chat_template_llama3.2_json.jinja`, `examples/tool_chat_template_llama3.1_json.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -126,6 +128,7 @@ diff -- examples/tool_chat_template_llama3.1_json.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/25786
 - Status/date: merged / 2025-10-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25786 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 29 files, +10/-1289, 1387 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Benchmark] Cleanup deprecated nightly benchmark and adjust the docstring for performance benchmark"; model line: Llama 3.1; category: performance/backend optimization; main diff: `.buildkite/nightly-benchmarks/scripts/download-tokenizer.py`, `.buildkite/nightly-benchmarks/scripts/run-nightly-benchmarks.sh`, `.buildkite/nightly-benchmarks/nightly-pipeline.yaml`; technical summary: Covers "[Benchmark] Cleanup deprecated nightly benchmark and adjust the docstring for performance benchmark"; the main implementation surface is `.buildkite/nightly-benchmarks/scripts/download-tokenizer.py`, `.buildkite/nightly-benchmarks/scripts/run-nightly-benchmarks.sh`, `.buildkite/nightly-benchmarks/nightly-pipeline.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -168,6 +171,7 @@ diff -- .buildkite/nightly-benchmarks/nightly-pipeline.yaml
 
 - Link: https://github.com/vllm-project/vllm/pull/33731
 - Status/date: merged / 2026-02-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33731 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 47 files, +717/-651, 1985 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile] Reorganize vllm/compilation and tests/compile (0/N for vLLM IR)"; model line: Llama 3.1; category: docs/tests/CI; main diff: `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/allreduce_rms_fusion.py`, `tests/compile/passes/distributed/test_async_tp.py`; technical summary: Covers "[torch.compile] Reorganize vllm/compilation and tests/compile (0/N for vLLM IR)"; the main implementation surface is `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/allreduce_rms_fusion.py`, `tests/compile/passes/distributed/test_async_tp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -211,6 +215,7 @@ diff -- tests/compile/passes/distributed/test_async_tp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34128
 - Status/date: merged / 2026-02-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +802/-254, 1243 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Vllm CPU benchmark suite improvement"; model line: Llama 3.1; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`; technical summary: Covers "Vllm CPU benchmark suite improvement"; the main implementation surface is `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -254,6 +259,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 
 - Link: https://github.com/vllm-project/vllm/pull/34716
 - Status/date: merged / 2026-02-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34716 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Fix sp tests"; model line: Llama 3.1; category: bug fix; main diff: `tests/compile/correctness_e2e/test_sequence_parallel.py`; technical summary: Covers "[BugFix] Fix sp tests"; the main implementation surface is `tests/compile/correctness_e2e/test_sequence_parallel.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -277,6 +283,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35871
 - Status/date: merged / 2026-03-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35871 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +15/-0, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Add Blackwell AsyncTP correctness test"; model line: Llama 3.1; category: docs/tests/CI; main diff: `.buildkite/test_areas/compile.yaml`, `tests/compile/correctness_e2e/test_async_tp.py`; technical summary: Covers "[CI] Add Blackwell AsyncTP correctness test"; the main implementation surface is `.buildkite/test_areas/compile.yaml`, `tests/compile/correctness_e2e/test_async_tp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -312,6 +319,7 @@ diff -- tests/compile/correctness_e2e/test_async_tp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36216
 - Status/date: merged / 2026-03-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36216 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 22 files, +19/-79, 395 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V0 Deprecation] Remove unused swap_space parameter"; model line: Llama 3.1; category: docs/tests/CI; main diff: `vllm/entrypoints/llm.py`, `vllm/config/cache.py`, `docs/design/metrics.md`; technical summary: Covers "[V0 Deprecation] Remove unused swap_space parameter"; the main implementation surface is `vllm/entrypoints/llm.py`, `vllm/config/cache.py`, `docs/design/metrics.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -355,6 +363,7 @@ diff -- docs/design/metrics.md
 
 - Link: https://github.com/vllm-project/vllm/pull/35086
 - Status/date: merged / 2026-03-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35086 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +800/-119, 1301 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "more models for vLLM Benchmark Suite"; model line: Llama 3.1; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; technical summary: Covers "more models for vLLM Benchmark Suite"; the main implementation surface is `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -398,6 +407,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - Link: https://github.com/vllm-project/vllm/pull/38576
 - Status/date: merged / 2026-03-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38576 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +15/-1, 119 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "vLLM Benchmark Suite perf regression after PR#32723"; model line: Llama 3.1; category: bug fix; main diff: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`; technical summary: Covers "vLLM Benchmark Suite perf regression after PR#32723"; the main implementation surface is `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -439,6 +449,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
 
 - Link: https://github.com/vllm-project/vllm/pull/38373
 - Status/date: merged / 2026-04-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38373 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +223/-80, 450 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation"; model line: Llama 3.1; category: docs/tests/CI; main diff: `tests/compile/test_config.py`, `vllm/config/vllm.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`; technical summary: Covers "[torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation"; the main implementation surface is `tests/compile/test_config.py`, `vllm/config/vllm.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -477,10 +488,52 @@ diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
   - runtime: `vllm/config/vllm.py` modified +17/-28; `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +16/-26; `vllm/v1/worker/utils.py` modified +8/-15; `vllm/config/compilation.py` modified +19/-0; `vllm/compilation/passes/fusion/collective_fusion.py` modified +7/-10
 - Risk and verification: The diff ships test coverage in `tests/compile/correctness_e2e/test_sequence_parallel.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`, `tests/compile/test_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #33322 - [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling
+
+- Link: https://github.com/vllm-project/vllm/pull/33322
+- Status/date: merged / 2026-05-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33322 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +116/-34, 260 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling"; model line: Llama 3.1; category: bug fix; main diff: `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`; technical summary: Covers "[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling"; the main implementation surface is `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass, touching `__init__, _all_reduce, replacement`; `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds, touching `_compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds`; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step, touching `get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors`.
+- Code diff details:
+  - `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass
+  - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds
+  - `vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step
+- Key code excerpts:
+
+```diff
+diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
+@@ -14,7 +14,10 @@
+-from vllm.distributed.parallel_state import get_tensor_model_parallel_world_size
++from vllm.distributed.parallel_state import (
++    get_tensor_model_parallel_rank,
++    get_tensor_model_parallel_world_size,
++)
+@@ -117,6 +120,7 @@ def __init__(
+diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
+@@ -167,6 +167,7 @@ def _compare_sp(
++    enable_prompt_embeds: bool,
+@@ -248,6 +249,8 @@ def _compare_sp(
++    elif enable_prompt_embeds:
++        common_args.append("--enable-prompt-embeds")
+@@ -257,7 +260,9 @@ def _compare_sp(
++            "fuse_allreduce_rms": False,
+diff -- vllm/v1/worker/gpu_model_runner.py
+@@ -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:
+```
+
+- Reviewed files:
+  - runtime: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14
+  - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0
+- Risk and verification: The diff ships test coverage in `tests/compile/correctness_e2e/test_sequence_parallel.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #41882 - Add NVFP4 all-gather GEMM fusion for AsyncTP
 
 - Link: https://github.com/vllm-project/vllm/pull/41882
 - Status/date: merged / 2026-05-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41882 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +605/-6, 781 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add NVFP4 all-gather GEMM fusion for AsyncTP"; model line: Llama 3.1; category: performance/backend optimization; main diff: `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py`; technical summary: Covers "Add NVFP4 all-gather GEMM fusion for AsyncTP"; the main implementation surface is `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -519,50 +572,11 @@ diff -- tests/compile/correctness_e2e/test_async_tp.py
   - tests: `tests/compile/correctness_e2e/test_async_tp.py` modified +73/-0; `tests/compile/fusions_e2e/test_tp2_async_tp.py` modified +65/-0; `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +44/-5; `tests/compile/fullgraph/test_toy_llama.py` modified +2/-1
 - Risk and verification: The diff ships test coverage in `tests/compile/correctness_e2e/test_async_tp.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `tests/compile/fullgraph/test_toy_llama.py`, `tests/compile/fusions_e2e/test_tp2_async_tp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #33322 - [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling
-
-- Link: https://github.com/vllm-project/vllm/pull/33322
-- Status/date: merged / 2026-05-10
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +116/-34, 260 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling"; model line: Llama 3.1; category: bug fix; main diff: `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`; technical summary: Covers "[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling"; the main implementation surface is `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass, touching `__init__, _all_reduce, replacement`; `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds, touching `_compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds`; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step, touching `get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors`.
-- Code diff details:
-  - `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass
-  - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds
-  - `vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step
-- Key code excerpts:
-
-```diff
-diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
-@@ -14,7 +14,10 @@
--from vllm.distributed.parallel_state import get_tensor_model_parallel_world_size
-+from vllm.distributed.parallel_state import (
-+    get_tensor_model_parallel_rank,
-+    get_tensor_model_parallel_world_size,
-+)
-@@ -117,6 +120,7 @@ def __init__(
-diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
-@@ -167,6 +167,7 @@ def _compare_sp(
-+    enable_prompt_embeds: bool,
-@@ -248,6 +249,8 @@ def _compare_sp(
-+    elif enable_prompt_embeds:
-+        common_args.append("--enable-prompt-embeds")
-@@ -257,7 +260,9 @@ def _compare_sp(
-+            "fuse_allreduce_rms": False,
-diff -- vllm/v1/worker/gpu_model_runner.py
-@@ -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:
-```
-
-- Reviewed files:
-  - runtime: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14
-  - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0
-- Risk and verification: The diff ships test coverage in `tests/compile/correctness_e2e/test_sequence_parallel.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #42197 - Fix mypy failure on main
 
 - Link: https://github.com/vllm-project/vllm/pull/42197
 - Status/date: merged / 2026-05-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42197 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix mypy failure on main"; model line: Llama 3.1; category: bug fix; main diff: `tests/compile/correctness_e2e/test_sequence_parallel.py`; technical summary: Covers "Fix mypy failure on main"; the main implementation surface is `tests/compile/correctness_e2e/test_sequence_parallel.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -585,6 +599,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42607
 - Status/date: merged / 2026-05-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42607 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +118/-159, 465 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; model line: Llama 3.1; category: performance/backend optimization; main diff: `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; technical summary: Covers "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -622,6 +637,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - Link: https://github.com/vllm-project/vllm/pull/43262
 - Status/date: merged / 2026-05-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43262 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +104/-69, 182 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "update GPU json file based on h200 recipes"; model line: Llama 3.1; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/tests/serving-tests.json`; technical summary: Covers "update GPU json file based on h200 recipes"; the main implementation surface is `.buildkite/performance-benchmarks/tests/serving-tests.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -649,6 +665,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests.json
 
 - Link: https://github.com/vllm-project/vllm/pull/43233
 - Status/date: merged / 2026-05-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43233 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +50/-6, 136 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model Runner v2] Force v1 runner for tests"; model line: Llama 3.1; category: docs/tests/CI; main diff: `tests/models/quantization/test_bitsandbytes.py`, `tests/compile/correctness_e2e/test_async_tp.py`, `tests/utils.py`; technical summary: Covers "[Model Runner v2] Force v1 runner for tests"; the main implementation surface is `tests/models/quantization/test_bitsandbytes.py`, `tests/compile/correctness_e2e/test_async_tp.py`, `tests/utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -690,6 +707,7 @@ diff -- tests/utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44128
 - Status/date: merged / 2026-06-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +1/-15, 100 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it"; model line: Llama 3.1; category: bug fix; main diff: `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`; technical summary: Covers "[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it"; the main implementation surface is `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`. File-level evidence, code excerpts, and validation risks are preserved below.

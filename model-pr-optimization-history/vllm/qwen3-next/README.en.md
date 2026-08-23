@@ -56,6 +56,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/24526
 - Status/date: merged / 2025-09-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24526 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`; associated commits `e93f4cc9e374`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 29 files, +2476/-61, 3045 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add the support for the qwen3 next model (a hybrid attention model)."; model line: Qwen3 Next; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`; technical summary: Covers "Add the support for the qwen3 next model (a hybrid attention model)."; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -95,6 +96,7 @@ diff -- vllm/transformers_utils/configs/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/24709
 - Status/date: merged / 2025-09-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24709 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `f592b3174b39`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-3, 31 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Fix Qwen3-Next PP"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[BugFix] Fix Qwen3-Next PP"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -122,6 +124,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/24957
 - Status/date: merged / 2025-09-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24957 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `dd6a910aac65`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +139/-34, 385 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation."; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation."; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -149,6 +152,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/24960
 - Status/date: merged / 2025-09-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24960 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `027d37df389b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-23, 101 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -171,6 +175,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25079
 - Status/date: merged / 2025-09-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25079 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`; associated commits `ef7eefe17a7d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +22/-21, 104 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Qwen] Add fp8 checkpoint support for qwen3-next."; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`; technical summary: Covers "[Qwen] Add fp8 checkpoint support for qwen3-next."; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -207,6 +212,7 @@ diff -- vllm/model_executor/models/qwen3_next_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25243
 - Status/date: merged / 2025-09-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25243 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `838d7116ba59`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Qwen] Remove cuda hard-code in qwen3 next"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Qwen] Remove cuda hard-code in qwen3 next"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -230,6 +236,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25268
 - Status/date: merged / 2025-09-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25268 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `36429096171f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-3, 15 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -257,6 +264,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26437
 - Status/date: merged / 2025-10-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26437 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `785d8b6410c3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +56/-36, 203 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -284,6 +292,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27030
 - Status/date: merged / 2025-10-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27030 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `bde9e2272a28`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-1, 8 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -306,6 +315,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27578
 - Status/date: merged / 2025-10-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27578 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `8df98c2161e2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-5, 31 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -333,6 +343,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28182
 - Status/date: open / 2025-11-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28182 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-1, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -358,6 +369,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28267
 - Status/date: merged / 2025-11-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28267 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `7ae5a5fb1115`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Add some comments in qwen3-next"; model line: Qwen3 Next; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Misc] Add some comments in qwen3-next"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -381,6 +393,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28202
 - Status/date: merged / 2025-11-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28202 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `f0359fffa434`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] fix qwen3-next crash"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] fix qwen3-next crash"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -404,6 +417,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28960
 - Status/date: merged / 2025-11-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28960 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `73ff872db0d4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix typo in Qwen3 Next model executor"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] Fix typo in Qwen3 Next model executor"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -429,6 +443,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30433
 - Status/date: merged / 2025-12-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30433 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `ace34e378320`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -456,6 +471,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31719
 - Status/date: merged / 2026-01-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31719 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `96fcd3c267a0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-1, 15 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Support qwen3-next lora"; model line: Qwen3 Next; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Misc] Support qwen3-next lora"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -483,6 +499,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34489
 - Status/date: merged / 2026-02-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34489 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `eea3024f43e0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +42/-6, 91 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -510,6 +527,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34697
 - Status/date: merged / 2026-02-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34697 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `c0bd8b13da36`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +102/-192, 477 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -537,6 +555,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35777
 - Status/date: merged / 2026-03-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35777 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `dc6b57846686`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +509/-31, 585 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -564,6 +583,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36242
 - Status/date: merged / 2026-03-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36242 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `4e95ec111cd1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +45/-6, 72 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -591,6 +611,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36795
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36795 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `a913b612d8a8`, `f1740006e47d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +115/-5, 174 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Perf] Enable dual stream execution of input projection for Qwen3"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Perf] Enable dual stream execution of input projection for Qwen3"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -618,6 +639,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37427
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37427 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `a913b612d8a8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -641,6 +663,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39181
 - Status/date: merged / 2026-04-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39181 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`; associated commits `f3c7941ec8d3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-0, 32 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next"; model line: Qwen3 Next; category: bug fix; main diff: `vllm/model_executor/models/qwen3_next.py`; technical summary: Covers "[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -786,6 +809,7 @@ diff -- vllm/model_executor/models/glm4_moe_lite.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39280
 - Status/date: merged / 2026-05-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39280 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`; associated commits `2c6b59b80771`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +359/-10, 573 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`; technical summary: Covers "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -822,6 +846,7 @@ diff -- vllm/model_executor/models/qwen3_next_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41126
 - Status/date: merged / 2026-05-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41126 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +765/-774, 1913 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Attention] Mamba attention module refactor"; model line: Qwen3 Next; category: model implementation change; main diff: `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`; technical summary: Covers "[Attention] Mamba attention module refactor"; the main implementation surface is `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -863,6 +888,7 @@ diff -- vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45161
 - Status/date: merged / 2026-06-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45161 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +62/-268, 612 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Deprecate Transformers v4 support"; model line: Qwen3 Next; category: model support/runtime entry; main diff: `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`; technical summary: Covers "Deprecate Transformers v4 support"; the main implementation surface is `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.

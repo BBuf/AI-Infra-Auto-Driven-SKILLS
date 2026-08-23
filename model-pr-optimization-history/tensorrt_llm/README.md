@@ -7,8 +7,19 @@ Current model families:
 
 ## Current Watch / Landed Items
 
-Refresh: `2026-07-28`. Source head:
-`NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`.
+Refresh: `2026-08-23`. Source head:
+`NVIDIA/TensorRT-LLM@da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`.
+
+2026-08-23 live main also contains recent Qwen3.8 / Kimi K3 merges that
+are **not** folded into audited cards: Qwen3.5/3.8 wave-2 `#17700`,
+Qwen3.8-27B FP8 VLM quant-config `#17786`, Kimi K3 MLA decode backend
+`#17800`, and Kimi K3 NVFP4 MegaMoE SiTU `#17865`. Read those diffs
+before treating them as TensorRT-LLM history evidence.
+
+2026-08-23 open-PR watch (also not folded into audited cards): DeepSeek-V4
+Hopper `#16940`, Kimi K3 frontend/tests/tool-call `#17822` / `#17921` /
+`#17980`, MiniMax-M3 MSA/MXFP8 `#17236` / `#17238` / `#17318`. Read the
+diffs before treating any of these as shipped TensorRT-LLM behavior.
 The final one-commit increment is PR
 [#16677](https://github.com/NVIDIA/TensorRT-LLM/pull/16677), which enables
 Attention2D plus tensor parallelism for VisualGen/Wan and is intentionally not

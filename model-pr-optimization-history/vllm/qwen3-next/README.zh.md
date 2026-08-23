@@ -56,6 +56,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/24526
 - 状态/时间: merged / 2025-09-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24526 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`；关联提交 `e93f4cc9e374`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 29 个文件，+2476/-61，可读 patch 3045 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add the support for the qwen3 next model (a hybrid attention model).」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`；技术摘要: 覆盖「Add the support for the qwen3 next model (a hybrid attention model).」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`, `vllm/transformers_utils/configs/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -95,6 +96,7 @@ diff -- vllm/transformers_utils/configs/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24709
 - 状态/时间: merged / 2025-09-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24709 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `f592b3174b39`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-3，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BugFix] Fix Qwen3-Next PP」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[BugFix] Fix Qwen3-Next PP」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -122,6 +124,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24957
 - 状态/时间: merged / 2025-09-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24957 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `dd6a910aac65`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+139/-34，可读 patch 385 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation.」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix][Qwen3-Next] fixes the varlen issue in qwen3-next's MTP implementation.」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -149,6 +152,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24960
 - 状态/时间: merged / 2025-09-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24960 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `027d37df389b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-23，可读 patch 101 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix][Qwen3-Next] add prefixes to shared_expert in qwen3-next and mlp in qwen2moe to successfully load ignored params in quantized models」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -171,6 +175,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25079
 - 状态/时间: merged / 2025-09-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25079 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；关联提交 `ef7eefe17a7d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+22/-21，可读 patch 104 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Qwen] Add fp8 checkpoint support for qwen3-next.」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；技术摘要: 覆盖「[Qwen] Add fp8 checkpoint support for qwen3-next.」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -207,6 +212,7 @@ diff -- vllm/model_executor/models/qwen3_next_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25243
 - 状态/时间: merged / 2025-09-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25243 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `838d7116ba59`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Qwen] Remove cuda hard-code in qwen3 next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen] Remove cuda hard-code in qwen3 next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -230,6 +236,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25268
 - 状态/时间: merged / 2025-09-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25268 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `36429096171f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-3，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[BUGFIX] GPTQ quantization compatibility for Qwen3 Next MOE models (AutoGPTQ and AutoRound-GPTQ)」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -257,6 +264,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26437
 - 状态/时间: merged / 2025-10-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26437 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `785d8b6410c3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+56/-36，可读 patch 203 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h)」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -284,6 +292,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27030
 - 状态/时间: merged / 2025-10-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/27030 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `bde9e2272a28`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-1，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -306,6 +315,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27578
 - 状态/时间: merged / 2025-10-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/27578 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `8df98c2161e2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+12/-5，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -333,6 +343,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28182
 - 状态/时间: open / 2025-11-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28182 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -358,6 +369,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28267
 - 状态/时间: merged / 2025-11-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28267 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `7ae5a5fb1115`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-0，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Add some comments in qwen3-next」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Misc] Add some comments in qwen3-next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -381,6 +393,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28202
 - 状态/时间: merged / 2025-11-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28202 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `f0359fffa434`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] fix qwen3-next crash」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] fix qwen3-next crash」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -404,6 +417,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28960
 - 状态/时间: merged / 2025-11-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28960 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `73ff872db0d4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix typo in Qwen3 Next model executor」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix typo in Qwen3 Next model executor」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -429,6 +443,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30433
 - 状态/时间: merged / 2025-12-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30433 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `ace34e378320`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Qwen3-next with --hf-overrides \{\"num_hidden_layers\":8\}」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -456,6 +471,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31719
 - 状态/时间: merged / 2026-01-08
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31719 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `96fcd3c267a0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-1，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Support qwen3-next lora」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Misc] Support qwen3-next lora」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -483,6 +499,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34489
 - 状态/时间: merged / 2026-02-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34489 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `eea3024f43e0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+42/-6，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix mamba state dtype setting for Qwen3-Next and Qwen3.5」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -510,6 +527,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34697
 - 状态/时间: merged / 2026-02-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34697 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `c0bd8b13da36`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+102/-192，可读 patch 477 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Redo Qwen3.5/Qwen3-Next GDN projector fusion」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -537,6 +555,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35777
 - 状态/时间: merged / 2026-03-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35777 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `dc6b57846686`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+509/-31，可读 patch 585 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Kernel] Add fused_sigmoid_gating_delta_rule_update kernel for Qwen3 Next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -564,6 +583,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36242
 - 状态/时间: merged / 2026-03-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36242 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `4e95ec111cd1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+45/-6，可读 patch 72 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3-Next in_proj_ba weight sharding with TP > 1」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -591,6 +611,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36795
 - 状态/时间: merged / 2026-03-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36795 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `a913b612d8a8`, `f1740006e47d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+115/-5，可读 patch 174 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Perf] Enable dual stream execution of input projection for Qwen3」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Perf] Enable dual stream execution of input projection for Qwen3」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -618,6 +639,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37427
 - 状态/时间: merged / 2026-03-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37427 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `a913b612d8a8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix] Fix ROCm crash in qwen3_next multi-stream events (#36795)」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -641,6 +663,7 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39181
 - 状态/时间: merged / 2026-04-08
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39181 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`；关联提交 `f3c7941ec8d3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+4/-0，可读 patch 32 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Bugfix]Fix EP precision for Qwen3.5, Qwen3-Next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -786,6 +809,7 @@ diff -- vllm/model_executor/models/glm4_moe_lite.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39280
 - 状态/时间: merged / 2026-05-08
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39280 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；关联提交 `2c6b59b80771`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+359/-10，可读 patch 573 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`；技术摘要: 覆盖「[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -822,6 +846,7 @@ diff -- vllm/model_executor/models/qwen3_next_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41126
 - 状态/时间: merged / 2026-05-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41126 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+765/-774，可读 patch 1913 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Attention] Mamba attention module refactor」；模型线: Qwen3 Next；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`；技术摘要: 覆盖「[Attention] Mamba attention module refactor」；主要实现面是 `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -863,6 +888,7 @@ diff -- vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45161
 - 状态/时间: merged / 2026-06-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45161 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+62/-268，可读 patch 612 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Deprecate Transformers v4 support」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`；技术摘要: 覆盖「Deprecate Transformers v4 support」；主要实现面是 `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`。下方保留文件级证据、代码摘录和验证风险。

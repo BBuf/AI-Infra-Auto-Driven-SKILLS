@@ -29,8 +29,8 @@
 | 2026-03-12 | [#35086](https://github.com/vllm-project/vllm/pull/35086) | merged | more models for vLLM Benchmark Suite | `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
 | 2026-03-31 | [#38576](https://github.com/vllm-project/vllm/pull/38576) | merged | vLLM Benchmark Suite perf regression after PR#32723 | `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json` |
 | 2026-04-26 | [#38373](https://github.com/vllm-project/vllm/pull/38373) | merged | [torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation | `tests/compile/test_config.py`, `vllm/config/vllm.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py` |
-| 2026-05-10 | [#41882](https://github.com/vllm-project/vllm/pull/41882) | merged | Add NVFP4 all-gather GEMM fusion for AsyncTP | `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py` |
 | 2026-05-10 | [#33322](https://github.com/vllm-project/vllm/pull/33322) | merged | [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling | `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py` |
+| 2026-05-10 | [#41882](https://github.com/vllm-project/vllm/pull/41882) | merged | Add NVFP4 all-gather GEMM fusion for AsyncTP | `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py` |
 | 2026-05-10 | [#42197](https://github.com/vllm-project/vllm/pull/42197) | merged | Fix mypy failure on main | `tests/compile/correctness_e2e/test_sequence_parallel.py` |
 | 2026-05-15 | [#42607](https://github.com/vllm-project/vllm/pull/42607) | merged | Update Intel Xeon model list and vLLM Benchmark Suite BKMs | `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json` |
 | 2026-05-21 | [#43262](https://github.com/vllm-project/vllm/pull/43262) | merged | update GPU json file based on h200 recipes | `.buildkite/performance-benchmarks/tests/serving-tests.json` |
@@ -44,6 +44,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/8343
 - 状态/时间: merged / 2024-09-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/8343 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama3.1_json.jinja`；关联提交 `344cd2b6f4c2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+576/-27，可读 patch 741 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Feature] Add support for Llama 3.1 and 3.2 tool use」；模型线: Llama 3.1；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`；技术摘要: 覆盖「[Feature] Add support for Llama 3.1 and 3.2 tool use」；主要实现面是 `examples/tool_chat_template_llama3.1_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -86,6 +87,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/10164
 - 状态/时间: merged / 2024-11-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/10164 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+110/-36，可读 patch 240 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `tests/entrypoints/test_chat_utils.py`, `examples/tool_chat_template_llama3.2_json.jinja`, `examples/tool_chat_template_llama3.1_json.jinja`；技术摘要: 覆盖「[Bugfix][Frontend] Update Llama Chat Templates to also support Non-Tool use」；主要实现面是 `tests/entrypoints/test_chat_utils.py`, `examples/tool_chat_template_llama3.2_json.jinja`, `examples/tool_chat_template_llama3.1_json.jinja`。下方保留文件级证据、代码摘录和验证风险。
@@ -126,6 +128,7 @@ diff -- examples/tool_chat_template_llama3.1_json.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/25786
 - 状态/时间: merged / 2025-10-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25786 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 29 个文件，+10/-1289，可读 patch 1387 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Benchmark] Cleanup deprecated nightly benchmark and adjust the docstring for performance benchmark」；模型线: Llama 3.1；类别: 性能/后端优化；主要 diff: `.buildkite/nightly-benchmarks/scripts/download-tokenizer.py`, `.buildkite/nightly-benchmarks/scripts/run-nightly-benchmarks.sh`, `.buildkite/nightly-benchmarks/nightly-pipeline.yaml`；技术摘要: 覆盖「[Benchmark] Cleanup deprecated nightly benchmark and adjust the docstring for performance benchmark」；主要实现面是 `.buildkite/nightly-benchmarks/scripts/download-tokenizer.py`, `.buildkite/nightly-benchmarks/scripts/run-nightly-benchmarks.sh`, `.buildkite/nightly-benchmarks/nightly-pipeline.yaml`。下方保留文件级证据、代码摘录和验证风险。
@@ -168,6 +171,7 @@ diff -- .buildkite/nightly-benchmarks/nightly-pipeline.yaml
 
 - 链接: https://github.com/vllm-project/vllm/pull/33731
 - 状态/时间: merged / 2026-02-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33731 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 47 个文件，+717/-651，可读 patch 1985 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[torch.compile] Reorganize vllm/compilation and tests/compile (0/N for vLLM IR)」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/allreduce_rms_fusion.py`, `tests/compile/passes/distributed/test_async_tp.py`；技术摘要: 覆盖「[torch.compile] Reorganize vllm/compilation and tests/compile (0/N for vLLM IR)」；主要实现面是 `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/allreduce_rms_fusion.py`, `tests/compile/passes/distributed/test_async_tp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -211,6 +215,7 @@ diff -- tests/compile/passes/distributed/test_async_tp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34128
 - 状态/时间: merged / 2026-02-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+802/-254，可读 patch 1243 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Vllm CPU benchmark suite improvement」；模型线: Llama 3.1；类别: 性能/后端优化；主要 diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`；技术摘要: 覆盖「Vllm CPU benchmark suite improvement」；主要实现面是 `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`。下方保留文件级证据、代码摘录和验证风险。
@@ -254,6 +259,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 
 - 链接: https://github.com/vllm-project/vllm/pull/34716
 - 状态/时间: merged / 2026-02-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34716 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BugFix] Fix sp tests」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `tests/compile/correctness_e2e/test_sequence_parallel.py`；技术摘要: 覆盖「[BugFix] Fix sp tests」；主要实现面是 `tests/compile/correctness_e2e/test_sequence_parallel.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -277,6 +283,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35871
 - 状态/时间: merged / 2026-03-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35871 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-0，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CI] Add Blackwell AsyncTP correctness test」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `.buildkite/test_areas/compile.yaml`, `tests/compile/correctness_e2e/test_async_tp.py`；技术摘要: 覆盖「[CI] Add Blackwell AsyncTP correctness test」；主要实现面是 `.buildkite/test_areas/compile.yaml`, `tests/compile/correctness_e2e/test_async_tp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -312,6 +319,7 @@ diff -- tests/compile/correctness_e2e/test_async_tp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36216
 - 状态/时间: merged / 2026-03-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36216 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 22 个文件，+19/-79，可读 patch 395 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[V0 Deprecation] Remove unused swap_space parameter」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `vllm/entrypoints/llm.py`, `vllm/config/cache.py`, `docs/design/metrics.md`；技术摘要: 覆盖「[V0 Deprecation] Remove unused swap_space parameter」；主要实现面是 `vllm/entrypoints/llm.py`, `vllm/config/cache.py`, `docs/design/metrics.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -355,6 +363,7 @@ diff -- docs/design/metrics.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/35086
 - 状态/时间: merged / 2026-03-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35086 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+800/-119，可读 patch 1301 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「more models for vLLM Benchmark Suite」；模型线: Llama 3.1；类别: 性能/后端优化；主要 diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`；技术摘要: 覆盖「more models for vLLM Benchmark Suite」；主要实现面是 `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -398,6 +407,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/38576
 - 状态/时间: merged / 2026-03-31
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38576 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+15/-1，可读 patch 119 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「vLLM Benchmark Suite perf regression after PR#32723」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`；技术摘要: 覆盖「vLLM Benchmark Suite perf regression after PR#32723」；主要实现面是 `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -439,6 +449,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/38373
 - 状态/时间: merged / 2026-04-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38373 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+223/-80，可读 patch 450 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `tests/compile/test_config.py`, `vllm/config/vllm.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`；技术摘要: 覆盖「[torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation」；主要实现面是 `tests/compile/test_config.py`, `vllm/config/vllm.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -477,10 +488,52 @@ diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
   - runtime: `vllm/config/vllm.py` modified +17/-28; `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +16/-26; `vllm/v1/worker/utils.py` modified +8/-15; `vllm/config/compilation.py` modified +19/-0; `vllm/compilation/passes/fusion/collective_fusion.py` modified +7/-10
 - 验证与风险: diff 自带测试面 `tests/compile/correctness_e2e/test_sequence_parallel.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`, `tests/compile/test_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #33322 - [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling
+
+- 链接: https://github.com/vllm-project/vllm/pull/33322
+- 状态/时间: merged / 2026-05-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33322 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+116/-34，可读 patch 260 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`；技术摘要: 覆盖「[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling」；主要实现面是 `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass，涉及 `__init__, _all_reduce, replacement`；`tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds，涉及 `_compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds`；`vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step，涉及 `get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors`。
+- 代码 diff 细节:
+  - `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass
+  - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds
+  - `vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step
+- 关键代码摘录:
+
+```diff
+diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
+@@ -14,7 +14,10 @@
+-from vllm.distributed.parallel_state import get_tensor_model_parallel_world_size
++from vllm.distributed.parallel_state import (
++    get_tensor_model_parallel_rank,
++    get_tensor_model_parallel_world_size,
++)
+@@ -117,6 +120,7 @@ def __init__(
+diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
+@@ -167,6 +167,7 @@ def _compare_sp(
++    enable_prompt_embeds: bool,
+@@ -248,6 +249,8 @@ def _compare_sp(
++    elif enable_prompt_embeds:
++        common_args.append("--enable-prompt-embeds")
+@@ -257,7 +260,9 @@ def _compare_sp(
++            "fuse_allreduce_rms": False,
+diff -- vllm/v1/worker/gpu_model_runner.py
+@@ -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:
+```
+
+- 已读文件:
+  - runtime: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14
+  - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0
+- 验证与风险: diff 自带测试面 `tests/compile/correctness_e2e/test_sequence_parallel.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #41882 - Add NVFP4 all-gather GEMM fusion for AsyncTP
 
 - 链接: https://github.com/vllm-project/vllm/pull/41882
 - 状态/时间: merged / 2026-05-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41882 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+605/-6，可读 patch 781 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add NVFP4 all-gather GEMM fusion for AsyncTP」；模型线: Llama 3.1；类别: 性能/后端优化；主要 diff: `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py`；技术摘要: 覆盖「Add NVFP4 all-gather GEMM fusion for AsyncTP」；主要实现面是 `vllm/compilation/passes/fusion/collective_fusion.py`, `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_async_tp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -519,50 +572,11 @@ diff -- tests/compile/correctness_e2e/test_async_tp.py
   - tests: `tests/compile/correctness_e2e/test_async_tp.py` modified +73/-0; `tests/compile/fusions_e2e/test_tp2_async_tp.py` modified +65/-0; `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +44/-5; `tests/compile/fullgraph/test_toy_llama.py` modified +2/-1
 - 验证与风险: diff 自带测试面 `tests/compile/correctness_e2e/test_async_tp.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `tests/compile/fullgraph/test_toy_llama.py`, `tests/compile/fusions_e2e/test_tp2_async_tp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #33322 - [Bugfix] Fix SP pass for multimodal models and PP+SP residual handling
-
-- 链接: https://github.com/vllm-project/vllm/pull/33322
-- 状态/时间: merged / 2026-05-10
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+116/-34，可读 patch 260 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`；技术摘要: 覆盖「[Bugfix] Fix SP pass for multimodal models and PP+SP residual handling」；主要实现面是 `vllm/compilation/passes/fusion/sequence_parallelism.py`, `tests/compile/correctness_e2e/test_sequence_parallel.py`, `vllm/v1/worker/gpu_model_runner.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass，涉及 `__init__, _all_reduce, replacement`；`tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds，涉及 `_compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds`；`vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step，涉及 `get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors`。
-- 代码 diff 细节:
-  - `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20 (75 lines); hunks: -14,7 +14,10; -117,6 +120,7 @@ def __init__(; symbols: __init__, _all_reduce, replacement, SequenceParallelismPass
-  - `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0 (48 lines); hunks: -167,6 +167,7 @@ def _compare_sp(; -248,6 +249,8 @@ def _compare_sp(; symbols: _compare_sp, test_tp_sp_generation, test_tp_sp_generation_prompt_embeds
-  - `vllm/v1/worker/gpu_model_runner.py` modified +13/-14 (27 lines); hunks: -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:; -3109,24 +3109,23 @@ def sync_and_slice_intermediate_tensors(; symbols: get_supported_tasks, sync_and_slice_intermediate_tensors, sync_and_gather_intermediate_tensors, eplb_step
-- 关键代码摘录:
-
-```diff
-diff -- vllm/compilation/passes/fusion/sequence_parallelism.py
-@@ -14,7 +14,10 @@
--from vllm.distributed.parallel_state import get_tensor_model_parallel_world_size
-+from vllm.distributed.parallel_state import (
-+    get_tensor_model_parallel_rank,
-+    get_tensor_model_parallel_world_size,
-+)
-@@ -117,6 +120,7 @@ def __init__(
-diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
-@@ -167,6 +167,7 @@ def _compare_sp(
-+    enable_prompt_embeds: bool,
-@@ -248,6 +249,8 @@ def _compare_sp(
-+    elif enable_prompt_embeds:
-+        common_args.append("--enable-prompt-embeds")
-@@ -257,7 +260,9 @@ def _compare_sp(
-+            "fuse_allreduce_rms": False,
-diff -- vllm/v1/worker/gpu_model_runner.py
-@@ -3098,7 +3098,7 @@ def get_supported_tasks(self) -> tuple[SupportedTask, ...]:
-```
-
-- 已读文件:
-  - runtime: `vllm/compilation/passes/fusion/sequence_parallelism.py` modified +55/-20; `vllm/v1/worker/gpu_model_runner.py` modified +13/-14
-  - tests: `tests/compile/correctness_e2e/test_sequence_parallel.py` modified +48/-0
-- 验证与风险: diff 自带测试面 `tests/compile/correctness_e2e/test_sequence_parallel.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #42197 - Fix mypy failure on main
 
 - 链接: https://github.com/vllm-project/vllm/pull/42197
 - 状态/时间: merged / 2026-05-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42197 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix mypy failure on main」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `tests/compile/correctness_e2e/test_sequence_parallel.py`；技术摘要: 覆盖「Fix mypy failure on main」；主要实现面是 `tests/compile/correctness_e2e/test_sequence_parallel.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -585,6 +599,7 @@ diff -- tests/compile/correctness_e2e/test_sequence_parallel.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42607
 - 状态/时间: merged / 2026-05-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42607 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+118/-159，可读 patch 465 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update Intel Xeon model list and vLLM Benchmark Suite BKMs」；模型线: Llama 3.1；类别: 性能/后端优化；主要 diff: `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`；技术摘要: 覆盖「Update Intel Xeon model list and vLLM Benchmark Suite BKMs」；主要实现面是 `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -622,6 +637,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/43262
 - 状态/时间: merged / 2026-05-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43262 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+104/-69，可读 patch 182 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「update GPU json file based on h200 recipes」；模型线: Llama 3.1；类别: 性能/后端优化；主要 diff: `.buildkite/performance-benchmarks/tests/serving-tests.json`；技术摘要: 覆盖「update GPU json file based on h200 recipes」；主要实现面是 `.buildkite/performance-benchmarks/tests/serving-tests.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -649,6 +665,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/43233
 - 状态/时间: merged / 2026-05-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43233 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+50/-6，可读 patch 136 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model Runner v2] Force v1 runner for tests」；模型线: Llama 3.1；类别: 文档/测试/CI；主要 diff: `tests/models/quantization/test_bitsandbytes.py`, `tests/compile/correctness_e2e/test_async_tp.py`, `tests/utils.py`；技术摘要: 覆盖「[Model Runner v2] Force v1 runner for tests」；主要实现面是 `tests/models/quantization/test_bitsandbytes.py`, `tests/compile/correctness_e2e/test_async_tp.py`, `tests/utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -690,6 +707,7 @@ diff -- tests/utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/44128
 - 状态/时间: merged / 2026-06-03
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/44128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+1/-15，可读 patch 100 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it」；模型线: Llama 3.1；类别: 缺陷修复；主要 diff: `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`；技术摘要: 覆盖「[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it」；主要实现面是 `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`。下方保留文件级证据、代码摘录和验证风险。

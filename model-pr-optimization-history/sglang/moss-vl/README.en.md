@@ -6,6 +6,7 @@
 | --- | --- |
 | `python/sglang/srt/models/moss_vl.py` | [#23454](https://github.com/sgl-project/sglang/pull/23454), [#23932](https://github.com/sgl-project/sglang/pull/23932), [#28940](https://github.com/sgl-project/sglang/pull/28940) |
 | `python/sglang/srt/multimodal/processors/moss_vl.py` | [#23454](https://github.com/sgl-project/sglang/pull/23454) |
+| `test/registered/unit/models/test_moss_vl_processor.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 

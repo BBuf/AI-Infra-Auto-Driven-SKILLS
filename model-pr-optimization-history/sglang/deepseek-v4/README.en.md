@@ -4,74 +4,84 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` | [#23605](https://github.com/sgl-project/sglang/pull/23605), [#23622](https://github.com/sgl-project/sglang/pull/23622), [#23628](https://github.com/sgl-project/sglang/pull/23628), [#23684](https://github.com/sgl-project/sglang/pull/23684), [#23689](https://github.com/sgl-project/sglang/pull/23689), [#23691](https://github.com/sgl-project/sglang/pull/23691), [#23697](https://github.com/sgl-project/sglang/pull/23697), [#23725](https://github.com/sgl-project/sglang/pull/23725), [#23882](https://github.com/sgl-project/sglang/pull/23882), [#23980](https://github.com/sgl-project/sglang/pull/23980), [#24035](https://github.com/sgl-project/sglang/pull/24035), [#25243](https://github.com/sgl-project/sglang/pull/25243), ... (31 total) |
-| `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` | [#25820](https://github.com/sgl-project/sglang/pull/25820), [#28423](https://github.com/sgl-project/sglang/pull/28423), [#28590](https://github.com/sgl-project/sglang/pull/28590), [#31363](https://github.com/sgl-project/sglang/pull/31363) |
-| `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` | [#25820](https://github.com/sgl-project/sglang/pull/25820), [#28423](https://github.com/sgl-project/sglang/pull/28423), [#28590](https://github.com/sgl-project/sglang/pull/28590), [#28981](https://github.com/sgl-project/sglang/pull/28981), [#30272](https://github.com/sgl-project/sglang/pull/30272), [#30651](https://github.com/sgl-project/sglang/pull/30651), [#31122](https://github.com/sgl-project/sglang/pull/31122), [#31363](https://github.com/sgl-project/sglang/pull/31363), [#31373](https://github.com/sgl-project/sglang/pull/31373), [#31452](https://github.com/sgl-project/sglang/pull/31452) |
+| `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` | [#34809](https://github.com/sgl-project/sglang/pull/34809), [#34926](https://github.com/sgl-project/sglang/pull/34926), [#35224](https://github.com/sgl-project/sglang/pull/35224), [#35918](https://github.com/sgl-project/sglang/pull/35918) |
+| `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` | [#34809](https://github.com/sgl-project/sglang/pull/34809) |
+| `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` | [#34044](https://github.com/sgl-project/sglang/pull/34044), [#34333](https://github.com/sgl-project/sglang/pull/34333), [#34809](https://github.com/sgl-project/sglang/pull/34809), [#35224](https://github.com/sgl-project/sglang/pull/35224), [#35918](https://github.com/sgl-project/sglang/pull/35918) |
+| `python/sglang/kernels/aot/csrc/elementwise/deepseek_v4_topk.cu` | no direct PR-number commit |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/c128.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/c128_online.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/c128_online_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh` | [#26671](https://github.com/sgl-project/sglang/pull/26671), [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/c4.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/c4_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#34189](https://github.com/sgl-project/sglang/pull/34189) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/common.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#34277](https://github.com/sgl-project/sglang/pull/34277) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#31563](https://github.com/sgl-project/sglang/pull/31563) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/hash_topk.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/main_norm_rope.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/mega_moe_pre_dispatch.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/online_c128_mtp.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh` | [#25855](https://github.com/sgl-project/sglang/pull/25855), [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/rope.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/silu_and_mul_masked_post_quant.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/store.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v1.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#32910](https://github.com/sgl-project/sglang/pull/32910) |
 | `python/sglang/kernels/jit/include/sgl_kernel/deepseek_v4/compress.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/include/sgl_kernel/deepseek_v4/compress_v2.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/include/sgl_kernel/deepseek_v4/fp8_utils.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/include/sgl_kernel/deepseek_v4/kvcacheio.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/include/sgl_kernel/deepseek_v4/topk_impl.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/attention/deepseek_v4_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/srt/arg_groups/deepseek_v4_hook.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#25771](https://github.com/sgl-project/sglang/pull/25771), [#25820](https://github.com/sgl-project/sglang/pull/25820), [#29569](https://github.com/sgl-project/sglang/pull/29569), [#29775](https://github.com/sgl-project/sglang/pull/29775), [#29982](https://github.com/sgl-project/sglang/pull/29982), [#30237](https://github.com/sgl-project/sglang/pull/30237) |
+| `python/sglang/kernels/ops/attention/deepseek_v4_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#31931](https://github.com/sgl-project/sglang/pull/31931) |
+| `python/sglang/srt/arg_groups/deepseek_v4_hook.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#25771](https://github.com/sgl-project/sglang/pull/25771), [#25820](https://github.com/sgl-project/sglang/pull/25820), [#29569](https://github.com/sgl-project/sglang/pull/29569), [#29775](https://github.com/sgl-project/sglang/pull/29775), [#29982](https://github.com/sgl-project/sglang/pull/29982), [#30237](https://github.com/sgl-project/sglang/pull/30237), [#33532](https://github.com/sgl-project/sglang/pull/33532), [#34926](https://github.com/sgl-project/sglang/pull/34926) |
 | `python/sglang/srt/configs/deepseek_v4.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882) |
-| `python/sglang/srt/layers/attention/deepseek_v4_backend.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24692](https://github.com/sgl-project/sglang/pull/24692), [#24890](https://github.com/sgl-project/sglang/pull/24890), [#25195](https://github.com/sgl-project/sglang/pull/25195), [#26209](https://github.com/sgl-project/sglang/pull/26209), [#26239](https://github.com/sgl-project/sglang/pull/26239), [#26471](https://github.com/sgl-project/sglang/pull/26471), [#26499](https://github.com/sgl-project/sglang/pull/26499), [#27059](https://github.com/sgl-project/sglang/pull/27059), [#27380](https://github.com/sgl-project/sglang/pull/27380), [#27914](https://github.com/sgl-project/sglang/pull/27914), [#29619](https://github.com/sgl-project/sglang/pull/29619), ... (20 total) |
-| `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` | [#24933](https://github.com/sgl-project/sglang/pull/24933), [#26208](https://github.com/sgl-project/sglang/pull/26208), [#26383](https://github.com/sgl-project/sglang/pull/26383), [#26499](https://github.com/sgl-project/sglang/pull/26499), [#27152](https://github.com/sgl-project/sglang/pull/27152), [#27380](https://github.com/sgl-project/sglang/pull/27380), [#27928](https://github.com/sgl-project/sglang/pull/27928), [#28520](https://github.com/sgl-project/sglang/pull/28520), [#28920](https://github.com/sgl-project/sglang/pull/28920), [#29362](https://github.com/sgl-project/sglang/pull/29362), [#29420](https://github.com/sgl-project/sglang/pull/29420), [#29630](https://github.com/sgl-project/sglang/pull/29630), ... (13 total) |
-| `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24933](https://github.com/sgl-project/sglang/pull/24933), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#26471](https://github.com/sgl-project/sglang/pull/26471), [#30333](https://github.com/sgl-project/sglang/pull/30333) |
-| `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24691](https://github.com/sgl-project/sglang/pull/24691), [#24704](https://github.com/sgl-project/sglang/pull/24704), [#24890](https://github.com/sgl-project/sglang/pull/24890), [#24933](https://github.com/sgl-project/sglang/pull/24933), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#25884](https://github.com/sgl-project/sglang/pull/25884), [#25889](https://github.com/sgl-project/sglang/pull/25889), [#25898](https://github.com/sgl-project/sglang/pull/25898), [#26208](https://github.com/sgl-project/sglang/pull/26208), [#26209](https://github.com/sgl-project/sglang/pull/26209), [#26471](https://github.com/sgl-project/sglang/pull/26471), ... (22 total) |
-| `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` | [#26383](https://github.com/sgl-project/sglang/pull/26383) |
-| `python/sglang/srt/models/deepseek_v4.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24704](https://github.com/sgl-project/sglang/pull/24704), [#24890](https://github.com/sgl-project/sglang/pull/24890), [#24933](https://github.com/sgl-project/sglang/pull/24933), [#24947](https://github.com/sgl-project/sglang/pull/24947), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#25195](https://github.com/sgl-project/sglang/pull/25195), [#25391](https://github.com/sgl-project/sglang/pull/25391), [#25396](https://github.com/sgl-project/sglang/pull/25396), [#25729](https://github.com/sgl-project/sglang/pull/25729), [#25733](https://github.com/sgl-project/sglang/pull/25733), [#25763](https://github.com/sgl-project/sglang/pull/25763), ... (47 total) |
-| `python/sglang/srt/models/deepseek_v4_dspark.py` | [#27657](https://github.com/sgl-project/sglang/pull/27657), [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/srt/models/deepseek_v4_nextn.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24934](https://github.com/sgl-project/sglang/pull/24934), [#24947](https://github.com/sgl-project/sglang/pull/24947), [#25810](https://github.com/sgl-project/sglang/pull/25810), [#25976](https://github.com/sgl-project/sglang/pull/25976), [#26238](https://github.com/sgl-project/sglang/pull/26238), [#28980](https://github.com/sgl-project/sglang/pull/28980) |
+| `python/sglang/srt/layers/attention/deepseek_v4_backend.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24692](https://github.com/sgl-project/sglang/pull/24692), [#24890](https://github.com/sgl-project/sglang/pull/24890), [#25195](https://github.com/sgl-project/sglang/pull/25195), [#26209](https://github.com/sgl-project/sglang/pull/26209), [#26239](https://github.com/sgl-project/sglang/pull/26239), [#26471](https://github.com/sgl-project/sglang/pull/26471), [#26499](https://github.com/sgl-project/sglang/pull/26499), [#27059](https://github.com/sgl-project/sglang/pull/27059), [#27380](https://github.com/sgl-project/sglang/pull/27380), [#27914](https://github.com/sgl-project/sglang/pull/27914), [#29619](https://github.com/sgl-project/sglang/pull/29619), ... (26 total) |
+| `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` | [#24933](https://github.com/sgl-project/sglang/pull/24933), [#26208](https://github.com/sgl-project/sglang/pull/26208), [#26383](https://github.com/sgl-project/sglang/pull/26383), [#26499](https://github.com/sgl-project/sglang/pull/26499), [#27152](https://github.com/sgl-project/sglang/pull/27152), [#27380](https://github.com/sgl-project/sglang/pull/27380), [#27928](https://github.com/sgl-project/sglang/pull/27928), [#28520](https://github.com/sgl-project/sglang/pull/28520), [#28920](https://github.com/sgl-project/sglang/pull/28920), [#29362](https://github.com/sgl-project/sglang/pull/29362), [#29420](https://github.com/sgl-project/sglang/pull/29420), [#29630](https://github.com/sgl-project/sglang/pull/29630), ... (16 total) |
+| `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24933](https://github.com/sgl-project/sglang/pull/24933), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#26471](https://github.com/sgl-project/sglang/pull/26471), [#30333](https://github.com/sgl-project/sglang/pull/30333), [#31747](https://github.com/sgl-project/sglang/pull/31747), [#33676](https://github.com/sgl-project/sglang/pull/33676) |
+| `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24691](https://github.com/sgl-project/sglang/pull/24691), [#24704](https://github.com/sgl-project/sglang/pull/24704), [#24890](https://github.com/sgl-project/sglang/pull/24890), [#24933](https://github.com/sgl-project/sglang/pull/24933), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#25884](https://github.com/sgl-project/sglang/pull/25884), [#25889](https://github.com/sgl-project/sglang/pull/25889), [#25898](https://github.com/sgl-project/sglang/pull/25898), [#26208](https://github.com/sgl-project/sglang/pull/26208), [#26209](https://github.com/sgl-project/sglang/pull/26209), [#26471](https://github.com/sgl-project/sglang/pull/26471), ... (25 total) |
+| `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` | [#26383](https://github.com/sgl-project/sglang/pull/26383), [#32577](https://github.com/sgl-project/sglang/pull/32577), [#34926](https://github.com/sgl-project/sglang/pull/34926) |
+| `python/sglang/srt/models/deepseek_v4.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24704](https://github.com/sgl-project/sglang/pull/24704), [#24890](https://github.com/sgl-project/sglang/pull/24890), [#24933](https://github.com/sgl-project/sglang/pull/24933), [#24947](https://github.com/sgl-project/sglang/pull/24947), [#25144](https://github.com/sgl-project/sglang/pull/25144), [#25195](https://github.com/sgl-project/sglang/pull/25195), [#25391](https://github.com/sgl-project/sglang/pull/25391), [#25396](https://github.com/sgl-project/sglang/pull/25396), [#25729](https://github.com/sgl-project/sglang/pull/25729), [#25733](https://github.com/sgl-project/sglang/pull/25733), [#25763](https://github.com/sgl-project/sglang/pull/25763), ... (63 total) |
+| `python/sglang/srt/models/deepseek_v4_dspark.py` | [#27657](https://github.com/sgl-project/sglang/pull/27657), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30240](https://github.com/sgl-project/sglang/pull/30240), [#30964](https://github.com/sgl-project/sglang/pull/30964), [#33312](https://github.com/sgl-project/sglang/pull/33312), [#33676](https://github.com/sgl-project/sglang/pull/33676), [#33865](https://github.com/sgl-project/sglang/pull/33865) |
+| `python/sglang/srt/models/deepseek_v4_nextn.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24934](https://github.com/sgl-project/sglang/pull/24934), [#24947](https://github.com/sgl-project/sglang/pull/24947), [#25810](https://github.com/sgl-project/sglang/pull/25810), [#25976](https://github.com/sgl-project/sglang/pull/25976), [#26238](https://github.com/sgl-project/sglang/pull/26238), [#28980](https://github.com/sgl-project/sglang/pull/28980), [#31700](https://github.com/sgl-project/sglang/pull/31700), [#33532](https://github.com/sgl-project/sglang/pull/33532) |
 | `python/sglang/test/kernels/deepseek_v4/__init__.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/test/kernels/deepseek_v4/common.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `test/registered/amd/test_deepseek_v4_flash_fp4.py` | [#24825](https://github.com/sgl-project/sglang/pull/24825), [#25039](https://github.com/sgl-project/sglang/pull/25039), [#26662](https://github.com/sgl-project/sglang/pull/26662), [#27149](https://github.com/sgl-project/sglang/pull/27149), [#28290](https://github.com/sgl-project/sglang/pull/28290), [#28920](https://github.com/sgl-project/sglang/pull/28920) |
 | `test/registered/amd/test_deepseek_v4_flash_fp8.py` | [#24825](https://github.com/sgl-project/sglang/pull/24825), [#25039](https://github.com/sgl-project/sglang/pull/25039), [#26662](https://github.com/sgl-project/sglang/pull/26662), [#27149](https://github.com/sgl-project/sglang/pull/27149), [#28290](https://github.com/sgl-project/sglang/pull/28290), [#28920](https://github.com/sgl-project/sglang/pull/28920) |
-| `test/registered/amd/test_deepseek_v4_flash_fp8_tbo.py` | [#29362](https://github.com/sgl-project/sglang/pull/29362) |
+| `test/registered/amd/test_deepseek_v4_flash_fp8_tbo.py` | [#29362](https://github.com/sgl-project/sglang/pull/29362), [#34926](https://github.com/sgl-project/sglang/pull/34926) |
 | `test/registered/amd/test_deepseek_v4_pro_fp4.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24203](https://github.com/sgl-project/sglang/pull/24203), [#24825](https://github.com/sgl-project/sglang/pull/24825), [#25039](https://github.com/sgl-project/sglang/pull/25039), [#26662](https://github.com/sgl-project/sglang/pull/26662), [#27149](https://github.com/sgl-project/sglang/pull/27149), [#28290](https://github.com/sgl-project/sglang/pull/28290), [#28920](https://github.com/sgl-project/sglang/pull/28920) |
 | `test/registered/amd/test_deepseek_v4_pro_fp4_cp.py` | [#27928](https://github.com/sgl-project/sglang/pull/27928), [#28920](https://github.com/sgl-project/sglang/pull/28920) |
+| `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py` | [#33480](https://github.com/sgl-project/sglang/pull/33480) |
+| `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py` | [#30964](https://github.com/sgl-project/sglang/pull/30964) |
 | `test/registered/amd/test_deepseek_v4_pro_fp4_mtp.py` | [#28520](https://github.com/sgl-project/sglang/pull/28520), [#28920](https://github.com/sgl-project/sglang/pull/28920) |
 | `test/registered/amd/test_deepseek_v4_pro_fp4_tbo.py` | [#29362](https://github.com/sgl-project/sglang/pull/29362) |
 | `test/registered/amd/test_deepseek_v4_pro_fp4_tbo_mtp.py` | [#30238](https://github.com/sgl-project/sglang/pull/30238) |
 | `test/registered/amd/test_deepseek_v4_pro_fp8.py` | [#23882](https://github.com/sgl-project/sglang/pull/23882), [#24203](https://github.com/sgl-project/sglang/pull/24203), [#24825](https://github.com/sgl-project/sglang/pull/24825), [#25039](https://github.com/sgl-project/sglang/pull/25039), [#26662](https://github.com/sgl-project/sglang/pull/26662), [#27149](https://github.com/sgl-project/sglang/pull/27149), [#28290](https://github.com/sgl-project/sglang/pull/28290), [#28920](https://github.com/sgl-project/sglang/pull/28920) |
-| `test/registered/ascend/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in8k_out1k_50ms.py` | no direct PR-number commit |
 | `test/registered/attention/unittests/dsv4/test_deepseek_v4.py` | [#25195](https://github.com/sgl-project/sglang/pull/25195), [#29775](https://github.com/sgl-project/sglang/pull/29775), [#29885](https://github.com/sgl-project/sglang/pull/29885), [#30365](https://github.com/sgl-project/sglang/pull/30365) |
-| `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` | [#24947](https://github.com/sgl-project/sglang/pull/24947), [#26609](https://github.com/sgl-project/sglang/pull/26609), [#28098](https://github.com/sgl-project/sglang/pull/28098), [#29569](https://github.com/sgl-project/sglang/pull/29569), [#30898](https://github.com/sgl-project/sglang/pull/30898) |
-| `test/registered/gb300/test_deepseek_v4_pro_fp4.py` | [#28103](https://github.com/sgl-project/sglang/pull/28103), [#29502](https://github.com/sgl-project/sglang/pull/29502) |
+| `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` | [#24947](https://github.com/sgl-project/sglang/pull/24947), [#26609](https://github.com/sgl-project/sglang/pull/26609), [#28098](https://github.com/sgl-project/sglang/pull/28098), [#29569](https://github.com/sgl-project/sglang/pull/29569), [#30898](https://github.com/sgl-project/sglang/pull/30898), [#33532](https://github.com/sgl-project/sglang/pull/33532), [#33865](https://github.com/sgl-project/sglang/pull/33865), [#35918](https://github.com/sgl-project/sglang/pull/35918) |
+| `test/registered/gb300/test_deepseek_v4_pro_fp4_balanced.py` | no direct PR-number commit |
+| `test/registered/gb300/test_deepseek_v4_pro_fp4_high_throughput.py` | no direct PR-number commit |
+| `test/registered/gb300/test_deepseek_v4_pro_fp4_low_latency.py` | no direct PR-number commit |
+| `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py` | [#34189](https://github.com/sgl-project/sglang/pull/34189) |
 | `test/registered/kernels/ops/attention/test_deepseek_v4_compress_state_runtime_shapes.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py` | [#25195](https://github.com/sgl-project/sglang/pull/25195), [#26141](https://github.com/sgl-project/sglang/pull/26141), [#26609](https://github.com/sgl-project/sglang/pull/26609), [#26766](https://github.com/sgl-project/sglang/pull/26766), [#28098](https://github.com/sgl-project/sglang/pull/28098), [#30898](https://github.com/sgl-project/sglang/pull/30898), [#31125](https://github.com/sgl-project/sglang/pull/31125) |
+| `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py` | [#25195](https://github.com/sgl-project/sglang/pull/25195), [#26141](https://github.com/sgl-project/sglang/pull/26141), [#26609](https://github.com/sgl-project/sglang/pull/26609), [#26766](https://github.com/sgl-project/sglang/pull/26766), [#28098](https://github.com/sgl-project/sglang/pull/28098), [#30898](https://github.com/sgl-project/sglang/pull/30898), [#31125](https://github.com/sgl-project/sglang/pull/31125), [#35919](https://github.com/sgl-project/sglang/pull/35919) |
 | `test/registered/models_e2e/test_deepseek_v4_flash_fp4_h200.py` | [#26141](https://github.com/sgl-project/sglang/pull/26141), [#26609](https://github.com/sgl-project/sglang/pull/26609), [#27867](https://github.com/sgl-project/sglang/pull/27867), [#28098](https://github.com/sgl-project/sglang/pull/28098) |
-| `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py` | [#26609](https://github.com/sgl-project/sglang/pull/26609), [#26766](https://github.com/sgl-project/sglang/pull/26766), [#28098](https://github.com/sgl-project/sglang/pull/28098) |
-| `test/registered/models_e2e/test_deepseek_v4_flash_fp8_h200.py` | [#26609](https://github.com/sgl-project/sglang/pull/26609), [#28098](https://github.com/sgl-project/sglang/pull/28098) |
-| `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py` | [#30954](https://github.com/sgl-project/sglang/pull/30954) |
-| `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py` | [#27349](https://github.com/sgl-project/sglang/pull/27349) |
+| `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py` | [#26609](https://github.com/sgl-project/sglang/pull/26609), [#26766](https://github.com/sgl-project/sglang/pull/26766), [#28098](https://github.com/sgl-project/sglang/pull/28098), [#35918](https://github.com/sgl-project/sglang/pull/35918) |
+| `test/registered/models_e2e/test_deepseek_v4_flash_fp8_h200.py` | [#26609](https://github.com/sgl-project/sglang/pull/26609), [#28098](https://github.com/sgl-project/sglang/pull/28098), [#29016](https://github.com/sgl-project/sglang/pull/29016), [#34926](https://github.com/sgl-project/sglang/pull/34926) |
+| `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_1p1d_16p_in8k_out1k_50ms.py` | no direct PR-number commit |
+| `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py` | [#35162](https://github.com/sgl-project/sglang/pull/35162) |
+| `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in8k_out1k_50ms.py` | no direct PR-number commit |
+| `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py` | [#32577](https://github.com/sgl-project/sglang/pull/32577) |
+| `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py` | [#33313](https://github.com/sgl-project/sglang/pull/33313) |
+| `test/registered/unit/models/test_deepseek_v4_rope_policy.py` | [#34788](https://github.com/sgl-project/sglang/pull/34788) |
+| `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py` | [#27349](https://github.com/sgl-project/sglang/pull/27349), [#33312](https://github.com/sgl-project/sglang/pull/33312) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 122
-- Extra PRs preserved from existing docs: 49
-- Total PRs in this document: 171
+- Git-traced PRs: 125
+- Extra PRs preserved from existing docs: 83
+- Total PRs in this document: 208
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -79,21 +89,21 @@
 
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
-| 2026-04-24 | [#23605](https://github.com/sgl-project/sglang/pull/23605) | merged | Add DeepSeek V4 cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-24 | [#23605](https://github.com/sgl-project/sglang/pull/23605) | merged | Add DeepSeek V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx` |
 | 2026-04-24 | [#23617](https://github.com/sgl-project/sglang/pull/23617) | merged | Further update Deepseek V4 docs | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-24 | [#23628](https://github.com/sgl-project/sglang/pull/23628) | merged | docs: note H200 DeepSeek-V4 checkpoint | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-04-24 | [#23622](https://github.com/sgl-project/sglang/pull/23622) | merged | Again update DeepSeek V4 cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-24 | [#23622](https://github.com/sgl-project/sglang/pull/23622) | merged | Again update DeepSeek V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-04-24 | [#23634](https://github.com/sgl-project/sglang/pull/23634) | merged | Update pro fp8 checkpoint in DeepSeek V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-25 | [#23684](https://github.com/sgl-project/sglang/pull/23684) | merged | docs(DeepSeek-V4): note SGLANG_FIX_DSV4_BASE_MODEL_LOAD for base models | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-04-25 | [#23689](https://github.com/sgl-project/sglang/pull/23689) | merged | docs(DeepSeek-V4): mark b200\|small\|pd-disagg + h200\|small\|{cp,pd-disagg} verified | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-04-25 | [#23691](https://github.com/sgl-project/sglang/pull/23691) | merged | docs(DeepSeek-V4): mark gb300\|{small,big}\|{cp,pd-disagg} verified + GB300-specific fixes | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23689](https://github.com/sgl-project/sglang/pull/23689) | merged | docs(DeepSeek-V4): mark b200\|small\|pd-disagg + h200\|small\|{cp,pd-disagg} verified | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23691](https://github.com/sgl-project/sglang/pull/23691) | merged | docs(DeepSeek-V4): mark gb300\|{small,big}\|{cp,pd-disagg} verified + GB300-specific fixes | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-04-25 | [#23690](https://github.com/sgl-project/sglang/pull/23690) | merged | Small udpate gb300 recipe for deepseek v4 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-| 2026-04-25 | [#23697](https://github.com/sgl-project/sglang/pull/23697) | merged | update: b300 container for dsv4 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-25 | [#23697](https://github.com/sgl-project/sglang/pull/23697) | merged | update: b300 container for dsv4 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-04-25 | [#23698](https://github.com/sgl-project/sglang/pull/23698) | merged | docs(DeepSeek-V4): bump GB300 Pro PD decode --mem-fraction-static 0.83 → 0.9 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-25 | [#23715](https://github.com/sgl-project/sglang/pull/23715) | merged | docs(DeepSeek-V4): mark h200\|big\|pd-disagg verified + recipe fixes | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-25 | [#23728](https://github.com/sgl-project/sglang/pull/23728) | merged | ci: add docker release workflow for deepseek_v4 branch | `.github/workflows/release-docker-deepseek-v4.yml` |
 | 2026-04-25 | [#23730](https://github.com/sgl-project/sglang/pull/23730) | merged | [CI] release-docker-deepseek-v4: select which flavors to push | `.github/workflows/release-docker-deepseek-v4.yml` |
-| 2026-04-26 | [#23725](https://github.com/sgl-project/sglang/pull/23725) | merged | docs(DeepSeek-V4): add GB200 platform to cookbook recipe | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-26 | [#23725](https://github.com/sgl-project/sglang/pull/23725) | merged | docs(DeepSeek-V4): add GB200 platform to cookbook recipe | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-04-26 | [#23742](https://github.com/sgl-project/sglang/pull/23742) | merged | docs(DeepSeek-V4): add h200\|big verified recipes + tune H200 Pro parameters | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-26 | [#23737](https://github.com/sgl-project/sglang/pull/23737) | merged | docs(DeepSeek-V4): mark gb200\|big\|low-latency verified | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-26 | [#23778](https://github.com/sgl-project/sglang/pull/23778) | merged | ci(deepseek-v4): add b300/grace-blackwell dev-branch build options | `.github/workflows/release-docker-deepseek-v4.yml` |
@@ -105,7 +115,7 @@
 | 2026-04-27 | [#23756](https://github.com/sgl-project/sglang/pull/23756) | merged | feat: port SGLANG_JIT_DEEPGEMM_FAST_WARMUP to deepseek_v4 branch | `python/sglang/srt/layers/deep_gemm_wrapper/compile_utils.py`, `python/sglang/srt/environ.py` |
 | 2026-04-28 | [#23883](https://github.com/sgl-project/sglang/pull/23883) | merged | Enable DeepGemm warmup in DeepSeek-V4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-04-28 | [#23943](https://github.com/sgl-project/sglang/pull/23943) | merged | [Docs] Add single-node H200 DeepSeek-V4-Pro low-latency recipe | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-| 2026-04-29 | [#23980](https://github.com/sgl-project/sglang/pull/23980) | merged | docs(cookbook): add H200 (FP4) deployment option for DeepSeek-V4 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-04-29 | [#23980](https://github.com/sgl-project/sglang/pull/23980) | merged | docs(cookbook): add H200 (FP4) deployment option for DeepSeek-V4 | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-04-29 | [#24035](https://github.com/sgl-project/sglang/pull/24035) | merged | [minor] Remove incorrect note after supporting w4a16 moe for DeepSeek V4 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-05-04 | [#24203](https://github.com/sgl-project/sglang/pull/24203) | merged | [AMD] Deepseek v4 Flash / Pro nightly tests for MI35x ROCm 7.2 | `test/registered/amd/test_deepseek_v4_pro_fp4.py`, `test/registered/amd/test_deepseek_v4_pro_fp8.py` |
 | 2026-05-05 | [#24367](https://github.com/sgl-project/sglang/pull/24367) | merged | [docs] Update B300 Pro cookbook with accuracy-verified serving configs | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
@@ -123,15 +133,15 @@
 | 2026-05-13 | [#24986](https://github.com/sgl-project/sglang/pull/24986) | merged | [rebase]Deepseek_v4 support w4(mxfp4)a16 on hopper | `python/sglang/srt/layers/quantization/mxfp4_marlin_moe.py`, `python/sglang/srt/layers/quantization/marlin_utils_fp4.py`, `python/sglang/srt/layers/quantization/mxfp4.py` |
 | 2026-05-14 | [#24925](https://github.com/sgl-project/sglang/pull/24925) | merged | [attn backend] Integrate tokenspeed_mla prefill/decode kernels (fp8 kv cache, blackwell) | `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`, `python/sglang/srt/layers/attention/attention_registry.py` |
 | 2026-05-14 | [#25052](https://github.com/sgl-project/sglang/pull/25052) | merged | DeepSeek V4 w4a4 MegaMoE | `python/sglang/srt/layers/moe/mega_moe.py`, `test/registered/dsv4/test_deepseek_v4_flash_fp4_megamoe_b200.py`, `test/registered/dsv4/test_deepseek_v4_flash_fp4_b200.py` |
-| 2026-05-14 | [#25243](https://github.com/sgl-project/sglang/pull/25243) | merged | [Docs] update dsv4 cookbook with H100 deployment commands | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-05-14 | [#25243](https://github.com/sgl-project/sglang/pull/25243) | merged | [Docs] update dsv4 cookbook with H100 deployment commands | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-05-15 | [#24691](https://github.com/sgl-project/sglang/pull/24691) | merged | [UnifiedTree]: Support HiCache For DeepSeek_V4 | `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
-| 2026-05-15 | [#25369](https://github.com/sgl-project/sglang/pull/25369) | merged | Add hicache feature in dsv4 cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-05-15 | [#25369](https://github.com/sgl-project/sglang/pull/25369) | merged | Add hicache feature in dsv4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-05-16 | [#25419](https://github.com/sgl-project/sglang/pull/25419) | merged | Port SGLANG_OPT_SWA_EVICT_DROP_PAGE_MARGIN from deepseek_v4_dev | `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/environ.py` |
 | 2026-05-16 | [#24704](https://github.com/sgl-project/sglang/pull/24704) | merged | feat: add Pipeline Parallelism (PP) and PD support for DeepSeek-V4 | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-05-16 | [#25477](https://github.com/sgl-project/sglang/pull/25477) | merged | [BugFix]: Fix DeepSeek V4 HiCache layer count logic | `test/registered/radix_cache/test_unified_radix_cache_kl_hicache.py`, `test/registered/radix_cache/test_unified_radix_cache_kl_hicache_nightly.py`, `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` |
 | 2026-05-16 | [#25410](https://github.com/sgl-project/sglang/pull/25410) | merged | [Docs] Update DeepSeek V4 cookbook to use the latest docker image | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-05-16 | [#25412](https://github.com/sgl-project/sglang/pull/25412) | merged | [Doc] DSV4 cookbook: clean up env vars, add MegaMoE toggle, unify docker image | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-| 2026-05-17 | [#25506](https://github.com/sgl-project/sglang/pull/25506) | merged | [Doc] Fix several places for dpsk v4 cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-05-17 | [#25506](https://github.com/sgl-project/sglang/pull/25506) | merged | [Doc] Fix several places for dpsk v4 cookbook | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-05-18 | [#25569](https://github.com/sgl-project/sglang/pull/25569) | merged | Add DeepSeekV4 fused MoE Triton autotune support | `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`, `benchmark/kernels/fused_moe_triton/common_utils.py` |
 | 2026-05-18 | [#24933](https://github.com/sgl-project/sglang/pull/24933) | merged | Amd/deepseek v4 rebase main 0509 | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` |
 | 2026-05-19 | [#25282](https://github.com/sgl-project/sglang/pull/25282) | merged | [UnifiedTree] Support deepseek v4 host pool layout | `python/sglang/srt/mem_cache/memory_pool_host.py`, `python/sglang/test/kl_multiturn_utils.py`, `test/registered/radix_cache/test_unified_radix_cache_kl_hicache.py` |
@@ -145,8 +155,8 @@
 | 2026-05-21 | [#25889](https://github.com/sgl-project/sglang/pull/25889) | merged | [Fix] DSV4 cached_loc invalidated when SWA mapping is rebuilt | `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-05-21 | [#25884](https://github.com/sgl-project/sglang/pull/25884) | merged | [Refactor] major JIT kernel clean up for dsv4 | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/jit_kernel/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-05-21 | [#26004](https://github.com/sgl-project/sglang/pull/26004) | merged | Default MegaMoE to W4A8 for Max-Throughput recipe | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-| 2026-05-21 | [#25923](https://github.com/sgl-project/sglang/pull/25923) | merged | [Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-05-22 | [#26057](https://github.com/sgl-project/sglang/pull/26057) | merged | [docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-05-21 | [#25923](https://github.com/sgl-project/sglang/pull/25923) | merged | [Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-05-22 | [#26057](https://github.com/sgl-project/sglang/pull/26057) | merged | [docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8 | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
 | 2026-05-22 | [#25128](https://github.com/sgl-project/sglang/pull/25128) | merged | [Intel GPU] 1/N Fix tilelang import in deepseek v4 rope as optional | `python/sglang/srt/layers/deepseek_v4_rope.py` |
 | 2026-05-23 | [#26141](https://github.com/sgl-project/sglang/pull/26141) | merged | Add non-MTP DSV4 test coverage | `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`, `test/registered/models_e2e/test_deepseek_v4_flash_fp4_h200.py` |
 | 2026-05-23 | [#26164](https://github.com/sgl-project/sglang/pull/26164) | merged | [docs] DeepSeek-V4 cookbook: balanced MegaMoE cap, H200 Pro FP4 mem-frac, nsa-* compat, PD-disagg fixes | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
@@ -156,7 +166,7 @@
 | 2026-05-26 | [#25391](https://github.com/sgl-project/sglang/pull/25391) | merged | Support DeepSeek V4 DeepEP Waterfill | `python/sglang/srt/models/deepseek_v4.py` |
 | 2026-05-26 | [#26208](https://github.com/sgl-project/sglang/pull/26208) | merged | [AMD] Dsv4/pr2 compressor opt | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-05-26 | [#26413](https://github.com/sgl-project/sglang/pull/26413) | merged | [docs] DeepSeek-V4 cookbook: note cu129 image for GB200 Pro DeepEP backend | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` |
-| 2026-05-27 | [#26451](https://github.com/sgl-project/sglang/pull/26451) | merged | [docs] Fix V4 Pro balanced recipe | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-05-27 | [#26451](https://github.com/sgl-project/sglang/pull/26451) | merged | [docs] Fix V4 Pro balanced recipe | `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-05-27 | [#26499](https://github.com/sgl-project/sglang/pull/26499) | merged | [Kernel] Import flash_mla kernels from sglang kernel for deepseek v4 | `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` |
 | 2026-05-27 | [#26383](https://github.com/sgl-project/sglang/pull/26383) | merged | [AMD][DSV4] DSV4 MTP graph + sparse triton attn optimizations | `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4.py` |
 | 2026-05-28 | [#26238](https://github.com/sgl-project/sglang/pull/26238) | merged | refactor(dsv4): route MHC prenorm through DeepGEMM wrapper | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py` |
@@ -170,7 +180,7 @@
 | 2026-06-02 | [#26931](https://github.com/sgl-project/sglang/pull/26931) | merged | [AMD] dpsk-v4 swa loc cache support | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-06-02 | [#26209](https://github.com/sgl-project/sglang/pull/26209) | merged | Add FP4 Indexer for DeepSeek V4 | `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-06-03 | [#27049](https://github.com/sgl-project/sglang/pull/27049) | merged | docs: add DeepSeek-V4 EPLB Waterfill tips | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-06-04 | [#27035](https://github.com/sgl-project/sglang/pull/27035) | merged | docs: add DeepSeek V4 FP4 indexer usage | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-06-04 | [#27035](https://github.com/sgl-project/sglang/pull/27035) | merged | docs: add DeepSeek V4 FP4 indexer usage | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/docs/advanced_features/server_arguments.mdx` |
 | 2026-06-05 | [#24880](https://github.com/sgl-project/sglang/pull/24880) | merged | [PD & HiSparse] Add DeepSeek V4 support for HiSparse direct Prefill-to-Decode DRAM | `python/sglang/srt/mem_cache/hisparse_memory_pool.py`, `python/sglang/jit_kernel/tests/test_hisparse.py`, `test/registered/disaggregation/test_disaggregation_dsv4.py` |
 | 2026-06-05 | [#27404](https://github.com/sgl-project/sglang/pull/27404) | merged | Remove DeepSeek V4 release Docker workflow | `.github/workflows/release-docker-deepseek-v4.yml` |
 | 2026-06-06 | [#27152](https://github.com/sgl-project/sglang/pull/27152) | merged | [bugfix][AMD] AttributeError and warp mask bugs in DeepSeek V4 FP4 indexer | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` |
@@ -199,7 +209,7 @@
 | 2026-06-18 | [#28590](https://github.com/sgl-project/sglang/pull/28590) | merged | [Docs] DeepSeek-V4 cookbook: drop --disable-flashinfer-autotune from GB300 Flash low-latency | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
 | 2026-06-18 | [#25144](https://github.com/sgl-project/sglang/pull/25144) | merged | [NPU] Add Ascend NPU support for DeepSeek-V4 | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` |
 | 2026-06-18 | [#26766](https://github.com/sgl-project/sglang/pull/26766) | merged | [DeepSeek-V4] Fuse UE8M0 scale rounding into FP8 group quantization | `python/sglang/srt/models/deepseek_v4.py`, `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`, `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py` |
-| 2026-06-22 | [#25820](https://github.com/sgl-project/sglang/pull/25820) | merged | [NVIDIA] Support NVFP4 MoE for DeepSeek-V4 | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-06-22 | [#25820](https://github.com/sgl-project/sglang/pull/25820) | merged | [NVIDIA] Support NVFP4 MoE for DeepSeek-V4 | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py` |
 | 2026-06-22 | [#28920](https://github.com/sgl-project/sglang/pull/28920) | merged | [AMD] deepseek-v4 clean env vars | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_mtp.py`, `test/registered/amd/test_deepseek_v4_flash_fp4.py` |
 | 2026-06-22 | [#28941](https://github.com/sgl-project/sglang/pull/28941) | merged | [AMD] Fix nightly-8-gpu-mi35x-deepseek-v4-flash-rocm720 OOM issue | `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
 | 2026-06-23 | [#28981](https://github.com/sgl-project/sglang/pull/28981) | merged | [AMD] Update v4 cookbook to clean env vars | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
@@ -207,7 +217,7 @@
 | 2026-06-24 | [#28455](https://github.com/sgl-project/sglang/pull/28455) | merged | [AMD] Fix DeepSeek-V4 fp8 KV path on gfx942 (e4m3fnuz) | `python/sglang/srt/models/deepseek_v4.py` |
 | 2026-06-24 | [#28952](https://github.com/sgl-project/sglang/pull/28952) | merged | Add DeepSeek V4 Flash demo notebook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | merged | [Docs] Fix broken links in cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
-| 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | merged | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test/registered/gb300/test_deepseek_v4_pro_fp4.py` |
+| 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | merged | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_kimi_k25_nvfp4.py`, `.github/workflows/nightly-test-nvidia.yml` |
 | 2026-06-25 | [#29103](https://github.com/sgl-project/sglang/pull/29103) | merged | [AMD] Feat/dsv4 aiter reduce scatter decode | `python/sglang/srt/models/deepseek_v4.py` |
 | 2026-06-26 | [#27783](https://github.com/sgl-project/sglang/pull/27783) | merged | [Intel GPU] DeepSeek V4 3/N: Support hc_split_sinkhorn on XPU using sgl_kernel | `python/sglang/srt/models/deepseek_v4.py` |
 | 2026-06-27 | [#29106](https://github.com/sgl-project/sglang/pull/29106) | merged | Fix DeepSeek V4 PP HiCache SWA allocation and layer mapping | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
@@ -234,22 +244,59 @@
 | 2026-07-14 | [#31125](https://github.com/sgl-project/sglang/pull/31125) | merged | Disable flaky DSV4-Flash FP4 BCG determinism test (nondeterminism from #30898 idle-rank dummy extend) | `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py` |
 | 2026-07-15 | [#30365](https://github.com/sgl-project/sglang/pull/30365) | merged | [DSV4] Remove per-step seqlen D2H from speculative to make overlap scheduler work | `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `test/registered/attention/unittests/dsv4/test_deepseek_v4.py` |
 | 2026-07-15 | [#30792](https://github.com/sgl-project/sglang/pull/30792) | merged | [Kernel] Migrate DSA + DSV4 attention kernels to sglang.kernels (RFC #29630, Phase 2.5, 5/7) | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4.py` |
-| 2026-07-15 | [#30651](https://github.com/sgl-project/sglang/pull/30651) | merged | cookbook(deepseek-v4): add MORI disagg backend for AMD + bump MI355X image | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
+| 2026-07-15 | [#30651](https://github.com/sgl-project/sglang/pull/30651) | merged | cookbook(deepseek-v4): add MORI disagg backend for AMD + bump MI355X image | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx` |
 | 2026-07-16 | [#28983](https://github.com/sgl-project/sglang/pull/28983) | merged | perf(deepseek_v4): enable SGLANG_OPT_FP8_WO_A_GEMM on sm90 (Hopper) | `python/sglang/srt/models/deepseek_v4.py` |
 | 2026-07-16 | [#31373](https://github.com/sgl-project/sglang/pull/31373) | merged | [Docs] Align B200 DeepSeek-V4-Pro balanced recipe with MegaMoE | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
-| 2026-07-16 | [#31122](https://github.com/sgl-project/sglang/pull/31122) | merged | [Docs] Add AMD-specific HiCache config for DeepSeek V4 playground | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-07-16 | [#31122](https://github.com/sgl-project/sglang/pull/31122) | merged | [Docs] Add AMD-specific HiCache config for DeepSeek V4 playground | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
 | 2026-07-16 | [#30238](https://github.com/sgl-project/sglang/pull/30238) | merged | [AMD] Support two batch overlap with MTP on DeepSeekV4 | `python/sglang/srt/models/deepseek_v4.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_tbo_mtp.py` |
 | 2026-07-16 | [#25763](https://github.com/sgl-project/sglang/pull/25763) | merged | [Feature] Support DeepSeek-V4 Wint4Abf16 and Win4Afp8. | `python/sglang/srt/models/deepseek_v4.py` |
-| 2026-07-17 | [#31452](https://github.com/sgl-project/sglang/pull/31452) | merged | [Docs] Tune DeepSeek-V4 HiCache for MI355X PD | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
-| 2026-07-18 | [#30272](https://github.com/sgl-project/sglang/pull/30272) | merged | Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2 | `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-07-17 | [#31452](https://github.com/sgl-project/sglang/pull/31452) | merged | [Docs] Tune DeepSeek-V4 HiCache for MI355X PD | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-07-18 | [#30272](https://github.com/sgl-project/sglang/pull/30272) | merged | Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2 | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
 | 2026-07-19 | [#31705](https://github.com/sgl-project/sglang/pull/31705) | merged | [DeepSeek-V4] Fix idle-rank dummy-extend sparse-prefill crash under DP breakable CUDA graph | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
-| 2026-07-21 | [#31363](https://github.com/sgl-project/sglang/pull/31363) | merged | docs(cookbook): re-benchmark DeepSeek-V4 on sglang 0.5.15 | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
+| 2026-07-21 | [#31363](https://github.com/sgl-project/sglang/pull/31363) | merged | docs(cookbook): re-benchmark DeepSeek-V4 on sglang 0.5.15 | `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_deployment.jsx` |
 | 2026-07-23 | [#27657](https://github.com/sgl-project/sglang/pull/27657) | merged | [DeepSeek V4] CP decode opt: slice repeat attention weights to local TP partition | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py` |
 | 2026-07-23 | [#29569](https://github.com/sgl-project/sglang/pull/29569) | merged | [DSV4] Support megamoe for CP | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` |
 | 2026-07-24 | [#27059](https://github.com/sgl-project/sglang/pull/27059) | merged | Add FP4 Indexer for DeepSeek V4 on SM120 | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
 | 2026-07-24 | [#31087](https://github.com/sgl-project/sglang/pull/31087) | merged | [RL] DSV4: dispatch indexer topk_transform_512 through DSATopKBackend | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
 | 2026-07-24 | [#31086](https://github.com/sgl-project/sglang/pull/31086) | merged | [RL] DSV4: add env to quantize SWA KV cache from bf16-rounded values | `python/sglang/srt/models/deepseek_v4.py` |
-| 2026-07-26 | [#30954](https://github.com/sgl-project/sglang/pull/30954) | merged | [SM120] Allow fused MHC opt-in with standalone TileLang pre disabled | `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py`, `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-07-26 | [#30954](https://github.com/sgl-project/sglang/pull/30954) | merged | [SM120] Allow fused MHC opt-in with standalone TileLang pre disabled | `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-07-28 | [#31931](https://github.com/sgl-project/sglang/pull/31931) | merged | [NPU] Optimize DeepSeek-V4 performance | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/kernels/ops/attention/deepseek_v4_rope.py` |
+| 2026-07-29 | [#31747](https://github.com/sgl-project/sglang/pull/31747) | merged | [AMD] DSv4: bring HIP compress-state pool into the memory_saver KV_CACHE region | `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
+| 2026-07-29 | [#31563](https://github.com/sgl-project/sglang/pull/31563) | merged | fix mqa preshuffle layout issue for deepseek v4 | `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh` |
+| 2026-07-30 | [#30240](https://github.com/sgl-project/sglang/pull/30240) | merged | Fix DeepSeek V4 loading with RunAI Model Streamer. | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py` |
+| 2026-08-02 | [#31727](https://github.com/sgl-project/sglang/pull/31727) | merged | [AMD] Fix DeepSeek-V4 fused-RMS FP8 scale metadata on gfx950 | `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-03 | [#32910](https://github.com/sgl-project/sglang/pull/32910) | merged | [DeepSeek-V4] Fix nvcc 13 crash building the topk_v2 kernel | `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh` |
+| 2026-08-04 | [#30741](https://github.com/sgl-project/sglang/pull/30741) | merged | Prewarm DSV4 MHC post kernel at model load | `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-05 | [#31865](https://github.com/sgl-project/sglang/pull/31865) | merged | [XPU] DeepSeek V4: use sgl-kernel-xpu implemetation of flash_mla_sparse_fwd for prefill | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
+| 2026-08-07 | [#33616](https://github.com/sgl-project/sglang/pull/33616) | merged | feat: Add flashinfer mHC fusion for DSV4 | `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-07 | [#33532](https://github.com/sgl-project/sglang/pull/33532) | merged | [CP]: Support CP V2 Strategy for dsv4 | `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py` |
+| 2026-08-07 | [#34044](https://github.com/sgl-project/sglang/pull/34044) | merged | docs(cookbook): DeepSeek-V4-Flash-0731 — drop chunked-prefill/autotune flags on B300 low-latency | `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
+| 2026-08-08 | [#30964](https://github.com/sgl-project/sglang/pull/30964) | merged | [AMD] Support DeepSeek V4 DSpark on AMD HIP platform | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py` |
+| 2026-08-09 | [#34189](https://github.com/sgl-project/sglang/pull/34189) | merged | [DSV4] Fix silent KV corruption when speculative draft tokens > 4 | `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py`, `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` |
+| 2026-08-10 | [#26671](https://github.com/sgl-project/sglang/pull/26671) | merged | [JIT Kernel][DSv4] Optimize epilogue of c128 | `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh` |
+| 2026-08-10 | [#33312](https://github.com/sgl-project/sglang/pull/33312) | merged | Fix DSV4 DSpark shared expert loading | `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py`, `python/sglang/srt/models/deepseek_v4_dspark.py` |
+| 2026-08-11 | [#31700](https://github.com/sgl-project/sglang/pull/31700) | merged | Fix DeepSeek-V4/DeepSeek-V4-Pro DP-attention gather semantics | `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py` |
+| 2026-08-11 | [#33662](https://github.com/sgl-project/sglang/pull/33662) | merged | [DSV4] Avoid host syncs in EAGLE prefill | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
+| 2026-08-11 | [#34333](https://github.com/sgl-project/sglang/pull/34333) | merged | docs: remove DSV4 low-latency chunked prefill size | `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
+| 2026-08-11 | [#33865](https://github.com/sgl-project/sglang/pull/33865) | merged | Fix DSpark + DeepSeek V4 prefill CP compatibility | `python/sglang/srt/models/deepseek_v4_dspark.py`, `python/sglang/srt/models/deepseek_v4.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` |
+| 2026-08-11 | [#29070](https://github.com/sgl-project/sglang/pull/29070) | merged | [DSV4] perf: Enable alt stream during BCG prefill | `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-13 | [#34597](https://github.com/sgl-project/sglang/pull/34597) | merged | [AMD] Run V4 MTP target-verify through the decode kernel | `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` |
+| 2026-08-14 | [#25855](https://github.com/sgl-project/sglang/pull/25855) | merged | perf(jit_kernel/deepseek_v4): optimize paged_mqa_metadata | `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh` |
+| 2026-08-14 | [#34788](https://github.com/sgl-project/sglang/pull/34788) | merged | [Fix] Restore layer-level DSV4 RoPE policy | `test/registered/unit/models/test_deepseek_v4_rope_policy.py`, `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-14 | [#34809](https://github.com/sgl-project/sglang/pull/34809) | merged | [Cookbook] Add DeepSeek-V4-Pro-0813 (Pro Official) serving recipes | `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-08-17 | [#34277](https://github.com/sgl-project/sglang/pull/34277) | merged | [DSV4] Emit TMA-aligned UE8M0 scales for FP8 einsum | `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh` |
+| 2026-08-17 | [#33480](https://github.com/sgl-project/sglang/pull/33480) | merged | [AMD] Support prefill context parallel two batch overlap for DeepSeek V4 | `python/sglang/srt/models/deepseek_v4.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py` |
+| 2026-08-17 | [#33676](https://github.com/sgl-project/sglang/pull/33676) | merged | [NPU] Support DeepSeek-V4 DSpark and refactor DSV4 cache management | `python/sglang/srt/models/deepseek_v4_dspark.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` |
+| 2026-08-17 | [#34926](https://github.com/sgl-project/sglang/pull/34926) | merged | Clean deprecated DeepSeek V4 Environs | `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-18 | [#35224](https://github.com/sgl-project/sglang/pull/35224) | merged | [Docs] Enable PD disaggregation for DSV4 low-latency recipes | `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` |
+| 2026-08-18 | [#34890](https://github.com/sgl-project/sglang/pull/34890) | merged | [Perf] Hoist DSv4 draft-extend SWA write locs; unify SWA graph buffer naming | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
+| 2026-08-18 | [#35162](https://github.com/sgl-project/sglang/pull/35162) | merged | Add deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms | `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py` |
+| 2026-08-19 | [#33313](https://github.com/sgl-project/sglang/pull/33313) | merged | [AMD] DeepSeek-V4: route decode wo_a bf16 batched matmul to aiter batched_gemm_bf16 | `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py`, `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-20 | [#32327](https://github.com/sgl-project/sglang/pull/32327) | merged | [DeepSeek-V4] Add Q8KV8 sparse MLA prefill runtime backend | `python/sglang/srt/layers/attention/deepseek_v4_backend.py` |
+| 2026-08-21 | [#34973](https://github.com/sgl-project/sglang/pull/34973) | merged | [AMD] DSv4: fuse the qk-norm-rope pair on the MTP target-verify path | `python/sglang/srt/models/deepseek_v4.py` |
+| 2026-08-21 | [#35919](https://github.com/sgl-project/sglang/pull/35919) | merged | [DeepSeek V4] Default FP4 checkpoints to FlashInfer MXFP4 MoE | `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`, `python/sglang/srt/arg_groups/overrides.py`, `python/sglang/srt/server_args.py` |
+| 2026-08-22 | [#35918](https://github.com/sgl-project/sglang/pull/35918) | merged | [DeepSeek V4] Add W4A4 MegaMoE server flag | `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` |
+| 2026-08-22 | [#32577](https://github.com/sgl-project/sglang/pull/32577) | merged | [AMD] DeepSeek-V4: add aiter fused mHC post+pre with cross-layer boundary dispatch | `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py`, `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py`, `python/sglang/srt/models/deepseek_v4.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -257,15 +304,26 @@
 
 - Link: https://github.com/sgl-project/sglang/pull/23605
 - Status/date: merged / 2026-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `492883c8ca66`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +1024/-1, 1041 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add DeepSeek V4 cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Add DeepSeek V4 cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0 (453 lines); hunks: -0,0 +1,453.
+- Motivation: Title: "Add DeepSeek V4 cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`; technical summary: Covers "Add DeepSeek V4 cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0 (569 lines); hunks: -0,0 +1,569; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0 (453 lines); hunks: -0,0 +1,453; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -16,7 +16,7 @@ metatags:; `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -940,6 +940,7.
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0 (569 lines); hunks: -0,0 +1,569
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0 (453 lines); hunks: -0,0 +1,453
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -16,7 +16,7 @@ metatags:
+  - `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -940,6 +940,7
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -0,0 +1,569 @@
++export const DeepSeekV4Deployment = () => {
++  // DeepSeek-V4 deployment matrix (small / real checkpoint):
++  //   Hardware × Recipe → concrete launch command.
++  //
++  //   Hardware (quantization determined by GPU generation):
++  //     B200  → FP4 weights, Flash TP=4 / Pro TP=8 single-node
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -0,0 +1,453 @@
 +---
@@ -274,10 +332,12 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 +    description: "Deploy DeepSeek-V4 with SGLang — a next-generation MoE model from DeepSeek. Blackwell deployments use the FP4 checkpoint; Hopper deployments use the FP8 checkpoi
 +tag: NEW
 +---
+diff -- docs_new/cookbook/autoregressive/intro.mdx
+@@ -16,7 +16,7 @@ metatags:
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` added +569/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` added +453/-0; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1; `docs_new/docs.json` modified +1/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`, `docs_new/docs.json`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23617 - Further update Deepseek V4 docs
@@ -311,7 +371,7 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23628
 - Status/date: merged / 2026-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `1a37e57fb1ae`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: note H200 DeepSeek-V4 checkpoint"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs: note H200 DeepSeek-V4 checkpoint"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -99,6 +99,10 @@ Please refer to the [official SGLang installation guide](../.....
@@ -335,15 +395,24 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/23622
 - Status/date: merged / 2026-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `3a620cb761ff`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +32/-9, 73 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Again update DeepSeek V4 cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Again update DeepSeek V4 cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../.....
+- Motivation: Title: "Again update DeepSeek V4 cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Again update DeepSeek V4 cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9 (28 lines); hunks: -42,11 +42,11 @@ export const DeepSeekV4Deployment = () => {; -161,7 +161,16 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../.....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9 (28 lines); hunks: -42,11 +42,11 @@ export const DeepSeekV4Deployment = () => {; -161,7 +161,16 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../....
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -42,11 +42,11 @@ export const DeepSeekV4Deployment = () => {
+-        { id: "low-latency",    label: "Low-Latency",      default: true,  subtitle: "MTP 3/4" },
+-        { id: "balanced",       label: "Balanced",         default: false, subtitle: "MTP 1/2 + DeepEP" },
+-        { id: "max-throughput", label: "Max-Throughput",   default: false, subtitle: "DP + DeepEP" },
+-        { id: "cp",             label: "Context-Parallel", default: false, subtitle: "long prompts" },
+-        { id: "pd-disagg",      label: "PD-Disagg",        default: false, subtitle: "1P + 1D + router" },
++        { id: "low-latency",    label: "Low-Latency",      default: true  },
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -95,6 +95,19 @@ Please refer to the [official SGLang installation guide](../../../docs/get-start
 +For how to actually launch one of these images, see [Install → Method 3: Using Docker](../../../docs/get-started/install#method-3-using-docker). A minimal example (substitute the
@@ -355,7 +424,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +19/-9; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23634 - Update pro fp8 checkpoint in DeepSeek V4 cookbook
@@ -387,7 +456,7 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23684
 - Status/date: merged / 2026-04-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `fd401c2fb451`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs(DeepSeek-V4): note SGLANG_FIX_DSV4_BASE_MODEL_LOAD for base models"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): note SGLANG_FIX_DSV4_BASE_MODEL_LOAD for base models"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -147,6 +147,10 @@ The generator currently picks values on the **conservative*....
@@ -410,15 +479,24 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/23689
 - Status/date: merged / 2026-04-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `d2c61acf2597`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +22/-1, 59 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs(DeepSeek-V4): mark b200|small|pd-disagg + h200|small|{cp,pd-disagg} verified"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): mark b200|small|pd-disagg + h200|small|{cp,pd-disagg} verified"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1 (9 lines); hunks: -145,7 +145,14 @@ The generator currently picks values on the **conservative*....
+- Motivation: Title: "docs(DeepSeek-V4): mark b200|small|pd-disagg + h200|small|{cp,pd-disagg} verified"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): mark b200|small|pd-disagg + h200|small|{cp,pd-disagg} verified"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +14/-0 (14 lines); hunks: -164,14 +164,26 @@ export const DeepSeekV4Deployment = () => {; -387,6 +399,7 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1 (9 lines); hunks: -145,7 +145,14 @@ The generator currently picks values on the **conservative*....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +14/-0 (14 lines); hunks: -164,14 +164,26 @@ export const DeepSeekV4Deployment = () => {; -387,6 +399,7 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1 (9 lines); hunks: -145,7 +145,14 @@ The generator currently picks values on the **conservative*...
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -164,14 +164,26 @@ export const DeepSeekV4Deployment = () => {
++    "b200|small|pd-disagg",
++    "h200|small|cp",
++    "h200|small|pd-disagg",
++    // h200|big|pd-disagg: pending verification (needs 4-node H200 cluster with
++    //   shared IB fabric: 2-node prefill + 2-node decode).
++  // Recipes whose command is intentionally not yet provided (e.g. blocked by an
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -145,7 +145,14 @@ The generator currently picks values on the **conservative** side (mirroring an
 -The H200 image and checkpoint are currently being uploaded — public path coming shortly.
@@ -430,22 +508,31 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +14/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +8/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23691 - docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes
 
 - Link: https://github.com/sgl-project/sglang/pull/23691
 - Status/date: merged / 2026-04-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `8a395994edcf`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +56/-5, 113 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0 (7 lines); hunks: -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpo....
+- Motivation: Title: "docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): mark gb300|{small,big}|{cp,pd-disagg} verified + GB300-specific fixes"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +49/-5 (54 lines); hunks: -176,6 +176,10 @@ export const DeepSeekV4Deployment = () => {; -372,7 +376,17 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0 (7 lines); hunks: -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpo....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +49/-5 (54 lines); hunks: -176,6 +176,10 @@ export const DeepSeekV4Deployment = () => {; -372,7 +376,17 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0 (7 lines); hunks: -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpo...
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -176,6 +176,10 @@ export const DeepSeekV4Deployment = () => {
++    "gb300|small|cp",
++    "gb300|big|cp",
++    "gb300|small|pd-disagg",
++    "gb300|big|pd-disagg",
+@@ -372,7 +376,17 @@ export const DeepSeekV4Deployment = () => {
+-      flags.push("  --mem-fraction-static 0.78");
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -158,6 +158,13 @@ TCP, which can lead to garbled KV transfer on large checkpoints.
 +**GB300 PD-Disagg cross-pod MNNVL**
@@ -456,7 +543,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +49/-5; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +7/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23690 - Small udpate gb300 recipe for deepseek v4
@@ -487,15 +574,24 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23697
 - Status/date: merged / 2026-04-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `0d224e505333`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-2, 41 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "update: b300 container for dsv4"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "update: b300 container for dsv4"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../.....
+- Motivation: Title: "update: b300 container for dsv4"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "update: b300 container for dsv4"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +7/-2 (9 lines); hunks: -26,6 +26,7 @@ export const DeepSeekV4Deployment = () => {; -222,7 +223,9 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../.....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +7/-2 (9 lines); hunks: -26,6 +26,7 @@ export const DeepSeekV4Deployment = () => {; -222,7 +223,9 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../....
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -26,6 +26,7 @@ export const DeepSeekV4Deployment = () => {
++        { id: "b300",  label: "B300 (FP4)",  default: false  },
+@@ -222,7 +223,9 @@ export const DeepSeekV4Deployment = () => {
+-    const { hardware, modelSize, recipe, reasoningParser, toolcall } = values;
++    const { hardware: rawHardware, modelSize, recipe, reasoningParser, toolcall } = values;
++    // B300 usage is identical to B200 — alias so we don't duplicate every spec entry.
++    const hardware = rawHardware === "b300" ? "b200" : rawHardware;
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -80,6 +80,10 @@ Please refer to the [official SGLang installation guide](../../../docs/get-start
 +    <tr>
@@ -505,7 +601,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +7/-2; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23698 - docs(DeepSeek-V4): bump GB300 Pro PD decode --mem-fraction-static 0.83 → 0.9
@@ -620,15 +716,24 @@ diff -- .github/workflows/release-docker-deepseek-v4.yml
 
 - Link: https://github.com/sgl-project/sglang/pull/23725
 - Status/date: merged / 2026-04-26
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `049f1bf6fb42`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +58/-8, 195 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs(DeepSeek-V4): add GB200 platform to cookbook recipe"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): add GB200 platform to cookbook recipe"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-2 (8 lines); hunks: -29,13 +29,13 @@ tag: NEW; -88,6 +88,10 @@ Please refer to the [official SGLang installation guide](../.....
+- Motivation: Title: "docs(DeepSeek-V4): add GB200 platform to cookbook recipe"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(DeepSeek-V4): add GB200 platform to cookbook recipe"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +52/-6 (58 lines); hunks: -4,6 +4,7 @@ export const DeepSeekV4Deployment = () => {; -27,6 +28,7 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-2 (8 lines); hunks: -29,13 +29,13 @@ tag: NEW; -88,6 +88,10 @@ Please refer to the [official SGLang installation guide](../.....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +52/-6 (58 lines); hunks: -4,6 +4,7 @@ export const DeepSeekV4Deployment = () => {; -27,6 +28,7 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-2 (8 lines); hunks: -29,13 +29,13 @@ tag: NEW; -88,6 +88,10 @@ Please refer to the [official SGLang installation guide](../....
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -4,6 +4,7 @@ export const DeepSeekV4Deployment = () => {
++  //     GB200 → FP4 weights, Flash TP=4 / Pro TP=8 2-node
+@@ -27,6 +28,7 @@ export const DeepSeekV4Deployment = () => {
++        { id: "gb200", label: "GB200 (FP4)", default: false },
+@@ -138,6 +140,8 @@ export const DeepSeekV4Deployment = () => {
++    "gb200|small": { slug: "deepseek-ai/DeepSeek-V4-Flash", tp: 4,  multinode: false },
++    "gb200|big":   { slug: "deepseek-ai/DeepSeek-V4-Pro",   tp: 8,  multinode: true, nnodes: 2 },
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -29,13 +29,13 @@ tag: NEW
 -      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.05)"}}>single-node serving: B200 / GB300 / H200 on 4 GPUs</td>
@@ -640,7 +745,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-2
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +52/-6; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-2
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23742 - docs(DeepSeek-V4): add h200|big verified recipes + tune H200 Pro parameters
@@ -971,15 +1076,24 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23980
 - Status/date: merged / 2026-04-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `4e885baa9bf1`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +84/-8, 162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs(cookbook): add H200 (FP4) deployment option for DeepSeek-V4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(cookbook): add H200 (FP4) deployment option for DeepSeek-V4"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +5/-5 (10 lines); hunks: -1,7 +1,7; -35,7 +35,7 @@ tag: NEW.
+- Motivation: Title: "docs(cookbook): add H200 (FP4) deployment option for DeepSeek-V4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs(cookbook): add H200 (FP4) deployment option for DeepSeek-V4"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +79/-3 (82 lines); hunks: -31,6 +31,7 @@ export const DeepSeekV4Deployment = () => {; -70,7 +71,19 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +5/-5 (10 lines); hunks: -1,7 +1,7; -35,7 +35,7 @@ tag: NEW.
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +79/-3 (82 lines); hunks: -31,6 +31,7 @@ export const DeepSeekV4Deployment = () => {; -70,7 +71,19 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +5/-5 (10 lines); hunks: -1,7 +1,7; -35,7 +35,7 @@ tag: NEW
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -31,6 +31,7 @@ export const DeepSeekV4Deployment = () => {
++        { id: "h200-fp4", label: "H200 (FP4)", default: false },
+@@ -70,7 +71,19 @@ export const DeepSeekV4Deployment = () => {
+-  const resolveItems = (option) => option.items;
++  // Recipes that are not supported on the H200 (FP4) Marlin path.
++  const H200_FP4_UNSUPPORTED_RECIPES = new Set(["cp", "pd-disagg"]);
++  const resolveItems = (option, vals) => {
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -1,7 +1,7 @@
 -    description: "Deploy DeepSeek-V4 with SGLang — a next-generation MoE model from DeepSeek. Blackwell deployments use the FP4 checkpoint; Hopper deployments use the FP8 checkpoi
@@ -991,14 +1105,14 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +5/-5
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +79/-3; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +5/-5
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #24035 - [minor] Remove incorrect note after supporting w4a16 moe for DeepSeek V4
 
 - Link: https://github.com/sgl-project/sglang/pull/24035
 - Status/date: merged / 2026-04-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `b3ead32d3ca2`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-3, 10 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[minor] Remove incorrect note after supporting w4a16 moe for DeepSeek V4"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[minor] Remove incorrect note after supporting w4a16 moe for DeepSeek V4"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +0/-3 (3 lines); hunks: -120,9 +120,6 @@ docker run --gpus all \.
@@ -1085,7 +1199,7 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23882
 - Status/date: merged / 2026-05-08
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/configs/deepseek_v4.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` and 10 files; associated commits `35870d55aca7`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/configs/deepseek_v4.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` and 9 files; associated commits `35870d55aca7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 154 files, +24534/-712, 27836 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Deepseek V4"; model line: DeepSeek V4; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`; technical summary: Covers "Deepseek V4"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `python/sglang/srt/models/deepseek_v4.py` added +1528/-0 (1528 lines); hunks: -0,0 +1,1528; symbols: _rms_normalize_kernel, rms_normalize_triton, MQALayer, __init__, touching `_rms_normalize_kernel, rms_normalize_triton, MQALayer`; `python/sglang/srt/layers/attention/deepseek_v4_backend.py` added +1255/-0 (1255 lines); hunks: -0,0 +1,1255; symbols: _pad_last_dim, _create_flashmla_metadata, _create_dummy_paged_compress_data, DSV4AttnMetadata, touching `_pad_last_dim, _create_flashmla_metadata, _create_dummy_paged_compress_data`; `python/sglang/srt/models/deepseek_v4_nextn.py` added +216/-0 (216 lines); hunks: -0,0 +1,216; symbols: DeepseekV4ModelNextN, __init__, hc_head, forward, touching `DeepseekV4ModelNextN, __init__, hc_head`; `python/sglang/srt/configs/deepseek_v4.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: try_detect_fp4_experts, DeepSeekV4Config, touching `try_detect_fp4_experts, DeepSeekV4Config`.
@@ -1626,15 +1740,24 @@ diff -- test/registered/dsv4/test_deepseek_v4_flash_fp4_b200.py
 
 - Link: https://github.com/sgl-project/sglang/pull/25243
 - Status/date: merged / 2026-05-14
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `1f119f6a4463`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +83/-9, 153 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] update dsv4 cookbook with H100 deployment commands"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] update dsv4 cookbook with H100 deployment commands"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -100,6 +100,10 @@ Please refer to the [official SGLang installation guide](......
+- Motivation: Title: "[Docs] update dsv4 cookbook with H100 deployment commands"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] update dsv4 cookbook with H100 deployment commands"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +79/-9 (88 lines); hunks: -7,6 +7,7 @@ export const DeepSeekV4Deployment = () => {; -32,6 +33,7 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -100,6 +100,10 @@ Please refer to the [official SGLang installation guide](......
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +79/-9 (88 lines); hunks: -7,6 +7,7 @@ export const DeepSeekV4Deployment = () => {; -32,6 +33,7 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -100,6 +100,10 @@ Please refer to the [official SGLang installation guide](.....
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -7,6 +7,7 @@ export const DeepSeekV4Deployment = () => {
++  //     H100  → FP4 weights (Marlin), Flash TP=8 single-node / Pro TP=16 2-node
+@@ -32,6 +33,7 @@ export const DeepSeekV4Deployment = () => {
++        { id: "h100", label: "H100 (FP4)", default: false },
+@@ -71,14 +73,17 @@ export const DeepSeekV4Deployment = () => {
+-  // Recipes that are not supported on the H200 (FP4) Marlin path.
+-  const H200_FP4_UNSUPPORTED_RECIPES = new Set(["cp", "pd-disagg"]);
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -100,6 +100,10 @@ Please refer to the [official SGLang installation guide](../../../docs/get-start
 +    <tr>
@@ -1644,7 +1767,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +79/-9; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #24691 - [UnifiedTree]: Support HiCache For DeepSeek_V4
@@ -1678,15 +1801,24 @@ diff -- python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py
 
 - Link: https://github.com/sgl-project/sglang/pull/25369
 - Status/date: merged / 2026-05-15
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `c7e879e43f77`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +50/-4, 95 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add hicache feature in dsv4 cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Add hicache feature in dsv4 cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +11/-0 (11 lines); hunks: -334,6 +334,17 @@ print().
+- Motivation: Title: "Add hicache feature in dsv4 cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Add hicache feature in dsv4 cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +39/-4 (43 lines); hunks: -71,6 +71,14 @@ export const DeepSeekV4Deployment = () => {; -295,7 +303,7 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +11/-0 (11 lines); hunks: -334,6 +334,17 @@ print().
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +39/-4 (43 lines); hunks: -71,6 +71,14 @@ export const DeepSeekV4Deployment = () => {; -295,7 +303,7 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +11/-0 (11 lines); hunks: -334,6 +334,17 @@ print()
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -71,6 +71,14 @@ export const DeepSeekV4Deployment = () => {
++    hicache: {
++      name: "hicache",
++      title: "HiCache",
++      items: [
++        { id: "disabled", label: "Disabled", default: true  },
++        { id: "l2",       label: "L2",       default: false, subtitle: "GPU+CPU" },
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -334,6 +334,17 @@ print()
 +#### 4.2.3 HiCache (Hierarchical KV Caching)
@@ -1698,7 +1830,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +11/-0
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +39/-4; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +11/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #25419 - Port SGLANG_OPT_SWA_EVICT_DROP_PAGE_MARGIN from deepseek_v4_dev
@@ -1812,7 +1944,7 @@ diff -- python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py
 
 - Link: https://github.com/sgl-project/sglang/pull/25410
 - Status/date: merged / 2026-05-16
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `9f26697d6a6a`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-41, 63 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Update DeepSeek V4 cookbook to use the latest docker image"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Update DeepSeek V4 cookbook to use the latest docker image"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-41 (47 lines); hunks: -66,48 +66,13 @@ SGLang offers multiple installation methods. Choose based on...; -116,7 +81,7 @@ docker run --gpus all \.
@@ -1866,15 +1998,24 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/25506
 - Status/date: merged / 2026-05-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `6dcacb1159d6`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +47/-1, 83 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Doc] Fix several places for dpsk v4 cookbook"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Doc] Fix several places for dpsk v4 cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +21/-1 (22 lines); hunks: -120,14 +120,34 @@ The generator currently picks values on the **conservative....
+- Motivation: Title: "[Doc] Fix several places for dpsk v4 cookbook"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Doc] Fix several places for dpsk v4 cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +26/-0 (26 lines); hunks: -96,6 +96,15 @@ export const DeepSeekV4Deployment = () => {; -104,6 +113,14 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +21/-1 (22 lines); hunks: -120,14 +120,34 @@ The generator currently picks values on the **conservative....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +26/-0 (26 lines); hunks: -96,6 +96,15 @@ export const DeepSeekV4Deployment = () => {; -104,6 +113,14 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +21/-1 (22 lines); hunks: -120,14 +120,34 @@ The generator currently picks values on the **conservative...
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -96,6 +96,15 @@ export const DeepSeekV4Deployment = () => {
++  // MegaMoE is only supported on Blackwell with DeepEP-based recipes
++  // (balanced / max-throughput / pd-disagg). It's disabled on Hopper
++  // (H100 / H200 / H200-FP4) and on low-latency / cp recipes.
++  const MEGAMOE_UNSUPPORTED_RECIPES = new Set(["low-latency", "cp"]);
++  const MEGAMOE_UNSUPPORTED_HARDWARE = new Set(["h100", "h200", "h200-fp4"]);
++  const isMegamoeUnsupported = (vals) =>
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -120,14 +120,34 @@ The generator currently picks values on the **conservative** side (mirroring an
 -- Original FP4 checkpoints: To run original FP4 checkpoints, apply the w4a16 MoE kernels (marlin) as in interactive command generator. For this option we only support TP method. C
@@ -1886,7 +2027,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +21/-1
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +26/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +21/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #25569 - Add DeepSeekV4 fused MoE Triton autotune support
@@ -2292,15 +2433,24 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/25923
 - Status/date: merged / 2026-05-21
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `17dadebd4e53`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +16/-5, 47 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -120,7 +120,7 @@ The generator currently picks values on the **conservative**....
+- Motivation: Title: "[Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] DeepSeek-V4: switch H200 FP4 Pro to flashinfer_mxfp4, Flash Balanced too"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +15/-4 (19 lines); hunks: -360,22 +360,33 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -120,7 +120,7 @@ The generator currently picks values on the **conservative**....
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +15/-4 (19 lines); hunks: -360,22 +360,33 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -120,7 +120,7 @@ The generator currently picks values on the **conservative**...
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -360,22 +360,33 @@ export const DeepSeekV4Deployment = () => {
+-    // H200 (FP4) Marlin path: dedicated branch — Hopper runs the FP4-mixed
+-    // Instruct repos through the Marlin MoE runner, so it doesn't share envs
+-    // or flags with either the FP8 H200 path or the Blackwell paths.
++    // H200 (FP4) path: dedicated branch — Hopper runs the FP4-mixed Instruct
++    // repos through one of two w4a16 MoE runners (Marlin or Flashinfer mxfp4),
++    // so it doesn't share envs or flags with either the FP8 H200 path or the
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -120,7 +120,7 @@ The generator currently picks values on the **conservative** side (mirroring an
 -- Original FP4 checkpoints: To run original FP4 checkpoints, we provide two different options for w4a16 MoE kernels: Marlin (`--moe-runner-backend marlin`) and Flashinfer (`--moe-
@@ -2308,19 +2458,20 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +15/-4; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #26057 - [docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8
 
 - Link: https://github.com/sgl-project/sglang/pull/26057
 - Status/date: merged / 2026-05-22
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `88a37d740511`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +388/-93, 722 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +273/-68 (341 lines); hunks: -35,7 +35,7 @@ tag: NEW; -182,7 +182,7 @@ curl http://localhost:30000/v1/chat/completions \.
+- Motivation: Title: "[docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; technical summary: Covers "[docs] DeepSeek-V4 cookbook: split Quantization axis, add H100 SGLang FP8"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +273/-68 (341 lines); hunks: -35,7 +35,7 @@ tag: NEW; -182,7 +182,7 @@ curl http://localhost:30000/v1/chat/completions \; `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +115/-25 (140 lines); hunks: -27,13 +27,12 @@ export const DeepSeekV4Deployment = () => {; -44,6 +43,14 @@ export const DeepSeekV4Deployment = () => {.
 - Code diff details:
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +273/-68 (341 lines); hunks: -35,7 +35,7 @@ tag: NEW; -182,7 +182,7 @@ curl http://localhost:30000/v1/chat/completions \
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +115/-25 (140 lines); hunks: -27,13 +27,12 @@ export const DeepSeekV4Deployment = () => {; -44,6 +43,14 @@ export const DeepSeekV4Deployment = () => {
 - Key code excerpts:
 
 ```diff
@@ -2332,10 +2483,18 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 -**Streaming with Thinking Process:**
 +<Accordion title="Streaming with Thinking Process (Python)">
 @@ -227,17 +227,36 @@ for chunk in response:
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -27,13 +27,12 @@ export const DeepSeekV4Deployment = () => {
+-        { id: "b200",  label: "B200 (FP4)",  default: true  },
+-        { id: "b300",  label: "B300 (FP4)",  default: false  },
+-        { id: "gb200", label: "GB200 (FP4)", default: false },
+-        { id: "gb300", label: "GB300 (FP4)", default: false },
+-        { id: "h200",  label: "H200 (FP8)",  default: false },
+-        { id: "h200-fp4", label: "H200 (FP4)", default: false },
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +273/-68
+  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +273/-68; `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +115/-25
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #25128 - [Intel GPU] 1/N Fix tilelang import in deepseek v4 rope as optional
@@ -2610,15 +2769,24 @@ diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/26451
 - Status/date: merged / 2026-05-27
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `d6032c04b665`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +6/-12, 40 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[docs] Fix V4 Pro balanced recipe"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[docs] Fix V4 Pro balanced recipe"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +2/-2 (4 lines); hunks: -145,8 +145,8 @@ Two variants are exposed:.
+- Motivation: Title: "[docs] Fix V4 Pro balanced recipe"; model line: DeepSeek V4; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[docs] Fix V4 Pro balanced recipe"; the main implementation surface is `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +4/-10 (14 lines); hunks: -119,11 +119,11 @@ export const DeepSeekV4Deployment = () => {; -864,12 +864,6 @@ export const DeepSeekV4Deployment = () => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +2/-2 (4 lines); hunks: -145,8 +145,8 @@ Two variants are exposed:.
 - Code diff details:
+  - `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +4/-10 (14 lines); hunks: -119,11 +119,11 @@ export const DeepSeekV4Deployment = () => {; -864,12 +864,6 @@ export const DeepSeekV4Deployment = () => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +2/-2 (4 lines); hunks: -145,8 +145,8 @@ Two variants are exposed:
 - Key code excerpts:
 
 ```diff
+diff -- docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx
+@@ -119,11 +119,11 @@ export const DeepSeekV4Deployment = () => {
+-  // MegaMoE is only wired into the deepep-replacing recipes on Blackwell
+-  // (balanced / max-throughput). Disabled on Hopper (H100 / H200, both FP4
+-  // and FP8), on low-latency / cp recipes, and on PD-Disagg (the cookbook's
++  // MegaMoE is only wired into the max-throughput recipe on Blackwell.
++  // Disabled on Hopper (H100 / H200, both FP4 and FP8), on
++  // low-latency / balanced / cp recipes, and on PD-Disagg (the cookbook's
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -145,8 +145,8 @@ Two variants are exposed:
 -- MegaMoE is **not** supported on Hopper (H100 / H200) nor on the `low-latency` / `cp` settings. When running MegaMoE, don't set `--moe-runner-backend` manually.
@@ -2628,7 +2796,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +2/-2
+  - docs: `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx` modified +4/-10; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +2/-2
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/autoregressive/deepseek-v4-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #26499 - [Kernel] Import flash_mla kernels from sglang kernel for deepseek v4
@@ -2784,7 +2952,7 @@ diff -- test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py
 
 - Link: https://github.com/sgl-project/sglang/pull/26668
 - Status/date: merged / 2026-05-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `69362cbc2c04`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +28/-36, 83 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Doc] Update benchmark instruction for dsv4"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Doc] Update benchmark instruction for dsv4"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +28/-36 (64 lines); hunks: -363,6 +363,10 @@ For more details, see the [HiCache documentation](../../../...; -383,47 +387,35 @@ python3 -m sglang.test.few_shot_gsm8k --num-questions 200....
@@ -3050,7 +3218,7 @@ diff -- python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py
 
 - Link: https://github.com/sgl-project/sglang/pull/27049
 - Status/date: merged / 2026-06-03
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `ac16dbf41250`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +41/-0, 48 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: add DeepSeek-V4 EPLB Waterfill tips"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs: add DeepSeek-V4 EPLB Waterfill tips"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +41/-0 (41 lines); hunks: -115,6 +115,47 @@ The generator currently picks values on the **conservative*....
@@ -3077,12 +3245,13 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/27035
 - Status/date: merged / 2026-06-04
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `10b6b45cad33`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +18/-0, 32 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs: add DeepSeek V4 FP4 indexer usage"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs: add DeepSeek V4 FP4 indexer usage"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +12/-0 (12 lines); hunks: -156,6 +156,18 @@ MegaMoE is not supported with this DeepEP Waterfill recipe....
+- Motivation: Title: "docs: add DeepSeek V4 FP4 indexer usage"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/docs/advanced_features/server_arguments.mdx`; technical summary: Covers "docs: add DeepSeek V4 FP4 indexer usage"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/docs/advanced_features/server_arguments.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +12/-0 (12 lines); hunks: -156,6 +156,18 @@ MegaMoE is not supported with this DeepEP Waterfill recipe...; `docs_new/docs/advanced_features/server_arguments.mdx` modified +6/-0 (6 lines); hunks: -1218,6 +1218,12 @@ Please consult the documentation below and [server_args.p....
 - Code diff details:
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +12/-0 (12 lines); hunks: -156,6 +156,18 @@ MegaMoE is not supported with this DeepEP Waterfill recipe...
+  - `docs_new/docs/advanced_features/server_arguments.mdx` modified +6/-0 (6 lines); hunks: -1218,6 +1218,12 @@ Please consult the documentation below and [server_args.p...
 - Key code excerpts:
 
 ```diff
@@ -3094,10 +3263,18 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 +# Please use latest main branch for this feature
 +sglang serve deepseek-ai/DeepSeek-V4-Flash \
 +  --tp 4 \
+diff -- docs_new/docs/advanced_features/server_arguments.mdx
+@@ -1218,6 +1218,12 @@ Please consult the documentation below and [server_args.py](https://github.com/s
++    <tr>
++      <td style={{padding: "9px 12px", fontWeight: 500, backgroundColor: "rgba(255,255,255,0.02)"}}>`--enable-deepseek-v4-fp4-indexer`</td>
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.05)"}}>Enable the experimental FP4 C4 indexer path for DeepSeek V4. When unset, SGLang keeps the defaul
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>`False`</td>
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.05)"}}>bool flag (set to enable)</td>
++    </tr>
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +12/-0
+  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +12/-0; `docs_new/docs/advanced_features/server_arguments.mdx` modified +6/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/docs/advanced_features/server_arguments.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #24880 - [PD & HiSparse] Add DeepSeek V4 support for HiSparse direct Prefill-to-Decode DRAM
@@ -3411,7 +3588,7 @@ diff -- python/sglang/jit_kernel/csrc/deepseek_v4/c128_v2.cuh
 
 - Link: https://github.com/sgl-project/sglang/pull/27830
 - Status/date: merged / 2026-06-10
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `99258b2f1e1c`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +12/-4, 44 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Restore right-hand ToC on the DeepSeek-V4 cookbook page"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Restore right-hand ToC on the DeepSeek-V4 cookbook page"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6.
@@ -3833,14 +4010,15 @@ diff -- test/registered/amd/test_deepseek_v4_pro_fp4_cp.py
 
 - Link: https://github.com/sgl-project/sglang/pull/28423
 - Status/date: merged / 2026-06-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `0d651e653b98`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +799/-6, 871 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Update v4 amd cookbook"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[AMD] Update v4 amd cookbook"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +724/-0 (724 lines); hunks: -7,6 +7,8 @@ export const config = {; -43,6 +45,10 @@ export const config = {; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +21/-0 (21 lines); hunks: -261,4 +261,25 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +34/-4 (38 lines); hunks: -28,15 +28,15 @@ Then run the **Python** output of the command panel below in...; -47,6 +47,28 @@ docker run --gpus all \.
+- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +724/-0 (724 lines); hunks: -7,6 +7,8 @@ export const config = {; -43,6 +45,10 @@ export const config = {; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +21/-0 (21 lines); hunks: -261,4 +261,25 @@ export const benchmarks = [; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +34/-4 (38 lines); hunks: -28,15 +28,15 @@ Then run the **Python** output of the command panel below in...; -47,6 +47,28 @@ docker run --gpus all \; `docs_new/src/snippets/_deployment.jsx` modified +20/-2 (22 lines); hunks: -504,9 +504,27 @@ export const Deployment = ({ config, benchmarks }) => {.
 - Code diff details:
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +724/-0 (724 lines); hunks: -7,6 +7,8 @@ export const config = {; -43,6 +45,10 @@ export const config = {
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +21/-0 (21 lines); hunks: -261,4 +261,25 @@ export const benchmarks = [
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +34/-4 (38 lines); hunks: -28,15 +28,15 @@ Then run the **Python** output of the command panel below in...; -47,6 +47,28 @@ docker run --gpus all \
+  - `docs_new/src/snippets/_deployment.jsx` modified +20/-2 (22 lines); hunks: -504,9 +504,27 @@ export const Deployment = ({ config, benchmarks }) => {
 - Key code excerpts:
 
 ```diff
@@ -3865,7 +4043,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +724/-0; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +21/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +34/-4
+  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +724/-0; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +21/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +34/-4; `docs_new/src/snippets/_deployment.jsx` modified +20/-2
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/_deployment.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #27277 - Deepseek v4: support mixed dtype compression states
@@ -3936,7 +4114,7 @@ diff -- test/registered/amd/test_deepseek_v4_pro_fp4_mtp.py
 
 - Link: https://github.com/sgl-project/sglang/pull/28613
 - Status/date: merged / 2026-06-18
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `b55cf4382d0d`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +13/-0, 20 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: add DeepSeek-V4 compressed state dtype tip"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "docs: add DeepSeek-V4 compressed state dtype tip"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +13/-0 (13 lines); hunks: -180,6 +180,19 @@ The generator currently picks values on the **conservative*....
@@ -3963,7 +4141,7 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/28590
 - Status/date: merged / 2026-06-18
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `3f6687330462`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +7/-1, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] DeepSeek-V4 cookbook: drop --disable-flashinfer-autotune from GB300 Flash low-latency"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; technical summary: Covers "[Docs] DeepSeek-V4 cookbook: drop --disable-flashinfer-autotune from GB300 Flash low-latency"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +7/-0 (7 lines); hunks: -140,6 +140,13 @@ export const benchmarks = [; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-1 (1 lines); hunks: -743,7 +743,6 @@ sgl-eval run aime25 \\.
@@ -4068,41 +4246,35 @@ diff -- test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py
 
 - Link: https://github.com/sgl-project/sglang/pull/25820
 - Status/date: merged / 2026-06-22
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/models/deepseek_v4.py`; associated commits `c0bb04b67f26`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/models/deepseek_v4.py`; associated commits `c0bb04b67f26`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +385/-17, 572 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NVIDIA] Support NVFP4 MoE for DeepSeek-V4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[NVIDIA] Support NVFP4 MoE for DeepSeek-V4"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +181/-0 (181 lines); hunks: -23,6 +23,7 @@ export const config = {; -38,8 +39,10 @@ export const config = {; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +50/-0 (50 lines); hunks: -136,6 +136,31 @@ export const benchmarks = [; -171,6 +196,31 @@ export const benchmarks = [; `python/sglang/srt/models/deepseek_v4.py` modified +5/-1 (6 lines); hunks: -2293,7 +2293,11 @@ def auto_weight_loader(module):; symbols: auto_weight_loader, touching `auto_weight_loader`; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +25/-0 (25 lines); hunks: -212,6 +212,31 @@ sglang serve \.
+- Motivation: Title: "[NVIDIA] Support NVFP4 MoE for DeepSeek-V4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py`; technical summary: Covers "[NVIDIA] Support NVFP4 MoE for DeepSeek-V4"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +5/-1 (6 lines); hunks: -2293,7 +2293,11 @@ def auto_weight_loader(module):; symbols: auto_weight_loader, touching `auto_weight_loader`; `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +11/-0 (11 lines); hunks: -46,6 +46,17 @@ def apply_deepseek_v4_defaults(server_args: "ServerArgs", mod...; symbols: apply_deepseek_v4_defaults, validate_deepseek_v4_cp, touching `apply_deepseek_v4_defaults, validate_deepseek_v4_cp`.
 - Code diff details:
-  - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +181/-0 (181 lines); hunks: -23,6 +23,7 @@ export const config = {; -38,8 +39,10 @@ export const config = {
-  - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +50/-0 (50 lines); hunks: -136,6 +136,31 @@ export const benchmarks = [; -171,6 +196,31 @@ export const benchmarks = [
   - `python/sglang/srt/models/deepseek_v4.py` modified +5/-1 (6 lines); hunks: -2293,7 +2293,11 @@ def auto_weight_loader(module):; symbols: auto_weight_loader
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +25/-0 (25 lines); hunks: -212,6 +212,31 @@ sglang serve \
   - `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +11/-0 (11 lines); hunks: -46,6 +46,17 @@ def apply_deepseek_v4_defaults(server_args: "ServerArgs", mod...; symbols: apply_deepseek_v4_defaults, validate_deepseek_v4_cp
 - Key code excerpts:
 
 ```diff
-diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
-@@ -23,6 +23,7 @@ export const config = {
-+    { id: "nvfp4", label: "NVFP4" },
-@@ -38,8 +39,10 @@ export const config = {
-+    "flash|nvfp4": "nvidia/DeepSeek-V4-Flash-NVFP4",
-+    "pro|nvfp4": "nvidia/DeepSeek-V4-Pro-NVFP4",
-@@ -582,6 +585,95 @@ sgl-eval run aime25 \\
-+    // ====================================================================
-diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx
-@@ -136,6 +136,31 @@ export const benchmarks = [
-+  // GB200 + NVFP4
-+  // ====================================================================
-+  {
-+    match: { hw: "gb200", variant: "flash", quant: "nvfp4", strategy: "low-latency", nodes: "single" },
-+    sglang_version: "PR #25820",
-+    speed: [
 diff -- python/sglang/srt/models/deepseek_v4.py
 @@ -2293,7 +2293,11 @@ def auto_weight_loader(module):
+-        skipped_checking_patterns = ["attn_mqa.k_scale", "attn_mqa.v_scale"]
++        skipped_checking_patterns = [
++            "attn_mqa.k_scale",
++            "attn_mqa.v_scale",
++            "blockscale_swizzled",
++        ]
+diff -- python/sglang/srt/arg_groups/deepseek_v4_hook.py
+@@ -46,6 +46,17 @@ def apply_deepseek_v4_defaults(server_args: "ServerArgs", model_arch: str) -> No
++    # nvidia/DeepSeek-V4-Pro-NVFP4 uses flashinfer_trtllm_routed MoE runner backend.
++    if (
++        server_args.moe_runner_backend == "auto"
++        and server_args.get_model_config().nvfp4_moe_meta is not None
++    ):
++        server_args.moe_runner_backend = "flashinfer_trtllm_routed"
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +181/-0; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +50/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +25/-0
   - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +5/-1; `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +11/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/layers/moe/hash_topk.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
@@ -4179,7 +4351,7 @@ diff -- python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py
 
 - Link: https://github.com/sgl-project/sglang/pull/28981
 - Status/date: merged / 2026-06-23
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `7e6587c94a1d`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +18/-262, 454 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD] Update v4 cookbook to clean env vars"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[AMD] Update v4 cookbook to clean env vars"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +12/-257 (269 lines); hunks: -158,8 +158,8 @@ sgl-eval run aime25 \\; -1400,26 +1400,9 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +6/-5 (11 lines); hunks: -49,13 +49,14 @@ docker run --gpus all \; -65,7 +66,7 @@ docker run \.
@@ -4269,7 +4441,7 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/28952
 - Status/date: merged / 2026-06-24
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `e97cc339e30c`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +1108/-0, 1116 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add DeepSeek V4 Flash demo notebook"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Add DeepSeek V4 Flash demo notebook"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -88,6 +88,10 @@ import { benchmarks } from "/src/snippets/configs/deepseek-ai....
@@ -4326,12 +4498,16 @@ diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
 
 - Link: https://github.com/sgl-project/sglang/pull/28103
 - Status/date: merged / 2026-06-25
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/gb300/test_deepseek_v4_pro_fp4.py`; associated commits `3344b73c80b3`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +218/-19, 334 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/gb300/test_deepseek_v4_pro_fp4.py`; technical summary: Covers "Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test"; the main implementation surface is `test/registered/gb300/test_deepseek_v4_pro_fp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/gb300/test_deepseek_v4_pro_fp4.py` added +152/-0 (152 lines); hunks: -0,0 +1,152; symbols: TestDeepSeekV4ProFp4, test_deepseek_v4_pro_fp4, touching `TestDeepSeekV4ProFp4, test_deepseek_v4_pro_fp4`.
+- Motivation: Title: "Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_kimi_k25_nvfp4.py`, `.github/workflows/nightly-test-nvidia.yml`; technical summary: Covers "Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test"; the main implementation surface is `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_kimi_k25_nvfp4.py`, `.github/workflows/nightly-test-nvidia.yml`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/gb300/test_deepseek_v4_pro_fp4.py` added +152/-0 (152 lines); hunks: -0,0 +1,152; symbols: TestDeepSeekV4ProFp4, test_deepseek_v4_pro_fp4, touching `TestDeepSeekV4ProFp4, test_deepseek_v4_pro_fp4`; `test/registered/gb300/test_kimi_k25_nvfp4.py` modified +26/-10 (36 lines); hunks: -6,9 +6,12; -19,30 +22,43; symbols: TestKimiK25Nvfp4, test_kimi_k25_nvfp4, touching `TestKimiK25Nvfp4, test_kimi_k25_nvfp4`; `.github/workflows/nightly-test-nvidia.yml` modified +18/-3 (21 lines); hunks: -539,7 +539,20 @@ jobs:; -549,8 +562,10 @@ jobs:; `test/run_suite.py` modified +8/-1 (9 lines); hunks: -121,8 +121,15.
 - Code diff details:
   - `test/registered/gb300/test_deepseek_v4_pro_fp4.py` added +152/-0 (152 lines); hunks: -0,0 +1,152; symbols: TestDeepSeekV4ProFp4, test_deepseek_v4_pro_fp4
+  - `test/registered/gb300/test_kimi_k25_nvfp4.py` modified +26/-10 (36 lines); hunks: -6,9 +6,12; -19,30 +22,43; symbols: TestKimiK25Nvfp4, test_kimi_k25_nvfp4
+  - `.github/workflows/nightly-test-nvidia.yml` modified +18/-3 (21 lines); hunks: -539,7 +539,20 @@ jobs:; -549,8 +562,10 @@ jobs:
+  - `test/run_suite.py` modified +8/-1 (9 lines); hunks: -121,8 +121,15
+  - `test/registered/gb300/test_glm5_fp8.py` modified +4/-1 (5 lines); hunks: -7,7 +7,10
 - Key code excerpts:
 
 ```diff
@@ -4343,10 +4519,21 @@ diff -- test/registered/gb300/test_deepseek_v4_pro_fp4.py
 +from sglang.test.performance_test_runner import PerformanceTestParams
 +from sglang.test.run_combined_tests import run_combined_tests
 +from sglang.test.test_utils import ModelLaunchSettings
+diff -- test/registered/gb300/test_kimi_k25_nvfp4.py
+@@ -6,9 +6,12 @@
+-register_cuda_ci(est_time=7200, suite="nightly-4-gpu-gb300", nightly=True)
++register_cuda_ci(
++    est_time=7200, suite="nightly-4-gpu-gb300-kimi-k25-nvfp4", nightly=True
++)
++DRAFT_MODEL_PATH = "lightseekorg/kimi-k2.5-eagle3-mla"
+@@ -19,30 +22,43 @@
+diff -- .github/workflows/nightly-test-nvidia.yml
+@@ -539,7 +539,20 @@ jobs:
 ```
 
 - Reviewed files:
-  - tests: `test/registered/gb300/test_deepseek_v4_pro_fp4.py` added +152/-0
+  - tests: `test/registered/gb300/test_deepseek_v4_pro_fp4.py` added +152/-0; `test/registered/gb300/test_kimi_k25_nvfp4.py` modified +26/-10; `test/run_suite.py` modified +8/-1; `test/registered/gb300/test_glm5_fp8.py` modified +4/-1; `test/registered/gb300/test_kimi_k25.py` modified +4/-1; `test/registered/gb300/test_qwen35_nvfp4.py` modified +4/-1
+  - ci: `.github/workflows/nightly-test-nvidia.yml` modified +18/-3
 - Risk and verification: The diff ships test coverage in `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_glm5_fp8.py`, `test/registered/gb300/test_glm5_nvfp4.py`, `test/registered/gb300/test_kimi_k25.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #29103 - [AMD] Feat/dsv4 aiter reduce scatter decode
@@ -4442,7 +4629,7 @@ diff -- python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29502
 - Status/date: merged / 2026-06-28
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/gb300/test_deepseek_v4_pro_fp4.py`; associated commits `ae09b8302fa1`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Fix GB300 DSV4 Pro FP4 nightly"; model line: DeepSeek V4; category: bug fix; main diff: `test/registered/gb300/test_deepseek_v4_pro_fp4.py`; technical summary: Covers "[CI] Fix GB300 DSV4 Pro FP4 nightly"; the main implementation surface is `test/registered/gb300/test_deepseek_v4_pro_fp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `test/registered/gb300/test_deepseek_v4_pro_fp4.py` modified +1/-1 (2 lines); hunks: -69,7 +69,7.
@@ -4528,7 +4715,7 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29827
 - Status/date: merged / 2026-07-01
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; associated commits `677a11bfa960`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Doc] Tiny update dsv4 doc"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Doc] Tiny update dsv4 doc"; the main implementation surface is `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +2/-2 (4 lines); hunks: -32,7 +32,7 @@ For how to launch the image, see [Install → Method 3: Using Do...; -296,7 +296,7 @@ TCP, which can lead to garbled KV transfer on large checkpoi....
@@ -5164,12 +5351,13 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/30651
 - Status/date: merged / 2026-07-15
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `fbcbe0a986f1`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +52/-29, 274 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "cookbook(deepseek-v4): add MORI disagg backend for AMD + bump MI355X image"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; technical summary: Covers "cookbook(deepseek-v4): add MORI disagg backend for AMD + bump MI355X image"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +48/-29 (77 lines); hunks: -161,7 +161,7 @@ sgl-eval run aime25 \\; -289,6 +289,9 @@ sgl-eval run aime25 \\.
+- Motivation: Title: "cookbook(deepseek-v4): add MORI disagg backend for AMD + bump MI355X image"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`; technical summary: Covers "cookbook(deepseek-v4): add MORI disagg backend for AMD + bump MI355X image"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +48/-29 (77 lines); hunks: -161,7 +161,7 @@ sgl-eval run aime25 \\; -289,6 +289,9 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/_playground.jsx` modified +4/-0 (4 lines); hunks: -684,6 +684,10 @@ export const Playground = ({ config }) => {.
 - Code diff details:
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +48/-29 (77 lines); hunks: -161,7 +161,7 @@ sgl-eval run aime25 \\; -289,6 +289,9 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/_playground.jsx` modified +4/-0 (4 lines); hunks: -684,6 +684,10 @@ export const Playground = ({ config }) => {
 - Key code excerpts:
 
 ```diff
@@ -5181,10 +5369,16 @@ diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
 +        // MORI-IO transport is AMD-only — hidden on every non-ROCm platform.
 +        { id: "mori",     label: "MORI",
 +          hide: { hw: ["h100", "h200", "b200", "b300", "gb200", "gb300", "rtx6000"] } },
+diff -- docs_new/src/snippets/_playground.jsx
+@@ -684,6 +684,10 @@ export const Playground = ({ config }) => {
++        if (next.transferBackend !== "mooncake" && fc.transferBackends
++            && h.isHidden(fc.transferBackends, next.transferBackend, base)) {
++          next.transferBackend = "mooncake"; changed = true;
++        }
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +48/-29
+  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +48/-29; `docs_new/src/snippets/_playground.jsx` modified +4/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/_playground.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #28983 - perf(deepseek_v4): enable SGLANG_OPT_FP8_WO_A_GEMM on sm90 (Hopper)
@@ -5218,7 +5412,7 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31373
 - Status/date: merged / 2026-07-16
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `a61482134186`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-4, 28 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Align B200 DeepSeek-V4-Pro balanced recipe with MegaMoE"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; technical summary: Covers "[Docs] Align B200 DeepSeek-V4-Pro balanced recipe with MegaMoE"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +4/-4 (8 lines); hunks: -427,15 +427,16 @@ sgl-eval run aime25 \\; -444,7 +445,6 @@ sgl-eval run aime25 \\.
@@ -5245,12 +5439,13 @@ diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/31122
 - Status/date: merged / 2026-07-16
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `3264477a0716`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +29/-7, 69 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Add AMD-specific HiCache config for DeepSeek V4 playground"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Add AMD-specific HiCache config for DeepSeek V4 playground"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +9/-3 (12 lines); hunks: -312,12 +312,18 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -514,6 +514,10 @@ To enable HiCache, open the **HiCache** card in the [Playgr....
+- Motivation: Title: "[Docs] Add AMD-specific HiCache config for DeepSeek V4 playground"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Add AMD-specific HiCache config for DeepSeek V4 playground"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +9/-3 (12 lines); hunks: -312,12 +312,18 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/_playground.jsx` modified +16/-4 (20 lines); hunks: -870,19 +870,31 @@ export const Playground = ({ config }) => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -514,6 +514,10 @@ To enable HiCache, open the **HiCache** card in the [Playgr....
 - Code diff details:
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +9/-3 (12 lines); hunks: -312,12 +312,18 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/_playground.jsx` modified +16/-4 (20 lines); hunks: -870,19 +870,31 @@ export const Playground = ({ config }) => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0 (4 lines); hunks: -514,6 +514,10 @@ To enable HiCache, open the **HiCache** card in the [Playgr...
 - Key code excerpts:
 
@@ -5263,15 +5458,20 @@ diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
 -        { id: "mooncake",  label: "Mooncake" },
 -        { id: "hf3fs",     label: "HF3FS" },
 -        { id: "nixl",      label: "NiXL" },
+diff -- docs_new/src/snippets/_playground.jsx
+@@ -870,19 +870,31 @@ export const Playground = ({ config }) => {
++          const isAmd = sel && /^mi\d/.test(sel.hw);
++          const ratio = (isAmd && fc.amdIo && fc.amdIo.ratio) || 2;
++          const useAmdIo = isAmd && fc.amdIo;
+-            "--hicache-ratio 2",
+-            "--hicache-size 0",
++            `--hicache-ratio ${ratio}`,
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -514,6 +514,10 @@ To enable HiCache, open the **HiCache** card in the [Playground above](#playgrou
-+For AMD devices,
-+- **L2 (GPU + CPU)** — leave Storage on `auto` (default). Cold KV pages spill to CPU pinned memory only. Use `direct` IO backend + `page_first_direct` or `layer-first` mem-layout.
-+- **L3 (GPU + CPU + Storage)** — pick a Storage backend (`file`); the Playground emits the canonical `page_first_direct` mem-layout + `direct` IO backend + `wait_complete` prefetc
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +9/-3; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
+  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +9/-3; `docs_new/src/snippets/_playground.jsx` modified +16/-4; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #30238 - [AMD] Support two batch overlap with MTP on DeepSeekV4
@@ -5340,12 +5540,13 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31452
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `27a52d2530a1`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +60/-10, 133 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Tune DeepSeek-V4 HiCache for MI355X PD"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Tune DeepSeek-V4 HiCache for MI355X PD"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +27/-1 (28 lines); hunks: -161,7 +161,7 @@ sgl-eval run aime25 \\; -325,6 +325,32 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-3 (6 lines); hunks: -52,11 +52,11 @@ docker run --gpus all \; -66,7 +66,7 @@ docker run \.
+- Motivation: Title: "[Docs] Tune DeepSeek-V4 HiCache for MI355X PD"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Tune DeepSeek-V4 HiCache for MI355X PD"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +27/-1 (28 lines); hunks: -161,7 +161,7 @@ sgl-eval run aime25 \\; -325,6 +325,32 @@ sgl-eval run aime25 \\; `docs_new/src/snippets/_playground.jsx` modified +30/-6 (36 lines); hunks: -1015,8 +1015,16 @@ export const Playground = ({ config }) => {; -1028,19 +1036,21 @@ export const Playground = ({ config }) => {; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-3 (6 lines); hunks: -52,11 +52,11 @@ docker run --gpus all \; -66,7 +66,7 @@ docker run \.
 - Code diff details:
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +27/-1 (28 lines); hunks: -161,7 +161,7 @@ sgl-eval run aime25 \\; -325,6 +325,32 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/_playground.jsx` modified +30/-6 (36 lines); hunks: -1015,8 +1015,16 @@ export const Playground = ({ config }) => {; -1028,19 +1036,21 @@ export const Playground = ({ config }) => {
   - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-3 (6 lines); hunks: -52,11 +52,11 @@ docker run --gpus all \; -66,7 +66,7 @@ docker run \
 - Key code excerpts:
 
@@ -5358,32 +5559,32 @@ diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
 +      roleOverrides: [
 +        {
 +          when: {
+diff -- docs_new/src/snippets/_playground.jsx
+@@ -1015,8 +1015,16 @@ export const Playground = ({ config }) => {
+-          const ratio = (isAmd && fc.amdIo && fc.amdIo.ratio) || 2;
+-          const useAmdIo = isAmd && fc.amdIo;
++          const pdMode = h.findFlagArg(flags, "--disaggregation-mode") || "off";
++          const pdBackend = h.findFlagArg(flags, "--disaggregation-transfer-backend");
++          const roleOverride = (fc.roleOverrides || []).find((item) => {
++            if (!item || item.mode !== pdMode) return false;
 diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
 @@ -52,11 +52,11 @@ docker run --gpus all \
--- **MI355X** → `lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi35x-20260623`
-+- **MI355X** → `lmsysorg/sglang-rocm:v0.5.14-rocm720-mi35x-20260710`
--docker pull lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi35x-20260623
-+docker pull lmsysorg/sglang-rocm:v0.5.14-rocm720-mi35x-20260710
-@@ -66,7 +66,7 @@ docker run \
--    lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi35x-20260623 \
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +27/-1; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-3
+  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +27/-1; `docs_new/src/snippets/_playground.jsx` modified +30/-6; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-3
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #30272 - Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2
 
 - Link: https://github.com/sgl-project/sglang/pull/30272
 - Status/date: merged / 2026-07-18
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; associated commits `faf68940939a`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; associated commits `faf68940939a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +506/-237, 1126 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +8/-3 (11 lines); hunks: -1688,9 +1688,14 @@ def match_num_queries(x, value):; symbols: match_num_queries, touching `match_num_queries`; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-4 (7 lines); hunks: -1421,7 +1421,6 @@ sgl-eval run aime25 \\; -1430,9 +1429,9 @@ sgl-eval run aime25 \\; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-4 (7 lines); hunks: -149,7 +149,7 @@ import { Playground } from "/src/snippets/_playground.jsx";; -293,9 +293,8 @@ TCP, which can lead to garbled KV transfer on large checkpoi....
+- Motivation: Title: "Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; technical summary: Covers "Implement SM120 DeepSeek V4 flashinfer_mxfp4 moe runner backend + TP2"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +8/-3 (11 lines); hunks: -1688,9 +1688,14 @@ def match_num_queries(x, value):; symbols: match_num_queries, touching `match_num_queries`.
 - Code diff details:
   - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +8/-3 (11 lines); hunks: -1688,9 +1688,14 @@ def match_num_queries(x, value):; symbols: match_num_queries
-  - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-4 (7 lines); hunks: -1421,7 +1421,6 @@ sgl-eval run aime25 \\; -1430,9 +1429,9 @@ sgl-eval run aime25 \\
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-4 (7 lines); hunks: -149,7 +149,7 @@ import { Playground } from "/src/snippets/_playground.jsx";; -293,9 +293,8 @@ TCP, which can lead to garbled KV transfer on large checkpoi...
 - Key code excerpts:
 
 ```diff
@@ -5395,21 +5596,10 @@ diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
 +            # sparse_prefill_fwd does not support SM120.
 +            if (
 +                forward_batch.forward_mode.is_extend_without_speculative()
-diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
-@@ -1421,7 +1421,6 @@ sgl-eval run aime25 \\
--    // (V4-Pro doesn't fit on 8× 96 GB); TP-only, Marlin MoE runner.
-@@ -1430,9 +1429,9 @@ sgl-eval run aime25 \\
--        "--tp 4",
--        "--moe-runner-backend marlin",
--        "--mem-fraction-static 0.70",
-+        "--tp 2",
-diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
-@@ -149,7 +149,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
 ```
 
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +8/-3
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-4; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +3/-4
 - Risk and verification: The diff ships test coverage in `test/registered/unit/layers/quantization/test_mxfp4_sm120_cutlass.py`, `test/registered/unit/layers/quantization/test_mxfp4_sm90_cutlass.py`, `test/registered/unit/test_model_overrides.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #31705 - [DeepSeek-V4] Fix idle-rank dummy-extend sparse-prefill crash under DP breakable CUDA graph
@@ -5439,13 +5629,14 @@ diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31363
 - Status/date: merged / 2026-07-21
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `4a55fdba0b7e`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +231/-71, 594 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs(cookbook): re-benchmark DeepSeek-V4 on sglang 0.5.15"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; technical summary: Covers "docs(cookbook): re-benchmark DeepSeek-V4 on sglang 0.5.15"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +209/-59 (268 lines); hunks: -1,113 +1,181; -118,6 +186,7 @@ export const benchmarks = [; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-3 (6 lines); hunks: -4,7 +4,7; -80,7 +80,7 @@ export const config = {.
+- Motivation: Title: "docs(cookbook): re-benchmark DeepSeek-V4 on sglang 0.5.15"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_deployment.jsx`; technical summary: Covers "docs(cookbook): re-benchmark DeepSeek-V4 on sglang 0.5.15"; the main implementation surface is `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs_new/src/snippets/_deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +209/-59 (268 lines); hunks: -1,113 +1,181; -118,6 +186,7 @@ export const benchmarks = [; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-3 (6 lines); hunks: -4,7 +4,7; -80,7 +80,7 @@ export const config = {; `docs_new/src/snippets/_deployment.jsx` modified +3/-1 (4 lines); hunks: -25,6 +25,8; -577,7 +579,7 @@ export const Deployment = ({ config, benchmarks }) => {.
 - Code diff details:
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +209/-59 (268 lines); hunks: -1,113 +1,181; -118,6 +186,7 @@ export const benchmarks = [
   - `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-3 (6 lines); hunks: -4,7 +4,7; -80,7 +80,7 @@ export const config = {
+  - `docs_new/src/snippets/_deployment.jsx` modified +3/-1 (4 lines); hunks: -25,6 +25,8; -577,7 +579,7 @@ export const Deployment = ({ config, benchmarks }) => {
 - Key code excerpts:
 
 ```diff
@@ -5465,10 +5656,12 @@ diff -- docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
 -  --warmup-requests 64`,
 +  --warmup-requests 64 --flush-cache`,
 @@ -1276,7 +1276,7 @@ sgl-eval run aime25 \\
+diff -- docs_new/src/snippets/_deployment.jsx
+@@ -25,6 +25,8 @@
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +209/-59; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-3
+  - docs: `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +209/-59; `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +3/-3; `docs_new/src/snippets/_deployment.jsx` modified +3/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/_deployment.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #27657 - [DeepSeek V4] CP decode opt: slice repeat attention weights to local TP partition
@@ -5630,24 +5823,15 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 
 - Link: https://github.com/sgl-project/sglang/pull/30954
 - Status/date: merged / 2026-07-26
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py`; associated commits `2cbddb842d67`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`; associated commits `2cbddb842d67`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +84/-3, 105 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[SM120] Allow fused MHC opt-in with standalone TileLang pre disabled"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py`, `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[SM120] Allow fused MHC opt-in with standalone TileLang pre disabled"; the main implementation surface is `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py`, `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestDeepseekV4FusedMHCPolicy, _is_enabled, test_sm120_allows_fused_opt_in_with_standalone_pre_disabled, test_other_platform_still_requires_tilelang_pre, touching `TestDeepseekV4FusedMHCPolicy, _is_enabled, test_sm120_allows_fused_opt_in_with_standalone_pre_disabled`; `python/sglang/srt/models/deepseek_v4.py` modified +5/-3 (8 lines); hunks: -153,6 +153,7; -204,12 +205,13 @@ def _get_mhc_ops() -> MhcOps:; symbols: _get_mhc_ops, _is_fused_mhc_post_pre_enabled, touching `_get_mhc_ops, _is_fused_mhc_post_pre_enabled`.
+- Motivation: Title: "[SM120] Allow fused MHC opt-in with standalone TileLang pre disabled"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[SM120] Allow fused MHC opt-in with standalone TileLang pre disabled"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +5/-3 (8 lines); hunks: -153,6 +153,7; -204,12 +205,13 @@ def _get_mhc_ops() -> MhcOps:; symbols: _get_mhc_ops, _is_fused_mhc_post_pre_enabled, touching `_get_mhc_ops, _is_fused_mhc_post_pre_enabled`.
 - Code diff details:
-  - `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py` added +79/-0 (79 lines); hunks: -0,0 +1,79; symbols: TestDeepseekV4FusedMHCPolicy, _is_enabled, test_sm120_allows_fused_opt_in_with_standalone_pre_disabled, test_other_platform_still_requires_tilelang_pre
   - `python/sglang/srt/models/deepseek_v4.py` modified +5/-3 (8 lines); hunks: -153,6 +153,7; -204,12 +205,13 @@ def _get_mhc_ops() -> MhcOps:; symbols: _get_mhc_ops, _is_fused_mhc_post_pre_enabled
 - Key code excerpts:
 
 ```diff
-diff -- test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py
-@@ -0,0 +1,79 @@
-+"""Unit tests for the DeepSeek-V4 fused-MHC enable policy."""
-+import unittest
-+from unittest.mock import patch
-+import sglang.srt.models.deepseek_v4 as deepseek_v4
-+from sglang.srt.environ import envs
-+from sglang.test.ci.ci_register import register_cpu_ci
 diff -- python/sglang/srt/models/deepseek_v4.py
 @@ -153,6 +153,7 @@
 +from sglang.srt.utils.common import is_sm120_supported
@@ -5659,9 +5843,1215 @@ diff -- python/sglang/srt/models/deepseek_v4.py
 ```
 
 - Reviewed files:
-  - tests: `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py` added +79/-0
   - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +5/-3
 - Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31931 - [NPU] Optimize DeepSeek-V4 performance
+
+- Link: https://github.com/sgl-project/sglang/pull/31931
+- Status/date: merged / 2026-07-28
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/ops/attention/deepseek_v4_rope.py`, `python/sglang/srt/models/deepseek_v4.py`; associated commits `5558dbad0037`
+- Diff scope read: GitHub Pull Request files API returned 21 files, +1308/-520, 2590 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] Optimize DeepSeek-V4 performance"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/kernels/ops/attention/deepseek_v4_rope.py`; technical summary: Covers "[NPU] Optimize DeepSeek-V4 performance"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/kernels/ops/attention/deepseek_v4_rope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +59/-22 (81 lines); hunks: -23,9 +23,6; -47,6 +44,7; symbols: __init__, _get_npu_rope_position_cache, _compute_q_a, _forward_prepare, touching `__init__, _get_npu_rope_position_cache, _compute_q_a`; `python/sglang/kernels/ops/attention/deepseek_v4_rope.py` modified +0/-120 (120 lines); hunks: -649,123 +649,3 @@ def fused_norm_rope_inplace_triton(; symbols: fused_norm_rope_inplace_triton, _get_contig_freqs_real_imag, get_fused_compressor_rope_cos_sin, v4_rope_inplace_npu, touching `fused_norm_rope_inplace_triton, _get_contig_freqs_real_imag, get_fused_compressor_rope_cos_sin`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +59/-22 (81 lines); hunks: -23,9 +23,6; -47,6 +44,7; symbols: __init__, _get_npu_rope_position_cache, _compute_q_a, _forward_prepare
+  - `python/sglang/kernels/ops/attention/deepseek_v4_rope.py` modified +0/-120 (120 lines); hunks: -649,123 +649,3 @@ def fused_norm_rope_inplace_triton(; symbols: fused_norm_rope_inplace_triton, _get_contig_freqs_real_imag, get_fused_compressor_rope_cos_sin, v4_rope_inplace_npu
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -23,9 +23,6 @@
+-from sglang.kernels.ops.attention.deepseek_v4_rope import (
+-    v4_rope_inplace_npu,
+-)
+@@ -47,6 +44,7 @@
++from sglang.srt.hardware_backend.npu.dsv4.dsv4_rope import Dsv4NpuRoPE
+@@ -622,6 +620,11 @@ def __init__(
+diff -- python/sglang/kernels/ops/attention/deepseek_v4_rope.py
+@@ -649,123 +649,3 @@ def fused_norm_rope_inplace_triton(
+-# Cache contiguous real/imag halves of each freqs_cis (its .real/.imag are
+-# strided views, stride=2 on the interleaved layout), keyed by id.
+-_NPU_ROPE_CONTIG_CACHE: dict[int, tuple] = {}
+-def _get_contig_freqs_real_imag(
+-    freqs_cis: torch.Tensor,
+-) -> tuple[torch.Tensor, torch.Tensor]:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +59/-22; `python/sglang/kernels/ops/attention/deepseek_v4_rope.py` modified +0/-120
+- Risk and verification: Runtime changes concentrate in `python/sglang/kernels/ops/attention/deepseek_v4_rope.py`, `python/sglang/srt/disaggregation/ascend/conn.py`, `python/sglang/srt/disaggregation/decode.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #31747 - [AMD] DSv4: bring HIP compress-state pool into the memory_saver KV_CACHE region
+
+- Link: https://github.com/sgl-project/sglang/pull/31747
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`; associated commits `f5bcd00e1638`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +19/-27, 61 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] DSv4: bring HIP compress-state pool into the memory_saver KV_CACHE region"; model line: DeepSeek V4; category: model implementation change; main diff: `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`; technical summary: Covers "[AMD] DSv4: bring HIP compress-state pool into the memory_saver KV_CACHE region"; the main implementation surface is `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` modified +18/-23 (41 lines); hunks: -153,30 +153,25 @@ def _alloc_kv_score_buffer(; symbols: _alloc_kv_score_buffer, state_cache_3d, touching `_alloc_kv_score_buffer, state_cache_3d`; `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +1/-4 (5 lines); hunks: -646,10 +646,7 @@ def __init__(; symbols: __init__, get_unified_kv, touching `__init__, get_unified_kv`.
+- Code diff details:
+  - `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` modified +18/-23 (41 lines); hunks: -153,30 +153,25 @@ def _alloc_kv_score_buffer(; symbols: _alloc_kv_score_buffer, state_cache_3d
+  - `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +1/-4 (5 lines); hunks: -646,10 +646,7 @@ def __init__(; symbols: __init__, get_unified_kv
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/mem_cache/deepseek_v4_compress_state.py
+@@ -153,30 +153,25 @@ def _alloc_kv_score_buffer(
+-        if _is_hip:
+-            self.kv_score_buffer = KVAndScore(
+-                torch.empty((self._size, self.last_dim), dtype=dtype, device=device)
+-            )
+-        else:
+-            self.memory_saver_adapter = TorchMemorySaverAdapter.create(
+diff -- python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py
+@@ -646,10 +646,7 @@ def __init__(
+-        if _is_hip:
+-            self._init_paged_compress_states(False)
+-        else:
+-            self._init_paged_compress_states(enable_memory_saver)
++        self._init_paged_compress_states(enable_memory_saver)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` modified +18/-23; `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +1/-4
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #31563 - fix mqa preshuffle layout issue for deepseek v4
+
+- Link: https://github.com/sgl-project/sglang/pull/31563
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh`; associated commits `1c6a0e91e125`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +92/-13, 224 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix mqa preshuffle layout issue for deepseek v4"; model line: DeepSeek V4; category: bug fix; main diff: `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh`; technical summary: Covers "fix mqa preshuffle layout issue for deepseek v4"; the main implementation surface is `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh` modified +23/-4 (27 lines); hunks: -64,7 +64,7 @@ enum class ForwardMode : bool {; -213,7 +213,19 @@ INDEXER_KERNEL void fused_norm_rope_indexer(const __grid_co...; symbols: ForwardMode, touching `ForwardMode`.
+- Code diff details:
+  - `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh` modified +23/-4 (27 lines); hunks: -64,7 +64,7 @@ enum class ForwardMode : bool {; -213,7 +213,19 @@ INDEXER_KERNEL void fused_norm_rope_indexer(const __grid_co...; symbols: ForwardMode
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh
+@@ -64,7 +64,7 @@ enum class ForwardMode : bool {
+-template <typename DType, ForwardMode kMode, int32_t kPageBits, bool kUsePDL>
++template <typename DType, ForwardMode kMode, int32_t kPageBits, bool kUsePDL, int32_t kPreshuffleSize = 0>
+@@ -213,7 +213,19 @@ INDEXER_KERNEL void fused_norm_rope_indexer(const __grid_constant__ FusedNormRop
+-    result.store(value_ptr, lane_id);
++    if constexpr (kPreshuffleSize != 0) {
++      constexpr int32_t kTile = kPreshuffleSize;
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh` modified +23/-4
+- Risk and verification: Runtime changes concentrate in `python/sglang/kernels/jit/csrc/deepseek_v4/fused_norm_rope_v2.cuh`, `python/sglang/kernels/ops/attention/dsa/index_buf_accessor.py`, `python/sglang/kernels/ops/attention/dsv4/compress.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #30240 - Fix DeepSeek V4 loading with RunAI Model Streamer.
+
+- Link: https://github.com/sgl-project/sglang/pull/30240
+- Status/date: merged / 2026-07-30
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`; associated commits `b61cb5f9de87`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +185/-14, 262 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix DeepSeek V4 loading with RunAI Model Streamer."; model line: DeepSeek V4; category: bug fix; main diff: `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`; technical summary: Covers "Fix DeepSeek V4 loading with RunAI Model Streamer."; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +60/-10 (70 lines); hunks: -121,7 +121,10; -2777,13 +2780,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, auto_weight_loader, _dequant_fp8, _clone_if_runai_streamed_tensor, touching `load_weights, auto_weight_loader, _dequant_fp8`; `python/sglang/srt/models/deepseek_v4_dspark.py` modified +2/-4 (6 lines); hunks: -30,7 +30,7; -761,9 +761,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +60/-10 (70 lines); hunks: -121,7 +121,10; -2777,13 +2780,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, auto_weight_loader, _dequant_fp8, _clone_if_runai_streamed_tensor
+  - `python/sglang/srt/models/deepseek_v4_dspark.py` modified +2/-4 (6 lines); hunks: -30,7 +30,7; -761,9 +761,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -121,7 +121,10 @@
+-from sglang.srt.model_loader.weight_utils import default_weight_loader
++from sglang.srt.model_loader.weight_utils import (
++    RUNAI_STREAMER_TENSOR_ATTR,
++    default_weight_loader,
++)
+@@ -2777,13 +2780,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal
+diff -- python/sglang/srt/models/deepseek_v4_dspark.py
+@@ -30,7 +30,7 @@
+-    _dequant_fp8_wo_a,
++    _dequant_fp8_wo_a_streaming,
+@@ -761,9 +761,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]) -> None:
+-        weights = list(weights)
+-        if any(name.endswith(".wo_a.scale") for name, _ in weights):
+-            weights = list(_dequant_fp8_wo_a(weights))
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +60/-10; `python/sglang/srt/models/deepseek_v4_dspark.py` modified +2/-4
+- Risk and verification: The diff ships test coverage in `test/registered/unit/model_loader/test_runai_model_streamer_loader.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31727 - [AMD] Fix DeepSeek-V4 fused-RMS FP8 scale metadata on gfx950
+
+- Link: https://github.com/sgl-project/sglang/pull/31727
+- Status/date: merged / 2026-08-02
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`; associated commits `1685d29f2127`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +116/-0, 169 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Fix DeepSeek-V4 fused-RMS FP8 scale metadata on gfx950"; model line: DeepSeek V4; category: bug fix; main diff: `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[AMD] Fix DeepSeek-V4 fused-RMS FP8 scale metadata on gfx950"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +8/-0 (8 lines); hunks: -84,6 +84,9; -249,6 +252,11 @@ def _fused_rmsnorm_fp8_quant(hidden_states, weight, eps):; symbols: _fused_rmsnorm_fp8_quant, touching `_fused_rmsnorm_fp8_quant`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +8/-0 (8 lines); hunks: -84,6 +84,9; -249,6 +252,11 @@ def _fused_rmsnorm_fp8_quant(hidden_states, weight, eps):; symbols: _fused_rmsnorm_fp8_quant
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -84,6 +84,9 @@
++from sglang.srt.layers.quantization.fp8_utils import (
++    view_aiter_fused_rms_transposed_fp8_scale,
++)
+@@ -249,6 +252,11 @@ def _fused_rmsnorm_fp8_quant(hidden_states, weight, eps):
++    if _use_aiter_bpreshuffle_gfx95:
++        x_quant = (
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +8/-0
+- Risk and verification: The diff ships test coverage in `test/registered/quant/test_fused_rms_fp8_group_quant.py`, `test/registered/unit/layers/test_fp8_bpreshuffle_scale.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #32910 - [DeepSeek-V4] Fix nvcc 13 crash building the topk_v2 kernel
+
+- Link: https://github.com/sgl-project/sglang/pull/32910
+- Status/date: merged / 2026-08-03
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh`; associated commits `28a2472f9588`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +7/-2, 16 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DeepSeek-V4] Fix nvcc 13 crash building the topk_v2 kernel"; model line: DeepSeek V4; category: bug fix; main diff: `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh`; technical summary: Covers "[DeepSeek-V4] Fix nvcc 13 crash building the topk_v2 kernel"; the main implementation surface is `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh` modified +7/-2 (9 lines); hunks: -220,8 +220,13 @@ CLUSTER_TOPK_KERNEL void topk_small_batch_kernel(const __gr....
+- Code diff details:
+  - `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh` modified +7/-2 (9 lines); hunks: -220,8 +220,13 @@ CLUSTER_TOPK_KERNEL void topk_small_batch_kernel(const __gr...
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh
+@@ -220,8 +220,13 @@ CLUSTER_TOPK_KERNEL void topk_small_batch_kernel(const __grid_constant__ TopKLau
+-    problem.out = cluster.map_shared_rank(topk_indices, worker_rank);
+-    Cluster::forward<kPDL>(problem, &smem);  // write to peer's output shared memory
++    // The mapped alias stays in a copy: the elected rank reads the very same
++    // bytes back through `topk_indices` below, and letting a shared::cluster
++    // address reach the `problem.out` that problem_transform loads makes cicc
++    // segfault on CUDA 13.x (issue #32830).
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh` modified +7/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #30741 - Prewarm DSV4 MHC post kernel at model load
+
+- Link: https://github.com/sgl-project/sglang/pull/30741
+- Status/date: merged / 2026-08-04
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`; associated commits `23ea7b648135`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +25/-10, 73 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Prewarm DSV4 MHC post kernel at model load"; model line: DeepSeek V4; category: model implementation change; main diff: `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "Prewarm DSV4 MHC post kernel at model load"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +25/-10 (35 lines); hunks: -2752,8 +2752,8 @@ def remap_weight_name_to_dpsk_hf_format(; -2774,16 +2774,17 @@ def _prewarm_mhc_pre_kernels(self) -> None:; symbols: remap_weight_name_to_dpsk_hf_format, _prewarm_mhc_pre_kernels, _prewarm_mhc_kernels, touching `remap_weight_name_to_dpsk_hf_format, _prewarm_mhc_pre_kernels, _prewarm_mhc_kernels`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +25/-10 (35 lines); hunks: -2752,8 +2752,8 @@ def remap_weight_name_to_dpsk_hf_format(; -2774,16 +2774,17 @@ def _prewarm_mhc_pre_kernels(self) -> None:; symbols: remap_weight_name_to_dpsk_hf_format, _prewarm_mhc_pre_kernels, _prewarm_mhc_kernels
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -2752,8 +2752,8 @@ def remap_weight_name_to_dpsk_hf_format(
+-    def _prewarm_mhc_pre_kernels(self) -> None:
+-        """One-shot mhc_pre() JIT prewarm at load time, synced across ranks.
++    def _prewarm_mhc_kernels(self) -> None:
++        """One-shot MHC JIT prewarm at load time, synced across ranks.
+@@ -2774,16 +2774,17 @@ def _prewarm_mhc_pre_kernels(self) -> None:
+-        from sglang.kernels.ops.layernorm.mhc import prewarm_mhc_pre
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +25/-10
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #31865 - [XPU] DeepSeek V4: use sgl-kernel-xpu implemetation of flash_mla_sparse_fwd for prefill
+
+- Link: https://github.com/sgl-project/sglang/pull/31865
+- Status/date: merged / 2026-08-05
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; associated commits `3b4fac5b9967`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 12 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[XPU] DeepSeek V4: use sgl-kernel-xpu implemetation of flash_mla_sparse_fwd for prefill"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; technical summary: Covers "[XPU] DeepSeek V4: use sgl-kernel-xpu implemetation of flash_mla_sparse_fwd for prefill"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +4/-1 (5 lines); hunks: -1780,7 +1780,10 @@ def _forward_prefill_sparse(; symbols: _forward_prefill_sparse, touching `_forward_prefill_sparse`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +4/-1 (5 lines); hunks: -1780,7 +1780,10 @@ def _forward_prefill_sparse(; symbols: _forward_prefill_sparse
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
+@@ -1780,7 +1780,10 @@ def _forward_prefill_sparse(
+-        from sgl_kernel.flash_mla import flash_mla_sparse_fwd
++        if _is_xpu:
++            from sgl_kernel import flash_mla_sparse_fwd
++        else:
++            from sgl_kernel.flash_mla import flash_mla_sparse_fwd
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +4/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #33616 - feat: Add flashinfer mHC fusion for DSV4
+
+- Link: https://github.com/sgl-project/sglang/pull/33616
+- Status/date: merged / 2026-08-07
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`; associated commits `3ed2a0adf3d8`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +86/-0, 114 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "feat: Add flashinfer mHC fusion for DSV4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "feat: Add flashinfer mHC fusion for DSV4"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +85/-0 (85 lines); hunks: -219,6 +219,74 @@ def _is_fused_mhc_post_pre_enabled() -> bool:; -1513,6 +1581,18 @@ def hc_pre_torch_impl(x, hc_fn):; symbols: _is_fused_mhc_post_pre_enabled, _cuda_sm_count, _flashinfer_mhc_pre_num_splits, _flashinfer_hc_pre, touching `_is_fused_mhc_post_pre_enabled, _cuda_sm_count, _flashinfer_mhc_pre_num_splits`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +85/-0 (85 lines); hunks: -219,6 +219,74 @@ def _is_fused_mhc_post_pre_enabled() -> bool:; -1513,6 +1581,18 @@ def hc_pre_torch_impl(x, hc_fn):; symbols: _is_fused_mhc_post_pre_enabled, _cuda_sm_count, _flashinfer_mhc_pre_num_splits, _flashinfer_hc_pre
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -219,6 +219,74 @@ def _is_fused_mhc_post_pre_enabled() -> bool:
++# FlashInfer's mhc_pre_big_fuse only accepts these split-K counts.
++_FLASHINFER_MHC_PRE_SPLITS = (1, 2, 4, 8, 16)
++@functools.cache
++def _cuda_sm_count() -> int:
++    return torch.cuda.get_device_properties(0).multi_processor_count
++def _flashinfer_mhc_pre_num_splits(num_tokens: int, hc_hidden_size: int) -> int:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +85/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/environ.py`, `python/sglang/srt/models/deepseek_v4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #33532 - [CP]: Support CP V2 Strategy for dsv4
+
+- Link: https://github.com/sgl-project/sglang/pull/33532
+- Status/date: merged / 2026-08-07
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`; associated commits `1480687cff5a`
+- Diff scope read: GitHub Pull Request files API returned 10 files, +161/-59, 601 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CP]: Support CP V2 Strategy for dsv4"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`; technical summary: Covers "[CP]: Support CP V2 Strategy for dsv4"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +32/-8 (40 lines); hunks: -58,6 +58,7; -277,11 +278,16 @@ def refresh_for_breakable_cuda_graph_replay_(self, other:...; symbols: refresh_for_breakable_cuda_graph_replay_, init_compression_metadata, touching `refresh_for_breakable_cuda_graph_replay_, init_compression_metadata`; `python/sglang/srt/models/deepseek_v4.py` modified +26/-14 (40 lines); hunks: -59,6 +59,11; -1073,9 +1078,8 @@ def _forward_prepare(; symbols: _forward_prepare, forward, touching `_forward_prepare, forward`; `python/sglang/srt/models/deepseek_v4_nextn.py` modified +18/-6 (24 lines); hunks: -13,6 +13,10; -115,6 +119,9 @@ def __init__(; symbols: __init__, get_input_embeddings, hc_head, forward, touching `__init__, get_input_embeddings, hc_head`; `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +14/-11 (25 lines); hunks: -1,7 +1,7; -29,6 +29,7; symbols: setUpClass, touching `setUpClass`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +32/-8 (40 lines); hunks: -58,6 +58,7; -277,11 +278,16 @@ def refresh_for_breakable_cuda_graph_replay_(self, other:...; symbols: refresh_for_breakable_cuda_graph_replay_, init_compression_metadata
+  - `python/sglang/srt/models/deepseek_v4.py` modified +26/-14 (40 lines); hunks: -59,6 +59,11; -1073,9 +1078,8 @@ def _forward_prepare(; symbols: _forward_prepare, forward
+  - `python/sglang/srt/models/deepseek_v4_nextn.py` modified +18/-6 (24 lines); hunks: -13,6 +13,10; -115,6 +119,9 @@ def __init__(; symbols: __init__, get_input_embeddings, hc_head, forward
+  - `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +14/-11 (25 lines); hunks: -1,7 +1,7; -29,6 +29,7; symbols: setUpClass
+  - `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +1/-0 (1 lines); hunks: -167,6 +167,7 @@ def validate_deepseek_v4_cp(server_args: ServerArgs) -> None:; symbols: validate_deepseek_v4_cp
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
+@@ -58,6 +58,7 @@
++from sglang.srt.layers.cp.utils import is_cp_v2_active
+@@ -277,11 +278,16 @@ def refresh_for_breakable_cuda_graph_replay_(self, other: DSV4AttnMetadata) -> N
+-    def init_compression_metadata(self):
++    def init_compression_metadata(self, num_tokens: Optional[int] = None) -> None:
++        # CP-v2 pads causal metadata for per-rank partitioning, while cache-write
++        # locations remain one-per-logical-token. num_tokens tracks that unpadded
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -59,6 +59,11 @@
++from sglang.srt.layers.cp.utils import (
++    cp_materialize_global_token_order,
++    cp_round_robin_input_ids_v2,
++    is_cp_v2_active,
++)
+@@ -1073,9 +1078,8 @@ def _forward_prepare(
+diff -- python/sglang/srt/models/deepseek_v4_nextn.py
+@@ -13,6 +13,10 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +32/-8; `python/sglang/srt/models/deepseek_v4.py` modified +26/-14; `python/sglang/srt/models/deepseek_v4_nextn.py` modified +18/-6; `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +1/-0
+  - tests: `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +14/-11
+- Risk and verification: The diff ships test coverage in `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34044 - docs(cookbook): DeepSeek-V4-Flash-0731 — drop chunked-prefill/autotune flags on B300 low-latency
+
+- Link: https://github.com/sgl-project/sglang/pull/34044
+- Status/date: merged / 2026-08-07
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `86f373daff12`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-3, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "docs(cookbook): DeepSeek-V4-Flash-0731 — drop chunked-prefill/autotune flags on B300 low-latency"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; technical summary: Covers "docs(cookbook): DeepSeek-V4-Flash-0731 — drop chunked-prefill/autotune flags on B300 low-latency"; the main implementation surface is `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +1/-3 (4 lines); hunks: -620,16 +620,14 @@ sgl-eval run aime25 \\.
+- Code diff details:
+  - `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +1/-3 (4 lines); hunks: -620,16 +620,14 @@ sgl-eval run aime25 \\
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
+@@ -620,16 +620,14 @@ sgl-eval run aime25 \\
+-      verified: false,
++      verified: true,
+-        "--chunked-prefill-size 4096",
+-        "--disable-flashinfer-autotune",
+```
+
+- Reviewed files:
+  - docs: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +1/-3
+- Risk and verification: This is mostly docs/examples in `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #30964 - [AMD] Support DeepSeek V4 DSpark on AMD HIP platform
+
+- Link: https://github.com/sgl-project/sglang/pull/30964
+- Status/date: merged / 2026-08-08
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py`; associated commits `ba7abd4f92de`
+- Diff scope read: GitHub Pull Request files API returned 9 files, +586/-52, 897 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Support DeepSeek V4 DSpark on AMD HIP platform"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py`; technical summary: Covers "[AMD] Support DeepSeek V4 DSpark on AMD HIP platform"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +102/-27 (129 lines); hunks: -414,6 +414,7 @@ class DeepseekV4HipRadixBackend(; -456,6 +457,18 @@ def __init__(; symbols: DeepseekV4HipRadixBackend, __init__, init_forward_metadata_prefill, touching `DeepseekV4HipRadixBackend, __init__, init_forward_metadata_prefill`; `python/sglang/srt/models/deepseek_v4_dspark.py` modified +27/-1 (28 lines); hunks: -9,6 +9,9; -135,6 +138,20 @@ def _store_block_kv(; symbols: _store_block_kv, write_target_hidden_kv, touching `_store_block_kv, write_target_hidden_kv`; `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py` added +201/-0 (201 lines); hunks: -0,0 +1,201; symbols: TestDSparkUnifiedKVKernelsAMD, test_build_unified_commit_inject_layout, test_scatter_bf16_into_unified, TestDeepseekV4DSparkUnifiedKVGSM8K, touching `TestDSparkUnifiedKVKernelsAMD, test_build_unified_commit_inject_layout, test_scatter_bf16_into_unified`; `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +28/-0 (28 lines); hunks: -1192,6 +1192,34 @@ def set_swa_key_buffer_radix_fused_norm_rope(; symbols: set_swa_key_buffer_radix_fused_norm_rope, set_unified_key_buffer_radix_fused_norm_rope, set_extra_key_buffer_fused, touching `set_swa_key_buffer_radix_fused_norm_rope, set_unified_key_buffer_radix_fused_norm_rope, set_extra_key_buffer_fused`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +102/-27 (129 lines); hunks: -414,6 +414,7 @@ class DeepseekV4HipRadixBackend(; -456,6 +457,18 @@ def __init__(; symbols: DeepseekV4HipRadixBackend, __init__, init_forward_metadata_prefill
+  - `python/sglang/srt/models/deepseek_v4_dspark.py` modified +27/-1 (28 lines); hunks: -9,6 +9,9; -135,6 +138,20 @@ def _store_block_kv(; symbols: _store_block_kv, write_target_hidden_kv
+  - `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py` added +201/-0 (201 lines); hunks: -0,0 +1,201; symbols: TestDSparkUnifiedKVKernelsAMD, test_build_unified_commit_inject_layout, test_scatter_bf16_into_unified, TestDeepseekV4DSparkUnifiedKVGSM8K
+  - `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +28/-0 (28 lines); hunks: -1192,6 +1192,34 @@ def set_swa_key_buffer_radix_fused_norm_rope(; symbols: set_swa_key_buffer_radix_fused_norm_rope, set_unified_key_buffer_radix_fused_norm_rope, set_extra_key_buffer_fused
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py
+@@ -414,6 +414,7 @@ class DeepseekV4HipRadixBackend(
++    supports_ragged_verify_graph: bool = True
+@@ -456,6 +457,18 @@ def __init__(
++        self.is_dspark_draft = (
++            getattr(model_runner, "is_draft_worker", False)
++            and model_runner.spec_algorithm.is_dspark()
++        )
+diff -- python/sglang/srt/models/deepseek_v4_dspark.py
+@@ -9,6 +9,9 @@
++from sglang.kernels.ops.attention.dsv4.unified_kv_kernels.env_gate import (
++    is_unified_kv_triton,
++)
+@@ -135,6 +138,20 @@ def _store_block_kv(
++        if is_unified_kv_triton():
++            # unified_kv: SWA K lives in the shared bf16 ring (swa_kv_pool is
+diff -- test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py
+@@ -0,0 +1,201 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +102/-27; `python/sglang/srt/models/deepseek_v4_dspark.py` modified +27/-1; `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +28/-0
+  - tests: `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py` added +201/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_deepseek_v4_pro_fp4_dspark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34189 - [DSV4] Fix silent KV corruption when speculative draft tokens > 4
+
+- Link: https://github.com/sgl-project/sglang/pull/34189
+- Status/date: merged / 2026-08-09
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`, `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py`; associated commits `4a5d7d3c67e6`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +314/-7, 390 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSV4] Fix silent KV corruption when speculative draft tokens > 4"; model line: DeepSeek V4; category: bug fix; main diff: `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py`, `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`; technical summary: Covers "[DSV4] Fix silent KV corruption when speculative draft tokens > 4"; the main implementation surface is `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py`, `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh`, `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: _window_size, _max_draft_tokens, _written_positions, TestCompressWritePlanDraftPad, touching `_window_size, _max_draft_tokens, _written_positions`; `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh` modified +12/-4 (16 lines); hunks: -47,6 +47,8 @@ struct Prefill0Params {; -509,13 +511,19 @@ inline PrefillPlan plan_compress_prefill(; `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +8/-0 (8 lines); hunks: -48,6 +48,14 @@ def get_compress_state_ring_size(; symbols: get_compress_state_ring_size, get_compress_state_write_pad, DeepSeekV4SingleKVPool, __init__, touching `get_compress_state_ring_size, get_compress_state_write_pad, DeepSeekV4SingleKVPool`.
+- Code diff details:
+  - `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py` added +217/-0 (217 lines); hunks: -0,0 +1,217; symbols: _window_size, _max_draft_tokens, _written_positions, TestCompressWritePlanDraftPad
+  - `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh` modified +12/-4 (16 lines); hunks: -47,6 +47,8 @@ struct Prefill0Params {; -509,13 +511,19 @@ inline PrefillPlan plan_compress_prefill(
+  - `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +8/-0 (8 lines); hunks: -48,6 +48,14 @@ def get_compress_state_ring_size(; symbols: get_compress_state_ring_size, get_compress_state_write_pad, DeepSeekV4SingleKVPool, __init__
+- Key code excerpts:
+
+```diff
+diff -- test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py
+@@ -0,0 +1,217 @@
++"""Kernel-level tests for the DSV4 compress write-plan (`plan_prefill`).
++`plan_w` decides which tokens' raw KV get persisted into the compress-state ring
++for a *future* compression window to read. A speculative verify batch plans from
++the optimistic `seq_len = prefix + num_draft_tokens` but rolls back to
++`prefix + accept_len`, so every committed token must stay resident whatever the
++accept length -- i.e. the plan must write all of `[prefix, seq_len)`.
+diff -- python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh
+@@ -47,6 +47,8 @@ struct Prefill0Params {
++  /// \brief Trailing tokens the write plan keeps resident in the compress state ring.
++  /// Derived from the ring in `plan_compress_prefill`; see the bound there.
+@@ -509,13 +511,19 @@ inline PrefillPlan plan_compress_prefill(
++  // Write pad: trailing tokens kept resident so a verify batch's committed tail survives
++  // any accept length. Zero without speculation -- nothing rolls back, and the ring is
++  // then exactly one window wide. Otherwise the ring bounds it: a write at `w` aliases
+diff -- python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py
+@@ -48,6 +48,14 @@ def get_compress_state_ring_size(
+```
+
+- Reviewed files:
+  - tests: `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py` added +217/-0
+  - runtime: `python/sglang/kernels/jit/csrc/deepseek_v4/c_plan.cuh` modified +12/-4; `python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py` modified +8/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `test/registered/kernels/ops/attention/test_deepseek_v4_compress_plan_draft_pad.py`, `test/registered/unit/mem_cache/test_dsv4_compress_write_pad.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #26671 - [JIT Kernel][DSv4] Optimize epilogue of c128
+
+- Link: https://github.com/sgl-project/sglang/pull/26671
+- Status/date: merged / 2026-08-10
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh`; associated commits `7331287c1cad`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +96/-97, 343 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[JIT Kernel][DSv4] Optimize epilogue of c128"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh`; technical summary: Covers "[JIT Kernel][DSv4] Optimize epilogue of c128"; the main implementation surface is `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh` modified +96/-97 (193 lines); hunks: -37,17 +37,37 @@ using PlanD = device::compress::DecodePlan;; -69,28 +89,6 @@ struct Compress128PrefillParams {.
+- Code diff details:
+  - `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh` modified +96/-97 (193 lines); hunks: -37,17 +37,37 @@ using PlanD = device::compress::DecodePlan;; -69,28 +89,6 @@ struct Compress128PrefillParams {
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh
+@@ -37,17 +37,37 @@ using PlanD = device::compress::DecodePlan;
+-/// \brief Each thread will handle this many elements (split along head_dim)
+-constexpr int32_t kTileElements = 2;
+-/// \brief Each warp will handle this many elements (split along 128)
+-constexpr int32_t kElementsPerWarp = 8;
+-constexpr uint32_t kNumWarps = 128 / kElementsPerWarp;
+-constexpr uint32_t kBlockSize = device::kWarpThreads * kNumWarps;
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh` modified +96/-97
+- Risk and verification: Runtime changes concentrate in `python/sglang/kernels/jit/csrc/deepseek_v4/c128_v2.cuh`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #33312 - Fix DSV4 DSpark shared expert loading
+
+- Link: https://github.com/sgl-project/sglang/pull/33312
+- Status/date: merged / 2026-08-10
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4_dspark.py`, `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py`; associated commits `8c5d5f75bf8b`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +122/-5, 212 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix DSV4 DSpark shared expert loading"; model line: DeepSeek V4; category: bug fix; main diff: `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`; technical summary: Covers "Fix DSV4 DSpark shared expert loading"; the main implementation surface is `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py` modified +104/-3 (107 lines); hunks: -1,18 +1,25; -31,13 +38,24 @@ def _publish(self, enforce):; symbols: TestDeepseekV4SharedExpertFusionPolicy, before, _publish, _install, touching `TestDeepseekV4SharedExpertFusionPolicy, before, _publish`; `python/sglang/srt/models/deepseek_v4_dspark.py` modified +17/-2 (19 lines); hunks: -20,6 +20,7; -32,6 +33,7; symbols: _run_ffn, DeepseekV4ForCausalLMDSpark, shared_experts_fusion_disable_reason, __init__, touching `_run_ffn, DeepseekV4ForCausalLMDSpark, shared_experts_fusion_disable_reason`.
+- Code diff details:
+  - `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py` modified +104/-3 (107 lines); hunks: -1,18 +1,25; -31,13 +38,24 @@ def _publish(self, enforce):; symbols: TestDeepseekV4SharedExpertFusionPolicy, before, _publish, _install
+  - `python/sglang/srt/models/deepseek_v4_dspark.py` modified +17/-2 (19 lines); hunks: -20,6 +20,7; -32,6 +33,7; symbols: _run_ffn, DeepseekV4ForCausalLMDSpark, shared_experts_fusion_disable_reason, __init__
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py
+@@ -1,18 +1,25 @@
++from unittest.mock import patch
++import torch
++from torch import nn
++from sglang.srt.configs.deepseek_v4 import DeepSeekV4Config
++from sglang.srt.models.deepseek_v4_dspark import DeepseekV4ForCausalLMDSpark
++from sglang.test.test_utils import CustomTestCase
+diff -- python/sglang/srt/models/deepseek_v4_dspark.py
+@@ -20,6 +20,7 @@
++from sglang.srt.layers.moe.utils import is_shared_experts_fusion_disabled
+@@ -32,6 +33,7 @@
++    DeepseekV4ForCausalLM,
+@@ -571,6 +573,12 @@ def _run_ffn(self, x: torch.Tensor, forward_batch: ForwardBatch) -> torch.Tensor
++    @classmethod
++    def shared_experts_fusion_disable_reason(cls, hf_config, quant_config):
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py` modified +104/-3
+  - runtime: `python/sglang/srt/models/deepseek_v4_dspark.py` modified +17/-2
+- Risk and verification: The diff ships test coverage in `test/registered/unit/model_loader/test_runai_model_streamer_loader.py`, `test/registered/unit/models/test_deepseek_v4_shared_expert_fusion.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #31700 - Fix DeepSeek-V4/DeepSeek-V4-Pro DP-attention gather semantics
+
+- Link: https://github.com/sgl-project/sglang/pull/31700
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`; associated commits `7c7326ccb328`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +14/-4, 46 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix DeepSeek-V4/DeepSeek-V4-Pro DP-attention gather semantics"; model line: DeepSeek V4; category: bug fix; main diff: `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`; technical summary: Covers "Fix DeepSeek-V4/DeepSeek-V4-Pro DP-attention gather semantics"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +7/-2 (9 lines); hunks: -1854,7 +1854,9 @@ def _run_moe_ffn_dp_sync(; -2372,7 +2374,10 @@ def forward(; symbols: _run_moe_ffn_dp_sync, forward, touching `_run_moe_ffn_dp_sync, forward`; `python/sglang/srt/models/deepseek_v4_nextn.py` modified +7/-2 (9 lines); hunks: -14,7 +14,7; -162,7 +162,12 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +7/-2 (9 lines); hunks: -1854,7 +1854,9 @@ def _run_moe_ffn_dp_sync(; -2372,7 +2374,10 @@ def forward(; symbols: _run_moe_ffn_dp_sync, forward
+  - `python/sglang/srt/models/deepseek_v4_nextn.py` modified +7/-2 (9 lines); hunks: -14,7 +14,7; -162,7 +162,12 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -1854,7 +1854,9 @@ def _run_moe_ffn_dp_sync(
+-            dp_gather_partial(hidden_states, local_hidden_states, forward_batch)
++            # self_attn has already reduced across attention TP, so these hidden
++            # states are replicated and must not be summed by a partial gather.
++            dp_gather_replicate(hidden_states, local_hidden_states, forward_batch)
+@@ -2372,7 +2374,10 @@ def forward(
+-            dp_gather_replicate(input_ids_global, input_ids[:, None], forward_batch)
+diff -- python/sglang/srt/models/deepseek_v4_nextn.py
+@@ -14,7 +14,7 @@
+-    dp_gather_partial,
++    dp_gather_replicate,
+@@ -162,7 +162,12 @@ def forward(
+-            dp_gather_partial(input_ids_global, input_ids[:, None], forward_batch)
++            # Token IDs are replicated within an attention-TP group. Use replicate
++            # gather to avoid summing duplicated IDs when attention_tp_size > 1.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +7/-2; `python/sglang/srt/models/deepseek_v4_nextn.py` modified +7/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_nextn.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #33662 - [DSV4] Avoid host syncs in EAGLE prefill
+
+- Link: https://github.com/sgl-project/sglang/pull/33662
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; associated commits `2d5009d130d3`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +17/-3, 76 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSV4] Avoid host syncs in EAGLE prefill"; model line: DeepSeek V4; category: model implementation change; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; technical summary: Covers "[DSV4] Avoid host syncs in EAGLE prefill"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +9/-0 (9 lines); hunks: -1789,6 +1789,14 @@ def _forward_prefill_sparse(; -1801,6 +1809,7 @@ def _forward_prefill_sparse(; symbols: _forward_prefill_sparse, touching `_forward_prefill_sparse`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +9/-0 (9 lines); hunks: -1789,6 +1789,14 @@ def _forward_prefill_sparse(; -1801,6 +1809,7 @@ def _forward_prefill_sparse(; symbols: _forward_prefill_sparse
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
+@@ -1789,6 +1789,14 @@ def _forward_prefill_sparse(
++            extend_seq_lens_cpu = forward_batch.extend_seq_lens_cpu
++            assert extend_seq_lens_cpu is not None
++            total_swa = sum(
++                min(int(seq_len), int(extend_len) + SWA_WINDOW - 1)
++                for seq_len, extend_len in zip(
++                    seq_lens_cpu.tolist(), extend_seq_lens_cpu, strict=True
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +9/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/dsv4/sparse_prefill_utils.py`, `python/sglang/srt/speculative/eagle_utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #34333 - docs: remove DSV4 low-latency chunked prefill size
+
+- Link: https://github.com/sgl-project/sglang/pull/34333
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `a92bbf2f247f`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +0/-11, 88 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "docs: remove DSV4 low-latency chunked prefill size"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; technical summary: Covers "docs: remove DSV4 low-latency chunked prefill size"; the main implementation surface is `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-11 (11 lines); hunks: -450,7 +450,6 @@ sgl-eval run aime25 \\; -471,7 +470,6 @@ sgl-eval run aime25 \\.
+- Code diff details:
+  - `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-11 (11 lines); hunks: -450,7 +450,6 @@ sgl-eval run aime25 \\; -471,7 +470,6 @@ sgl-eval run aime25 \\
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
+@@ -450,7 +450,6 @@ sgl-eval run aime25 \\
+-        "--chunked-prefill-size 4096",
+@@ -471,7 +470,6 @@ sgl-eval run aime25 \\
+-        "--chunked-prefill-size 4096",
+@@ -646,7 +644,6 @@ sgl-eval run aime25 \\
+-        "--chunked-prefill-size 4096",
+@@ -830,7 +827,6 @@ sgl-eval run aime25 \\
+```
+
+- Reviewed files:
+  - docs: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-11
+- Risk and verification: This is mostly docs/examples in `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #33865 - Fix DSpark + DeepSeek V4 prefill CP compatibility
+
+- Link: https://github.com/sgl-project/sglang/pull/33865
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`; associated commits `9d4be40124cc`
+- Diff scope read: GitHub Pull Request files API returned 5 files, +91/-21, 178 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix DSpark + DeepSeek V4 prefill CP compatibility"; model line: DeepSeek V4; category: bug fix; main diff: `python/sglang/srt/models/deepseek_v4_dspark.py`, `python/sglang/srt/models/deepseek_v4.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`; technical summary: Covers "Fix DSpark + DeepSeek V4 prefill CP compatibility"; the main implementation surface is `python/sglang/srt/models/deepseek_v4_dspark.py`, `python/sglang/srt/models/deepseek_v4.py`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4_dspark.py` modified +18/-9 (27 lines); hunks: -319,6 +319,7 @@ def __init__(self, *, vocab_size: int, markov_rank: int) ->...; -338,16 +339,23 @@ def configure_tp_shard(self, *, lm_head: nn.Module) -> None:; symbols: __init__, configure_tp_shard, _apply_step_logits_sharded, touching `__init__, configure_tp_shard, _apply_step_logits_sharded`; `python/sglang/srt/models/deepseek_v4.py` modified +10/-7 (17 lines); hunks: -2492,12 +2492,6 @@ def forward(; -2548,12 +2542,21 @@ def forward(; symbols: forward, touching `forward`; `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +44/-0 (44 lines); hunks: -198,5 +198,49 @@ def tearDownClass(cls):; symbols: tearDownClass, TestDSV4FlashFP4B200_CP_DSpark, setUpClass, touching `tearDownClass, TestDSV4FlashFP4B200_CP_DSpark, setUpClass`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4_dspark.py` modified +18/-9 (27 lines); hunks: -319,6 +319,7 @@ def __init__(self, *, vocab_size: int, markov_rank: int) ->...; -338,16 +339,23 @@ def configure_tp_shard(self, *, lm_head: nn.Module) -> None:; symbols: __init__, configure_tp_shard, _apply_step_logits_sharded
+  - `python/sglang/srt/models/deepseek_v4.py` modified +10/-7 (17 lines); hunks: -2492,12 +2492,6 @@ def forward(; -2548,12 +2542,21 @@ def forward(; symbols: forward
+  - `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +44/-0 (44 lines); hunks: -198,5 +198,49 @@ def tearDownClass(cls):; symbols: tearDownClass, TestDSV4FlashFP4B200_CP_DSpark, setUpClass
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4_dspark.py
+@@ -319,6 +319,7 @@ def __init__(self, *, vocab_size: int, markov_rank: int) -> None:
++        self._shard_group = None
+@@ -338,16 +339,23 @@ def configure_tp_shard(self, *, lm_head: nn.Module) -> None:
+-        attn_tp_size = get_parallel().attn_tp_group.world_size
+-        if attn_tp_size != tp_size:
++        # Follow lm_head's group choice; attn_tp_group degenerates to size 1
++        # under prefill CP while lm_head still shards over the full TP group.
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -2492,12 +2492,6 @@ def forward(
+-        if capture_dspark and use_prefill_cp:
+-            raise NotImplementedError(
+-                "DSpark aux hidden-state capture is not supported together with "
+-                "DeepSeek-V4 prefill context parallelism (attn_cp_size > 1). Disable one "
+-                "of them: DSpark static-verify is CP-off for v1."
+-            )
+diff -- test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py
+@@ -198,5 +198,49 @@ def tearDownClass(cls):
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4_dspark.py` modified +18/-9; `python/sglang/srt/models/deepseek_v4.py` modified +10/-7
+  - tests: `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +44/-0
+- Risk and verification: The diff ships test coverage in `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #29070 - [DSV4] perf: Enable alt stream during BCG prefill
+
+- Link: https://github.com/sgl-project/sglang/pull/29070
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`; associated commits `a0a76e448518`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 12 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSV4] perf: Enable alt stream during BCG prefill"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[DSV4] perf: Enable alt stream during BCG prefill"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +4/-1 (5 lines); hunks: -1262,7 +1262,10 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +4/-1 (5 lines); hunks: -1262,7 +1262,10 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -1262,7 +1262,10 @@ def forward(
+-            and x.shape[0] <= self._multi_stream_bs_limit
++            and (
++                is_in_breakable_cuda_graph()
++                or x.shape[0] <= self._multi_stream_bs_limit
++            )
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +4/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #34597 - [AMD] Run V4 MTP target-verify through the decode kernel
+
+- Link: https://github.com/sgl-project/sglang/pull/34597
+- Status/date: merged / 2026-08-13
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`; associated commits `34206c00175a`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +43/-8, 127 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Run V4 MTP target-verify through the decode kernel"; model line: DeepSeek V4; category: model implementation change; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`; technical summary: Covers "[AMD] Run V4 MTP target-verify through the decode kernel"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +43/-8 (51 lines); hunks: -105,6 +105,12 @@ class UnifiedKvMetadata:; -126,6 +132,7 @@ def copy_(self, other: UnifiedKvMetadata) -> None:; symbols: UnifiedKvMetadata, copy_, init_forward_metadata_prefill, init_forward_metadata_target_verify_old, touching `UnifiedKvMetadata, copy_, init_forward_metadata_prefill`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +43/-8 (51 lines); hunks: -105,6 +105,12 @@ class UnifiedKvMetadata:; -126,6 +132,7 @@ def copy_(self, other: UnifiedKvMetadata) -> None:; symbols: UnifiedKvMetadata, copy_, init_forward_metadata_prefill, init_forward_metadata_target_verify_old
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py
+@@ -105,6 +105,12 @@ class UnifiedKvMetadata:
++    # Per-token req-slot map used by the SWA ring store, precomputed once per
++    # step so the forward store does not recompute a repeat_interleave per layer.
++    # Read by the target-verify store (num_draft*bs tokens); for plain decode it
++    # equals req_pool_indices and is unused (the decode store reads that live).
++    verify_store_state_slot: Optional[torch.Tensor] = None
+@@ -126,6 +132,7 @@ def copy_(self, other: UnifiedKvMetadata) -> None:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +43/-8
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #25855 - perf(jit_kernel/deepseek_v4): optimize paged_mqa_metadata
+
+- Link: https://github.com/sgl-project/sglang/pull/25855
+- Status/date: merged / 2026-08-14
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh`; associated commits `f2b2b567aacc`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +641/-58, 769 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "perf(jit_kernel/deepseek_v4): optimize paged_mqa_metadata"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh`; technical summary: Covers "perf(jit_kernel/deepseek_v4): optimize paged_mqa_metadata"; the main implementation surface is `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh` modified +297/-57 (354 lines); hunks: -1,93 +1,314; -98,21 +319,40 @@ struct IndexerMetadataKernel {.
+- Code diff details:
+  - `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh` modified +297/-57 (354 lines); hunks: -1,93 +1,314; -98,21 +319,40 @@ struct IndexerMetadataKernel {
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh
+@@ -1,93 +1,314 @@
++// paged_mqa_metadata: batch-size-adaptive dispatch.
++//
++// Replaces upstream's single-block kernel (grid=1, Phase-3 lane-serial
++// advance, O(bs) dependent loads on the critical path) with three internal
++// kernels dispatched by batch_size, all sharing the same Phase-1/2 prefix
++// sum and a `num_sm + 1`-thread parallel upper_bound for Phase 3.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/kernels/jit/csrc/deepseek_v4/paged_mqa_metadata.cuh` modified +297/-57
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/attention/test_paged_mqa_metadata.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34788 - [Fix] Restore layer-level DSV4 RoPE policy
+
+- Link: https://github.com/sgl-project/sglang/pull/34788
+- Status/date: merged / 2026-08-14
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `test/registered/unit/models/test_deepseek_v4_rope_policy.py`; associated commits `0a6bbbe128dd`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +163/-8, 211 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Fix] Restore layer-level DSV4 RoPE policy"; model line: DeepSeek V4; category: bug fix; main diff: `test/registered/unit/models/test_deepseek_v4_rope_policy.py`, `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[Fix] Restore layer-level DSV4 RoPE policy"; the main implementation surface is `test/registered/unit/models/test_deepseek_v4_rope_policy.py`, `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/models/test_deepseek_v4_rope_policy.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: _ModuleStub, __init__, _RMSNormStub, _RoPEConsumerStub, touching `_ModuleStub, __init__, _RMSNormStub`; `python/sglang/srt/models/deepseek_v4.py` modified +18/-8 (26 lines); hunks: -607,15 +607,23 @@ def __init__(; -693,14 +701,16 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `test/registered/unit/models/test_deepseek_v4_rope_policy.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: _ModuleStub, __init__, _RMSNormStub, _RoPEConsumerStub
+  - `python/sglang/srt/models/deepseek_v4.py` modified +18/-8 (26 lines); hunks: -607,15 +607,23 @@ def __init__(; -693,14 +701,16 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_deepseek_v4_rope_policy.py
+@@ -0,0 +1,145 @@
++"""Unit tests for DeepSeek-V4 layer-level RoPE selection."""
++import unittest
++from types import SimpleNamespace
++from unittest.mock import patch
++import torch
++from torch import nn
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -607,15 +607,23 @@ def __init__(
+-        self.rope_scaling = rope_scaling
+-        scaling = rope_scaling or {}
++        self.rope_scaling = dict(rope_scaling) if rope_scaling else None
++        scaling = self.rope_scaling or {}
++        # RoPE is selected at layer granularity in the reference model. Pure
++        # SWA layers use the main unscaled RoPE, while C4/C128 layers use the
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/models/test_deepseek_v4_rope_policy.py` added +145/-0
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +18/-8
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_deepseek_v4_rope_policy.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34809 - [Cookbook] Add DeepSeek-V4-Pro-0813 (Pro Official) serving recipes
+
+- Link: https://github.com/sgl-project/sglang/pull/34809
+- Status/date: merged / 2026-08-14
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `463981922ce6`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +511/-9, 623 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Cookbook] Add DeepSeek-V4-Pro-0813 (Pro Official) serving recipes"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Cookbook] Add DeepSeek-V4-Pro-0813 (Pro Official) serving recipes"; the main implementation surface is `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +439/-3 (442 lines); hunks: -26,6 +26,7 @@ export const config = {; -51,6 +52,7 @@ export const config = {; `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +52/-0 (52 lines); hunks: -358,6 +358,58 @@ export const benchmarks = [; `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +20/-6 (26 lines); hunks: -1,6 +1,6; -127,7 +127,7 @@ import { Playground } from "/src/snippets/_playground.jsx";.
+- Code diff details:
+  - `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +439/-3 (442 lines); hunks: -26,6 +26,7 @@ export const config = {; -51,6 +52,7 @@ export const config = {
+  - `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +52/-0 (52 lines); hunks: -358,6 +358,58 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +20/-6 (26 lines); hunks: -1,6 +1,6; -127,7 +127,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
+@@ -26,6 +26,7 @@ export const config = {
++    { id: "pro-official", label: "Pro Official", subtitle: "1.6T · 0813" },
+@@ -51,6 +52,7 @@ export const config = {
++    "pro-official|fp4": "deepseek-ai/DeepSeek-V4-Pro-0813",
+@@ -83,6 +85,7 @@ export const config = {
++  --random-range-ratio 1.0 \\
+@@ -289,11 +292,11 @@ sgl-eval run aime25 \\
+diff -- docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx
+@@ -358,6 +358,58 @@ export const benchmarks = [
++  // GB300 + FP4 — Pro Official (0813)
++  //
++  // 4xGB300, random 8192/1024 with --random-range-ratio 1.0 (a true fixed
++  // length; the 0.0 default samples uniformly and averages ~5100 in), 64 warmup
++  // requests, cache flushed per point. Each strategy carries its lowest and
++  // highest measured concurrency. TTFT/TPOT are bench_serving means, hence the
+diff -- docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -1,6 +1,6 @@
+```
+
+- Reviewed files:
+  - docs: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +439/-3; `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx` modified +52/-0; `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +20/-6
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4-benchmarks.jsx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #34277 - [DSV4] Emit TMA-aligned UE8M0 scales for FP8 einsum
+
+- Link: https://github.com/sgl-project/sglang/pull/34277
+- Status/date: merged / 2026-08-17
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh`; associated commits `f3225bceb367`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +113/-36, 306 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DSV4] Emit TMA-aligned UE8M0 scales for FP8 einsum"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh`; technical summary: Covers "[DSV4] Emit TMA-aligned UE8M0 scales for FP8 einsum"; the main implementation surface is `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh` modified +48/-13 (61 lines); hunks: -2,9 +2,10; -34,6 +35,8 @@ constexpr uint32_t THREADS_PER_GROUP = 8;.
+- Code diff details:
+  - `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh` modified +48/-13 (61 lines); hunks: -2,9 +2,10; -34,6 +35,8 @@ constexpr uint32_t THREADS_PER_GROUP = 8;
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh
+@@ -2,9 +2,10 @@
+-// contiguous [T, G, D], group_size is fixed to 128, scales are fp32 UE8M0
+-// power-of-two values, and output_s is a logical [T, G, D/128] view backed by
+-// group-major [G, T, D/128] storage.
++// contiguous [T, G, D], group_size is fixed to 128, and output_s stores four
++// packed UE8M0 exponent bytes per int32. Its physical layout is
++// [G, ceil((D/128)/4), align_up(T, 4)]; the Python wrapper returns the logical
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/kernels/jit/csrc/deepseek_v4/fp8_wo_a_group_major_quant.cuh` modified +48/-13
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/attention/test_fp8_wo_a.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33480 - [AMD] Support prefill context parallel two batch overlap for DeepSeek V4
+
+- Link: https://github.com/sgl-project/sglang/pull/33480
+- Status/date: merged / 2026-08-17
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py`; associated commits `eb61cb28233b`
+- Diff scope read: GitHub Pull Request files API returned 10 files, +594/-19, 884 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Support prefill context parallel two batch overlap for DeepSeek V4"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py`; technical summary: Covers "[AMD] Support prefill context parallel two batch overlap for DeepSeek V4"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`, `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +235/-15 (250 lines); hunks: -66,6 +66,8; -96,6 +98,8; symbols: _forward_prepare, forward, touching `_forward_prepare, forward`; `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: TestDeepseekV4ProFp4CPInterleaveTbo, setUpClass, tearDownClass, test_a_gsm8k, touching `TestDeepseekV4ProFp4CPInterleaveTbo, setUpClass, tearDownClass`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +235/-15 (250 lines); hunks: -66,6 +66,8; -96,6 +98,8; symbols: _forward_prepare, forward
+  - `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py` added +155/-0 (155 lines); hunks: -0,0 +1,155; symbols: TestDeepseekV4ProFp4CPInterleaveTbo, setUpClass, tearDownClass, test_a_gsm8k
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -66,6 +66,8 @@
++    attn_cp_overlap_all_gather_into_tensor,
++    attn_cp_overlap_reduce_scatter_tensor,
+@@ -96,6 +98,8 @@
++    cp_all_gather_rerange_finish,
++    cp_all_gather_rerange_launch,
+@@ -1066,6 +1070,15 @@ def _forward_prepare(
+diff -- test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py
+@@ -0,0 +1,155 @@
++"""MI35x DeepSeek-V4-Pro FP4 prefill context-parallel (CP) + two-batch-overlap (TBO)
++accuracy test (8-GPU).
++Same launch conventions as test_deepseek_v4_pro_fp4_cp.py (prefill CP over the
++unified_kv backend via ``--enable-prefill-cp --cp-strategy interleave``), plus
++``--enable-two-batch-overlap``. This exercises the CP TBO op strategy
++(``op_cp_gather`` / ``op_cp_moe`` / ``op_cp_combine`` driven by
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +235/-15
+  - tests: `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py` added +155/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_deepseek_v4_pro_fp4_cp_tbo.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33676 - [NPU] Support DeepSeek-V4 DSpark and refactor DSV4 cache management
+
+- Link: https://github.com/sgl-project/sglang/pull/33676
+- Status/date: merged / 2026-08-17
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/models/deepseek_v4_dspark.py`; associated commits `b83d507cd711`
+- Diff scope read: GitHub Pull Request files API returned 37 files, +2017/-2025, 5881 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] Support DeepSeek-V4 DSpark and refactor DSV4 cache management"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `python/sglang/srt/models/deepseek_v4_dspark.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`; technical summary: Covers "[NPU] Support DeepSeek-V4 DSpark and refactor DSV4 cache management"; the main implementation surface is `python/sglang/srt/models/deepseek_v4_dspark.py`, `python/sglang/srt/models/deepseek_v4.py`, `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4_dspark.py` modified +171/-12 (183 lines); hunks: -18,12 +18,16; -53,7 +57,7; symbols: apply_rotary_emb, __init__, kv_proj_only, _compute_q, touching `apply_rotary_emb, __init__, kv_proj_only`; `python/sglang/srt/models/deepseek_v4.py` modified +123/-3 (126 lines); hunks: -730,7 +730,10 @@ def __init__(; -953,6 +956,108 @@ def _forward_prepare_multi_stream(; symbols: __init__, _forward_prepare_multi_stream, _forward_prepare_multi_stream_npu, _forward_prepare_multi_stream_hip, touching `__init__, _forward_prepare_multi_stream, _forward_prepare_multi_stream_npu`; `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` modified +13/-11 (24 lines); hunks: -8,11 +8,10; -95,11 +94,14 @@ def __init__(; symbols: _lcm, __init__, _alloc_kv_score_buffer, touching `_lcm, __init__, _alloc_kv_score_buffer`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4_dspark.py` modified +171/-12 (183 lines); hunks: -18,12 +18,16; -53,7 +57,7; symbols: apply_rotary_emb, __init__, kv_proj_only, _compute_q
+  - `python/sglang/srt/models/deepseek_v4.py` modified +123/-3 (126 lines); hunks: -730,7 +730,10 @@ def __init__(; -953,6 +956,108 @@ def _forward_prepare_multi_stream(; symbols: __init__, _forward_prepare_multi_stream, _forward_prepare_multi_stream_npu, _forward_prepare_multi_stream_hip
+  - `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` modified +13/-11 (24 lines); hunks: -8,11 +8,10; -95,11 +94,14 @@ def __init__(; symbols: _lcm, __init__, _alloc_kv_score_buffer
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4_dspark.py
+@@ -18,12 +18,16 @@
++from sglang.srt.layers.dp_attention import is_dp_attention_enabled
+-from sglang.srt.layers.vocab_parallel_embedding import VocabParallelEmbedding
++from sglang.srt.layers.vocab_parallel_embedding import (
++    ParallelLMHead,
++    VocabParallelEmbedding,
++)
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -730,7 +730,10 @@ def __init__(
+-        if envs.SGLANG_OPT_USE_MULTI_STREAM_OVERLAP.get() and alt_streams is not None:
++        if alt_streams is not None and (
++            (_is_cuda and envs.SGLANG_OPT_USE_MULTI_STREAM_OVERLAP.get())
++            or (_is_npu and envs.SGLANG_NPU_USE_MULTI_STREAM.get())
++        ):
+@@ -953,6 +956,108 @@ def _forward_prepare_multi_stream(
+diff -- python/sglang/srt/mem_cache/deepseek_v4_compress_state.py
+@@ -8,11 +8,10 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4_dspark.py` modified +171/-12; `python/sglang/srt/models/deepseek_v4.py` modified +123/-3; `python/sglang/srt/mem_cache/deepseek_v4_compress_state.py` modified +13/-11
+- Risk and verification: The diff ships test coverage in `test/registered/unit/npu/attention/test_npu_ascend_dsv4_backend.py`, `test/registered/unit/spec/test_decode_bookkeeping_ownership.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34926 - Clean deprecated DeepSeek V4 Environs
+
+- Link: https://github.com/sgl-project/sglang/pull/34926
+- Status/date: merged / 2026-08-17
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `python/sglang/srt/arg_groups/deepseek_v4_hook.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` and 8 files; associated commits `bc312d185dc1`
+- Diff scope read: GitHub Pull Request files API returned 28 files, +189/-643, 1408 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Clean deprecated DeepSeek V4 Environs"; model line: DeepSeek V4; category: model implementation change; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "Clean deprecated DeepSeek V4 Environs"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py`, `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +38/-144 (182 lines); hunks: -25,9 +25,6; -68,7 +65,6; symbols: __init__, init_forward_metadata_decode, init_forward_metadata_prefill, init_forward_metadata_target_verify, touching `__init__, init_forward_metadata_decode, init_forward_metadata_prefill`; `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +8/-49 (57 lines); hunks: -21,9 +21,6; -505,39 +502,10 @@ def init_forward_metadata_decode(; symbols: init_forward_metadata_decode, init_forward_metadata_prefill, init_forward_metadata_target_verify, store_cache, touching `init_forward_metadata_decode, init_forward_metadata_prefill, init_forward_metadata_target_verify`; `python/sglang/srt/models/deepseek_v4.py` modified +3/-7 (10 lines); hunks: -1779,7 +1779,7 @@ def hc_pre_torch_impl(x, hc_fn):; -1860,7 +1860,7 @@ def hc_post(; symbols: hc_pre_torch_impl, hc_post, _run_moe_ffn_dp_sync, _prewarm_mhc_kernels, touching `hc_pre_torch_impl, hc_post, _run_moe_ffn_dp_sync`; `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` modified +0/-3 (3 lines); hunks: -4,8 +4,6; -104,7 +102,6 @@ def try_fused_hc_post_pre(; symbols: try_fused_hc_post_pre, touching `try_fused_hc_post_pre`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +38/-144 (182 lines); hunks: -25,9 +25,6; -68,7 +65,6; symbols: __init__, init_forward_metadata_decode, init_forward_metadata_prefill, init_forward_metadata_target_verify
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +8/-49 (57 lines); hunks: -21,9 +21,6; -505,39 +502,10 @@ def init_forward_metadata_decode(; symbols: init_forward_metadata_decode, init_forward_metadata_prefill, init_forward_metadata_target_verify, store_cache
+  - `python/sglang/srt/models/deepseek_v4.py` modified +3/-7 (10 lines); hunks: -1779,7 +1779,7 @@ def hc_pre_torch_impl(x, hc_fn):; -1860,7 +1860,7 @@ def hc_post(; symbols: hc_pre_torch_impl, hc_post, _run_moe_ffn_dp_sync, _prewarm_mhc_kernels
+  - `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` modified +0/-3 (3 lines); hunks: -4,8 +4,6; -104,7 +102,6 @@ def try_fused_hc_post_pre(; symbols: try_fused_hc_post_pre
+  - `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +1/-4 (5 lines); hunks: -15,10 +15,7 @@ def validate_deepseek_v4_mega_moe_token_budget(; symbols: validate_deepseek_v4_mega_moe_token_budget
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
+@@ -25,9 +25,6 @@
+-from sglang.kernels.ops.attention.dsv4.quant_k_cache import (
+-    quant_to_nope_fp8_rope_bf16_pack_triton,
+-)
+@@ -68,7 +65,6 @@
+-    compute_ragged_extend_lengths,
+@@ -586,9 +582,7 @@ def __init__(
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py
+@@ -21,9 +21,6 @@
+-from sglang.kernels.ops.attention.dsv4.quant_k_cache import (
+-    quant_to_nope_fp8_rope_bf16_pack_triton,
+-)
+@@ -505,39 +502,10 @@ def init_forward_metadata_decode(
+-        if envs.SGLANG_PREP_IN_CUDA_GRAPH.get():
+-            return DSV4RawDecodeMetadata(
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -1779,7 +1779,7 @@ def hc_pre_torch_impl(x, hc_fn):
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +38/-144; `python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py` modified +8/-49; `python/sglang/srt/models/deepseek_v4.py` modified +3/-7; `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` modified +0/-3; `python/sglang/srt/arg_groups/deepseek_v4_hook.py` modified +1/-4
+  - docs: `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-3
+  - tests: `test/registered/models_e2e/test_deepseek_v4_flash_fp8_h200.py` modified +0/-3; `test/registered/amd/test_deepseek_v4_flash_fp8_tbo.py` modified +0/-2
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_deepseek_v4_flash_fp8_tbo.py`, `test/registered/dcp/test_kimi_linear_dcp_dspark4.py`, `test/registered/models_e2e/test_deepseek_v4_flash_fp8_h200.py`, `test/registered/unit/layers/test_dsv4_nonpaged_indexer.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35224 - [Docs] Enable PD disaggregation for DSV4 low-latency recipes
+
+- Link: https://github.com/sgl-project/sglang/pull/35224
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`; associated commits `53621818e414`
+- Diff scope read: GitHub Pull Request files API returned 5 files, +36/-6, 88 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Enable PD disaggregation for DSV4 low-latency recipes"; model line: DeepSeek V4; category: docs/tests/CI; main diff: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`; technical summary: Covers "[Docs] Enable PD disaggregation for DSV4 low-latency recipes"; the main implementation surface is `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-1 (1 lines); hunks: -319,7 +319,6 @@ sgl-eval run aime25 \\; `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -602,4 +602,4 @@ Larger blocks can improve decode latency when acceptance sta....
+- Code diff details:
+  - `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-1 (1 lines); hunks: -319,7 +319,6 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1 (2 lines); hunks: -602,4 +602,4 @@ Larger blocks can improve decode latency when acceptance sta...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
+@@ -319,7 +319,6 @@ sgl-eval run aime25 \\
+-      showWhen: (base) => base.specAlgorithm !== "DSPARK",
+diff -- docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -602,4 +602,4 @@ Larger blocks can improve decode latency when acceptance stays high, but they al
+-DSpark currently requires CUDA, `pp_size == 1`, and DP Attention disabled. It is not compatible with PD disaggregation on current SGLang releases; turn DSpark off before selecting
++DSpark currently requires CUDA, `pp_size == 1`, and DP Attention disabled. It is not compatible with PD disaggregation on current SGLang releases; selecting a prefill or decode ro
+```
+
+- Reviewed files:
+  - docs: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +0/-1; `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +1/-1
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs/scripts/check_cookbook_configs.mjs`, `docs/src/snippets/_playground.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #34890 - [Perf] Hoist DSv4 draft-extend SWA write locs; unify SWA graph buffer naming
+
+- Link: https://github.com/sgl-project/sglang/pull/34890
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; associated commits `0111b290312a`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +68/-30, 222 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Perf] Hoist DSv4 draft-extend SWA write locs; unify SWA graph buffer naming"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; technical summary: Covers "[Perf] Hoist DSv4 draft-extend SWA write locs; unify SWA graph buffer naming"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +45/-9 (54 lines); hunks: -588,6 +588,7 @@ def __init__(; -1000,6 +1001,13 @@ def init_forward_metadata_draft_extend(; symbols: __init__, _move_to_device, init_forward_metadata_draft_extend, _fill_cuda_graph_swa_out_cache_loc, touching `__init__, _move_to_device, init_forward_metadata_draft_extend`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +45/-9 (54 lines); hunks: -588,6 +588,7 @@ def __init__(; -1000,6 +1001,13 @@ def init_forward_metadata_draft_extend(; symbols: __init__, _move_to_device, init_forward_metadata_draft_extend, _fill_cuda_graph_swa_out_cache_loc
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
+@@ -588,6 +588,7 @@ def __init__(
++        self.cuda_graph_swa_out_cache_loc: Optional[torch.Tensor] = None
+@@ -1000,6 +1001,13 @@ def init_forward_metadata_draft_extend(
++        swa_out_cache_loc = self._fill_cuda_graph_swa_out_cache_loc(out_cache_loc)
++        if swa_out_cache_loc is None and out_cache_loc is not None:
++            # Eager-only miss (no graph state / oversized batch): translate once
++            # per step instead of per layer at store time.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +45/-9
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/layers/attention/deepseek_v4_backend.py`, `python/sglang/srt/layers/attention/flashattention_backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #35162 - Add deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms
+
+- Link: https://github.com/sgl-project/sglang/pull/35162
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py`; associated commits `7605529bdf98`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +142/-0, 143 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py`; technical summary: Covers "Add deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms"; the main implementation surface is `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py` added +142/-0 (142 lines); hunks: -0,0 +1,142; symbols: TestNPUDeepSeekV4FlashW8A88PIn32kOut1k50ms, test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms, touching `TestNPUDeepSeekV4FlashW8A88PIn32kOut1k50ms, test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms`.
+- Code diff details:
+  - `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py` added +142/-0 (142 lines); hunks: -0,0 +1,142; symbols: TestNPUDeepSeekV4FlashW8A88PIn32kOut1k50ms, test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms
+- Key code excerpts:
+
+```diff
+diff -- test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py
+@@ -0,0 +1,142 @@
++import unittest
++from sglang.test.ascend.e2e.test_npu_performance_utils import (
++    AISBENCHMARK_DATASET_DEFAULT,
++    BENCHMARK_TOOL_DEFAULT,
++    DEEPSEEK_V4_FLASH_W8A8_MTP_MODEL_PATH,
++    TestNpuPerformanceTestCaseBase,
+```
+
+- Reviewed files:
+  - tests: `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py` added +142/-0
+- Risk and verification: The diff ships test coverage in `test/registered/npu/performance/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_in32k_out1k_50ms.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33313 - [AMD] DeepSeek-V4: route decode wo_a bf16 batched matmul to aiter batched_gemm_bf16
+
+- Link: https://github.com/sgl-project/sglang/pull/33313
+- Status/date: merged / 2026-08-19
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`, `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py`; associated commits `f446e853e73f`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +293/-1, 316 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] DeepSeek-V4: route decode wo_a bf16 batched matmul to aiter batched_gemm_bf16"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py`, `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[AMD] DeepSeek-V4: route decode wo_a bf16 batched matmul to aiter batched_gemm_bf16"; the main implementation surface is `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py`, `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py` added +203/-0 (203 lines); hunks: -0,0 +1,203; symbols: TestWoABf16BatchedGemm, setUpClass, setUp, _rand, touching `TestWoABf16BatchedGemm, setUpClass, setUp`; `python/sglang/srt/models/deepseek_v4.py` modified +86/-1 (87 lines); hunks: -310,6 +310,89 @@ def _flashinfer_hc_pre(; -1581,7 +1664,9 @@ def forward(; symbols: _flashinfer_hc_pre, _wo_a_aiter_gemm_eligible, _apply_wo_a_bf16_matmul, _fused_rmsnorm_fp8_quant, touching `_flashinfer_hc_pre, _wo_a_aiter_gemm_eligible, _apply_wo_a_bf16_matmul`.
+- Code diff details:
+  - `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py` added +203/-0 (203 lines); hunks: -0,0 +1,203; symbols: TestWoABf16BatchedGemm, setUpClass, setUp, _rand
+  - `python/sglang/srt/models/deepseek_v4.py` modified +86/-1 (87 lines); hunks: -310,6 +310,89 @@ def _flashinfer_hc_pre(; -1581,7 +1664,9 @@ def forward(; symbols: _flashinfer_hc_pre, _wo_a_aiter_gemm_eligible, _apply_wo_a_bf16_matmul, _fused_rmsnorm_fp8_quant
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py
+@@ -0,0 +1,203 @@
++"""Tests for the DeepSeek-V4 decode ``wo_a`` bf16 batched-matmul routing.
++Covers ``deepseek_v4._apply_wo_a_bf16_matmul``, which (opt-in via
++``SGLANG_OPT_USE_AITER_BATCHED_GEMM`` on HIP/gfx95) routes the MLA output-absorb
++bf16 GEMM off the rocBLAS/Tensile ``Cijk_*`` batched GEMM onto aiter's tuned
++``batched_gemm_bf16``, with an einsum fallback.
++The opt-in flag and the aiter kernel are resolved ONCE at module import
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -310,6 +310,89 @@ def _flashinfer_hc_pre(
++def _wo_a_aiter_gemm_eligible(
++    flag: bool, use_aiter: bool, is_hip: bool, is_gfx95: bool
++) -> bool:
++    """Static eligibility for the aiter ``wo_a`` reroute.
++    Folds the opt-in flag, the global ``SGLANG_USE_AITER`` switch, and the
++    HIP/gfx95 platform gates into one predicate. Evaluated once at import (see
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py` added +203/-0
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +86/-1
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_deepseek_v4_amd_wo_a_bf16.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #32327 - [DeepSeek-V4] Add Q8KV8 sparse MLA prefill runtime backend
+
+- Link: https://github.com/sgl-project/sglang/pull/32327
+- Status/date: merged / 2026-08-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; associated commits `9db4ba8da166`
+- Diff scope read: GitHub Pull Request files API returned 7 files, +1337/-13, 1499 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DeepSeek-V4] Add Q8KV8 sparse MLA prefill runtime backend"; model line: DeepSeek V4; category: model support/runtime entry; main diff: `python/sglang/srt/layers/attention/deepseek_v4_backend.py`; technical summary: Covers "[DeepSeek-V4] Add Q8KV8 sparse MLA prefill runtime backend"; the main implementation surface is `python/sglang/srt/layers/attention/deepseek_v4_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +246/-2 (248 lines); hunks: -19,7 +19,11; -56,8 +60,12; symbols: __init__, match_num_queries, _forward_prefill_sparse, _prepare_q8kv8_q_and_sink, touching `__init__, match_num_queries, _forward_prefill_sparse`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +246/-2 (248 lines); hunks: -19,7 +19,11; -56,8 +60,12; symbols: __init__, match_num_queries, _forward_prefill_sparse, _prepare_q8kv8_q_and_sink
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/deepseek_v4_backend.py
+@@ -19,7 +19,11 @@
++    cast_q_fp8_for_q8kv8_prefill,
++    fp8_dtype,
++    gather_dequant_requant_fp8_paged,
++    q8kv8_padded_num_heads,
+@@ -56,8 +60,12 @@
++    use_dsv4_q8kv8_sparse_prefill,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/deepseek_v4_backend.py` modified +246/-2
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/attention/test_q8kv8_sparse_prefill_backend.py`, `test/registered/unit/server_args/test_server_args.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34973 - [AMD] DSv4: fuse the qk-norm-rope pair on the MTP target-verify path
+
+- Link: https://github.com/sgl-project/sglang/pull/34973
+- Status/date: merged / 2026-08-21
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_v4.py`; associated commits `44c90c628264`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +49/-8, 95 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] DSv4: fuse the qk-norm-rope pair on the MTP target-verify path"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[AMD] DSv4: fuse the qk-norm-rope pair on the MTP target-verify path"; the main implementation surface is `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek_v4.py` modified +45/-8 (53 lines); hunks: -1295,11 +1295,19 @@ def _forward_prepare(; -1318,7 +1326,27 @@ def _forward_prepare(; symbols: _forward_prepare, forward, touching `_forward_prepare, forward`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek_v4.py` modified +45/-8 (53 lines); hunks: -1295,11 +1295,19 @@ def _forward_prepare(; -1318,7 +1326,27 @@ def _forward_prepare(; symbols: _forward_prepare, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -1295,11 +1295,19 @@ def _forward_prepare(
+-        do_fused_store = (unified and is_decode) or (
++        # The kernel is token-indexed (q, kv and positions are all length M), so
++        # a verify batch carrying several draft tokens per request is a shape it
++        # already handles. Only the cache store differs between decode and
++        # verify, and that half is left off below.
++        fuse_verify = (
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek_v4.py` modified +45/-8
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/environ.py`, `python/sglang/srt/models/deepseek_v4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #35919 - [DeepSeek V4] Default FP4 checkpoints to FlashInfer MXFP4 MoE
+
+- Link: https://github.com/sgl-project/sglang/pull/35919
+- Status/date: merged / 2026-08-21
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`; associated commits `60ff1e33a51f`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +106/-74, 243 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DeepSeek V4] Default FP4 checkpoints to FlashInfer MXFP4 MoE"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`, `python/sglang/srt/arg_groups/overrides.py`, `python/sglang/srt/server_args.py`; technical summary: Covers "[DeepSeek V4] Default FP4 checkpoints to FlashInfer MXFP4 MoE"; the main implementation surface is `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`, `python/sglang/srt/arg_groups/overrides.py`, `python/sglang/srt/server_args.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py` modified +2/-3 (5 lines); hunks: -1,6 +1,7; -56,8 +57,6 @@ def setUpClass(cls):; symbols: setUpClass, touching `setUpClass`; `python/sglang/srt/arg_groups/overrides.py` modified +21/-24 (45 lines); hunks: -1164,16 +1164,27 @@ def _deepseek_v4_overrides(server_args: Any, hf_config:...; -1921,20 +1932,6 @@ def _deepseek_v4_kv_cache_dtype(view: Any) -> dict:; symbols: _deepseek_v4_overrides, _deepseek_v4_kv_cache_dtype, _deepseek_v4_sm120_moe, _muse_glimmer_fp4_gemm_runner_overrides, touching `_deepseek_v4_overrides, _deepseek_v4_kv_cache_dtype, _deepseek_v4_sm120_moe`; `python/sglang/srt/server_args.py` modified +0/-9 (9 lines); hunks: -5540,15 +5540,6 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments, touching `_handle_model_specific_adjustments`.
+- Code diff details:
+  - `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py` modified +2/-3 (5 lines); hunks: -1,6 +1,7; -56,8 +57,6 @@ def setUpClass(cls):; symbols: setUpClass
+  - `python/sglang/srt/arg_groups/overrides.py` modified +21/-24 (45 lines); hunks: -1164,16 +1164,27 @@ def _deepseek_v4_overrides(server_args: Any, hf_config:...; -1921,20 +1932,6 @@ def _deepseek_v4_kv_cache_dtype(view: Any) -> dict:; symbols: _deepseek_v4_overrides, _deepseek_v4_kv_cache_dtype, _deepseek_v4_sm120_moe, _muse_glimmer_fp4_gemm_runner_overrides
+  - `python/sglang/srt/server_args.py` modified +0/-9 (9 lines); hunks: -5540,15 +5540,6 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py
+@@ -1,6 +1,7 @@
+-Launches TP=4 with flashinfer_mxfp4 MoE runner + EAGLE speculative decoding.
++Launches TP=4 with the auto-selected flashinfer_mxfp4 MoE runner and EAGLE
++speculative decoding.
+@@ -56,8 +57,6 @@ def setUpClass(cls):
+-                "--moe-runner-backend",
+-                "flashinfer_mxfp4",
+diff -- python/sglang/srt/arg_groups/overrides.py
+@@ -1164,16 +1164,27 @@ def _deepseek_v4_overrides(server_args: Any, hf_config: Any) -> dict:
+-    # nvidia/DeepSeek-V4-Pro-NVFP4 uses flashinfer_trtllm_routed MoE runner backend.
+-    if (
+-        server_args.moe_runner_backend == "auto"
+-        and server_args.get_model_config().nvfp4_moe_meta is not None
+-    ):
+-        overrides["moe_runner_backend"] = "flashinfer_trtllm_routed"
+diff -- python/sglang/srt/server_args.py
+@@ -5540,15 +5540,6 @@ def _handle_model_specific_adjustments(self):
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py` modified +2/-3
+  - runtime: `python/sglang/srt/arg_groups/overrides.py` modified +21/-24; `python/sglang/srt/server_args.py` modified +0/-9
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_deepseek_v4_flash_fp4_b200.py`, `test/registered/unit/test_model_overrides.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35918 - [DeepSeek V4] Add W4A4 MegaMoE server flag
+
+- Link: https://github.com/sgl-project/sglang/pull/35918
+- Status/date: merged / 2026-08-22
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`, `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py`; associated commits `3b5909de0ef5`
+- Diff scope read: GitHub Pull Request files API returned 15 files, +147/-87, 430 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[DeepSeek V4] Add W4A4 MegaMoE server flag"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`; technical summary: Covers "[DeepSeek V4] Add W4A4 MegaMoE server flag"; the main implementation surface is `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx`, `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +2/-5 (7 lines); hunks: -258,11 +258,8 @@ sgl-eval run aime25 \\; `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-5 (9 lines); hunks: -332,14 +332,13 @@ HiCache and MegaMoE are **not** supported on RTX PRO 6000.; `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +1/-2 (3 lines); hunks: -41,8 +41,6; -126,6 +124,7 @@ def setUpClass(cls):; symbols: setUpClass, touching `setUpClass`; `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py` modified +1/-2 (3 lines); hunks: -34,8 +34,6; -115,6 +113,7 @@ def setUpClass(cls):; symbols: setUpClass, touching `setUpClass`.
+- Code diff details:
+  - `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +2/-5 (7 lines); hunks: -258,11 +258,8 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-5 (9 lines); hunks: -332,14 +332,13 @@ HiCache and MegaMoE are **not** supported on RTX PRO 6000.
+  - `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +1/-2 (3 lines); hunks: -41,8 +41,6; -126,6 +124,7 @@ def setUpClass(cls):; symbols: setUpClass
+  - `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py` modified +1/-2 (3 lines); hunks: -34,8 +34,6; -115,6 +113,7 @@ def setUpClass(cls):; symbols: setUpClass
+  - `python/sglang/srt/layers/moe/mega_moe.py` modified +1/-23 (24 lines); hunks: -42,26 +42,6; -74,8 +54,6 @@ def _get_mega_moe_symm_buffer(; symbols: _apply_mega_moe_dg_env, _get_mega_moe_symm_buffer, _run_mega_routed
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx
+@@ -258,11 +258,8 @@ sgl-eval run aime25 \\
+-            env: [
+-              "SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8320",
+-              "SGLANG_OPT_DEEPGEMM_MEGA_MOE_USE_FP4_ACTS=1",
+-              "SGLANG_OPT_DEEPGEMM_MEGA_MOE_USE_MXF4_KIND=1",
+-            ] },
++            flags: ["--enable-w4a4-mxfp4-megamoe"],
+diff -- docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx
+@@ -332,14 +332,13 @@ HiCache and MegaMoE are **not** supported on RTX PRO 6000.
+-`--moe-a2a-backend megamoe` and add the relevant env vars automatically.
++`--moe-a2a-backend megamoe` and add the relevant launch settings automatically.
+-- **W4A4** — adds `SGLANG_OPT_DEEPGEMM_MEGA_MOE_USE_FP4_ACTS=1` and
+-  `SGLANG_OPT_DEEPGEMM_MEGA_MOE_USE_MXF4_KIND=1` to run the custom W4A4
+-  kernel (FP4 activations). Higher throughput with negligible accuracy drop
+-  (~89.5 GPQA on Pro).
+diff -- test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py
+@@ -41,8 +41,6 @@
+```
+
+- Reviewed files:
+  - docs: `docs/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` modified +2/-5; `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx` modified +4/-5
+  - tests: `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py` modified +1/-2; `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py` modified +1/-2
+  - runtime: `python/sglang/srt/layers/moe/mega_moe.py` modified +1/-23; `python/sglang/srt/arg_groups/mega_moe_hook.py` added +38/-0; `python/sglang/srt/server_args.py` modified +10/-15; `python/sglang/srt/environ.py` modified +6/-10
+- Risk and verification: The diff ships test coverage in `test/registered/cp/test_deepseek_v4_flash_fp4_b200_cp.py`, `test/registered/models_e2e/test_deepseek_v4_flash_fp4_megamoe_b200.py`, `test/registered/unit/server_args/test_server_args.py`, `test/registered/unit/test_environ.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #32577 - [AMD] DeepSeek-V4: add aiter fused mHC post+pre with cross-layer boundary dispatch
+
+- Link: https://github.com/sgl-project/sglang/pull/32577
+- Status/date: merged / 2026-08-22
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py`, `python/sglang/srt/models/deepseek_v4.py`, `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py`; associated commits `d315eb725044`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +803/-130, 1038 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] DeepSeek-V4: add aiter fused mHC post+pre with cross-layer boundary dispatch"; model line: DeepSeek V4; category: performance/backend optimization; main diff: `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py`, `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py`, `python/sglang/srt/models/deepseek_v4.py`; technical summary: Covers "[AMD] DeepSeek-V4: add aiter fused mHC post+pre with cross-layer boundary dispatch"; the main implementation surface is `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py`, `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py`, `python/sglang/srt/models/deepseek_v4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py` added +400/-0 (400 lines); hunks: -0,0 +1,400; symbols: TestAmdFusedMhcCrossLayerGating, test_tilelang_fuse_flag_enables_cross_layer_fusion, test_sm120_enables_fusion_with_tilelang_pre_disabled, test_no_sm120_still_requires_tilelang_pre, touching `TestAmdFusedMhcCrossLayerGating, test_tilelang_fuse_flag_enables_cross_layer_fusion, test_sm120_enables_fusion_with_tilelang_pre_disabled`; `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` modified +259/-0 (259 lines); hunks: -4,13 +4,55; -153,3 +195,220 @@ def try_fused_hc_post_pre(; symbols: _is_fused_mhc_post_pre_enabled, _is_aiter_gfx95_mhc_available, _is_production_mhc_enabled, is_cross_layer_mhc_fusion_enabled, touching `_is_fused_mhc_post_pre_enabled, _is_aiter_gfx95_mhc_available, _is_production_mhc_enabled`; `python/sglang/srt/models/deepseek_v4.py` modified +144/-51 (195 lines); hunks: -138,7 +138,8; -168,7 +169,6; symbols: _get_mhc_ops, _is_fused_mhc_post_pre_enabled, __init__, forward, touching `_get_mhc_ops, _is_fused_mhc_post_pre_enabled, __init__`.
+- Code diff details:
+  - `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py` added +400/-0 (400 lines); hunks: -0,0 +1,400; symbols: TestAmdFusedMhcCrossLayerGating, test_tilelang_fuse_flag_enables_cross_layer_fusion, test_sm120_enables_fusion_with_tilelang_pre_disabled, test_no_sm120_still_requires_tilelang_pre
+  - `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` modified +259/-0 (259 lines); hunks: -4,13 +4,55; -153,3 +195,220 @@ def try_fused_hc_post_pre(; symbols: _is_fused_mhc_post_pre_enabled, _is_aiter_gfx95_mhc_available, _is_production_mhc_enabled, is_cross_layer_mhc_fusion_enabled
+  - `python/sglang/srt/models/deepseek_v4.py` modified +144/-51 (195 lines); hunks: -138,7 +138,8; -168,7 +169,6; symbols: _get_mhc_ops, _is_fused_mhc_post_pre_enabled, __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py
+@@ -0,0 +1,400 @@
++import unittest
++from unittest import mock
++from sglang.srt.environ import envs
++from sglang.srt.models.deepseek_common.amd import deepseek_v4_fused_mhc
++from sglang.test.ci.ci_register import register_cpu_ci
++register_cpu_ci(est_time=4, suite="base-a-test-cpu")
+diff -- python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py
+@@ -4,13 +4,55 @@
++from sglang.srt.environ import envs
++from sglang.srt.utils import get_bool_env_var, is_gfx95_supported, is_hip
++from sglang.srt.utils.common import is_sm120_supported
++_is_hip = is_hip()
++_is_gfx95_supported = is_gfx95_supported()
++# aiter fused mHC state. The kernel self-gates the fused-vs-unfused decision per
+diff -- python/sglang/srt/models/deepseek_v4.py
+@@ -138,7 +138,8 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py` added +400/-0
+  - runtime: `python/sglang/srt/models/deepseek_common/amd/deepseek_v4_fused_mhc.py` modified +259/-0; `python/sglang/srt/models/deepseek_v4.py` modified +144/-51
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_deepseek_v4_amd_fused_mhc.py`, `test/registered/unit/models/test_deepseek_v4_fused_mhc_policy.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

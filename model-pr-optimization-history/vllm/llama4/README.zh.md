@@ -35,8 +35,8 @@
 | 2025-04-11 | [#16439](https://github.com/vllm-project/vllm/pull/16439) | merged | [Llama4] Enable attention temperature tuning by default for long context (>32k) | `vllm/model_executor/models/llama4.py` |
 | 2025-04-11 | [#16463](https://github.com/vllm-project/vllm/pull/16463) | merged | [Frontend] Added chat templates for LLaMa4 pythonic tool calling | `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py` |
 | 2025-04-12 | [#16512](https://github.com/vllm-project/vllm/pull/16512) | merged | Optimized topk for topk=1 (Llama-4) | `vllm/model_executor/models/llama4.py` |
-| 2025-04-18 | [#16801](https://github.com/vllm-project/vllm/pull/16801) | merged | [BugFix] Accuracy fix for llama4 int4 - improperly casted scales | `vllm/model_executor/models/llama4.py` |
 | 2025-04-18 | [#16746](https://github.com/vllm-project/vllm/pull/16746) | merged | [Bugfix] fix pp for llama4 | `vllm/model_executor/models/mllama4.py` |
+| 2025-04-18 | [#16801](https://github.com/vllm-project/vllm/pull/16801) | merged | [BugFix] Accuracy fix for llama4 int4 - improperly casted scales | `vllm/model_executor/models/llama4.py` |
 | 2025-04-24 | [#16428](https://github.com/vllm-project/vllm/pull/16428) | merged | Add chat template for Llama 4 models | `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` |
 | 2025-04-29 | [#17315](https://github.com/vllm-project/vllm/pull/17315) | merged | [model] make llama4 compatible with pure dense layers | `vllm/model_executor/models/llama4.py` |
 | 2025-05-22 | [#17917](https://github.com/vllm-project/vllm/pull/17917) | merged | [Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser | `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
@@ -67,8 +67,8 @@
 | 2026-02-21 | [#34997](https://github.com/vllm-project/vllm/pull/34997) | merged | Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers " | `vllm/model_executor/models/llama4.py` |
 | 2026-02-23 | [#35033](https://github.com/vllm-project/vllm/pull/35033) | merged | [Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests | `vllm/model_executor/models/llama4.py` |
 | 2026-02-24 | [#35147](https://github.com/vllm-project/vllm/pull/35147) | merged | [Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4) | `vllm/model_executor/models/mllama4.py` |
-| 2026-03-09 | [#36436](https://github.com/vllm-project/vllm/pull/36436) | merged | [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py` |
 | 2026-03-09 | [#36281](https://github.com/vllm-project/vllm/pull/36281) | merged | [BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder` | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py` |
+| 2026-03-09 | [#36436](https://github.com/vllm-project/vllm/pull/36436) | merged | [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py` |
 | 2026-03-11 | [#36770](https://github.com/vllm-project/vllm/pull/36770) | merged | [Misc] Clean up renderers | `vllm/transformers_utils/processors/kimi_audio.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/kimi_audio.py` |
 | 2026-03-13 | [#36063](https://github.com/vllm-project/vllm/pull/36063) | merged | [Refactor] Consolidate SupportsEagle | `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/hunyuan_v1.py` |
 | 2026-03-16 | [#36288](https://github.com/vllm-project/vllm/pull/36288) | merged | [torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/mllama4.py`, `docs/design/torch_compile_multimodal.md` |
@@ -83,8 +83,8 @@
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-10 | [#39419](https://github.com/vllm-project/vllm/pull/39419) | merged | [SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding | `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/qwen3.py` |
 | 2026-06-10 | [#45047](https://github.com/vllm-project/vllm/pull/45047) | merged | [Bugfix] Fix Llama4 weight loading | `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py` |
-| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | merged | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `vllm/model_executor/models/mllama4.py` |
 | 2026-06-12 | [#39612](https://github.com/vllm-project/vllm/pull/39612) | merged | [Migration] Migrate GGUF quantization support to plugin | `vllm/model_executor/layers/quantization/gguf.py`, `vllm/model_executor/model_loader/gguf_loader.py`, `tests/models/test_gguf_download.py` |
+| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | merged | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `vllm/model_executor/models/mllama4.py` |
 | 2026-06-15 | [#44645](https://github.com/vllm-project/vllm/pull/44645) | merged | [Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders | `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 
@@ -94,6 +94,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/16104
 - 状态/时间: merged / 2025-04-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 35 个文件，+2369/-142，可读 patch 3141 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Support Llama4 in vLLM」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`；技术摘要: 覆盖「[Model] Support Llama4 in vLLM」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -136,6 +137,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD
 
 - 链接: https://github.com/vllm-project/vllm/pull/16113
 - 状态/时间: merged / 2025-04-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16113 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_llama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `55dcce91df15`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 43 个文件，+2436/-155，可读 patch 3350 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Upstream Llama4 Support to Main」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`；技术摘要: 覆盖「Upstream Llama4 Support to Main」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -176,6 +178,7 @@ diff -- tests/models/multimodal/processing/test_llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16201
 - 状态/时间: merged / 2025-04-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16201 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `ed636d99caa0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-3，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Move Llama 4 projector call into encoder execution」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[Misc] Move Llama 4 projector call into encoder execution」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -203,6 +206,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16311
 - 状态/时间: merged / 2025-04-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16311 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ec7da6fcf32f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-12，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BugFix] llama4 qknorm should be not shared across head」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[BugFix] llama4 qknorm should be not shared across head」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -230,6 +234,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16365
 - 状态/时间: merged / 2025-04-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16365 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `61de3ef74b9c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-7，可读 patch 84 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Remove image mm limit for LLaMa4」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[Model] Remove image mm limit for LLaMa4」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -255,6 +260,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16439
 - 状态/时间: merged / 2025-04-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16439 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `99ef59cf7f93`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Llama4] Enable attention temperature tuning by default for long context (>32k)」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Llama4] Enable attention temperature tuning by default for long context (>32k)」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -282,6 +288,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16463
 - 状态/时间: merged / 2025-04-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16463 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_pythonic.jinja`；关联提交 `16eda8c43a9d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+182/-2，可读 patch 223 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend] Added chat templates for LLaMa4 pythonic tool calling」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py`；技术摘要: 覆盖「[Frontend] Added chat templates for LLaMa4 pythonic tool calling」；主要实现面是 `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -315,6 +322,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16512
 - 状态/时间: merged / 2025-04-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16512 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `bd6028d6b0bb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+11/-2，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Optimized topk for topk=1 (Llama-4)」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「Optimized topk for topk=1 (Llama-4)」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -337,35 +345,11 @@ diff -- vllm/model_executor/models/llama4.py
   - runtime: `vllm/model_executor/models/llama4.py` modified +2/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/utils.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #16801 - [BugFix] Accuracy fix for llama4 int4 - improperly casted scales
-
-- 链接: https://github.com/vllm-project/vllm/pull/16801
-- 状态/时间: merged / 2025-04-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `7eb42556281d`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+6/-9，可读 patch 58 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[BugFix] Accuracy fix for llama4 int4 - improperly casted scales」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[BugFix] Accuracy fix for llama4 int4 - improperly casted scales」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__，涉及 `custom_routing_function, __init__`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/llama4.py
-@@ -51,8 +51,8 @@ def custom_routing_function(
--        router_scores = torch.sigmoid(router_scores.float()).to(
--            hidden_states.dtype)
-+        # psuedo-standard is that the router scores are floats
-+        router_scores = torch.sigmoid(router_scores.float())
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/llama4.py` modified +2/-2
-- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #16746 - [Bugfix] fix pp for llama4
 
 - 链接: https://github.com/vllm-project/vllm/pull/16746
 - 状态/时间: merged / 2025-04-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16746 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `e31045f95ca0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-3，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] fix pp for llama4」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[Bugfix] fix pp for llama4」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -389,10 +373,37 @@ diff -- vllm/model_executor/models/mllama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +3/-3
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mllama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #16801 - [BugFix] Accuracy fix for llama4 int4 - improperly casted scales
+
+- 链接: https://github.com/vllm-project/vllm/pull/16801
+- 状态/时间: merged / 2025-04-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16801 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `7eb42556281d`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+6/-9，可读 patch 58 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[BugFix] Accuracy fix for llama4 int4 - improperly casted scales」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[BugFix] Accuracy fix for llama4 int4 - improperly casted scales」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__，涉及 `custom_routing_function, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/llama4.py
+@@ -51,8 +51,8 @@ def custom_routing_function(
+-        router_scores = torch.sigmoid(router_scores.float()).to(
+-            hidden_states.dtype)
++        # psuedo-standard is that the router scores are floats
++        router_scores = torch.sigmoid(router_scores.float())
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/llama4.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #16428 - Add chat template for Llama 4 models
 
 - 链接: https://github.com/vllm-project/vllm/pull/16428
 - 状态/时间: merged / 2025-04-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16428 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_json.jinja`；关联提交 `05e1fbfc52ca`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+139/-1，可读 patch 172 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add chat template for Llama 4 models」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`；技术摘要: 覆盖「Add chat template for Llama 4 models」；主要实现面是 `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -425,6 +436,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17315
 - 状态/时间: merged / 2025-04-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17315 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `b4ac4fa04da1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[model] make llama4 compatible with pure dense layers」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[model] make llama4 compatible with pure dense layers」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -450,6 +462,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17917
 - 状态/时间: merged / 2025-05-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17917 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_llama4_pythonic.jinja`；关联提交 `c91fe7b1b9c4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+541/-72，可读 patch 720 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`；技术摘要: 覆盖「[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser」；主要实现面是 `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -490,6 +503,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/18368
 - 状态/时间: merged / 2025-06-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/18368 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `ebb1ec931871`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+214/-68，可读 patch 496 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] enable data parallel for Llama4 vision encoder」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[Model] enable data parallel for Llama4 vision encoder」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -517,6 +531,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/19997
 - 状态/时间: merged / 2025-06-25
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/19997 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1afa9948f593`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Llama4] Update `attn_temperature_tuning`」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Llama4] Update `attn_temperature_tuning`」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -541,6 +556,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20419
 - 状态/时间: merged / 2025-07-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20419 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `4afe687a8291`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+501/-35，可读 patch 693 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Enable ModelOpt Llama4 fp8 checkpoint deployment」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「Enable ModelOpt Llama4 fp8 checkpoint deployment」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -577,6 +593,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20591
 - 状态/时间: merged / 2025-07-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20591 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `c11013db8b76`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+258/-18，可读 patch 363 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Meta] Llama4 EAGLE Support」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/llama4_eagle.py`；技术摘要: 覆盖「[Meta] Llama4 EAGLE Support」；主要实现面是 `vllm/model_executor/models/llama4_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -604,6 +621,7 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21499
 - 状态/时间: merged / 2025-07-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21499 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ff08e51940a7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+219/-70，可读 patch 432 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NVIDIA] Fix Llama4 Scout FP4 functionality issues」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[NVIDIA] Fix Llama4 Scout FP4 functionality issues」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -631,6 +649,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20788
 - 状态/时间: merged / 2025-07-31
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20788 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/llama4_eagle.py`；关联提交 `9e0726e5bfd2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+206/-37，可读 patch 487 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Meta] Official Eagle mm support, first enablement on llama4」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Meta] Official Eagle mm support, first enablement on llama4」；主要实现面是 `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -662,6 +681,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22107
 - 状态/时间: merged / 2025-08-03
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22107 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `337eb23bcca6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-4，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Fix] Fix llama4 modelopt weight loading error」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[Fix] Fix llama4 modelopt weight loading error」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -689,6 +709,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22511
 - 状态/时间: merged / 2025-08-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22511 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+9/-5，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Llama4 FlashInfer FP4 MoE issues」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`；技术摘要: 覆盖「Fix Llama4 FlashInfer FP4 MoE issues」；主要实现面是 `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -728,6 +749,7 @@ diff -- vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22701
 - 状态/时间: merged / 2025-08-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22701 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `4f0f844b1675`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-2，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -755,6 +777,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22691
 - 状态/时间: merged / 2025-08-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22691 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `5bfe0dea7a34`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-2，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[bug fix] Fix llama4 spec decoding」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[bug fix] Fix llama4 spec decoding」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -782,6 +805,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22021
 - 状态/时间: merged / 2025-08-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22021 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `f32a5bc5058a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-18，可读 patch 87 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Migrate Llama4ImagePatchInputs to TensorSchema」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「Migrate Llama4ImagePatchInputs to TensorSchema」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -809,6 +833,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24444
 - 状态/时间: merged / 2025-09-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24444 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+53/-30，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix platform-specific routing in CustomOp implementations」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py`；技术摘要: 覆盖「[Bugfix] Fix platform-specific routing in CustomOp implementations」；主要实现面是 `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -850,6 +875,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25889
 - 状态/时间: merged / 2025-09-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25889 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `43b752c325d5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；技术摘要: 覆盖「[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`」；主要实现面是 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -875,6 +901,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25961
 - 状态/时间: merged / 2025-10-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25961 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `05f6846ede18`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+83/-8，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support llama3 eagle3 head with llama4 verifier」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「Support llama3 eagle3 head with llama4 verifier」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -902,6 +929,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26790
 - 状态/时间: merged / 2025-10-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26790 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `87efc681dbd5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；技术摘要: 覆盖「llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch」；主要实现面是 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -929,6 +957,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27136
 - 状态/时间: merged / 2025-10-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/27136 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `be4445072c4e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+17/-10，可读 patch 34 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Fix][Spec Decode] Fix llama4 draft loading with different quantization」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4_eagle.py`；技术摘要: 覆盖「[Fix][Spec Decode] Fix llama4 draft loading with different quantization」；主要实现面是 `vllm/model_executor/models/llama4_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -956,6 +985,7 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25145
 - 状态/时间: merged / 2025-10-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25145 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；关联提交 `b798e39f931a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+22/-32，可读 patch 116 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[XPU][bugfix] fix rope for llama4 and deepseek」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；技术摘要: 覆盖「[XPU][bugfix] fix rope for llama4 and deepseek」；主要实现面是 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -983,6 +1013,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28602
 - 状态/时间: merged / 2025-11-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28602 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `964d65deedb9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-2，可读 patch 79 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「LLaMA4 LoRA Adapter Enablement」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「LLaMA4 LoRA Adapter Enablement」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1010,6 +1041,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28577
 - 状态/时间: merged / 2025-11-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28577 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `dc45efc8ef7f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BugFix] Fix Llama4 Pipeline Parallelism Assert Error」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[BugFix] Fix Llama4 Pipeline Parallelism Assert Error」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1037,6 +1069,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/29926
 - 状态/时间: merged / 2025-12-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29926 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4_eagle.py`；关联提交 `962d703818c0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+16/-3，可读 patch 46 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4_eagle.py`；技术摘要: 覆盖「[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute」；主要实现面是 `vllm/model_executor/models/llama4_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1064,6 +1097,7 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30709
 - 状态/时间: merged / 2026-01-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30709 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `ea6d067a2aeb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+85/-20，可读 patch 202 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc][LLaMa4] Compile LLaMa Vision Encoder」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`；技术摘要: 覆盖「[Misc][LLaMa4] Compile LLaMa Vision Encoder」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1100,6 +1134,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32886
 - 状态/时间: merged / 2026-01-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32886 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1fb648bf107e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-1，可读 patch 36 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1127,6 +1162,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34243
 - 状态/时间: merged / 2026-02-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34243 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `11c7ace34061`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-5，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1154,6 +1190,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34471
 - 状态/时间: merged / 2026-02-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34471 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `ee1d25f199ee`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-68，可读 patch 114 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1181,6 +1218,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34997
 - 状态/时间: merged / 2026-02-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34997 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `0e22cd618b5d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+68/-29，可读 patch 114 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers "」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers "」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1208,6 +1246,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35033
 - 状态/时间: merged / 2026-02-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35033 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`；关联提交 `1e8438a89a64`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+31/-70，可读 patch 127 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests」；主要实现面是 `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1235,6 +1274,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35147
 - 状态/时间: merged / 2026-02-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35147 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `012dee92331c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+23/-1，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1258,50 +1298,11 @@ diff -- vllm/model_executor/models/mllama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +23/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mllama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #36436 - [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers
-
-- 链接: https://github.com/vllm-project/vllm/pull/36436
-- 状态/时间: merged / 2026-03-09
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+247/-452，可读 patch 911 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`；技术摘要: 覆盖「[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers」；主要实现面是 `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value，涉及 `find_common_prefix, get_json_schema_from_tools, UnexpectedAstError`；`vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming，涉及 `_UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls`；`vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming，涉及 `_UnexpectedAstError, PythonicToolParser, extract_tool_calls`；`vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming，涉及 `_UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls`。
-- 代码 diff 细节:
-  - `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value
-  - `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
-  - `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
-  - `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
-- 关键代码摘录:
-
-```diff
-diff -- vllm/tool_parsers/utils.py
-@@ -1,6 +1,7 @@
-+import ast
-@@ -17,6 +18,15 @@
-+from vllm.entrypoints.openai.engine.protocol import (
-+    DeltaFunctionCall,
-+    DeltaToolCall,
-+    FunctionCall,
-diff -- vllm/tool_parsers/olmo3_tool_parser.py
-@@ -1,9 +1,8 @@
--import json
--from typing import Any
-@@ -13,25 +12,23 @@
--    DeltaFunctionCall,
--    DeltaToolCall,
--    FunctionCall,
-diff -- vllm/tool_parsers/pythonic_tool_parser.py
-@@ -2,9 +2,7 @@
-```
-
-- 已读文件:
-  - runtime: `vllm/tool_parsers/utils.py` modified +209/-0; `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156; `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147
-- 验证与风险: runtime 路径改动集中在 `vllm/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #36281 - [BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder`
 
 - 链接: https://github.com/vllm-project/vllm/pull/36281
 - 状态/时间: merged / 2026-03-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36281 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+23/-17，可读 patch 138 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder`」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder`」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1340,10 +1341,52 @@ diff -- vllm/model_executor/models/mllama4.py
   - docs: `docs/design/torch_compile_multimodal.md` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/compilation/decorators.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #36436 - [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers
+
+- 链接: https://github.com/vllm-project/vllm/pull/36436
+- 状态/时间: merged / 2026-03-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36436 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+247/-452，可读 patch 911 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`；技术摘要: 覆盖「[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers」；主要实现面是 `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value，涉及 `find_common_prefix, get_json_schema_from_tools, UnexpectedAstError`；`vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming，涉及 `_UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls`；`vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming，涉及 `_UnexpectedAstError, PythonicToolParser, extract_tool_calls`；`vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming，涉及 `_UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls`。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value
+  - `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
+  - `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
+  - `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/utils.py
+@@ -1,6 +1,7 @@
++import ast
+@@ -17,6 +18,15 @@
++from vllm.entrypoints.openai.engine.protocol import (
++    DeltaFunctionCall,
++    DeltaToolCall,
++    FunctionCall,
+diff -- vllm/tool_parsers/olmo3_tool_parser.py
+@@ -1,9 +1,8 @@
+-import json
+-from typing import Any
+@@ -13,25 +12,23 @@
+-    DeltaFunctionCall,
+-    DeltaToolCall,
+-    FunctionCall,
+diff -- vllm/tool_parsers/pythonic_tool_parser.py
+@@ -2,9 +2,7 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/tool_parsers/utils.py` modified +209/-0; `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156; `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147
+- 验证与风险: runtime 路径改动集中在 `vllm/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #36770 - [Misc] Clean up renderers
 
 - 链接: https://github.com/vllm-project/vllm/pull/36770
 - 状态/时间: merged / 2026-03-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36770 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+136/-220，可读 patch 632 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Clean up renderers」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/transformers_utils/processors/kimi_audio.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/kimi_audio.py`；技术摘要: 覆盖「[Misc] Clean up renderers」；主要实现面是 `vllm/transformers_utils/processors/kimi_audio.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/kimi_audio.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1386,6 +1429,7 @@ diff -- vllm/model_executor/models/kimi_audio.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36063
 - 状态/时间: merged / 2026-03-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36063 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+229/-235，可读 patch 1149 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Refactor] Consolidate SupportsEagle」；模型线: Llama 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/hunyuan_v1.py`；技术摘要: 覆盖「[Refactor] Consolidate SupportsEagle」；主要实现面是 `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/hunyuan_v1.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1427,6 +1471,7 @@ diff -- vllm/model_executor/models/hunyuan_v1.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36288
 - 状态/时间: merged / 2026-03-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36288 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+27/-29，可读 patch 112 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/mllama4.py`, `docs/design/torch_compile_multimodal.md`；技术摘要: 覆盖「[torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/mllama4.py`, `docs/design/torch_compile_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1468,6 +1513,7 @@ diff -- docs/design/torch_compile_multimodal.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/37345
 - 状态/时间: merged / 2026-03-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37345 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+86/-69，可读 patch 312 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[torch.compile][BE][Multimodal] Remove requirement to set_model_tag to avoid cache conflict」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `docs/design/torch_compile_multimodal.md`；技术摘要: 覆盖「[torch.compile][BE][Multimodal] Remove requirement to set_model_tag to avoid cache conflict」；主要实现面是 `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `docs/design/torch_compile_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1510,6 +1556,7 @@ diff -- docs/design/torch_compile_multimodal.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/37834
 - 状态/时间: merged / 2026-03-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37834 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+376/-353，可读 patch 774 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Test] Consolidate tool parser unit tests to tests/tool_parsers」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `tests/tool_parsers/test_hermes_tool_parser.py`, `tests/entrypoints/openai/tool_parsers/test_hermes_tool_parser.py`, `tests/tool_parsers/test_granite4_tool_parser.py`；技术摘要: 覆盖「[Test] Consolidate tool parser unit tests to tests/tool_parsers」；主要实现面是 `tests/tool_parsers/test_hermes_tool_parser.py`, `tests/entrypoints/openai/tool_parsers/test_hermes_tool_parser.py`, `tests/tool_parsers/test_granite4_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1756,6 +1803,7 @@ diff -- vllm/model_executor/models/glm4_moe_lite.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42280
 - 状态/时间: merged / 2026-05-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42280 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 25 个文件，+49/-29，可读 patch 302 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Fix missing `maybe_prefix`」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`；技术摘要: 覆盖「[Model] Fix missing `maybe_prefix`」；主要实现面是 `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1839,6 +1887,7 @@ diff -- vllm/model_executor/layers/quantization/kv_cache.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39419
 - 状态/时间: merged / 2026-06-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39419 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+53/-39，可读 patch 169 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding」；模型线: Llama 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/qwen3.py`；技术摘要: 覆盖「[SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding」；主要实现面是 `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1880,6 +1929,7 @@ diff -- vllm/model_executor/models/qwen3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45047
 - 状态/时间: merged / 2026-06-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45047 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `fa8c868a3c64`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+18/-6，可读 patch 92 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Llama4 weight loading」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Bugfix] Fix Llama4 weight loading」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1909,37 +1959,11 @@ diff -- vllm/model_executor/models/llama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +5/-1; `vllm/model_executor/models/llama4.py` modified +2/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/model_loader/weight_utils.py`, `vllm/model_executor/models/lfm2_moe.py`, `vllm/model_executor/models/llama4.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #40660 - [MM][Perf][CG] Support ViT full cudagraphs for mllama4
-
-- 链接: https://github.com/vllm-project/vllm/pull/40660
-- 状态/时间: merged / 2026-06-12
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `39dee1114a2c`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+193/-14，可读 patch 291 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MM][Perf][CG] Support ViT full cudagraphs for mllama4」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full cudagraphs for mllama4」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk，涉及 `Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/mllama4.py
-@@ -19,7 +19,7 @@
--from typing import Annotated, Literal
-+from typing import Annotated, Any, Literal
-@@ -78,6 +78,7 @@
-+    SupportsEncoderCudaGraph,
-@@ -105,7 +106,7 @@ class Llama4ImagePatchInputs(TensorSchema):
--    The number of total patches for each image in the batch.
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/mllama4.py` modified +160/-12
-- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/models/utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #39612 - [Migration] Migrate GGUF quantization support to plugin
 
 - 链接: https://github.com/vllm-project/vllm/pull/39612
 - 状态/时间: merged / 2026-06-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39612 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 57 个文件，+71/-9047，可读 patch 9824 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Migration] Migrate GGUF quantization support to plugin」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/layers/quantization/gguf.py`, `vllm/model_executor/model_loader/gguf_loader.py`, `tests/models/test_gguf_download.py`；技术摘要: 覆盖「[Migration] Migrate GGUF quantization support to plugin」；主要实现面是 `vllm/model_executor/layers/quantization/gguf.py`, `vllm/model_executor/model_loader/gguf_loader.py`, `tests/models/test_gguf_download.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1978,10 +2002,38 @@ diff -- tests/models/test_gguf_download.py
   - tests: `tests/models/test_gguf_download.py` removed +0/-224; `tests/plugins_tests/gguf/test_gguf_plugin_multimodal.py` renamed +6/-19
 - 验证与风险: diff 自带测试面 `requirements/test/rocm.txt`, `tests/compile/fullgraph/test_full_graph.py`, `tests/kernels/quantization/test_ggml.py`, `tests/kernels/quantization/test_gguf.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #40660 - [MM][Perf][CG] Support ViT full cudagraphs for mllama4
+
+- 链接: https://github.com/vllm-project/vllm/pull/40660
+- 状态/时间: merged / 2026-06-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mllama4.py`；关联提交 `39dee1114a2c`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+193/-14，可读 patch 291 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full cudagraphs for mllama4」；模型线: Llama 4；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mllama4.py`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full cudagraphs for mllama4」；主要实现面是 `vllm/model_executor/models/mllama4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk，涉及 `Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/mllama4.py
+@@ -19,7 +19,7 @@
+-from typing import Annotated, Literal
++from typing import Annotated, Any, Literal
+@@ -78,6 +78,7 @@
++    SupportsEncoderCudaGraph,
+@@ -105,7 +106,7 @@ class Llama4ImagePatchInputs(TensorSchema):
+-    The number of total patches for each image in the batch.
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/mllama4.py` modified +160/-12
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/models/utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #44645 - [Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders
 
 - 链接: https://github.com/vllm-project/vllm/pull/44645
 - 状态/时间: merged / 2026-06-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/44645 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`；关联提交 `1801fad0ba62`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+64/-72，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`；技术摘要: 覆盖「[Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders」；主要实现面是 `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`。下方保留文件级证据、代码摘录和验证风险。

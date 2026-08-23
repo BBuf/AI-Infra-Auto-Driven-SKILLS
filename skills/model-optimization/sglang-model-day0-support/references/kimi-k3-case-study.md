@@ -14,20 +14,23 @@
 ## Public Evidence Boundary
 
 This case study uses only public `sgl-project/sglang` pull requests, their
-public diffs, and public source paths. The audit snapshot is **2026-07-28**.
+public diffs, and public source paths. The audit snapshot is **2026-08-23**.
 An open PR is evidence of proposed implementation, not evidence that support
 has shipped. A merged documentation, image, or follow-up PR does not make an
 open runtime spine release-ready by itself.
 
-The principal runtime source is still open:
+The principal runtime spine has now shipped:
 
-- Evidence: https://github.com/sgl-project/sglang/pull/32541 | state: open | head: f748ae35a26fbe1be98db09967ffb828658b821a | limitation: point-in-time review of a large open support branch; merge state, final diff, and released behavior can still change
+- Evidence: https://github.com/sgl-project/sglang/pull/32541 | state: merged 2026-08-04 | released in SGLang `v0.5.17` (2026-08-08)
+- Follow-ups that also shipped with that cut: DCP + DSpark `#32828`, standalone kernels `#32890`, reasoning/tool-call/OpenAI serving `#33025`
+- Competitor landing: vLLM `v0.27.0` (2026-08-10) shipped a matching Kimi K3 stack (`#50089`, `#50000`, `#50093`, `#50090`, `#50458`, `#50500`, `#50242`)
+- 2026-08-22 known issue in SGLang `v0.5.18`: the Kimi K3 MLA gate-projection fusion into the QKV-A GEMM landed and was reverted (`#33623`, `#34642`). Do not treat that fuse as current mainline behavior.
 
-The reviewed diff is unusually broad: it adds model and VLM implementations,
-KDA and MLA paths, MoE routing, collectives, speculative state handling,
-multimodal preprocessing, platform dispatch, tests, and benchmarks. Treat it
-as the support spine to decompose and audit, not as a precedent for accepting
-an unreviewable monolith.
+The reviewed `#32541` diff is unusually broad: it adds model and VLM
+implementations, KDA and MLA paths, MoE routing, collectives, speculative
+state handling, multimodal preprocessing, platform dispatch, tests, and
+benchmarks. Keep using it as the support-spine lesson, not as a precedent
+for accepting an unreviewable monolith on a later model.
 
 ## Architecture Delta
 
@@ -181,4 +184,6 @@ For the full manually diff-reviewed history and file coverage, use:
 - [English Kimi public PR dossier](../../../../model-pr-optimization-history/sglang/kimi/README.en.md)
 - [中文 Kimi 公开 PR 档案](../../../../model-pr-optimization-history/sglang/kimi/README.zh.md)
 
-Re-audit live PR state before reusing this case after 2026-07-28.
+Re-audit live PR state before reusing this case after 2026-08-23. The
+follow-up items below the spine may still be open or already merged; query
+GitHub at review time instead of copying the 2026-07-28 open/head snapshots.

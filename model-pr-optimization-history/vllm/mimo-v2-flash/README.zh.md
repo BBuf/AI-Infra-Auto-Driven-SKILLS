@@ -4,12 +4,13 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
+| `tests/models/multimodal/test_mimo_v2_omni.py` | [#49815](https://github.com/vllm-project/vllm/pull/49815) |
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
 | `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200), [#46104](https://github.com/vllm-project/vllm/pull/46104) |
 | `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
-| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#49815](https://github.com/vllm-project/vllm/pull/49815) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#43117](https://github.com/vllm-project/vllm/pull/43117) |
 
@@ -45,6 +46,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/17433
 - 状态/时间: merged / 2025-05-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17433 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo.py`, `vllm/model_executor/models/mimo_mtp.py`；关联提交 `acee8f48aa9c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+507/-4，可读 patch 576 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Support MiMo-7B inference with MTP」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/mimo.py`；技术摘要: 覆盖「[Model] Support MiMo-7B inference with MTP」；主要实现面是 `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/mimo.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -81,6 +83,7 @@ diff -- vllm/model_executor/models/mimo.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25136
 - 状态/时间: merged / 2025-09-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25136 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_mtp.py`；关联提交 `c4cb0af98a8e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+20/-6，可读 patch 61 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[spec decode] Fix MTP inference path for MiMo-7B model」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mimo_mtp.py`；技术摘要: 覆盖「[spec decode] Fix MTP inference path for MiMo-7B model」；主要实现面是 `vllm/model_executor/models/mimo_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -108,6 +111,7 @@ diff -- vllm/model_executor/models/mimo_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30836
 - 状态/时间: merged / 2025-12-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30836 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+789/-13，可读 patch 946 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add MiMo-V2-Flash support」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/linear.py`, `vllm/model_executor/layers/quantization/utils/fp8_utils.py`；技术摘要: 覆盖「[Model] Add MiMo-V2-Flash support」；主要实现面是 `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/linear.py`, `vllm/model_executor/layers/quantization/utils/fp8_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -151,6 +155,7 @@ diff -- vllm/model_executor/layers/quantization/utils/fp8_utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31175
 - 状态/时间: merged / 2026-01-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31175 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-13，可读 patch 79 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Properly apply v_scale for mimo_v2_flash」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mimo_v2_flash.py`；技术摘要: 覆盖「[Bugfix] Properly apply v_scale for mimo_v2_flash」；主要实现面是 `vllm/model_executor/models/mimo_v2_flash.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -178,6 +183,7 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40045
 - 状态/时间: merged / 2026-04-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40045 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+112/-24，可读 patch 270 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Attention] use diff kv backend for mimo v2 flash」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/attention/attention.py`, `tools/pre_commit/generate_attention_backend_docs.py`；技术摘要: 覆盖「[Attention] use diff kv backend for mimo v2 flash」；主要实现面是 `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/attention/attention.py`, `tools/pre_commit/generate_attention_backend_docs.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -221,6 +227,7 @@ diff -- tools/pre_commit/generate_attention_backend_docs.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40967
 - 状态/时间: merged / 2026-04-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40967 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_audio.py`, `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/transformers_utils/configs/mimo_v2_omni.py` 等 6 个文件；关联提交 `c245d35ff467`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+4737/-5，可读 patch 4920 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add MiMo-V2.5 support」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`；技术摘要: 覆盖「[Model] Add MiMo-V2.5 support」；主要实现面是 `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -262,6 +269,7 @@ diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41029
 - 状态/时间: merged / 2026-04-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41029 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `7a1eb8ac2ec4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+10/-8，可读 patch 74 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] update for mimo v25」；模型线: MiMo V2 Flash；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Model] update for mimo v25」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -285,6 +293,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41905
 - 状态/时间: merged / 2026-05-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41905 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2_mtp.py`；关联提交 `2ee8c2a56e41`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-10，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[SpecDecoding] extend mtp support for mimo 2.5」；模型线: MiMo V2 Flash；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mimo_v2_mtp.py`；技术摘要: 覆盖「[SpecDecoding] extend mtp support for mimo 2.5」；主要实现面是 `vllm/model_executor/models/mimo_v2_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -354,6 +363,7 @@ diff -- vllm/model_executor/layers/quantization/kv_cache.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41797
 - 状态/时间: merged / 2026-06-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41797 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `f81daf888063`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+1041/-9，可读 patch 1103 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Attention] add triton diff-kv backend for mimo」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Attention] add triton diff-kv backend for mimo」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -381,6 +391,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45200
 - 状态/时间: merged / 2026-06-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45200 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `b5adb027ad03`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+170/-5，可读 patch 245 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Models] Fix MiMo v2.x QKV TP sharding + FP4 support」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Models] Fix MiMo v2.x QKV TP sharding + FP4 support」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -408,6 +419,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46104
 - 状态/时间: merged / 2026-07-01
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/46104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mimo_v2.py`；关联提交 `9969466a5978`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+243/-25，可读 patch 500 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Spec Decode] Support SWA + DFlash for MiMo」；模型线: MiMo V2 Flash；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/mimo_v2.py`；技术摘要: 覆盖「[Spec Decode] Support SWA + DFlash for MiMo」；主要实现面是 `vllm/model_executor/models/mimo_v2.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -435,6 +447,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/43117
 - 状态/时间: merged / 2026-07-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43117 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/mimo_v2_omni.py`；关联提交 `54503ecec0f3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-76，可读 patch 190 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「fix(processor): route MiMo-V2-Omni media fetch through MediaConnector」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/processors/mimo_v2_omni.py`；技术摘要: 覆盖「fix(processor): route MiMo-V2-Omni media fetch through MediaConnector」；主要实现面是 `vllm/transformers_utils/processors/mimo_v2_omni.py`。下方保留文件级证据、代码摘录和验证风险。

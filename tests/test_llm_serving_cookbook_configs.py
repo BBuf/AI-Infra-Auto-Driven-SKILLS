@@ -101,6 +101,7 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
         expected = {
             "minimax-m3.yaml": "MiniMaxAI/MiniMax-M3-MXFP8",
             "qwen36-35b-a3b-fp8.yaml": "Qwen/Qwen3.6-35B-A3B-FP8",
+            "qwen38-27b-fp8.yaml": "Qwen/Qwen3.8-27B-FP8",
         }
 
         for filename, model in expected.items():

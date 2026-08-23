@@ -13,25 +13,25 @@
 | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml` | [#31759](https://github.com/vllm-project/vllm/pull/31759), [#33807](https://github.com/vllm-project/vllm/pull/33807) |
 | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml` | [#31759](https://github.com/vllm-project/vllm/pull/31759) |
 | `tests/lora/test_mixtral.py` | [#2831](https://github.com/vllm-project/vllm/pull/2831), [#9008](https://github.com/vllm-project/vllm/pull/9008), [#11390](https://github.com/vllm-project/vllm/pull/11390), [#28322](https://github.com/vllm-project/vllm/pull/28322) |
-| `tests/quantization/test_quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26364](https://github.com/vllm-project/vllm/pull/26364), [#35658](https://github.com/vllm-project/vllm/pull/35658), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#36320](https://github.com/vllm-project/vllm/pull/36320), [#41184](https://github.com/vllm-project/vllm/pull/41184), [#46142](https://github.com/vllm-project/vllm/pull/46142), [#47330](https://github.com/vllm-project/vllm/pull/47330), ... (13 total) |
+| `tests/quantization/test_quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26364](https://github.com/vllm-project/vllm/pull/26364), [#35658](https://github.com/vllm-project/vllm/pull/35658), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#36320](https://github.com/vllm-project/vllm/pull/36320), [#41184](https://github.com/vllm-project/vllm/pull/41184), [#46142](https://github.com/vllm-project/vllm/pull/46142), [#46765](https://github.com/vllm-project/vllm/pull/46765), ... (17 total) |
 | `vllm/model_executor/layers/quantization/quark/__init__.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765) |
-| `vllm/model_executor/layers/quantization/quark/quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#15734](https://github.com/vllm-project/vllm/pull/15734), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#17215](https://github.com/vllm-project/vllm/pull/17215), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#24239](https://github.com/vllm-project/vllm/pull/24239), [#28275](https://github.com/vllm-project/vllm/pull/28275), [#28638](https://github.com/vllm-project/vllm/pull/28638), [#29008](https://github.com/vllm-project/vllm/pull/29008), [#30071](https://github.com/vllm-project/vllm/pull/30071), [#32779](https://github.com/vllm-project/vllm/pull/32779), ... (18 total) |
-| `vllm/model_executor/layers/quantization/quark/quark_moe.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#11528](https://github.com/vllm-project/vllm/pull/11528), [#13784](https://github.com/vllm-project/vllm/pull/13784), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#22035](https://github.com/vllm-project/vllm/pull/22035), [#22537](https://github.com/vllm-project/vllm/pull/22537), [#23123](https://github.com/vllm-project/vllm/pull/23123), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26545](https://github.com/vllm-project/vllm/pull/26545), [#26739](https://github.com/vllm-project/vllm/pull/26739), [#27029](https://github.com/vllm-project/vllm/pull/27029), ... (61 total) |
-| `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#35316](https://github.com/vllm-project/vllm/pull/35316), [#35859](https://github.com/vllm-project/vllm/pull/35859) |
+| `vllm/model_executor/layers/quantization/quark/quark.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#15734](https://github.com/vllm-project/vllm/pull/15734), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#17215](https://github.com/vllm-project/vllm/pull/17215), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#24239](https://github.com/vllm-project/vllm/pull/24239), [#28275](https://github.com/vllm-project/vllm/pull/28275), [#28638](https://github.com/vllm-project/vllm/pull/28638), [#29008](https://github.com/vllm-project/vllm/pull/29008), [#30071](https://github.com/vllm-project/vllm/pull/30071), [#32779](https://github.com/vllm-project/vllm/pull/32779), ... (20 total) |
+| `vllm/model_executor/layers/quantization/quark/quark_moe.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#11528](https://github.com/vllm-project/vllm/pull/11528), [#13784](https://github.com/vllm-project/vllm/pull/13784), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#17888](https://github.com/vllm-project/vllm/pull/17888), [#22035](https://github.com/vllm-project/vllm/pull/22035), [#22537](https://github.com/vllm-project/vllm/pull/22537), [#23123](https://github.com/vllm-project/vllm/pull/23123), [#24649](https://github.com/vllm-project/vllm/pull/24649), [#26545](https://github.com/vllm-project/vllm/pull/26545), [#26739](https://github.com/vllm-project/vllm/pull/26739), [#27029](https://github.com/vllm-project/vllm/pull/27029), ... (68 total) |
+| `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#16943](https://github.com/vllm-project/vllm/pull/16943), [#35316](https://github.com/vllm-project/vllm/pull/35316), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#47972](https://github.com/vllm-project/vllm/pull/47972) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_nvfp4.py` | [#35859](https://github.com/vllm-project/vllm/pull/35859) |
-| `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` | [#36100](https://github.com/vllm-project/vllm/pull/36100), [#36232](https://github.com/vllm-project/vllm/pull/36232), [#48015](https://github.com/vllm-project/vllm/pull/48015) |
+| `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` | [#36100](https://github.com/vllm-project/vllm/pull/36100), [#36232](https://github.com/vllm-project/vllm/pull/36232), [#48015](https://github.com/vllm-project/vllm/pull/48015), [#48949](https://github.com/vllm-project/vllm/pull/48949), [#49348](https://github.com/vllm-project/vllm/pull/49348) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_scheme.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_w4a8_mxfp4_fp8.py` | [#35316](https://github.com/vllm-project/vllm/pull/35316) |
-| `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#14390](https://github.com/vllm-project/vllm/pull/14390), [#14578](https://github.com/vllm-project/vllm/pull/14578), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#19830](https://github.com/vllm-project/vllm/pull/19830), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#27814](https://github.com/vllm-project/vllm/pull/27814), [#33892](https://github.com/vllm-project/vllm/pull/33892), [#44626](https://github.com/vllm-project/vllm/pull/44626) |
+| `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#12612](https://github.com/vllm-project/vllm/pull/12612), [#14245](https://github.com/vllm-project/vllm/pull/14245), [#14390](https://github.com/vllm-project/vllm/pull/14390), [#14578](https://github.com/vllm-project/vllm/pull/14578), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#19830](https://github.com/vllm-project/vllm/pull/19830), [#20251](https://github.com/vllm-project/vllm/pull/20251), [#27814](https://github.com/vllm-project/vllm/pull/27814), [#33892](https://github.com/vllm-project/vllm/pull/33892), [#44626](https://github.com/vllm-project/vllm/pull/44626), [#47972](https://github.com/vllm-project/vllm/pull/47972) |
 | `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#16236](https://github.com/vllm-project/vllm/pull/16236), [#27814](https://github.com/vllm-project/vllm/pull/27814), [#41892](https://github.com/vllm-project/vllm/pull/41892) |
 | `vllm/model_executor/layers/quantization/quark/utils.py` | [#10765](https://github.com/vllm-project/vllm/pull/10765), [#35859](https://github.com/vllm-project/vllm/pull/35859), [#46757](https://github.com/vllm-project/vllm/pull/46757) |
-| `vllm/model_executor/models/mixtral.py` | [#2011](https://github.com/vllm-project/vllm/pull/2011), [#2015](https://github.com/vllm-project/vllm/pull/2015), [#2036](https://github.com/vllm-project/vllm/pull/2036), [#2090](https://github.com/vllm-project/vllm/pull/2090), [#2208](https://github.com/vllm-project/vllm/pull/2208), [#2542](https://github.com/vllm-project/vllm/pull/2542), [#2677](https://github.com/vllm-project/vllm/pull/2677), [#2769](https://github.com/vllm-project/vllm/pull/2769), [#2831](https://github.com/vllm-project/vllm/pull/2831), [#2875](https://github.com/vllm-project/vllm/pull/2875), [#2880](https://github.com/vllm-project/vllm/pull/2880), [#3597](https://github.com/vllm-project/vllm/pull/3597), ... (41 total) |
+| `vllm/model_executor/models/mixtral.py` | [#2011](https://github.com/vllm-project/vllm/pull/2011), [#2015](https://github.com/vllm-project/vllm/pull/2015), [#2036](https://github.com/vllm-project/vllm/pull/2036), [#2090](https://github.com/vllm-project/vllm/pull/2090), [#2208](https://github.com/vllm-project/vllm/pull/2208), [#2542](https://github.com/vllm-project/vllm/pull/2542), [#2677](https://github.com/vllm-project/vllm/pull/2677), [#2769](https://github.com/vllm-project/vllm/pull/2769), [#2831](https://github.com/vllm-project/vllm/pull/2831), [#2875](https://github.com/vllm-project/vllm/pull/2875), [#2880](https://github.com/vllm-project/vllm/pull/2880), [#3597](https://github.com/vllm-project/vllm/pull/3597), ... (42 total) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 133
+- Git-traced PRs: 134
 - Extra PRs preserved from existing docs: 20
-- Total PRs in this document: 153
+- Total PRs in this document: 154
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -51,8 +51,8 @@
 | 2024-01-31 | [#2677](https://github.com/vllm-project/vllm/pull/2677) | merged | Add unit test for Mixtral MoE layer | `vllm/model_executor/models/mixtral.py` |
 | 2024-02-06 | [#2769](https://github.com/vllm-project/vllm/pull/2769) | merged | Add fused top-K softmax kernel for MoE | `vllm/model_executor/models/mixtral.py` |
 | 2024-02-13 | [#2831](https://github.com/vllm-project/vllm/pull/2831) | merged | Add LoRA support for Mixtral | `vllm/model_executor/models/mixtral.py`, `tests/lora/test_mixtral.py` |
-| 2024-02-15 | [#2880](https://github.com/vllm-project/vllm/pull/2880) | merged | Align LoRA code between Mistral and Mixtral (fixes #2875) | `vllm/model_executor/models/mixtral.py` |
 | 2024-02-15 | [#2875](https://github.com/vllm-project/vllm/pull/2875) | closed | Fix AttributeError: MixtralModel object has no attribute org_vocab_size. | `vllm/model_executor/models/mixtral.py` |
+| 2024-02-15 | [#2880](https://github.com/vllm-project/vllm/pull/2880) | merged | Align LoRA code between Mistral and Mixtral (fixes #2875) | `vllm/model_executor/models/mixtral.py` |
 | 2024-02-26 | [#2979](https://github.com/vllm-project/vllm/pull/2979) | merged | Optimized fused MoE Kernel, take 2 | `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/configs/E=8,N=7168,device_name=NVIDIA_H100_80GB_HBM3.json`, `vllm/model_executor/layers/fused_moe/configs/E=8,N=3584,device_name=NVIDIA_A100-SXM4-80GB.json` |
 | 2024-03-24 | [#3597](https://github.com/vllm-project/vllm/pull/3597) | merged | [BugFix] 1D query fix for MoE models | `vllm/model_executor/models/mixtral.py` |
 | 2024-04-24 | [#4244](https://github.com/vllm-project/vllm/pull/4244) | merged | [Kernel] FP8 support for MoE kernel / Mixtral | `vllm/model_executor/models/mixtral.py` |
@@ -102,17 +102,17 @@
 | 2025-07-14 | [#20893](https://github.com/vllm-project/vllm/pull/20893) | merged | [Quantization] add BNB for MixtralForCausalLM | `vllm/model_executor/models/mixtral.py` |
 | 2025-08-15 | [#22035](https://github.com/vllm-project/vllm/pull/22035) | merged | [Kernels] Clean up FusedMoeMethodBase and modular kernel setup. Remove extra arguments from modular kernel methods. | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2025-08-30 | [#23123](https://github.com/vllm-project/vllm/pull/23123) | merged | Add routed_scaling_factor to MoE grouped topk | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
-| 2025-09-17 | [#24649](https://github.com/vllm-project/vllm/pull/24649) | merged | [Rocm] [quantization] Fix quark ptpc moe and add test case | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/quantization/test_quark.py` |
-| 2025-09-17 | [#22842](https://github.com/vllm-project/vllm/pull/22842) | merged | [EPLB] Support EPLB for Mixtral Model | `vllm/model_executor/models/mixtral.py` |
 | 2025-09-17 | [#22537](https://github.com/vllm-project/vllm/pull/22537) | merged | [Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2025-09-17 | [#22842](https://github.com/vllm-project/vllm/pull/22842) | merged | [EPLB] Support EPLB for Mixtral Model | `vllm/model_executor/models/mixtral.py` |
+| 2025-09-17 | [#24649](https://github.com/vllm-project/vllm/pull/24649) | merged | [Rocm] [quantization] Fix quark ptpc moe and add test case | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/quantization/test_quark.py` |
 | 2025-10-07 | [#21166](https://github.com/vllm-project/vllm/pull/21166) | merged | [Feature][OCP MX] Support mxfp6 and mixed mxfp6-mxfp4 | `vllm/model_executor/layers/quantization/utils/mxfp6_utils.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py` |
 | 2025-10-07 | [#26364](https://github.com/vllm-project/vllm/pull/26364) | merged | [ci] Rename `test_mxfp4_moe.py` to `test_ocp_mx_moe.py` | `tests/quantization/test_quark.py` |
 | 2025-10-14 | [#26739](https://github.com/vllm-project/vllm/pull/26739) | merged | [torch.compile] Unwrap fused_marlin_moe custom op | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2025-10-17 | [#26545](https://github.com/vllm-project/vllm/pull/26545) | merged | [ROCM] MoE fp4 CK kernel | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2025-10-17 | [#27029](https://github.com/vllm-project/vllm/pull/27029) | merged | [Bugfix] [AITER] [ROCm] Fix Quark MoE Quant Config and AITER Fused MoE quant type logic | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2025-11-04 | [#27123](https://github.com/vllm-project/vllm/pull/27123) | merged | [Kernels] Isolate modular kernel code from FusedMoEMethodBase subclasses. | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
-| 2025-11-10 | [#28322](https://github.com/vllm-project/vllm/pull/28322) | merged | [CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness | `tests/lora/test_mixtral.py` |
 | 2025-11-10 | [#27474](https://github.com/vllm-project/vllm/pull/27474) | merged | [Rocm][fused_moe][fp4] view weight to torch.float4_e2m1fn_x2 when running aiter fused moe for fp4 model | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2025-11-10 | [#28322](https://github.com/vllm-project/vllm/pull/28322) | merged | [CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness | `tests/lora/test_mixtral.py` |
 | 2025-11-11 | [#24239](https://github.com/vllm-project/vllm/pull/24239) | merged | [ROCm][Quantization] extend AMD Quark to support mixed-precision quantized model | `vllm/model_executor/layers/quantization/quark/quark.py`, `docs/features/quantization/quark.md` |
 | 2025-11-14 | [#28275](https://github.com/vllm-project/vllm/pull/28275) | merged | [Misc] add ignore mapper for quark quantization | `vllm/model_executor/layers/quantization/quark/quark.py` |
 | 2025-11-18 | [#28638](https://github.com/vllm-project/vllm/pull/28638) | merged | [ROCm][Quantization] add apply_vllm_mapper in quark config for models like gpt-oss | `vllm/model_executor/layers/quantization/quark/quark.py` |
@@ -123,8 +123,8 @@
 | 2025-12-20 | [#28891](https://github.com/vllm-project/vllm/pull/28891) | merged | [MoE Refactor][5/N] Isolate zero expert to LongCatFlash | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2025-12-29 | [#31499](https://github.com/vllm-project/vllm/pull/31499) | merged | [MoE Refactor][12/N] Marlin Fp8 MoE Pure Function | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-01-06 | [#31759](https://github.com/vllm-project/vllm/pull/31759) | merged | [MoE Refactor] Add Temporary Integration Tests - H100/B200 | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml` |
-| 2026-01-08 | [#31415](https://github.com/vllm-project/vllm/pull/31415) | merged | [MoE Refactor][15/N] Apply Refactor to Fp8 | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-01-08 | [#30519](https://github.com/vllm-project/vllm/pull/30519) | merged | [Misc][Refactor] Add FusedMoERouter object | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-01-08 | [#31415](https://github.com/vllm-project/vllm/pull/31415) | merged | [MoE Refactor][15/N] Apply Refactor to Fp8 | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-01-15 | [#31827](https://github.com/vllm-project/vllm/pull/31827) | merged | [MoE Refactor][17/N] Apply Refactor to Bf16 | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-triton.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py` |
 | 2026-01-18 | [#30623](https://github.com/vllm-project/vllm/pull/30623) | merged | [MoE Refactor] Separate Router into OO Classes | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-01-20 | [#27814](https://github.com/vllm-project/vllm/pull/27814) | merged | [Refactor] Make FP8 Linear Ops use kernel abstraction | `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` |
@@ -137,8 +137,8 @@
 | 2026-02-12 | [#33843](https://github.com/vllm-project/vllm/pull/33843) | merged | [Refactor] Replace `activation: str` with `MoEActivation` enum | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-02-12 | [#34192](https://github.com/vllm-project/vllm/pull/34192) | merged | [ROCm] Enable MXFP4 MoE weight pre-shuffling on gfx950 and update aiter | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-02-20 | [#34386](https://github.com/vllm-project/vllm/pull/34386) | merged | [Quark] Fix MoE fp8 activation scale handling on mi300 | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
-| 2026-02-26 | [#33807](https://github.com/vllm-project/vllm/pull/33807) | merged | [UX] Add `--moe-backend` arg for explicit kernel selection | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py` |
 | 2026-02-26 | [#30357](https://github.com/vllm-project/vllm/pull/30357) | merged | [ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-02-26 | [#33807](https://github.com/vllm-project/vllm/pull/33807) | merged | [UX] Add `--moe-backend` arg for explicit kernel selection | `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py` |
 | 2026-03-02 | [#35658](https://github.com/vllm-project/vllm/pull/35658) | merged | [ROCm] add amd-quark package in requirements for rocm to use quantized models | `tests/quantization/test_quark.py` |
 | 2026-03-04 | [#35893](https://github.com/vllm-project/vllm/pull/35893) | merged | [ROCm][Bugfix] Fall back from CK MXFP4 MoE when GEMM dimensions are unsupported | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-03-13 | [#35316](https://github.com/vllm-project/vllm/pull/35316) | merged | [ROCm][Quantization] add quark w4a8 mxfp4_fp8 for LinearLayer | `vllm/model_executor/layers/quantization/quark/schemes/quark_w4a8_mxfp4_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` |
@@ -159,23 +159,23 @@
 | 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | merged | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `vllm/model_executor/models/mixtral.py` |
 | 2026-04-22 | [#35737](https://github.com/vllm-project/vllm/pull/35737) | merged | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-04-23 | [#40671](https://github.com/vllm-project/vllm/pull/40671) | merged | [MoE Refactor] Rename FusedMoE.make_expert_params_mapping to fused_moe_make_expert_params_mapping | `vllm/model_executor/models/mixtral.py` |
-| 2026-04-29 | [#40754](https://github.com/vllm-project/vllm/pull/40754) | merged | [Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature | `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` |
-| 2026-04-29 | [#41175](https://github.com/vllm-project/vllm/pull/41175) | merged | [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-04-29 | [#39987](https://github.com/vllm-project/vllm/pull/39987) | merged | [ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers | `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/utils.py`, `tests/quantization/test_quark_maybe_update_config.py` |
+| 2026-04-29 | [#40754](https://github.com/vllm-project/vllm/pull/40754) | merged | [Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature | `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` |
 | 2026-04-29 | [#41165](https://github.com/vllm-project/vllm/pull/41165) | merged | [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
+| 2026-04-29 | [#41175](https://github.com/vllm-project/vllm/pull/41175) | merged | [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-05 | [#39136](https://github.com/vllm-project/vllm/pull/39136) | merged | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-10 | [#41979](https://github.com/vllm-project/vllm/pull/41979) | merged | [MoE] Move various experts classes to fused_moe/experts/ | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
-| 2026-05-12 | [#41046](https://github.com/vllm-project/vllm/pull/41046) | merged | [MoE Refactor] Move expert map related code into ExpertMapManager class | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-12 | [#40735](https://github.com/vllm-project/vllm/pull/40735) | merged | [MoE Refactor] Introduce RoutedExperts alias for FusedMoE and don't store SharedExperts in MK | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py` |
-| 2026-05-13 | [#41892](https://github.com/vllm-project/vllm/pull/41892) | merged | [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports) | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` |
+| 2026-05-12 | [#41046](https://github.com/vllm-project/vllm/pull/41046) | merged | [MoE Refactor] Move expert map related code into ExpertMapManager class | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-13 | [#35859](https://github.com/vllm-project/vllm/pull/35859) | merged | [Quark] Support loading Quark NVFP4 checkpoints in vLLM | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_nvfp4.py`, `vllm/model_executor/layers/quantization/quark/quark.py` |
+| 2026-05-13 | [#41892](https://github.com/vllm-project/vllm/pull/41892) | merged | [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports) | `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` |
 | 2026-05-13 | [#42563](https://github.com/vllm-project/vllm/pull/42563) | merged | [CI] Fix pre-commit issue | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-14 | [#41986](https://github.com/vllm-project/vllm/pull/41986) | merged | [Bugfix] Add swiglu limits to deepgemm fp8 methods | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-15 | [#35024](https://github.com/vllm-project/vllm/pull/35024) | merged | [Deprecation] Remove old locations of `get_tokenizer` and `resolve_hf_chat_template` | `vllm/transformers_utils/tokenizer.py`, `vllm/entrypoints/chat_utils.py`, `requirements/test/cuda.txt` |
 | 2026-05-18 | [#41436](https://github.com/vllm-project/vllm/pull/41436) | merged | [ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-05-28 | [#43727](https://github.com/vllm-project/vllm/pull/43727) | merged | [MoE] Remove inplace fused experts mechanism | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
-| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-05 | [#44635](https://github.com/vllm-project/vllm/pull/44635) | merged | Speed up docs build | `vllm/model_executor/layers/quantization/compressed_tensors/utils.py`, `vllm/model_executor/layers/quantization/input_quant_fp8.py`, `vllm/model_executor/parameter.py` |
+| 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `tests/quantization/test_quark.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py` |
 | 2026-06-10 | [#39498](https://github.com/vllm-project/vllm/pull/39498) | merged | [Bugfix] Add deepseek_v32 to Quark dynamic MXFP4 model type check | `vllm/model_executor/layers/quantization/quark/quark.py` |
 | 2026-06-15 | [#43981](https://github.com/vllm-project/vllm/pull/43981) | merged | [AMD][Bugfix][Quantization] Honor fused-name match in is_layer_skipped | `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `tests/quantization/test_quark.py` |
@@ -188,10 +188,11 @@
 | 2026-07-03 | [#47220](https://github.com/vllm-project/vllm/pull/47220) | merged | [AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-07-06 | [#41652](https://github.com/vllm-project/vllm/pull/41652) | merged | [Quantization] add humming moe backend to all dense/moe oracles | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-07-15 | [#47330](https://github.com/vllm-project/vllm/pull/47330) | merged | [ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release | `tests/quantization/test_quark.py` |
-| 2026-07-16 | [#48015](https://github.com/vllm-project/vllm/pull/48015) | merged | [ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX | `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` |
 | 2026-07-16 | [#46757](https://github.com/vllm-project/vllm/pull/46757) | merged | Fix Quark mxfp4 quantized model loading issue under mtp | `vllm/model_executor/layers/quantization/quark/utils.py`, `vllm/model_executor/layers/quantization/quark/quark.py` |
+| 2026-07-16 | [#48015](https://github.com/vllm-project/vllm/pull/48015) | merged | [ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX | `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` |
 | 2026-07-18 | [#43979](https://github.com/vllm-project/vllm/pull/43979) | merged | [ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned | `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 | 2026-07-24 | [#48050](https://github.com/vllm-project/vllm/pull/48050) | merged | [ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage | `tests/quantization/test_quark.py` |
+| 2026-08-07 | [#47972](https://github.com/vllm-project/vllm/pull/47972) | merged | Support DeepSeek-V4 AMD Quark NVFP4 with emulation kernel | `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -199,6 +200,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/4
 - Status/date: merged / 2023-03-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the request...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +108/-34, 236 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Use FlashAttention for `multi_query_kv_attention`"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `cacheflow/models/attention.py`, `tests/kernels/attention.py`, `server.py`; technical summary: Covers "Use FlashAttention for `multi_query_kv_attention`"; the main implementation surface is `cacheflow/models/attention.py`, `tests/kernels/attention.py`, `server.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -241,6 +243,7 @@ diff -- server.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2011
 - Status/date: merged / 2023-12-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2011 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `b5f882cc98e2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +538/-0, 566 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Mixtral 8x7B support"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Mixtral 8x7B support"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -268,6 +271,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2015
 - Status/date: merged / 2023-12-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2015 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `4ff0203987ff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-6, 46 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Minor fixes for Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Minor fixes for Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -295,6 +299,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2036
 - Status/date: merged / 2023-12-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2036 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `81ce2a4b26c7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Minor] Fix type annotation in Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Minor] Fix type annotation in Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -318,6 +323,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2090
 - Status/date: merged / 2023-12-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2090 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `21d93c140d0a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +221/-334, 737 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Mixtral expert parallelism"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Mixtral expert parallelism"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -345,6 +351,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2208
 - Status/date: merged / 2023-12-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2208 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `ba4f82673884`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-26, 59 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Fix weight loading for Mixtral with TP"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[BugFix] Fix weight loading for Mixtral with TP"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -372,6 +379,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2293
 - Status/date: closed / 2024-01-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2293 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +515/-126, 720 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "tensor parallel MOE implementation"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `vllm/model_executor/layers/moe.py`, `vllm/model_executor/models/mixtral.py`, `tests/kernels/test_moe_grouped_matmul.py`; technical summary: Covers "tensor parallel MOE implementation"; the main implementation surface is `vllm/model_executor/layers/moe.py`, `vllm/model_executor/models/mixtral.py`, `tests/kernels/test_moe_grouped_matmul.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -415,6 +423,7 @@ diff -- tests/kernels/test_moe_grouped_matmul.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2453
 - Status/date: merged / 2024-01-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2453 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +924/-0, 957 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "DeepseekMoE support with Fused MoE kernel"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/layers/fused_moe.py`, `vllm/model_executor/models/__init__.py`; technical summary: Covers "DeepseekMoE support with Fused MoE kernel"; the main implementation surface is `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/layers/fused_moe.py`, `vllm/model_executor/models/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -458,6 +467,7 @@ diff -- vllm/model_executor/models/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2542
 - Status/date: merged / 2024-01-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2542 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `ab406446691f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +115/-109, 327 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fused MOE for Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Fused MOE for Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -485,6 +495,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2677
 - Status/date: merged / 2024-01-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2677 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `d0d93b92b190`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +119/-55, 209 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add unit test for Mixtral MoE layer"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Add unit test for Mixtral MoE layer"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -512,6 +523,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2769
 - Status/date: merged / 2024-02-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2769 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `f0d4e145575b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +591/-50, 772 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add fused top-K softmax kernel for MoE"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Add fused top-K softmax kernel for MoE"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -539,6 +551,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2831
 - Status/date: merged / 2024-02-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2831 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/lora/test_mixtral.py`, `vllm/model_executor/models/mixtral.py`; associated commits `2a543d6efecc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +251/-121, 751 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add LoRA support for Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `vllm/model_executor/models/mixtral.py`, `tests/lora/test_mixtral.py`; technical summary: Covers "Add LoRA support for Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`, `tests/lora/test_mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -572,10 +585,35 @@ diff -- tests/lora/test_mixtral.py
   - tests: `tests/lora/test_mixtral.py` added +53/-0
 - Risk and verification: The diff ships test coverage in `tests/lora/conftest.py`, `tests/lora/test_lora_manager.py`, `tests/lora/test_mixtral.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #2875 - Fix AttributeError: MixtralModel object has no attribute org_vocab_size.
+
+- Link: https://github.com/vllm-project/vllm/pull/2875
+- Status/date: closed / 2024-02-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2875 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `31348dff03d6`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix AttributeError: MixtralModel object has no attribute org_vocab_size."; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Fix AttributeError: MixtralModel object has no attribute org_vocab_size."; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mixtral.py` modified +1/-1 (2 lines); hunks: -293,7 +293,7 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/mixtral.py` modified +1/-1 (2 lines); hunks: -293,7 +293,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mixtral.py
+@@ -293,7 +293,7 @@ def __init__(
+-            org_num_embeddings=self.org_vocab_size,
++            org_num_embeddings=self.vocab_size,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mixtral.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mixtral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #2880 - Align LoRA code between Mistral and Mixtral (fixes #2875)
 
 - Link: https://github.com/vllm-project/vllm/pull/2880
 - Status/date: merged / 2024-02-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2880 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `31348dff03d6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-4, 34 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Align LoRA code between Mistral and Mixtral (fixes #2875)"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Align LoRA code between Mistral and Mixtral (fixes #2875)"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -599,33 +637,11 @@ diff -- vllm/model_executor/models/mixtral.py
   - runtime: `vllm/model_executor/models/mixtral.py` modified +10/-4
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mixtral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #2875 - Fix AttributeError: MixtralModel object has no attribute org_vocab_size.
-
-- Link: https://github.com/vllm-project/vllm/pull/2875
-- Status/date: closed / 2024-02-15
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `31348dff03d6`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix AttributeError: MixtralModel object has no attribute org_vocab_size."; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Fix AttributeError: MixtralModel object has no attribute org_vocab_size."; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/mixtral.py` modified +1/-1 (2 lines); hunks: -293,7 +293,7 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `vllm/model_executor/models/mixtral.py` modified +1/-1 (2 lines); hunks: -293,7 +293,7 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/mixtral.py
-@@ -293,7 +293,7 @@ def __init__(
--            org_num_embeddings=self.org_vocab_size,
-+            org_num_embeddings=self.vocab_size,
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/mixtral.py` modified +1/-1
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mixtral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #2979 - Optimized fused MoE Kernel, take 2
 
 - Link: https://github.com/vllm-project/vllm/pull/2979
 - Status/date: merged / 2024-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2979 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +297/-15, 364 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Optimized fused MoE Kernel, take 2"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/configs/E=8,N=7168,device_name=NVIDIA_H100_80GB_HBM3.json`, `vllm/model_executor/layers/fused_moe/configs/E=8,N=3584,device_name=NVIDIA_A100-SXM4-80GB.json`; technical summary: Covers "Optimized fused MoE Kernel, take 2"; the main implementation surface is `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/configs/E=8,N=7168,device_name=NVIDIA_H100_80GB_HBM3.json`, `vllm/model_executor/layers/fused_moe/configs/E=8,N=3584,device_name=NVIDIA_A100-SXM4-80GB.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -668,6 +684,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=8,N=3584,device_name=NVID
 
 - Link: https://github.com/vllm-project/vllm/pull/3597
 - Status/date: merged / 2024-03-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/3597 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `41deac4a3d78`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +15/-15, 93 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] 1D query fix for MoE models"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[BugFix] 1D query fix for MoE models"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -695,6 +712,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4244
 - Status/date: merged / 2024-04-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4244 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `eace8bf0b911`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +385/-21, 626 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] FP8 support for MoE kernel / Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Kernel] FP8 support for MoE kernel / Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -722,6 +740,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4343
 - Status/date: merged / 2024-04-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4343 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `12628d3c787e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +95/-18, 233 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Optimize FP8 support for MoE kernel / Mixtral via static scales"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Kernel] Optimize FP8 support for MoE kernel / Mixtral via static scales"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -749,6 +768,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4332
 - Status/date: merged / 2024-04-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4332 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +307/-40, 549 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Support Fp8 Checkpoints (Dynamic + Static)"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/fp8.py`, `tests/models/test_fp8.py`, `vllm/model_executor/layers/linear.py`; technical summary: Covers "[Kernel] Support Fp8 Checkpoints (Dynamic + Static)"; the main implementation surface is `vllm/model_executor/layers/quantization/fp8.py`, `tests/models/test_fp8.py`, `vllm/model_executor/layers/linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -789,6 +809,7 @@ diff -- vllm/model_executor/layers/linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4436
 - Status/date: closed / 2024-05-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4436 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +105/-40, 223 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Support Fp8 Checkpoints for Mixtral (Dynamic + Static)"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`, `vllm/model_executor/model_loader/weight_utils.py`; technical summary: Covers "[Kernel] Support Fp8 Checkpoints for Mixtral (Dynamic + Static)"; the main implementation surface is `vllm/model_executor/models/mixtral.py`, `vllm/model_executor/model_loader/weight_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -822,6 +843,7 @@ diff -- vllm/model_executor/model_loader/weight_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4543
 - Status/date: merged / 2024-05-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4543 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `c9d852d601ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-8, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Remove Mixtral device="cuda" declarations"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Misc] Remove Mixtral device="cuda" declarations"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -849,6 +871,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4527
 - Status/date: merged / 2024-05-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4527 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `2a052011ca47`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +122/-53, 262 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Support MoE Fp8 Checkpoints for Mixtral (Static Weights with Dynamic/Static Activations)"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Kernel] Support MoE Fp8 Checkpoints for Mixtral (Static Weights with Dynamic/Static Activations)"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -876,6 +899,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4793
 - Status/date: merged / 2024-05-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4793 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `33d3914b1e6d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix dynamic FP8 quantization for Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Bugfix] Fix dynamic FP8 quantization for Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -899,6 +923,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/4893
 - Status/date: merged / 2024-05-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/4893 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `a3a73ab0696b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 40 files, +284/-158, 869 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Load FP8 kv-cache scaling factors from checkpoints"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Misc] Load FP8 kv-cache scaling factors from checkpoints"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -926,6 +951,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/5039
 - Status/date: merged / 2024-05-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/5039 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `e9899fb7a4d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +711/-114, 1000 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Enable FP8 QKV in MoE and refine kernel tuning script"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Model] Enable FP8 QKV in MoE and refine kernel tuning script"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -953,6 +979,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/5231
 - Status/date: merged / 2024-06-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/5231 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `5563a4dea86e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +80/-35, 182 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Correct Mixtral FP8 checkpoint loading"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Model] Correct Mixtral FP8 checkpoint loading"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -980,6 +1007,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/5353
 - Status/date: merged / 2024-06-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/5353 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `c09dade2a263`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +23/-23, 127 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc][Breaking] Change FP8 checkpoint format from act_scale -> input_scale"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Misc][Breaking] Change FP8 checkpoint format from act_scale -> input_scale"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1007,6 +1035,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/5970
 - Status/date: merged / 2024-07-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/5970 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `7c008c51a9aa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +537/-306, 1033 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ Misc ] Refactor MoE to isolate Fp8 From Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[ Misc ] Refactor MoE to isolate Fp8 From Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1034,6 +1063,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/6287
 - Status/date: merged / 2024-07-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/6287 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `e72ae80b0640`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +7/-4, 36 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Support 2D input shape in MoE layer"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Bugfix] Support 2D input shape in MoE layer"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1060,6 +1090,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/6417
 - Status/date: merged / 2024-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/6417 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `fb6af8bc0863`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +223/-137, 564 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ Misc ] Apply MoE Refactor to Qwen2 + Deepseekv2 To Support Fp8"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[ Misc ] Apply MoE Refactor to Qwen2 + Deepseekv2 To Support Fp8"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1087,6 +1118,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/6516
 - Status/date: merged / 2024-07-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/6516 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `b5af8c223c3d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +60/-19, 207 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Pipeline parallel support for Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Model] Pipeline parallel support for Mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1114,6 +1146,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/7334
 - Status/date: merged / 2024-08-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/7334 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `d3bdfd3ab9ba`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +264/-201, 614 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Update Fused MoE weight loading"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Misc] Update Fused MoE weight loading"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1137,6 +1170,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/7527
 - Status/date: merged / 2024-08-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/7527 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `8678a69ab519`, `aae74ef95c37`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +2374/-84, 2645 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Expand MoE weight loading + Add Fused Marlin MoE Kernel"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Kernel] Expand MoE weight loading + Add Fused Marlin MoE Kernel"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1158,6 +1192,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/7764
 - Status/date: merged / 2024-08-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/7764 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `aae74ef95c37`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +84/-2374, 2645 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Revert "[Kernel] Expand MoE weight loading + Add Fused Marlin MoE Kernel (#7527)""; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Revert "[Kernel] Expand MoE weight loading + Add Fused Marlin MoE Kernel (#7527)""; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1179,6 +1214,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/7766
 - Status/date: merged / 2024-08-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/7766 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `fc911880cc50`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +2382/-85, 2666 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Expand MoE weight loading + Add Fused Marlin MoE Kernel"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Kernel] Expand MoE weight loading + Add Fused Marlin MoE Kernel"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1200,6 +1236,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/8217
 - Status/date: merged / 2024-09-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/8217 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `6cd5e5b07e44`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +912/-204, 1442 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Fused MoE Marlin support for GPTQ"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Misc] Fused MoE Marlin support for GPTQ"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1227,6 +1264,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/9008
 - Status/date: merged / 2024-10-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/9008 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/lora/test_mixtral.py`, `vllm/model_executor/models/mixtral.py`; associated commits `9ade8bbc8dc6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +69/-20, 123 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] add a bunch of supported lora modules for mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `vllm/model_executor/models/mixtral.py`, `tests/lora/test_mixtral.py`; technical summary: Covers "[Model] add a bunch of supported lora modules for mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`, `tests/lora/test_mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1264,6 +1302,7 @@ diff -- tests/lora/test_mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/9632
 - Status/date: merged / 2024-10-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/9632 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +217/-78, 605 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile] support moe models"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/fused_marlin_moe.py`, `vllm/model_executor/layers/fused_moe/layer.py`; technical summary: Covers "[torch.compile] support moe models"; the main implementation surface is `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/fused_marlin_moe.py`, `vllm/model_executor/layers/fused_moe/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1305,6 +1344,7 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 
 - Link: https://github.com/vllm-project/vllm/pull/9758
 - Status/date: merged / 2024-10-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/9758 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `aa0addb39726`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +8/-0, 64 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile] Adding "torch compile" annotations to some models"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[torch.compile] Adding "torch compile" annotations to some models"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1329,6 +1369,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/11390
 - Status/date: merged / 2024-12-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/11390 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/lora/test_mixtral.py`; associated commits `f1d1bf6288ab`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-2, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix fully sharded LoRAs with Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `tests/lora/test_mixtral.py`, `vllm/lora/layers.py`; technical summary: Covers "[Bugfix] Fix fully sharded LoRAs with Mixtral"; the main implementation surface is `tests/lora/test_mixtral.py`, `vllm/lora/layers.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1362,6 +1403,7 @@ diff -- vllm/lora/layers.py
 
 - Link: https://github.com/vllm-project/vllm/pull/10765
 - Status/date: merged / 2025-01-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/10765 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/__init__.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` and 10 files; associated commits `de0526f668d6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 32 files, +1264/-70, 1679 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc][Quark] Upstream Quark format to VLLM"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; technical summary: Covers "[Misc][Quark] Upstream Quark format to VLLM"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1403,6 +1445,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py
 
 - Link: https://github.com/vllm-project/vllm/pull/11528
 - Status/date: merged / 2025-01-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/11528 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `eb5cb5e5280c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +243/-148, 756 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Fix parameter names and `process_after_weight_loading` for W4A16 MoE Group Act Order"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[BugFix] Fix parameter names and `process_after_weight_loading` for W4A16 MoE Group Act Order"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1430,6 +1473,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/3208
 - Status/date: closed / 2025-02-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/3208 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +203/-71, 473 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[RFC/WIP] First steps towards FP8 for Mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/configs/E=8,N=7168,device_name=NVIDIA_H100_80GB_HBM3.json`, `vllm/model_executor/models/mixtral.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`; technical summary: Covers "[RFC/WIP] First steps towards FP8 for Mixtral"; the main implementation surface is `vllm/model_executor/layers/fused_moe/configs/E=8,N=7168,device_name=NVIDIA_H100_80GB_HBM3.json`, `vllm/model_executor/models/mixtral.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1473,6 +1517,7 @@ diff -- vllm/model_executor/layers/fused_moe/fused_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/13591
 - Status/date: merged / 2025-02-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/13591 Get "https://api.github.com/repos/vllm-project/vllm/pulls/13591": EOF`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +416/-28, 719 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[core] set up data parallel communication"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/distributed/utils.py`, `examples/offline_inference/data_parallel.py`, `vllm/distributed/parallel_state.py`; technical summary: Covers "[core] set up data parallel communication"; the main implementation surface is `vllm/distributed/utils.py`, `examples/offline_inference/data_parallel.py`, `vllm/distributed/parallel_state.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1515,6 +1560,7 @@ diff -- vllm/distributed/parallel_state.py
 
 - Link: https://github.com/vllm-project/vllm/pull/13784
 - Status/date: merged / 2025-02-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/13784 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `1e15aaef562d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +22/-22, 138 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Quantization] Fix FP8 + EP"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Bugfix][Quantization] Fix FP8 + EP"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1538,6 +1584,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/13931
 - Status/date: merged / 2025-03-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/13931 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `72c62eae5f01`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +250/-75, 778 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V1] EP/TP MoE + DP Attention"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[V1] EP/TP MoE + DP Attention"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1562,6 +1609,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/14390
 - Status/date: merged / 2025-03-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/14390 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `e1744502c21f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +268/-242, 760 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[FP8] Refactor apply_fp8_linear and apply_fp8_linear_generic into an object"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; technical summary: Covers "[FP8] Refactor apply_fp8_linear and apply_fp8_linear_generic into an object"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1589,6 +1637,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py
 
 - Link: https://github.com/vllm-project/vllm/pull/14245
 - Status/date: merged / 2025-03-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/14245 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `a1c8f3796c89`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 25 files, +293/-159, 944 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "dynamic distpatch of fp8 kernels"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "dynamic distpatch of fp8 kernels"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1621,6 +1670,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/14961
 - Status/date: merged / 2025-03-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/14961 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `aaaec52ad907`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-2, 54 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Model] Mixtral: use unused head_dim config argument"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Bugfix][Model] Mixtral: use unused head_dim config argument"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1648,6 +1698,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/14578
 - Status/date: merged / 2025-03-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/14578 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `4d0ec37267af`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +41/-9, 155 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization][FP8] Adding support for fp8 gemm layer input in fp8"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; technical summary: Covers "[Quantization][FP8] Adding support for fp8 gemm layer input in fp8"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1672,6 +1723,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py
 
 - Link: https://github.com/vllm-project/vllm/pull/15961
 - Status/date: merged / 2025-04-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/15961 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-1, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add support to modelopt quantization of Mixtral model"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/models/mixtral_quant.py`; technical summary: Covers "Add support to modelopt quantization of Mixtral model"; the main implementation surface is `vllm/model_executor/models/mixtral_quant.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1699,6 +1751,7 @@ diff -- vllm/model_executor/models/mixtral_quant.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16325
 - Status/date: merged / 2025-04-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16325 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `a564797151a0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +353/-323, 836 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] use AutoWeightsLoader for granite, granitemoe, granitemoeshared, grok1, mixtral"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Model] use AutoWeightsLoader for granite, granitemoe, granitemoeshared, grok1, mixtral"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1726,6 +1779,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16236
 - Status/date: merged / 2025-04-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16236 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; associated commits `9e90c9f73f94`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +67/-22, 183 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix bugs of running Quark quantized models"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `tests/quantization/test_quark.py`; technical summary: Covers "[Bugfix] Fix bugs of running Quark quantized models"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1766,6 +1820,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/15734
 - Status/date: merged / 2025-04-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/15734 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `a41351f363f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +105/-20, 212 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization][FP8] Add support for FP8 models with input_scale for output projection and QK quantization"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[Quantization][FP8] Add support for FP8 models with input_scale for output projection and QK quantization"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1793,6 +1848,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17215
 - Status/date: merged / 2025-04-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17215 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `68af5f6c5ce4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +0/-29, 43 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD][FP8][BugFix] Remove V1 check in arg_utils.py for FP8 since it is not necessary"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[AMD][FP8][BugFix] Remove V1 check in arg_utils.py for FP8 since it is not necessary"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1820,6 +1876,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16943
 - Status/date: merged / 2025-05-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16943 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`; associated commits `db593aa67f8d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +289/-3, 378 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] Quark MXFP4 format loading"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`; technical summary: Covers "[Quantization] Quark MXFP4 format loading"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1853,6 +1910,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/12612
 - Status/date: merged / 2025-05-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/12612 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `bb239a730f2a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +38/-9, 71 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix quark fp8 format loading on AMD GPUs"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `tests/quantization/test_quark.py`; technical summary: Covers "[Bugfix] Fix quark fp8 format loading on AMD GPUs"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1890,6 +1948,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20251
 - Status/date: merged / 2025-06-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20251 Get "https://api.github.com/repos/vllm-project/vllm/pulls/20251": EOF`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `1c50e100a9c5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +23/-16, 99 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] fix quark ptpc"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[Bugfix] fix quark ptpc"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1926,6 +1985,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17888
 - Status/date: merged / 2025-07-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17888 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `docs/features/quantization/quark.md`, `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `332d4cb17b7c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +875/-106, 1416 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature][Quantization] MXFP4 support for MOE models"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `tests/quantization/test_quark.py`; technical summary: Covers "[Feature][Quantization] MXFP4 support for MOE models"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1968,6 +2028,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19830
 - Status/date: merged / 2025-07-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19830 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `31d5c1797f32`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +368/-104, 858 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Perf][fp8] Use CustomOp abstraction for fp8 quant for better perf"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; technical summary: Covers "[Perf][fp8] Use CustomOp abstraction for fp8 quant for better perf"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1995,6 +2056,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20893
 - Status/date: merged / 2025-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20893 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `a99b9f7dee0a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +128/-20, 251 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] add BNB for MixtralForCausalLM"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[Quantization] add BNB for MixtralForCausalLM"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2022,6 +2084,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22035
 - Status/date: merged / 2025-08-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22035 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `8ad7285ea28a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 54 files, +2022/-1305, 5535 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernels] Clean up FusedMoeMethodBase and modular kernel setup. Remove extra arguments from modular kernel methods."; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Kernels] Clean up FusedMoeMethodBase and modular kernel setup. Remove extra arguments from modular kernel methods."; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2072,10 +2135,67 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +4/-0
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/cpu_fused_moe.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`, `vllm/model_executor/layers/fused_moe/layer.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #22537 - [Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses
+
+- Link: https://github.com/vllm-project/vllm/pull/22537
+- Status/date: merged / 2025-09-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22537 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `5963b98b4650`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 68 files, +2675/-2503, 9071 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +27/-19 (46 lines); hunks: -11,6 +11,9; -287,6 +290,16 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config, apply, touching `process_weights_after_loading, get_fused_moe_quant_config, apply`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +27/-19 (46 lines); hunks: -11,6 +11,9; -287,6 +290,16 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config, apply
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -11,6 +11,9 @@
++from vllm.model_executor.layers.fused_moe.config import (
++    FusedMoEQuantConfig, fp8_w8a8_moe_quant_config,
++    mxfp4_w4a4_moe_quant_config)
+@@ -287,6 +290,16 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
++    def get_fused_moe_quant_config(
++            self, layer: torch.nn.Module) -> Optional[FusedMoEQuantConfig]:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +27/-19
+- Risk and verification: The diff ships test coverage in `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/make_feature_matrix.py`, `tests/kernels/moe/modular_kernel_tools/mk_objects.py`, `tests/kernels/moe/test_batched_deepgemm.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #22842 - [EPLB] Support EPLB for Mixtral Model
+
+- Link: https://github.com/vllm-project/vllm/pull/22842
+- Status/date: merged / 2025-09-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22842 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `b77bf34e531a`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +137/-23, 265 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[EPLB] Support EPLB for Mixtral Model"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[EPLB] Support EPLB for Mixtral Model"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mixtral.py` modified +137/-23 (160 lines); hunks: -23,7 +23,8; -33,8 +34,9; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/mixtral.py` modified +137/-23 (160 lines); hunks: -23,7 +23,8; -33,8 +34,9; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mixtral.py
+@@ -23,7 +23,8 @@
+-from collections.abc import Iterable
++import typing
++from collections.abc import Callable, Iterable
+@@ -33,8 +34,9 @@
+-from vllm.config import CacheConfig, VllmConfig
+-from vllm.distributed import get_pp_group, get_tensor_model_parallel_world_size
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mixtral.py` modified +137/-23
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mixtral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #24649 - [Rocm] [quantization] Fix quark ptpc moe and add test case
 
 - Link: https://github.com/vllm-project/vllm/pull/24649
 - Status/date: merged / 2025-09-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24649 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `ca2d1925ef5a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +196/-52, 325 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Rocm] [quantization] Fix quark ptpc moe and add test case"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/quantization/test_quark.py`; technical summary: Covers "[Rocm] [quantization] Fix quark ptpc moe and add test case"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2109,64 +2229,11 @@ diff -- tests/quantization/test_quark.py
   - tests: `tests/quantization/test_quark.py` modified +25/-0
 - Risk and verification: The diff ships test coverage in `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #22842 - [EPLB] Support EPLB for Mixtral Model
-
-- Link: https://github.com/vllm-project/vllm/pull/22842
-- Status/date: merged / 2025-09-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `b77bf34e531a`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +137/-23, 265 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[EPLB] Support EPLB for Mixtral Model"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "[EPLB] Support EPLB for Mixtral Model"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/mixtral.py` modified +137/-23 (160 lines); hunks: -23,7 +23,8; -33,8 +34,9; symbols: __init__, forward, touching `__init__, forward`.
-- Code diff details:
-  - `vllm/model_executor/models/mixtral.py` modified +137/-23 (160 lines); hunks: -23,7 +23,8; -33,8 +34,9; symbols: __init__, forward
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/mixtral.py
-@@ -23,7 +23,8 @@
--from collections.abc import Iterable
-+import typing
-+from collections.abc import Callable, Iterable
-@@ -33,8 +34,9 @@
--from vllm.config import CacheConfig, VllmConfig
--from vllm.distributed import get_pp_group, get_tensor_model_parallel_world_size
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/mixtral.py` modified +137/-23
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mixtral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #22537 - [Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses
-
-- Link: https://github.com/vllm-project/vllm/pull/22537
-- Status/date: merged / 2025-09-17
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `5963b98b4650`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 68 files, +2675/-2503, 9071 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Kernel] Delegate construction of FusedMoEQuantConfig to FusedMoEMethodBase subclasses"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +27/-19 (46 lines); hunks: -11,6 +11,9; -287,6 +290,16 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config, apply, touching `process_weights_after_loading, get_fused_moe_quant_config, apply`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +27/-19 (46 lines); hunks: -11,6 +11,9; -287,6 +290,16 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config, apply
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
-@@ -11,6 +11,9 @@
-+from vllm.model_executor.layers.fused_moe.config import (
-+    FusedMoEQuantConfig, fp8_w8a8_moe_quant_config,
-+    mxfp4_w4a4_moe_quant_config)
-@@ -287,6 +290,16 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
-+    def get_fused_moe_quant_config(
-+            self, layer: torch.nn.Module) -> Optional[FusedMoEQuantConfig]:
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +27/-19
-- Risk and verification: The diff ships test coverage in `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/make_feature_matrix.py`, `tests/kernels/moe/modular_kernel_tools/mk_objects.py`, `tests/kernels/moe/test_batched_deepgemm.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #21166 - [Feature][OCP MX] Support mxfp6 and mixed mxfp6-mxfp4
 
 - Link: https://github.com/vllm-project/vllm/pull/21166
 - Status/date: merged / 2025-10-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21166 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +658/-182, 1462 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature][OCP MX] Support mxfp6 and mixed mxfp6-mxfp4"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/utils/mxfp6_utils.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`; technical summary: Covers "[Feature][OCP MX] Support mxfp6 and mixed mxfp6-mxfp4"; the main implementation surface is `vllm/model_executor/layers/quantization/utils/mxfp6_utils.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2208,6 +2275,7 @@ diff -- vllm/model_executor/layers/fused_moe/fused_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26364
 - Status/date: merged / 2025-10-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26364 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`; associated commits `a38c1bfe09f4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ci] Rename `test_mxfp4_moe.py` to `test_ocp_mx_moe.py`"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/quantization/test_quark.py`; technical summary: Covers "[ci] Rename `test_mxfp4_moe.py` to `test_ocp_mx_moe.py`"; the main implementation surface is `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2231,6 +2299,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26739
 - Status/date: merged / 2025-10-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26739 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `8ae169286f93`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +22/-52, 228 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile] Unwrap fused_marlin_moe custom op"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[torch.compile] Unwrap fused_marlin_moe custom op"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2256,6 +2325,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26545
 - Status/date: merged / 2025-10-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26545 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `0925b28a8e92`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +73/-24, 144 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCM] MoE fp4 CK kernel"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCM] MoE fp4 CK kernel"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2283,6 +2353,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27029
 - Status/date: merged / 2025-10-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27029 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `e33ee23ee3cd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +14/-3, 38 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] [AITER] [ROCm] Fix Quark MoE Quant Config and AITER Fused MoE quant type logic"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Bugfix] [AITER] [ROCm] Fix Quark MoE Quant Config and AITER Fused MoE quant type logic"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2307,6 +2378,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27123
 - Status/date: merged / 2025-11-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27123 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `938772af03ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +271/-311, 1049 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernels] Isolate modular kernel code from FusedMoEMethodBase subclasses."; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Kernels] Isolate modular kernel code from FusedMoEMethodBase subclasses."; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2330,37 +2402,11 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-28
 - Risk and verification: Runtime changes concentrate in `vllm/distributed/device_communicators/base_device_communicator.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/modular_kernel.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #28322 - [CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness
-
-- Link: https://github.com/vllm-project/vllm/pull/28322
-- Status/date: merged / 2025-11-10
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/lora/test_mixtral.py`; associated commits `6b2b9fd934af`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +18/-11, 34 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `tests/lora/test_mixtral.py`; technical summary: Covers "[CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness"; the main implementation surface is `tests/lora/test_mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/lora/test_mixtral.py` modified +18/-11 (29 lines); hunks: -56,15 +56,22 @@ def test_mixtral_lora(mixtral_lora_files, tp_size):; symbols: test_mixtral_lora, check_outputs, touching `test_mixtral_lora, check_outputs`.
-- Code diff details:
-  - `tests/lora/test_mixtral.py` modified +18/-11 (29 lines); hunks: -56,15 +56,22 @@ def test_mixtral_lora(mixtral_lora_files, tp_size):; symbols: test_mixtral_lora, check_outputs
-- Key code excerpts:
-
-```diff
-diff -- tests/lora/test_mixtral.py
-@@ -56,15 +56,22 @@ def test_mixtral_lora(mixtral_lora_files, tp_size):
--        "give_opinion(name[SpellForce 3], release_year[2017], developer[Grimlore Games], rating[poor])",  # noqa: E501
--        "give_opinion(name[SpellForce 3], developer[Grimlore Games], release_year[2017], rating[poor])",  # noqa: E501
--        "inform(name[BioShock], release_year[2007], rating[good], genres[action-adventure, role-playing, shooter], platforms[PlayStation, Xbox, PC], available_on_steam[yes], has_l
-+        [
-+            "give_opinion(name[SpellForce 3], release_year[2017], developer[Grimlore Games], rating[poor])"  # noqa: E501
-+        ],
-```
-
-- Reviewed files:
-  - tests: `tests/lora/test_mixtral.py` modified +18/-11
-- Risk and verification: The diff ships test coverage in `tests/lora/test_mixtral.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #27474 - [Rocm][fused_moe][fp4] view weight to torch.float4_e2m1fn_x2 when running aiter fused moe for fp4 model
 
 - Link: https://github.com/vllm-project/vllm/pull/27474
 - Status/date: merged / 2025-11-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27474 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `b06b9470ca88`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Rocm][fused_moe][fp4] view weight to torch.float4_e2m1fn_x2 when running aiter fused moe for fp4 model"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Rocm][fused_moe][fp4] view weight to torch.float4_e2m1fn_x2 when running aiter fused moe for fp4 model"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2384,10 +2430,39 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +12/-0
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #28322 - [CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness
+
+- Link: https://github.com/vllm-project/vllm/pull/28322
+- Status/date: merged / 2025-11-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28322 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/lora/test_mixtral.py`; associated commits `6b2b9fd934af`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +18/-11, 34 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `tests/lora/test_mixtral.py`; technical summary: Covers "[CI] lora/test_mixtral.py : Add additional expected outputs due to flakiness"; the main implementation surface is `tests/lora/test_mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/lora/test_mixtral.py` modified +18/-11 (29 lines); hunks: -56,15 +56,22 @@ def test_mixtral_lora(mixtral_lora_files, tp_size):; symbols: test_mixtral_lora, check_outputs, touching `test_mixtral_lora, check_outputs`.
+- Code diff details:
+  - `tests/lora/test_mixtral.py` modified +18/-11 (29 lines); hunks: -56,15 +56,22 @@ def test_mixtral_lora(mixtral_lora_files, tp_size):; symbols: test_mixtral_lora, check_outputs
+- Key code excerpts:
+
+```diff
+diff -- tests/lora/test_mixtral.py
+@@ -56,15 +56,22 @@ def test_mixtral_lora(mixtral_lora_files, tp_size):
+-        "give_opinion(name[SpellForce 3], release_year[2017], developer[Grimlore Games], rating[poor])",  # noqa: E501
+-        "give_opinion(name[SpellForce 3], developer[Grimlore Games], release_year[2017], rating[poor])",  # noqa: E501
+-        "inform(name[BioShock], release_year[2007], rating[good], genres[action-adventure, role-playing, shooter], platforms[PlayStation, Xbox, PC], available_on_steam[yes], has_l
++        [
++            "give_opinion(name[SpellForce 3], release_year[2017], developer[Grimlore Games], rating[poor])"  # noqa: E501
++        ],
+```
+
+- Reviewed files:
+  - tests: `tests/lora/test_mixtral.py` modified +18/-11
+- Risk and verification: The diff ships test coverage in `tests/lora/test_mixtral.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #24239 - [ROCm][Quantization] extend AMD Quark to support mixed-precision quantized model
 
 - Link: https://github.com/vllm-project/vllm/pull/24239
 - Status/date: merged / 2025-11-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24239 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `docs/features/quantization/quark.md`, `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `05576df85c52`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +127/-8, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization] extend AMD Quark to support mixed-precision quantized model"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`, `docs/features/quantization/quark.md`; technical summary: Covers "[ROCm][Quantization] extend AMD Quark to support mixed-precision quantized model"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`, `docs/features/quantization/quark.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2425,6 +2500,7 @@ diff -- docs/features/quantization/quark.md
 
 - Link: https://github.com/vllm-project/vllm/pull/28275
 - Status/date: merged / 2025-11-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28275 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `0b25498990f0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-3, 48 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] add ignore mapper for quark quantization"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[Misc] add ignore mapper for quark quantization"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2452,6 +2528,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28638
 - Status/date: merged / 2025-11-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28638 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `d0a73620cc85`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +30/-5, 70 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization] add apply_vllm_mapper in quark config for models like gpt-oss"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[ROCm][Quantization] add apply_vllm_mapper in quark config for models like gpt-oss"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2479,6 +2556,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29067
 - Status/date: merged / 2025-11-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29067 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `8f066146c395`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +163/-472, 1200 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE][Refactor] Make select_experts a non-static method"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE][Refactor] Make select_experts a non-static method"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2506,6 +2584,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29773
 - Status/date: merged / 2025-12-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29773 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `c6df05ebb499`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-0, 19 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] [Fused Moe EP] Use binary expert mask for aiter fused moe kernel"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm] [Fused Moe EP] Use binary expert mask for aiter fused moe kernel"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2528,6 +2607,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29066
 - Status/date: merged / 2025-12-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29066 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `00e5cbb96789`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +318/-872, 2081 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE][Refactor] Remove most arguments to FusedMoEMethodBase.apply"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE][Refactor] Remove most arguments to FusedMoEMethodBase.apply"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2555,6 +2635,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30071
 - Status/date: merged / 2025-12-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30071 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `0c738b58bc0e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +201/-2, 224 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] Support Quark int4-fp8 w4a8 for MoE"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[Quantization] Support Quark int4-fp8 w4a8 for MoE"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2591,6 +2672,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28891
 - Status/date: merged / 2025-12-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28891 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `54c892438479`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +263/-108, 709 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor][5/N] Isolate zero expert to LongCatFlash"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor][5/N] Isolate zero expert to LongCatFlash"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2618,6 +2700,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31499
 - Status/date: merged / 2025-12-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31499 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `9152a30d8f6f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +92/-76, 270 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor][12/N] Marlin Fp8 MoE Pure Function"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor][12/N] Marlin Fp8 MoE Pure Function"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2645,6 +2728,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31759
 - Status/date: merged / 2026-01-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31759 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml`; associated commits `d3e477c01342`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 30 files, +247/-0, 280 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Add Temporary Integration Tests - H100/B200"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml`; technical summary: Covers "[MoE Refactor] Add Temporary Integration Tests - H100/B200"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2676,37 +2760,11 @@ diff -- tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.y
   - tests: `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml` added +9/-0; `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-triton.yaml` added +5/-0
 - Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/moe-refactor/Llama-4-Scout-Fp8-ModelOpt-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Llama-4-Scout-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Llama-4-Scout-Fp8-ModelOpt-marlin.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Llama-4-Scout-Fp8-ModelOpt-triton.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #31415 - [MoE Refactor][15/N] Apply Refactor to Fp8
-
-- Link: https://github.com/vllm-project/vllm/pull/31415
-- Status/date: merged / 2026-01-08
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `5dcd7ef1f219`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 38 files, +1446/-1535, 4055 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MoE Refactor][15/N] Apply Refactor to Fp8"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor][15/N] Apply Refactor to Fp8"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-4 (7 lines); hunks: -22,7 +22,7; -315,16 +315,15 @@ def process_weights_after_loading(self, layer: torch.nn.Mo...; symbols: process_weights_after_loading, touching `process_weights_after_loading`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-4 (7 lines); hunks: -22,7 +22,7; -315,16 +315,15 @@ def process_weights_after_loading(self, layer: torch.nn.Mo...; symbols: process_weights_after_loading
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
-@@ -22,7 +22,7 @@
--    prepare_moe_fp8_layer_for_marlin,
-+    prepare_fp8_moe_layer_for_marlin,
-@@ -315,16 +315,15 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
--            (workspace, w13_weight, w2_weight, w13_weight_scale, w2_weight_scale) = (
--                prepare_moe_fp8_layer_for_marlin(
-+            w13_weight, w2_weight, w13_weight_scale, w2_weight_scale = (
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-4
-- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Llama-4-Scout-Fp8-ModelOpt-triton.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-Fp8-AutoFp8-deepgemm-deepep-ht.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-Fp8-AutoFp8-deepgemm-deepep-ll.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-Fp8-AutoFp8-deepgemm.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #30519 - [Misc][Refactor] Add FusedMoERouter object
 
 - Link: https://github.com/vllm-project/vllm/pull/30519
 - Status/date: merged / 2026-01-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30519 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `e74698c27ad5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 20 files, +165/-36, 744 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc][Refactor] Add FusedMoERouter object"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Misc][Refactor] Add FusedMoERouter object"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2730,10 +2788,39 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +6/-2
 - Risk and verification: The diff ships test coverage in `tests/test_routing_simulator.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #31415 - [MoE Refactor][15/N] Apply Refactor to Fp8
+
+- Link: https://github.com/vllm-project/vllm/pull/31415
+- Status/date: merged / 2026-01-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31415 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `5dcd7ef1f219`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 38 files, +1446/-1535, 4055 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor][15/N] Apply Refactor to Fp8"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor][15/N] Apply Refactor to Fp8"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-4 (7 lines); hunks: -22,7 +22,7; -315,16 +315,15 @@ def process_weights_after_loading(self, layer: torch.nn.Mo...; symbols: process_weights_after_loading, touching `process_weights_after_loading`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-4 (7 lines); hunks: -22,7 +22,7; -315,16 +315,15 @@ def process_weights_after_loading(self, layer: torch.nn.Mo...; symbols: process_weights_after_loading
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -22,7 +22,7 @@
+-    prepare_moe_fp8_layer_for_marlin,
++    prepare_fp8_moe_layer_for_marlin,
+@@ -315,16 +315,15 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
+-            (workspace, w13_weight, w2_weight, w13_weight_scale, w2_weight_scale) = (
+-                prepare_moe_fp8_layer_for_marlin(
++            w13_weight, w2_weight, w13_weight_scale, w2_weight_scale = (
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-4
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Llama-4-Scout-Fp8-ModelOpt-triton.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-Fp8-AutoFp8-deepgemm-deepep-ht.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-Fp8-AutoFp8-deepgemm-deepep-ll.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-Fp8-AutoFp8-deepgemm.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #31827 - [MoE Refactor][17/N] Apply Refactor to Bf16
 
 - Link: https://github.com/vllm-project/vllm/pull/31827
 - Status/date: merged / 2026-01-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31827 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-triton.yaml`; associated commits `31c29257c852`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +257/-87, 445 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor][17/N] Apply Refactor to Bf16"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-triton.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py`; technical summary: Covers "[MoE Refactor][17/N] Apply Refactor to Bf16"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-triton.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2775,6 +2862,7 @@ diff -- vllm/model_executor/layers/fused_moe/oracle/unquantized.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30623
 - Status/date: merged / 2026-01-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30623 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `327a02d8db86`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 45 files, +1754/-688, 2998 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Separate Router into OO Classes"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Separate Router into OO Classes"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2798,6 +2886,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27814
 - Status/date: merged / 2026-01-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27814 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; associated commits `148117ea2e68`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 30 files, +1458/-1029, 3752 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Make FP8 Linear Ops use kernel abstraction"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; technical summary: Covers "[Refactor] Make FP8 Linear Ops use kernel abstraction"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2834,6 +2923,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31996
 - Status/date: merged / 2026-01-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31996 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `dc917cceb877`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 22 files, +495/-530, 1822 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Move `select_experts` from `FusedMoEQuantMethod` -> `FusedMoE`"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Move `select_experts` from `FusedMoEQuantMethod` -> `FusedMoE`"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2861,6 +2951,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32954
 - Status/date: merged / 2026-01-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32954 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +290/-17, 452 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NVIDIA] [feat] Integrate flashinfer Trtllmgen bf16 moe"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`, `vllm/model_executor/layers/fused_moe/unquantized_fused_moe_method.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`; technical summary: Covers "[NVIDIA] [feat] Integrate flashinfer Trtllmgen bf16 moe"; the main implementation surface is `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`, `vllm/model_executor/layers/fused_moe/unquantized_fused_moe_method.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2902,6 +2993,7 @@ diff -- vllm/model_executor/layers/quantization/utils/flashinfer_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33375
 - Status/date: merged / 2026-02-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33375 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `a57c8228ffb3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 37 files, +132/-109, 869 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Moe Refactor] Make Inplace Flag for FusedMoEModularKernel part of the constructor"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Moe Refactor] Make Inplace Flag for FusedMoEModularKernel part of the constructor"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2965,6 +3057,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32344
 - Status/date: merged / 2026-02-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32344 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `d1481ba78323`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 25 files, +913/-753, 2246 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Introduce MoERunner abstraction and move execution logic from FusedMoE to DefaultMoERunner"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Introduce MoERunner abstraction and move execution logic from FusedMoE to DefaultMoERunner"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2991,6 +3084,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33715
 - Status/date: merged / 2026-02-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33715 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`; associated commits `275e0d2a993b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +296/-1, 337 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NVIDIA][test] Tests for flashinfer TRTLLM BF16 MoE"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py`; technical summary: Covers "[NVIDIA][test] Tests for flashinfer TRTLLM BF16 MoE"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3023,6 +3117,7 @@ diff -- vllm/model_executor/layers/fused_moe/oracle/unquantized.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33843
 - Status/date: merged / 2026-02-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33843 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `ff1f83b056ae`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 48 files, +474/-282, 2289 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Replace `activation: str` with `MoEActivation` enum"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Refactor] Replace `activation: str` with `MoEActivation` enum"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3048,6 +3143,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34192
 - Status/date: merged / 2026-02-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34192 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `8a798be929d6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-3, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] Enable MXFP4 MoE weight pre-shuffling on gfx950 and update aiter"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm] Enable MXFP4 MoE weight pre-shuffling on gfx950 and update aiter"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3075,6 +3171,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34386
 - Status/date: merged / 2026-02-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34386 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `d9e62c03eb98`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 26 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quark] Fix MoE fp8 activation scale handling on mi300"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Quark] Fix MoE fp8 activation scale handling on mi300"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3098,10 +3195,39 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +3/-3
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #30357 - [ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales
+
+- Link: https://github.com/vllm-project/vllm/pull/30357
+- Status/date: merged / 2026-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30357 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `01923eec7092`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +315/-37, 494 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +173/-29 (202 lines); hunks: -5,8 +5,8; -32,6 +32,7; symbols: QuarkMoEMethod, get_moe_method, __init__, create_weights, touching `QuarkMoEMethod, get_moe_method, __init__`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +173/-29 (202 lines); hunks: -5,8 +5,8; -32,6 +32,7; symbols: QuarkMoEMethod, get_moe_method, __init__, create_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -5,8 +5,8 @@
+-import vllm.envs as envs
++from vllm import envs
+@@ -32,6 +32,7 @@
++from vllm.model_executor.layers.quantization.utils.mxfp4_utils import _swizzle_mxfp4
+@@ -49,7 +50,11 @@
+-__all__ = ["QuarkMoEMethod", "QuarkW8A8Fp8MoEMethod", "QuarkOCP_MX_MoEMethod"]
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +173/-29
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #33807 - [UX] Add `--moe-backend` arg for explicit kernel selection
 
 - Link: https://github.com/vllm-project/vllm/pull/33807
 - Status/date: merged / 2026-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33807 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`; associated commits `de527e1cec82`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 37 files, +260/-140, 720 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[UX] Add `--moe-backend` arg for explicit kernel selection"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py`; technical summary: Covers "[UX] Add `--moe-backend` arg for explicit kernel selection"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-BF16-fi-cutlass.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Mixtral-8x7B-Fp8-AutoFp8-fi-cutlass.yaml`, `vllm/model_executor/layers/fused_moe/oracle/unquantized.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3140,33 +3266,6 @@ diff -- vllm/model_executor/layers/fused_moe/oracle/unquantized.py
   - runtime: `vllm/model_executor/layers/fused_moe/oracle/unquantized.py` modified +54/-10; `vllm/model_executor/layers/fused_moe/oracle/fp8.py` modified +59/-0; `vllm/model_executor/layers/fused_moe/oracle/nvfp4.py` modified +35/-0; `vllm/model_executor/layers/fused_moe/config.py` modified +1/-1; `vllm/model_executor/layers/fused_moe/deepep_ll_prepare_finalize.py` modified +0/-1; `vllm/model_executor/layers/fused_moe/layer.py` modified +1/-0
 - Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/Qwen3-Next-80B-A3B-NVFP4-EP2.yaml`, `tests/evals/gsm8k/configs/Qwen3-Next-FP8-EP2.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Llama-4-Scout-Fp8-ModelOpt-triton.yaml`, `tests/evals/gsm8k/configs/moe-refactor-dp-ep/Qwen3-30B-A3B-NvFp4-CT-fi-cutedsl-deepep-ll.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #30357 - [ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales
-
-- Link: https://github.com/vllm-project/vllm/pull/30357
-- Status/date: merged / 2026-02-26
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `01923eec7092`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +315/-37, 494 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Quantization] GPT OSS Upstream MoE wmxfp4_afp8 with static scales"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +173/-29 (202 lines); hunks: -5,8 +5,8; -32,6 +32,7; symbols: QuarkMoEMethod, get_moe_method, __init__, create_weights, touching `QuarkMoEMethod, get_moe_method, __init__`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +173/-29 (202 lines); hunks: -5,8 +5,8; -32,6 +32,7; symbols: QuarkMoEMethod, get_moe_method, __init__, create_weights
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
-@@ -5,8 +5,8 @@
--import vllm.envs as envs
-+from vllm import envs
-@@ -32,6 +32,7 @@
-+from vllm.model_executor.layers.quantization.utils.mxfp4_utils import _swizzle_mxfp4
-@@ -49,7 +50,11 @@
--__all__ = ["QuarkMoEMethod", "QuarkW8A8Fp8MoEMethod", "QuarkOCP_MX_MoEMethod"]
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +173/-29
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #35658 - [ROCm] add amd-quark package in requirements for rocm to use quantized models
 
 - Link: https://github.com/vllm-project/vllm/pull/35658
@@ -3198,6 +3297,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35893
 - Status/date: merged / 2026-03-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35893 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `5dc3538736e4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +63/-1, 99 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Bugfix] Fall back from CK MXFP4 MoE when GEMM dimensions are unsupported"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Bugfix] Fall back from CK MXFP4 MoE when GEMM dimensions are unsupported"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3225,6 +3325,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35316
 - Status/date: merged / 2026-03-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35316 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w4a8_mxfp4_fp8.py`; associated commits `6341d4304351`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +311/-1, 362 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization] add quark w4a8 mxfp4_fp8 for LinearLayer"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w4a8_mxfp4_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`; technical summary: Covers "[ROCm][Quantization] add quark w4a8 mxfp4_fp8 for LinearLayer"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w4a8_mxfp4_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3264,6 +3365,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32779
 - Status/date: merged / 2026-03-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32779 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `24b4272a8ca6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-4, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix infinite recursive search issue in quark.py"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "Fix infinite recursive search issue in quark.py"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3291,6 +3393,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36232
 - Status/date: merged / 2026-03-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36232 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; associated commits `44eea10f6846`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +19/-5, 58 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization] make quark ocp mx dtype parser robust for weight-only quantization"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Quantization] make quark ocp mx dtype parser robust for weight-only quantization"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3324,6 +3427,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37128
 - Status/date: merged / 2026-03-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `87bd91892f8c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +1695/-1369, 3508 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Mxfp4 oracle rebased"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Mxfp4 oracle rebased"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3351,6 +3455,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36100
 - Status/date: merged / 2026-03-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36100 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; associated commits `e99fb98867c2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +16/-26, 122 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] Fix fused_moe_fake signature mismatch and other AITER bugs"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm] Fix fused_moe_fake signature mismatch and other AITER bugs"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3383,6 +3488,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37833
 - Status/date: merged / 2026-03-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37833 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `7d6917bef552`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +480/-88, 928 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] Fix MoE kernel test failures on gfx950"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm] Fix MoE kernel test failures on gfx950"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3410,6 +3516,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34285
 - Status/date: merged / 2026-03-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34285 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `0ae89f18fd75`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +204/-222, 868 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Move FusedMoE hidden_size roundup to quant_method"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Refactor] Move FusedMoE hidden_size roundup to quant_method"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3437,6 +3544,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35153
 - Status/date: merged / 2026-04-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35153 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `7cf56a59a267`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 34 files, +556/-397, 1816 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Make SharedExperts class for use with DefaultMoERunner"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Make SharedExperts class for use with DefaultMoERunner"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3464,6 +3572,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38774
 - Status/date: merged / 2026-04-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38774 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-aiter.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-fp8-triton.yaml`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `103f0de565f2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +170/-15, 316 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ oracle"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-aiter.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yaml`; technical summary: Covers "[ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ oracle"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-aiter.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3505,6 +3614,7 @@ diff -- tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yam
 
 - Link: https://github.com/vllm-project/vllm/pull/38504
 - Status/date: merged / 2026-04-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38504 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-aiter.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-fp8-triton.yaml`; associated commits `2df2c85be494`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +84/-216, 444 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-aiter.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-fp8-triton.yaml`; technical summary: Covers "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path"; the main implementation surface is `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-aiter.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-bf16-triton.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-fp8-triton.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3546,6 +3656,7 @@ diff -- vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33892
 - Status/date: merged / 2026-04-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33892 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `2e9034c998e2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 35 files, +1710/-904, 3623 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections."; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; technical summary: Covers "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections."; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3573,6 +3684,7 @@ diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36320
 - Status/date: merged / 2026-04-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36320 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `827268e98d92`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +360/-2, 411 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] Support Quark W8A8 INT8 MoE inference"; model line: Mixtral Quark INT4/FP8 MoE; category: docs/tests/CI; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `tests/quantization/test_quark.py`; technical summary: Covers "[Quantization] Support Quark W8A8 INT8 MoE inference"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3640,6 +3752,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39107
 - Status/date: merged / 2026-04-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39107 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `e1e318af010b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 20 files, +76/-389, 782 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Remove MoE DP chunking"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Remove MoE DP chunking"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3710,6 +3823,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35737
 - Status/date: merged / 2026-04-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35737 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `d622e27d2be9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +601/-121, 1072 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3760,64 +3874,11 @@ diff -- vllm/model_executor/models/mixtral.py
   - runtime: `vllm/model_executor/models/mixtral.py` modified +5/-2
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/__init__.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/AXK1.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #40754 - [Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature
-
-- Link: https://github.com/vllm-project/vllm/pull/40754
-- Status/date: merged / 2026-04-29
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-11, 24 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; technical summary: Covers "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +2/-11 (13 lines); hunks: -96,21 +96,12 @@ def gemm_with_dynamic_quant(; symbols: gemm_with_dynamic_quant, touching `gemm_with_dynamic_quant`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +2/-11 (13 lines); hunks: -96,21 +96,12 @@ def gemm_with_dynamic_quant(; symbols: gemm_with_dynamic_quant
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py
-@@ -96,21 +96,12 @@ def gemm_with_dynamic_quant(
--                # 32 alignment is enough for dim0 padding of output for
--                # gemm_a4w4 kernel
--                y = torch.empty(
--                    (M + 31) // 32 * 32,
--                    weight.shape[0],
--                    device=x_q.device,
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +2/-11
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #41175 - [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware
-
-- Link: https://github.com/vllm-project/vllm/pull/41175
-- Status/date: merged / 2026-04-29
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `944e138bcf39`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +4/-7, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-6 (8 lines); hunks: -1025,12 +1025,8 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-6 (8 lines); hunks: -1025,12 +1025,8 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
-@@ -1025,12 +1025,8 @@ def __init__(
--        # TODO(aiter): extend once rocm_aiter_fused_experts gains dispatch
--        # for the other OCP MX schemes. Today its CK MoE kernel only has an
--        # entry for `w_mxfp4` (w4a16); mixed schemes like `w_mxfp4_a_mxfp6_*`
--        # fall through to QuantMethod.NO and raise "Unsupported kernel config
--        # for moe heuristic dispatch".
--        _AITER_NATIVE_OCP_MX_SCHEMES = ("w_mxfp4",)
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-6
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #39987 - [ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers
 
 - Link: https://github.com/vllm-project/vllm/pull/39987
 - Status/date: merged / 2026-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39987 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +28/-103, 183 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/utils.py`, `tests/quantization/test_quark_maybe_update_config.py`; technical summary: Covers "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/utils.py`, `tests/quantization/test_quark_maybe_update_config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3856,10 +3917,39 @@ diff -- tests/quantization/test_quark_maybe_update_config.py
   - tests: `tests/quantization/test_quark_maybe_update_config.py` removed +0/-63
 - Risk and verification: The diff ships test coverage in `tests/quantization/test_quark_maybe_update_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #40754 - [Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature
+
+- Link: https://github.com/vllm-project/vllm/pull/40754
+- Status/date: merged / 2026-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40754 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-11, 24 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; technical summary: Covers "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +2/-11 (13 lines); hunks: -96,21 +96,12 @@ def gemm_with_dynamic_quant(; symbols: gemm_with_dynamic_quant, touching `gemm_with_dynamic_quant`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +2/-11 (13 lines); hunks: -96,21 +96,12 @@ def gemm_with_dynamic_quant(; symbols: gemm_with_dynamic_quant
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py
+@@ -96,21 +96,12 @@ def gemm_with_dynamic_quant(
+-                # 32 alignment is enough for dim0 padding of output for
+-                # gemm_a4w4 kernel
+-                y = torch.empty(
+-                    (M + 31) // 32 * 32,
+-                    weight.shape[0],
+-                    device=x_q.device,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +2/-11
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #41165 - [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss
 
 - Link: https://github.com/vllm-project/vllm/pull/41165
 - Status/date: merged / 2026-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41165 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `3795d7acf431`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-5, 28 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3882,6 +3972,34 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 - Reviewed files:
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +5/-5
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #41175 - [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware
+
+- Link: https://github.com/vllm-project/vllm/pull/41175
+- Status/date: merged / 2026-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41175 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `944e138bcf39`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +4/-7, 25 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-6 (8 lines); hunks: -1025,12 +1025,8 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-6 (8 lines); hunks: -1025,12 +1025,8 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1025,12 +1025,8 @@ def __init__(
+-        # TODO(aiter): extend once rocm_aiter_fused_experts gains dispatch
+-        # for the other OCP MX schemes. Today its CK MoE kernel only has an
+-        # entry for `w_mxfp4` (w4a16); mixed schemes like `w_mxfp4_a_mxfp6_*`
+-        # fall through to QuantMethod.NO and raise "Unsupported kernel config
+-        # for moe heuristic dispatch".
+-        _AITER_NATIVE_OCP_MX_SCHEMES = ("w_mxfp4",)
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-6
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #39136 - [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle
 
@@ -3914,6 +4032,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41979
 - Status/date: merged / 2026-05-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41979 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `1b57eb41f241`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 34 files, +586/-553, 1529 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE] Move various experts classes to fused_moe/experts/"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE] Move various experts classes to fused_moe/experts/"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3937,33 +4056,11 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +4/-4
 - Risk and verification: The diff ships test coverage in `tests/kernels/moe/modular_kernel_tools/mk_objects.py`, `tests/kernels/moe/test_flashinfer.py`, `tests/kernels/moe/test_flashinfer_moe.py`, `tests/kernels/moe/test_marlin_vs_trtllm_mxint4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #41046 - [MoE Refactor] Move expert map related code into ExpertMapManager class
-
-- Link: https://github.com/vllm-project/vllm/pull/41046
-- Status/date: merged / 2026-05-12
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `206eaed08d25`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 19 files, +593/-323, 1128 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MoE Refactor] Move expert map related code into ExpertMapManager class"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Move expert map related code into ExpertMapManager class"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-1 (2 lines); hunks: -1340,7 +1340,7 @@ def _setup_kernel(self, layer: FusedMoE):; symbols: _setup_kernel, touching `_setup_kernel`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-1 (2 lines); hunks: -1340,7 +1340,7 @@ def _setup_kernel(self, layer: FusedMoE):; symbols: _setup_kernel
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
-@@ -1340,7 +1340,7 @@ def _setup_kernel(self, layer: FusedMoE):
--                routing_tables=layer._maybe_init_expert_routing_tables(),
-+                routing_tables=layer._expert_routing_tables(),
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-1
-- Risk and verification: The diff ships test coverage in `tests/distributed/test_expert_placement.py`, `tests/kernels/moe/test_moe.py`, `tests/kernels/moe/test_moe_permute_unpermute.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #40735 - [MoE Refactor] Introduce RoutedExperts alias for FusedMoE and don't store SharedExperts in MK
 
 - Link: https://github.com/vllm-project/vllm/pull/40735
 - Status/date: merged / 2026-05-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40735 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `4d591db470c0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 53 files, +369/-332, 2770 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Introduce RoutedExperts alias for FusedMoE and don't store SharedExperts in MK"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[MoE Refactor] Introduce RoutedExperts alias for FusedMoE and don't store SharedExperts in MK"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -3995,46 +4092,35 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-20; `vllm/model_executor/layers/quantization/quark/quark.py` modified +2/-2
 - Risk and verification: The diff ships test coverage in `tests/kernels/moe/test_zero_expert_moe.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #41892 - [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)
+### PR #41046 - [MoE Refactor] Move expert map related code into ExpertMapManager class
 
-- Link: https://github.com/vllm-project/vllm/pull/41892
-- Status/date: merged / 2026-05-13
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; associated commits `3b1ef03be4a3`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +46/-4, 97 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; technical summary: Covers "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-0 (25 lines); hunks: -23,6 +23,7; -708,6 +709,20 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config, touching `process_weights_after_loading, get_fused_moe_quant_config`; `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` modified +15/-4 (19 lines); hunks: -47,6 +47,17 @@ def create_weights(; -69,15 +80,15 @@ def create_weights(; symbols: create_weights, _scale_weight_loader, touching `create_weights, _scale_weight_loader`.
+- Link: https://github.com/vllm-project/vllm/pull/41046
+- Status/date: merged / 2026-05-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41046 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `206eaed08d25`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 19 files, +593/-323, 1128 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MoE Refactor] Move expert map related code into ExpertMapManager class"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Move expert map related code into ExpertMapManager class"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-1 (2 lines); hunks: -1340,7 +1340,7 @@ def _setup_kernel(self, layer: FusedMoE):; symbols: _setup_kernel, touching `_setup_kernel`.
 - Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-0 (25 lines); hunks: -23,6 +23,7; -708,6 +709,20 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config
-  - `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` modified +15/-4 (19 lines); hunks: -47,6 +47,17 @@ def create_weights(; -69,15 +80,15 @@ def create_weights(; symbols: create_weights, _scale_weight_loader
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-1 (2 lines); hunks: -1340,7 +1340,7 @@ def _setup_kernel(self, layer: FusedMoE):; symbols: _setup_kernel
 - Key code excerpts:
 
 ```diff
 diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
-@@ -23,6 +23,7 @@
-+    int8_w8a8_moe_quant_config,
-@@ -708,6 +709,20 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
-+        # Per-channel scales: 2D [E, N] -> 3D [E, N, 1] for the int8 MoE kernel.
-+        if self.weight_qscheme == "per_channel":
-+            for attr in ("w13_weight_scale", "w2_weight_scale"):
-+                param = getattr(layer, attr, None)
-diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py
-@@ -47,6 +47,17 @@ def create_weights(
-+        # Quark stores per-channel weight_scale as 1D [N]; reshape to [N, 1].
-+        def _scale_weight_loader(
-+            param: torch.nn.Parameter,
-+            loaded_weight: torch.Tensor,
-+            *args,
-+            **kwargs,
+@@ -1340,7 +1340,7 @@ def _setup_kernel(self, layer: FusedMoE):
+-                routing_tables=layer._maybe_init_expert_routing_tables(),
++                routing_tables=layer._expert_routing_tables(),
 ```
 
 - Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-0; `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` modified +15/-4
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`, `vllm/model_executor/models/step3p5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `tests/distributed/test_expert_placement.py`, `tests/kernels/moe/test_moe.py`, `tests/kernels/moe/test_moe_permute_unpermute.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #35859 - [Quark] Support loading Quark NVFP4 checkpoints in vLLM
 
 - Link: https://github.com/vllm-project/vllm/pull/35859
 - Status/date: merged / 2026-05-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35859 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_nvfp4.py` and 6 files; associated commits `40330967ab8e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +503/-4, 595 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quark] Support loading Quark NVFP4 checkpoints in vLLM"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_nvfp4.py`, `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[Quark] Support loading Quark NVFP4 checkpoints in vLLM"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_nvfp4.py`, `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4073,10 +4159,48 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
   - tests: `tests/quantization/test_quark.py` modified +54/-2
 - Risk and verification: The diff ships test coverage in `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #41892 - [Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)
+
+- Link: https://github.com/vllm-project/vllm/pull/41892
+- Status/date: merged / 2026-05-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41892 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; associated commits `3b1ef03be4a3`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +46/-4, 97 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`; technical summary: Covers "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-0 (25 lines); hunks: -23,6 +23,7; -708,6 +709,20 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config, touching `process_weights_after_loading, get_fused_moe_quant_config`; `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` modified +15/-4 (19 lines); hunks: -47,6 +47,17 @@ def create_weights(; -69,15 +80,15 @@ def create_weights(; symbols: create_weights, _scale_weight_loader, touching `create_weights, _scale_weight_loader`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-0 (25 lines); hunks: -23,6 +23,7; -708,6 +709,20 @@ def process_weights_after_loading(self, layer: torch.nn.Mod...; symbols: process_weights_after_loading, get_fused_moe_quant_config
+  - `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` modified +15/-4 (19 lines); hunks: -47,6 +47,17 @@ def create_weights(; -69,15 +80,15 @@ def create_weights(; symbols: create_weights, _scale_weight_loader
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -23,6 +23,7 @@
++    int8_w8a8_moe_quant_config,
+@@ -708,6 +709,20 @@ def process_weights_after_loading(self, layer: torch.nn.Module) -> None:
++        # Per-channel scales: 2D [E, N] -> 3D [E, N, 1] for the int8 MoE kernel.
++        if self.weight_qscheme == "per_channel":
++            for attr in ("w13_weight_scale", "w2_weight_scale"):
++                param = getattr(layer, attr, None)
+diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py
+@@ -47,6 +47,17 @@ def create_weights(
++        # Quark stores per-channel weight_scale as 1D [N]; reshape to [N, 1].
++        def _scale_weight_loader(
++            param: torch.nn.Parameter,
++            loaded_weight: torch.Tensor,
++            *args,
++            **kwargs,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +25/-0; `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py` modified +15/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_int8.py`, `vllm/model_executor/models/step3p5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #42563 - [CI] Fix pre-commit issue
 
 - Link: https://github.com/vllm-project/vllm/pull/42563
 - Status/date: merged / 2026-05-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42563 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-9, 52 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Fix pre-commit issue"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[CI] Fix pre-commit issue"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4104,6 +4228,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41986
 - Status/date: merged / 2026-05-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41986 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `f8848b2f2da5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +85/-1, 285 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Add swiglu limits to deepgemm fp8 methods"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Bugfix] Add swiglu limits to deepgemm fp8 methods"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4128,6 +4253,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35024
 - Status/date: merged / 2026-05-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35024 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +15/-64, 238 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Deprecation] Remove old locations of `get_tokenizer` and `resolve_hf_chat_template`"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/transformers_utils/tokenizer.py`, `vllm/entrypoints/chat_utils.py`, `requirements/test/cuda.txt`; technical summary: Covers "[Deprecation] Remove old locations of `get_tokenizer` and `resolve_hf_chat_template`"; the main implementation surface is `vllm/transformers_utils/tokenizer.py`, `vllm/entrypoints/chat_utils.py`, `requirements/test/cuda.txt`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4171,6 +4297,7 @@ diff -- requirements/test/cuda.txt
 
 - Link: https://github.com/vllm-project/vllm/pull/41436
 - Status/date: merged / 2026-05-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41436 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `a2c8fc665736`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +224/-158, 564 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4198,6 +4325,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43727
 - Status/date: merged / 2026-05-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43727 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `2d2c660104ee`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 44 files, +11/-237, 853 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE] Remove inplace fused experts mechanism"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE] Remove inplace fused experts mechanism"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4219,6 +4347,48 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 - Reviewed files:
   - runtime: `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +0/-3
 - Risk and verification: The diff ships test coverage in `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/test_batched_deepgemm.py`, `tests/kernels/moe/test_block_fp8.py`, `tests/kernels/moe/test_cutlass_moe.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #44635 - Speed up docs build
+
+- Link: https://github.com/vllm-project/vllm/pull/44635
+- Status/date: merged / 2026-06-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44635 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 32 files, +234/-159, 798 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Speed up docs build"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/compressed_tensors/utils.py`, `vllm/model_executor/layers/quantization/input_quant_fp8.py`, `vllm/model_executor/parameter.py`; technical summary: Covers "Speed up docs build"; the main implementation surface is `vllm/model_executor/layers/quantization/compressed_tensors/utils.py`, `vllm/model_executor/layers/quantization/input_quant_fp8.py`, `vllm/model_executor/parameter.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/compressed_tensors/utils.py` modified +13/-12 (25 lines); hunks: -133,12 +133,11 @@ def find_matched_target(; -161,9 +160,10 @@ def _find_first_match(; symbols: find_matched_target, _find_first_match, _match_fused_layer, touching `find_matched_target, _find_first_match, _match_fused_layer`; `vllm/model_executor/layers/quantization/input_quant_fp8.py` modified +11/-10 (21 lines); hunks: -46,16 +46,17 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/model_executor/parameter.py` modified +10/-9 (19 lines); hunks: -3,6 +3,7; -42,10 +43,9 @@ def __init__(self, data: torch.Tensor, weight_loader: Callable):; symbols: __init__, add_partition, touching `__init__, add_partition`; `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +13/-5 (18 lines); hunks: -267,8 +267,11 @@ def _parse_sparsity_config(; -296,8 +299,11 @@ def _quantization_scheme_map_from_config(; symbols: _parse_sparsity_config, _quantization_scheme_map_from_config, validate_kv_cache_scheme, touching `_parse_sparsity_config, _quantization_scheme_map_from_config, validate_kv_cache_scheme`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/compressed_tensors/utils.py` modified +13/-12 (25 lines); hunks: -133,12 +133,11 @@ def find_matched_target(; -161,9 +160,10 @@ def _find_first_match(; symbols: find_matched_target, _find_first_match, _match_fused_layer
+  - `vllm/model_executor/layers/quantization/input_quant_fp8.py` modified +11/-10 (21 lines); hunks: -46,16 +46,17 @@ def __init__(; symbols: __init__
+  - `vllm/model_executor/parameter.py` modified +10/-9 (19 lines); hunks: -3,6 +3,7; -42,10 +43,9 @@ def __init__(self, data: torch.Tensor, weight_loader: Callable):; symbols: __init__, add_partition
+  - `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +13/-5 (18 lines); hunks: -267,8 +267,11 @@ def _parse_sparsity_config(; -296,8 +299,11 @@ def _quantization_scheme_map_from_config(; symbols: _parse_sparsity_config, _quantization_scheme_map_from_config, validate_kv_cache_scheme
+  - `vllm/model_executor/model_loader/reload/sanitize.py` modified +11/-6 (17 lines); hunks: -20,9 +20,12 @@ def sanitize_layer_refs(tensor: torch.Tensor, layer: torch.nn...; -38,10 +41,12 @@ def restore_layer_refs(tensor: torch.Tensor, layer: torch.nn...; symbols: sanitize_layer_refs, restore_layer_refs
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/compressed_tensors/utils.py
+@@ -133,12 +133,11 @@ def find_matched_target(
+-    :param layer_name: layer name
+-    :param module: torch.nn.Module
+-    :param targets: list of targets to match the layer against
+-    :param fused_mapping: map from fused layer names to its components
+-    :param fused_strategy: either "all" or "any". If using "all", fused
+-        layers match if "all" of its components match
+diff -- vllm/model_executor/layers/quantization/input_quant_fp8.py
+@@ -46,16 +46,17 @@ def __init__(
+-        :param static: static or dynamic quantization
+-        :param group_shape: quantization group shape (PER_TOKEN, PER_TENSOR,
+-            PER_CHANNEL, or arbitrary block size)
+-        :param num_token_padding: Pad the token dimension of output to this
+-            size
+-        :param tma_aligned_scales: For group quantization, output scales in
+diff -- vllm/model_executor/parameter.py
+@@ -3,6 +3,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/compressed_tensors/utils.py` modified +13/-12; `vllm/model_executor/layers/quantization/input_quant_fp8.py` modified +11/-10; `vllm/model_executor/parameter.py` modified +10/-9; `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +13/-5; `vllm/model_executor/model_loader/reload/sanitize.py` modified +11/-6; `vllm/model_executor/layers/fused_moe/layer.py` modified +8/-6
+- Risk and verification: Runtime changes concentrate in `vllm/_custom_ops.py`, `vllm/compilation/passes/inductor_pass.py`, `vllm/compilation/passes/utility/fix_functionalization.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #43167 - Remove KV cache scale boilerplate from model weight loading methods
 
@@ -4261,47 +4431,6 @@ diff -- vllm/model_executor/layers/quantization/kv_cache.py
   - tests: `tests/model_executor/test_eagle_quantization.py` modified +0/-56
   - runtime: `vllm/model_executor/models/gpt_oss.py` modified +0/-46; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20; `vllm/model_executor/models/llama4.py` modified +3/-18; `vllm/model_executor/models/glm_ocr_mtp.py` modified +4/-13
 - Risk and verification: The diff ships test coverage in `tests/model_executor/test_eagle_quantization.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #44635 - Speed up docs build
-
-- Link: https://github.com/vllm-project/vllm/pull/44635
-- Status/date: merged / 2026-06-05
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 32 files, +234/-159, 798 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Speed up docs build"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/compressed_tensors/utils.py`, `vllm/model_executor/layers/quantization/input_quant_fp8.py`, `vllm/model_executor/parameter.py`; technical summary: Covers "Speed up docs build"; the main implementation surface is `vllm/model_executor/layers/quantization/compressed_tensors/utils.py`, `vllm/model_executor/layers/quantization/input_quant_fp8.py`, `vllm/model_executor/parameter.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/compressed_tensors/utils.py` modified +13/-12 (25 lines); hunks: -133,12 +133,11 @@ def find_matched_target(; -161,9 +160,10 @@ def _find_first_match(; symbols: find_matched_target, _find_first_match, _match_fused_layer, touching `find_matched_target, _find_first_match, _match_fused_layer`; `vllm/model_executor/layers/quantization/input_quant_fp8.py` modified +11/-10 (21 lines); hunks: -46,16 +46,17 @@ def __init__(; symbols: __init__, touching `__init__`; `vllm/model_executor/parameter.py` modified +10/-9 (19 lines); hunks: -3,6 +3,7; -42,10 +43,9 @@ def __init__(self, data: torch.Tensor, weight_loader: Callable):; symbols: __init__, add_partition, touching `__init__, add_partition`; `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +13/-5 (18 lines); hunks: -267,8 +267,11 @@ def _parse_sparsity_config(; -296,8 +299,11 @@ def _quantization_scheme_map_from_config(; symbols: _parse_sparsity_config, _quantization_scheme_map_from_config, validate_kv_cache_scheme, touching `_parse_sparsity_config, _quantization_scheme_map_from_config, validate_kv_cache_scheme`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/compressed_tensors/utils.py` modified +13/-12 (25 lines); hunks: -133,12 +133,11 @@ def find_matched_target(; -161,9 +160,10 @@ def _find_first_match(; symbols: find_matched_target, _find_first_match, _match_fused_layer
-  - `vllm/model_executor/layers/quantization/input_quant_fp8.py` modified +11/-10 (21 lines); hunks: -46,16 +46,17 @@ def __init__(; symbols: __init__
-  - `vllm/model_executor/parameter.py` modified +10/-9 (19 lines); hunks: -3,6 +3,7; -42,10 +43,9 @@ def __init__(self, data: torch.Tensor, weight_loader: Callable):; symbols: __init__, add_partition
-  - `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +13/-5 (18 lines); hunks: -267,8 +267,11 @@ def _parse_sparsity_config(; -296,8 +299,11 @@ def _quantization_scheme_map_from_config(; symbols: _parse_sparsity_config, _quantization_scheme_map_from_config, validate_kv_cache_scheme
-  - `vllm/model_executor/model_loader/reload/sanitize.py` modified +11/-6 (17 lines); hunks: -20,9 +20,12 @@ def sanitize_layer_refs(tensor: torch.Tensor, layer: torch.nn...; -38,10 +41,12 @@ def restore_layer_refs(tensor: torch.Tensor, layer: torch.nn...; symbols: sanitize_layer_refs, restore_layer_refs
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/compressed_tensors/utils.py
-@@ -133,12 +133,11 @@ def find_matched_target(
--    :param layer_name: layer name
--    :param module: torch.nn.Module
--    :param targets: list of targets to match the layer against
--    :param fused_mapping: map from fused layer names to its components
--    :param fused_strategy: either "all" or "any". If using "all", fused
--        layers match if "all" of its components match
-diff -- vllm/model_executor/layers/quantization/input_quant_fp8.py
-@@ -46,16 +46,17 @@ def __init__(
--        :param static: static or dynamic quantization
--        :param group_shape: quantization group shape (PER_TOKEN, PER_TENSOR,
--            PER_CHANNEL, or arbitrary block size)
--        :param num_token_padding: Pad the token dimension of output to this
--            size
--        :param tma_aligned_scales: For group quantization, output scales in
-diff -- vllm/model_executor/parameter.py
-@@ -3,6 +3,7 @@
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/compressed_tensors/utils.py` modified +13/-12; `vllm/model_executor/layers/quantization/input_quant_fp8.py` modified +11/-10; `vllm/model_executor/parameter.py` modified +10/-9; `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +13/-5; `vllm/model_executor/model_loader/reload/sanitize.py` modified +11/-6; `vllm/model_executor/layers/fused_moe/layer.py` modified +8/-6
-- Risk and verification: Runtime changes concentrate in `vllm/_custom_ops.py`, `vllm/compilation/passes/inductor_pass.py`, `vllm/compilation/passes/utility/fix_functionalization.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #41184 - [MoE Refactor] FusedMoE/MoERunner inversion refactor
 
@@ -4349,6 +4478,7 @@ diff -- vllm/model_executor/layers/fused_moe/routed_experts.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39498
 - Status/date: merged / 2026-06-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39498 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`; associated commits `a1ec011a833e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +32/-0, 53 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Add deepseek_v32 to Quark dynamic MXFP4 model type check"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "[Bugfix] Add deepseek_v32 to Quark dynamic MXFP4 model type check"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4376,6 +4506,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43981
 - Status/date: merged / 2026-06-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43981 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +97/-1, 116 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD][Bugfix][Quantization] Honor fused-name match in is_layer_skipped"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `tests/quantization/test_quark.py`; technical summary: Covers "[AMD][Bugfix][Quantization] Honor fused-name match in is_layer_skipped"; the main implementation surface is `vllm/model_executor/layers/quantization/utils/quant_utils.py`, `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4413,6 +4544,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44626
 - Status/date: merged / 2026-06-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44626 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `0b131b16c933`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-3, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][AITER][Quark] Tag per-channel FP8 weights as PER_CHANNEL so AITER pre-shuffled GEMM is selected"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; technical summary: Covers "[ROCm][AITER][Quark] Tag per-channel FP8 weights as PER_CHANNEL so AITER pre-shuffled GEMM is selected"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4480,6 +4612,7 @@ diff -- vllm/model_executor/layers/fused_moe/oracle/mxfp4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43721
 - Status/date: merged / 2026-06-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43721 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `c97e8f99d69d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +91/-104, 279 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization][4/N] refactor quark_moe fp8 w/ oracle"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Quantization][4/N] refactor quark_moe fp8 w/ oracle"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4540,6 +4673,7 @@ diff -- tests/quantization/test_quark.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46820
 - Status/date: merged / 2026-06-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46820 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mixtral.py`; associated commits `d8eb734d94fe`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 29 files, +80/-156, 748 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Transformers backend FP8 MoE and remove some boilerplate"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/models/mixtral.py`; technical summary: Covers "Fix Transformers backend FP8 MoE and remove some boilerplate"; the main implementation surface is `vllm/model_executor/models/mixtral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4562,6 +4696,7 @@ diff -- vllm/model_executor/models/mixtral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43373
 - Status/date: merged / 2026-06-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43373 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `bc8481af09cd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +1178/-392, 2022 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE Refactor] Standardize Humming MoE experts + utilities"; model line: Mixtral Quark INT4/FP8 MoE; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[MoE Refactor] Standardize Humming MoE experts + utilities"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4584,6 +4719,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47220
 - Status/date: merged / 2026-07-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47220 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `576bf75d0e79`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-0, 12 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[AMD][EPLB] Enable EPLB for Quark OCP MXFP4 MoE"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4609,6 +4745,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41652
 - Status/date: merged / 2026-07-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41652 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `d891b9bd51ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 73 files, +1336/-122, 2552 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] add humming moe backend to all dense/moe oracles"; model line: Mixtral Quark INT4/FP8 MoE; category: model support/runtime entry; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[Quantization] add humming moe backend to all dense/moe oracles"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4634,6 +4771,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47330
 - Status/date: merged / 2026-07-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47330 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`; associated commits `6e073440b175`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +11/-59, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/quantization/test_quark.py`; technical summary: Covers "[ROCm][CI] Remove mxfp4 test skips after `amd-quark` 0.12 release"; the main implementation surface is `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4653,37 +4791,11 @@ diff -- tests/quantization/test_quark.py
   - tests: `tests/quantization/test_quark.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/test_gsm8k_correctness.py`, `tests/kernels/moe/test_ocp_mx_moe.py`, `tests/lora/test_gptoss_tp.py`, `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #48015 - [ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX
-
-- Link: https://github.com/vllm-project/vllm/pull/48015
-- Status/date: merged / 2026-07-16
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; associated commits `7d56fe2adc93`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +29/-21, 101 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; technical summary: Covers "[ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21 (50 lines); hunks: -9,7 +9,7; -36,19 +36,15; symbols: gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX, __init__, touching `gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX`.
-- Code diff details:
-  - `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21 (50 lines); hunks: -9,7 +9,7; -36,19 +36,15; symbols: gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX, __init__
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py
-@@ -9,7 +9,7 @@
--from vllm._aiter_ops import rocm_aiter_ops
-+from vllm._aiter_ops import is_aiter_found_and_supported, rocm_aiter_ops
-@@ -36,19 +36,15 @@
--try:
--    from aiter.ops.shuffle import shuffle_weight
--    from aiter.ops.triton.gemm_afp4wfp4 import (
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #46757 - Fix Quark mxfp4 quantized model loading issue under mtp
 
 - Link: https://github.com/vllm-project/vllm/pull/46757
 - Status/date: merged / 2026-07-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46757 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/utils.py`; associated commits `02bf9c7907b4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-2, 54 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Quark mxfp4 quantized model loading issue under mtp"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/utils.py`, `vllm/model_executor/layers/quantization/quark/quark.py`; technical summary: Covers "Fix Quark mxfp4 quantized model loading issue under mtp"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/utils.py`, `vllm/model_executor/layers/quantization/quark/quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4716,10 +4828,39 @@ diff -- vllm/model_executor/layers/quantization/quark/quark.py
   - runtime: `vllm/model_executor/layers/quantization/quark/utils.py` modified +16/-0; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-2
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #48015 - [ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX
+
+- Link: https://github.com/vllm-project/vllm/pull/48015
+- Status/date: merged / 2026-07-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/48015 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; associated commits `7d56fe2adc93`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +29/-21, 101 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; technical summary: Covers "[ROCm][CI] Avoid HIP init at config time via lazy aiter import in Quark OCP-MX"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21 (50 lines); hunks: -9,7 +9,7; -36,19 +36,15; symbols: gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX, __init__, touching `gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX`.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21 (50 lines); hunks: -9,7 +9,7; -36,19 +36,15; symbols: gemm_with_dynamic_quant, gemm_with_dynamic_quant_fake, QuarkOCP_MX, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py
+@@ -9,7 +9,7 @@
+-from vllm._aiter_ops import rocm_aiter_ops
++from vllm._aiter_ops import is_aiter_found_and_supported, rocm_aiter_ops
+@@ -36,19 +36,15 @@
+-try:
+-    from aiter.ops.shuffle import shuffle_weight
+-    from aiter.ops.triton.gemm_afp4wfp4 import (
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py` modified +29/-21
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/quantization/quark/schemes/quark_ocp_mx.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #43979 - [ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned
 
 - Link: https://github.com/vllm-project/vllm/pull/43979
 - Status/date: merged / 2026-07-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43979 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/quantization/quark/quark_moe.py`; associated commits `f12b80c6efa1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +59/-7, 91 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned"; model line: Mixtral Quark INT4/FP8 MoE; category: bug fix; main diff: `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "[ROCm][Bugfix] Fix GPT-OSS Quark MXFP4 MoE loading - emulation buffer not block-aligned"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4747,6 +4888,7 @@ diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48050
 - Status/date: merged / 2026-07-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/48050 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`; associated commits `80c9d5d5e044`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +37/-1, 61 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `tests/quantization/test_quark.py`; technical summary: Covers "[ROCm][Quantization] Add Quark W4A8 (INT4-FP8) MoE CI coverage"; the main implementation surface is `tests/quantization/test_quark.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -4769,6 +4911,48 @@ diff -- tests/quantization/test_quark.py
 - Reviewed files:
   - tests: `tests/quantization/test_quark.py` modified +37/-1
 - Risk and verification: The diff ships test coverage in `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #47972 - Support DeepSeek-V4 AMD Quark NVFP4 with emulation kernel
+
+- Link: https://github.com/vllm-project/vllm/pull/47972
+- Status/date: merged / 2026-08-07
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/quantization/test_quark.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`, `vllm/model_executor/layers/quantization/quark/schemes/__init__.py`, `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`; associated commits `da788334bc06`
+- Diff scope read: GitHub Pull Request files API returned 11 files, +332/-17, 511 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support DeepSeek-V4 AMD Quark NVFP4 with emulation kernel"; model line: Mixtral Quark INT4/FP8 MoE; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`; technical summary: Covers "Support DeepSeek-V4 AMD Quark NVFP4 with emulation kernel"; the main implementation surface is `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py`, `vllm/model_executor/layers/quantization/quark/quark.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py` modified +115/-4 (119 lines); hunks: -9,13 +9,18; -24,13 +29,14; symbols: __init__, apply_weights, QuarkW8A8Fp8PerBlock, get_min_capability, touching `__init__, apply_weights, QuarkW8A8Fp8PerBlock`; `vllm/model_executor/layers/quantization/quark/quark.py` modified +32/-2 (34 lines); hunks: -33,6 +33,7; -66,6 +67,14 @@ def __init__(; symbols: __init__, rather, _is_fp8_w8a8, _get_scheme_from_config, touching `__init__, rather, _is_fp8_w8a8`; `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +7/-6 (13 lines); hunks: -1599,15 +1599,16 @@ def process_weights_after_loading(self, layer: RoutedExp...; symbols: process_weights_after_loading, touching `process_weights_after_loading`; `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` modified +2/-1 (3 lines); hunks: -5,12 +5,13.
+- Code diff details:
+  - `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py` modified +115/-4 (119 lines); hunks: -9,13 +9,18; -24,13 +29,14; symbols: __init__, apply_weights, QuarkW8A8Fp8PerBlock, get_min_capability
+  - `vllm/model_executor/layers/quantization/quark/quark.py` modified +32/-2 (34 lines); hunks: -33,6 +33,7; -66,6 +67,14 @@ def __init__(; symbols: __init__, rather, _is_fp8_w8a8, _get_scheme_from_config
+  - `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +7/-6 (13 lines); hunks: -1599,15 +1599,16 @@ def process_weights_after_loading(self, layer: RoutedExp...; symbols: process_weights_after_loading
+  - `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` modified +2/-1 (3 lines); hunks: -5,12 +5,13
+  - `tests/quantization/test_quark.py` modified +97/-0 (97 lines); hunks: -19,8 +19,10; -80,6 +82,101 @@ def enable_pickle(monkeypatch):; symbols: enable_pickle, test_quark_config_has_no_model_specific_fused_mappings, test_quark_config_preserves_existing_packed_modules_mapping, CustomQuarkConfig
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py
+@@ -9,13 +9,18 @@
+-from vllm.model_executor.kernels.linear import (
+-    init_fp8_linear_kernel,
+-)
++from vllm.model_executor.kernels.linear import init_fp8_linear_kernel
++from vllm.model_executor.layers.quantization.utils.fp8_utils import (
++    create_fp8_scale_parameter,
+diff -- vllm/model_executor/layers/quantization/quark/quark.py
+@@ -33,6 +33,7 @@
++    QuarkW8A8Fp8PerBlock,
+@@ -66,6 +67,14 @@ def __init__(
++        # Copy the class-level default (which a subclass may override, e.g. the
++        # DeepSeek-V4 Quark config) so per-instance edits don't mutate the class.
++        # Read from the class rather than ``self`` because the base
++        # ``QuantizationConfig.__init__`` sets an empty instance-level
+diff -- vllm/model_executor/layers/quantization/quark/quark_moe.py
+@@ -1599,15 +1599,16 @@ def process_weights_after_loading(self, layer: RoutedExperts) -> None:
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/layers/quantization/quark/schemes/quark_w8a8_fp8.py` modified +115/-4; `vllm/model_executor/layers/quantization/quark/quark.py` modified +32/-2; `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +7/-6; `vllm/model_executor/layers/quantization/quark/schemes/__init__.py` modified +2/-1
+  - tests: `tests/quantization/test_quark.py` modified +97/-0
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/DeepSeek-V4-Flash-NVFP4.yaml`, `tests/evals/gsm8k/configs/DeepSeek-V4-Pro-NVFP4.yaml`, `tests/evals/gsm8k/configs/models-gfx950-large.txt`, `tests/quantization/test_quark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

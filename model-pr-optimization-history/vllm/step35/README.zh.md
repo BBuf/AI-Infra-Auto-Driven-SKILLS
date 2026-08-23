@@ -10,7 +10,7 @@
 | `vllm/model_executor/models/step3_text.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/step3_vl.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/step3p5.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33755](https://github.com/vllm-project/vllm/pull/33755), [#34478](https://github.com/vllm-project/vllm/pull/34478), [#41892](https://github.com/vllm-project/vllm/pull/41892) |
-| `vllm/model_executor/models/step3p5_mtp.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523) |
+| `vllm/model_executor/models/step3p5_mtp.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#48883](https://github.com/vllm-project/vllm/pull/48883) |
 | `vllm/reasoning/step3p5_reasoning_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#34211](https://github.com/vllm-project/vllm/pull/34211) |
 | `vllm/tool_parsers/step3p5_tool_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33690](https://github.com/vllm-project/vllm/pull/33690) |
 | `vllm/transformers_utils/configs/step3_vl.py` | 无直接 PR 号提交 |
@@ -47,6 +47,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/33523
 - 状态/时间: merged / 2026-02-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33523 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`；关联提交 `c3b40dc3e74d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+3107/-4，可读 patch 3270 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Models] Step-3.5-Flash」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`；技术摘要: 覆盖「[Models] Step-3.5-Flash」；主要实现面是 `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -88,6 +89,7 @@ diff -- vllm/model_executor/models/step3p5_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33690
 - 状态/时间: merged / 2026-02-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33690 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`；关联提交 `82914d2ae8d0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+1455/-5，可读 patch 1508 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix step3p5 parser when using mtp」；模型线: Step 3.5；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix step3p5 parser when using mtp」；主要实现面是 `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -125,6 +127,7 @@ diff -- vllm/tool_parsers/step3p5_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33755
 - 状态/时间: merged / 2026-02-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33755 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`；关联提交 `db4ede974343`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+28/-32，可读 patch 115 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Enable Step3p5ForCausalLM testing」；模型线: Step 3.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/step3p5.py`；技术摘要: 覆盖「[Model] Enable Step3p5ForCausalLM testing」；主要实现面是 `vllm/model_executor/models/step3p5.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -152,6 +155,7 @@ diff -- vllm/model_executor/models/step3p5.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34478
 - 状态/时间: merged / 2026-02-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34478 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`；关联提交 `b7892a3beff0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+204/-4，可读 patch 291 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add NVFP4 quantization support for Step3.5-Flash」；模型线: Step 3.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/step3p5.py`；技术摘要: 覆盖「[Model] Add NVFP4 quantization support for Step3.5-Flash」；主要实现面是 `vllm/model_executor/models/step3p5.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -179,6 +183,7 @@ diff -- vllm/model_executor/models/step3p5.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34211
 - 状态/时间: merged / 2026-02-25
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34211 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`；关联提交 `af5e6afa0af2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+387/-14，可读 patch 423 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix step3p5 reasoning with interleaved thinking」；模型线: Step 3.5；类别: 缺陷修复；主要 diff: `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`；技术摘要: 覆盖「[Bugfix] Fix step3p5 reasoning with interleaved thinking」；主要实现面是 `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -216,6 +221,7 @@ diff -- vllm/reasoning/step3p5_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41892
 - 状态/时间: merged / 2026-05-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41892 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5.py`；关联提交 `3b1ef03be4a3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+46/-4，可读 patch 97 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)」；模型线: Step 3.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/step3p5.py`；技术摘要: 覆盖「[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)」；主要实现面是 `vllm/model_executor/models/step3p5.py`。下方保留文件级证据、代码摘录和验证风险。

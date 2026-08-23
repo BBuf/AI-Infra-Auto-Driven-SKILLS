@@ -4,33 +4,34 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Mistral/Devstral-2.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/Mistral/Ministral-3.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | [#31507](https://github.com/sgl-project/sglang/pull/31507) |
-| `docs_new/cookbook/autoregressive/Mistral/Mistral-Small-4.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/ministral-3-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Mistral/Devstral-2.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Mistral/Ministral-3.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Mistral/Mistral-Small-4.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/ministral-3-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/mistral_detector.py` | [#6597](https://github.com/sgl-project/sglang/pull/6597), [#14921](https://github.com/sgl-project/sglang/pull/14921), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
 | `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251), [#29111](https://github.com/sgl-project/sglang/pull/29111) |
 | `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099) |
 | `python/sglang/srt/models/mistral_eagle.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
-| `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
-| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396) |
+| `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708), [#33785](https://github.com/sgl-project/sglang/pull/33785) |
+| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396), [#35215](https://github.com/sgl-project/sglang/pull/35215) |
 | `test/manual/models/test_mistral_large3_basic.py` | 无直接 PR 号提交 |
-| `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402) |
-| `test/registered/ascend/llm_models/test_npu_mistral_7b.py` | 无直接 PR 号提交 |
-| `test/registered/ascend/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | 无直接 PR 号提交 |
+| `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402), [#33785](https://github.com/sgl-project/sglang/pull/33785) |
 | `test/registered/models_e2e/test_ministral3_models.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_ministral4_models.py` | 无直接 PR 号提交 |
+| `test/registered/npu/llm_models/test_npu_mistral_7b.py` | 无直接 PR 号提交 |
+| `test/registered/npu/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | 无直接 PR 号提交 |
+| `test/registered/unit/constrained/test_mistral_common_xgrammar.py` | [#35215](https://github.com/sgl-project/sglang/pull/35215) |
 | `test/registered/unit/function_call/test_mistral_detector.py` | [#21399](https://github.com/sgl-project/sglang/pull/21399) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 16
-- 原文档显式引用补充 PR 数: 8
-- 当前文档总 PR 数: 24
+- git 追溯 PR 数: 17
+- 原文档显式引用补充 PR 数: 9
+- 当前文档总 PR 数: 26
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -62,6 +63,8 @@
 | 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | merged | [Bugfix] Fix Ministral3 init argument forwarding | `python/sglang/srt/models/ministral3.py` |
 | 2026-07-09 | [#30396](https://github.com/sgl-project/sglang/pull/30396) | merged | Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral) | `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
 | 2026-07-17 | [#31507](https://github.com/sgl-project/sglang/pull/31507) | merged | [Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest | `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` |
+| 2026-08-06 | [#33785](https://github.com/sgl-project/sglang/pull/33785) | merged | Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__ | `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py` |
+| 2026-08-19 | [#35215](https://github.com/sgl-project/sglang/pull/35215) | merged | [Constrained] Support MistralCommon tokenizers in the XGrammar backend | `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -814,7 +817,7 @@ diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31507
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`；关联提交 `40a3bd765975`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-8，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`；技术摘要: 覆盖「[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest」；主要实现面是 `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8 (9 lines); hunks: -41,14 +41,7 @@ The HuggingFace repo ships both the mistral native layout (`p...。
@@ -836,6 +839,80 @@ diff -- docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx
 - 已读文件:
   - docs: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #33785 - Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__
+
+- 链接: https://github.com/sgl-project/sglang/pull/33785
+- 状态/时间: merged / 2026-08-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py`；关联提交 `dd7e4c91e2e1`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+25/-54，可读 patch 118 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py`；技术摘要: 覆盖「Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__」；主要实现面是 `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/mistral_large_3_eagle.py` modified +6/-46 (52 lines); hunks: -4,19 +4,12; -31,50 +24,17 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`；`test/registered/8-gpu-models/test_mistral_large3.py` modified +19/-8 (27 lines); hunks: -1,6 +1,7; -84,14 +85,24 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants，涉及 `test_mistral_large3_all_variants`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/mistral_large_3_eagle.py` modified +6/-46 (52 lines); hunks: -4,19 +4,12; -31,50 +24,17 @@ def __init__(; symbols: __init__, forward
+  - `test/registered/8-gpu-models/test_mistral_large3.py` modified +19/-8 (27 lines); hunks: -1,6 +1,7; -84,14 +85,24 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/mistral_large_3_eagle.py
+@@ -4,19 +4,12 @@
+-from torch import nn
+-from sglang.srt.configs.model_config import is_deepseek_dsa
+-from sglang.srt.distributed import get_pp_group
+-from sglang.srt.layers.attention.dsa.utils import is_dsa_enable_prefill_cp
+-from sglang.srt.layers.layernorm import RMSNorm
+-from sglang.srt.layers.utils.cp_utils import is_prefill_context_parallel_enabled
+diff -- test/registered/8-gpu-models/test_mistral_large3.py
+@@ -1,6 +1,7 @@
++from sglang.srt.environ import envs
+@@ -84,14 +85,24 @@ def test_mistral_large3_all_variants(self):
+-        run_combined_tests(
+-            models=variants,
+-            test_name="Mistral-Large-3",
+-            accuracy_params=AccuracyTestParams(dataset="gsm8k", baseline_accuracy=0.85),
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/mistral_large_3_eagle.py` modified +6/-46
+  - tests: `test/registered/8-gpu-models/test_mistral_large3.py` modified +19/-8
+- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_mistral_large3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #35215 - [Constrained] Support MistralCommon tokenizers in the XGrammar backend
+
+- 链接: https://github.com/sgl-project/sglang/pull/35215
+- 状态/时间: merged / 2026-08-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/utils/hf_transformers/mistral_utils.py`, `test/registered/unit/constrained/test_mistral_common_xgrammar.py`；关联提交 `3391ab3712bb`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+168/-1，可读 patch 189 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Constrained] Support MistralCommon tokenizers in the XGrammar backend」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py`；技术摘要: 覆盖「[Constrained] Support MistralCommon tokenizers in the XGrammar backend」；主要实现面是 `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0 (112 lines); hunks: -0,0 +1,112; symbols: _StubTekkenizer, __init__, id_to_piece, id_to_byte_piece，涉及 `_StubTekkenizer, __init__, id_to_piece`；`python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0 (43 lines); hunks: -634,4 +634,47 @@ def _safe_apply_chat_template(messages, **kwargs):; symbols: _safe_apply_chat_template, init_xgrammar，涉及 `_safe_apply_chat_template, init_xgrammar`。
+- 代码 diff 细节:
+  - `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0 (112 lines); hunks: -0,0 +1,112; symbols: _StubTekkenizer, __init__, id_to_piece, id_to_byte_piece
+  - `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0 (43 lines); hunks: -634,4 +634,47 @@ def _safe_apply_chat_template(messages, **kwargs):; symbols: _safe_apply_chat_template, init_xgrammar
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/constrained/test_mistral_common_xgrammar.py
+@@ -0,0 +1,112 @@
++import sys
++import pytest
++from sglang.srt.utils.hf_transformers.mistral_utils import (
++    patch_mistral_common_tokenizer,
++)
++from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
+@@ -634,4 +634,47 @@ def _safe_apply_chat_template(messages, **kwargs):
++    def init_xgrammar():
++        from xgrammar import TokenizerInfo
++        tekken = getattr(
++            getattr(tokenizer.tokenizer, "instruct_tokenizer", None), "tokenizer", None
++        )
++        if tekken is None or not hasattr(tekken, "id_to_byte_piece"):
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0
+  - runtime: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/constrained/test_mistral_common_xgrammar.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

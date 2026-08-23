@@ -4,31 +4,31 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `benchmark/gpt_oss/README.md` | [#9728](https://github.com/sgl-project/sglang/pull/9728) |
-| `docs_new/cookbook/autoregressive/OpenAI/GPT-OSS.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/gpt-oss-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/OpenAI/GPT-OSS.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/gpt-oss-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/gpt_oss_detector.py` | [#9043](https://github.com/sgl-project/sglang/pull/9043), [#9190](https://github.com/sgl-project/sglang/pull/9190), [#9657](https://github.com/sgl-project/sglang/pull/9657) |
-| `python/sglang/srt/models/gpt_oss.py` | [#8824](https://github.com/sgl-project/sglang/pull/8824), [#8843](https://github.com/sgl-project/sglang/pull/8843), [#8944](https://github.com/sgl-project/sglang/pull/8944), [#9028](https://github.com/sgl-project/sglang/pull/9028), [#9146](https://github.com/sgl-project/sglang/pull/9146), [#9161](https://github.com/sgl-project/sglang/pull/9161), [#9359](https://github.com/sgl-project/sglang/pull/9359), [#9433](https://github.com/sgl-project/sglang/pull/9433), [#9469](https://github.com/sgl-project/sglang/pull/9469), [#9783](https://github.com/sgl-project/sglang/pull/9783), [#14197](https://github.com/sgl-project/sglang/pull/14197), [#16775](https://github.com/sgl-project/sglang/pull/16775), ... (21 total) |
+| `python/sglang/srt/models/gpt_oss.py` | [#8824](https://github.com/sgl-project/sglang/pull/8824), [#8843](https://github.com/sgl-project/sglang/pull/8843), [#8944](https://github.com/sgl-project/sglang/pull/8944), [#9028](https://github.com/sgl-project/sglang/pull/9028), [#9146](https://github.com/sgl-project/sglang/pull/9146), [#9161](https://github.com/sgl-project/sglang/pull/9161), [#9359](https://github.com/sgl-project/sglang/pull/9359), [#9433](https://github.com/sgl-project/sglang/pull/9433), [#9469](https://github.com/sgl-project/sglang/pull/9469), [#9783](https://github.com/sgl-project/sglang/pull/9783), [#14197](https://github.com/sgl-project/sglang/pull/14197), [#16775](https://github.com/sgl-project/sglang/pull/16775), ... (22 total) |
 | `python/sglang/test/gpt_oss_common.py` | [#16426](https://github.com/sgl-project/sglang/pull/16426) |
 | `test/manual/core/test_gpt_oss_1gpu.py` | 无直接 PR 号提交 |
 | `test/registered/8-gpu-models/test_gpt_oss_120b.py` | [#18134](https://github.com/sgl-project/sglang/pull/18134) |
 | `test/registered/amd/accuracy/mi30x/test_gpt_oss_eval_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` | [#26884](https://github.com/sgl-project/sglang/pull/26884) |
 | `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` | [#27204](https://github.com/sgl-project/sglang/pull/27204) |
+| `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` | [#34645](https://github.com/sgl-project/sglang/pull/34645) |
+| `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py` | [#34645](https://github.com/sgl-project/sglang/pull/34645) |
 | `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` | [#31732](https://github.com/sgl-project/sglang/pull/31732) |
 | `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` | 无直接 PR 号提交 |
 | `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` | [#21570](https://github.com/sgl-project/sglang/pull/21570) |
-| `test/registered/models_e2e/test_gpt_oss_4gpu_bf16.py` | 无直接 PR 号提交 |
+| `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py` | [#30050](https://github.com/sgl-project/sglang/pull/30050) |
 | `test/registered/models_e2e/test_gpt_oss_4gpu_mxfp4.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_gpt_oss_sm120.py` | 无直接 PR 号提交 |
 | `test/registered/page_major/test_page_major_gpt_oss.py` | 无直接 PR 号提交 |
-| `test/registered/perf/test_gpt_oss_4gpu_perf.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 19
-- 当前文档总 PR 数: 48
+- git 追溯 PR 数: 31
+- 原文档显式引用补充 PR 数: 20
+- 当前文档总 PR 数: 51
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -84,6 +84,9 @@
 | 2026-06-30 | [#27204](https://github.com/sgl-project/sglang/pull/27204) | merged | [AMD] Implement QuarkW4A8MXFp4MoE to support amd/gpt-oss-120b-w-mxfp4-a-fp8 | `python/sglang/srt/models/gpt_oss.py`, `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` |
 | 2026-07-20 | [#31649](https://github.com/sgl-project/sglang/pull/31649) | merged | Enable GPT-OSS TinyGEMM on CUDA 13 | `python/sglang/srt/models/gpt_oss.py` |
 | 2026-07-20 | [#31732](https://github.com/sgl-project/sglang/pull/31732) | merged | Support GPT-OSS zigzag CP with TRTLLM-MHA | `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`, `python/sglang/srt/layers/attention/trtllm_mha_backend.py`, `python/sglang/srt/layers/cp/zigzag.py` |
+| 2026-07-31 | [#32334](https://github.com/sgl-project/sglang/pull/32334) | merged | [Speculative Decoding] Fix GPT-OSS EAGLE3 hidden states | `python/sglang/srt/models/gpt_oss.py` |
+| 2026-08-10 | [#30050](https://github.com/sgl-project/sglang/pull/30050) | merged | [MLX] Support gpt-oss: sliding-window attention, attention sinks, sm_scale | `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py` |
+| 2026-08-16 | [#34645](https://github.com/sgl-project/sglang/pull/34645) | merged | [AMD][CI] Add GPT-OSS perf benchmarks to the ROCm 7.2 nightly | `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -430,7 +433,7 @@ diff -- docs/basic_usage/gpt_oss.md
 
 - 链接: https://github.com/sgl-project/sglang/pull/9728
 - 状态/时间: merged / 2025-08-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `benchmark/gpt_oss/README.md`；关联提交 `d0934a519257`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+163/-0，可读 patch 164 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「gpt-oss blog reproduction document」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `benchmark/gpt_oss/README.md`；技术摘要: 覆盖「gpt-oss blog reproduction document」；主要实现面是 `benchmark/gpt_oss/README.md`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `benchmark/gpt_oss/README.md` added +163/-0 (163 lines); hunks: -0,0 +1,163。
@@ -1585,6 +1588,111 @@ diff -- python/sglang/srt/layers/cp/zigzag.py
   - tests: `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` added +32/-0
   - runtime: `python/sglang/srt/layers/attention/trtllm_mha_backend.py` modified +84/-31; `python/sglang/srt/layers/cp/zigzag.py` modified +22/-1; `python/sglang/srt/layers/cp/base.py` modified +4/-1; `python/sglang/srt/layers/cp/utils.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #32334 - [Speculative Decoding] Fix GPT-OSS EAGLE3 hidden states
+
+- 链接: https://github.com/sgl-project/sglang/pull/32334
+- 状态/时间: merged / 2026-07-31
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gpt_oss.py`；关联提交 `5df193b4ac0f`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+36/-6，可读 patch 82 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Speculative Decoding] Fix GPT-OSS EAGLE3 hidden states」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「[Speculative Decoding] Fix GPT-OSS EAGLE3 hidden states」；主要实现面是 `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/gpt_oss.py` modified +19/-6 (25 lines); hunks: -720,15 +720,25 @@ def forward(; -1319,15 +1329,18 @@ def set_eagle3_layers_to_capture(self, layer_ids: Option...; symbols: forward, set_eagle3_layers_to_capture, set_dflash_layers_to_capture，涉及 `forward, set_eagle3_layers_to_capture, set_dflash_layers_to_capture`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gpt_oss.py` modified +19/-6 (25 lines); hunks: -720,15 +720,25 @@ def forward(; -1319,15 +1329,18 @@ def set_eagle3_layers_to_capture(self, layer_ids: Option...; symbols: forward, set_eagle3_layers_to_capture, set_dflash_layers_to_capture
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -720,15 +720,25 @@ def forward(
++        # Capture hidden-state boundaries: boundary 0 is the embedding output,
++        # and boundary i + 1 is the output after transformer block i.
++        if self.start_layer in self.layers_to_capture:
++            aux_hidden_states.append(
++                hidden_states + residual if residual is not None else hidden_states
++            )
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +19/-6
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/llama_eagle3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #30050 - [MLX] Support gpt-oss: sliding-window attention, attention sinks, sm_scale
+
+- 链接: https://github.com/sgl-project/sglang/pull/30050
+- 状态/时间: merged / 2026-08-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py`；关联提交 `553dc0f936ea`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1100/-43，可读 patch 1372 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MLX] Support gpt-oss: sliding-window attention, attention sinks, sm_scale」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py`；技术摘要: 覆盖「[MLX] Support gpt-oss: sliding-window attention, attention sinks, sm_scale」；主要实现面是 `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py` added +371/-0 (371 lines); hunks: -0,0 +1,371; symbols: _available_gb, TestGptOssMlxCorrectness, setUpClass, tearDownClass，涉及 `_available_gb, TestGptOssMlxCorrectness, setUpClass`；`python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py` modified +54/-6 (60 lines); hunks: -15,6 +15,7; -120,12 +121,29 @@ class MLXAttentionWrapper(nn.Module):; symbols: MLXAttentionWrapper, __init__, __call__, _batched_decode，涉及 `MLXAttentionWrapper, __init__, __call__`；`python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py` modified +42/-4 (46 lines); hunks: -4,10 +4,12; -17,6 +19,9; symbols: first_present_attr, get_head_dim, get_attention_scale, is_attention_module，涉及 `first_present_attr, get_head_dim, get_attention_scale`；`python/sglang/srt/server_args.py` modified +24/-22 (46 lines); hunks: -5359,28 +5359,30 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments，涉及 `_handle_model_specific_adjustments`。
+- 代码 diff 细节:
+  - `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py` added +371/-0 (371 lines); hunks: -0,0 +1,371; symbols: _available_gb, TestGptOssMlxCorrectness, setUpClass, tearDownClass
+  - `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py` modified +54/-6 (60 lines); hunks: -15,6 +15,7; -120,12 +121,29 @@ class MLXAttentionWrapper(nn.Module):; symbols: MLXAttentionWrapper, __init__, __call__, _batched_decode
+  - `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py` modified +42/-4 (46 lines); hunks: -4,10 +4,12; -17,6 +19,9; symbols: first_present_attr, get_head_dim, get_attention_scale, is_attention_module
+  - `python/sglang/srt/server_args.py` modified +24/-22 (46 lines); hunks: -5359,28 +5359,30 @@ def _handle_model_specific_adjustments(self):; symbols: _handle_model_specific_adjustments
+  - `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_kv_cache.py` modified +31/-7 (38 lines); hunks: -5,13 +5,31; -25,8 +43,10 @@ def __init__(self, offset: int = 0):; symbols: make_attention_mask, AttentionOffsetCache, __init__, state
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py
+@@ -0,0 +1,371 @@
++"""Correctness tests for gpt-oss served on the SGLang MLX backend.
++gpt-oss interleaves sliding-window (window=128) and full-attention layers and
++uses per-head attention sinks, so it exercises the MLX backend's
++sliding-window path end to end. Two guards:
++1. ``TestGptOssMlxCorrectness`` — black-box serving smoke against a running
++   server, including a >128-token prompt so the sliding window actually
+diff -- python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py
+@@ -15,6 +15,7 @@
++    get_attention_scale,
+@@ -120,12 +121,29 @@ class MLXAttentionWrapper(nn.Module):
++    ``window_size`` marks a sliding-window layer: the pool keeps the full
++    KV history and the wrapper attends to the trailing window only, which
++    is numerically identical to a rotating cache.
+-    def __init__(self, inner: nn.Module, layer_idx: int):
+diff -- python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py
+@@ -4,10 +4,12 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py` added +371/-0
+  - runtime: `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py` modified +54/-6; `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py` modified +42/-4; `python/sglang/srt/server_args.py` modified +24/-22; `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_kv_cache.py` modified +31/-7; `python/sglang/srt/hardware_backend/mlx/kv_cache/model_patching.py` modified +23/-1; `python/sglang/srt/hardware_backend/mlx/aot.py` modified +17/-1
+- 验证与风险: diff 自带测试面 `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py`, `test/registered/unit/hardware_backend/mlx/test_mlx_runner_pool_contract.py`, `test/registered/unit/hardware_backend/mlx/test_sliding_window_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #34645 - [AMD][CI] Add GPT-OSS perf benchmarks to the ROCm 7.2 nightly
+
+- 链接: https://github.com/sgl-project/sglang/pull/34645
+- 状态/时间: merged / 2026-08-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py`, `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`；关联提交 `d91c3682b0b4`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+283/-0，可读 patch 319 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][CI] Add GPT-OSS perf benchmarks to the ROCm 7.2 nightly」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py`；技术摘要: 覆盖「[AMD][CI] Add GPT-OSS perf benchmarks to the ROCm 7.2 nightly」；主要实现面是 `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py` added +107/-0 (107 lines); hunks: -0,0 +1,107; symbols: TestNightlyGptOssPerformanceMI35x, setUpClass, test_bench_one_batch，涉及 `TestNightlyGptOssPerformanceMI35x, setUpClass, test_bench_one_batch`；`test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: TestNightlyGptOssPerformanceAMD, setUpClass, test_bench_one_batch，涉及 `TestNightlyGptOssPerformanceAMD, setUpClass, test_bench_one_batch`。
+- 代码 diff 细节:
+  - `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py` added +107/-0 (107 lines); hunks: -0,0 +1,107; symbols: TestNightlyGptOssPerformanceMI35x, setUpClass, test_bench_one_batch
+  - `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: TestNightlyGptOssPerformanceAMD, setUpClass, test_bench_one_batch
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py
+@@ -0,0 +1,107 @@
++"""MI35x nightly performance benchmark for GPT-OSS (8-GPU).
++Benchmarks the MXFP4 GPT-OSS checkpoints (openai/gpt-oss-20b,
++openai/gpt-oss-120b) with the same TP8 AITER server configuration the MI35x
++GPT-OSS accuracy test uses, so a throughput change here points at the
++serving stack rather than at a different recipe.
++Registry: nightly-perf-8-gpu-mi35x-gpt-oss suite
+diff -- test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py
+@@ -0,0 +1,106 @@
++"""MI30x nightly performance benchmark for GPT-OSS (8-GPU).
++Benchmarks the bf16 GPT-OSS conversions (lmsys/gpt-oss-20b-bf16,
++lmsys/gpt-oss-120b-bf16) with the same TP8 AITER server configuration the
++MI30x GPT-OSS accuracy test uses, so a throughput change here points at the
++serving stack rather than at a different recipe.
++MI30x cannot serve the MXFP4 checkpoints natively, which is why the model
+```
+
+- 已读文件:
+  - tests: `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py` added +107/-0; `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` added +106/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/nightly_bench_utils.py`, `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py`, `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

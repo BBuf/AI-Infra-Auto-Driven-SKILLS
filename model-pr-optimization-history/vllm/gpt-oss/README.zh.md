@@ -17,11 +17,14 @@
 | `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-fp8-triton.yaml` | 无直接 PR 号提交 |
 | `tests/evals/gpt_oss/configs/gpt-oss-20b-sm100-fi-mxfp4-mxfp8-trtllm.yaml` | 无直接 PR 号提交 |
 | `tests/evals/gpt_oss/configs/gpt-oss-20b-sm120.yaml` | 无直接 PR 号提交 |
+| `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
+| `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
 | `tests/evals/gpt_oss/configs/models-b200.txt` | 无直接 PR 号提交 |
 | `tests/evals/gpt_oss/configs/models-gfx942.txt` | [#36179](https://github.com/vllm-project/vllm/pull/36179) |
 | `tests/evals/gpt_oss/configs/models-gfx950.txt` | [#36179](https://github.com/vllm-project/vllm/pull/36179), [#38292](https://github.com/vllm-project/vllm/pull/38292) |
 | `tests/evals/gpt_oss/configs/models-h100.txt` | 无直接 PR 号提交 |
 | `tests/evals/gpt_oss/configs/models-spark.txt` | 无直接 PR 号提交 |
+| `tests/evals/gpt_oss/configs/models-xpu.txt` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
 | `tests/evals/gpt_oss/conftest.py` | [#24920](https://github.com/vllm-project/vllm/pull/24920) |
 | `tests/evals/gpt_oss/test_gpqa_correctness.py` | [#24920](https://github.com/vllm-project/vllm/pull/24920), [#26030](https://github.com/vllm-project/vllm/pull/26030) |
 | `tests/evals/gsm8k/configs/humming/gpt-oss-20b-humming-act-fp8.yaml` | 无直接 PR 号提交 |
@@ -33,9 +36,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 40
+- git 追溯 PR 数: 41
 - 原文档显式引用补充 PR 数: 23
-- 当前文档总 PR 数: 63
+- 当前文档总 PR 数: 64
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -106,6 +109,7 @@
 | 2026-06-23 | [#46142](https://github.com/vllm-project/vllm/pull/46142) | merged | [AMD][OCP MX][CI] Fix tests to not dispatch on `UNFUSED_TRITON` backend on MI300, improve w_mxfp4_a_fp8 emulation support | `vllm/model_executor/layers/fused_moe/utils.py`, `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`, `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` |
 | 2026-06-24 | [#46406](https://github.com/vllm-project/vllm/pull/46406) | merged | [Bugfix] Support non-power-of-2 top_k in legacy triton_kernels routing | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` |
 | 2026-06-24 | [#46408](https://github.com/vllm-project/vllm/pull/46408) | merged | [Bugfix] Support -1 (invalid/non-local) slots in topk_ids for Triton MoE | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` |
+| 2026-07-29 | [#48703](https://github.com/vllm-project/vllm/pull/48703) | merged | [XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci | `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt` |
 
 ## 逐 PR diff 审计卡
 
@@ -2095,6 +2099,45 @@ diff -- vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.
 - 已读文件:
   - runtime: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +88/-7
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #48703 - [XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci
+
+- 链接: https://github.com/vllm-project/vllm/pull/48703
+- 状态/时间: merged / 2026-07-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`；关联提交 `7de49bab7e91`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+38/-0，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci」；模型线: GPT-OSS；类别: 性能/后端优化；主要 diff: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`；技术摘要: 覆盖「[XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci」；主要实现面是 `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0 (6 lines); hunks: -0,0 +1,6；`tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0 (5 lines); hunks: -0,0 +1,5；`tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0 (3 lines); hunks: -0,0 +1,3。
+- 代码 diff 细节:
+  - `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0 (6 lines); hunks: -0,0 +1,6
+  - `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0 (5 lines); hunks: -0,0 +1,5
+  - `tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0 (3 lines); hunks: -0,0 +1,3
+- 关键代码摘录:
+
+```diff
+diff -- tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++model_name: openai/gpt-oss-20b
++metric_threshold: 0.568
++reasoning_effort: low
++server_args: "--attention-backend TRITON_ATTN"
+diff -- tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++model_name: openai/gpt-oss-20b
++metric_threshold: 0.568
++reasoning_effort: low
+diff -- tests/evals/gpt_oss/configs/models-xpu.txt
+@@ -0,0 +1,3 @@
++# Intel XPU model configurations for GPQA evaluation
+```
+
+- 已读文件:
+  - tests: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0; `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0; `tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0
+- 验证与风险: diff 自带测试面 `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

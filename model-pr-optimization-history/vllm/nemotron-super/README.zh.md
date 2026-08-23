@@ -10,6 +10,7 @@
 | `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml` | [#36803](https://github.com/vllm-project/vllm/pull/36803) |
 | `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml` | [#36803](https://github.com/vllm-project/vllm/pull/36803) |
 | `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml` | [#36803](https://github.com/vllm-project/vllm/pull/36803) |
+| `tests/evals/gsm8k/configs/humming/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4-humming.yaml` | 无直接 PR 号提交 |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` | [#34725](https://github.com/vllm-project/vllm/pull/34725) |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` | [#34725](https://github.com/vllm-project/vllm/pull/34725) |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-vllm-cutlass.yaml` | 无直接 PR 号提交 |
@@ -18,10 +19,10 @@
 | `tests/models/multimodal/generation/test_nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#42498](https://github.com/vllm-project/vllm/pull/42498) |
 | `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` | [#35735](https://github.com/vllm-project/vllm/pull/35735), [#37613](https://github.com/vllm-project/vllm/pull/37613) |
 | `tests/models/multimodal/processing/test_nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22739](https://github.com/vllm-project/vllm/pull/22739) |
-| `tests/models/multimodal/test_nano_nemotron_vl.py` | [#41205](https://github.com/vllm-project/vllm/pull/41205), [#42244](https://github.com/vllm-project/vllm/pull/42244) |
+| `tests/models/multimodal/test_nano_nemotron_vl.py` | [#41205](https://github.com/vllm-project/vllm/pull/41205), [#42244](https://github.com/vllm-project/vllm/pull/42244), [#50221](https://github.com/vllm-project/vllm/pull/50221) |
 | `tests/parser/engine/test_nemotron_v3.py` | [#45755](https://github.com/vllm-project/vllm/pull/45755) |
 | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635), [#39091](https://github.com/vllm-project/vllm/pull/39091), [#45755](https://github.com/vllm-project/vllm/pull/45755) |
-| `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (23 total) |
+| `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (24 total) |
 | `vllm/model_executor/models/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611), [#46495](https://github.com/vllm-project/vllm/pull/46495) |
 | `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (19 total) |
 | `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803), [#47440](https://github.com/vllm-project/vllm/pull/47440) |
@@ -75,8 +76,8 @@
 | 2026-01-21 | [#32682](https://github.com/vllm-project/vllm/pull/32682) | merged | [Bugfix] Fix Nemotron-Nano-v2-vlm static resolution | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-01-27 | [#32265](https://github.com/vllm-project/vllm/pull/32265) | merged | [LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-01-27 | [#32549](https://github.com/vllm-project/vllm/pull/32549) | merged | Support heterogeneous NemotronHPuzzle model | `vllm/model_executor/models/nemotron_h.py` |
-| 2026-01-29 | [#33189](https://github.com/vllm-project/vllm/pull/33189) | merged | [Misc][Build] Lazy load cv2 in nemotron_parse.py | `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-01-29 | [#32669](https://github.com/vllm-project/vllm/pull/32669) | merged | Bugfix: Pass router logits dtype in nemotron shared experts | `vllm/model_executor/models/nemotron_h.py` |
+| 2026-01-29 | [#33189](https://github.com/vllm-project/vllm/pull/33189) | merged | [Misc][Build] Lazy load cv2 in nemotron_parse.py | `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-02-02 | [#32790](https://github.com/vllm-project/vllm/pull/32790) | merged | [MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H) | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-12 | [#33506](https://github.com/vllm-project/vllm/pull/33506) | merged | [Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4 | `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` |
 | 2026-02-16 | [#34582](https://github.com/vllm-project/vllm/pull/34582) | merged | [NemotronH] Do not force router to run in fp32 | `vllm/model_executor/models/nemotron_h.py` |
@@ -133,6 +134,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/6611
 - 状态/时间: merged / 2024-07-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/6611 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`；关联提交 `07278c37ddd8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+776/-1，可读 patch 847 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`；技术摘要: 覆盖「[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)」；主要实现面是 `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -169,6 +171,7 @@ diff -- vllm/transformers_utils/configs/nemotron.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/7611
 - 状态/时间: merged / 2024-08-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/7611 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`；关联提交 `44f26a946645`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+29/-35，可读 patch 181 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Align nemotron config with final HF state and fix lm-eval-small」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/nemotron.py`；技术摘要: 覆盖「[Model] Align nemotron config with final HF state and fix lm-eval-small」；主要实现面是 `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/nemotron.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -205,6 +208,7 @@ diff -- vllm/model_executor/models/nemotron.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/15008
 - 状态/时间: merged / 2025-03-31
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/15008 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_nas.py`；关联提交 `3aa2b6a63714`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+524/-133，可读 patch 764 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Update support for NemotronNAS models」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_nas.py`；技术摘要: 覆盖「[Model] Update support for NemotronNAS models」；主要实现面是 `vllm/model_executor/models/nemotron_nas.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -232,6 +236,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/18427
 - 状态/时间: merged / 2025-05-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/18427 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_nas.py`；关联提交 `6d68030f1cac`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+67/-16，可读 patch 129 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add support for YARN in NemotronNAS models」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_nas.py`；技术摘要: 覆盖「[Model] Add support for YARN in NemotronNAS models」；主要实现面是 `vllm/model_executor/models/nemotron_nas.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -259,6 +264,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/18863
 - 状态/时间: merged / 2025-06-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/18863 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`；关联提交 `cb6d572e85a3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+829/-0，可读 patch 866 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] NemotronH support」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`；技术摘要: 覆盖「[Model] NemotronH support」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -295,6 +301,7 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/19249
 - 状态/时间: merged / 2025-06-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/19249 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `7661e92ef85e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+16/-8，可读 patch 88 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Optimize nemotron_h implementation」；模型线: Nemotron Super；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[Model] Optimize nemotron_h implementation」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -322,6 +329,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20349
 - 状态/时间: merged / 2025-07-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20349 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`；关联提交 `4ef00b5caca4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+701/-3，可读 patch 837 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[VLM] Add Nemotron-Nano-VL-8B-V1 support」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`；技术摘要: 覆盖「[VLM] Add Nemotron-Nano-VL-8B-V1 support」；主要实现面是 `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -362,6 +370,7 @@ diff -- vllm/transformers_utils/configs/nemotron.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22349
 - 状态/时间: merged / 2025-08-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22349 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`；关联提交 `14a5d903ab82`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+23/-7，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] NemotronH Support」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`；技术摘要: 覆盖「[Model] NemotronH Support」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -397,6 +406,7 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22739
 - 状态/时间: merged / 2025-08-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22739 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`；关联提交 `a01e0018b50f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+190/-4，可读 patch 234 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Nemotron VL image processing」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`；技术摘要: 覆盖「[Bugfix] Fix Nemotron VL image processing」；主要实现面是 `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -434,6 +444,7 @@ diff -- tests/models/multimodal/processing/test_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22023
 - 状态/时间: merged / 2025-08-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22023 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_vl.py`；关联提交 `e75f34226161`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-23，可读 patch 43 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_vl.py`；技术摘要: 覆盖「Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema」；主要实现面是 `vllm/model_executor/models/nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -461,6 +472,7 @@ diff -- vllm/model_executor/models/nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/23644
 - 状态/时间: merged / 2025-09-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/23644 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `72d30108a0fe`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+1400/-1，可读 patch 1423 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support for NemotronH Nano VLM」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Support for NemotronH Nano VLM」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -488,6 +500,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25708
 - 状态/时间: merged / 2025-09-25
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25708 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `57329a8c013c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+6/-6，可读 patch 47 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「[Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -515,6 +528,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/22980
 - 状态/时间: merged / 2025-09-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/22980 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+783/-39，可读 patch 1076 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「EVS Support (Video tokens pruning)」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `vllm/multimodal/evs.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`；技术摘要: 覆盖「EVS Support (Video tokens pruning)」；主要实现面是 `vllm/multimodal/evs.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -557,6 +571,7 @@ diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26186
 - 状态/时间: merged / 2025-10-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26186 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `5a05f2660370`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix issue of using only the part of video frame [Nemotron Nano]」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Fix issue of using only the part of video frame [Nemotron Nano]」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -580,6 +595,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26269
 - 状态/时间: merged / 2025-10-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26269 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `b8f603cebe39`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+224/-31，可读 patch 447 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] EVS support for nano_nemotron_vl」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「[Model] EVS support for nano_nemotron_vl」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -607,6 +623,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27107
 - 状态/时间: merged / 2025-10-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/27107 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `e93ff6c8b92b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+316/-105，可读 patch 771 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Nemotron Nano V2 VL + EVS Video Support」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Nemotron Nano V2 VL + EVS Video Support」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -634,6 +651,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25863
 - 状态/时间: merged / 2025-10-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25863 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`；关联提交 `61089465a610`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+413/-39，可读 patch 765 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add MoE support for NemotronH」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`；技术摘要: 覆盖「[Model] Add MoE support for NemotronH」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -670,6 +688,7 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/27968
 - 状态/时间: merged / 2025-11-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/27968 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `77f8001f5330`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+13/-5，可读 patch 67 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model][Bugfix] fix pipeline parallelism support for NemotronH」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[Model][Bugfix] fix pipeline parallelism support for NemotronH」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -697,6 +716,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30795
 - 状态/时间: merged / 2025-12-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30795 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_nas.py`；关联提交 `f5db6385a19b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-4，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix nemotron_nas intermediate_size computation」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_nas.py`；技术摘要: 覆盖「Fix nemotron_nas intermediate_size computation」；主要实现面是 `vllm/model_executor/models/nemotron_nas.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -724,6 +744,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31539
 - 状态/时间: merged / 2025-12-31
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31539 Get "https://api.github.com/repos/vllm-project/vllm/pulls/31539": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `108a2728f74d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-10，可读 patch 38 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add get_expert_mapping to NemotronHModel (for LoRA support)」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Add get_expert_mapping to NemotronHModel (for LoRA support)」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -751,6 +772,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30864
 - 状态/时间: merged / 2026-01-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30864 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/model_executor/models/nemotron_parse.py`；关联提交 `ee212918250a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+1117/-31，可读 patch 1329 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Nemotron Parse 1.1 Support」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「[Model] Nemotron Parse 1.1 Support」；主要实现面是 `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -791,6 +813,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31807
 - 状态/时间: merged / 2026-01-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31807 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `28c94770adfc`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-5，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NemotronH] Use ReplicatedLinear for fc1_latent_proj」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[NemotronH] Use ReplicatedLinear for fc1_latent_proj」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -818,6 +841,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31898
 - 状态/时间: merged / 2026-01-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31898 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `bf184a66218b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+4/-0，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Enable quantized attention in NemotronH models」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Enable quantized attention in NemotronH models」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -840,6 +864,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30802
 - 状态/时间: merged / 2026-01-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30802 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `aa7f37ccfa16`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+497/-27，可读 patch 717 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add support for LoRA adapters in Nemotron-H models」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Add support for LoRA adapters in Nemotron-H models」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -863,6 +888,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32121
 - 状态/时间: merged / 2026-01-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32121 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `cd3ac5b79703`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+755/-164，可读 patch 1299 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「support dynamic resolution image encoding for Nemotron Nano VL」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「support dynamic resolution image encoding for Nemotron Nano VL」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -890,6 +916,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32682
 - 状态/时间: merged / 2026-01-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32682 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `27ca95b3c9e6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Nemotron-Nano-v2-vlm static resolution」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「[Bugfix] Fix Nemotron-Nano-v2-vlm static resolution」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -915,6 +942,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32265
 - 状态/时间: merged / 2026-01-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32265 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `f3a5ee705fa9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+31/-0，可读 patch 106 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -938,6 +966,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32549
 - 状态/时间: merged / 2026-01-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32549 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `83fb2d09e8f6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+75/-5，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support heterogeneous NemotronHPuzzle model」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Support heterogeneous NemotronHPuzzle model」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -961,36 +990,11 @@ diff -- vllm/model_executor/models/nemotron_h.py
   - runtime: `vllm/model_executor/models/nemotron_h.py` modified +43/-3
 - 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #33189 - [Misc][Build] Lazy load cv2 in nemotron_parse.py
-
-- 链接: https://github.com/vllm-project/vllm/pull/33189
-- 状态/时间: merged / 2026-01-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_parse.py`；关联提交 `9e138cb01d65`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc][Build] Lazy load cv2 in nemotron_parse.py」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_parse.py`；技术摘要: 覆盖「[Misc][Build] Lazy load cv2 in nemotron_parse.py」；主要实现面是 `vllm/model_executor/models/nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio，涉及 `_create_transforms, _resize_with_aspect_ratio`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/nemotron_parse.py
-@@ -11,7 +11,6 @@
--import cv2
-@@ -416,6 +415,8 @@ def _create_transforms(self):
-+        import cv2
-@@ -457,6 +458,8 @@ def _resize_with_aspect_ratio(self, image: np.ndarray) -> np.ndarray:
-+        import cv2
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1
-- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nemotron_parse.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #32669 - Bugfix: Pass router logits dtype in nemotron shared experts
 
 - 链接: https://github.com/vllm-project/vllm/pull/32669
 - 状态/时间: merged / 2026-01-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32669 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `e01ff5c070f4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Bugfix: Pass router logits dtype in nemotron shared experts」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Bugfix: Pass router logits dtype in nemotron shared experts」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1013,10 +1017,38 @@ diff -- vllm/model_executor/models/nemotron_h.py
   - runtime: `vllm/model_executor/models/nemotron_h.py` modified +3/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nemotron_h.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #33189 - [Misc][Build] Lazy load cv2 in nemotron_parse.py
+
+- 链接: https://github.com/vllm-project/vllm/pull/33189
+- 状态/时间: merged / 2026-01-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33189 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_parse.py`；关联提交 `9e138cb01d65`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc][Build] Lazy load cv2 in nemotron_parse.py」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_parse.py`；技术摘要: 覆盖「[Misc][Build] Lazy load cv2 in nemotron_parse.py」；主要实现面是 `vllm/model_executor/models/nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio，涉及 `_create_transforms, _resize_with_aspect_ratio`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_parse.py
+@@ -11,7 +11,6 @@
+-import cv2
+@@ -416,6 +415,8 @@ def _create_transforms(self):
++        import cv2
+@@ -457,6 +458,8 @@ def _resize_with_aspect_ratio(self, image: np.ndarray) -> np.ndarray:
++        import cv2
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/nemotron_parse.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #32790 - [MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)
 
 - 链接: https://github.com/vllm-project/vllm/pull/32790
 - 状态/时间: merged / 2026-02-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32790 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `0aca8b8c628e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+303/-58，可读 patch 499 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1044,6 +1076,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33506
 - 状态/时间: merged / 2026-02-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33506 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+197/-45，可读 patch 562 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4」；模型线: Nemotron Super；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`；技术摘要: 覆盖「[Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4」；主要实现面是 `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1086,6 +1119,7 @@ diff -- vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34582
 - 状态/时间: merged / 2026-02-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34582 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `3b30e6150777`, `3eff45d793da`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+5/-4，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NemotronH] Do not force router to run in fp32」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[NemotronH] Do not force router to run in fp32」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1113,6 +1147,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34725
 - 状态/时间: merged / 2026-02-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34725 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`；关联提交 `caeb887bf633`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+20/-0，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`；技术摘要: 覆盖「[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4」；主要实现面是 `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1153,6 +1188,7 @@ diff -- vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34808
 - 状态/时间: merged / 2026-02-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34808 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `3eff45d793da`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Revert "[NemotronH] Do not force router to run in fp32 (#34582)"」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Revert "[NemotronH] Do not force router to run in fp32 (#34582)"」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1180,6 +1216,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33726
 - 状态/时间: merged / 2026-02-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33726 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`, `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`；关联提交 `f5972a872fa3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+800/-158，可读 patch 1473 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support」；主要实现面是 `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1219,6 +1256,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35297
 - 状态/时间: merged / 2026-02-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35297 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/pooling/embed/template/nemotron_embed_vl.jinja`, `vllm/model_executor/models/nemotron_vl.py`；关联提交 `111d86906999`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+545/-31，可读 patch 752 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja`；技术摘要: 覆盖「[Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model」；主要实现面是 `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja`。下方保留文件级证据、代码摘录和验证风险。
@@ -1256,6 +1294,7 @@ diff -- examples/pooling/embed/template/nemotron_embed_vl.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/35396
 - 状态/时间: merged / 2026-02-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35396 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `832a780f3aed`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-0，可读 patch 12 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1281,6 +1320,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35100
 - 状态/时间: merged / 2026-02-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35100 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `c8aca0c9e1b3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+448/-20，可读 patch 678 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support parakeet as audio encoder for nemotron-nano-vl」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Support parakeet as audio encoder for nemotron-nano-vl」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1308,6 +1348,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35735
 - 状态/时间: merged / 2026-03-03
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35735 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/pooling/score/template/nemotron-vl-rerank.jinja`, `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`；关联提交 `c8b678e53e37`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+503/-149，可读 patch 723 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add support for nvidia/llama-nemotron-rerank-vl-1b-v2」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/score/template/nemotron-vl-rerank.jinja`；技术摘要: 覆盖「[Model] Add support for nvidia/llama-nemotron-rerank-vl-1b-v2」；主要实现面是 `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/score/template/nemotron-vl-rerank.jinja`。下方保留文件级证据、代码摘录和验证风险。
@@ -1349,6 +1390,7 @@ diff -- examples/pooling/score/template/nemotron-vl-rerank.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/35539
 - 状态/时间: merged / 2026-03-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35539 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `5d199ac8f25a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+225/-1，可读 patch 293 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support Audio Extraction from MP4 Video for Nemotron Nano VL」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Support Audio Extraction from MP4 Video for Nemotron Nano VL」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1376,6 +1418,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36192
 - 状态/时间: merged / 2026-03-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36192 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_vl.py`；关联提交 `00bd08edeee5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-2，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nemotron_vl.py`；技术摘要: 覆盖「[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25」；主要实现面是 `vllm/model_executor/models/nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1403,6 +1446,7 @@ diff -- vllm/model_executor/models/nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35657
 - 状态/时间: merged / 2026-03-08
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35657 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `b7332b058c3b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+80/-61，可读 patch 217 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Nano Nemotron VL - fast media preprocessing」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「[Model] Nano Nemotron VL - fast media preprocessing」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1430,6 +1474,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36393
 - 状态/时间: merged / 2026-03-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36393 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`；关联提交 `203a7f27dac2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+186/-0，可读 patch 195 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「add nemotron v3 reasoning parser」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py`；技术摘要: 覆盖「add nemotron v3 reasoning parser」；主要实现面是 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1470,6 +1515,7 @@ diff -- vllm/reasoning/__init__.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36635
 - 状态/时间: merged / 2026-03-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36635 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`；关联提交 `e661b9ee83d9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+26/-1，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[NemotronH] Small fix reasoning parser」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`；技术摘要: 覆盖「[NemotronH] Small fix reasoning parser」；主要实现面是 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1506,6 +1552,7 @@ diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37456
 - 状态/时间: merged / 2026-03-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37456 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_parse.py`；关联提交 `7476d148db99`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+0/-259，可读 patch 288 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Remove unnecessary processor definition for Nemotron Parse」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`；技术摘要: 覆盖「[Model] Remove unnecessary processor definition for Nemotron Parse」；主要实现面是 `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1542,6 +1589,7 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36808
 - 状态/时间: merged / 2026-03-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36808 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`；关联提交 `0b6d52629fe8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+553/-130，可读 patch 1189 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support temporal compression for Nemotron-3-VL videos」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Support temporal compression for Nemotron-3-VL videos」；主要实现面是 `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1578,6 +1626,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37407
 - 状态/时间: merged / 2026-03-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37407 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`；关联提交 `765e4610651b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+49/-19，可读 patch 138 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Nemotron Parse loading」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`；技术摘要: 覆盖「[Bugfix] Fix Nemotron Parse loading」；主要实现面是 `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1614,6 +1663,7 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37613
 - 状态/时间: merged / 2026-03-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37613 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`；关联提交 `fb4e8bf442c5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-1，可读 patch 40 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][CI] Fix accuracy for llama-nemotron-vl pooling tests」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`；技术摘要: 覆盖「[ROCm][CI] Fix accuracy for llama-nemotron-vl pooling tests」；主要实现面是 `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1641,6 +1691,7 @@ diff -- tests/models/multimodal/pooling/test_llama_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37803
 - 状态/时间: merged / 2026-03-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37803 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h_mtp.py`；关联提交 `e74c17e15331`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-3，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Enable `NemotronHPuzzle` + `NemotronHMTP`」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h_mtp.py`；技术摘要: 覆盖「Enable `NemotronHPuzzle` + `NemotronHMTP`」；主要实现面是 `vllm/model_executor/models/nemotron_h_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1668,6 +1719,7 @@ diff -- vllm/model_executor/models/nemotron_h_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36803
 - 状态/时间: merged / 2026-03-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36803 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`；关联提交 `56777b5c898d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+37/-0，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Test] E2E Nemotron-3-Super tests」；模型线: Nemotron Super；类别: 性能/后端优化；主要 diff: `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`；技术摘要: 覆盖「[Test] E2E Nemotron-3-Super tests」；主要实现面是 `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`。下方保留文件级证据、代码摘录和验证风险。
@@ -1707,6 +1759,7 @@ diff -- tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml
 
 - 链接: https://github.com/vllm-project/vllm/pull/37903
 - 状态/时间: merged / 2026-03-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37903 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/nano_nemotron_vl.py`；关联提交 `a0d487b2e1d5`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+32/-44，可读 patch 122 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`；技术摘要: 覆盖「nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths」；主要实现面是 `vllm/transformers_utils/processors/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1734,6 +1787,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38018
 - 状态/时间: merged / 2026-03-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38018 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `e812bf70bd66`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+215/-145，可读 patch 595 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Use helper function to run MM processors with token inputs (where applicable)」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`；技术摘要: 覆盖「[Model] Use helper function to run MM processors with token inputs (where applicable)」；主要实现面是 `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1775,6 +1829,7 @@ diff -- vllm/multimodal/processing/processor.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38567
 - 状态/时间: merged / 2026-03-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38567 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `e812bf70bd66`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Restore non-hf processor path for Nano-Nemotron-VL (bypass `call_hf_processor_mm_only`) - fixes #38018」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Restore non-hf processor path for Nano-Nemotron-VL (bypass `call_hf_processor_mm_only`) - fixes #38018」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1802,6 +1857,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38655
 - 状态/时间: merged / 2026-04-03
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38655 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`；关联提交 `fa9e68022d29`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+84/-52，可读 patch 331 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Nano Nemotron VL regressions」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`；技术摘要: 覆盖「Fix Nano Nemotron VL regressions」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1838,6 +1894,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39029
 - 状态/时间: merged / 2026-04-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39029 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `d56e95223917`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-2，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「nano_nemotron_vl: fix tensor device mismatch exception when video profiling」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「nano_nemotron_vl: fix tensor device mismatch exception when video profiling」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1864,6 +1921,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38727
 - 状态/时间: merged / 2026-04-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38727 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `a9a0e0551f03`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+52/-10，可读 patch 84 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「nano-nemotron-vl: get_mm_max_tokens_per_item for audio, video, image == seq_len」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「nano-nemotron-vl: get_mm_max_tokens_per_item for audio, video, image == seq_len」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1891,6 +1949,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38538
 - 状态/时间: merged / 2026-04-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38538 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`；关联提交 `df2503e125f3`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+74/-18，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`；技术摘要: 覆盖「nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1924,6 +1983,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37580
 - 状态/时间: merged / 2026-04-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37580 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `270e8a410254`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-36，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Nemotron Nano VL: Streamline pixel shuffle」；模型线: Nemotron Super；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Nemotron Nano VL: Streamline pixel shuffle」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1951,6 +2011,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39901
 - 状态/时间: merged / 2026-04-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39901 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `8b5531933a7b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「FIX: support language_model.backbone naming in NemotronH Nano VL quantization config」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「FIX: support language_model.backbone naming in NemotronH Nano VL quantization config」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1978,6 +2039,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40283
 - 状态/时间: merged / 2026-04-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40283 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/nano_nemotron_vl.py`；关联提交 `982beae809b1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+116/-98，可读 patch 384 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Optimize nemotron VL image/video preprocessing」；模型线: Nemotron Super；类别: 性能/后端优化；主要 diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`；技术摘要: 覆盖「Optimize nemotron VL image/video preprocessing」；主要实现面是 `vllm/transformers_utils/processors/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2005,6 +2067,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40724
 - 状态/时间: merged / 2026-04-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40724 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `9ad5abe7722b`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Nano Nemotron VL static image inputs」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Fix Nano Nemotron VL static image inputs」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2030,6 +2093,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41205
 - 状态/时间: merged / 2026-05-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41205 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `8c780943b492`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+130/-5，可读 patch 171 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Nano Nemotron text-only weight loading」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；技术摘要: 覆盖「Fix Nano Nemotron text-only weight loading」；主要实现面是 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2067,6 +2131,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42244
 - 状态/时间: merged / 2026-05-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42244 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`；关联提交 `ac062147fae7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+55/-28，可读 patch 108 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`；技术摘要: 覆盖「Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming」；主要实现面是 `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2104,6 +2169,7 @@ diff -- tests/models/multimodal/test_nano_nemotron_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42498
 - 状态/时间: merged / 2026-05-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42498 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/generation/test_nemotron_parse.py`；关联提交 `67671692ace7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+12/-9，可读 patch 59 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/generation/test_nemotron_parse.py`；技术摘要: 覆盖「[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2」；主要实现面是 `tests/models/multimodal/generation/test_nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2131,6 +2197,7 @@ diff -- tests/models/multimodal/generation/test_nemotron_parse.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42641
 - 状态/时间: merged / 2026-05-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42641 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_parse.py`；关联提交 `b8a25d0e1216`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+5/-1，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix LM detection for Nemotron Parse」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_parse.py`；技术摘要: 覆盖「[Bugfix] Fix LM detection for Nemotron Parse」；主要实现面是 `vllm/model_executor/models/nemotron_parse.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2154,6 +2221,7 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41233
 - 状态/时间: merged / 2026-05-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41233 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+568/-117，可读 patch 960 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py`；技术摘要: 覆盖「[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash」；主要实现面是 `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2196,6 +2264,7 @@ diff -- tests/v1/attention/test_mamba_update_block_table.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/43130
 - 状态/时间: merged / 2026-05-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43130 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `0a508743d42a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+16/-2，可读 patch 60 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Spec Decode] Support non-MTP speculation for NemotronH」；模型线: Nemotron Super；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[Spec Decode] Support non-MTP speculation for NemotronH」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2223,6 +2292,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42124
 - 状态/时间: merged / 2026-05-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42124 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+220/-5，可读 patch 315 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add LM head quantization support for ModelOpt」；模型线: Nemotron Super；类别: 性能/后端优化；主要 diff: `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py`；技术摘要: 覆盖「Add LM head quantization support for ModelOpt」；主要实现面是 `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2265,6 +2335,7 @@ diff -- vllm/model_executor/layers/quantization/modelopt.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/43581
 - 状态/时间: merged / 2026-05-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43581 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_vl.py`；关联提交 `4ec28173139c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-4，可读 patch 29 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_vl.py`；技术摘要: 覆盖「[Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models」；主要实现面是 `vllm/model_executor/models/nemotron_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2375,6 +2446,7 @@ diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39091
 - 状态/时间: merged / 2026-06-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39091 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`；关联提交 `4882fd763282`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+163/-10，可读 patch 237 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py`；技术摘要: 覆盖「[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated」；主要实现面是 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2415,6 +2487,7 @@ diff -- vllm/parser/abstract_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45128
 - 状态/时间: merged / 2026-06-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+1/-17，可读 patch 123 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Remove InternLMForCausalLM registry alias」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Model] Remove InternLMForCausalLM registry alias」；主要实现面是 `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -2458,6 +2531,7 @@ diff -- vllm/model_executor/models/exaone.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45755
 - 状态/时间: merged / 2026-06-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45755 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/parser/engine/test_nemotron_v3.py`, `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/parser/nemotron_v3.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`；关联提交 `f3858d5422f0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+768/-169，可读 patch 1174 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py`；技术摘要: 覆盖「[Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine」；主要实现面是 `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2540,6 +2614,7 @@ diff -- vllm/model_executor/layers/quantization/moe_wna16.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46495
 - 状态/时间: merged / 2026-06-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/46495 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron.py`；关联提交 `ac1fa74616fe`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-8，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron.py`；技术摘要: 覆盖「[Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type」；主要实现面是 `vllm/model_executor/models/nemotron.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2567,6 +2642,7 @@ diff -- vllm/model_executor/models/nemotron.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47440
 - 状态/时间: merged / 2026-07-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/47440 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h_mtp.py`；关联提交 `7ff656cc8bc7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-5，可读 patch 13 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「fix: ensure no double load of lm head in nemotron mtp」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_h_mtp.py`；技术摘要: 覆盖「fix: ensure no double load of lm head in nemotron mtp」；主要实现面是 `vllm/model_executor/models/nemotron_h_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2594,6 +2670,7 @@ diff -- vllm/model_executor/models/nemotron_h_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/49781
 - 状态/时间: merged / 2026-07-25
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/49781 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/nemotron_h.py`；关联提交 `190be7dad2af`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Fix confusing docstring indentation in nemotron_h.py」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/nemotron_h.py`；技术摘要: 覆盖「[Docs] Fix confusing docstring indentation in nemotron_h.py」；主要实现面是 `vllm/model_executor/models/nemotron_h.py`。下方保留文件级证据、代码摘录和验证风险。

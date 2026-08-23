@@ -1,9 +1,9 @@
 # TokenSpeed Qwen3.5 模型 PR 优化历史
 
-## 2026-07-28 源码 head 刷新
+## 2026-08-23 源码 head 刷新
 
 已复核 TokenSpeed 上游 main：
-`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`。
+`lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d`。
 已读完上一 head `d73bf0454422092f306d5575e803a08fd35ac41c`
 之后的 2-commit 完整增量；两项都只是 Kimi K3 文档变化，因此不新增 Qwen3.5 卡片。
 

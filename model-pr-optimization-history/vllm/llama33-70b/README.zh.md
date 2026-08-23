@@ -35,6 +35,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/28697
 - 状态/时间: merged / 2025-11-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28697 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+26/-0，可读 patch 27 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add CPU support model」；模型线: Llama 3.3 70B；类别: 文档/测试/CI；主要 diff: `docs/models/hardware_supported_models/cpu.md`；技术摘要: 覆盖「Add CPU support model」；主要实现面是 `docs/models/hardware_supported_models/cpu.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -62,6 +63,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/29380
 - 状态/时间: merged / 2025-11-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29380 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+82/-9，可读 patch 109 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「add xpu supported model and model id for cpu」；模型线: Llama 3.3 70B；类别: 文档/测试/CI；主要 diff: `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md`；技术摘要: 覆盖「add xpu supported model and model id for cpu」；主要实现面是 `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -98,6 +100,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/32963
 - 状态/时间: merged / 2026-01-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32963 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+4/-4，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update CPU doc according to feedback」；模型线: Llama 3.3 70B；类别: 文档/测试/CI；主要 diff: `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md`；技术摘要: 覆盖「Update CPU doc according to feedback」；主要实现面是 `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -133,6 +136,7 @@ diff -- docs/benchmarking/dashboard.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/34128
 - 状态/时间: merged / 2026-02-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+802/-254，可读 patch 1243 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Vllm CPU benchmark suite improvement」；模型线: Llama 3.3 70B；类别: 性能/后端优化；主要 diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`；技术摘要: 覆盖「Vllm CPU benchmark suite improvement」；主要实现面是 `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`。下方保留文件级证据、代码摘录和验证风险。
@@ -176,6 +180,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 
 - 链接: https://github.com/vllm-project/vllm/pull/36398
 - 状态/时间: merged / 2026-03-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36398 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 47 个文件，+394/-392，可读 patch 1933 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Allow `markdownlint` to run locally」；模型线: Llama 3.3 70B；类别: 文档/测试/CI；主要 diff: `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md`；技术摘要: 覆盖「Allow `markdownlint` to run locally」；主要实现面是 `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -217,6 +222,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/35086
 - 状态/时间: merged / 2026-03-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35086 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+800/-119，可读 patch 1301 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「more models for vLLM Benchmark Suite」；模型线: Llama 3.3 70B；类别: 性能/后端优化；主要 diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`；技术摘要: 覆盖「more models for vLLM Benchmark Suite」；主要实现面是 `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -260,6 +266,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/38576
 - 状态/时间: merged / 2026-03-31
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38576 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+15/-1，可读 patch 119 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「vLLM Benchmark Suite perf regression after PR#32723」；模型线: Llama 3.3 70B；类别: 缺陷修复；主要 diff: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`；技术摘要: 覆盖「vLLM Benchmark Suite perf regression after PR#32723」；主要实现面是 `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -301,6 +308,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/42607
 - 状态/时间: merged / 2026-05-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42607 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+118/-159，可读 patch 465 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update Intel Xeon model list and vLLM Benchmark Suite BKMs」；模型线: Llama 3.3 70B；类别: 性能/后端优化；主要 diff: `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`；技术摘要: 覆盖「Update Intel Xeon model list and vLLM Benchmark Suite BKMs」；主要实现面是 `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -338,6 +346,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/44128
 - 状态/时间: merged / 2026-06-03
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/44128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+1/-15，可读 patch 100 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it」；模型线: Llama 3.3 70B；类别: 缺陷修复；主要 diff: `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`；技术摘要: 覆盖「[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it」；主要实现面是 `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -381,6 +390,7 @@ diff -- .buildkite/performance-benchmarks/tests/latency-tests-cpu.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/42726
 - 状态/时间: merged / 2026-06-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42726 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+108/-3，可读 patch 200 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ZenCPU] Add zencpu Platform Runtime Logging and Docs」；模型线: Llama 3.3 70B；类别: 文档/测试/CI；主要 diff: `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md`；技术摘要: 覆盖「[ZenCPU] Add zencpu Platform Runtime Logging and Docs」；主要实现面是 `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md`。下方保留文件级证据、代码摘录和验证风险。

@@ -1,35 +1,95 @@
-# vllm Kimi K2/K2.5/Linear/VL Model PR Optimization History
+# vllm Kimi K2/K2.5/K3/Linear/VL Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
+| `benchmarks/kernels/benchmark_kimi_k3_gemm_rs_ar.py` | [#53053](https://github.com/vllm-project/vllm/pull/53053) |
+| `benchmarks/kernels/benchmark_kimi_k3_kda_decode.py` | [#50654](https://github.com/vllm-project/vllm/pull/50654) |
+| `benchmarks/kernels/benchmark_kimi_k3_latent_moe_tail.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `benchmarks/kernels/benchmark_kimi_k3_sp_collectives.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `tests/distributed/test_kimi_linear_context_parallel.py` | [#50484](https://github.com/vllm-project/vllm/pull/50484), [#50493](https://github.com/vllm-project/vllm/pull/50493) |
+| `tests/kernels/attention/test_kimi_k3_mla_fused_epilogue.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#51772](https://github.com/vllm-project/vllm/pull/51772) |
+| `tests/kernels/attention/test_kimi_k3_mla_key_concat_kv_cache.py` | [#50484](https://github.com/vllm-project/vllm/pull/50484) |
+| `tests/kernels/test_kimi_k3_gemm_rs_ar.py` | [#53053](https://github.com/vllm-project/vllm/pull/53053) |
+| `tests/models/kimi_k3/__init__.py` | [#51253](https://github.com/vllm-project/vllm/pull/51253) |
+| `tests/models/kimi_k3/test_amd_attn_res.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090), [#50593](https://github.com/vllm-project/vllm/pull/50593) |
+| `tests/models/kimi_k3/test_amd_kda_decode.py` | [#50654](https://github.com/vllm-project/vllm/pull/50654) |
+| `tests/models/kimi_k3/test_amd_latent_moe_runner.py` | [#51253](https://github.com/vllm-project/vllm/pull/51253) |
+| `tests/models/kimi_k3/test_attn_res.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50090](https://github.com/vllm-project/vllm/pull/50090) |
+| `tests/models/kimi_k3/test_aux_attn_res_stream.py` | [#50487](https://github.com/vllm-project/vllm/pull/50487) |
+| `tests/models/kimi_k3/test_eagle3.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50487](https://github.com/vllm-project/vllm/pull/50487), [#52171](https://github.com/vllm-project/vllm/pull/52171) |
+| `tests/models/kimi_k3/test_kda.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#51682](https://github.com/vllm-project/vllm/pull/51682), [#51809](https://github.com/vllm-project/vllm/pull/51809) |
+| `tests/models/kimi_k3/test_kda_metadata.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `tests/models/kimi_k3/test_latent_moe_tail.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#53327](https://github.com/vllm-project/vllm/pull/53327) |
+| `tests/models/kimi_k3/test_mla_prefill_context.py` | [#51772](https://github.com/vllm-project/vllm/pull/51772) |
+| `tests/models/kimi_k3/test_sequence_parallel.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50656](https://github.com/vllm-project/vllm/pull/50656), [#50912](https://github.com/vllm-project/vllm/pull/50912), [#52079](https://github.com/vllm-project/vllm/pull/52079) |
 | `tests/reasoning/test_kimi_k2_reasoning_parser.py` | [#37438](https://github.com/vllm-project/vllm/pull/37438), [#41068](https://github.com/vllm-project/vllm/pull/41068), [#46610](https://github.com/vllm-project/vllm/pull/46610) |
+| `tests/reasoning/test_kimi_k3_reasoning_parser.py` | [#50093](https://github.com/vllm-project/vllm/pull/50093), [#50886](https://github.com/vllm-project/vllm/pull/50886) |
+| `tests/renderers/test_kimi_k3.py` | [#50093](https://github.com/vllm-project/vllm/pull/50093) |
 | `tests/tool_parsers/test_kimi_k2_tool_parser.py` | [#31207](https://github.com/vllm-project/vllm/pull/31207), [#38579](https://github.com/vllm-project/vllm/pull/38579) |
-| `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py` | no direct PR-number commit |
+| `tests/tool_parsers/test_kimi_k3_named_tool_choice.py` | [#50093](https://github.com/vllm-project/vllm/pull/50093) |
+| `tests/tool_use/test_kimi_k3_tool_parser.py` | [#50093](https://github.com/vllm-project/vllm/pull/50093), [#50420](https://github.com/vllm-project/vllm/pull/50420) |
+| `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py` | [#50000](https://github.com/vllm-project/vllm/pull/50000), [#51862](https://github.com/vllm-project/vllm/pull/51862) |
 | `vllm/model_executor/models/kimi_audio.py` | [#36127](https://github.com/vllm-project/vllm/pull/36127), [#36903](https://github.com/vllm-project/vllm/pull/36903) |
-| `vllm/model_executor/models/kimi_k25.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33320](https://github.com/vllm-project/vllm/pull/33320), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#33562](https://github.com/vllm-project/vllm/pull/33562), [#33876](https://github.com/vllm-project/vllm/pull/33876), [#34427](https://github.com/vllm-project/vllm/pull/34427), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#36361](https://github.com/vllm-project/vllm/pull/36361), [#37693](https://github.com/vllm-project/vllm/pull/37693), [#39344](https://github.com/vllm-project/vllm/pull/39344), [#42869](https://github.com/vllm-project/vllm/pull/42869), ... (14 total) |
-| `vllm/model_executor/models/kimi_k25_vit.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#42081](https://github.com/vllm-project/vllm/pull/42081), [#44493](https://github.com/vllm-project/vllm/pull/44493) |
-| `vllm/model_executor/models/kimi_linear.py` | [#27809](https://github.com/vllm-project/vllm/pull/27809), [#27834](https://github.com/vllm-project/vllm/pull/27834), [#27885](https://github.com/vllm-project/vllm/pull/27885), [#37371](https://github.com/vllm-project/vllm/pull/37371) |
+| `vllm/model_executor/models/kimi_k25.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33320](https://github.com/vllm-project/vllm/pull/33320), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#33562](https://github.com/vllm-project/vllm/pull/33562), [#33876](https://github.com/vllm-project/vllm/pull/33876), [#34427](https://github.com/vllm-project/vllm/pull/34427), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#36192](https://github.com/vllm-project/vllm/pull/36192), [#36361](https://github.com/vllm-project/vllm/pull/36361), [#37693](https://github.com/vllm-project/vllm/pull/37693), [#39344](https://github.com/vllm-project/vllm/pull/39344), [#42869](https://github.com/vllm-project/vllm/pull/42869), ... (15 total) |
+| `vllm/model_executor/models/kimi_k25_vit.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33346](https://github.com/vllm-project/vllm/pull/33346), [#34501](https://github.com/vllm-project/vllm/pull/34501), [#42081](https://github.com/vllm-project/vllm/pull/42081), [#44493](https://github.com/vllm-project/vllm/pull/44493), [#50000](https://github.com/vllm-project/vllm/pull/50000), [#50400](https://github.com/vllm-project/vllm/pull/50400), [#51196](https://github.com/vllm-project/vllm/pull/51196) |
 | `vllm/model_executor/models/kimi_vl.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387), [#16833](https://github.com/vllm-project/vllm/pull/16833), [#17156](https://github.com/vllm-project/vllm/pull/17156), [#21769](https://github.com/vllm-project/vllm/pull/21769), [#23114](https://github.com/vllm-project/vllm/pull/23114), [#23817](https://github.com/vllm-project/vllm/pull/23817), [#31738](https://github.com/vllm-project/vllm/pull/31738), [#41992](https://github.com/vllm-project/vllm/pull/41992) |
 | `vllm/model_executor/models/moonvit.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387), [#23817](https://github.com/vllm-project/vllm/pull/23817), [#29309](https://github.com/vllm-project/vllm/pull/29309), [#31738](https://github.com/vllm-project/vllm/pull/31738), [#41992](https://github.com/vllm-project/vllm/pull/41992) |
-| `vllm/parser/kimi_k2.py` | [#46610](https://github.com/vllm-project/vllm/pull/46610) |
-| `vllm/reasoning/kimi_k2_reasoning_parser.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131), [#33646](https://github.com/vllm-project/vllm/pull/33646), [#41068](https://github.com/vllm-project/vllm/pull/41068), [#46610](https://github.com/vllm-project/vllm/pull/46610) |
-| `vllm/tokenizers/kimi_audio.py` | [#36127](https://github.com/vllm-project/vllm/pull/36127) |
-| `vllm/tool_parsers/kimi_k2_tool_parser.py` | [#31207](https://github.com/vllm-project/vllm/pull/31207), [#38579](https://github.com/vllm-project/vllm/pull/38579), [#46610](https://github.com/vllm-project/vllm/pull/46610) |
-| `vllm/transformers_utils/chat_templates/template_kimi_audio.jinja` | [#36127](https://github.com/vllm-project/vllm/pull/36127) |
-| `vllm/transformers_utils/configs/kimi_k25.py` | [#33131](https://github.com/vllm-project/vllm/pull/33131) |
-| `vllm/transformers_utils/configs/kimi_linear.py` | [#27809](https://github.com/vllm-project/vllm/pull/27809) |
-| `vllm/transformers_utils/configs/kimi_vl.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387) |
-| `vllm/transformers_utils/configs/moonvit.py` | [#16387](https://github.com/vllm-project/vllm/pull/16387) |
-| `vllm/transformers_utils/processors/kimi_audio.py` | [#36127](https://github.com/vllm-project/vllm/pull/36127) |
-| `vllm/transformers_utils/processors/kimi_k25.py` | [#37693](https://github.com/vllm-project/vllm/pull/37693) |
-| `vllm/transformers_utils/processors/kimi_k25_vision_fused.py` | [#47416](https://github.com/vllm-project/vllm/pull/47416) |
+| `vllm/model_executor/warmup/kimi_k3_triton_warmup.py` | [#50000](https://github.com/vllm-project/vllm/pull/50000) |
+| `vllm/models/kimi_k3/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50131](https://github.com/vllm-project/vllm/pull/50131), [#51529](https://github.com/vllm-project/vllm/pull/51529) |
+| `vllm/models/kimi_k3/amd/__init__.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090) |
+| `vllm/models/kimi_k3/amd/kda.py` | [#50649](https://github.com/vllm-project/vllm/pull/50649), [#50654](https://github.com/vllm-project/vllm/pull/50654), [#51862](https://github.com/vllm-project/vllm/pull/51862), [#52606](https://github.com/vllm-project/vllm/pull/52606), [#53294](https://github.com/vllm-project/vllm/pull/53294) |
+| `vllm/models/kimi_k3/amd/kda_metadata.py` | [#51862](https://github.com/vllm-project/vllm/pull/51862) |
+| `vllm/models/kimi_k3/amd/latent_moe_runner.py` | [#51253](https://github.com/vllm-project/vllm/pull/51253) |
+| `vllm/models/kimi_k3/amd/linear.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50593](https://github.com/vllm-project/vllm/pull/50593), [#50649](https://github.com/vllm-project/vllm/pull/50649), [#50761](https://github.com/vllm-project/vllm/pull/50761), [#51253](https://github.com/vllm-project/vllm/pull/51253) |
+| `vllm/models/kimi_k3/amd/model.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/amd/mtp.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/amd/ops/__init__.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090), [#50131](https://github.com/vllm-project/vllm/pull/50131) |
+| `vllm/models/kimi_k3/amd/ops/attn_res.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090), [#50593](https://github.com/vllm-project/vllm/pull/50593) |
+| `vllm/models/kimi_k3/amd/ops/kda_decode.py` | [#50654](https://github.com/vllm-project/vllm/pull/50654) |
+| `vllm/models/kimi_k3/amd/ops/third_party/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/amd/ops/third_party/kda/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/amd/ops/third_party/kda/chunk.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50649](https://github.com/vllm-project/vllm/pull/50649), [#51862](https://github.com/vllm-project/vllm/pull/51862) |
+| `vllm/models/kimi_k3/amd/ops/third_party/kda/chunk_intra.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/amd/ops/third_party/kda/chunk_intra_token_parallel.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/amd/ops/third_party/kda/fused_recurrent.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#51682](https://github.com/vllm-project/vllm/pull/51682) |
+| `vllm/models/kimi_k3/common/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/common/mm_preprocess.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/common/mtp.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/__init__.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090) |
+| `vllm/models/kimi_k3/nvidia/dspark_mla.py` | [#50000](https://github.com/vllm-project/vllm/pull/50000), [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/kda.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50262](https://github.com/vllm-project/vllm/pull/50262), [#52079](https://github.com/vllm-project/vllm/pull/52079), [#53053](https://github.com/vllm-project/vllm/pull/53053), [#53132](https://github.com/vllm-project/vllm/pull/53132) |
+| `vllm/models/kimi_k3/nvidia/kda_metadata.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/latent_moe_runner.py` | [#53327](https://github.com/vllm-project/vllm/pull/53327) |
+| `vllm/models/kimi_k3/nvidia/low_latency_gemm.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/mla.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50404](https://github.com/vllm-project/vllm/pull/50404), [#50484](https://github.com/vllm-project/vllm/pull/50484), [#51772](https://github.com/vllm-project/vllm/pull/51772), [#52079](https://github.com/vllm-project/vllm/pull/52079), [#52188](https://github.com/vllm-project/vllm/pull/52188), [#53053](https://github.com/vllm-project/vllm/pull/53053) |
+| `vllm/models/kimi_k3/nvidia/model.py` | [#50000](https://github.com/vllm-project/vllm/pull/50000), [#50089](https://github.com/vllm-project/vllm/pull/50089), [#50487](https://github.com/vllm-project/vllm/pull/50487), [#50500](https://github.com/vllm-project/vllm/pull/50500), [#50656](https://github.com/vllm-project/vllm/pull/50656), [#50912](https://github.com/vllm-project/vllm/pull/50912), [#51249](https://github.com/vllm-project/vllm/pull/51249), [#52079](https://github.com/vllm-project/vllm/pull/52079), [#52171](https://github.com/vllm-project/vllm/pull/52171), [#52445](https://github.com/vllm-project/vllm/pull/52445), [#53053](https://github.com/vllm-project/vllm/pull/53053) |
+| `vllm/models/kimi_k3/nvidia/mtp.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/__init__.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090) |
+| `vllm/models/kimi_k3/nvidia/ops/attn_res.py` | [#50090](https://github.com/vllm-project/vllm/pull/50090), [#50567](https://github.com/vllm-project/vllm/pull/50567) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/gemm_rs_ar.py` | [#53053](https://github.com/vllm-project/vllm/pull/53053) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/latent_moe_tail/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/latent_moe_tail/allreduce_rmsnorm_reduce_scatter_early_exit.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/latent_moe_tail/fused_add_multicast_gemm.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/latent_moe_tail/fused_add_multicast_skinny_gemm.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/latent_moe_tail/lamport_copy.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/cute_dsl/latent_moe_tail/primitives.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/fused_mla_key_concat_kv_cache.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089), [#51772](https://github.com/vllm-project/vllm/pull/51772) |
+| `vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/recoverssm.py` | no direct PR-number commit |
+| `vllm/models/kimi_k3/nvidia/ops/third_party/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/third_party/kda/__init__.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/third_party/kda/chunk.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/third_party/kda/chunk_intra.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| `vllm/models/kimi_k3/nvidia/ops/third_party/kda/chunk_intra_token_parallel.py` | [#50089](https://github.com/vllm-project/vllm/pull/50089) |
+| ... | 20 more files omitted from table; all were used for git tracing. |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 36
-- Extra PRs preserved from existing docs: 7
+- Git-traced PRs: 33
+- Extra PRs preserved from existing docs: 10
 - Total PRs in this document: 43
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -88,6 +148,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/16387
 - Status/date: merged / 2025-04-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16387 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`, `vllm/transformers_utils/configs/kimi_vl.py`, `vllm/transformers_utils/configs/moonvit.py`; associated commits `b1308b84a3a6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +1436/-14, 1618 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][VLM] Add Kimi-VL model support"; model line: Kimi K2/K2.5/Linear/VL; category: model support/runtime entry; main diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `vllm/transformers_utils/configs/kimi_vl.py`; technical summary: Covers "[Model][VLM] Add Kimi-VL model support"; the main implementation surface is `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `vllm/transformers_utils/configs/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -128,6 +189,7 @@ diff -- vllm/transformers_utils/configs/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16833
 - Status/date: merged / 2025-04-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16833 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`; associated commits `aadb6565628c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +20/-44, 139 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Clean up Kimi-VL"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "[Misc] Clean up Kimi-VL"; the main implementation surface is `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -155,6 +217,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17156
 - Status/date: merged / 2025-04-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17156 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`; associated commits `69bff9bc8934`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 10 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix float16 support for kimi-vl"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "fix float16 support for kimi-vl"; the main implementation surface is `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -179,6 +242,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21769
 - Status/date: merged / 2025-08-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21769 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`; associated commits `05fae021750b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +15/-9, 55 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Migrate KimiVLImagePixelInputs to TensorSchema"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "Migrate KimiVLImagePixelInputs to TensorSchema"; the main implementation surface is `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -206,6 +270,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/23114
 - Status/date: merged / 2025-08-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/23114 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`; associated commits `fda9537c5e61`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +18/-13, 77 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support Pipeline Parallelism for moonshotai/Kimi-VL-A3B-Thinking-2506"; model line: Kimi K2/K2.5/Linear/VL; category: model support/runtime entry; main diff: `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "[Model] Support Pipeline Parallelism for moonshotai/Kimi-VL-A3B-Thinking-2506"; the main implementation surface is `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -233,6 +298,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/23817
 - Status/date: merged / 2025-09-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/23817 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`; associated commits `a0e0efd6bdcf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +157/-62, 478 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support DP for ViT on Kimi-VL-A3B-Thinking-2506"; model line: Kimi K2/K2.5/Linear/VL; category: model support/runtime entry; main diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "[Model] Support DP for ViT on Kimi-VL-A3B-Thinking-2506"; the main implementation surface is `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -269,6 +335,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27809
 - Status/date: merged / 2025-10-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27809 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_linear.py`, `vllm/transformers_utils/configs/kimi_linear.py`; associated commits `4e68cc9b6aa2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +1326/-49, 1510 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Introduce Kimi Linear to vLLM"; model line: Kimi K2/K2.5/Linear/VL; category: model support/runtime entry; main diff: `vllm/model_executor/models/kimi_linear.py`, `vllm/transformers_utils/configs/kimi_linear.py`; technical summary: Covers "[Model] Introduce Kimi Linear to vLLM"; the main implementation surface is `vllm/model_executor/models/kimi_linear.py`, `vllm/transformers_utils/configs/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -305,6 +372,7 @@ diff -- vllm/transformers_utils/configs/kimi_linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27834
 - Status/date: merged / 2025-10-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27834 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_linear.py`; associated commits `e5ef4dfc11ab`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-1, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kimi-Linear] Correct prefixes and add compatibility to AWQ quants"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_linear.py`; technical summary: Covers "[Kimi-Linear] Correct prefixes and add compatibility to AWQ quants"; the main implementation surface is `vllm/model_executor/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -330,6 +398,7 @@ diff -- vllm/model_executor/models/kimi_linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27885
 - Status/date: merged / 2025-10-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27885 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_linear.py`; associated commits `bc306fe5e978`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix incorrect type annotation in KimiMLP"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_linear.py`; technical summary: Covers "fix incorrect type annotation in KimiMLP"; the main implementation surface is `vllm/model_executor/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -355,6 +424,7 @@ diff -- vllm/model_executor/models/kimi_linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29309
 - Status/date: merged / 2025-11-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29309 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/moonvit.py`; associated commits `3cfa63ad9916`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-6, 52 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[XPU]fix Kimi-VL-A3B-thinking on xpu"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/moonvit.py`; technical summary: Covers "[XPU]fix Kimi-VL-A3B-thinking on xpu"; the main implementation surface is `vllm/model_executor/models/moonvit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -382,6 +452,7 @@ diff -- vllm/model_executor/models/moonvit.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30125
 - Status/date: merged / 2025-12-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30125 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 24 files, +1264/-853, 3625 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CustomOp][MM] Extract MMEncoderAttention as CustomOp and replace the backend of QwenVisionAttention with it."; model line: Kimi K2/K2.5/Linear/VL; category: docs/tests/CI; main diff: `tests/models/multimodal/generation/test_vit_backend_functionality.py`, `vllm/attention/layers/mm_encoder_attention.py`, `vllm/model_executor/models/qwen2_vl.py`; technical summary: Covers "[CustomOp][MM] Extract MMEncoderAttention as CustomOp and replace the backend of QwenVisionAttention with it."; the main implementation surface is `tests/models/multimodal/generation/test_vit_backend_functionality.py`, `vllm/attention/layers/mm_encoder_attention.py`, `vllm/model_executor/models/qwen2_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -424,6 +495,7 @@ diff -- vllm/model_executor/models/qwen2_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31207
 - Status/date: merged / 2025-12-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31207 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`; associated commits `358bfd315cad`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +211/-202, 511 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix: update kimi k2 tool parser logic"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`; technical summary: Covers "fix: update kimi k2 tool parser logic"; the main implementation surface is `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -461,6 +533,7 @@ diff -- vllm/tool_parsers/kimi_k2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31738
 - Status/date: merged / 2026-01-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31738 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`; associated commits `7101e0851f73`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +72/-158, 345 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models]: Use `MMEncoderAttention` for MoonViT"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "[Models]: Use `MMEncoderAttention` for MoonViT"; the main implementation surface is `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -493,6 +566,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33131
 - Status/date: merged / 2026-01-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33131 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `vllm/transformers_utils/configs/kimi_k25.py`; associated commits `b539f988e1ee`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +1799/-8, 2011 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models] Kimi-K2.5"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/configs/kimi_k25.py`; technical summary: Covers "[Models] Kimi-K2.5"; the main implementation surface is `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/configs/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -533,6 +607,7 @@ diff -- vllm/transformers_utils/configs/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33320
 - Status/date: merged / 2026-01-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33320 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `17b17c068453`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-1, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Backport] [Kimi-K2.5] Replace torch.cuda with current_platform for d…"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Backport] [Kimi-K2.5] Replace torch.cuda with current_platform for d…"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -558,6 +633,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33346
 - Status/date: merged / 2026-01-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33346 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`; associated commits `8bfc8d5600ed`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +40/-176, 282 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models] Refactor Kimi-K2.5 weight loading"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`; technical summary: Covers "[Models] Refactor Kimi-K2.5 weight loading"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -592,6 +668,7 @@ diff -- vllm/model_executor/models/kimi_k25_vit.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33562
 - Status/date: merged / 2026-02-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33562 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `4061dcf4c51a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +96/-12, 221 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Enable Kimi k25 processor test"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Bugfix] Enable Kimi k25 processor test"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -621,7 +698,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 - Status/date: merged / 2026-02-05
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `a2522839d87d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +15/-5, 53 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Bugfix] Fix Kimi-K2.5 NVFP4 checkpoints weight loading"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/kimi_k25.py` modified +14/-4 (18 lines); hunks: -24,7 +24,11; -302,7 +306,9 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits, touching `split_video_chunks, KimiK25ForConditionalGeneration, compute_logits`.
 - Code diff details:
   - `vllm/model_executor/models/kimi_k25.py` modified +14/-4 (18 lines); hunks: -24,7 +24,11; -302,7 +306,9 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits
@@ -646,6 +723,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34427
 - Status/date: merged / 2026-02-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34427 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `62788f99a4d0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-5, 19 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Delete unused redundant code in Kimi-K2.5"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Bugfix] Delete unused redundant code in Kimi-K2.5"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -673,6 +751,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34501
 - Status/date: merged / 2026-02-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34501 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`; associated commits `4a9952ec1b15`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-0, 158 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Add quant_config in ViT of Kimi-K2.5"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Bugfix] Add quant_config in ViT of Kimi-K2.5"; the main implementation surface is `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -709,6 +788,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33646
 - Status/date: merged / 2026-02-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33646 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/reasoning/kimi_k2_reasoning_parser.py`; associated commits `9251ed5c4fc6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +230/-2, 240 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Handle case when kimi ends reasoning with a tool call"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/reasoning/kimi_k2_reasoning_parser.py`; technical summary: Covers "[Bugfix] Handle case when kimi ends reasoning with a tool call"; the main implementation surface is `vllm/reasoning/kimi_k2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -736,6 +816,7 @@ diff -- vllm/reasoning/kimi_k2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36192
 - Status/date: merged / 2026-03-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36192 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `00bd08edeee5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +7/-2, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -804,7 +885,7 @@ diff -- vllm/transformers_utils/processors/kimi_audio.py
 - Status/date: merged / 2026-03-11
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `557389473755`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +499/-8, 649 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Kimi k2.5 MLA based eagle3"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "Kimi k2.5 MLA based eagle3"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "Kimi k2.5 MLA based eagle3"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "Kimi k2.5 MLA based eagle3"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/kimi_k25.py` modified +14/-1 (15 lines); hunks: -28,6 +28,8; -311,7 +313,12 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits, set_aux_hidden_state_layers, touching `split_video_chunks, KimiK25ForConditionalGeneration, compute_logits`.
 - Code diff details:
   - `vllm/model_executor/models/kimi_k25.py` modified +14/-1 (15 lines); hunks: -28,6 +28,8; -311,7 +313,12 @@ def split_video_chunks(self, video):; symbols: split_video_chunks, KimiK25ForConditionalGeneration, compute_logits, set_aux_hidden_state_layers
@@ -829,6 +910,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36903
 - Status/date: merged / 2026-03-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36903 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_audio.py`; associated commits `a8e8d62dd80f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +89/-116, 382 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Clean up Kimi-audio whisper encoder loading"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_audio.py`; technical summary: Covers "[Misc] Clean up Kimi-audio whisper encoder loading"; the main implementation surface is `vllm/model_executor/models/kimi_audio.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -856,6 +938,7 @@ diff -- vllm/model_executor/models/kimi_audio.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37371
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37371 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_linear.py`; associated commits `17808394bc48`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +235/-219, 527 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/kimi_linear.py`; technical summary: Covers "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; the main implementation surface is `vllm/model_executor/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -883,6 +966,7 @@ diff -- vllm/model_executor/models/kimi_linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37438
 - Status/date: merged / 2026-03-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37438 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_kimi_k2_reasoning_parser.py`; associated commits `c63ca2b2e696`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +173/-18, 227 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/entrypoints/chat_utils.py`, `vllm/entrypoints/openai/chat_completion/serving.py`; technical summary: Covers "[Bugfix] Add Kimi-K2.5 reasoning/tool parser aliases and tool_call_id support"; the main implementation surface is `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/entrypoints/chat_utils.py`, `vllm/entrypoints/openai/chat_completion/serving.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -924,6 +1008,7 @@ diff -- vllm/entrypoints/openai/chat_completion/serving.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37693
 - Status/date: merged / 2026-03-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37693 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25.py`; associated commits `37aadf623786`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +128/-95, 366 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Update Kimi-K25 and Isaac processors to fit HF-style"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/transformers_utils/processors/kimi_k25.py`, `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Model] Update Kimi-K25 and Isaac processors to fit HF-style"; the main implementation surface is `vllm/transformers_utils/processors/kimi_k25.py`, `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -960,6 +1045,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39344
 - Status/date: merged / 2026-04-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39344 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `17e787a7792b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +24/-3, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix(kimi_k25): resolve media_placeholder_token_id from tokenizer"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "fix(kimi_k25): resolve media_placeholder_token_id from tokenizer"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -987,6 +1073,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38579
 - Status/date: merged / 2026-04-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38579 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`; associated commits `03ce1c6ed908`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +684/-1405, 2206 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Kimi-K2 tool parser streaming - fix token leakage, argument truncation, and content dropping"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`; technical summary: Covers "[Bugfix] Kimi-K2 tool parser streaming - fix token leakage, argument truncation, and content dropping"; the main implementation surface is `tests/tool_parsers/test_kimi_k2_tool_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1024,6 +1111,7 @@ diff -- vllm/tool_parsers/kimi_k2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41068
 - Status/date: merged / 2026-05-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41068 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`; associated commits `712ad0286c9a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +70/-0, 102 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] KimiK2ReasoningParser: guard against buffered end-token in streaming"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`; technical summary: Covers "[Bugfix] KimiK2ReasoningParser: guard against buffered end-token in streaming"; the main implementation surface is `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1061,6 +1149,7 @@ diff -- vllm/reasoning/kimi_k2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42081
 - Status/date: merged / 2026-05-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42081 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25_vit.py`; associated commits `3f9c0c25b331`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bug] Fix kimi dtype issue with `mm_projector_forward`"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25_vit.py`; technical summary: Covers "[Bug] Fix kimi dtype issue with `mm_projector_forward`"; the main implementation surface is `vllm/model_executor/models/kimi_k25_vit.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1087,7 +1176,7 @@ diff -- vllm/model_executor/models/kimi_k25_vit.py
 - Status/date: merged / 2026-05-14
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +640/-89, 975 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell"; model line: Kimi K2/K2.5/Linear/VL; category: docs/tests/CI; main diff: `benchmarks/attention_benchmarks/configs/mla_prefill.yaml`, `benchmarks/attention_benchmarks/configs/mla_decode.yaml`, `vllm/model_executor/layers/attention/mla_attention.py`; technical summary: Covers "[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell"; the main implementation surface is `benchmarks/attention_benchmarks/configs/mla_prefill.yaml`, `benchmarks/attention_benchmarks/configs/mla_decode.yaml`, `vllm/model_executor/layers/attention/mla_attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `benchmarks/attention_benchmarks/configs/mla_prefill.yaml`, `benchmarks/attention_benchmarks/configs/mla_decode.yaml`, `vllm/model_executor/layers/attention/mla_attention.py`; technical summary: Covers "[MLA Attention Backend] Add TOKENSPEED_MLA backend for DSR1/Kimi K25 prefill + decode on Blackwell"; the main implementation surface is `benchmarks/attention_benchmarks/configs/mla_prefill.yaml`, `benchmarks/attention_benchmarks/configs/mla_decode.yaml`, `vllm/model_executor/layers/attention/mla_attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `benchmarks/attention_benchmarks/configs/mla_prefill.yaml` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -120,6 +121,7 @@ prefill_backends:; `benchmarks/attention_benchmarks/configs/mla_decode.yaml` modified +1/-0 (1 lines); hunks: -53,6 +53,7 @@ backends:; `vllm/model_executor/layers/attention/mla_attention.py` modified +1/-0 (1 lines); hunks: -1362,6 +1362,7 @@ def backend_supports_prefill_query_quantization() -> bool:; symbols: backend_supports_prefill_query_quantization, touching `backend_supports_prefill_query_quantization`; `vllm/v1/attention/backends/mla/tokenspeed_mla.py` added +277/-0 (277 lines); hunks: -0,0 +1,277; symbols: _get_workspace, TokenspeedMLAMetadataBuilder, TokenspeedMLABackend, get_supported_kernel_block_sizes, touching `_get_workspace, TokenspeedMLAMetadataBuilder, TokenspeedMLABackend`.
 - Code diff details:
   - `benchmarks/attention_benchmarks/configs/mla_prefill.yaml` modified +2/-0 (2 lines); hunks: -3,6 +3,7; -120,6 +121,7 @@ prefill_backends:
@@ -1128,6 +1217,7 @@ diff -- vllm/v1/attention/backends/mla/tokenspeed_mla.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42869
 - Status/date: merged / 2026-05-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42869 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`; associated commits `23c15acd770c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-3, 16 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Kimi-K2.5: skip vision tower dtype conversion when using quantization"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[BugFix] Kimi-K2.5: skip vision tower dtype conversion when using quantization"; the main implementation surface is `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1155,6 +1245,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41126
 - Status/date: merged / 2026-05-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41126 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +765/-774, 1913 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Attention] Mamba attention module refactor"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`; technical summary: Covers "[Attention] Mamba attention module refactor"; the main implementation surface is `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1196,6 +1287,7 @@ diff -- vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43857
 - Status/date: merged / 2026-05-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43857 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +78/-43, 467 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add vLLM library info to Hugging Face Hub requests"; model line: Kimi K2/K2.5/Linear/VL; category: model support/runtime entry; main diff: `vllm/model_executor/model_loader/weight_utils.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/tokenizers/grok2.py`; technical summary: Covers "Add vLLM library info to Hugging Face Hub requests"; the main implementation surface is `vllm/model_executor/model_loader/weight_utils.py`, `vllm/tokenizers/kimi_audio.py`, `vllm/tokenizers/grok2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1237,6 +1329,7 @@ diff -- vllm/tokenizers/grok2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44493
 - Status/date: merged / 2026-06-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44493 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`, `vllm/model_executor/models/kimi_k25_vit.py`; associated commits `1bdc60ed53ad`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +109/-28, 260 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix]Fix Kimi-K2.5 FlashInfer ViT metadata"; model line: Kimi K2/K2.5/Linear/VL; category: bug fix; main diff: `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[Bugfix]Fix Kimi-K2.5 FlashInfer ViT metadata"; the main implementation surface is `vllm/model_executor/models/kimi_k25_vit.py`, `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1269,6 +1362,7 @@ diff -- vllm/model_executor/models/kimi_k25.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44539
 - Status/date: merged / 2026-06-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44539 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +16/-30, 120 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[mamba] unify KDA conv states into one cache to match 2-state SSM layout"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/layers/mamba/mamba_utils.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`, `vllm/model_executor/models/kimi_linear.py`; technical summary: Covers "[mamba] unify KDA conv states into one cache to match 2-state SSM layout"; the main implementation surface is `vllm/model_executor/layers/mamba/mamba_utils.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py`, `vllm/model_executor/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1310,7 +1404,7 @@ diff -- vllm/model_executor/models/kimi_linear.py
 - Status/date: merged / 2026-06-12
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 29 files, +672/-1936, 3162 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Frontend] Support strict mode for tool calling"; model line: Kimi K2/K2.5/Linear/VL; category: docs/tests/CI; main diff: `vllm/tool_parsers/qwen3xml_tool_parser.py`, `vllm/tool_parsers/structural_tag_registry.py`, `tests/tool_parsers/test_structural_tag_registry.py`; technical summary: Covers "[Frontend] Support strict mode for tool calling"; the main implementation surface is `vllm/tool_parsers/qwen3xml_tool_parser.py`, `vllm/tool_parsers/structural_tag_registry.py`, `tests/tool_parsers/test_structural_tag_registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[Frontend] Support strict mode for tool calling"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `vllm/tool_parsers/qwen3xml_tool_parser.py`, `vllm/tool_parsers/structural_tag_registry.py`, `tests/tool_parsers/test_structural_tag_registry.py`; technical summary: Covers "[Frontend] Support strict mode for tool calling"; the main implementation surface is `vllm/tool_parsers/qwen3xml_tool_parser.py`, `vllm/tool_parsers/structural_tag_registry.py`, `tests/tool_parsers/test_structural_tag_registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/tool_parsers/qwen3xml_tool_parser.py` removed +0/-1300 (1300 lines); hunks: -1,1300 +0,0; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks, touching `StreamingXMLToolCallParser, __init__, reset_streaming_state`; `vllm/tool_parsers/structural_tag_registry.py` modified +174/-240 (414 lines); hunks: -1,14 +1,15; -24,23 +25,51; symbols: register_model_structural_tag, register_vllm_structural_tag, decorator, get_model_structural_tag, touching `register_model_structural_tag, register_vllm_structural_tag, decorator`; `tests/tool_parsers/test_structural_tag_registry.py` added +314/-0 (314 lines); hunks: -0,0 +1,314; symbols: sample_tools, test_supported_structural_tag_models_include_vllm_builtins, test_get_model_structural_tag_supports_all_xgrammar_builtins, test_get_model_structural_tag_supports_vllm_hermes, touching `sample_tools, test_supported_structural_tag_models_include_vllm_builtins, test_get_model_structural_tag_supports_all_xgrammar_builtins`; `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +13/-190 (203 lines); hunks: -3,6 +3,7; -19,15 +20,12; symbols: qwen3_tool_parser, qwen3_xml_tool_parser, qwen3_tool_parser_parametrized, assert_tool_calls, touching `qwen3_tool_parser, qwen3_xml_tool_parser, qwen3_tool_parser_parametrized`.
 - Code diff details:
   - `vllm/tool_parsers/qwen3xml_tool_parser.py` removed +0/-1300 (1300 lines); hunks: -1,1300 +0,0; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks
@@ -1352,7 +1446,7 @@ diff -- tests/tool_parsers/test_structural_tag_registry.py
 - Status/date: merged / 2026-06-17
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_vl.py`, `vllm/model_executor/models/moonvit.py`; associated commits `fa85ead2f378`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +498/-39, 726 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "[MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL"; the main implementation surface is `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Motivation: Title: "[MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`; technical summary: Covers "[MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL"; the main implementation surface is `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `vllm/model_executor/models/moonvit.py` modified +266/-37 (303 lines); hunks: -45,7 +45,9; -110,23 +112,42 @@ def __init__(; symbols: __init__, reset_parameters, forward, get_pos_embeds, touching `__init__, reset_parameters, forward`; `vllm/model_executor/models/kimi_vl.py` modified +195/-2 (197 lines); hunks: -56,7 +56,11; -79,6 +83,7; symbols: get_replacement, KimiVLForConditionalGeneration, __init__, get_encoder_cudagraph_config, touching `get_replacement, KimiVLForConditionalGeneration, __init__`.
 - Code diff details:
   - `vllm/model_executor/models/moonvit.py` modified +266/-37 (303 lines); hunks: -45,7 +45,9; -110,23 +112,42 @@ def __init__(; symbols: __init__, reset_parameters, forward, get_pos_embeds
@@ -1386,6 +1480,7 @@ diff -- vllm/model_executor/models/kimi_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45424
 - Status/date: merged / 2026-06-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45424 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 49 files, +254/-264, 1718 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Core] Ensure memory is pinned prior to async h2d copy"; model line: Kimi K2/K2.5/Linear/VL; category: model implementation change; main diff: `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/model_executor/layers/pooler/seqwise/methods.py`, `vllm/multimodal/inputs.py`; technical summary: Covers "[Core] Ensure memory is pinned prior to async h2d copy"; the main implementation surface is `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/model_executor/layers/pooler/seqwise/methods.py`, `vllm/multimodal/inputs.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1427,6 +1522,7 @@ diff -- vllm/multimodal/inputs.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46610
 - Status/date: merged / 2026-06-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46610 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_kimi_k2_reasoning_parser.py`, `vllm/parser/kimi_k2.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `vllm/tool_parsers/kimi_k2_tool_parser.py`; associated commits `2bc20e8abaf7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +397/-570, 1069 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser"; model line: Kimi K2/K2.5/Linear/VL; category: docs/tests/CI; main diff: `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`; technical summary: Covers "[Frontend] Add Streaming Parser Engine and new Kimi k2.5/k2.6/k2.7 Parser"; the main implementation surface is `vllm/tool_parsers/kimi_k2_tool_parser.py`, `vllm/reasoning/kimi_k2_reasoning_parser.py`, `tests/reasoning/test_kimi_k2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1468,6 +1564,7 @@ diff -- tests/reasoning/test_kimi_k2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47416
 - Status/date: merged / 2026-07-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47416 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/kimi_k25.py`, `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`; associated commits `5ad11172b791`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +402/-2, 462 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[perf]Add fused Kimi image preprocessing"; model line: Kimi K2/K2.5/Linear/VL; category: performance/backend optimization; main diff: `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py`; technical summary: Covers "[perf]Add fused Kimi image preprocessing"; the main implementation surface is `vllm/transformers_utils/processors/kimi_k25_vision_fused.py`, `vllm/model_executor/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.

@@ -1,6 +1,6 @@
 # SGLang Model PR Optimization History
 
-Refresh: `2026-07-28`. Source head: `sgl-project/sglang@8a311d1c889244ab1f857d7df79de7e5f0a6891c`.
+Refresh: `2026-08-23`. Source head: `sgl-project/sglang@eec794bce0808ae26cc1dcb84a56b65d2df82af5`.
 
 Current model families:
 
@@ -36,6 +36,7 @@ Current model families:
 - `qwen3-next`
 - `qwen35`
 - `qwen36`
+- `qwen38`
 - `ring25`
 - `step35`
 

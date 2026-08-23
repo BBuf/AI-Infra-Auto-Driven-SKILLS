@@ -4,14 +4,19 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` | [#27708](https://github.com/sgl-project/sglang/pull/27708), [#28437](https://github.com/sgl-project/sglang/pull/28437), [#29194](https://github.com/sgl-project/sglang/pull/29194), [#29313](https://github.com/sgl-project/sglang/pull/29313) |
-| `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28454](https://github.com/sgl-project/sglang/pull/28454), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#28471](https://github.com/sgl-project/sglang/pull/28471), [#28731](https://github.com/sgl-project/sglang/pull/28731), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29544](https://github.com/sgl-project/sglang/pull/29544), [#30826](https://github.com/sgl-project/sglang/pull/30826), [#31577](https://github.com/sgl-project/sglang/pull/31577) |
-| `docs_new/cookbook/autoregressive/GLM/GLM-5.mdx` | [#25814](https://github.com/sgl-project/sglang/pull/25814) |
-| `docs_new/docs/hardware-platforms/ascend-npus/best_practice/glm5_1.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` | [#25814](https://github.com/sgl-project/sglang/pull/25814) |
-| `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` | [#23540](https://github.com/sgl-project/sglang/pull/23540), [#27708](https://github.com/sgl-project/sglang/pull/27708), [#29194](https://github.com/sgl-project/sglang/pull/29194), [#29313](https://github.com/sgl-project/sglang/pull/29313) |
-| `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#28471](https://github.com/sgl-project/sglang/pull/28471), [#28731](https://github.com/sgl-project/sglang/pull/28731), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29486](https://github.com/sgl-project/sglang/pull/29486), [#29557](https://github.com/sgl-project/sglang/pull/29557), [#29674](https://github.com/sgl-project/sglang/pull/29674), [#30826](https://github.com/sgl-project/sglang/pull/30826) |
-| `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` | [#28437](https://github.com/sgl-project/sglang/pull/28437), [#28448](https://github.com/sgl-project/sglang/pull/28448), [#28460](https://github.com/sgl-project/sglang/pull/28460), [#28471](https://github.com/sgl-project/sglang/pull/28471), [#28731](https://github.com/sgl-project/sglang/pull/28731), [#29380](https://github.com/sgl-project/sglang/pull/29380), [#29466](https://github.com/sgl-project/sglang/pull/29466), [#29486](https://github.com/sgl-project/sglang/pull/29486), [#29544](https://github.com/sgl-project/sglang/pull/29544), [#29557](https://github.com/sgl-project/sglang/pull/29557), [#29674](https://github.com/sgl-project/sglang/pull/29674), [#30826](https://github.com/sgl-project/sglang/pull/30826) |
+| `docs/cookbook/autoregressive/GLM/GLM-5.1.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` | [#31554](https://github.com/sgl-project/sglang/pull/31554), [#34379](https://github.com/sgl-project/sglang/pull/34379) |
+| `docs/cookbook/autoregressive/GLM/GLM-5.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/glm-5-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/glm-51-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` | [#31554](https://github.com/sgl-project/sglang/pull/31554) |
+| `docs/src/snippets/configs/zai-org/glm-5.2.jsx` | [#33935](https://github.com/sgl-project/sglang/pull/33935), [#34379](https://github.com/sgl-project/sglang/pull/34379) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml` | [#34476](https://github.com/sgl-project/sglang/pull/34476) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` | [#34476](https://github.com/sgl-project/sglang/pull/34476) |
 | `test/registered/8-gpu-models/test_glm52_fp8.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
 | `test/registered/amd/accuracy/mi30x/test_glm51_hisparse_eval_mi30x.py` | 无直接 PR 号提交 |
@@ -19,30 +24,32 @@
 | `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
 | `test/registered/amd/accuracy/mi35x/test_glm51_hisparse_eval_mi35x.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py` | [#26396](https://github.com/sgl-project/sglang/pull/26396) |
+| `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` | [#32570](https://github.com/sgl-project/sglang/pull/32570) |
 | `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` | [#18911](https://github.com/sgl-project/sglang/pull/18911), [#21710](https://github.com/sgl-project/sglang/pull/21710) |
 | `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py` | [#21773](https://github.com/sgl-project/sglang/pull/21773) |
 | `test/registered/amd/perf/mi30x/test_glm51_perf_amd.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
 | `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py` | [#21710](https://github.com/sgl-project/sglang/pull/21710) |
 | `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
+| `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py` | [#32570](https://github.com/sgl-project/sglang/pull/32570) |
 | `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py` | [#21773](https://github.com/sgl-project/sglang/pull/21773) |
 | `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py` | [#21710](https://github.com/sgl-project/sglang/pull/21710) |
-| `test/registered/ascend/performance/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` | 无直接 PR 号提交 |
-| `test/registered/cp/test_glm52_cp_index_share.py` | [#30992](https://github.com/sgl-project/sglang/pull/30992) |
-| `test/registered/cuda_graph/piecewise/test_pcg_glm52_fp4.py` | 无直接 PR 号提交 |
-| `test/registered/cuda_graph/piecewise/test_pcg_glm52_fp8_tp8.py` | 无直接 PR 号提交 |
 | `test/registered/gb300/test_glm52_nvfp4.py` | 无直接 PR 号提交 |
-| `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` | [#29421](https://github.com/sgl-project/sglang/pull/29421), [#31512](https://github.com/sgl-project/sglang/pull/31512) |
 | `test/registered/models_e2e/test_dsa_glm52_dp_mtp.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_dsa_glm52_hisparse.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` | [#30021](https://github.com/sgl-project/sglang/pull/30021) |
 | `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` | [#30021](https://github.com/sgl-project/sglang/pull/30021), [#31289](https://github.com/sgl-project/sglang/pull/31289) |
+| `test/registered/models_e2e/test_dsa_glm52_pd_mtp_cp_layersplit.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_dsa_glm52_tp_mtp.py` | 无直接 PR 号提交 |
+| `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` | 无直接 PR 号提交 |
+| `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w4a8_16p_gpqa.py` | 无直接 PR 号提交 |
+| `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` | 无直接 PR 号提交 |
+| `test/registered/npu/performance/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 29
-- 原文档显式引用补充 PR 数: 28
-- 当前文档总 PR 数: 57
+- git 追溯 PR 数: 13
+- 原文档显式引用补充 PR 数: 50
+- 当前文档总 PR 数: 63
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -67,7 +74,7 @@
 | 2026-04-19 | [#22850](https://github.com/sgl-project/sglang/pull/22850) | merged | [AMD] Reduce NSA indexer kernels (weights_proj, k-cache store kernel fusion) | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-04-20 | [#23219](https://github.com/sgl-project/sglang/pull/23219) | merged | [AMD] Enable MTP for GLM-5-mxfp4 model | `python/sglang/srt/models/deepseek_nextn.py` |
 | 2026-04-23 | [#23060](https://github.com/sgl-project/sglang/pull/23060) | merged | [fix] Fix dynamic chunking profiling crash on GLM-5 models | `python/sglang/srt/managers/scheduler_pp_mixin.py` |
-| 2026-04-23 | [#23540](https://github.com/sgl-project/sglang/pull/23540) | merged | docs: split MI300X and MI325X options in GLM-5.1 generator | `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` |
+| 2026-04-23 | [#23540](https://github.com/sgl-project/sglang/pull/23540) | merged | docs: split MI300X and MI325X options in GLM-5.1 generator | `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx` |
 | 2026-05-08 | [#23708](https://github.com/sgl-project/sglang/pull/23708) | merged | [NPU][Doc] Update GLM-5 docs, enabling deepep by default | `docs/platforms/ascend/ascend_npu_glm5_examples.md` |
 | 2026-05-16 | [#25453](https://github.com/sgl-project/sglang/pull/25453) | merged | [CI] Lower mem-fraction-static for GLM-5.1 FP8 8-GPU test to 0.85 | `test/registered/8-gpu-models/test_glm_51_fp8.py` |
 | 2026-05-19 | [#25735](https://github.com/sgl-project/sglang/pull/25735) | merged | [NPU] [DOCS] Improved the usability of Ascend NPU documents | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_faq.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_qwen3_5_examples.mdx` |
@@ -95,18 +102,24 @@
 | 2026-06-26 | [#29380](https://github.com/sgl-project/sglang/pull/29380) | merged | [Docs] Add NVFP4 quantization to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-06-26 | [#29466](https://github.com/sgl-project/sglang/pull/29466) | merged | Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` |
 | 2026-06-27 | [#29486](https://github.com/sgl-project/sglang/pull/29486) | merged | [Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
-| 2026-06-29 | [#28731](https://github.com/sgl-project/sglang/pull/28731) | merged | [cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note | `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-06-29 | [#28731](https://github.com/sgl-project/sglang/pull/28731) | merged | [cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note | `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` |
 | 2026-06-29 | [#29674](https://github.com/sgl-project/sglang/pull/29674) | merged | docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
 | 2026-06-29 | [#29557](https://github.com/sgl-project/sglang/pull/29557) | merged | [cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
 | 2026-06-30 | [#28471](https://github.com/sgl-project/sglang/pull/28471) | merged | docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2 | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
-| 2026-07-02 | [#29544](https://github.com/sgl-project/sglang/pull/29544) | merged | docs: add PD disaggregation to GLM-5.2 cookbook playground | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-07-02 | [#29544](https://github.com/sgl-project/sglang/pull/29544) | merged | docs: add PD disaggregation to GLM-5.2 cookbook playground | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-07-03 | [#30021](https://github.com/sgl-project/sglang/pull/30021) | merged | [CI] Add GLM52 NVFP4 MTP B200 tests | `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
-| 2026-07-09 | [#29421](https://github.com/sgl-project/sglang/pull/29421) | merged | [Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` |
+| 2026-07-09 | [#29421](https://github.com/sgl-project/sglang/pull/29421) | merged | [Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP | `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` |
 | 2026-07-10 | [#30826](https://github.com/sgl-project/sglang/pull/30826) | merged | Update GLM-5.2 NVFP4 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
-| 2026-07-14 | [#30992](https://github.com/sgl-project/sglang/pull/30992) | merged | support GLM-5.2 MTP index sharing with prefill CP | `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py` |
+| 2026-07-14 | [#30992](https://github.com/sgl-project/sglang/pull/30992) | merged | support GLM-5.2 MTP index sharing with prefill CP | `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/layers/attention/dsa_backend.py` |
 | 2026-07-15 | [#31289](https://github.com/sgl-project/sglang/pull/31289) | merged | [CI] Lower GLM-5.2 NVFP4 MTP speed threshold | `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
 | 2026-07-17 | [#31512](https://github.com/sgl-project/sglang/pull/31512) | merged | Add nightly test for GLM5.2 LayerSplit | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` |
 | 2026-07-17 | [#31577](https://github.com/sgl-project/sglang/pull/31577) | merged | [Doc] Update GLM5.2 Cookbook with LayerSplit usage | `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-08-07 | [#33935](https://github.com/sgl-project/sglang/pull/33935) | merged | Clean GLM-5.2 NVFP4 cookbook | `docs/src/snippets/configs/zai-org/glm-5.2.jsx` |
+| 2026-08-07 | [#32120](https://github.com/sgl-project/sglang/pull/32120) | merged | [AMD][DI][CI] 8/N Add GLM-5.2 MXFP4 1P1D DI/CI recipes (base + MTP + DP8/EP8) | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` |
+| 2026-08-12 | [#34379](https://github.com/sgl-project/sglang/pull/34379) | merged | [AMD] GLM 5.2 MXFP4 SGLANG COOKBOOK | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-08-12 | [#34476](https://github.com/sgl-project/sglang/pull/34476) | merged | [AMD][DI][CI] Add GLM-5.2 MXFP4 wide-EP16 2P1D nightly recipes | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` |
+| 2026-08-14 | [#31554](https://github.com/sgl-project/sglang/pull/31554) | merged | [Docs] Fill GLM-5.2 H200 FP8 speed cells (low-latency, balanced); fix MTP notation | `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-08-20 | [#32570](https://github.com/sgl-project/sglang/pull/32570) | merged | [AMD] Add GLM-5.2 MI35x nightly accuracy and perf benchmark | `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -677,15 +690,25 @@ diff -- python/sglang/srt/managers/scheduler_pp_mixin.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/23540
 - 状态/时间: merged / 2026-04-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；关联提交 `9b2f7f8a91d4`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+15/-13，可读 patch 79 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: split MI300X and MI325X options in GLM-5.1 generator」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；技术摘要: 覆盖「docs: split MI300X and MI325X options in GLM-5.1 generator」；主要实现面是 `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4 (10 lines); hunks: -14,7 +14,8 @@ export const GLM51Deployment = () => {; -23,7 +24,7 @@ export const GLM51Deployment = () => {。
+- 动机: 标题「docs: split MI300X and MI325X options in GLM-5.1 generator」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`；技术摘要: 覆盖「docs: split MI300X and MI325X options in GLM-5.1 generator」；主要实现面是 `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/docs.json` modified +8/-8 (16 lines); hunks: -960,16 +960,16；`docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4 (10 lines); hunks: -14,7 +14,8 @@ export const GLM51Deployment = () => {; -23,7 +24,7 @@ export const GLM51Deployment = () => {；`docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -28,7 +28,7 @@ metatags:。
 - 代码 diff 细节:
+  - `docs_new/docs.json` modified +8/-8 (16 lines); hunks: -960,16 +960,16
   - `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4 (10 lines); hunks: -14,7 +14,8 @@ export const GLM51Deployment = () => {; -23,7 +24,7 @@ export const GLM51Deployment = () => {
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -28,7 +28,7 @@ metatags:
 - 关键代码摘录:
 
 ```diff
+diff -- docs_new/docs.json
+@@ -960,16 +960,16 @@
+-                      "cookbook/autoregressive/GLM/GLM-4.5",
+-                      "cookbook/autoregressive/GLM/GLM-4.6",
+-                      "cookbook/autoregressive/GLM/GLM-4.7",
+-                      "cookbook/autoregressive/GLM/GLM-4.7-Flash",
+-                      "cookbook/autoregressive/GLM/GLM-5",
+-                      "cookbook/autoregressive/GLM/GLM-Glyph",
 diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
 @@ -14,7 +14,8 @@ export const GLM51Deployment = () => {
 -        { id: 'mi300x', label: 'MI300X/MI325X', default: false },
@@ -694,10 +717,12 @@ diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
 @@ -23,7 +24,7 @@ export const GLM51Deployment = () => {
 -        const isAMD = hw === 'mi300x' || hw === 'mi355x';
 +        const isAMD = ['mi300x', 'mi325x', 'mi355x'].includes(hw);
+diff -- docs_new/cookbook/autoregressive/intro.mdx
+@@ -28,7 +28,7 @@ metatags:
 ```
 
 - 已读文件:
-  - docs: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4
+  - docs: `docs_new/docs.json` modified +8/-8; `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +6/-4; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/intro.mdx`, `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #23708 - [NPU][Doc] Update GLM-5 docs, enabling deepep by default
@@ -795,7 +820,7 @@ diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_qwen3_5_examples
 
 - 链接: https://github.com/sgl-project/sglang/pull/25814
 - 状态/时间: merged / 2026-05-20
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.mdx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`；关联提交 `da6d549ab28a`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-0，可读 patch 20 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update GLM-5 H200 FP8」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.mdx`；技术摘要: 覆盖「Update GLM-5 H200 FP8」；主要实现面是 `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +5/-0 (5 lines); hunks: -206,6 +206,11 @@ export const GLM5Deployment = () => {；`docs_new/cookbook/autoregressive/GLM/GLM-5.mdx` modified +1/-0 (1 lines); hunks: -109,6 +109,7 @@ sglang serve \。
@@ -1016,7 +1041,7 @@ diff -- test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_kv_fp8_perf_mi35x.
 
 - 链接: https://github.com/sgl-project/sglang/pull/27708
 - 状态/时间: merged / 2026-06-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；关联提交 `91ff7baa2860`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+92/-38，可读 patch 275 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Add GLM-5.1 NVFP4 to cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；技术摘要: 覆盖「[Docs] Add GLM-5.1 NVFP4 to cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +69/-21 (90 lines); hunks: -1,7 +1,7; -11,6 +11,7 @@ tag: NEW；`docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +23/-17 (40 lines); hunks: -1,19 +1,19; -25,10 +25,13 @@ export const GLM51Deployment = () => {。
@@ -1095,14 +1120,15 @@ diff -- python/sglang/srt/arg_groups/speculative_hook.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/28437
 - 状态/时间: merged / 2026-06-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `0cb6183432dc`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+970/-2，可读 patch 996 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): add GLM-5.2 deployment cookbook」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs(cookbook): add GLM-5.2 deployment cookbook」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` added +657/-0 (657 lines); hunks: -0,0 +1,657；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` added +116/-0 (116 lines); hunks: -0,0 +1,116；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` added +195/-0 (195 lines); hunks: -0,0 +1,195；`docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6。
+- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` added +657/-0 (657 lines); hunks: -0,0 +1,657；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` added +116/-0 (116 lines); hunks: -0,0 +1,116；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` added +195/-0 (195 lines); hunks: -0,0 +1,195；`docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -28,7 +28,7 @@ metatags:。
 - 代码 diff 细节:
   - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` added +657/-0 (657 lines); hunks: -0,0 +1,657
   - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` added +116/-0 (116 lines); hunks: -0,0 +1,116
   - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` added +195/-0 (195 lines); hunks: -0,0 +1,195
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -28,7 +28,7 @@ metatags:
   - `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6
 - 关键代码摘录:
 
@@ -1128,21 +1154,22 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 ```
 
 - 已读文件:
-  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` added +657/-0; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` added +116/-0; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` added +195/-0; `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +0/-1
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` added +657/-0; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` added +116/-0; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` added +195/-0; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +0/-1; `docs_new/docs.json` modified +1/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #28448 - docs(cookbook): tune GLM-5.2 MTP to 5-1-6 and simplify launch flags
 
 - 链接: https://github.com/sgl-project/sglang/pull/28448
 - 状态/时间: merged / 2026-06-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `00081a00d5b3`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+36/-54，可读 patch 354 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): tune GLM-5.2 MTP to 5-1-6 and simplify launch flags」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs(cookbook): tune GLM-5.2 MTP to 5-1-6 and simplify launch flags」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +20/-45 (65 lines); hunks: -36,7 +36,6 @@ export const config = {; -141,10 +140,10 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +11/-6 (17 lines); hunks: -5,13 +5,16; -36,13 +39,14 @@ export const benchmarks = [；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +2/-2 (4 lines); hunks: -92,8 +92,8 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +20/-45 (65 lines); hunks: -36,7 +36,6 @@ export const config = {; -141,10 +140,10 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +11/-6 (17 lines); hunks: -5,13 +5,16; -36,13 +39,14 @@ export const benchmarks = [；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +2/-2 (4 lines); hunks: -92,8 +92,8 @@ import { Playground } from "/src/snippets/_playground.jsx";；`docs_new/src/snippets/_deployment.jsx` modified +3/-1 (4 lines); hunks: -512,7 +512,9 @@ export const Deployment = ({ config, benchmarks }) => {。
 - 代码 diff 细节:
   - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +20/-45 (65 lines); hunks: -36,7 +36,6 @@ export const config = {; -141,10 +140,10 @@ sgl-eval run aime25 \\
   - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +11/-6 (17 lines); hunks: -5,13 +5,16; -36,13 +39,14 @@ export const benchmarks = [
   - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +2/-2 (4 lines); hunks: -92,8 +92,8 @@ import { Playground } from "/src/snippets/_playground.jsx";
+  - `docs_new/src/snippets/_deployment.jsx` modified +3/-1 (4 lines); hunks: -512,7 +512,9 @@ export const Deployment = ({ config, benchmarks }) => {
 - 关键代码摘录:
 
 ```diff
@@ -1167,14 +1194,14 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 ```
 
 - 已读文件:
-  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +20/-45; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +11/-6; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +2/-2
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +20/-45; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +11/-6; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +2/-2; `docs_new/src/snippets/_deployment.jsx` modified +3/-1
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/_deployment.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #28454 - docs(cookbook): fix GLM-5.2 thinking toggle kwarg + document reasoning effort
 
 - 链接: https://github.com/sgl-project/sglang/pull/28454
 - 状态/时间: merged / 2026-06-16
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；关联提交 `33f205d8c5b2`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-2，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): fix GLM-5.2 thinking toggle kwarg + document reasoning effort」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs(cookbook): fix GLM-5.2 thinking toggle kwarg + document reasoning effort」；主要实现面是 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +10/-2 (12 lines); hunks: -104,7 +104,15 @@ import { Playground } from "/src/snippets/_playground.jsx";; -115,7 +123,7 @@ client = OpenAI(base_url="http://localhost:30000/v1", api_ke...。
@@ -1228,7 +1255,7 @@ diff -- docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.
 
 - 链接: https://github.com/sgl-project/sglang/pull/28460
 - 状态/时间: merged / 2026-06-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `72ccfec5949d`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+76/-23，可读 patch 170 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): verify GLM-5.2 single-node B300 (FP8 + BF16)」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs(cookbook): verify GLM-5.2 single-node B300 (FP8 + BF16)」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +61/-8 (69 lines); hunks: -100,14 +100,67 @@ export const benchmarks = [; symbols: kernels，涉及 `kernels`；`docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +12/-12 (24 lines); hunks: -354,13 +354,13 @@ sgl-eval run aime25 \\; -377,7 +377,7 @@ sgl-eval run aime25 \\; symbols: kernels，涉及 `kernels`；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +3/-3 (6 lines); hunks: -1,6 +1,6; -94,10 +94,10 @@ import { Playground } from "/src/snippets/_playground.jsx";。
@@ -1474,7 +1501,7 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/29194
 - 状态/时间: merged / 2026-06-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；关联提交 `0075c8f02b1e`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+53/-17，可读 patch 188 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；技术摘要: 覆盖「[AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1 (35 lines); hunks: -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/...; -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressiv...；`docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16 (35 lines); hunks: -4,7 +4,9 @@ export const GLM51Deployment = () => {; -25,11 +27,13 @@ export const GLM51Deployment = () => {。
@@ -1552,7 +1579,7 @@ diff -- .github/workflows/nightly-test-nvidia.yml
 
 - 链接: https://github.com/sgl-project/sglang/pull/29313
 - 状态/时间: merged / 2026-06-26
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；关联提交 `7f376644e0cc`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+22/-9，可读 patch 66 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`；技术摘要: 覆盖「[AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook」；主要实现面是 `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +10/-8 (18 lines); hunks: -170,14 +170,16 @@ export const GLM51Deployment = () => {；`docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +12/-1 (13 lines); hunks: -94,7 +94,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/...; -183,6 +183,7 @@ SGLANG_DSA_TRITON_PREFILL=1 sglang serve \。
@@ -1588,14 +1615,15 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29380
 - 状态/时间: merged / 2026-06-26
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `dd56a9f06948`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+112/-12，可读 patch 224 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Add NVFP4 quantization to GLM-5.2 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「[Docs] Add NVFP4 quantization to GLM-5.2 cookbook」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +79/-0 (79 lines); hunks: -15,6 +15,7 @@ export const config = {; -29,6 +30,7 @@ export const config = {；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +5/-0 (5 lines); hunks: -171,4 +171,9 @@ export const benchmarks = [；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +11/-2 (13 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -62,7 +66,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +79/-0 (79 lines); hunks: -15,6 +15,7 @@ export const config = {; -29,6 +30,7 @@ export const config = {；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +5/-0 (5 lines); hunks: -171,4 +171,9 @@ export const benchmarks = [；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +11/-2 (13 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -62,7 +66,7 @@ import { Playground } from "/src/snippets/_playground.jsx";；`docs_new/src/snippets/_deployment.jsx` modified +5/-3 (8 lines); hunks: -24,7 +24,8; -500,8 +501,9 @@ export const Deployment = ({ config, benchmarks }) => {。
 - 代码 diff 细节:
   - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +79/-0 (79 lines); hunks: -15,6 +15,7 @@ export const config = {; -29,6 +30,7 @@ export const config = {
   - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +5/-0 (5 lines); hunks: -171,4 +171,9 @@ export const benchmarks = [
   - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +11/-2 (13 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -62,7 +66,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+  - `docs_new/src/snippets/_deployment.jsx` modified +5/-3 (8 lines); hunks: -24,7 +24,8; -500,8 +501,9 @@ export const Deployment = ({ config, benchmarks }) => {
 - 关键代码摘录:
 
 ```diff
@@ -1620,14 +1648,14 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 ```
 
 - 已读文件:
-  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +79/-0; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +5/-0; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +11/-2
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +79/-0; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +5/-0; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +11/-2; `docs_new/src/snippets/_deployment.jsx` modified +5/-3
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/_deployment.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #29466 - Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings
 
 - 链接: https://github.com/sgl-project/sglang/pull/29466
 - 状态/时间: merged / 2026-06-26
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `12f76d115cd8`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-8，可读 patch 44 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；技术摘要: 覆盖「Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-8 (16 lines); hunks: -652,8 +652,8 @@ sgl-eval run aime25 \\; -667,8 +667,8 @@ sgl-eval run aime25 \\。
@@ -1654,7 +1682,7 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29486
 - 状态/时间: merged / 2026-06-27
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `e0c0c0a45cb1`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+68/-12，可读 patch 132 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；技术摘要: 覆盖「[Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +32/-9 (41 lines); hunks: -635,16 +635,16 @@ sgl-eval run aime25 \\; -663,7 +663,6 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +36/-3 (39 lines); hunks: -171,9 +171,42 @@ export const benchmarks = [。
@@ -1690,14 +1718,16 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/28731
 - 状态/时间: merged / 2026-06-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `38d4ffcd863b`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+64/-193，可读 patch 543 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157 (207 lines); hunks: -3,164 +3,95; -171,42 +102,4 @@ export const benchmarks = [; symbols: kernels，涉及 `kernels`；`docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30 (38 lines); hunks: -55,6 +55,7 @@ export const config = {; -185,7 +186,6 @@ sgl-eval run aime25 \\；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0 (4 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...。
+- 动机: 标题「[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`；技术摘要: 覆盖「[cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157 (207 lines); hunks: -3,164 +3,95; -171,42 +102,4 @@ export const benchmarks = [; symbols: kernels，涉及 `kernels`；`docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30 (38 lines); hunks: -55,6 +55,7 @@ export const config = {; -185,7 +186,6 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +0/-4 (4 lines); hunks: -211,7 +211,6 @@ sgl-eval run mmmu_pro \\; -230,7 +229,6 @@ sgl-eval run mmmu_pro \\；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0 (4 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...。
 - 代码 diff 细节:
   - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157 (207 lines); hunks: -3,164 +3,95; -171,42 +102,4 @@ export const benchmarks = [; symbols: kernels
   - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30 (38 lines); hunks: -55,6 +55,7 @@ export const config = {; -185,7 +186,6 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +0/-4 (4 lines); hunks: -211,7 +211,6 @@ sgl-eval run mmmu_pro \\; -230,7 +229,6 @@ sgl-eval run mmmu_pro \\
   - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0 (4 lines); hunks: -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...
+  - `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +2/-2 (4 lines); hunks: -117,10 +117,10 @@ The first import JIT-compiles the kernels, which can take...
 - 关键代码摘录:
 
 ```diff
@@ -1717,19 +1747,19 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
 @@ -205,11 +205,10 @@ sgl-eval run aime25 \\
 -        "--cuda-graph-max-bs-decode 128",
 -        "--max-running-requests 80",
-diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
-@@ -52,6 +52,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+diff -- docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx
+@@ -211,7 +211,6 @@ sgl-eval run mmmu_pro \\
 ```
 
 - 已读文件:
-  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30; `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +0/-4; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0; `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +2/-2
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #29674 - docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook
 
 - 链接: https://github.com/sgl-project/sglang/pull/29674
 - 状态/时间: merged / 2026-06-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `74a197af9d27`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+97/-4，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；技术摘要: 覆盖「docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [。
@@ -1765,7 +1795,7 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29557
 - 状态/时间: merged / 2026-06-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `5106b42cbd98`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+74/-8，可读 patch 117 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；技术摘要: 覆盖「[cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +39/-8 (47 lines); hunks: -614,11 +614,12 @@ sgl-eval run aime25 \\; -685,14 +686,14 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-0 (35 lines); hunks: -134,4 +134,39 @@ export const benchmarks = [。
@@ -1801,7 +1831,7 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/28471
 - 状态/时间: merged / 2026-06-30
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `bb98629157e2`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+324/-5，可读 patch 383 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +284/-4 (288 lines); hunks: -6,6 +6,7 @@ export const config = {; -93,6 +94,9 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +31/-0 (31 lines); hunks: -169,4 +169,35 @@ export const benchmarks = [；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +9/-1 (10 lines); hunks: -1,6 +1,6; -113,6 +113,14 @@ import { Playground } from "/src/snippets/_playground.jsx";。
@@ -1840,12 +1870,13 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29544
 - 状态/时间: merged / 2026-07-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `cba3801f5214`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+53/-8，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: add PD disaggregation to GLM-5.2 cookbook playground」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs: add PD disaggregation to GLM-5.2 cookbook playground」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1 (43 lines); hunks: -156,7 +156,48 @@ sgl-eval run aime25 \\；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 动机: 标题「docs: add PD disaggregation to GLM-5.2 cookbook playground」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「docs: add PD disaggregation to GLM-5.2 cookbook playground」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1 (43 lines); hunks: -156,7 +156,48 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/_playground.jsx` modified +10/-7 (17 lines); hunks: -39,9 +39,14 @@ export const Playground = ({ config }) => {; -698,12 +703,10 @@ export const Playground = ({ config }) => {；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
 - 代码 diff 细节:
   - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1 (43 lines); hunks: -156,7 +156,48 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/_playground.jsx` modified +10/-7 (17 lines); hunks: -39,9 +39,14 @@ export const Playground = ({ config }) => {; -698,12 +703,10 @@ export const Playground = ({ config }) => {
   - `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
 - 关键代码摘录:
 
@@ -1858,13 +1889,20 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
 +    // prefill/decode disaggregation. Owns the `--disaggregation-*` flags; the
 +    // engine also pins role-specific serving ports (spaced apart) so prefill +
 +    // decode don't collide on one host.
+diff -- docs_new/src/snippets/_playground.jsx
+@@ -39,9 +39,14 @@ export const Playground = ({ config }) => {
++  // Single-host PD runs prefill + decode as two engines on one box. Each derives
++  // 5 consecutive ZMQ/dist ports from its --port (port+233, see server_args.py
++  // ZMQ_TCP_PORT_DELTA), so the serve ports are spaced 100 apart to keep those
++  // derived ranges from overlapping — no --dist-init-addr needed single-host.
++  // `dist` is only used by the multi-node renderer (cross-node rendezvous).
+-    decode:  { serve: 30001, dist: 30435 },
 diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 @@ -111,6 +111,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
-+- **PD Disaggregation (prefill/decode).** GLM-5.2 is a DSA model and runs under prefill/decode disaggregation — toggle the **PD Disagg** card in the [Playground above](#playground
 ```
 
 - 已读文件:
-  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +42/-1; `docs_new/src/snippets/_playground.jsx` modified +10/-7; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #30021 - [CI] Add GLM52 NVFP4 MTP B200 tests
@@ -1907,27 +1945,19 @@ diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/29421
 - 状态/时间: merged / 2026-07-09
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`；关联提交 `8e54517f0276`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 21 个文件，+1507/-72，可读 patch 2185 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`；技术摘要: 覆盖「[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP」；主要实现面是 `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass，涉及 `TestGLM52DSACacheLayerSplit, setUpClass`；`python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range，涉及 `is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers`；`python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm，涉及 `_fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer`；`python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools，涉及 `_init_pools`。
+- 动机: 标题「[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP」；模型线: GLM-5/5.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`；技术摘要: 覆盖「[Feat][GLM5.2] Add DSA Cache Layer Split under Prefill CP」；主要实现面是 `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range，涉及 `is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers`；`python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm，涉及 `_fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer`；`python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools，涉及 `_init_pools`；`python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0 (20 lines); hunks: -38,6 +38,7; -48,6 +49,25 @@ def dsa_enable_prefill_cp():; symbols: dsa_enable_prefill_cp, maybe_prefetch_next_full_attention_kv, dsa_cp_gather_hidden_states，涉及 `dsa_enable_prefill_cp, maybe_prefetch_next_full_attention_kv, dsa_cp_gather_hidden_states`。
 - 代码 diff 细节:
-  - `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: TestGLM52DSACacheLayerSplit, setUpClass
   - `python/sglang/srt/layers/cp/utils.py` modified +92/-1 (93 lines); hunks: -14,7 +14,7; -33,13 +33,99; symbols: is_glm_dsa_cache_layer_split_enabled, get_glm_dsa_cp_layer_shard_info, get_glm_dsa_layer_split_effective_num_layers, get_layer_shard_range
   - `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13 (39 lines); hunks: -673,6 +673,10 @@ def _fused_k_prepare_and_store(; -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tens...; symbols: _fused_k_prepare_and_store, _update_rope_guarded, _get_index_k_read_buffer, _pad_heads_for_deep_gemm
   - `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3 (21 lines); hunks: -947,16 +947,31 @@ def _init_pools(self: ModelRunner):; symbols: _init_pools
   - `python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0 (20 lines); hunks: -38,6 +38,7; -48,6 +49,25 @@ def dsa_enable_prefill_cp():; symbols: dsa_enable_prefill_cp, maybe_prefetch_next_full_attention_kv, dsa_cp_gather_hidden_states
+  - `python/sglang/srt/model_executor/pool_configurator.py` modified +14/-5 (19 lines); hunks: -177,14 +177,21 @@ def _compute_cell_size(self, mr: ModelRunner, num_layers:...; -195,7 +202,7 @@ def _compute_cell_size(self, mr: ModelRunner, num_layers: in...; symbols: _compute_cell_size
 - 关键代码摘录:
 
 ```diff
-diff -- test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py
-@@ -0,0 +1,83 @@
-+"""End-to-end GSM8K accuracy test for DSA cache layer split (GLM-5.2).
-+Layer split shards the DSA GPU KV/indexer cache layers across prefill CP ranks
-+(``--enable-dsa-cache-layer-split``); non-owner ranks read a layer via an
-+owner-broadcast into a small remote scratch buffer. It only applies to PD
-+prefill workers running DSA prefill-CP (a unified server would decode on the
-+same worker, where non-owner ranks lack the full cache), so this test drives a
 diff -- python/sglang/srt/layers/cp/utils.py
 @@ -14,7 +14,7 @@
 -from typing import Any, Optional, Tuple
@@ -1938,18 +1968,26 @@ diff -- python/sglang/srt/layers/cp/utils.py
 +def is_glm_dsa_cache_layer_split_enabled(model_runner: "ModelRunner") -> bool:
 diff -- python/sglang/srt/layers/attention/dsa/dsa_indexer.py
 @@ -673,6 +673,10 @@ def _fused_k_prepare_and_store(
++        if hasattr(pool, "invalidate_index_buffer_for_layer"):
++            pool.invalidate_index_buffer_for_layer(layer_id)
++        if hasattr(pool, "_is_layer_owned") and not pool._is_layer_owned(layer_id):
++            return
+@@ -801,6 +805,15 @@ def _update_rope_guarded(dst: torch.Tensor, src: torch.Tensor) -> None:
++    @staticmethod
+diff -- python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py
+@@ -947,16 +947,31 @@ def _init_pools(self: ModelRunner):
 ```
 
 - 已读文件:
-  - tests: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` added +83/-0
   - runtime: `python/sglang/srt/layers/cp/utils.py` modified +92/-1; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +26/-13; `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` modified +18/-3; `python/sglang/srt/layers/communicator_dsa_cp.py` modified +20/-0; `python/sglang/srt/model_executor/pool_configurator.py` modified +14/-5; `python/sglang/srt/models/deepseek_v2.py` modified +17/-1
+  - tests: `test/registered/unit/model_executor/test_pool_configurator.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`, `test/registered/unit/mem_cache/test_dsa_layer_shard_utils.py`, `test/registered/unit/mem_cache/test_dsa_layer_split_broadcast.py`, `test/registered/unit/mem_cache/test_hicache_staged_write_back_dispatch.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #30826 - Update GLM-5.2 NVFP4 cookbook
 
 - 链接: https://github.com/sgl-project/sglang/pull/30826
 - 状态/时间: merged / 2026-07-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `e8646701c14d`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+13/-18，可读 patch 122 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update GLM-5.2 NVFP4 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「Update GLM-5.2 NVFP4 cookbook」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +10/-5 (15 lines); hunks: -97,10 +97,6 @@ sgl-eval run aime25 \\; -668,7 +664,6 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +2/-8 (10 lines); hunks: -103,12 +103,11 @@ export const benchmarks = [; -118,7 +117,6 @@ export const benchmarks = [；`docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-5 (6 lines); hunks: -56,10 +56,6 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...; -107,7 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
@@ -1988,27 +2026,19 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/30992
 - 状态/时间: merged / 2026-07-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/cp/test_glm52_cp_index_share.py`；关联提交 `7e229e2a817d`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+529/-51，可读 patch 760 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「support GLM-5.2 MTP index sharing with prefill CP」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`；技术摘要: 覆盖「support GLM-5.2 MTP index sharing with prefill CP」；主要实现面是 `test/registered/cp/test_glm52_cp_index_share.py`, `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass，涉及 `TestGLM52CPInterleave, setUpClass, tearDownClass`；`python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel，涉及 `transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result`；`python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward，涉及 `_gather_dsa_topk_indices_for_cp, forward`；`python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm，涉及 `forward_extend, _forward_trtllm`。
+- 动机: 标题「support GLM-5.2 MTP index sharing with prefill CP」；模型线: GLM-5/5.1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/layers/attention/dsa_backend.py`；技术摘要: 覆盖「support GLM-5.2 MTP index sharing with prefill CP」；主要实现面是 `python/sglang/srt/layers/attention/dsa/transform_index.py`, `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/layers/attention/dsa_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel，涉及 `transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result`；`python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward，涉及 `_gather_dsa_topk_indices_for_cp, forward`；`python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm，涉及 `forward_extend, _forward_trtllm`；`test/registered/kernels/test_dsa_transform_index.py` added +240/-0 (240 lines); hunks: -0,0 +1,240; symbols: TestDSATransformIndex, setUp, tearDown, _make_page_table，涉及 `TestDSATransformIndex, setUp, tearDown`。
 - 代码 diff 细节:
-  - `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass
   - `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20 (162 lines); hunks: -1,3 +1,4; -6,11 +7,39; symbols: transform_index_page_table_prefill, transform_index_page_table_decode, _allocate_prefill_result, transform_index_page_table_decode_kernel
   - `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18 (79 lines); hunks: -33,6 +33,7; -60,6 +61,34; symbols: _gather_dsa_topk_indices_for_cp, forward
   - `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9 (31 lines); hunks: -1898,19 +1898,20 @@ def forward_extend(; -1929,6 +1930,12 @@ def forward_extend(; symbols: forward_extend, _forward_trtllm
-  - `python/sglang/srt/speculative/eagle_worker_v2.py` modified +0/-3 (3 lines); hunks: -15,7 +15,6; -825,11 +824,9 @@ def _draft_extend_for_prefill(; symbols: _draft_extend_for_prefill
+  - `test/registered/kernels/test_dsa_transform_index.py` added +240/-0 (240 lines); hunks: -0,0 +1,240; symbols: TestDSATransformIndex, setUp, tearDown, _make_page_table
+  - `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: TestGLM52CPInterleave, setUpClass, tearDownClass
 - 关键代码摘录:
 
 ```diff
-diff -- test/registered/cp/test_glm52_cp_index_share.py
-@@ -0,0 +1,63 @@
-+import unittest
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.ci.ci_register import register_cuda_ci
-+from sglang.test.kits.eval_accuracy_kit import GSM8KMixin
-+from sglang.test.test_utils import (
-+    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
 diff -- python/sglang/srt/layers/attention/dsa/transform_index.py
 @@ -1,3 +1,4 @@
 +from itertools import accumulate
@@ -2019,11 +2049,19 @@ diff -- python/sglang/srt/layers/attention/dsa/transform_index.py
 +    return transform_index_page_table_decode_fast(**kwargs)
 diff -- python/sglang/srt/models/deepseek_nextn.py
 @@ -33,6 +33,7 @@
++    is_dsa_prefill_cp_round_robin_split,
+@@ -60,6 +61,34 @@
++def _gather_dsa_topk_indices_for_cp(
++    topk_indices: torch.Tensor,
++    local_num_tokens: int,
++    cp_size: int,
+diff -- python/sglang/srt/layers/attention/dsa_backend.py
+@@ -1898,19 +1898,20 @@ def forward_extend(
 ```
 
 - 已读文件:
-  - tests: `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0
   - runtime: `python/sglang/srt/layers/attention/dsa/transform_index.py` modified +142/-20; `python/sglang/srt/models/deepseek_nextn.py` modified +61/-18; `python/sglang/srt/layers/attention/dsa_backend.py` modified +22/-9; `python/sglang/srt/speculative/eagle_worker_v2.py` modified +0/-3; `python/sglang/srt/server_args.py` modified +1/-1
+  - tests: `test/registered/kernels/test_dsa_transform_index.py` added +240/-0; `test/registered/cp/test_glm52_cp_index_share.py` added +63/-0
 - 验证与风险: diff 自带测试面 `test/registered/cp/test_glm52_cp_index_share.py`, `test/registered/kernels/test_dsa_transform_index.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #31289 - [CI] Lower GLM-5.2 NVFP4 MTP speed threshold
@@ -2053,7 +2091,7 @@ diff -- test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31512
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`；关联提交 `e83551230383`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+30/-14，可读 patch 85 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add nightly test for GLM5.2 LayerSplit」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`；技术摘要: 覆盖「Add nightly test for GLM5.2 LayerSplit」；主要实现面是 `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` modified +30/-14 (44 lines); hunks: -9,8 +9,7; -22,10 +21,9; symbols: TestGLM52DSACacheLayerSplit，涉及 `TestGLM52DSACacheLayerSplit`。
@@ -2080,7 +2118,7 @@ diff -- test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31577
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；关联提交 `eaeb779ea4b1`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+18/-1，可读 patch 30 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Doc] Update GLM5.2 Cookbook with LayerSplit usage」；模型线: GLM-5/5.1；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「[Doc] Update GLM5.2 Cookbook with LayerSplit usage」；主要实现面是 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1 (19 lines); hunks: -107,7 +107,6 @@ import { Playground } from "/src/snippets/_playground.jsx";; -247,3 +246,21 @@ Two of these matter specifically for GLM-5.2:。
@@ -2102,6 +2140,212 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
 - 已读文件:
   - docs: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #33935 - Clean GLM-5.2 NVFP4 cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/33935
+- 状态/时间: merged / 2026-08-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `0c3a76fa0a5b`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-4，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Clean GLM-5.2 NVFP4 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；技术摘要: 覆盖「Clean GLM-5.2 NVFP4 cookbook」；主要实现面是 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4 (4 lines); hunks: -763,8 +763,6 @@ sgl-eval run aime25 \\; -830,8 +828,6 @@ sgl-eval run aime25 \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4 (4 lines); hunks: -763,8 +763,6 @@ sgl-eval run aime25 \\; -830,8 +828,6 @@ sgl-eval run aime25 \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -763,8 +763,6 @@ sgl-eval run aime25 \\
+-        "--kv-cache-dtype fp8_e4m3",
+-        "--bf16-gemm-backend cutedsl",
+@@ -830,8 +828,6 @@ sgl-eval run aime25 \\
+-        "--kv-cache-dtype fp8_e4m3",
+-        "--bf16-gemm-backend cutedsl",
+```
+
+- 已读文件:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #32120 - [AMD][DI][CI] 8/N Add GLM-5.2 MXFP4 1P1D DI/CI recipes (base + MTP + DP8/EP8)
+
+- 链接: https://github.com/sgl-project/sglang/pull/32120
+- 状态/时间: merged / 2026-08-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml`；关联提交 `fc9479243ef8`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+382/-0，可读 patch 390 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][DI][CI] 8/N Add GLM-5.2 MXFP4 1P1D DI/CI recipes (base + MTP + DP8/EP8)」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml`；技术摘要: 覆盖「[AMD][DI][CI] 8/N Add GLM-5.2 MXFP4 1P1D DI/CI recipes (base + MTP + DP8/EP8)」；主要实现面是 `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` added +81/-0 (81 lines); hunks: -0,0 +1,81；`scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml` added +80/-0 (80 lines); hunks: -0,0 +1,80；`scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` added +78/-0 (78 lines); hunks: -0,0 +1,78；`scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml` added +71/-0 (71 lines); hunks: -0,0 +1,71。
+- 代码 diff 细节:
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` added +81/-0 (81 lines); hunks: -0,0 +1,81
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml` added +80/-0 (80 lines); hunks: -0,0 +1,80
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` added +78/-0 (78 lines); hunks: -0,0 +1,78
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml` added +71/-0 (71 lines); hunks: -0,0 +1,71
+- 关键代码摘录:
+
+```diff
+diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml
+@@ -0,0 +1,81 @@
++# MI355X GLM-5.2 (MXFP4) 2-node 1P1D disaggregation recipe — TP8 + MTP.
++#
++# GLM-5.2 ships a built-in NextN MTP head (num_nextn_predict_layers=1), same
++# mechanism as DeepSeek-V4 — no external draft checkpoint. DSA attention is
++# auto-selected (see 1p1d.yaml).
++#
+diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml
+@@ -0,0 +1,80 @@
++# MI355X GLM-5.2 (MXFP4) 2-node 1P1D disaggregation recipe — DP8 + narrow EP8 + MTP.
++#
++# DSA attention is auto-selected (see 1p1d.yaml). DP-attention 8 + within-node
++# EP8 + built-in NextN MTP head (no external draft).
++#
++# Consumed by:
+diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml
+@@ -0,0 +1,78 @@
+```
+
+- 已读文件:
+  - other: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` added +81/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml` added +80/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` added +78/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml` added +71/-0
+- 验证与风险: 未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。
+
+### PR #34379 - [AMD] GLM 5.2 MXFP4 SGLANG COOKBOOK
+
+- 链接: https://github.com/sgl-project/sglang/pull/34379
+- 状态/时间: merged / 2026-08-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `b5d1453ed26b`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+1266/-1153，可读 patch 2446 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] GLM 5.2 MXFP4 SGLANG COOKBOOK」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「[AMD] GLM 5.2 MXFP4 SGLANG COOKBOOK」；主要实现面是 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +1258/-1151 (2409 lines); hunks: -1,1151 +1,1258; symbols: kernels，涉及 `kernels`；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +8/-2 (10 lines); hunks: -70,7 +70,7 @@ import { Playground } from "/src/snippets/_playground.jsx";; -96,12 +96,17 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +1258/-1151 (2409 lines); hunks: -1,1151 +1,1258; symbols: kernels
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +8/-2 (10 lines); hunks: -70,7 +70,7 @@ import { Playground } from "/src/snippets/_playground.jsx";; -96,12 +96,17 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -1,1151 +1,1258 @@
+-// Single `export const config` literal — no spreads/calls/IIFE (Mintlify re-evals at hydration).
+-// Cells are denormalized: no `--nnodes`/`--node-rank`/`--dist-init-addr`/`--host`/`--port` literals — engine injects them.
+-export const config = {
+-  modelName: "GLM-5.2",
+-  supportedHardware: [
+-    "h200", "b200", "gb300", "b300",
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -70,7 +70,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-**GLM-5.2** is Z.ai's flagship Mixture-of-Experts model built on **DeepSeek Sparse Attention (DSA)**: a lightning indexer selects a sparse set of key tokens per query (top-2048),
++**GLM-5.2** is Z.ai's flagship Mixture-of-Experts model built on **DeepSeek Sparse Attention (DSA)**: a lightning indexer selects a sparse set of key tokens per query (top-2048),
+@@ -96,12 +96,17 @@ import { Playground } from "/src/snippets/_playground.jsx";
++    <tr>
++      <td style={{padding: "9px 12px"}}><strong><a href="https://huggingface.co/amd/GLM-5.2-MXFP4">GLM-5.2-MXFP4</a></strong></td>
++      <td style={{padding: "9px 12px"}}>MoE · DSA · 256 experts (top-8) · MTP · MXFP4</td>
+```
+
+- 已读文件:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +1258/-1151; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +8/-2
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #34476 - [AMD][DI][CI] Add GLM-5.2 MXFP4 wide-EP16 2P1D nightly recipes
+
+- 链接: https://github.com/sgl-project/sglang/pull/34476
+- 状态/时间: merged / 2026-08-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml`；关联提交 `9deb6952afa4`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+204/-0，可读 patch 210 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][DI][CI] Add GLM-5.2 MXFP4 wide-EP16 2P1D nightly recipes」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml`；技术摘要: 覆盖「[AMD][DI][CI] Add GLM-5.2 MXFP4 wide-EP16 2P1D nightly recipes」；主要实现面是 `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml` added +90/-0 (90 lines); hunks: -0,0 +1,90；`scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` added +82/-0 (82 lines); hunks: -0,0 +1,82。
+- 代码 diff 细节:
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml` added +90/-0 (90 lines); hunks: -0,0 +1,90
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` added +82/-0 (82 lines); hunks: -0,0 +1,82
+- 关键代码摘录:
+
+```diff
+diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml
+@@ -0,0 +1,90 @@
++# MI355X GLM-5.2 (MXFP4) 4-node 2P1D disaggregation recipe -- narrow-prefill EP8 + MTP
++# + wide-decode EP16 (mirrors the DSV4-Pro / Kimi Oren config: wide EP only helps decode).
++#
++# Two prefill engines (EP8, one node each) + one decode engine (EP16) spanning 2
++# nodes, 4 nodes total. Prefill EP8 keeps MoE all-to-all INTRA-node (XGMI); decode
++# gets wide EP16 across nodes over mori. KV (prefill TP8 -> decode TP16) over mori.
+diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml
+@@ -0,0 +1,82 @@
++# MI355X GLM-5.2 (MXFP4) 4-node 2P1D disaggregation recipe -- narrow-prefill EP8
++# + wide-decode EP16 (mirrors the DSV4-Pro / Kimi Oren config: wide EP only helps decode).
++#
++# Two prefill engines (EP8, one node each) + one decode engine (EP16) spanning 2
++# nodes, 4 nodes total. Prefill EP8 keeps MoE all-to-all INTRA-node (XGMI); decode
++# gets wide EP16 across nodes over mori. KV (prefill TP8 -> decode TP16) over mori.
+```
+
+- 已读文件:
+  - other: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml` added +90/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` added +82/-0
+- 验证与风险: 未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。
+
+### PR #31554 - [Docs] Fill GLM-5.2 H200 FP8 speed cells (low-latency, balanced); fix MTP notation
+
+- 链接: https://github.com/sgl-project/sglang/pull/31554
+- 状态/时间: merged / 2026-08-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；关联提交 `22dde1dd5b56`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+36/-5，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Docs] Fill GLM-5.2 H200 FP8 speed cells (low-latency, balanced); fix MTP notation」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；技术摘要: 覆盖「[Docs] Fill GLM-5.2 H200 FP8 speed cells (low-latency, balanced); fix MTP notation」；主要实现面是 `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-4 (39 lines); hunks: -3,10 +3,41；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -57,7 +57,7 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-4 (39 lines); hunks: -3,10 +3,41
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -57,7 +57,7 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -3,10 +3,41 @@
+-  // ---- H200 + FP8 ----  (serve recipe in glm-5.2.jsx; benchmark pending re-measurement)
+-  { match: { hw: "h200", variant: "default", quant: "fp8", strategy: "low-latency", nodes: "single" } },
+-  { match: { hw: "h200", variant: "default", quant: "fp8", strategy: "balanced", nodes: "single" } },
+-  { match: { hw: "h200", variant: "default", quant: "fp8", strategy: "high-throughput", nodes: "single" } },
++  // ---- H200 + FP8 ----  (8-GPU single node; serve recipe in glm-5.2.jsx; real weights,
++  // --random-range-ratio 1.0, flush-cache every run)
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -57,7 +57,7 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+-  Speed numbers are measured with `--random-range-ratio 1.0`, `--flush-cache`, on `main @ 09ca4fc`. Spec cells pin the EAGLE acceptance length via the serve env `SGLANG_SIMULATE_A
++  Speed numbers are measured with `--random-range-ratio 1.0`, `--flush-cache`, on `main @ 09ca4fc` (H200 FP8 cells: `v0.5.14 @ 49e384ce`). Spec cells pin the EAGLE acceptance leng
+```
+
+- 已读文件:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-4; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #32570 - [AMD] Add GLM-5.2 MI35x nightly accuracy and perf benchmark
+
+- 链接: https://github.com/sgl-project/sglang/pull/32570
+- 状态/时间: merged / 2026-08-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`；关联提交 `02b93e7e01cd`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+231/-10，可读 patch 300 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Add GLM-5.2 MI35x nightly accuracy and perf benchmark」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py`；技术摘要: 覆盖「[AMD] Add GLM-5.2 MI35x nightly accuracy and perf benchmark」；主要实现面是 `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: TestGLM52FP8PerfMI35x, setUpClass, test_glm52_fp8_perf，涉及 `TestGLM52FP8PerfMI35x, setUpClass, test_glm52_fp8_perf`；`test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` added +103/-0 (103 lines); hunks: -0,0 +1,103; symbols: TestGLM52FP8EvalMI35x, test_glm_52_fp8，涉及 `TestGLM52FP8EvalMI35x, test_glm_52_fp8`。
+- 代码 diff 细节:
+  - `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py` added +106/-0 (106 lines); hunks: -0,0 +1,106; symbols: TestGLM52FP8PerfMI35x, setUpClass, test_glm52_fp8_perf
+  - `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` added +103/-0 (103 lines); hunks: -0,0 +1,103; symbols: TestGLM52FP8EvalMI35x, test_glm_52_fp8
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py
+@@ -0,0 +1,106 @@
++"""MI35x nightly performance benchmark for GLM-5.2-FP8 (8-GPU).
++Benchmarks zai-org/GLM-5.2-FP8 at TP8 with the cookbook's MI355X / FP8 /
++low-latency / single-node server configuration. At 8K-input / 1K-output,
++batch 1 and 16 are the concurrency points the cookbook publishes, so drift from
++the recipe shows up directly; 8 and 64 extend the sweep to keep the batch range
++the retired GLM-5.1 MI35x benchmark used to cover.
+diff -- test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py
+@@ -0,0 +1,103 @@
++"""MI35x GLM-5.2-FP8 GSM8K Accuracy Evaluation Test (8-GPU)
++Tests zai-org/GLM-5.2-FP8 with the DSA tilelang backend on MI35x (gfx950).
++Server arguments track the GLM-5.2 cookbook's MI355X / FP8 / low-latency /
++single-node cell: TP8, DSA tilelang prefill+decode, 131072 chunked prefill,
++0.80 static memory fraction, and a 20-minute watchdog for weight loading.
++That cell ships as `verified: true` with published benchmarks, but nothing in
+```
+
+- 已读文件:
+  - tests: `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py` added +106/-0; `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` added +103/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`, `test/run_suite.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

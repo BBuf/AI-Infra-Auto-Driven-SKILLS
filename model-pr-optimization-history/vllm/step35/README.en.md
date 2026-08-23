@@ -10,7 +10,7 @@
 | `vllm/model_executor/models/step3_text.py` | no direct PR-number commit |
 | `vllm/model_executor/models/step3_vl.py` | no direct PR-number commit |
 | `vllm/model_executor/models/step3p5.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33755](https://github.com/vllm-project/vllm/pull/33755), [#34478](https://github.com/vllm-project/vllm/pull/34478), [#41892](https://github.com/vllm-project/vllm/pull/41892) |
-| `vllm/model_executor/models/step3p5_mtp.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523) |
+| `vllm/model_executor/models/step3p5_mtp.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#48883](https://github.com/vllm-project/vllm/pull/48883) |
 | `vllm/reasoning/step3p5_reasoning_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#34211](https://github.com/vllm-project/vllm/pull/34211) |
 | `vllm/tool_parsers/step3p5_tool_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33690](https://github.com/vllm-project/vllm/pull/33690) |
 | `vllm/transformers_utils/configs/step3_vl.py` | no direct PR-number commit |
@@ -47,6 +47,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/33523
 - Status/date: merged / 2026-02-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33523 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`, `vllm/reasoning/step3p5_reasoning_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/transformers_utils/configs/step3p5.py`; associated commits `c3b40dc3e74d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +3107/-4, 3270 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models] Step-3.5-Flash"; model line: Step 3.5; category: performance/backend optimization; main diff: `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`; technical summary: Covers "[Models] Step-3.5-Flash"; the main implementation surface is `vllm/tool_parsers/step3p5_tool_parser.py`, `vllm/model_executor/models/step3p5.py`, `vllm/model_executor/models/step3p5_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -88,6 +89,7 @@ diff -- vllm/model_executor/models/step3p5_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33690
 - Status/date: merged / 2026-02-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33690 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; associated commits `82914d2ae8d0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +1455/-5, 1508 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix step3p5 parser when using mtp"; model line: Step 3.5; category: bug fix; main diff: `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; technical summary: Covers "[Bugfix] Fix step3p5 parser when using mtp"; the main implementation surface is `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -125,6 +127,7 @@ diff -- vllm/tool_parsers/step3p5_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33755
 - Status/date: merged / 2026-02-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33755 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `db4ede974343`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +28/-32, 115 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Enable Step3p5ForCausalLM testing"; model line: Step 3.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/step3p5.py`; technical summary: Covers "[Model] Enable Step3p5ForCausalLM testing"; the main implementation surface is `vllm/model_executor/models/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -152,6 +155,7 @@ diff -- vllm/model_executor/models/step3p5.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34478
 - Status/date: merged / 2026-02-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34478 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `b7892a3beff0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +204/-4, 291 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add NVFP4 quantization support for Step3.5-Flash"; model line: Step 3.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/step3p5.py`; technical summary: Covers "[Model] Add NVFP4 quantization support for Step3.5-Flash"; the main implementation surface is `vllm/model_executor/models/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -179,6 +183,7 @@ diff -- vllm/model_executor/models/step3p5.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34211
 - Status/date: merged / 2026-02-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34211 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; associated commits `af5e6afa0af2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +387/-14, 423 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix step3p5 reasoning with interleaved thinking"; model line: Step 3.5; category: bug fix; main diff: `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`; technical summary: Covers "[Bugfix] Fix step3p5 reasoning with interleaved thinking"; the main implementation surface is `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -216,6 +221,7 @@ diff -- vllm/reasoning/step3p5_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41892
 - Status/date: merged / 2026-05-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41892 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5.py`; associated commits `3b1ef03be4a3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +46/-4, 97 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; model line: Step 3.5; category: bug fix; main diff: `vllm/model_executor/models/step3p5.py`; technical summary: Covers "[Bugfix][Quark] Fix W8A8 INT8 garbage outputs on Step-3.5-Flash (and other 3-key fused-MoE Quark exports)"; the main implementation surface is `vllm/model_executor/models/step3p5.py`. File-level evidence, code excerpts, and validation risks are preserved below.

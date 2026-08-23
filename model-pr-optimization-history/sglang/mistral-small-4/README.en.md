@@ -4,33 +4,34 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Mistral/Devstral-2.mdx` | no direct PR-number commit |
-| `docs_new/cookbook/autoregressive/Mistral/Ministral-3.mdx` | no direct PR-number commit |
-| `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | [#31507](https://github.com/sgl-project/sglang/pull/31507) |
-| `docs_new/cookbook/autoregressive/Mistral/Mistral-Small-4.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/ministral-3-deployment.jsx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Mistral/Devstral-2.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Mistral/Ministral-3.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Mistral/Mistral-Small-4.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/ministral-3-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/mistral-medium-3-5-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/mistral_detector.py` | [#6597](https://github.com/sgl-project/sglang/pull/6597), [#14921](https://github.com/sgl-project/sglang/pull/14921), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
 | `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251), [#29111](https://github.com/sgl-project/sglang/pull/29111) |
 | `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099) |
 | `python/sglang/srt/models/mistral_eagle.py` | no direct PR-number commit |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
-| `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
-| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396) |
+| `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708), [#33785](https://github.com/sgl-project/sglang/pull/33785) |
+| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396), [#35215](https://github.com/sgl-project/sglang/pull/35215) |
 | `test/manual/models/test_mistral_large3_basic.py` | no direct PR-number commit |
-| `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402) |
-| `test/registered/ascend/llm_models/test_npu_mistral_7b.py` | no direct PR-number commit |
-| `test/registered/ascend/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | no direct PR-number commit |
+| `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402), [#33785](https://github.com/sgl-project/sglang/pull/33785) |
 | `test/registered/models_e2e/test_ministral3_models.py` | no direct PR-number commit |
 | `test/registered/models_e2e/test_ministral4_models.py` | no direct PR-number commit |
+| `test/registered/npu/llm_models/test_npu_mistral_7b.py` | no direct PR-number commit |
+| `test/registered/npu/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | no direct PR-number commit |
+| `test/registered/unit/constrained/test_mistral_common_xgrammar.py` | [#35215](https://github.com/sgl-project/sglang/pull/35215) |
 | `test/registered/unit/function_call/test_mistral_detector.py` | [#21399](https://github.com/sgl-project/sglang/pull/21399) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 16
-- Extra PRs preserved from existing docs: 8
-- Total PRs in this document: 24
+- Git-traced PRs: 17
+- Extra PRs preserved from existing docs: 9
+- Total PRs in this document: 26
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -62,6 +63,8 @@
 | 2026-06-25 | [#29111](https://github.com/sgl-project/sglang/pull/29111) | merged | [Bugfix] Fix Ministral3 init argument forwarding | `python/sglang/srt/models/ministral3.py` |
 | 2026-07-09 | [#30396](https://github.com/sgl-project/sglang/pull/30396) | merged | Fix garbage output for bare-tekken Mistral checkpoints (e.g. Leanstral) | `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
 | 2026-07-17 | [#31507](https://github.com/sgl-project/sglang/pull/31507) | merged | [Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest | `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` |
+| 2026-08-06 | [#33785](https://github.com/sgl-project/sglang/pull/33785) | merged | Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__ | `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py` |
+| 2026-08-19 | [#35215](https://github.com/sgl-project/sglang/pull/35215) | merged | [Constrained] Support MistralCommon tokenizers in the XGrammar backend | `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -814,7 +817,7 @@ diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31507
 - Status/date: merged / 2026-07-17
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`; associated commits `40a3bd765975`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-8, 16 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`; technical summary: Covers "[Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest"; the main implementation surface is `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8 (9 lines); hunks: -41,14 +41,7 @@ The HuggingFace repo ships both the mistral native layout (`p....
@@ -836,6 +839,80 @@ diff -- docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx
 - Reviewed files:
   - docs: `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` modified +1/-8
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #33785 - Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__
+
+- Link: https://github.com/sgl-project/sglang/pull/33785
+- Status/date: merged / 2026-08-06
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py`; associated commits `dd7e4c91e2e1`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +25/-54, 118 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__"; model line: Mistral Small 4; category: bug fix; main diff: `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py`; technical summary: Covers "Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__"; the main implementation surface is `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/mistral_large_3_eagle.py` modified +6/-46 (52 lines); hunks: -4,19 +4,12; -31,50 +24,17 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `test/registered/8-gpu-models/test_mistral_large3.py` modified +19/-8 (27 lines); hunks: -1,6 +1,7; -84,14 +85,24 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants, touching `test_mistral_large3_all_variants`.
+- Code diff details:
+  - `python/sglang/srt/models/mistral_large_3_eagle.py` modified +6/-46 (52 lines); hunks: -4,19 +4,12; -31,50 +24,17 @@ def __init__(; symbols: __init__, forward
+  - `test/registered/8-gpu-models/test_mistral_large3.py` modified +19/-8 (27 lines); hunks: -1,6 +1,7; -84,14 +85,24 @@ def test_mistral_large3_all_variants(self):; symbols: test_mistral_large3_all_variants
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/mistral_large_3_eagle.py
+@@ -4,19 +4,12 @@
+-from torch import nn
+-from sglang.srt.configs.model_config import is_deepseek_dsa
+-from sglang.srt.distributed import get_pp_group
+-from sglang.srt.layers.attention.dsa.utils import is_dsa_enable_prefill_cp
+-from sglang.srt.layers.layernorm import RMSNorm
+-from sglang.srt.layers.utils.cp_utils import is_prefill_context_parallel_enabled
+diff -- test/registered/8-gpu-models/test_mistral_large3.py
+@@ -1,6 +1,7 @@
++from sglang.srt.environ import envs
+@@ -84,14 +85,24 @@ def test_mistral_large3_all_variants(self):
+-        run_combined_tests(
+-            models=variants,
+-            test_name="Mistral-Large-3",
+-            accuracy_params=AccuracyTestParams(dataset="gsm8k", baseline_accuracy=0.85),
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/mistral_large_3_eagle.py` modified +6/-46
+  - tests: `test/registered/8-gpu-models/test_mistral_large3.py` modified +19/-8
+- Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_mistral_large3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35215 - [Constrained] Support MistralCommon tokenizers in the XGrammar backend
+
+- Link: https://github.com/sgl-project/sglang/pull/35215
+- Status/date: merged / 2026-08-19
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/utils/hf_transformers/mistral_utils.py`, `test/registered/unit/constrained/test_mistral_common_xgrammar.py`; associated commits `3391ab3712bb`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +168/-1, 189 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Constrained] Support MistralCommon tokenizers in the XGrammar backend"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py`; technical summary: Covers "[Constrained] Support MistralCommon tokenizers in the XGrammar backend"; the main implementation surface is `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0 (112 lines); hunks: -0,0 +1,112; symbols: _StubTekkenizer, __init__, id_to_piece, id_to_byte_piece, touching `_StubTekkenizer, __init__, id_to_piece`; `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0 (43 lines); hunks: -634,4 +634,47 @@ def _safe_apply_chat_template(messages, **kwargs):; symbols: _safe_apply_chat_template, init_xgrammar, touching `_safe_apply_chat_template, init_xgrammar`.
+- Code diff details:
+  - `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0 (112 lines); hunks: -0,0 +1,112; symbols: _StubTekkenizer, __init__, id_to_piece, id_to_byte_piece
+  - `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0 (43 lines); hunks: -634,4 +634,47 @@ def _safe_apply_chat_template(messages, **kwargs):; symbols: _safe_apply_chat_template, init_xgrammar
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/constrained/test_mistral_common_xgrammar.py
+@@ -0,0 +1,112 @@
++import sys
++import pytest
++from sglang.srt.utils.hf_transformers.mistral_utils import (
++    patch_mistral_common_tokenizer,
++)
++from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
+@@ -634,4 +634,47 @@ def _safe_apply_chat_template(messages, **kwargs):
++    def init_xgrammar():
++        from xgrammar import TokenizerInfo
++        tekken = getattr(
++            getattr(tokenizer.tokenizer, "instruct_tokenizer", None), "tokenizer", None
++        )
++        if tekken is None or not hasattr(tekken, "id_to_byte_piece"):
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0
+  - runtime: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0
+- Risk and verification: The diff ships test coverage in `test/registered/unit/constrained/test_mistral_common_xgrammar.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

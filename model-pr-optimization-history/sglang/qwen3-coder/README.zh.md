@@ -4,23 +4,23 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder-Next.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx` | [#24435](https://github.com/sgl-project/sglang/pull/24435) |
-| `docs_new/src/snippets/autoregressive/qwen3-coder-480b-a35b-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx` | [#24435](https://github.com/sgl-project/sglang/pull/24435) |
-| `docs_new/src/snippets/autoregressive/qwen3-coder-next-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Qwen/Qwen3-Coder-Next.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/qwen3-coder-480b-a35b-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/qwen3-coder-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/qwen3-coder-next-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/qwen3_coder_detector.py` | [#8371](https://github.com/sgl-project/sglang/pull/8371), [#16744](https://github.com/sgl-project/sglang/pull/16744), [#30832](https://github.com/sgl-project/sglang/pull/30832) |
 | `python/sglang/srt/models/qwen3.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
 | `test/registered/amd/test_qwen3_coder_next_8gpu.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
-| `test/registered/ascend/llm_models/test_npu_qwen3_coder_480b_a35b.py` | 无直接 PR 号提交 |
 | `test/registered/cpu/test_qwen3.py` | 无直接 PR 号提交 |
 | `test/registered/lora/test_lora_qwen3.py` | 无直接 PR 号提交 |
+| `test/registered/npu/llm_models/test_npu_qwen3_coder_480b_a35b.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 5
-- 原文档显式引用补充 PR 数: 36
+- git 追溯 PR 数: 4
+- 原文档显式引用补充 PR 数: 37
 - 当前文档总 PR 数: 41
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
@@ -1230,7 +1230,7 @@ diff -- python/sglang/srt/models/qwen3.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/24435
 - 状态/时间: merged / 2026-06-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx`；关联提交 `106092123f01`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+285/-20，可读 patch 361 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update Qwen3-Coder docs_new NVIDIA guidance」；模型线: Qwen3 Coder；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx`；技术摘要: 覆盖「Update Qwen3-Coder docs_new NVIDIA guidance」；主要实现面是 `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx` modified +273/-10 (283 lines); hunks: -47,7 +47,7 @@ This section provides deployment configurations verified on AM...; -292,7 +292,7 @@ Arguments: {"code": "def factorial(n):\n if n == 0 or n == 1...; symbols: factorial，涉及 `factorial`；`docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx` modified +12/-10 (22 lines); hunks: -45,8 +45,8 @@ export const Qwen3CoderDeployment = () => {; -97,24 +97,26 @@ export const Qwen3CoderDeployment = () => {。

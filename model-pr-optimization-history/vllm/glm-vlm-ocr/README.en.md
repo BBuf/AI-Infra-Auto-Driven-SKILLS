@@ -380,6 +380,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39986
 - Status/date: merged / 2026-04-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39986/files?per_page=100 --paginate Get "https://api.github.com/repos/vllm-project/vllm/pulls/39986/files?per_page=100": EOF`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +290/-118, 622 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Multimodal] Add PyAV video backend for concurrent video decoding"; model line: GLM VLM/OCR; category: docs/tests/CI; main diff: `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py`; technical summary: Covers "[Multimodal] Add PyAV video backend for concurrent video decoding"; the main implementation surface is `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py`. File-level evidence, code excerpts, and validation risks are preserved below.

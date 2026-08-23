@@ -4,8 +4,8 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/InclusionAI/Ring-2.5-1T.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/ring-25-1t-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/InclusionAI/Ring-2.5-1T.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/ring-25-1t-deployment.jsx` | no direct PR-number commit |
 | `test/registered/8-gpu-models/test_ring_2_5_1t.py` | no direct PR-number commit |
 
 ## PR Coverage Summary

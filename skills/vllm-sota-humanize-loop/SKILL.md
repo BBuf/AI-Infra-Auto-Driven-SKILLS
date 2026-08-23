@@ -169,15 +169,15 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for every selected framework. The 2026-07-28 immutable source heads checked
+  for every selected framework. The 2026-08-23 immutable source heads checked
   for this skill are vLLM
-  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, SGLang
-  `8a311d1c889244ab1f857d7df79de7e5f0a6891c`, and TensorRT-LLM
-  `9fe5853263750ade5b7dc24fb31a1215ec822d45`. Prefer the target image's
+  `bbe8b23e1a2b32a96240b27f63255170d09ef144`, SGLang
+  `eec794bce0808ae26cc1dcb84a56b65d2df82af5`, and TensorRT-LLM
+  `da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`. Prefer the target image's
   current `--help`, re-check open PRs, and do not add TokenSpeed to this scoped
   workflow unless its executable benchmark path is verified end to end.
 - Use the target image's current commands: `vllm serve`,
-  `python -m sglang.launch_server`, and
+  `sglang serve` or `python -m sglang.launch_server`, and
   `trtllm-serve serve --backend pytorch`.
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless
   the user explicitly provides a production workload:

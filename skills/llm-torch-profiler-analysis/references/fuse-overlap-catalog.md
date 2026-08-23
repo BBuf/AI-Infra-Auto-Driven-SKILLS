@@ -30,11 +30,11 @@ overlap opportunity as novel.
 
 The catalog is grouped by reusable optimization family, not by one specific model.
 
-Refresh note `2026-07-28`: rechecked official main heads for SGLang
-`8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
-`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
-`9fe5853263750ade5b7dc24fb31a1215ec822d45`, and TokenSpeed
-`e41aa8b1609a9412d7ed26aa56d910828607950f`. The vLLM torch.compile pass
+Refresh note `2026-08-23`: rechecked official main heads for SGLang
+`eec794bce0808ae26cc1dcb84a56b65d2df82af5`, vLLM
+`bbe8b23e1a2b32a96240b27f63255170d09ef144`, TensorRT-LLM
+`da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`, and TokenSpeed
+`2706143a8669d50a8f56466b9d340b86922b8f2d`. The vLLM torch.compile pass
 inventory is split out in
 [`vllm-torch-compile-fusions.md`](vllm-torch-compile-fusions.md). Stable
 current-code families remain folded into the mainline rows below. The prior refresh
@@ -48,9 +48,10 @@ dimension 256; classify it as broader backend coverage, not a new fusion
 family.
 The public Kimi K3 Day-0 PR
 [`sgl-project/sglang#32541`](https://github.com/sgl-project/sglang/pull/32541)
-was audited while open at immutable head
-`4b6e6fc24c27d3621a43013c049d281b54a25ee4`; its rows remain
-status-sensitive and shape-gated until merged.
+merged on 2026-08-04 and shipped in SGLang `v0.5.17`. Treat its KDA/MLA and
+kernel rows as mainline, then re-check `v0.5.18`: the MLA gate-projection
+fusion into QKV-A GEMM landed and was reverted (`#33623` / `#34642`), so that
+specific fuse is not current.
 
 ## 1. LLM / SRT fused-kernel families
 

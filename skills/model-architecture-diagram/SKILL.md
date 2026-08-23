@@ -45,6 +45,7 @@ Do not copy remote image binaries into the skill. Return the raw GitHub URLs so 
 For a direct match, show the original image. Good direct matches include:
 
 - DeepSeek V3/V3.2/V4, GLM-5, Kimi K2/K2.5/K3, MiniMax M2.5, Qwen3.5, Qwen3-VL, and Step 3.5 Flash from InfraTech.
+- Qwen3.8 is public as of 2026-08-23 but is not yet in `diagram-index.json`; return `no_match` rather than inventing a figure.
 - Hunyuan-A13B, Kimi-VL, Qwen3, Qwen3-VL detail flows, MiniMax M2, and Llama 4 architecture/module diagrams from self-llm.
 - Z-Image, Wan2.1, Wan2.2, HunyuanVideo, Hunyuan3D 2.0, and FLUX.1 diffusion architecture/module diagrams from public GitHub sources.
 

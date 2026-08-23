@@ -4,8 +4,8 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/InclusionAI/Ring-2.5-1T.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/ring-25-1t-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/InclusionAI/Ring-2.5-1T.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/ring-25-1t-deployment.jsx` | 无直接 PR 号提交 |
 | `test/registered/8-gpu-models/test_ring_2_5_1t.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览

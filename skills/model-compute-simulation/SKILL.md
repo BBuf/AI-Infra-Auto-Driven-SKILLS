@@ -28,6 +28,9 @@ Before running a simulation, collect or verify these inputs:
 
 If the model is not in `model-config-index.json`, ask the user for a
 `config.json` path or add an indexed config before running estimates.
+The 2026-08-23 refresh added public `Qwen/Qwen3.8-27B` (`qwen3.8-27b`):
+64-layer hybrid GDN/GQA, no MoE. The 2.4T Qwen3.8-A95B checkpoint is not
+indexed here because this pass did not lock a serving config.json.
 
 ## Workflow
 

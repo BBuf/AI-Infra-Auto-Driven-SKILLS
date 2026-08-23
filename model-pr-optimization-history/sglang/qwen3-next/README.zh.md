@@ -4,20 +4,21 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/docs/hardware-platforms/ascend-npus/best_practice/qwen3_next_80b_a3b_instruct.mdx` | 无直接 PR 号提交 |
-| `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/qwen3_next_80b_a3b_instruct.mdx` | 无直接 PR 号提交 |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/qwen3_next_80b_a3b_instruct.mdx` | 无直接 PR 号提交 |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/qwen3_next_80b_a3b_instruct.mdx` | 无直接 PR 号提交 |
 | `python/sglang/srt/configs/qwen3_next.py` | [#10233](https://github.com/sgl-project/sglang/pull/10233), [#11585](https://github.com/sgl-project/sglang/pull/11585), [#12525](https://github.com/sgl-project/sglang/pull/12525) |
 | `python/sglang/srt/models/qwen3_next.py` | [#10233](https://github.com/sgl-project/sglang/pull/10233), [#10322](https://github.com/sgl-project/sglang/pull/10322), [#10379](https://github.com/sgl-project/sglang/pull/10379), [#10622](https://github.com/sgl-project/sglang/pull/10622), [#11969](https://github.com/sgl-project/sglang/pull/11969), [#12525](https://github.com/sgl-project/sglang/pull/12525), [#13081](https://github.com/sgl-project/sglang/pull/13081), [#14607](https://github.com/sgl-project/sglang/pull/14607), [#16164](https://github.com/sgl-project/sglang/pull/16164), [#17016](https://github.com/sgl-project/sglang/pull/17016), [#17373](https://github.com/sgl-project/sglang/pull/17373), [#17613](https://github.com/sgl-project/sglang/pull/17613), ... (23 total) |
 | `python/sglang/srt/models/qwen3_next_mtp.py` | [#10233](https://github.com/sgl-project/sglang/pull/10233), [#10322](https://github.com/sgl-project/sglang/pull/10322), [#10392](https://github.com/sgl-project/sglang/pull/10392), [#26204](https://github.com/sgl-project/sglang/pull/26204) |
 | `test/manual/4-gpu-models/test_qwen3_next_models.py` | 无直接 PR 号提交 |
 | `test/manual/4-gpu-models/test_qwen3_next_models_mtp_archived.py` | 无直接 PR 号提交 |
-| `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` | 无直接 PR 号提交 |
-| `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` | 无直接 PR 号提交 |
-| `test/registered/ascend/performance/qwen3_next_80b_a3b_instruct/test_npu_qwen3_next_80b_w8a8_2p_in6k_out1k5_bs16_aime25.py` | 无直接 PR 号提交 |
 | `test/registered/attention/test_qwen3_next_deterministic.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_qwen3_next_models.py` | [#27419](https://github.com/sgl-project/sglang/pull/27419) |
-| `test/registered/models_e2e/test_qwen3_next_models_fp4.py` | 无直接 PR 号提交 |
+| `test/registered/models_e2e/test_qwen3_next_models_extra.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_qwen3_next_models_mtp.py` | 无直接 PR 号提交 |
+| `test/registered/npu/accuracy/qwen3_next_80b_a3b_instruct/test_npu_qwen3_next_80b_w8a8_2p_in6k_out1k5_bs16_aime25.py` | 无直接 PR 号提交 |
+| `test/registered/npu/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` | 无直接 PR 号提交 |
+| `test/registered/npu/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` | 无直接 PR 号提交 |
+| `test/registered/npu/performance/qwen3_next_80b_a3b_instruct/test_npu_qwen3_next_80b_w8a8_2p_in6k_out1k5_bs16.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
@@ -47,11 +48,8 @@
 | 2025-11-21 | [#13708](https://github.com/sgl-project/sglang/pull/13708) | merged | [Fix] Qwen3Next lmhead dtype | `python/sglang/srt/models/qwen3_next.py` |
 | 2025-11-25 | [#13081](https://github.com/sgl-project/sglang/pull/13081) | merged | Support piecewise cuda graph for Qwen3-next | `python/sglang/srt/models/qwen3_next.py` |
 | 2025-11-26 | [#13924](https://github.com/sgl-project/sglang/pull/13924) | closed | [performance]Qwen3 Next kernel performance optimize | `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` |
-| 2025-11-26 | [#13964](https://github.com/sgl-project/sglang/pull/13964) | open | [Performance]Qwen3 Next kernel performance optimize | `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` |
-| 2025-12-05 | [#14502](https://github.com/sgl-project/sglang/pull/14502) | open | [Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
 | 2025-12-13 | [#14855](https://github.com/sgl-project/sglang/pull/14855) | merged | Clean up GDN Init | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-01-03 | [#16164](https://github.com/sgl-project/sglang/pull/16164) | merged | [NPU] Adapt qwen3-next W8A8 on NPU | `python/sglang/srt/models/qwen3_next.py` |
-| 2026-01-05 | [#16488](https://github.com/sgl-project/sglang/pull/16488) | open | Two-Batch Overlap (TBO) support to Qwen3-Next Models | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
 | 2026-01-10 | [#16863](https://github.com/sgl-project/sglang/pull/16863) | merged | tiny refactor pcg split op registration | `python/sglang/srt/layers/radix_attention.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/compilation/compilation_config.py` |
 | 2026-01-16 | [#17016](https://github.com/sgl-project/sglang/pull/17016) | merged | [bugfix] fix qwen3-next alt_stream none issue | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-01-18 | [#15631](https://github.com/sgl-project/sglang/pull/15631) | merged | [jit-kernel] Add CuTe DSL GDN Decode Kernel | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/jit_kernel/cutedsl_gdn.py`, `python/sglang/jit_kernel/tests/test_cutedsl_gdn.py` |
@@ -78,7 +76,6 @@
 | 2026-03-26 | [#21313](https://github.com/sgl-project/sglang/pull/21313) | merged | bugfix for weight loading for qwen3-next | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-26 | [#21496](https://github.com/sgl-project/sglang/pull/21496) | merged | Revert "bugfix for weight loading for qwen3-next" | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-30 | [#21662](https://github.com/sgl-project/sglang/pull/21662) | merged | [Fix] Fix weight_loader property assignment for qwen3-next FP8 models | `python/sglang/srt/models/qwen3_next.py` |
-| 2026-03-30 | [#21684](https://github.com/sgl-project/sglang/pull/21684) | open | [bugfix] fix Qwen3-next memory leak | `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py` |
 | 2026-04-07 | [#22073](https://github.com/sgl-project/sglang/pull/22073) | merged | [Feature] Adding Qwen3-asr Model Support | `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-10 | [#22458](https://github.com/sgl-project/sglang/pull/22458) | merged | Fix NCCL AllGather hanging issue for Qwen3 Next MTP | `python/sglang/srt/speculative/eagle_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py` |
@@ -106,6 +103,10 @@
 | 2026-06-12 | [#23862](https://github.com/sgl-project/sglang/pull/23862) | merged | Fix --mem-fraction-static not accounting for EAGLE draft model KV cache | `python/sglang/srt/model_executor/model_runner.py`, `test/registered/unit/configs/test_model_config_shapes.py`, `python/sglang/srt/configs/model_config.py` |
 | 2026-06-13 | [#19812](https://github.com/sgl-project/sglang/pull/19812) | closed | Fix Qwen3.5/Qwen3Next MTP EPLB compatibility | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-07-28 | [#21684](https://github.com/sgl-project/sglang/pull/21684) | closed | [bugfix] fix Qwen3-next memory leak | `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py` |
+| 2026-08-16 | [#13964](https://github.com/sgl-project/sglang/pull/13964) | closed | [Performance]Qwen3 Next kernel performance optimize | `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` |
+| 2026-08-16 | [#16488](https://github.com/sgl-project/sglang/pull/16488) | closed | Two-Batch Overlap (TBO) support to Qwen3-Next Models | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
+| 2026-08-18 | [#14502](https://github.com/sgl-project/sglang/pull/14502) | closed | [Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -622,74 +623,6 @@ diff -- python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py
   - runtime: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +38/-22
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #13964 - [Performance]Qwen3 Next kernel performance optimize
-
-- 链接: https://github.com/sgl-project/sglang/pull/13964
-- 状态/时间: open / 2025-11-26
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-24，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Performance]Qwen3 Next kernel performance optimize」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`；技术摘要: 覆盖「[Performance]Qwen3 Next kernel performance optimize」；主要实现面是 `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +34/-24 (58 lines); hunks: -7,6 +7,17; -71,6 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update，涉及 `fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +34/-24 (58 lines); hunks: -7,6 +7,17; -71,6 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py
-@@ -7,6 +7,17 @@
-+@triton.autotune(
-+    configs=[
-+        triton.Config({}, num_warps=4, num_stages=2),
-+        triton.Config({}, num_warps=4, num_stages=3),
-+        triton.Config({}, num_warps=2, num_stages=3),
-+        triton.Config({}, num_warps=2, num_stages=4),
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +34/-24
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #14502 - [Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next
-
-- 链接: https://github.com/sgl-project/sglang/pull/14502
-- 状态/时间: open / 2025-12-05
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+248/-123，可读 patch 498 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`；技术摘要: 覆盖「[Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next」；主要实现面是 `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75 (294 lines); hunks: -5,6 +5,7; -37,6 +38,7; symbols: forward_extend, _causal_conv1d_gdn_core，涉及 `forward_extend, _causal_conv1d_gdn_core`；`python/sglang/srt/models/qwen3_next.py` modified +0/-41 (41 lines); hunks: -5,7 +5,6; -49,7 +48,6; symbols: fused_qkvzba_split_reshape_cat_kernel, forward, _forward, get_model_config_for_expert_location，涉及 `fused_qkvzba_split_reshape_cat_kernel, forward, _forward`；`python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4 (16 lines); hunks: -330,9 +330,13 @@ def warmup_torch_compile(self, num_tokens: int):; -477,9 +481,13 @@ def capture_one_batch_size(self, num_tokens: int):; symbols: warmup_torch_compile, capture_one_batch_size，涉及 `warmup_torch_compile, capture_one_batch_size`；`python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2 (18 lines); hunks: -131,10 +131,15 @@ class State:; -151,6 +156,15 @@ class SpeculativeState(State):; symbols: State, at_layer_idx, SpeculativeState, __init__，涉及 `State, at_layer_idx, SpeculativeState`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75 (294 lines); hunks: -5,6 +5,7; -37,6 +38,7; symbols: forward_extend, _causal_conv1d_gdn_core
-  - `python/sglang/srt/models/qwen3_next.py` modified +0/-41 (41 lines); hunks: -5,7 +5,6; -49,7 +48,6; symbols: fused_qkvzba_split_reshape_cat_kernel, forward, _forward, get_model_config_for_expert_location
-  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4 (16 lines); hunks: -330,9 +330,13 @@ def warmup_torch_compile(self, num_tokens: int):; -477,9 +481,13 @@ def capture_one_batch_size(self, num_tokens: int):; symbols: warmup_torch_compile, capture_one_batch_size
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2 (18 lines); hunks: -131,10 +131,15 @@ class State:; -151,6 +156,15 @@ class SpeculativeState(State):; symbols: State, at_layer_idx, SpeculativeState, __init__
-  - `python/sglang/srt/compilation/compilation_config.py` modified +1/-1 (2 lines); hunks: -17,7 +17,7 @@ def __init__(; symbols: __init__
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
-@@ -5,6 +5,7 @@
-+from sglang.srt.compilation.piecewise_context_manager import get_forward_context
-@@ -37,6 +38,7 @@
-+from sglang.srt.utils.custom_op import register_custom_op
-@@ -957,6 +959,9 @@ def forward_extend(
-+        g, beta = fused_gdn_gating(A_log, a, b, dt_bias)
-@@ -968,13 +973,11 @@ def forward_extend(
-diff -- python/sglang/srt/models/qwen3_next.py
-@@ -5,7 +5,6 @@
--from sglang.srt.compilation.piecewise_context_manager import get_forward_context
-@@ -49,7 +48,6 @@
--from sglang.srt.utils.custom_op import register_custom_op
-@@ -59,8 +57,6 @@
--from sglang.srt.compilation.piecewise_context_manager import get_forward_context
-@@ -373,22 +369,6 @@ def forward(
-diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
-@@ -330,9 +330,13 @@ def warmup_torch_compile(self, num_tokens: int):
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75; `python/sglang/srt/models/qwen3_next.py` modified +0/-41; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4; `python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2; `python/sglang/srt/compilation/compilation_config.py` modified +1/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/compilation/compilation_config.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #14855 - Clean up GDN Init
 
 - 链接: https://github.com/sgl-project/sglang/pull/14855
@@ -743,48 +676,6 @@ diff -- python/sglang/srt/models/qwen3_next.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +18/-5
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #16488 - Two-Batch Overlap (TBO) support to Qwen3-Next Models
-
-- 链接: https://github.com/sgl-project/sglang/pull/16488
-- 状态/时间: open / 2026-01-05
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+484/-13，可读 patch 594 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Two-Batch Overlap (TBO) support to Qwen3-Next Models」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`；技术摘要: 覆盖「Two-Batch Overlap (TBO) support to Qwen3-Next Models」；主要实现面是 `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_next.py` modified +293/-11 (304 lines); hunks: -12,7 +12,7; -50,6 +50,8; symbols: _forward, op_prepare, op_core, Qwen3HybridLinearDecoderLayer，涉及 `_forward, op_prepare, op_core`；`python/sglang/srt/models/qwen2_moe.py` modified +91/-0 (91 lines); hunks: -78,6 +78,7; -324,6 +325,96 @@ def forward(; symbols: forward, op_gate, op_shared_experts, op_select_experts，涉及 `forward, op_gate, op_shared_experts`；`python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +5/-1 (6 lines); hunks: -223,6 +223,9 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; -1040,7 +1043,8 @@ def forward_extend(; symbols: _forward_metadata, forward_extend，涉及 `_forward_metadata, forward_extend`；`python/sglang/srt/batch_overlap/operations_strategy.py` modified +85/-0 (85 lines); hunks: -51,6 +51,16 @@ def init_new_tbo(; -209,3 +219,78 @@ def _compute_moe_qwen3_decode(layer):; symbols: init_new_tbo, _compute_moe_qwen3_decode, _compute_moe_qwen3_next_layer_operations_strategy_tbo, _compute_moe_qwen3_next_prefill，涉及 `init_new_tbo, _compute_moe_qwen3_decode, _compute_moe_qwen3_next_layer_operations_strategy_tbo`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_next.py` modified +293/-11 (304 lines); hunks: -12,7 +12,7; -50,6 +50,8; symbols: _forward, op_prepare, op_core, Qwen3HybridLinearDecoderLayer
-  - `python/sglang/srt/models/qwen2_moe.py` modified +91/-0 (91 lines); hunks: -78,6 +78,7; -324,6 +325,96 @@ def forward(; symbols: forward, op_gate, op_shared_experts, op_select_experts
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +5/-1 (6 lines); hunks: -223,6 +223,9 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; -1040,7 +1043,8 @@ def forward_extend(; symbols: _forward_metadata, forward_extend
-  - `python/sglang/srt/batch_overlap/operations_strategy.py` modified +85/-0 (85 lines); hunks: -51,6 +51,16 @@ def init_new_tbo(; -209,3 +219,78 @@ def _compute_moe_qwen3_decode(layer):; symbols: init_new_tbo, _compute_moe_qwen3_decode, _compute_moe_qwen3_next_layer_operations_strategy_tbo, _compute_moe_qwen3_next_prefill
-  - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +9/-0 (9 lines); hunks: -79,6 +79,15 @@ def compute_split_seq_index(; symbols: compute_split_seq_index
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_next.py
-@@ -12,7 +12,7 @@
--from sglang.srt.layers.communicator import LayerCommunicator, LayerScatterModes
-+from sglang.srt.layers.communicator import LayerCommunicator, LayerScatterModes, ScatterMode
-@@ -50,6 +50,8 @@
-+from sglang.srt.batch_overlap.two_batch_overlap import model_forward_maybe_tbo
-@@ -468,7 +470,100 @@ def _forward(
-+    def op_prepare(self, state):
-diff -- python/sglang/srt/models/qwen2_moe.py
-@@ -78,6 +78,7 @@
-+    is_non_idle_and_non_empty
-@@ -324,6 +325,96 @@ def forward(
-+    def op_gate(self, state):
-+        if is_non_idle_and_non_empty(
-+            state.forward_batch.forward_mode, state.hidden_states_mlp_input
-+        ):
-diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
-@@ -223,6 +223,9 @@ def _forward_metadata(self, forward_batch: ForwardBatch):
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +293/-11; `python/sglang/srt/models/qwen2_moe.py` modified +91/-0; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +5/-1; `python/sglang/srt/batch_overlap/operations_strategy.py` modified +85/-0; `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +9/-0
-  - tests: `test/manual/test_two_batch_overlap.py` modified +1/-1
-- 验证与风险: diff 自带测试面 `test/manual/test_two_batch_overlap.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #16863 - tiny refactor pcg split op registration
 
@@ -1662,34 +1553,6 @@ diff -- python/sglang/srt/models/qwen3_next.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +17/-4
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #21684 - [bugfix] fix Qwen3-next memory leak
-
-- 链接: https://github.com/sgl-project/sglang/pull/21684
-- 状态/时间: open / 2026-03-30
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[bugfix] fix Qwen3-next memory leak」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`；技术摘要: 覆盖「[bugfix] fix Qwen3-next memory leak」；主要实现面是 `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/mem_cache/allocator.py` modified +1/-1 (2 lines); hunks: -150,7 +150,7 @@ def alloc(self, need_size: int):; symbols: alloc, free，涉及 `alloc, free`；`python/sglang/srt/mem_cache/memory_pool.py` modified +1/-1 (2 lines); hunks: -356,7 +356,7 @@ def alloc(self, need_size: int) -> Optional[torch.Tensor]:; symbols: alloc, free，涉及 `alloc, free`。
-- 代码 diff 细节:
-  - `python/sglang/srt/mem_cache/allocator.py` modified +1/-1 (2 lines); hunks: -150,7 +150,7 @@ def alloc(self, need_size: int):; symbols: alloc, free
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +1/-1 (2 lines); hunks: -356,7 +356,7 @@ def alloc(self, need_size: int) -> Optional[torch.Tensor]:; symbols: alloc, free
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/mem_cache/allocator.py
-@@ -150,7 +150,7 @@ def alloc(self, need_size: int):
--        return select_index
-+        return select_index.clone()
-diff -- python/sglang/srt/mem_cache/memory_pool.py
-@@ -356,7 +356,7 @@ def alloc(self, need_size: int) -> Optional[torch.Tensor]:
--        return select_index
-+        return select_index.clone()
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/mem_cache/allocator.py` modified +1/-1; `python/sglang/srt/mem_cache/memory_pool.py` modified +1/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #22073 - [Feature] Adding Qwen3-asr Model Support
 
@@ -2691,6 +2554,144 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #21684 - [bugfix] fix Qwen3-next memory leak
+
+- 链接: https://github.com/sgl-project/sglang/pull/21684
+- 状态/时间: closed / 2026-07-28
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[bugfix] fix Qwen3-next memory leak」；模型线: Qwen3 Next；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`；技术摘要: 覆盖「[bugfix] fix Qwen3-next memory leak」；主要实现面是 `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/mem_cache/allocator.py` modified +1/-1 (2 lines); hunks: -150,7 +150,7 @@ def alloc(self, need_size: int):; symbols: alloc, free，涉及 `alloc, free`；`python/sglang/srt/mem_cache/memory_pool.py` modified +1/-1 (2 lines); hunks: -356,7 +356,7 @@ def alloc(self, need_size: int) -> Optional[torch.Tensor]:; symbols: alloc, free，涉及 `alloc, free`。
+- 代码 diff 细节:
+  - `python/sglang/srt/mem_cache/allocator.py` modified +1/-1 (2 lines); hunks: -150,7 +150,7 @@ def alloc(self, need_size: int):; symbols: alloc, free
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +1/-1 (2 lines); hunks: -356,7 +356,7 @@ def alloc(self, need_size: int) -> Optional[torch.Tensor]:; symbols: alloc, free
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/mem_cache/allocator.py
+@@ -150,7 +150,7 @@ def alloc(self, need_size: int):
+-        return select_index
++        return select_index.clone()
+diff -- python/sglang/srt/mem_cache/memory_pool.py
+@@ -356,7 +356,7 @@ def alloc(self, need_size: int) -> Optional[torch.Tensor]:
+-        return select_index
++        return select_index.clone()
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/mem_cache/allocator.py` modified +1/-1; `python/sglang/srt/mem_cache/memory_pool.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/mem_cache/allocator.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #13964 - [Performance]Qwen3 Next kernel performance optimize
+
+- 链接: https://github.com/sgl-project/sglang/pull/13964
+- 状态/时间: closed / 2026-08-16
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-24，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Performance]Qwen3 Next kernel performance optimize」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`；技术摘要: 覆盖「[Performance]Qwen3 Next kernel performance optimize」；主要实现面是 `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +34/-24 (58 lines); hunks: -7,6 +7,17; -71,6 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update，涉及 `fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +34/-24 (58 lines); hunks: -7,6 +7,17; -71,6 +82,10 @@ def fused_sigmoid_gating_delta_rule_update_kernel(; symbols: fused_sigmoid_gating_delta_rule_update_kernel, fused_sigmoid_gating_delta_rule_update
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py
+@@ -7,6 +7,17 @@
++@triton.autotune(
++    configs=[
++        triton.Config({}, num_warps=4, num_stages=2),
++        triton.Config({}, num_warps=4, num_stages=3),
++        triton.Config({}, num_warps=2, num_stages=3),
++        triton.Config({}, num_warps=2, num_stages=4),
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +34/-24
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #16488 - Two-Batch Overlap (TBO) support to Qwen3-Next Models
+
+- 链接: https://github.com/sgl-project/sglang/pull/16488
+- 状态/时间: closed / 2026-08-16
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+484/-13，可读 patch 594 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Two-Batch Overlap (TBO) support to Qwen3-Next Models」；模型线: Qwen3 Next；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`；技术摘要: 覆盖「Two-Batch Overlap (TBO) support to Qwen3-Next Models」；主要实现面是 `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_next.py` modified +293/-11 (304 lines); hunks: -12,7 +12,7; -50,6 +50,8; symbols: _forward, op_prepare, op_core, Qwen3HybridLinearDecoderLayer，涉及 `_forward, op_prepare, op_core`；`python/sglang/srt/models/qwen2_moe.py` modified +91/-0 (91 lines); hunks: -78,6 +78,7; -324,6 +325,96 @@ def forward(; symbols: forward, op_gate, op_shared_experts, op_select_experts，涉及 `forward, op_gate, op_shared_experts`；`python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +5/-1 (6 lines); hunks: -223,6 +223,9 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; -1040,7 +1043,8 @@ def forward_extend(; symbols: _forward_metadata, forward_extend，涉及 `_forward_metadata, forward_extend`；`python/sglang/srt/batch_overlap/operations_strategy.py` modified +85/-0 (85 lines); hunks: -51,6 +51,16 @@ def init_new_tbo(; -209,3 +219,78 @@ def _compute_moe_qwen3_decode(layer):; symbols: init_new_tbo, _compute_moe_qwen3_decode, _compute_moe_qwen3_next_layer_operations_strategy_tbo, _compute_moe_qwen3_next_prefill，涉及 `init_new_tbo, _compute_moe_qwen3_decode, _compute_moe_qwen3_next_layer_operations_strategy_tbo`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_next.py` modified +293/-11 (304 lines); hunks: -12,7 +12,7; -50,6 +50,8; symbols: _forward, op_prepare, op_core, Qwen3HybridLinearDecoderLayer
+  - `python/sglang/srt/models/qwen2_moe.py` modified +91/-0 (91 lines); hunks: -78,6 +78,7; -324,6 +325,96 @@ def forward(; symbols: forward, op_gate, op_shared_experts, op_select_experts
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +5/-1 (6 lines); hunks: -223,6 +223,9 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; -1040,7 +1043,8 @@ def forward_extend(; symbols: _forward_metadata, forward_extend
+  - `python/sglang/srt/batch_overlap/operations_strategy.py` modified +85/-0 (85 lines); hunks: -51,6 +51,16 @@ def init_new_tbo(; -209,3 +219,78 @@ def _compute_moe_qwen3_decode(layer):; symbols: init_new_tbo, _compute_moe_qwen3_decode, _compute_moe_qwen3_next_layer_operations_strategy_tbo, _compute_moe_qwen3_next_prefill
+  - `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +9/-0 (9 lines); hunks: -79,6 +79,15 @@ def compute_split_seq_index(; symbols: compute_split_seq_index
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -12,7 +12,7 @@
+-from sglang.srt.layers.communicator import LayerCommunicator, LayerScatterModes
++from sglang.srt.layers.communicator import LayerCommunicator, LayerScatterModes, ScatterMode
+@@ -50,6 +50,8 @@
++from sglang.srt.batch_overlap.two_batch_overlap import model_forward_maybe_tbo
+@@ -468,7 +470,100 @@ def _forward(
++    def op_prepare(self, state):
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -78,6 +78,7 @@
++    is_non_idle_and_non_empty
+@@ -324,6 +325,96 @@ def forward(
++    def op_gate(self, state):
++        if is_non_idle_and_non_empty(
++            state.forward_batch.forward_mode, state.hidden_states_mlp_input
++        ):
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -223,6 +223,9 @@ def _forward_metadata(self, forward_batch: ForwardBatch):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +293/-11; `python/sglang/srt/models/qwen2_moe.py` modified +91/-0; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +5/-1; `python/sglang/srt/batch_overlap/operations_strategy.py` modified +85/-0; `python/sglang/srt/batch_overlap/two_batch_overlap.py` modified +9/-0
+  - tests: `test/manual/test_two_batch_overlap.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/manual/test_two_batch_overlap.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #14502 - [Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next
+
+- 链接: https://github.com/sgl-project/sglang/pull/14502
+- 状态/时间: closed / 2026-08-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+248/-123，可读 patch 498 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`；技术摘要: 覆盖「[Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next」；主要实现面是 `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75 (294 lines); hunks: -5,6 +5,7; -37,6 +38,7; symbols: forward_extend, _causal_conv1d_gdn_core，涉及 `forward_extend, _causal_conv1d_gdn_core`；`python/sglang/srt/models/qwen3_next.py` modified +0/-41 (41 lines); hunks: -5,7 +5,6; -49,7 +48,6; symbols: fused_qkvzba_split_reshape_cat_kernel, forward, _forward, get_model_config_for_expert_location，涉及 `fused_qkvzba_split_reshape_cat_kernel, forward, _forward`；`python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4 (16 lines); hunks: -330,9 +330,13 @@ def warmup_torch_compile(self, num_tokens: int):; -477,9 +481,13 @@ def capture_one_batch_size(self, num_tokens: int):; symbols: warmup_torch_compile, capture_one_batch_size，涉及 `warmup_torch_compile, capture_one_batch_size`；`python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2 (18 lines); hunks: -131,10 +131,15 @@ class State:; -151,6 +156,15 @@ class SpeculativeState(State):; symbols: State, at_layer_idx, SpeculativeState, __init__，涉及 `State, at_layer_idx, SpeculativeState`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75 (294 lines); hunks: -5,6 +5,7; -37,6 +38,7; symbols: forward_extend, _causal_conv1d_gdn_core
+  - `python/sglang/srt/models/qwen3_next.py` modified +0/-41 (41 lines); hunks: -5,7 +5,6; -49,7 +48,6; symbols: fused_qkvzba_split_reshape_cat_kernel, forward, _forward, get_model_config_for_expert_location
+  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4 (16 lines); hunks: -330,9 +330,13 @@ def warmup_torch_compile(self, num_tokens: int):; -477,9 +481,13 @@ def capture_one_batch_size(self, num_tokens: int):; symbols: warmup_torch_compile, capture_one_batch_size
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2 (18 lines); hunks: -131,10 +131,15 @@ class State:; -151,6 +156,15 @@ class SpeculativeState(State):; symbols: State, at_layer_idx, SpeculativeState, __init__
+  - `python/sglang/srt/compilation/compilation_config.py` modified +1/-1 (2 lines); hunks: -17,7 +17,7 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -5,6 +5,7 @@
++from sglang.srt.compilation.piecewise_context_manager import get_forward_context
+@@ -37,6 +38,7 @@
++from sglang.srt.utils.custom_op import register_custom_op
+@@ -957,6 +959,9 @@ def forward_extend(
++        g, beta = fused_gdn_gating(A_log, a, b, dt_bias)
+@@ -968,13 +973,11 @@ def forward_extend(
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -5,7 +5,6 @@
+-from sglang.srt.compilation.piecewise_context_manager import get_forward_context
+@@ -49,7 +48,6 @@
+-from sglang.srt.utils.custom_op import register_custom_op
+@@ -59,8 +57,6 @@
+-from sglang.srt.compilation.piecewise_context_manager import get_forward_context
+@@ -373,22 +369,6 @@ def forward(
+diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
+@@ -330,9 +330,13 @@ def warmup_torch_compile(self, num_tokens: int):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75; `python/sglang/srt/models/qwen3_next.py` modified +0/-41; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4; `python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2; `python/sglang/srt/compilation/compilation_config.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/compilation/compilation_config.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

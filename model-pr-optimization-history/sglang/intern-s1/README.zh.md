@@ -4,8 +4,8 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/InternLM/Intern-S1.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/intern-s1-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/internlm_detector.py` | [#14866](https://github.com/sgl-project/sglang/pull/14866) |
 | `python/sglang/srt/models/interns1.py` | [#8350](https://github.com/sgl-project/sglang/pull/8350), [#9299](https://github.com/sgl-project/sglang/pull/9299), [#12367](https://github.com/sgl-project/sglang/pull/12367), [#28629](https://github.com/sgl-project/sglang/pull/28629) |
 | `python/sglang/srt/models/interns1pro.py` | [#18145](https://github.com/sgl-project/sglang/pull/18145) |

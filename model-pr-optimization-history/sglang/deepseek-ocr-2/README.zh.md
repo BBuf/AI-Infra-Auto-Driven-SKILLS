@@ -4,8 +4,8 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/deepseek-ocr-v2-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/deepseek-ocr-v2-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/configs/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
 | `python/sglang/srt/models/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#19732](https://github.com/sgl-project/sglang/pull/19732) |
 | `python/sglang/srt/multimodal/processors/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
@@ -34,7 +34,6 @@
 | 2026-02-05 | [#13561](https://github.com/sgl-project/sglang/pull/13561) | merged | [XPU] Integrate MoE and minor improvements in XPU attention backend | `python/sglang/srt/layers/quantization/unquant.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `python/sglang/srt/layers/moe/moe_runner/triton.py` |
 | 2026-02-15 | [#18860](https://github.com/sgl-project/sglang/pull/18860) | merged | update pre-commit config | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/pixtral.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py` |
 | 2026-02-17 | [#18774](https://github.com/sgl-project/sglang/pull/18774) | merged | Adapt the Qwen2Model._update_causal_mask for transformers==4.57.1 | `python/sglang/srt/models/deepseek_ocr.py` |
-| 2026-03-02 | [#19722](https://github.com/sgl-project/sglang/pull/19722) | open | fix: align DeepSeek OCR vision dtypes | `python/sglang/srt/models/deepseek_ocr.py` |
 | 2026-03-11 | [#19732](https://github.com/sgl-project/sglang/pull/19732) | merged | [AMD] [DeepSeek-OCR-2 Day 0] Enable DeepSeek-OCR-2 on AMD GPUs and add nightly test | `python/sglang/srt/models/deepseek_ocr.py` |
 | 2026-03-18 | [#20708](https://github.com/sgl-project/sglang/pull/20708) | merged | Add Mistral Small 4 (Pixtral) support | `python/sglang/srt/multimodal/processors/pixtral.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py` |
 | 2026-03-19 | [#12555](https://github.com/sgl-project/sglang/pull/12555) | merged | [CPU] Fix MoE layer support for DeepSeek-OCR models | `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py` |
@@ -56,6 +55,7 @@
 | 2026-06-23 | [#27527](https://github.com/sgl-project/sglang/pull/27527) | merged | Vectorize _create_custom_4d_mask in CustomQwen2Decoder | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
 | 2026-06-23 | [#28988](https://github.com/sgl-project/sglang/pull/28988) | merged | [CI] Fix lint brought by #27527 | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
 | 2026-07-06 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | merged | Add Accuracy Benchmark for OCR models | `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py` |
+| 2026-08-11 | [#19722](https://github.com/sgl-project/sglang/pull/19722) | closed | fix: align DeepSeek OCR vision dtypes | `python/sglang/srt/models/deepseek_ocr.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -382,33 +382,6 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 
 - 已读文件:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +10/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #19722 - fix: align DeepSeek OCR vision dtypes
-
-- 链接: https://github.com/sgl-project/sglang/pull/19722
-- 状态/时间: open / 2026-03-02
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-6，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: align DeepSeek OCR vision dtypes」；模型线: DeepSeek OCR 2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_ocr.py`；技术摘要: 覆盖「fix: align DeepSeek OCR vision dtypes」；主要实现面是 `python/sglang/srt/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6 (20 lines); hunks: -1509,18 +1509,26 @@ def _collect_mm_flag(; -1612,7 +1620,7 @@ def _pixel_values_to_embedding(; symbols: _collect_mm_flag, _encode_ocr2_features, _encode_ocr1_features, _pixel_values_to_embedding，涉及 `_collect_mm_flag, _encode_ocr2_features, _encode_ocr1_features`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6 (20 lines); hunks: -1509,18 +1509,26 @@ def _collect_mm_flag(; -1612,7 +1620,7 @@ def _pixel_values_to_embedding(; symbols: _collect_mm_flag, _encode_ocr2_features, _encode_ocr1_features, _pixel_values_to_embedding
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_ocr.py
-@@ -1509,18 +1509,26 @@ def _collect_mm_flag(
-+        sam_dtype = next(self.sam_model.parameters()).dtype
-+        projector_dtype = next(self.projector.parameters()).dtype
-+        images = images.to(dtype=sam_dtype)
-+        features = features.to(dtype=projector_dtype)
-+        sam_dtype = next(self.sam_model.parameters()).dtype
-+        vision_dtype = self.vision_model.dtype
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #19732 - [AMD] [DeepSeek-OCR-2 Day 0] Enable DeepSeek-OCR-2 on AMD GPUs and add nightly test
@@ -1193,6 +1166,33 @@ diff -- benchmark/ocr/generate_report.py
   - other: `benchmark/ocr/bench_sglang.py` added +727/-0; `benchmark/ocr/eval_utils.py` added +631/-0; `benchmark/ocr/generate_report.py` added +381/-0; `benchmark/ocr/README.md` added +171/-0
   - runtime: `python/pyproject.toml` modified +1/-0; `python/pyproject_cpu.toml` modified +1/-0; `python/pyproject_npu.toml` modified +1/-0; `python/pyproject_other.toml` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/pyproject.toml`, `python/pyproject_cpu.toml`, `python/pyproject_npu.toml`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #19722 - fix: align DeepSeek OCR vision dtypes
+
+- 链接: https://github.com/sgl-project/sglang/pull/19722
+- 状态/时间: closed / 2026-08-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+14/-6，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: align DeepSeek OCR vision dtypes」；模型线: DeepSeek OCR 2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_ocr.py`；技术摘要: 覆盖「fix: align DeepSeek OCR vision dtypes」；主要实现面是 `python/sglang/srt/models/deepseek_ocr.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6 (20 lines); hunks: -1509,18 +1509,26 @@ def _collect_mm_flag(; -1612,7 +1620,7 @@ def _pixel_values_to_embedding(; symbols: _collect_mm_flag, _encode_ocr2_features, _encode_ocr1_features, _pixel_values_to_embedding，涉及 `_collect_mm_flag, _encode_ocr2_features, _encode_ocr1_features`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6 (20 lines); hunks: -1509,18 +1509,26 @@ def _collect_mm_flag(; -1612,7 +1620,7 @@ def _pixel_values_to_embedding(; symbols: _collect_mm_flag, _encode_ocr2_features, _encode_ocr1_features, _pixel_values_to_embedding
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_ocr.py
+@@ -1509,18 +1509,26 @@ def _collect_mm_flag(
++        sam_dtype = next(self.sam_model.parameters()).dtype
++        projector_dtype = next(self.projector.parameters()).dtype
++        images = images.to(dtype=sam_dtype)
++        features = features.to(dtype=projector_dtype)
++        sam_dtype = next(self.sam_model.parameters()).dtype
++        vision_dtype = self.vision_model.dtype
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

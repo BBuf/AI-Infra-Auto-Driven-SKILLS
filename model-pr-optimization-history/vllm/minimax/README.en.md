@@ -5,8 +5,9 @@
 | File | Git-traced PRs |
 | --- | --- |
 | `tests/kernels/attention/test_minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47984](https://github.com/vllm-project/vllm/pull/47984) |
+| `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` | [#50032](https://github.com/vllm-project/vllm/pull/50032), [#51203](https://github.com/vllm-project/vllm/pull/51203) |
 | `tests/kernels/core/test_minimax_reduce_rms.py` | [#37045](https://github.com/vllm-project/vllm/pull/37045), [#43410](https://github.com/vllm-project/vllm/pull/43410), [#45935](https://github.com/vllm-project/vllm/pull/45935) |
-| `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287) |
+| `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
 | `tests/kernels/test_minimax_m3_amd_ops.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#46117](https://github.com/vllm-project/vllm/pull/46117), [#47158](https://github.com/vllm-project/vllm/pull/47158) |
 | `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287) |
 | `tests/models/multimodal/processing/test_minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
@@ -32,22 +33,23 @@
 | `vllm/models/minimax_m3/amd/ops/sparse_attn.py` | [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287) |
 | `vllm/models/minimax_m3/amd/ops/sparse_pa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984) |
 | `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
-| `vllm/models/minimax_m3/amd/sparse_attention_msa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984) |
+| `vllm/models/minimax_m3/amd/sparse_attention_msa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
 | `vllm/models/minimax_m3/common/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/common/indexer.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#49149](https://github.com/vllm-project/vllm/pull/49149) |
-| `vllm/models/minimax_m3/common/mm_preprocess.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
+| `vllm/models/minimax_m3/common/mm_preprocess.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#50092](https://github.com/vllm-project/vllm/pull/50092), [#50305](https://github.com/vllm-project/vllm/pull/50305), [#50313](https://github.com/vllm-project/vllm/pull/50313) |
 | `vllm/models/minimax_m3/common/ops/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
 | `vllm/models/minimax_m3/common/ops/index_topk.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
 | `vllm/models/minimax_m3/common/ops/sparse_attn.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
-| `vllm/models/minimax_m3/common/sparse_attention.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#49149](https://github.com/vllm-project/vllm/pull/49149) |
+| `vllm/models/minimax_m3/common/sparse_attention.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#49149](https://github.com/vllm-project/vllm/pull/49149), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
 | `vllm/models/minimax_m3/common/vision_tower.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/nvidia/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/nvidia/indexer_msa.py` | [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
-| `vllm/models/minimax_m3/nvidia/model.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45810](https://github.com/vllm-project/vllm/pull/45810), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47631](https://github.com/vllm-project/vllm/pull/47631) |
+| `vllm/models/minimax_m3/nvidia/model.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45810](https://github.com/vllm-project/vllm/pull/45810), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47631](https://github.com/vllm-project/vllm/pull/47631), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#51203](https://github.com/vllm-project/vllm/pull/51203) |
+| `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` | [#50032](https://github.com/vllm-project/vllm/pull/50032) |
 | `vllm/models/minimax_m3/nvidia/mtp.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/nvidia/ops/__init__.py` | no direct PR-number commit |
 | `vllm/models/minimax_m3/nvidia/ops/index_decode_score.py` | no direct PR-number commit |
-| `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
+| `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
 | `vllm/parser/minimax_m2.py` | [#45701](https://github.com/vllm-project/vllm/pull/45701), [#48846](https://github.com/vllm-project/vllm/pull/48846) |
 | `vllm/reasoning/minimax_m2_reasoning_parser.py` | [#27535](https://github.com/vllm-project/vllm/pull/27535), [#29882](https://github.com/vllm-project/vllm/pull/29882), [#35352](https://github.com/vllm-project/vllm/pull/35352), [#45701](https://github.com/vllm-project/vllm/pull/45701) |
 | `vllm/reasoning/minimax_m3_reasoning_parser.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45718](https://github.com/vllm-project/vllm/pull/45718) |
@@ -118,18 +120,18 @@
 | 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
 | 2026-06-21 | [#45935](https://github.com/vllm-project/vllm/pull/45935) | merged | [Model]Fix MiniMaxM2ForCausalLM perf regression | `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `tests/kernels/core/test_minimax_reduce_rms.py` |
 | 2026-06-22 | [#45993](https://github.com/vllm-project/vllm/pull/45993) | merged | [Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM | `tests/tool_parsers/test_minimax_tool_parser.py`, `vllm/model_executor/models/minimax_text_01.py`, `vllm/tool_parsers/minimax_tool_parser.py` |
-| 2026-06-23 | [#45892](https://github.com/vllm-project/vllm/pull/45892) | merged | [Minimax-M3] BF16/FP8 Indexer using MSA | `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/nvidia/model.py` |
 | 2026-06-23 | [#45718](https://github.com/vllm-project/vllm/pull/45718) | merged | [Bugfix] Parse MiniMax M3 streaming reasoning by text markers | `vllm/reasoning/minimax_m3_reasoning_parser.py`, `tests/reasoning/test_minimax_m3_reasoning_parser.py` |
+| 2026-06-23 | [#45892](https://github.com/vllm-project/vllm/pull/45892) | merged | [Minimax-M3] BF16/FP8 Indexer using MSA | `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/nvidia/model.py` |
 | 2026-06-24 | [#45810](https://github.com/vllm-project/vllm/pull/45810) | merged | [Model][MiniMax-M3] Add pipeline parallelism support | `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/nvidia/model.py` |
 | 2026-06-25 | [#46546](https://github.com/vllm-project/vllm/pull/46546) | merged | [ROCm][ [Perf] sparse attention optimization on minimax-m3 | `vllm/models/minimax_m3/amd/ops/index_topk.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
 | 2026-06-26 | [#46419](https://github.com/vllm-project/vllm/pull/46419) | merged | [ROCm]Enable AITER MoE backend for MiniMax-M3-MXFP4 | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-06-26 | [#46545](https://github.com/vllm-project/vllm/pull/46545) | merged | [ROCm] [MoE] [Perf] Shared-expert fusion for bias-routed MoE; enable on MiniMax-M3 mxfp8 model | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-06-27 | [#46474](https://github.com/vllm-project/vllm/pull/46474) | merged | [ROCm][Perf] Fused shared expert for Minimax M3 | `vllm/models/minimax_m3/amd/model.py` |
 | 2026-07-01 | [#47269](https://github.com/vllm-project/vllm/pull/47269) | merged | [ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing | `vllm/models/minimax_m3/amd/model.py` |
-| 2026-07-08 | [#47502](https://github.com/vllm-project/vllm/pull/47502) | merged | [Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels | `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
 | 2026-07-08 | [#46117](https://github.com/vllm-project/vllm/pull/46117) | merged | [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3 | `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` |
-| 2026-07-08 | [#47631](https://github.com/vllm-project/vllm/pull/47631) | merged | [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion | `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py` |
 | 2026-07-08 | [#47158](https://github.com/vllm-project/vllm/pull/47158) | merged | [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8 | `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` |
+| 2026-07-08 | [#47502](https://github.com/vllm-project/vllm/pull/47502) | merged | [Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels | `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
+| 2026-07-08 | [#47631](https://github.com/vllm-project/vllm/pull/47631) | merged | [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion | `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py` |
 | 2026-07-13 | [#47287](https://github.com/vllm-project/vllm/pull/47287) | merged | [ROCm][MiniMax-M3] Add AITER sparse paged attention | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` |
 | 2026-07-14 | [#44849](https://github.com/vllm-project/vllm/pull/44849) | merged | [ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER | `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py` |
 | 2026-07-14 | [#47984](https://github.com/vllm-project/vllm/pull/47984) | merged | [ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py` |
@@ -143,6 +145,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/13454
 - Status/date: merged / 2025-04-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/13454 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +2440/-130, 2657 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][MiniMaxText01] Support MiniMaxText01 model inference"; model line: MiniMax M2/M3 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/layers/lightning_attn.py`, `vllm/model_executor/models/constant_size_cache.py`; technical summary: Covers "[Model][MiniMaxText01] Support MiniMaxText01 model inference"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/layers/lightning_attn.py`, `vllm/model_executor/models/constant_size_cache.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -186,6 +189,7 @@ diff -- vllm/model_executor/models/constant_size_cache.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16328
 - Status/date: merged / 2025-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16328 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +954/-19, 1193 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] support MiniMax-VL-01 model"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/transformers_utils/configs/minimax_vl_01.py`; technical summary: Covers "[Model] support MiniMax-VL-01 model"; the main implementation surface is `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`, `vllm/transformers_utils/configs/minimax_vl_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -228,6 +232,7 @@ diff -- vllm/transformers_utils/configs/minimax_vl_01.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17354
 - Status/date: merged / 2025-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17354 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +38/-283, 442 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Clean up MiniMax-VL and fix processing"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `docs/source/models/supported_models.md`, `tests/models/multimodal/processing/test_common.py`; technical summary: Covers "[Bugfix] Clean up MiniMax-VL and fix processing"; the main implementation surface is `vllm/model_executor/models/minimax_vl_01.py`, `docs/source/models/supported_models.md`, `tests/models/multimodal/processing/test_common.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -270,6 +275,7 @@ diff -- tests/models/multimodal/processing/test_common.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19592
 - Status/date: merged / 2025-06-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19592 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 27 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Fix minimax model cache & lm_head precision"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[Model] Fix minimax model cache & lm_head precision"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -297,6 +303,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19677
 - Status/date: merged / 2025-06-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19677 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +4/-0, 25 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add support for MiniMaxM1ForCausalLM (shares architecture with MiniMaxText01ForCausalLM)"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `tests/models/registry.py`, `docs/models/supported_models.md`, `vllm/model_executor/models/registry.py`; technical summary: Covers "[Model] Add support for MiniMaxM1ForCausalLM (shares architecture with MiniMaxText01ForCausalLM)"; the main implementation surface is `tests/models/registry.py`, `docs/models/supported_models.md`, `vllm/model_executor/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -330,6 +337,7 @@ diff -- vllm/model_executor/models/registry.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20199
 - Status/date: merged / 2025-06-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20199 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +9/-1, 31 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI Fix] Pin tests/models/registry.py MiniMaxText01ForCausalLM to revision due to model changes"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/models/registry.py`, `tests/models/test_initialization.py`; technical summary: Covers "[CI Fix] Pin tests/models/registry.py MiniMaxText01ForCausalLM to revision due to model changes"; the main implementation surface is `tests/models/registry.py`, `tests/models/test_initialization.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -361,6 +369,7 @@ diff -- tests/models/test_initialization.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20297
 - Status/date: merged / 2025-07-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20297 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +842/-1, 866 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Support MiniMax-M1 function calls features"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `tests/tool_use/test_minimax_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/minimax_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; technical summary: Covers "[Feature] Support MiniMax-M1 function calls features"; the main implementation surface is `tests/tool_use/test_minimax_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/minimax_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -404,6 +413,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20211
 - Status/date: merged / 2025-07-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20211 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +36/-11, 101 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support HF format of minimax"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_text_01.py`, `tests/models/registry.py`, `vllm/model_executor/models/registry.py`; technical summary: Covers "[Model] Support HF format of minimax"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`, `tests/models/registry.py`, `vllm/model_executor/models/registry.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -441,6 +451,7 @@ diff -- vllm/model_executor/models/registry.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22151
 - Status/date: merged / 2025-08-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22151 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +234/-42, 448 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V1] [Hybrid] Support Minimax-Text-01 in V1"; model line: MiniMax M2/M3 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`, `vllm/model_executor/layers/lightning_attn.py`; technical summary: Covers "[V1] [Hybrid] Support Minimax-Text-01 in V1"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`, `vllm/model_executor/layers/lightning_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -482,6 +493,7 @@ diff -- vllm/model_executor/layers/lightning_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22928
 - Status/date: merged / 2025-08-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22928 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 23 files, +467/-87, 1435 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V1] [Hybrid] Support using float32 for state in Hybrid Models (Mamba2, Mamba1, Minimax)"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `tests/models/language/generation/test_hybrid.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`, `vllm/model_executor/layers/mamba/mamba_mixer2.py`; technical summary: Covers "[V1] [Hybrid] Support using float32 for state in Hybrid Models (Mamba2, Mamba1, Minimax)"; the main implementation surface is `tests/models/language/generation/test_hybrid.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`, `vllm/model_executor/layers/mamba/mamba_mixer2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -524,6 +536,7 @@ diff -- vllm/model_executor/layers/mamba/mamba_mixer2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22116
 - Status/date: merged / 2025-08-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22116 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +123/-32, 258 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix broken Minimax-01-VL model"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/test_tensor_schema.py`, `examples/offline_inference/vision_language.py`; technical summary: Covers "[Bugfix] Fix broken Minimax-01-VL model"; the main implementation surface is `vllm/model_executor/models/minimax_vl_01.py`, `tests/models/multimodal/test_tensor_schema.py`, `examples/offline_inference/vision_language.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -565,6 +578,7 @@ diff -- examples/offline_inference/vision_language.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22589
 - Status/date: merged / 2025-08-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22589 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +98/-137, 387 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V1] [Hybrid] Enable compile and piecewise CUDA graph for MiniMax-Text models"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_text_01.py`, `vllm/config/compilation.py`; technical summary: Covers "[V1] [Hybrid] Enable compile and piecewise CUDA graph for MiniMax-Text models"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`, `vllm/config/compilation.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -596,6 +610,7 @@ diff -- vllm/config/compilation.py
 
 - Link: https://github.com/vllm-project/vllm/pull/23831
 - Status/date: merged / 2025-08-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/23831 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +448/-410, 917 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V1] [Hybrid] Move MiniMaxLinearAttention into layers/mamba"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/models/minimax_text_01.py`; technical summary: Covers "[V1] [Hybrid] Move MiniMaxLinearAttention into layers/mamba"; the main implementation surface is `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/models/minimax_text_01.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -632,6 +647,7 @@ diff -- vllm/model_executor/models/minimax_text_01.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27535
 - Status/date: merged / 2025-10-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27535 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; associated commits `720af6ab7911`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +1306/-0, 1347 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][MiniMax-M2] Support MiniMax-M2 Model"; model line: MiniMax M2/M3 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[Model][MiniMax-M2] Support MiniMax-M2 Model"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -668,6 +684,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27537
 - Status/date: merged / 2025-10-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27537 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `5980604c44d8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-3, 13 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix MiniMax-M2 copyright"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Fix MiniMax-M2 copyright"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -694,6 +711,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27627
 - Status/date: merged / 2025-10-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27627 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `d6704dd099b7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +1/-19, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix MiniMax-M2 rmsnorm precision and remove useless code"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Fix MiniMax-M2 rmsnorm precision and remove useless code"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -721,6 +739,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30384
 - Status/date: merged / 2025-12-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30384 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `d017bceb08ea`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Fix minimax m2 model rotary_dim"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[BugFix] Fix minimax m2 model rotary_dim"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -744,6 +763,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29882
 - Status/date: merged / 2025-12-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29882 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; associated commits `6299628d326f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +468/-0, 484 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[bugfix] fix MiniMaxM2ReasoningParser streaming output not separating reasoning_content."; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[bugfix] fix MiniMaxM2ReasoningParser streaming output not separating reasoning_content."; the main implementation surface is `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `tests/reasoning/test_minimax_m2_append_reasoning_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -784,6 +804,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30555
 - Status/date: merged / 2025-12-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30555 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `20fda431515d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +137/-4, 186 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Frontend] Prevent IndexError in MiniMax M2 tool parser during streaming extraction"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/tool_use/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "[Bugfix][Frontend] Prevent IndexError in MiniMax M2 tool parser during streaming extraction"; the main implementation surface is `tests/tool_use/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -821,6 +842,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31083
 - Status/date: merged / 2025-12-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31083 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `c02a2705f9ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +167/-48, 257 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "Update MiniMax-M2 ToolCall and add MiniMax-M2.1 in Docs"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -848,6 +870,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31493
 - Status/date: merged / 2025-12-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31493 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `5bc664110f12`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +25/-2, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Optimize QKNorm for MiniMax-M2/M2.1"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Optimize QKNorm for MiniMax-M2/M2.1"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -874,6 +897,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32342
 - Status/date: merged / 2026-01-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32342 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `19b251fe3d26`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-5, 19 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix optional parameter parsing in MiniMax M2 tool parser #32278"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "Fix optional parameter parsing in MiniMax M2 tool parser #32278"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -901,6 +925,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32763
 - Status/date: merged / 2026-01-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32763 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `bc0d291bfebf`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-3, 35 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "feat: Complete LoRA support for MiniMaxM2 Fixes #32736"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "feat: Complete LoRA support for MiniMaxM2 Fixes #32736"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -928,6 +953,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35352
 - Status/date: merged / 2026-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35352 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/reasoning/minimax_m2_reasoning_parser.py`; associated commits `7fea7250a46c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-1, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bug] Fix missing tag after tool call in MiniMax 2.1"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[Bug] Fix missing tag after tool call in MiniMax 2.1"; the main implementation surface is `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -955,6 +981,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35895
 - Status/date: merged / 2026-03-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35895 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `8647c6cf510b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +534/-532, 1119 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix minimax_m2 tool parser when stream interval > 1"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_use/test_minimax_m2_tool_parser.py`; technical summary: Covers "[Bugfix] Fix minimax_m2 tool parser when stream interval > 1"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_use/test_minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -995,6 +1022,7 @@ diff -- tests/tool_use/test_minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37371
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37371 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +235/-219, 527 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/models/kimi_linear.py`; technical summary: Covers "standardize load_weights using AutoWeightsLoader for kimi_linear and minimax_text_01"; the main implementation surface is `vllm/model_executor/models/minimax_text_01.py`, `vllm/model_executor/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1031,6 +1059,7 @@ diff -- vllm/model_executor/models/kimi_linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37214
 - Status/date: merged / 2026-03-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37214 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `74056039b776`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix minimax m2.5 nvfp4 kv scales weight loading"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "Fix minimax m2.5 nvfp4 kv scales weight loading"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1058,6 +1087,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36965
 - Status/date: merged / 2026-03-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36965 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `63babd17f1b1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +137/-10, 238 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][Quantization] Add GGUF support for MiniMax-M2.1"; model line: MiniMax M2/M3 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[Model][Quantization] Add GGUF support for MiniMax-M2.1"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1085,6 +1115,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37512
 - Status/date: merged / 2026-04-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37512 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `f6983f01de2b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +24/-5, 99 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "MiniMax-M2: add Eagle3 speculative decoding support"; model line: MiniMax M2/M3 Series; category: model support/runtime entry; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "MiniMax-M2: add Eagle3 speculative decoding support"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1112,6 +1143,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37045
 - Status/date: merged / 2026-04-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37045 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/core/test_minimax_reduce_rms.py`, `vllm/model_executor/models/minimax_m2.py`; associated commits `ecd1ea13634e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +1861/-4, 1936 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `vllm/model_executor/models/minimax_m2.py`, `tests/kernels/core/test_minimax_reduce_rms.py`; technical summary: Covers "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`, `tests/kernels/core/test_minimax_reduce_rms.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1147,6 +1179,7 @@ diff -- tests/kernels/core/test_minimax_reduce_rms.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39683
 - Status/date: merged / 2026-04-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39683 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-2, 25 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix]: Fix MinimaxM2ToolParser missing tools parameter"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/parser/minimax_m2_parser.py`; technical summary: Covers "[Bugfix]: Fix MinimaxM2ToolParser missing tools parameter"; the main implementation surface is `vllm/parser/minimax_m2_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1174,6 +1207,7 @@ diff -- vllm/parser/minimax_m2_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39861
 - Status/date: merged / 2026-04-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39861 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-3, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__()"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/parser/minimax_m2_parser.py`; technical summary: Covers "[Bugfix] Accept **kwargs in MiniMaxM2Parser.__init__()"; the main implementation surface is `vllm/parser/minimax_m2_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1201,6 +1235,7 @@ diff -- vllm/parser/minimax_m2_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38191
 - Status/date: merged / 2026-04-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38191 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `f8ac0c7cf0e3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +44/-12, 97 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[Bugfix] Fix k_norm weight sharding in MiniMaxM2Attention when total_num_kv_heads < tp_size"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1228,6 +1263,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39599
 - Status/date: merged / 2026-05-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39599 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `63cc8a55a97f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +137/-6, 166 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix(tool-parser): preserve "none"/"nil" strings as valid enum values in minimax_m2"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "fix(tool-parser): preserve "none"/"nil" strings as valid enum values in minimax_m2"; the main implementation surface is `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1265,6 +1301,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42497
 - Status/date: merged / 2026-05-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42497 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +31/-12, 59 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`; technical summary: Covers "[Perf] Wire silu_and_mul_per_block_quant into TritonFP8MoE (MiniMax-M2)"; the main implementation surface is `vllm/model_executor/layers/fused_moe/experts/triton_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1292,6 +1329,7 @@ diff -- vllm/model_executor/layers/fused_moe/experts/triton_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43006
 - Status/date: merged / 2026-05-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43006 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `57fef4e0bf0b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +247/-77, 353 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "[Refactor] Extract shared coerce_to_schema_type utility from Minimax M2 tool parser"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1319,6 +1357,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43025
 - Status/date: merged / 2026-05-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43025 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/minimax_m2_tool_parser.py`; associated commits `42b4f1fdf726`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +123/-106, 282 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Extract extract_types_from_schema utility from Minimax M2 tool parser"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`; technical summary: Covers "[Refactor] Extract extract_types_from_schema utility from Minimax M2 tool parser"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1346,6 +1385,7 @@ diff -- vllm/tool_parsers/minimax_m2_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43410
 - Status/date: merged / 2026-05-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43410 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/core/test_minimax_reduce_rms.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`, `vllm/model_executor/layers/minimax_rms_norm/lamport_workspace.py`, `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/models/minimax_m2.py`; associated commits `6e503868caa4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +262/-490, 893 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Porting fuse_minimax_qk_norm to manual fusion"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`, `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[Kernel] Porting fuse_minimax_qk_norm to manual fusion"; the main implementation surface is `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`, `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1388,6 +1428,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38445
 - Status/date: merged / 2026-05-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38445 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/minimax_m2.py`; associated commits `559d6710bf45`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +716/-23, 871 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[PERF]MiniMax-M2 gate kernel"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/models/minimax_m2.py`; technical summary: Covers "[PERF]MiniMax-M2 gate kernel"; the main implementation surface is `vllm/model_executor/models/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1415,6 +1456,7 @@ diff -- vllm/model_executor/models/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44279
 - Status/date: merged / 2026-06-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44279 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +35/-328, 459 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Remove dead code from parser infrastructure"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/parser/parser_manager.py`, `vllm/parser/minimax_m2_parser.py`, `vllm/parser/abstract_parser.py`; technical summary: Covers "[Refactor] Remove dead code from parser infrastructure"; the main implementation surface is `vllm/parser/parser_manager.py`, `vllm/parser/minimax_m2_parser.py`, `vllm/parser/abstract_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1457,6 +1499,7 @@ diff -- vllm/parser/abstract_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43556
 - Status/date: merged / 2026-06-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43556 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +505/-551, 1309 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Attention] Mamba attention module refactor - LINEAR"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear/bailing_linear_attn.py`, `vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py`; technical summary: Covers "[Attention] Mamba attention module refactor - LINEAR"; the main implementation surface is `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear/bailing_linear_attn.py`, `vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1499,6 +1542,7 @@ diff -- vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44983
 - Status/date: merged / 2026-06-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44983 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; associated commits `dc10e467a985`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +41/-9, 96 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix minimax_qk_norm_fusion"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; technical summary: Covers "[Bugfix] Fix minimax_qk_norm_fusion"; the main implementation surface is `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1609,6 +1653,7 @@ diff -- vllm/models/minimax_m3/common/ops/index_topk.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45701
 - Status/date: merged / 2026-06-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45701 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_minimax_m2.py`, `tests/reasoning/test_minimax_m2_reasoning_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py` and 6 files; associated commits `f00e163f3562`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +588/-481, 1318 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend] Add Streaming Parser Engine and new MinimaxM2 Parser"; model line: MiniMax M2/M3 Series; category: docs/tests/CI; main diff: `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`; technical summary: Covers "[Frontend] Add Streaming Parser Engine and new MinimaxM2 Parser"; the main implementation surface is `vllm/tool_parsers/minimax_m2_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/reasoning/minimax_m2_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1651,6 +1696,7 @@ diff -- vllm/reasoning/minimax_m2_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45720
 - Status/date: merged / 2026-06-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45720 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`, `vllm/models/minimax_m3/common/sparse_attention.py`; associated commits `efd15e192a1a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +60/-5, 112 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][ROCm] Fix MiniMax-M3 FP8 KV cache dtype"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`, `tests/kernels/attention/test_minimax_m3.py`; technical summary: Covers "[Bugfix][ROCm] Fix MiniMax-M3 FP8 KV cache dtype"; the main implementation surface is `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`, `tests/kernels/attention/test_minimax_m3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1759,6 +1805,7 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45935
 - Status/date: merged / 2026-06-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45935 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/core/test_minimax_reduce_rms.py`, `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; associated commits `745bba5ea8fa`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +215/-16, 305 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model]Fix MiniMaxM2ForCausalLM perf regression"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `tests/kernels/core/test_minimax_reduce_rms.py`; technical summary: Covers "[Model]Fix MiniMaxM2ForCausalLM perf regression"; the main implementation surface is `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `tests/kernels/core/test_minimax_reduce_rms.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1835,10 +1882,49 @@ diff -- vllm/tool_parsers/minimax_tool_parser.py
   - docs: `examples/generate/multimodal/vision_language_offline.py` modified +0/-34
 - Risk and verification: The diff ships test coverage in `rust/src/chat/tests/templates/vllm_examples/tool_chat_template_minimax_m1.jinja`, `tests/models/multimodal/generation/test_common.py`, `tests/models/multimodal/generation/vlm_utils/model_utils.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #45718 - [Bugfix] Parse MiniMax M3 streaming reasoning by text markers
+
+- Link: https://github.com/vllm-project/vllm/pull/45718
+- Status/date: merged / 2026-06-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45718 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_minimax_m3_reasoning_parser.py`, `vllm/reasoning/minimax_m3_reasoning_parser.py`; associated commits `d8e422ccda9b`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +357/-67, 496 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Parse MiniMax M3 streaming reasoning by text markers"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/reasoning/minimax_m3_reasoning_parser.py`, `tests/reasoning/test_minimax_m3_reasoning_parser.py`; technical summary: Covers "[Bugfix] Parse MiniMax M3 streaming reasoning by text markers"; the main implementation surface is `vllm/reasoning/minimax_m3_reasoning_parser.py`, `tests/reasoning/test_minimax_m3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/reasoning/minimax_m3_reasoning_parser.py` modified +215/-66 (281 lines); hunks: -19,10 +19,12 @@ class MiniMaxM3ReasoningParser(BaseThinkingReasoningParser):; -35,9 +37,135 @@ def end_token(self) -> str:; symbols: MiniMaxM3ReasoningParser, end_token, __init__, _encode_text, touching `MiniMaxM3ReasoningParser, end_token, __init__`; `tests/reasoning/test_minimax_m3_reasoning_parser.py` modified +142/-1 (143 lines); hunks: -83,6 +83,20 @@ def convert_tokens_to_string(self, tokens: list[str]) -> str:; -105,7 +119,8 @@ def run_streaming(; symbols: convert_tokens_to_string, SplitMiniMaxM3Tokenizer, tokenize, RuntimeSplitMiniMaxM3Tokenizer, touching `convert_tokens_to_string, SplitMiniMaxM3Tokenizer, tokenize`.
+- Code diff details:
+  - `vllm/reasoning/minimax_m3_reasoning_parser.py` modified +215/-66 (281 lines); hunks: -19,10 +19,12 @@ class MiniMaxM3ReasoningParser(BaseThinkingReasoningParser):; -35,9 +37,135 @@ def end_token(self) -> str:; symbols: MiniMaxM3ReasoningParser, end_token, __init__, _encode_text
+  - `tests/reasoning/test_minimax_m3_reasoning_parser.py` modified +142/-1 (143 lines); hunks: -83,6 +83,20 @@ def convert_tokens_to_string(self, tokens: list[str]) -> str:; -105,7 +119,8 @@ def run_streaming(; symbols: convert_tokens_to_string, SplitMiniMaxM3Tokenizer, tokenize, RuntimeSplitMiniMaxM3Tokenizer
+- Key code excerpts:
+
+```diff
+diff -- vllm/reasoning/minimax_m3_reasoning_parser.py
+@@ -19,10 +19,12 @@ class MiniMaxM3ReasoningParser(BaseThinkingReasoningParser):
+-    The M3 tokenizer exposes both markers as complete vocabulary tokens. The
+-    chat template may also prefill the start marker when
+-    ``thinking_mode="enabled"``, so generated text can begin directly inside a
+-    reasoning block without emitting ``<mm:think>`` again.
++    The M3 tokenizer exposes both markers as complete vocabulary entries, but
++    generated marker text may be tokenized into smaller pieces. The streaming
+diff -- tests/reasoning/test_minimax_m3_reasoning_parser.py
+@@ -83,6 +83,20 @@ def convert_tokens_to_string(self, tokens: list[str]) -> str:
++class SplitMiniMaxM3Tokenizer(MiniMaxM3Tokenizer):
++    """Tokenizer that exposes marker vocab entries but encodes them as text."""
++    def tokenize(self, text: str) -> list[str]:
++        return list(text)
++class RuntimeSplitMiniMaxM3Tokenizer(MiniMaxM3Tokenizer):
++    """Tokenizer whose runtime output splits markers despite atomic encodes."""
+```
+
+- Reviewed files:
+  - runtime: `vllm/reasoning/minimax_m3_reasoning_parser.py` modified +215/-66
+  - tests: `tests/reasoning/test_minimax_m3_reasoning_parser.py` modified +142/-1
+- Risk and verification: The diff ships test coverage in `tests/reasoning/test_minimax_m3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #45892 - [Minimax-M3] BF16/FP8 Indexer using MSA
 
 - Link: https://github.com/vllm-project/vllm/pull/45892
 - Status/date: merged / 2026-06-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45892 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/index_topk.py` and 9 files; associated commits `6691f087a65b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +1048/-104, 1712 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Minimax-M3] BF16/FP8 Indexer using MSA"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/nvidia/model.py`; technical summary: Covers "[Minimax-M3] BF16/FP8 Indexer using MSA"; the main implementation surface is `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1877,47 +1963,11 @@ diff -- vllm/models/minimax_m3/nvidia/model.py
   - tests: `tests/kernels/attention/test_minimax_m3.py` modified +325/-1
 - Risk and verification: The diff ships test coverage in `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #45718 - [Bugfix] Parse MiniMax M3 streaming reasoning by text markers
-
-- Link: https://github.com/vllm-project/vllm/pull/45718
-- Status/date: merged / 2026-06-23
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_minimax_m3_reasoning_parser.py`, `vllm/reasoning/minimax_m3_reasoning_parser.py`; associated commits `d8e422ccda9b`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +357/-67, 496 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Parse MiniMax M3 streaming reasoning by text markers"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/reasoning/minimax_m3_reasoning_parser.py`, `tests/reasoning/test_minimax_m3_reasoning_parser.py`; technical summary: Covers "[Bugfix] Parse MiniMax M3 streaming reasoning by text markers"; the main implementation surface is `vllm/reasoning/minimax_m3_reasoning_parser.py`, `tests/reasoning/test_minimax_m3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/reasoning/minimax_m3_reasoning_parser.py` modified +215/-66 (281 lines); hunks: -19,10 +19,12 @@ class MiniMaxM3ReasoningParser(BaseThinkingReasoningParser):; -35,9 +37,135 @@ def end_token(self) -> str:; symbols: MiniMaxM3ReasoningParser, end_token, __init__, _encode_text, touching `MiniMaxM3ReasoningParser, end_token, __init__`; `tests/reasoning/test_minimax_m3_reasoning_parser.py` modified +142/-1 (143 lines); hunks: -83,6 +83,20 @@ def convert_tokens_to_string(self, tokens: list[str]) -> str:; -105,7 +119,8 @@ def run_streaming(; symbols: convert_tokens_to_string, SplitMiniMaxM3Tokenizer, tokenize, RuntimeSplitMiniMaxM3Tokenizer, touching `convert_tokens_to_string, SplitMiniMaxM3Tokenizer, tokenize`.
-- Code diff details:
-  - `vllm/reasoning/minimax_m3_reasoning_parser.py` modified +215/-66 (281 lines); hunks: -19,10 +19,12 @@ class MiniMaxM3ReasoningParser(BaseThinkingReasoningParser):; -35,9 +37,135 @@ def end_token(self) -> str:; symbols: MiniMaxM3ReasoningParser, end_token, __init__, _encode_text
-  - `tests/reasoning/test_minimax_m3_reasoning_parser.py` modified +142/-1 (143 lines); hunks: -83,6 +83,20 @@ def convert_tokens_to_string(self, tokens: list[str]) -> str:; -105,7 +119,8 @@ def run_streaming(; symbols: convert_tokens_to_string, SplitMiniMaxM3Tokenizer, tokenize, RuntimeSplitMiniMaxM3Tokenizer
-- Key code excerpts:
-
-```diff
-diff -- vllm/reasoning/minimax_m3_reasoning_parser.py
-@@ -19,10 +19,12 @@ class MiniMaxM3ReasoningParser(BaseThinkingReasoningParser):
--    The M3 tokenizer exposes both markers as complete vocabulary tokens. The
--    chat template may also prefill the start marker when
--    ``thinking_mode="enabled"``, so generated text can begin directly inside a
--    reasoning block without emitting ``<mm:think>`` again.
-+    The M3 tokenizer exposes both markers as complete vocabulary entries, but
-+    generated marker text may be tokenized into smaller pieces. The streaming
-diff -- tests/reasoning/test_minimax_m3_reasoning_parser.py
-@@ -83,6 +83,20 @@ def convert_tokens_to_string(self, tokens: list[str]) -> str:
-+class SplitMiniMaxM3Tokenizer(MiniMaxM3Tokenizer):
-+    """Tokenizer that exposes marker vocab entries but encodes them as text."""
-+    def tokenize(self, text: str) -> list[str]:
-+        return list(text)
-+class RuntimeSplitMiniMaxM3Tokenizer(MiniMaxM3Tokenizer):
-+    """Tokenizer whose runtime output splits markers despite atomic encodes."""
-```
-
-- Reviewed files:
-  - runtime: `vllm/reasoning/minimax_m3_reasoning_parser.py` modified +215/-66
-  - tests: `tests/reasoning/test_minimax_m3_reasoning_parser.py` modified +142/-1
-- Risk and verification: The diff ships test coverage in `tests/reasoning/test_minimax_m3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #45810 - [Model][MiniMax-M3] Add pipeline parallelism support
 
 - Link: https://github.com/vllm-project/vllm/pull/45810
 - Status/date: merged / 2026-06-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45810 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/nvidia/model.py`; associated commits `d7c1821b5a31`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +124/-49, 397 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][MiniMax-M3] Add pipeline parallelism support"; model line: MiniMax M2/M3 Series; category: model support/runtime entry; main diff: `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/nvidia/model.py`; technical summary: Covers "[Model][MiniMax-M3] Add pipeline parallelism support"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1954,6 +2004,7 @@ diff -- vllm/models/minimax_m3/nvidia/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46546
 - Status/date: merged / 2026-06-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46546 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/ops/index_topk.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`, `vllm/models/minimax_m3/common/sparse_attention.py`; associated commits `c63cd4906c2a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +1238/-36, 1313 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][ [Perf] sparse attention optimization on minimax-m3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/ops/index_topk.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`; technical summary: Covers "[ROCm][ [Perf] sparse attention optimization on minimax-m3"; the main implementation surface is `vllm/models/minimax_m3/amd/ops/index_topk.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1995,6 +2046,7 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46419
 - Status/date: merged / 2026-06-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46419 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `8e394244a59a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +27/-8, 100 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm]Enable AITER MoE backend for MiniMax-M3-MXFP4"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/model.py`; technical summary: Covers "[ROCm]Enable AITER MoE backend for MiniMax-M3-MXFP4"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2017,6 +2069,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46545
 - Status/date: merged / 2026-06-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46545 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `c2507fb2937a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +110/-20, 266 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm] [MoE] [Perf] Shared-expert fusion for bias-routed MoE; enable on MiniMax-M3 mxfp8 model"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/model.py`; technical summary: Covers "[ROCm] [MoE] [Perf] Shared-expert fusion for bias-routed MoE; enable on MiniMax-M3 mxfp8 model"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2044,6 +2097,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46474
 - Status/date: merged / 2026-06-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46474 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `51a99565c398`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +46/-13, 127 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][Perf] Fused shared expert for Minimax M3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/model.py`; technical summary: Covers "[ROCm][Perf] Fused shared expert for Minimax M3"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2071,6 +2125,7 @@ diff -- vllm/models/minimax_m3/amd/model.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47269
 - Status/date: merged / 2026-07-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47269 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/amd/model.py`; associated commits `4e5ca89cfe98`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +41/-1, 63 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing"; model line: MiniMax M2/M3 Series; category: model implementation change; main diff: `vllm/models/minimax_m3/amd/model.py`; technical summary: Covers "[ROCm][MiniMax-M3] Cross-layer lightning-indexer top-k sharing"; the main implementation surface is `vllm/models/minimax_m3/amd/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2094,10 +2149,90 @@ diff -- vllm/models/minimax_m3/amd/model.py
   - runtime: `vllm/models/minimax_m3/amd/model.py` modified +41/-1
 - Risk and verification: Runtime changes concentrate in `vllm/models/minimax_m3/amd/model.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #46117 - [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3
+
+- Link: https://github.com/vllm-project/vllm/pull/46117
+- Status/date: merged / 2026-07-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46117 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `d9e57ea82e3e`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +226/-42, 372 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`; technical summary: Covers "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native, touching `test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native`; `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8, touching `_select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8`; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel, touching `_mxfp8_dot_scaled_linear, _select_cfg, local`.
+- Code diff details:
+  - `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native
+  - `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8
+  - `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel
+- Key code excerpts:
+
+```diff
+diff -- tests/kernels/test_minimax_m3_amd_ops.py
+@@ -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):
++# --------------------------------------------------------------------------- #
++# Native MXFP8 grouped GEMM (dot_scaled) vs pure-PyTorch grouped matmul
++# --------------------------------------------------------------------------- #
++def _ref_grouped_gemm(a_deq, w_deq, topk_ids, a_div, num_valid, mul_weight=None):
++    """Pure-PyTorch reference for ``_grouped_gemm_mxfp8``.
++    For each routed (expanded) token ``tid in [0, num_valid)`` the kernel writes
+diff -- vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py
+@@ -19,7 +19,6 @@
+-from vllm.logger import init_logger
+@@ -32,7 +31,26 @@
+-logger = init_logger(__name__)
++def _select_cfg(M, N, K, block_m):
++    """Pick the launch config from host constants only (M=num_valid_tokens, N, K,
++    block_m) — graph-capture safe (no GPU-scalar branch)."""
+diff -- vllm/model_executor/kernels/linear/mxfp8/rocm_native.py
+@@ -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(
+```
+
+- Reviewed files:
+  - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7
+- Risk and verification: The diff ships test coverage in `tests/kernels/test_minimax_m3_amd_ops.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #47158 - [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8
+
+- Link: https://github.com/vllm-project/vllm/pull/47158
+- Status/date: merged / 2026-07-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47158 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `2c64b4c1cc18`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +107/-12, 139 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`; technical summary: Covers "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes, touching `test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe`; `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply, touching `_supports_current_device, _supports_parallel_config, apply`.
+- Code diff details:
+  - `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes
+  - `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply
+- Key code excerpts:
+
+```diff
+diff -- tests/kernels/test_minimax_m3_amd_ops.py
+@@ -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(
++# ── EP expert_mask handling for the FlyDSL (AITER_MXFP8) MoE ────────────────
++# Regression for the EP + aiter-master-switch interaction: under expert
++# parallelism ``RoutedExperts.expert_map`` hands the experts either the 0/1
++# ``expert_mask`` (aiter master ON, ``rocm_aiter_fmoe_enabled``) or vLLM's -1
++# index map (master OFF). ``AiterMxfp8Experts.apply`` must forward the right 0/1
++# mask to aiter in BOTH cases. The old code always rebuilt the mask via
+diff -- vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py
+@@ -78,9 +78,6 @@ def _supports_current_device() -> bool:
+-        # Both TP (expert_map=None) and EP are supported: apply() forwards the
+-        # expert_map as aiter's ``expert_mask`` (the per-rank local-expert
+-        # selection), mirroring the native rocm_aiter_moe path.
+@@ -129,17 +126,21 @@ def apply(
+-        # Under EP, aiter expects ``expert_mask`` as a 0/1 *local-expert* mask
+-        # over global ids with a trailing fake-expert sentinel slot
+```
+
+- Reviewed files:
+  - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12
+- Risk and verification: The diff ships test coverage in `tests/kernels/test_minimax_m3_amd_ops.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #47502 - [Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels
 
 - Link: https://github.com/vllm-project/vllm/pull/47502
 - Status/date: merged / 2026-07-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47502 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/__init__.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py` and 8 files; associated commits `902158949803`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +233/-72, 577 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`; technical summary: Covers "[Minimax-M3] Using tok_sparse_select from MSA instead of triton kernels"; the main implementation surface is `vllm/models/minimax_m3/nvidia/indexer_msa.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2136,50 +2271,11 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
   - tests: `tests/kernels/attention/test_minimax_m3.py` modified +4/-4
 - Risk and verification: The diff ships test coverage in `tests/kernels/attention/test_minimax_m3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #46117 - [ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3
-
-- Link: https://github.com/vllm-project/vllm/pull/46117
-- Status/date: merged / 2026-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `d9e57ea82e3e`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +226/-42, 372 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`; technical summary: Covers "[ROCm][Perf] MXFP8 dense-linear + grouped-MoE GEMM optimizations for MiniMax-M3"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py`, `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native, touching `test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native`; `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8, touching `_select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8`; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel, touching `_mxfp8_dot_scaled_linear, _select_cfg, local`.
-- Code diff details:
-  - `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0 (87 lines); hunks: -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):; symbols: test_mxfp8_native_moe, _ref_grouped_gemm, test_mxfp8_grouped_gemm_native
-  - `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35 (98 lines); hunks: -19,7 +19,6; -32,7 +31,26; symbols: _select_cfg, _mxfp8_grouped_gemm_kernel, _grouped_gemm_mxfp8
-  - `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7 (83 lines); hunks: -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(; -125,6 +119,81 @@ def _mxfp8_dot_scaled_linear(; symbols: _mxfp8_dot_scaled_linear, _select_cfg, local, RocmDotScaledMxfp8LinearKernel
-- Key code excerpts:
-
-```diff
-diff -- tests/kernels/test_minimax_m3_amd_ops.py
-@@ -284,6 +284,93 @@ def test_mxfp8_native_moe(T, H, inter, E, top_k):
-+# --------------------------------------------------------------------------- #
-+# Native MXFP8 grouped GEMM (dot_scaled) vs pure-PyTorch grouped matmul
-+# --------------------------------------------------------------------------- #
-+def _ref_grouped_gemm(a_deq, w_deq, topk_ids, a_div, num_valid, mul_weight=None):
-+    """Pure-PyTorch reference for ``_grouped_gemm_mxfp8``.
-+    For each routed (expanded) token ``tid in [0, num_valid)`` the kernel writes
-diff -- vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py
-@@ -19,7 +19,6 @@
--from vllm.logger import init_logger
-@@ -32,7 +31,26 @@
--logger = init_logger(__name__)
-+def _select_cfg(M, N, K, block_m):
-+    """Pick the launch config from host constants only (M=num_valid_tokens, N, K,
-+    block_m) — graph-capture safe (no GPU-scalar branch)."""
-diff -- vllm/model_executor/kernels/linear/mxfp8/rocm_native.py
-@@ -89,13 +89,7 @@ def _mxfp8_dot_scaled_linear(
-```
-
-- Reviewed files:
-  - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +87/-0
-  - runtime: `vllm/model_executor/layers/fused_moe/experts/mxfp8_native_moe.py` modified +63/-35; `vllm/model_executor/kernels/linear/mxfp8/rocm_native.py` modified +76/-7
-- Risk and verification: The diff ships test coverage in `tests/kernels/test_minimax_m3_amd_ops.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #47631 - [Perf] Minimax M3 - Support cross-layer allreduce-norm fusion
 
 - Link: https://github.com/vllm-project/vllm/pull/47631
 - Status/date: merged / 2026-07-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47631 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/nvidia/model.py`; associated commits `2afa3f7e9502`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +65/-17, 228 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Perf] Minimax M3 - Support cross-layer allreduce-norm fusion"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py`; technical summary: Covers "[Perf] Minimax M3 - Support cross-layer allreduce-norm fusion"; the main implementation surface is `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/model.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2212,47 +2308,11 @@ diff -- vllm/models/deepseek_v32/nvidia/model.py
   - runtime: `vllm/models/minimax_m3/nvidia/model.py` modified +37/-10; `vllm/models/deepseek_v32/nvidia/model.py` modified +4/-4
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py`, `vllm/model_executor/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #47158 - [ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8
-
-- Link: https://github.com/vllm-project/vllm/pull/47158
-- Status/date: merged / 2026-07-08
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/test_minimax_m3_amd_ops.py`; associated commits `2c64b4c1cc18`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +107/-12, 139 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`; technical summary: Covers "[ROCm] fixed aiter master flag and expert parallelism compatibility on minimax-m3-mxfp8"; the main implementation surface is `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes, touching `test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe`; `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply, touching `_supports_current_device, _supports_parallel_config, apply`.
-- Code diff details:
-  - `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0 (94 lines); hunks: -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(; symbols: test_mxfp8_linear_emulation_bf16_at_load, _capture_expert_mask, _fake_fused_moe, test_aiter_mxfp8_ep_expert_mask_both_master_modes
-  - `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12 (25 lines); hunks: -78,9 +78,6 @@ def _supports_current_device() -> bool:; -129,17 +126,21 @@ def apply(; symbols: _supports_current_device, _supports_parallel_config, apply
-- Key code excerpts:
-
-```diff
-diff -- tests/kernels/test_minimax_m3_amd_ops.py
-@@ -335,3 +335,97 @@ def test_mxfp8_linear_emulation_bf16_at_load(
-+# ── EP expert_mask handling for the FlyDSL (AITER_MXFP8) MoE ────────────────
-+# Regression for the EP + aiter-master-switch interaction: under expert
-+# parallelism ``RoutedExperts.expert_map`` hands the experts either the 0/1
-+# ``expert_mask`` (aiter master ON, ``rocm_aiter_fmoe_enabled``) or vLLM's -1
-+# index map (master OFF). ``AiterMxfp8Experts.apply`` must forward the right 0/1
-+# mask to aiter in BOTH cases. The old code always rebuilt the mask via
-diff -- vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py
-@@ -78,9 +78,6 @@ def _supports_current_device() -> bool:
--        # Both TP (expert_map=None) and EP are supported: apply() forwards the
--        # expert_map as aiter's ``expert_mask`` (the per-rank local-expert
--        # selection), mirroring the native rocm_aiter_moe path.
-@@ -129,17 +126,21 @@ def apply(
--        # Under EP, aiter expects ``expert_mask`` as a 0/1 *local-expert* mask
--        # over global ids with a trailing fake-expert sentinel slot
-```
-
-- Reviewed files:
-  - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +94/-0
-  - runtime: `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp8_moe.py` modified +13/-12
-- Risk and verification: The diff ships test coverage in `tests/kernels/test_minimax_m3_amd_ops.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #47287 - [ROCm][MiniMax-M3] Add AITER sparse paged attention
 
 - Link: https://github.com/vllm-project/vllm/pull/47287
 - Status/date: merged / 2026-07-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47287 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_attn.py` and 11 files; associated commits `ee5a89f4d7b8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +1553/-127, 2389 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M3] Add AITER sparse paged attention"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`; technical summary: Covers "[ROCm][MiniMax-M3] Add AITER sparse paged attention"; the main implementation surface is `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/ops/sparse_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2294,6 +2354,7 @@ diff -- vllm/models/minimax_m3/common/ops/sparse_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44849
 - Status/date: merged / 2026-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44849 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; associated commits `b50ef9c6ed97`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +12/-0, 26 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`; technical summary: Covers "[ROCm][MiniMax-M2] Dispatch fused QK-norm + AllReduce via AITER"; the main implementation surface is `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2321,6 +2382,7 @@ diff -- vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47984
 - Status/date: merged / 2026-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47984 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`; associated commits `95aab66e9585`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +182/-15, 276 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA"; model line: MiniMax M2/M3 Series; category: performance/backend optimization; main diff: `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py`; technical summary: Covers "[ROCm][MiniMax-M3][Spec Decode] Support speculative decode with AITER sparse PA"; the main implementation surface is `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `tests/kernels/attention/test_minimax_m3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2361,6 +2423,7 @@ diff -- tests/kernels/attention/test_minimax_m3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48523
 - Status/date: merged / 2026-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/48523 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m3_tool_parser.py`; associated commits `af1f036a70e0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/tool_parsers/test_minimax_m3_tool_parser.py`; technical summary: Covers "[Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent"; the main implementation surface is `tests/tool_parsers/test_minimax_m3_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2385,6 +2448,7 @@ diff -- tests/tool_parsers/test_minimax_m3_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48846
 - Status/date: merged / 2026-07-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/48846 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`; associated commits `11d291511a35`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +164/-9, 249 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`; technical summary: Covers "[Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML)"; the main implementation surface is `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2422,6 +2486,7 @@ diff -- vllm/parser/minimax_m2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/49149
 - Status/date: merged / 2026-07-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/49149 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/sparse_attention.py`; associated commits `d1a8ba63d9d2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +13/-3, 44 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton …"; model line: MiniMax M2/M3 Series; category: bug fix; main diff: `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py`; technical summary: Covers "[Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton …"; the main implementation surface is `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py`. File-level evidence, code excerpts, and validation risks are preserved below.

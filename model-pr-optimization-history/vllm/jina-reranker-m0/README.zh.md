@@ -11,18 +11,19 @@
 | `examples/pooling/token_embed/jina_reranker_v3_offline.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800) |
 | `examples/pooling/token_embed/jina_reranker_v3_online.py` | [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` | [#49963](https://github.com/vllm-project/vllm/pull/49963) |
+| `tests/models/language/pooling/test_jina_embeddings_v5.py` | [#50337](https://github.com/vllm-project/vllm/pull/50337), [#50352](https://github.com/vllm-project/vllm/pull/50352), [#50688](https://github.com/vllm-project/vllm/pull/50688) |
 | `tests/models/language/pooling/test_jina_reranker_v3.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800), [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/models/language/pooling_mteb_test/test_bge_reranker_v2_gemma.py` | 无直接 PR 号提交 |
-| `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575) |
+| `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#50917](https://github.com/vllm-project/vllm/pull/50917) |
 | `tests/models/multimodal/pooling/test_jinavl_reranker.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#20907](https://github.com/vllm-project/vllm/pull/20907), [#31445](https://github.com/vllm-project/vllm/pull/31445) |
-| `vllm/model_executor/models/jina.py` | [#38633](https://github.com/vllm-project/vllm/pull/38633), [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575) |
+| `vllm/model_executor/models/jina.py` | [#38633](https://github.com/vllm-project/vllm/pull/38633), [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#52037](https://github.com/vllm-project/vllm/pull/52037) |
 | `vllm/model_executor/models/jina_vl.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 10
+- git 追溯 PR 数: 11
 - 原文档显式引用补充 PR 数: 35
-- 当前文档总 PR 数: 45
+- 当前文档总 PR 数: 46
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -68,13 +69,14 @@
 | 2026-05-06 | [#41832](https://github.com/vllm-project/vllm/pull/41832) | merged | [Doc] Add ModernBertForSequenceClassification to scoring.md cross-en… | `docs/models/pooling_models/scoring.md` |
 | 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | merged | [Feature] Add instruction support for score/rerank chat templates | `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-05-15 | [#42267](https://github.com/vllm-project/vllm/pull/42267) | merged | [Entrypoints] Split the pooling offline API into PoolingOfflineMixin. | `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md` |
-| 2026-05-19 | [#42626](https://github.com/vllm-project/vllm/pull/42626) | merged | [Docs] Add SVG images for pooling models. | `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg` |
 | 2026-05-19 | [#41907](https://github.com/vllm-project/vllm/pull/41907) | merged | [Docs] Reorganize online serving docs. | `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md` |
+| 2026-05-19 | [#42626](https://github.com/vllm-project/vllm/pull/42626) | merged | [Docs] Add SVG images for pooling models. | `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg` |
 | 2026-05-22 | [#43393](https://github.com/vllm-project/vllm/pull/43393) | merged | [Docs] Note image preprocessing difference between qwen_vl_utils and vllm. | `docs/models/supported_models.md`, `docs/models/pooling_models/embed.md`, `docs/models/pooling_models/scoring.md` |
 | 2026-06-15 | [#45676](https://github.com/vllm-project/vllm/pull/45676) | merged | [Docs] Update the online serving docs. | `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md` |
 | 2026-06-23 | [#46398](https://github.com/vllm-project/vllm/pull/46398) | merged | [Doc] Fix typos, grammar, and broken commands across docs | `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md` |
 | 2026-07-05 | [#47590](https://github.com/vllm-project/vllm/pull/47590) | merged | [Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts | `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-07-27 | [#49963](https://github.com/vllm-project/vllm/pull/49963) | merged | [Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
+| 2026-08-03 | [#50688](https://github.com/vllm-project/vllm/pull/50688) | merged | [Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone) | `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -82,6 +84,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/20260
 - 状态/时间: merged / 2025-07-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20260 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py`；关联提交 `4bed167768bd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+993/-133，可读 patch 1479 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model][VLM] Support JinaVL Reranker」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py`；技术摘要: 覆盖「[Model][VLM] Support JinaVL Reranker」；主要实现面是 `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -119,6 +122,7 @@ diff -- vllm/model_executor/models/jina_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20907
 - 状态/时间: merged / 2025-07-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20907 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_jinavl_reranker.py`；关联提交 `dcf2a5e2088d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+85/-58，可读 patch 225 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CI/Build] Fix OOM issue in Jina-VL test」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`；技术摘要: 覆盖「[CI/Build] Fix OOM issue in Jina-VL test」；主要实现面是 `tests/models/multimodal/pooling/test_jinavl_reranker.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -146,6 +150,7 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21058
 - 状态/时间: merged / 2025-07-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21058 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+247/-345，可读 patch 1411 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Update pooling model interface」；模型线: Jina Reranker M0；类别: 模型实现调整；主要 diff: `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py`；技术摘要: 覆盖「[Model] Update pooling model interface」；主要实现面是 `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -187,6 +192,7 @@ diff -- vllm/model_executor/models/bert.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21227
 - 状态/时间: merged / 2025-07-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21227 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 22 个文件，+550/-414，可读 patch 1581 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model][1/N] Support multiple poolers at model level」；模型线: Jina Reranker M0；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/bert.py`, `vllm/model_executor/models/adapters.py`；技术摘要: 覆盖「[Model][1/N] Support multiple poolers at model level」；主要实现面是 `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/bert.py`, `vllm/model_executor/models/adapters.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -271,6 +277,7 @@ diff -- tests/models/language/generation/test_mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21470
 - 状态/时间: merged / 2025-07-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21470 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 94 个文件，+1111/-1077，可读 patch 4435 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Deprecation][2/N] Replace `--task` with `--runner` and `--convert`」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/registry.py`, `vllm/model_executor/model_loader/utils.py`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Deprecation][2/N] Replace `--task` with `--runner` and `--convert`」；主要实现面是 `vllm/model_executor/models/registry.py`, `vllm/model_executor/model_loader/utils.py`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -314,6 +321,7 @@ diff -- docs/models/supported_models.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/20538
 - 状态/时间: merged / 2025-08-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20538 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 21 个文件，+948/-173，可读 patch 1566 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Pooling model activation supports per request control by PoolingParams」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_override_pooler_config.py`, `tests/entrypoints/llm/test_score.py`；技术摘要: 覆盖「[Model] Pooling model activation supports per request control by PoolingParams」；主要实现面是 `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_override_pooler_config.py`, `tests/entrypoints/llm/test_score.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -356,6 +364,7 @@ diff -- tests/entrypoints/llm/test_score.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24031
 - 状态/时间: merged / 2025-09-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24031 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+38/-30，可读 patch 143 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Classification models support logit_bias / sigmoid_normalize」；模型线: Jina Reranker M0；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/config.py`；技术摘要: 覆盖「[Model] Classification models support logit_bias / sigmoid_normalize」；主要实现面是 `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/config.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -438,6 +447,7 @@ diff -- vllm/model_executor/models/internlm2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26247
 - 状态/时间: merged / 2025-10-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26247/files?per_page=100 --paginate gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1508 个文件，+83935/-68959，可读 patch 272044 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Convert formatting to use `ruff` instead of `yapf` + `isort`」；模型线: Jina Reranker M0；类别: 性能/后端优化；主要 diff: `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`；技术摘要: 覆盖「Convert formatting to use `ruff` instead of `yapf` + `isort`」；主要实现面是 `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -480,6 +490,7 @@ diff -- vllm/model_executor/layers/fused_moe/fused_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26633
 - 状态/时间: merged / 2025-10-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26633/files?per_page=100 --paginate gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 944 个文件，+9491/-10122，可读 patch 61484 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`」；模型线: Jina Reranker M0；类别: 性能/后端优化；主要 diff: `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`；技术摘要: 覆盖「Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`」；主要实现面是 `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -521,6 +532,7 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26687
 - 状态/时间: merged / 2025-10-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26687 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/pooling_mteb_test/test_jina.py`；关联提交 `8e67b2557aae`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+13/-7，可读 patch 49 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py`；技术摘要: 覆盖「[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph」；主要实现面是 `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -556,6 +568,7 @@ diff -- vllm/model_executor/models/config.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25370
 - 状态/时间: merged / 2025-10-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25370 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 41 个文件，+786/-399，可读 patch 1862 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model][2/N] Improve all pooling task | Support multi-vector retrieval」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_pooler_config_init_behaviour.py`, `tests/models/language/pooling/test_multi_vector_retrieval.py`；技术摘要: 覆盖「[Model][2/N] Improve all pooling task | Support multi-vector retrieval」；主要实现面是 `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_pooler_config_init_behaviour.py`, `tests/models/language/pooling/test_multi_vector_retrieval.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -598,6 +611,7 @@ diff -- tests/models/language/pooling/test_multi_vector_retrieval.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/29802
 - 状态/时间: merged / 2025-12-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29802 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+29/-28，可读 patch 93 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix some Transformers nightly tests」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/models/qwen2.py`；技术摘要: 覆盖「Fix some Transformers nightly tests」；主要实现面是 `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/models/qwen2.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -635,6 +649,7 @@ diff -- vllm/model_executor/models/qwen2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31445
 - 状态/时间: merged / 2025-12-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31445 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_jinavl_reranker.py`；关联提交 `bf73a3e4d7e1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+316/-138，可读 patch 519 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py`；技术摘要: 覆盖「[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility」；主要实现面是 `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -670,6 +685,7 @@ diff -- vllm/entrypoints/score_utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31669
 - 状态/时间: merged / 2026-01-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31669 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+181/-40，可读 patch 753 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc][Model][Refactor] Pass the prefix into Linear layers」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/molmo.py`, `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/qwen_vl.py`；技术摘要: 覆盖「[Misc][Model][Refactor] Pass the prefix into Linear layers」；主要实现面是 `vllm/model_executor/models/molmo.py`, `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/qwen_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -711,6 +727,7 @@ diff -- vllm/model_executor/models/qwen_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31890
 - 状态/时间: merged / 2026-01-08
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31890 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/pooling/score/template/qwen3_vl_reranker.jinja`；关联提交 `eac3b96ec04d`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+287/-13，可读 patch 415 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Models] Allow converting Qwen3-VL into Reranker model」；模型线: Jina Reranker M0；类别: 模型实现调整；主要 diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py`；技术摘要: 覆盖「[Models] Allow converting Qwen3-VL into Reranker model」；主要实现面是 `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -752,6 +769,7 @@ diff -- vllm/model_executor/models/config.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31973
 - 状态/时间: merged / 2026-01-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31973 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 34 个文件，+1290/-1143，可读 patch 2875 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Reorganize pooling layers」；模型线: Jina Reranker M0；类别: 模型实现调整；主要 diff: `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/layers/pooler/activations.py`, `vllm/model_executor/layers/pooler/seqwise/heads.py`；技术摘要: 覆盖「[Model] Reorganize pooling layers」；主要实现面是 `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/layers/pooler/activations.py`, `vllm/model_executor/layers/pooler/seqwise/heads.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -793,6 +811,7 @@ diff -- vllm/model_executor/layers/pooler/seqwise/heads.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32085
 - 状态/时间: merged / 2026-01-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32085 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+381/-69，可读 patch 538 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Improve multimodal pooling examples」；模型线: Jina Reranker M0；类别: 模型实现调整；主要 diff: `examples/pooling/score/openai_cross_encoder_score_for_multimodal.py`, `examples/pooling/embed/vision_embedding_online.py`, `examples/pooling/embed/vision_embedding_offline.py`；技术摘要: 覆盖「[Model] Improve multimodal pooling examples」；主要实现面是 `examples/pooling/score/openai_cross_encoder_score_for_multimodal.py`, `examples/pooling/embed/vision_embedding_online.py`, `examples/pooling/embed/vision_embedding_offline.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -876,6 +895,7 @@ diff -- tests/entrypoints/pooling/pooling/test_online.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32577
 - 状态/时间: merged / 2026-01-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32577 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 17 个文件，+253/-113，可读 patch 749 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend] Score entrypoint support data_1 & data_2 and queries & documents as inputs」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `tests/entrypoints/pooling/score/test_online_score.py`, `vllm/entrypoints/pooling/score/protocol.py`, `vllm/entrypoints/pooling/score/serving.py`；技术摘要: 覆盖「[Frontend] Score entrypoint support data_1 & data_2 and queries & documents as inputs」；主要实现面是 `tests/entrypoints/pooling/score/test_online_score.py`, `vllm/entrypoints/pooling/score/protocol.py`, `vllm/entrypoints/pooling/score/serving.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -918,6 +938,7 @@ diff -- vllm/entrypoints/pooling/score/serving.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32287
 - 状态/时间: merged / 2026-01-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32287 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+25/-3，可读 patch 91 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Upgrade transformers-4.57.5」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `requirements/nightly_torch_test.txt`, `requirements/test.in`；技术摘要: 覆盖「Upgrade transformers-4.57.5」；主要实现面是 `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `requirements/nightly_torch_test.txt`, `requirements/test.in`。下方保留文件级证据、代码摘录和验证风险。
@@ -1000,6 +1021,7 @@ diff -- vllm/model_executor/models/gpt2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33298
 - 状态/时间: merged / 2026-01-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33298 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+234/-112，可读 patch 457 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Qwen3-VL-Reranker load.」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/model_executor/models/adapters.py`, `tests/entrypoints/test_utils.py`；技术摘要: 覆盖「[Bugfix] Fix Qwen3-VL-Reranker load.」；主要实现面是 `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/model_executor/models/adapters.py`, `tests/entrypoints/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1043,6 +1065,7 @@ diff -- tests/entrypoints/test_utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33060
 - 状态/时间: merged / 2026-02-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33060 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+432/-205，可读 patch 1008 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend][4/n] Make pooling entrypoints request schema consensus | ScoreRequest」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/entrypoints/pooling/score/serving.py`, `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/entrypoints/llm.py`；技术摘要: 覆盖「[Frontend][4/n] Make pooling entrypoints request schema consensus | ScoreRequest」；主要实现面是 `vllm/entrypoints/pooling/score/serving.py`, `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/entrypoints/llm.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1086,6 +1109,7 @@ diff -- vllm/entrypoints/llm.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33837
 - 状态/时间: merged / 2026-02-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33837 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-44，可读 patch 99 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix ScoreMultiModalParam multi-document scoring returning single result」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`；技术摘要: 覆盖「[Bugfix] Fix ScoreMultiModalParam multi-document scoring returning single result」；主要实现面是 `tests/models/multimodal/pooling/test_jinavl_reranker.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1113,6 +1137,7 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31127
 - 状态/时间: merged / 2026-02-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31127 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+658/-612，可读 patch 1726 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend][last/5] Make pooling entrypoints request schema consensus.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `tests/entrypoints/pooling/embed/test_online_vision.py`, `tests/entrypoints/pooling/classify/test_offline.py`, `vllm/entrypoints/pooling/score/protocol.py`；技术摘要: 覆盖「[Frontend][last/5] Make pooling entrypoints request schema consensus.」；主要实现面是 `tests/entrypoints/pooling/embed/test_online_vision.py`, `tests/entrypoints/pooling/classify/test_offline.py`, `vllm/entrypoints/pooling/score/protocol.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1197,6 +1222,7 @@ diff -- docs/models/pooling_models/scoring.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/37537
 - 状态/时间: merged / 2026-03-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37537 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 22 个文件，+184/-163，可读 patch 808 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Deprecate the score task (this will not affect users).」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `docs/models/pooling_models/README.md`, `vllm/model_executor/layers/pooler/seqwise/heads.py`, `vllm/entrypoints/pooling/__init__.py`；技术摘要: 覆盖「[Model] Deprecate the score task (this will not affect users).」；主要实现面是 `docs/models/pooling_models/README.md`, `vllm/model_executor/layers/pooler/seqwise/heads.py`, `vllm/entrypoints/pooling/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1282,6 +1308,7 @@ diff -- examples/offline_inference/encoder_decoder_multimodal.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28631
 - 状态/时间: merged / 2026-03-31
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28631 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 37 个文件，+1257/-1780，可读 patch 3713 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend][3/n] Improve pooling entrypoints | scoring.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`, `tests/entrypoints/pooling/scoring/test_utils.py`；技术摘要: 覆盖「[Frontend][3/n] Improve pooling entrypoints | scoring.」；主要实现面是 `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`, `tests/entrypoints/pooling/scoring/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1407,6 +1434,7 @@ diff -- tests/models/multimodal/generation/test_common.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39575
 - 状态/时间: merged / 2026-04-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39575 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/jina.py`；关联提交 `2cdf86044d7e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+218/-10，可读 patch 401 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add Jina Embeddings v5 model support (fixes #38633)」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/jina.py`, `tests/models/language/pooling_mteb_test/test_jina.py`；技术摘要: 覆盖「Add Jina Embeddings v5 model support (fixes #38633)」；主要实现面是 `vllm/model_executor/models/jina.py`, `tests/models/language/pooling_mteb_test/test_jina.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1444,6 +1472,7 @@ diff -- tests/models/language/pooling_mteb_test/test_jina.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39675
 - 状态/时间: merged / 2026-04-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39675 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 29 个文件，+465/-427，可读 patch 1334 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Frontend][last/5] Improve pooling entrypoints | clean up.」；模型线: Jina Reranker M0；类别: 模型实现调整；主要 diff: `vllm/entrypoints/pooling/factories.py`, `vllm/entrypoints/pooling/__init__.py`, `vllm/entrypoints/sagemaker/api_router.py`；技术摘要: 覆盖「[Frontend][last/5] Improve pooling entrypoints | clean up.」；主要实现面是 `vllm/entrypoints/pooling/factories.py`, `vllm/entrypoints/pooling/__init__.py`, `vllm/entrypoints/sagemaker/api_router.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1485,6 +1514,7 @@ diff -- vllm/entrypoints/sagemaker/api_router.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41832
 - 状态/时间: merged / 2026-05-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41832 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Doc] Add ModernBertForSequenceClassification to scoring.md cross-en…」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `docs/models/pooling_models/scoring.md`；技术摘要: 覆盖「[Doc] Add ModernBertForSequenceClassification to scoring.md cross-en…」；主要实现面是 `docs/models/pooling_models/scoring.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1507,6 +1537,7 @@ diff -- docs/models/pooling_models/scoring.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/42412
 - 状态/时间: merged / 2026-05-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42412 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/pooling/score/template/qwen3_vl_reranker.jinja`；关联提交 `70c00163ffa8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+182/-12，可读 patch 285 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Feature] Add instruction support for score/rerank chat templates」；模型线: Jina Reranker M0；类别: 模型支持/运行时入口；主要 diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`；技术摘要: 覆盖「[Feature] Add instruction support for score/rerank chat templates」；主要实现面是 `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1547,6 +1578,7 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42267
 - 状态/时间: merged / 2026-05-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42267 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+531/-439，可读 patch 1121 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Entrypoints] Split the pooling offline API into PoolingOfflineMixin.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md`；技术摘要: 覆盖「[Entrypoints] Split the pooling offline API into PoolingOfflineMixin.」；主要实现面是 `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1585,46 +1617,11 @@ diff -- docs/models/pooling_models/README.md
   - docs: `docs/models/pooling_models/README.md` modified +4/-4; `docs/models/pooling_models/embed.md` modified +3/-3; `docs/models/pooling_models/classify.md` modified +2/-2; `docs/models/pooling_models/token_embed.md` modified +2/-2; `docs/models/pooling_models/reward.md` modified +1/-1; `docs/models/pooling_models/scoring.md` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/entrypoints/llm.py`, `vllm/entrypoints/pooling/offline.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #42626 - [Docs] Add SVG images for pooling models.
-
-- 链接: https://github.com/vllm-project/vllm/pull/42626
-- 状态/时间: merged / 2026-05-19
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+2336/-0，可读 patch 44 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Docs] Add SVG images for pooling models.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`；技术摘要: 覆盖「[Docs] Add SVG images for pooling models.」；主要实现面是 `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines)；`docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines)；`docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines)；`docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts...。
-- 代码 diff 细节:
-  - `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines)
-  - `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines)
-  - `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines)
-  - `docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts...
-  - `docs/models/pooling_models/scoring.md` modified +6/-0 (6 lines); hunks: -25,6 +25,12 @@ The score models is designed to compute similarity scores bet...
-- 关键代码摘录:
-
-```diff
-diff -- docs/models/pooling_models/README.md
-@@ -33,6 +33,12 @@ from large language models, allowing them to benefit from the continuous improve
-+### Cheat Sheet
-+As illustrated in the figure below, we have summarized the relationships among the key elements of pooling models as a takeaway.
-+![Cheat Sheet](../../assets/models/pooling_models/cheat_sheet.svg)
-@@ -61,6 +67,8 @@ are a subset of classification models that accept two prompts as input and outpu
-+![Pooling Types](../../assets/models/pooling_models/pooling_types.svg)
-@@ -71,6 +79,8 @@ are a subset of classification models that accept two prompts as input and outpu
-diff -- docs/models/pooling_models/scoring.md
-@@ -25,6 +25,12 @@ The score models is designed to compute similarity scores between two input prom
-+### Score Types
-+The three supported scoring functions are as illustrated in the figure below.
-+![Score Types](../../assets/models/pooling_models/score_types.svg)
-```
-
-- 已读文件:
-  - docs: `docs/assets/models/pooling_models/score_types.svg` added +902/-0; `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0; `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0; `docs/models/pooling_models/README.md` modified +10/-0; `docs/models/pooling_models/scoring.md` modified +6/-0
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`, `docs/assets/models/pooling_models/score_types.svg`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #41907 - [Docs] Reorganize online serving docs.
 
 - 链接: https://github.com/vllm-project/vllm/pull/41907
 - 状态/时间: merged / 2026-05-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41907 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+1348/-1241，可读 patch 1469 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Reorganize online serving docs.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Docs] Reorganize online serving docs.」；主要实现面是 `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1661,6 +1658,42 @@ diff -- docs/models/generative_models.md
 - 已读文件:
   - docs: `docs/assets/models/pooling_models/cheat_sheet.svg` modified +671/-660; `docs/models/pooling_models/README.md` modified +6/-6; `docs/models/supported_models.md` modified +4/-4; `docs/models/generative_models.md` modified +3/-3; `docs/models/pooling_models/scoring.md` modified +3/-3; `docs/models/pooling_models/embed.md` modified +2/-2
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/.nav.yml`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/configuration/README.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #42626 - [Docs] Add SVG images for pooling models.
+
+- 链接: https://github.com/vllm-project/vllm/pull/42626
+- 状态/时间: merged / 2026-05-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+2336/-0，可读 patch 44 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Docs] Add SVG images for pooling models.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`；技术摘要: 覆盖「[Docs] Add SVG images for pooling models.」；主要实现面是 `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines)；`docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines)；`docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines)；`docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts...。
+- 代码 diff 细节:
+  - `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines)
+  - `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines)
+  - `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines)
+  - `docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts...
+  - `docs/models/pooling_models/scoring.md` modified +6/-0 (6 lines); hunks: -25,6 +25,12 @@ The score models is designed to compute similarity scores bet...
+- 关键代码摘录:
+
+```diff
+diff -- docs/models/pooling_models/README.md
+@@ -33,6 +33,12 @@ from large language models, allowing them to benefit from the continuous improve
++### Cheat Sheet
++As illustrated in the figure below, we have summarized the relationships among the key elements of pooling models as a takeaway.
++![Cheat Sheet](../../assets/models/pooling_models/cheat_sheet.svg)
+@@ -61,6 +67,8 @@ are a subset of classification models that accept two prompts as input and outpu
++![Pooling Types](../../assets/models/pooling_models/pooling_types.svg)
+@@ -71,6 +79,8 @@ are a subset of classification models that accept two prompts as input and outpu
+diff -- docs/models/pooling_models/scoring.md
+@@ -25,6 +25,12 @@ The score models is designed to compute similarity scores between two input prom
++### Score Types
++The three supported scoring functions are as illustrated in the figure below.
++![Score Types](../../assets/models/pooling_models/score_types.svg)
+```
+
+- 已读文件:
+  - docs: `docs/assets/models/pooling_models/score_types.svg` added +902/-0; `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0; `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0; `docs/models/pooling_models/README.md` modified +10/-0; `docs/models/pooling_models/scoring.md` modified +6/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`, `docs/assets/models/pooling_models/score_types.svg`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #43393 - [Docs] Note image preprocessing difference between qwen_vl_utils and vllm.
 
@@ -1705,6 +1738,7 @@ diff -- docs/models/pooling_models/scoring.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/45676
 - 状态/时间: merged / 2026-06-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45676 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+83/-37，可读 patch 216 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Update the online serving docs.」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md`；技术摘要: 覆盖「[Docs] Update the online serving docs.」；主要实现面是 `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1745,6 +1779,7 @@ diff -- docs/serving/online_serving/README.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/46398
 - 状态/时间: merged / 2026-06-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/46398 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 11 个文件，+16/-18，可读 patch 149 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Doc] Fix typos, grammar, and broken commands across docs」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md`；技术摘要: 覆盖「[Doc] Fix typos, grammar, and broken commands across docs」；主要实现面是 `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -1786,6 +1821,7 @@ diff -- docs/benchmarking/cli.md
 
 - 链接: https://github.com/vllm-project/vllm/pull/47590
 - 状态/时间: merged / 2026-07-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/47590 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/pooling/token_embed/jina_reranker_v3_online.py`, `tests/models/language/pooling/test_jina_reranker_v3.py`；关联提交 `922661304357`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+179/-22，可读 patch 281 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`；技术摘要: 覆盖「[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts」；主要实现面是 `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1827,6 +1863,7 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/49963
 - 状态/时间: merged / 2026-07-27
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/49963 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`；关联提交 `27d7061ef62b`
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+69/-1，可读 patch 78 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online」；模型线: Jina Reranker M0；类别: 缺陷修复；主要 diff: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`；技术摘要: 覆盖「[Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online」；主要实现面是 `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1859,6 +1896,46 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
   - tests: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` added +59/-0
   - runtime: `vllm/entrypoints/pooling/scoring/io_processor.py` modified +10/-1
 - 验证与风险: diff 自带测试面 `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #50688 - [Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)
+
+- 链接: https://github.com/vllm-project/vllm/pull/50688
+- 状态/时间: merged / 2026-08-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/jina.py`；关联提交 `9a4fd57cac19`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+155/-91，可读 patch 333 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py`；技术摘要: 覆盖「[Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)」；主要实现面是 `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/jina.py` modified +112/-61 (173 lines); hunks: -24,6 +24,7; -185,11 +186,79 @@ def _build_lora_pairs(adapter_weights: dict) -> dict:; symbols: _build_lora_pairs, JinaEmbeddingsV5Model, _setup_jina_v5_task_and_pooler, _load_jina_v5_weights，涉及 `_build_lora_pairs, JinaEmbeddingsV5Model, _setup_jina_v5_task_and_pooler`；`tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12 (27 lines); hunks: -1,12 +1,13; -34,16 +35,18 @@ def test_registered_for_the_architecture():; symbols: test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_encoder_backbone_enables_bidirectional_attention，涉及 `test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_encoder_backbone_enables_bidirectional_attention`；`tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0 (8 lines); hunks: -38,6 +38,14。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/jina.py` modified +112/-61 (173 lines); hunks: -24,6 +24,7; -185,11 +186,79 @@ def _build_lora_pairs(adapter_weights: dict) -> dict:; symbols: _build_lora_pairs, JinaEmbeddingsV5Model, _setup_jina_v5_task_and_pooler, _load_jina_v5_weights
+  - `tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12 (27 lines); hunks: -1,12 +1,13; -34,16 +35,18 @@ def test_registered_for_the_architecture():; symbols: test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_encoder_backbone_enables_bidirectional_attention
+  - `tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0 (8 lines); hunks: -38,6 +38,14
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/jina.py
+@@ -24,6 +24,7 @@
++from .llama import LlamaForCausalLM
+@@ -185,11 +186,79 @@ def _build_lora_pairs(adapter_weights: dict) -> dict:
+-class JinaEmbeddingsV5Model(Qwen3ForCausalLM, VllmModelForPooling):
+-    """Jina Embeddings V5 with task-specific LoRA adapters merged at load time.
++def _setup_jina_v5_task_and_pooler(model: nn.Module, vllm_config: VllmConfig) -> None:
++    """Shared init for jina-embeddings-v5 wrappers: select task + build pooler."""
+diff -- tests/models/language/pooling/test_jina_embeddings_v5.py
+@@ -1,12 +1,13 @@
+-"""Backbone validation for Jina Embeddings V5 (issue #50337).
++"""Backbone validation for Jina Embeddings V5.
+-a Qwen3 decoder (which vLLM implements), while `-nano` is a bidirectional
+-EuroBERT encoder (which it does not). Upstream ships a separate
+-`configuration_*.py` per repository, so the only signal distinguishing them is
+-`is_decoder`, which the encoder variant sets to False.
+diff -- tests/models/language/pooling_mteb_test/test_jina.py
+@@ -38,6 +38,14 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/jina.py` modified +112/-61
+  - tests: `tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12; `tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0
+- 验证与风险: diff 自带测试面 `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/mteb_embed_utils.py`, `tests/models/language/pooling_mteb_test/test_jina.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

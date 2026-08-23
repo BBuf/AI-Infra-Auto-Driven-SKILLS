@@ -4,23 +4,23 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder-Next.mdx` | no direct PR-number commit |
-| `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx` | [#24435](https://github.com/sgl-project/sglang/pull/24435) |
-| `docs_new/src/snippets/autoregressive/qwen3-coder-480b-a35b-deployment.jsx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx` | [#24435](https://github.com/sgl-project/sglang/pull/24435) |
-| `docs_new/src/snippets/autoregressive/qwen3-coder-next-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Qwen/Qwen3-Coder-Next.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/qwen3-coder-480b-a35b-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/qwen3-coder-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/qwen3-coder-next-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/qwen3_coder_detector.py` | [#8371](https://github.com/sgl-project/sglang/pull/8371), [#16744](https://github.com/sgl-project/sglang/pull/16744), [#30832](https://github.com/sgl-project/sglang/pull/30832) |
 | `python/sglang/srt/models/qwen3.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
 | `test/registered/amd/test_qwen3_coder_next_8gpu.py` | [#18608](https://github.com/sgl-project/sglang/pull/18608) |
-| `test/registered/ascend/llm_models/test_npu_qwen3_coder_480b_a35b.py` | no direct PR-number commit |
 | `test/registered/cpu/test_qwen3.py` | no direct PR-number commit |
 | `test/registered/lora/test_lora_qwen3.py` | no direct PR-number commit |
+| `test/registered/npu/llm_models/test_npu_qwen3_coder_480b_a35b.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 5
-- Extra PRs preserved from existing docs: 36
+- Git-traced PRs: 4
+- Extra PRs preserved from existing docs: 37
 - Total PRs in this document: 41
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -1230,7 +1230,7 @@ diff -- python/sglang/srt/models/qwen3.py
 
 - Link: https://github.com/sgl-project/sglang/pull/24435
 - Status/date: merged / 2026-06-01
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx`; associated commits `106092123f01`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +285/-20, 361 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update Qwen3-Coder docs_new NVIDIA guidance"; model line: Qwen3 Coder; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx`; technical summary: Covers "Update Qwen3-Coder docs_new NVIDIA guidance"; the main implementation surface is `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx`, `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder.mdx` modified +273/-10 (283 lines); hunks: -47,7 +47,7 @@ This section provides deployment configurations verified on AM...; -292,7 +292,7 @@ Arguments: {"code": "def factorial(n):\n if n == 0 or n == 1...; symbols: factorial, touching `factorial`; `docs_new/src/snippets/autoregressive/qwen3-coder-deployment.jsx` modified +12/-10 (22 lines); hunks: -45,8 +45,8 @@ export const Qwen3CoderDeployment = () => {; -97,24 +97,26 @@ export const Qwen3CoderDeployment = () => {.

@@ -11,32 +11,34 @@
 | `tests/model_executor/test_mistral_large_3_eagle.py` | [#45217](https://github.com/vllm-project/vllm/pull/45217) |
 | `tests/models/fixtures/ministral_3b_chat.json` | 无直接 PR 号提交 |
 | `tests/models/fixtures/mistral_small_3_chat.json` | [#14977](https://github.com/vllm-project/vllm/pull/14977) |
-| `tests/models/language/generation/test_mistral.py` | [#20093](https://github.com/vllm-project/vllm/pull/20093), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29918](https://github.com/vllm-project/vllm/pull/29918) |
-| `tests/reasoning/test_mistral_reasoning_parser.py` | [#26358](https://github.com/vllm-project/vllm/pull/26358), [#30391](https://github.com/vllm-project/vllm/pull/30391) |
+| `tests/models/language/generation/test_mistral.py` | [#20093](https://github.com/vllm-project/vllm/pull/20093), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29918](https://github.com/vllm-project/vllm/pull/29918), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/parser/mistral/__init__.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/parser/mistral/test_reasoning.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/parser/mistral/test_tool_calls.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/renderers/test_mistral.py` | 无直接 PR 号提交 |
-| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622) |
-| `tests/tool_parsers/test_mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550) |
+| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/tool_use/mistral/__init__.py` | 无直接 PR 号提交 |
 | `tests/tool_use/mistral/conftest.py` | 无直接 PR 号提交 |
-| `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
+| `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/tool_use/mistral/utils.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
+| `tests/v1/structured_output/test_mistral_common_tokenizer.py` | [#52720](https://github.com/vllm-project/vllm/pull/52720) |
 | `vllm/model_executor/models/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1220](https://github.com/vllm-project/vllm/pull/1220), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#1303](https://github.com/vllm-project/vllm/pull/1303), [#2868](https://github.com/vllm-project/vllm/pull/2868), [#32780](https://github.com/vllm-project/vllm/pull/32780), [#33095](https://github.com/vllm-project/vllm/pull/33095) |
 | `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928) |
 | `vllm/model_executor/models/mistral_eagle.py` | [#41024](https://github.com/vllm-project/vllm/pull/41024) |
 | `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
 | `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232), [#45217](https://github.com/vllm-project/vllm/pull/45217), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
-| `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596) |
-| `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
+| `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596), [#48947](https://github.com/vllm-project/vllm/pull/48947), [#50515](https://github.com/vllm-project/vllm/pull/50515) |
+| `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `vllm/renderers/mistral.py` | 无直接 PR 号提交 |
-| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658) |
-| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550) |
+| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550), ... (14 total) |
 | `vllm/transformers_utils/configs/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#20570](https://github.com/vllm-project/vllm/pull/20570), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29172](https://github.com/vllm-project/vllm/pull/29172), [#29239](https://github.com/vllm-project/vllm/pull/29239), [#29757](https://github.com/vllm-project/vllm/pull/29757), [#33521](https://github.com/vllm-project/vllm/pull/33521), [#34028](https://github.com/vllm-project/vllm/pull/34028), [#34104](https://github.com/vllm-project/vllm/pull/34104), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37104](https://github.com/vllm-project/vllm/pull/37104), ... (13 total) |
-| `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043) |
+| `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 51
-- 原文档显式引用补充 PR 数: 12
+- git 追溯 PR 数: 50
+- 原文档显式引用补充 PR 数: 13
 - 当前文档总 PR 数: 63
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
@@ -66,8 +68,8 @@
 | 2025-08-20 | [#21945](https://github.com/vllm-project/vllm/pull/21945) | merged | Migrate Mistral3ImagePixelInputs to TensorSchema | `vllm/model_executor/models/mistral3.py` |
 | 2025-10-09 | [#26358](https://github.com/vllm-project/vllm/pull/26358) | merged | Refactor MistralTokenizer | `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`, `vllm/entrypoints/chat_utils.py` |
 | 2025-11-19 | [#28542](https://github.com/vllm-project/vllm/pull/28542) | merged | Update `rope_scaling` to `rope_parameters` in preparation for Transformers v5 | `vllm/model_executor/layers/rotary_embedding/__init__.py`, `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/deepseek_v2.py` |
-| 2025-11-21 | [#29172](https://github.com/vllm-project/vllm/pull/29172) | merged | Fix mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2025-11-21 | [#28659](https://github.com/vllm-project/vllm/pull/28659) | merged | Default model load/config/tokenizer to `mistral` format if relevant files exist | `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py` |
+| 2025-11-21 | [#29172](https://github.com/vllm-project/vllm/pull/29172) | merged | Fix mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2025-11-22 | [#29239](https://github.com/vllm-project/vllm/pull/29239) | merged | [Bugfix] Use HF config fields as fallback when loading Mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2025-12-02 | [#29757](https://github.com/vllm-project/vllm/pull/29757) | merged | Add Mistral Large 3 and Ministral 3 | `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py` |
 | 2025-12-02 | [#29918](https://github.com/vllm-project/vllm/pull/29918) | merged | [BUGFIX] Fix regex pattern for Mistral Tool Call | `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py` |
@@ -83,8 +85,8 @@
 | 2026-02-12 | [#34104](https://github.com/vllm-project/vllm/pull/34104) | merged | Fix Mistral config remap to accept compressed-tensors quantization #34028 | `vllm/transformers_utils/configs/mistral.py` |
 | 2026-02-23 | [#34651](https://github.com/vllm-project/vllm/pull/34651) | merged | [Feature] Lazy import for the "mistral" tokenizer module. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py` |
 | 2026-03-06 | [#36156](https://github.com/vllm-project/vllm/pull/36156) | merged | [Bugfix] Fix simple Mistral-Small example | `examples/offline_inference/mistral-small.py` |
-| 2026-03-11 | [#36782](https://github.com/vllm-project/vllm/pull/36782) | merged | [Bugfix] Fix Mistral-small `--format` | `examples/offline_inference/mistral-small.py` |
 | 2026-03-11 | [#36163](https://github.com/vllm-project/vllm/pull/36163) | merged | Add support to Mistral large 3 eagle with dense layers | `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py` |
+| 2026-03-11 | [#36782](https://github.com/vllm-project/vllm/pull/36782) | merged | [Bugfix] Fix Mistral-small `--format` | `examples/offline_inference/mistral-small.py` |
 | 2026-03-14 | [#36971](https://github.com/vllm-project/vllm/pull/36971) | merged | Mistral common v10 | `vllm/tokenizers/mistral.py` |
 | 2026-03-16 | [#37104](https://github.com/vllm-project/vllm/pull/37104) | merged | Patch Mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2026-03-16 | [#37232](https://github.com/vllm-project/vllm/pull/37232) | merged | Fix EagleMistralLarge3Model initialization | `vllm/model_executor/models/mistral_large_3_eagle.py` |
@@ -94,8 +96,8 @@
 | 2026-04-07 | [#37292](https://github.com/vllm-project/vllm/pull/37292) | merged | Fix Mistral yarn warning in Transformers v5 | `vllm/transformers_utils/configs/mistral.py` |
 | 2026-04-16 | [#39217](https://github.com/vllm-project/vllm/pull/39217) | merged | [Mistral Grammar] Fix tool and reasoning parsing | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py` |
 | 2026-04-22 | [#40531](https://github.com/vllm-project/vllm/pull/40531) | merged | [Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
-| 2026-04-24 | [#40043](https://github.com/vllm-project/vllm/pull/40043) | merged | [Feature] Avoid eager import of the "mistral_common" package. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py` |
 | 2026-04-24 | [#39294](https://github.com/vllm-project/vllm/pull/39294) | merged | [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers | `vllm/tool_parsers/mistral_tool_parser.py` |
+| 2026-04-24 | [#40043](https://github.com/vllm-project/vllm/pull/40043) | merged | [Feature] Avoid eager import of the "mistral_common" package. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py` |
 | 2026-04-28 | [#41024](https://github.com/vllm-project/vllm/pull/41024) | merged | [FEATURE] Add EagleMistralForCausalLM | `vllm/model_executor/models/mistral_eagle.py` |
 | 2026-05-05 | [#41730](https://github.com/vllm-project/vllm/pull/41730) | merged | [BUGFIX] Support streamed_args_for_tool in MistralToolParser | `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py` |
 | 2026-05-06 | [#41658](https://github.com/vllm-project/vllm/pull/41658) | merged | [Mistral Tokenizer] allow more leniency in apply_chat_template | `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
@@ -115,6 +117,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/1196
 - 状态/时间: merged / 2023-09-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/1196 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `bb1ba58f0647`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 13 个文件，+571/-25，可读 patch 795 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Mistral] Mistral-7B-v0.1 support」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「[Mistral] Mistral-7B-v0.1 support」；主要实现面是 `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -151,6 +154,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/1220
 - 状态/时间: merged / 2023-09-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/1220 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `a8e98aee0c16`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+27/-14，可读 patch 124 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Mistral model」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「Fix Mistral model」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -175,6 +179,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/1303
 - 状态/时间: merged / 2023-10-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/1303 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `b95ee898fe1c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Minor] Fix comment in mistral.py」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「[Minor] Fix comment in mistral.py」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -198,6 +203,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/1254
 - 状态/时间: merged / 2023-10-13
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/1254 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `e7c8555d0652`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+4/-81，可读 patch 136 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Bump up transformers version & Remove MistralConfig」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「Bump up transformers version & Remove MistralConfig」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -231,6 +237,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/2868
 - 状态/时间: merged / 2024-02-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/2868 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `344020c926ad`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+6/-379，可读 patch 421 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Migrate MistralForCausalLM to LlamaForCausalLM」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「Migrate MistralForCausalLM to LlamaForCausalLM」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -258,6 +265,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/5649
 - 状态/时间: merged / 2024-09-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/5649 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_mistral.jinja`, `examples/tool_chat_template_mistral_parallel.jinja`；关联提交 `e02ce498be2e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 26 个文件，+2588/-83，可读 patch 3136 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`, `vllm/entrypoints/openai/tool_parsers/hermes_tool_parser.py`；技术摘要: 覆盖「[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models」；主要实现面是 `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`, `vllm/entrypoints/openai/tool_parsers/hermes_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -300,6 +308,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/hermes_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/14977
 - 状态/时间: merged / 2025-03-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/14977 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/fixtures/mistral_small_3_chat.json`；关联提交 `f863ffc96532`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+34/-60，可读 patch 204 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Mistral-Small 3.1] Update docs and tests」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/models/fixtures/mistral_small_3_chat.json`；技术摘要: 覆盖「[Mistral-Small 3.1] Update docs and tests」；主要实现面是 `tests/models/fixtures/mistral_small_3_chat.json`。下方保留文件级证据、代码摘录和验证风险。
@@ -322,6 +331,7 @@ diff -- tests/models/fixtures/mistral_small_3_chat.json
 
 - 链接: https://github.com/vllm-project/vllm/pull/15184
 - 状态/时间: merged / 2025-03-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/15184 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-2，可读 patch 37 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Doc] Update Mistral Small 3.1/Pixtral example」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `examples/offline_inference/mistral-small.py`；技术摘要: 覆盖「[Doc] Update Mistral Small 3.1/Pixtral example」；主要实现面是 `examples/offline_inference/mistral-small.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -349,6 +359,7 @@ diff -- examples/offline_inference/mistral-small.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/15505
 - 状态/时间: merged / 2025-04-01
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/15505 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `51d7c6a2b23e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+723/-4，可读 patch 805 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Support Mistral3 in the HF Transformers format」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[Model] Support Mistral3 in the HF Transformers format」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -376,6 +387,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/15950
 - 状态/时间: merged / 2025-04-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/15950 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `f021b9799386`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+10/-7，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[V1] Support Mistral3 in V1」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[V1] Support Mistral3 in V1」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -403,6 +415,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/16147
 - 状态/时间: merged / 2025-04-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/16147 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+22/-8，可读 patch 77 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Update Mistral-3.1 example」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `examples/offline_inference/mistral-small.py`；技术摘要: 覆盖「[Misc] Update Mistral-3.1 example」；主要实现面是 `examples/offline_inference/mistral-small.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -430,6 +443,7 @@ diff -- examples/offline_inference/mistral-small.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17270
 - 状态/时间: merged / 2025-04-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17270 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `cb3f2d8d10ff`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+5/-3，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Mistral3 spatial merge error」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[Bugfix] Fix Mistral3 spatial merge error」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -454,6 +468,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17195
 - 状态/时间: merged / 2025-04-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17195 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_mistral3.jinja`；关联提交 `96e06e3cb73f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+119/-0，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Add a Jinja template to support Mistral3 function calling」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `examples/tool_chat_template_mistral3.jinja`；技术摘要: 覆盖「[Misc] Add a Jinja template to support Mistral3 function calling」；主要实现面是 `examples/tool_chat_template_mistral3.jinja`。下方保留文件级证据、代码摘录和验证风险。
@@ -481,6 +496,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/17428
 - 状态/时间: merged / 2025-04-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17428 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `a44c4f1d2f7c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-4，可读 patch 51 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Support LoRA for Mistral3」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Support LoRA for Mistral3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -508,6 +524,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/17644
 - 状态/时间: merged / 2025-05-08
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/17644 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `examples/tool_chat_template_mistral3.jinja`；关联提交 `ca04b97c9361`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-2，可读 patch 23 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix tool call template validation for Mistral models」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `examples/tool_chat_template_mistral3.jinja`；技术摘要: 覆盖「[Bugfix] Fix tool call template validation for Mistral models」；主要实现面是 `examples/tool_chat_template_mistral3.jinja`。下方保留文件级证据、代码摘录和验证风险。
@@ -535,6 +552,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 
 - 链接: https://github.com/vllm-project/vllm/pull/19193
 - 状态/时间: merged / 2025-06-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/19193 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+32/-4，可读 patch 70 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[mistral_common] Add v11 tokenizer」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`；技术摘要: 覆盖「[mistral_common] Add v11 tokenizer」；主要实现面是 `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -567,6 +585,7 @@ diff -- vllm/transformers_utils/tokenizers/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20093
 - 状态/时间: merged / 2025-06-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20093 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/generation/test_mistral.py`；关联提交 `754b00edb3fd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+53/-2，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix Mistral tool-parser regex for nested JSON」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[Bugfix] Fix Mistral tool-parser regex for nested JSON」；主要实现面是 `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -602,6 +621,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/20570
 - 状态/时间: merged / 2025-07-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20570 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `14601f5fba13`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+167/-113，可读 patch 320 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Config] Refactor mistral configs」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「[Config] Refactor mistral configs」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -629,6 +649,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21945
 - 状态/时间: merged / 2025-08-20
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21945 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `c4477f55e581`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+17/-21，可读 patch 69 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Migrate Mistral3ImagePixelInputs to TensorSchema」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Migrate Mistral3ImagePixelInputs to TensorSchema」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -656,6 +677,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26358
 - 状态/时间: merged / 2025-10-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26358 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_mistral_reasoning_parser.py`；关联提交 `c6187f55f7c4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+2349/-461，可读 patch 3215 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Refactor MistralTokenizer」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`, `vllm/entrypoints/chat_utils.py`；技术摘要: 覆盖「Refactor MistralTokenizer」；主要实现面是 `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`, `vllm/entrypoints/chat_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -735,33 +757,11 @@ diff -- vllm/model_executor/models/deepseek_v2.py
   - runtime: `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +38/-38; `vllm/transformers_utils/configs/nemotron.py` modified +31/-29; `vllm/model_executor/models/deepseek_v2.py` modified +13/-30; `vllm/model_executor/models/chameleon.py` modified +4/-25; `vllm/model_executor/models/openpangu.py` modified +7/-19; `vllm/model_executor/models/hunyuan_v1.py` modified +2/-23
 - 验证与风险: diff 自带测试面 `tests/compile/test_functionalization.py`, `tests/kernels/core/test_mrope.py`, `tests/kernels/core/test_pos_encoding.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #29172 - Fix mistral config
-
-- 链接: https://github.com/vllm-project/vllm/pull/29172
-- 状态/时间: merged / 2025-11-21
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `434f3d3eb869`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-0，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix mistral config」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Fix mistral config」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args，涉及 `_remap_mistral_yarn_args`。
-- 代码 diff 细节:
-  - `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args
-- 关键代码摘录:
-
-```diff
-diff -- vllm/transformers_utils/configs/mistral.py
-@@ -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:
-+    if rope_theta := config.pop("rope_theta", None):
-+        config["rope_parameters"]["rope_theta"] = rope_theta
-```
-
-- 已读文件:
-  - runtime: `vllm/transformers_utils/configs/mistral.py` modified +4/-0
-- 验证与风险: runtime 路径改动集中在 `vllm/transformers_utils/configs/mistral.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #28659 - Default model load/config/tokenizer to `mistral` format if relevant files exist
 
 - 链接: https://github.com/vllm-project/vllm/pull/28659
 - 状态/时间: merged / 2025-11-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28659 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `57430fc95c8a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+230/-34，可读 patch 497 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Default model load/config/tokenizer to `mistral` format if relevant files exist」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Default model load/config/tokenizer to `mistral` format if relevant files exist」；主要实现面是 `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -787,10 +787,35 @@ diff -- vllm/transformers_utils/configs/mistral.py
   - runtime: `vllm/transformers_utils/configs/mistral.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `tests/models/language/generation/test_mistral.py`, `tests/models/multimodal/test_mapping.py`, `tests/models/quantization/test_bitsandbytes.py`, `tests/tool_use/utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #29172 - Fix mistral config
+
+- 链接: https://github.com/vllm-project/vllm/pull/29172
+- 状态/时间: merged / 2025-11-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29172 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `434f3d3eb869`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-0，可读 patch 11 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix mistral config」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Fix mistral config」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args，涉及 `_remap_mistral_yarn_args`。
+- 代码 diff 细节:
+  - `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args
+- 关键代码摘录:
+
+```diff
+diff -- vllm/transformers_utils/configs/mistral.py
+@@ -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:
++    if rope_theta := config.pop("rope_theta", None):
++        config["rope_parameters"]["rope_theta"] = rope_theta
+```
+
+- 已读文件:
+  - runtime: `vllm/transformers_utils/configs/mistral.py` modified +4/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/transformers_utils/configs/mistral.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #29239 - [Bugfix] Use HF config fields as fallback when loading Mistral config
 
 - 链接: https://github.com/vllm-project/vllm/pull/29239
 - 状态/时间: merged / 2025-11-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29239 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `d1cf8214e523`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+25/-4，可读 patch 69 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Use HF config fields as fallback when loading Mistral config」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「[Bugfix] Use HF config fields as fallback when loading Mistral config」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -818,6 +843,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/29757
 - 状态/时间: merged / 2025-12-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29757 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`, `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/tokenizers/mistral.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `d8c6210eeaa7`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+724/-30，可读 patch 1015 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add Mistral Large 3 and Ministral 3」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Add Mistral Large 3 and Ministral 3」；主要实现面是 `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -860,6 +886,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/29918
 - 状态/时间: merged / 2025-12-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/29918 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/generation/test_mistral.py`；关联提交 `1b1e35aaf9d9`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+36/-1，可读 patch 48 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BUGFIX] Fix regex pattern for Mistral Tool Call」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[BUGFIX] Fix regex pattern for Mistral Tool Call」；主要实现面是 `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -893,6 +920,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30391
 - 状态/时间: merged / 2025-12-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30391 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；关联提交 `aa3c250c487e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+186/-64，可读 patch 383 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[IMPROVEMENT] Change MistralReasoningParser behavior」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；技术摘要: 覆盖「[IMPROVEMENT] Change MistralReasoningParser behavior」；主要实现面是 `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -930,6 +958,7 @@ diff -- vllm/reasoning/mistral_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30588
 - 状态/时间: closed / 2025-12-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30588 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 241 个文件，+6757/-2646，可读 patch 15228 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix edge case Mistral tool parser」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`；技术摘要: 覆盖「Fix edge case Mistral tool parser」；主要实现面是 `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -972,6 +1001,7 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/30724
 - 状态/时间: merged / 2025-12-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/30724 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `38c361f99dff`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+115/-56，可读 patch 224 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix edge case Mistral tool parser」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`；技术摘要: 覆盖「Fix edge case Mistral tool parser」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1009,6 +1039,7 @@ diff -- tests/tool_parsers/test_mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/31138
 - 状态/时间: merged / 2025-12-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/31138 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/mistral.py`；关联提交 `48e744976cf4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+24/-57，可读 patch 181 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Mistral common] Ensure all functions are imported from the top & only use public methods」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/tokenizers/mistral.py`；技术摘要: 覆盖「[Mistral common] Ensure all functions are imported from the top & only use public methods」；主要实现面是 `vllm/tokenizers/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1036,6 +1067,7 @@ diff -- vllm/tokenizers/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/32780
 - 状态/时间: merged / 2026-01-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/32780 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `1579c9b5fd0f`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+248/-115，可读 patch 426 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1063,6 +1095,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33095
 - 状态/时间: merged / 2026-01-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33095 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral.py`；关联提交 `d56afd45fd4e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-8，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Remove unused logic in `models/mistral.py`」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral.py`；技术摘要: 覆盖「Remove unused logic in `models/mistral.py`」；主要实现面是 `vllm/model_executor/models/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1131,6 +1164,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVI
 
 - 链接: https://github.com/vllm-project/vllm/pull/33521
 - 状态/时间: merged / 2026-02-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33521 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `beb889948276`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+25/-22，可读 patch 82 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix mistral sliding window parsing」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Fix mistral sliding window parsing」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1158,6 +1192,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33939
 - 状态/时间: merged / 2026-02-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33939 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `4df44c16ba8c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+9/-1，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1185,6 +1220,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34104
 - 状态/时间: merged / 2026-02-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `f5897613fb27`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Mistral config remap to accept compressed-tensors quantization #34028」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Fix Mistral config remap to accept compressed-tensors quantization #34028」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1212,6 +1248,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/34651
 - 状态/时间: merged / 2026-02-23
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/34651 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`；关联提交 `54e2f83d0a82`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+68/-48，可读 patch 399 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Feature] Lazy import for the "mistral" tokenizer module.」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`；技术摘要: 覆盖「[Feature] Lazy import for the "mistral" tokenizer module.」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1251,6 +1288,7 @@ diff -- vllm/utils/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36156
 - 状态/时间: merged / 2026-03-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36156 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+5/-2，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Fix simple Mistral-Small example」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `examples/offline_inference/mistral-small.py`；技术摘要: 覆盖「[Bugfix] Fix simple Mistral-Small example」；主要实现面是 `examples/offline_inference/mistral-small.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1274,37 +1312,11 @@ diff -- examples/offline_inference/mistral-small.py
   - docs: `examples/offline_inference/mistral-small.py` modified +5/-2
 - 验证与风险: 该 PR 主要落在文档/示例 `examples/offline_inference/mistral-small.py`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #36782 - [Bugfix] Fix Mistral-small `--format`
-
-- 链接: https://github.com/vllm-project/vllm/pull/36782
-- 状态/时间: merged / 2026-03-11
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-6，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] Fix Mistral-small `--format`」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `examples/offline_inference/mistral-small.py`；技术摘要: 覆盖「[Bugfix] Fix Mistral-small `--format`」；主要实现面是 `examples/offline_inference/mistral-small.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo，涉及 `run_simple_demo, run_advanced_demo`。
-- 代码 diff 细节:
-  - `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo
-- 关键代码摘录:
-
-```diff
-diff -- examples/offline_inference/mistral-small.py
-@@ -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):
--        tokenizer_mode="mistral" if args.format == "mistral" else "auto",
--        config_format="mistral" if args.format == "mistral" else "auto",
--        load_format="mistral" if args.format == "mistral" else "auto",
-+        tokenizer_mode="mistral" if args.format == "mistral" else "hf",
-+        config_format="mistral" if args.format == "mistral" else "hf",
-+        load_format="mistral" if args.format == "mistral" else "hf",
-```
-
-- 已读文件:
-  - docs: `examples/offline_inference/mistral-small.py` modified +6/-6
-- 验证与风险: 该 PR 主要落在文档/示例 `examples/offline_inference/mistral-small.py`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #36163 - Add support to Mistral large 3 eagle with dense layers
 
 - 链接: https://github.com/vllm-project/vllm/pull/36163
 - 状态/时间: merged / 2026-03-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36163 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/transformers_utils/configs/mistral.py`；关联提交 `afebeffbfbf2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+28/-1，可读 patch 61 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Add support to Mistral large 3 eagle with dense layers」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；技术摘要: 覆盖「Add support to Mistral large 3 eagle with dense layers」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1337,10 +1349,39 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
   - runtime: `vllm/transformers_utils/configs/mistral.py` modified +23/-0; `vllm/model_executor/models/mistral_large_3_eagle.py` modified +5/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/transformers_utils/configs/mistral.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #36782 - [Bugfix] Fix Mistral-small `--format`
+
+- 链接: https://github.com/vllm-project/vllm/pull/36782
+- 状态/时间: merged / 2026-03-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36782 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-6，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] Fix Mistral-small `--format`」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `examples/offline_inference/mistral-small.py`；技术摘要: 覆盖「[Bugfix] Fix Mistral-small `--format`」；主要实现面是 `examples/offline_inference/mistral-small.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo，涉及 `run_simple_demo, run_advanced_demo`。
+- 代码 diff 细节:
+  - `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo
+- 关键代码摘录:
+
+```diff
+diff -- examples/offline_inference/mistral-small.py
+@@ -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):
+-        tokenizer_mode="mistral" if args.format == "mistral" else "auto",
+-        config_format="mistral" if args.format == "mistral" else "auto",
+-        load_format="mistral" if args.format == "mistral" else "auto",
++        tokenizer_mode="mistral" if args.format == "mistral" else "hf",
++        config_format="mistral" if args.format == "mistral" else "hf",
++        load_format="mistral" if args.format == "mistral" else "hf",
+```
+
+- 已读文件:
+  - docs: `examples/offline_inference/mistral-small.py` modified +6/-6
+- 验证与风险: 该 PR 主要落在文档/示例 `examples/offline_inference/mistral-small.py`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
 ### PR #36971 - Mistral common v10
 
 - 链接: https://github.com/vllm-project/vllm/pull/36971
 - 状态/时间: merged / 2026-03-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36971 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/mistral.py`；关联提交 `e42b49bd69d4`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+22/-3，可读 patch 74 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Mistral common v10」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/tokenizers/mistral.py`；技术摘要: 覆盖「Mistral common v10」；主要实现面是 `vllm/tokenizers/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1368,6 +1409,7 @@ diff -- vllm/tokenizers/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37104
 - 状态/时间: merged / 2026-03-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `ffbc2e5bdbfb`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+49/-30，可读 patch 162 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Patch Mistral config」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Patch Mistral config」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1395,6 +1437,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37232
 - 状态/时间: merged / 2026-03-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37232 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_large_3_eagle.py`；关联提交 `7961486a9b74`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix EagleMistralLarge3Model initialization」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral_large_3_eagle.py`；技术摘要: 覆盖「Fix EagleMistralLarge3Model initialization」；主要实现面是 `vllm/model_executor/models/mistral_large_3_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1417,6 +1460,7 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37209
 - 状态/时间: merged / 2026-03-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37209 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `5db91f0aaf35`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+42/-34，可读 patch 147 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix some Mistral parser issues」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「Fix some Mistral parser issues」；主要实现面是 `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1453,6 +1497,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/36928
 - 状态/时间: merged / 2026-03-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/36928 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral3.py`；关联提交 `5bc1da147fb0`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-0，可读 patch 10 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/mistral3.py`；技术摘要: 覆盖「[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3」；主要实现面是 `vllm/model_executor/models/mistral3.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1477,6 +1522,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/38150
 - 状态/时间: merged / 2026-04-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/38150 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`, `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `fef56c18555e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+601/-29，可读 patch 816 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Mistral Grammar] Support Grammar Factory」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`；技术摘要: 覆盖「[Mistral Grammar] Support Grammar Factory」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1518,6 +1564,7 @@ diff -- tests/tokenizers_/test_mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37292
 - 状态/时间: merged / 2026-04-07
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37292 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/configs/mistral.py`；关联提交 `edcc37a8cee2`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix Mistral yarn warning in Transformers v5」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/transformers_utils/configs/mistral.py`；技术摘要: 覆盖「Fix Mistral yarn warning in Transformers v5」；主要实现面是 `vllm/transformers_utils/configs/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1545,6 +1592,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39217
 - 状态/时间: merged / 2026-04-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39217 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `tests/tool_use/mistral/test_mistral_tool_calls.py`, `tests/tool_use/mistral/utils.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `c0722f22de71`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+1601/-266，可读 patch 2396 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Mistral Grammar] Fix tool and reasoning parsing」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`；技术摘要: 覆盖「[Mistral Grammar] Fix tool and reasoning parsing」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1587,6 +1635,7 @@ diff -- vllm/tokenizers/mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40531
 - 状态/时间: merged / 2026-04-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40531 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `cfa49213d778`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+66/-18，可读 patch 160 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1620,10 +1669,39 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
   - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +17/-9
 - 验证与风险: diff 自带测试面 `tests/tool_parsers/test_mistral_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #39294 - [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers
+
+- 链接: https://github.com/vllm-project/vllm/pull/39294
+- 状态/时间: merged / 2026-04-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39294 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `2ec18f5df43e`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+13/-4，可读 patch 59 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls，涉及 `is_valid_id, _is_pre_v11_tokeniser, __init__`。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:
+-    return not (is_mistral_tokenizer(model_tokenizer) and model_tokenizer.version >= 11)
++    if is_mistral_tokenizer(model_tokenizer):
++        return model_tokenizer.version < 11
++    # For HF tokenizers, check if [ARGS] token exists in vocab
++    # which indicates a v11+ equivalent tokenizer
++    vocab: dict[str, int] = getattr(model_tokenizer, "get_vocab", lambda: {})()
+```
+
+- 已读文件:
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4
+- 验证与风险: runtime 路径改动集中在 `vllm/tool_parsers/mistral_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #40043 - [Feature] Avoid eager import of the "mistral_common" package.
 
 - 链接: https://github.com/vllm-project/vllm/pull/40043
 - 状态/时间: merged / 2026-04-24
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40043 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`；关联提交 `56bdf85e10b8`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+47/-23，可读 patch 194 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Feature] Avoid eager import of the "mistral_common" package.」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`；技术摘要: 覆盖「[Feature] Avoid eager import of the "mistral_common" package.」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1651,37 +1729,11 @@ diff -- vllm/utils/mistral.py
   - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-0; `vllm/utils/mistral.py` modified +15/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/entrypoints/openai/chat_completion/serving.py`, `vllm/entrypoints/openai/engine/serving.py`, `vllm/entrypoints/serve/render/serving.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #39294 - [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers
-
-- 链接: https://github.com/vllm-project/vllm/pull/39294
-- 状态/时间: merged / 2026-04-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `2ec18f5df43e`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+13/-4，可读 patch 59 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls，涉及 `is_valid_id, _is_pre_v11_tokeniser, __init__`。
-- 代码 diff 细节:
-  - `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls
-- 关键代码摘录:
-
-```diff
-diff -- vllm/tool_parsers/mistral_tool_parser.py
-@@ -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:
--    return not (is_mistral_tokenizer(model_tokenizer) and model_tokenizer.version >= 11)
-+    if is_mistral_tokenizer(model_tokenizer):
-+        return model_tokenizer.version < 11
-+    # For HF tokenizers, check if [ARGS] token exists in vocab
-+    # which indicates a v11+ equivalent tokenizer
-+    vocab: dict[str, int] = getattr(model_tokenizer, "get_vocab", lambda: {})()
-```
-
-- 已读文件:
-  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4
-- 验证与风险: runtime 路径改动集中在 `vllm/tool_parsers/mistral_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #41024 - [FEATURE] Add EagleMistralForCausalLM
 
 - 链接: https://github.com/vllm-project/vllm/pull/41024
 - 状态/时间: merged / 2026-04-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41024 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_eagle.py`；关联提交 `e9f8f31e9a4c`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+172/-0，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[FEATURE] Add EagleMistralForCausalLM」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/mistral_eagle.py`；技术摘要: 覆盖「[FEATURE] Add EagleMistralForCausalLM」；主要实现面是 `vllm/model_executor/models/mistral_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1709,6 +1761,7 @@ diff -- vllm/model_executor/models/mistral_eagle.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41730
 - 状态/时间: merged / 2026-05-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41730 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `c6235ed1803e`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+55/-15，可读 patch 145 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[BUGFIX] Support streamed_args_for_tool in MistralToolParser」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`；技术摘要: 覆盖「[BUGFIX] Support streamed_args_for_tool in MistralToolParser」；主要实现面是 `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1746,6 +1799,7 @@ diff -- tests/tool_parsers/test_mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41658
 - 状态/时间: merged / 2026-05-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41658 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `16e336491e96`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+144/-397，可读 patch 675 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Mistral Tokenizer] allow more leniency in apply_chat_template」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[Mistral Tokenizer] allow more leniency in apply_chat_template」；主要实现面是 `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1786,6 +1840,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/42280
 - 状态/时间: merged / 2026-05-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42280 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 25 个文件，+49/-29，可读 patch 302 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Fix missing `maybe_prefix`」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`；技术摘要: 覆盖「[Model] Fix missing `maybe_prefix`」；主要实现面是 `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1827,6 +1882,7 @@ diff -- vllm/model_executor/models/hunyuan_v1.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/44131
 - 状态/时间: merged / 2026-06-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/44131 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+201/-3，可读 patch 308 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CI] Stabilize OpenAI schema fuzzing for malformed structural tags」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`；技术摘要: 覆盖「[CI] Stabilize OpenAI schema fuzzing for malformed structural tags」；主要实现面是 `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1869,6 +1925,7 @@ diff -- tests/entrypoints/openai/completion/test_completion_error.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/44622
 - 状态/时间: merged / 2026-06-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/44622 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tokenizers_/test_mistral.py`；关联提交 `d61d8566ec30`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Update mistral tokenizer test for continue_final_message fix」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/tokenizers_/test_mistral.py`；技术摘要: 覆盖「[Bugfix] Update mistral tokenizer test for continue_final_message fix」；主要实现面是 `tests/tokenizers_/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1894,6 +1951,7 @@ diff -- tests/tokenizers_/test_mistral.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/44596
 - 状态/时间: merged / 2026-06-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/44596 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/parser/mistral.py`, `vllm/reasoning/mistral_reasoning_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `d82ac0092392`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+136/-729，可读 patch 1101 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Refactor][Mistral] Extract parsing logic into MistralParser」；模型线: Mistral Small 4；类别: 文档/测试/CI；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`；技术摘要: 覆盖「[Refactor][Mistral] Extract parsing logic into MistralParser」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1935,6 +1993,7 @@ diff -- vllm/reasoning/mistral_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45161
 - 状态/时间: merged / 2026-06-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45161 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 19 个文件，+62/-268，可读 patch 612 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Deprecate Transformers v4 support」；模型线: Mistral Small 4；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`；技术摘要: 覆盖「Deprecate Transformers v4 support」；主要实现面是 `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1976,6 +2035,7 @@ diff -- vllm/model_executor/model_loader/weight_utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/45217
 - 状态/时间: merged / 2026-06-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/45217 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；关联提交 `6f573f486bc6`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+156/-0，可读 patch 164 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Initialize missing attributes in mistral eagle」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；技术摘要: 覆盖「[Bugfix] Initialize missing attributes in mistral eagle」；主要实现面是 `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2054,6 +2114,7 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/47550
 - 状态/时间: merged / 2026-07-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/47550 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；关联提交 `5769a7382cb1`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+142/-47，可读 patch 302 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)」；模型线: Mistral Small 4；类别: 缺陷修复；主要 diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`；技术摘要: 覆盖「[ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)」；主要实现面是 `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -2091,6 +2152,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/48153
 - 状态/时间: merged / 2026-07-10
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/48153 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；关联提交 `fabec87f63cd`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+89/-57，可读 patch 179 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader」；模型线: Mistral Small 4；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`；技术摘要: 覆盖「[Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader」；主要实现面是 `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`。下方保留文件级证据、代码摘录和验证风险。

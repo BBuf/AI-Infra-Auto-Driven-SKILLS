@@ -4,30 +4,31 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` | [#24433](https://github.com/sgl-project/sglang/pull/24433), [#27287](https://github.com/sgl-project/sglang/pull/27287), [#27321](https://github.com/sgl-project/sglang/pull/27321), [#29252](https://github.com/sgl-project/sglang/pull/29252), [#29266](https://github.com/sgl-project/sglang/pull/29266) |
-| `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx` | [#24433](https://github.com/sgl-project/sglang/pull/24433), [#29252](https://github.com/sgl-project/sglang/pull/29252) |
+| `docs/cookbook/autoregressive/Google/Gemma4.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/gemma4-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/kernels/ops/layernorm/gemma4_fused_ops.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/gemma4_detector.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952) |
 | `python/sglang/srt/models/gemma4_audio.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952) |
-| `python/sglang/srt/models/gemma4_causal.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#23280](https://github.com/sgl-project/sglang/pull/23280), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26026](https://github.com/sgl-project/sglang/pull/26026), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#26502](https://github.com/sgl-project/sglang/pull/26502), [#27471](https://github.com/sgl-project/sglang/pull/27471) |
-| `python/sglang/srt/models/gemma4_mm.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#27471](https://github.com/sgl-project/sglang/pull/27471), [#31672](https://github.com/sgl-project/sglang/pull/31672) |
-| `python/sglang/srt/models/gemma4_mtp.py` | [#24436](https://github.com/sgl-project/sglang/pull/24436), [#26026](https://github.com/sgl-project/sglang/pull/26026) |
+| `python/sglang/srt/models/gemma4_causal.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498), [#23280](https://github.com/sgl-project/sglang/pull/23280), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26026](https://github.com/sgl-project/sglang/pull/26026), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#26502](https://github.com/sgl-project/sglang/pull/26502), [#27471](https://github.com/sgl-project/sglang/pull/27471) |
+| `python/sglang/srt/models/gemma4_mm.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#27471](https://github.com/sgl-project/sglang/pull/27471), [#31672](https://github.com/sgl-project/sglang/pull/31672) |
+| `python/sglang/srt/models/gemma4_mtp.py` | [#24436](https://github.com/sgl-project/sglang/pull/24436), [#26026](https://github.com/sgl-project/sglang/pull/26026), [#32440](https://github.com/sgl-project/sglang/pull/32440) |
 | `python/sglang/srt/models/gemma4_unified.py` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/gemma4_vision.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952) |
+| `python/sglang/srt/models/gemma4_vision.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498) |
 | `python/sglang/srt/multimodal/processors/gemma4.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#26320](https://github.com/sgl-project/sglang/pull/26320) |
 | `python/sglang/srt/multimodal/processors/gemma4_unified.py` | 无直接 PR 号提交 |
 | `test/registered/attention/test_gemma4_swa_triton_oob_regression.py` | 无直接 PR 号提交 |
 | `test/registered/kernels/ops/layernorm/test_gemma4_fused_routing.py` | 无直接 PR 号提交 |
 | `test/registered/models_e2e/test_gemma4_fp8_per_expert_loading.py` | 无直接 PR 号提交 |
+| `test/registered/pp/test_pp_gemma4.py` | 无直接 PR 号提交 |
 | `test/registered/spec/test_gemma4_dflash_31b_extra.py` | [#27471](https://github.com/sgl-project/sglang/pull/27471) |
 | `test/registered/spec/test_gemma4_mtp_26b_a4b_extra.py` | [#24552](https://github.com/sgl-project/sglang/pull/24552), [#26653](https://github.com/sgl-project/sglang/pull/26653), [#27082](https://github.com/sgl-project/sglang/pull/27082) |
 | `test/registered/spec/test_gemma4_mtp_31b_extra.py` | [#24552](https://github.com/sgl-project/sglang/pull/24552), [#27101](https://github.com/sgl-project/sglang/pull/27101) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 22
-- 原文档显式引用补充 PR 数: 14
-- 当前文档总 PR 数: 36
+- git 追溯 PR 数: 19
+- 原文档显式引用补充 PR 数: 19
+- 当前文档总 PR 数: 38
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -71,6 +72,8 @@
 | 2026-06-25 | [#29252](https://github.com/sgl-project/sglang/pull/29252) | merged | Tune Gemma4 26B-A4B B200 memory recipe | `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`, `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
 | 2026-06-25 | [#29266](https://github.com/sgl-project/sglang/pull/29266) | merged | Sync Gemma4 hardware table with Blackwell recipes | `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
 | 2026-07-19 | [#31672](https://github.com/sgl-project/sglang/pull/31672) | merged | fix(gemma4): prevent attention mask offset overflow | `python/sglang/srt/models/gemma4_mm.py` |
+| 2026-08-17 | [#22498](https://github.com/sgl-project/sglang/pull/22498) | merged | [CPU] Add support for Gemma4 on Xeon | `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_vision.py` |
+| 2026-08-19 | [#32440](https://github.com/sgl-project/sglang/pull/32440) | merged | fix(gemma4): quantize MTP bridge projections | `python/sglang/srt/models/gemma4_mtp.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -251,7 +254,7 @@ diff -- python/sglang/srt/models/gemma4_mm.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/24433
 - 状态/时间: merged / 2026-05-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`, `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`；关联提交 `932d89690a7f`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+84/-7，可读 patch 166 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Gemma4-mtp cookbook」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`, `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`；技术摘要: 覆盖「Gemma4-mtp cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`, `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +61/-6 (67 lines); hunks: -94,6 +94,7 @@ For the full Docker setup and other installation methods, plea...; -159,6 +160,60 @@ sglang serve --model-path google/gemma-4-26B-A4B-it \；`docs_new/src/snippets/autoregressive/gemma4-deployment.jsx` modified +23/-1 (24 lines); hunks: -41,6 +41,15 @@ export const Gemma4Deployment = () => {; -68,7 +77,7 @@ export const Gemma4Deployment = () => {。
@@ -847,7 +850,7 @@ diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/27287
 - 状态/时间: merged / 2026-06-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；关联提交 `75be9224519b`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+20/-3，可读 patch 35 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): add Docker install option for Gemma 4」；模型线: Gemma 4；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；技术摘要: 覆盖「docs(cookbook): add Docker install option for Gemma 4」；主要实现面是 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +20/-3 (23 lines); hunks: -67,14 +67,31 @@ Gemma 4 is Google's next-generation family of open models, b...。
@@ -874,7 +877,7 @@ diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/27321
 - 状态/时间: merged / 2026-06-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；关联提交 `7425bebb6c5e`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs(cookbook): restore Gemma 4 transformers commit pin」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；技术摘要: 覆盖「docs(cookbook): restore Gemma 4 transformers commit pin」；主要实现面是 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1 (5 lines); hunks: -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, b...。
@@ -1180,7 +1183,7 @@ diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29252
 - 状态/时间: merged / 2026-06-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`, `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`；关联提交 `efbe67d23787`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Tune Gemma4 26B-A4B B200 memory recipe」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`, `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；技术摘要: 覆盖「Tune Gemma4 26B-A4B B200 memory recipe」；主要实现面是 `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`, `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx` modified +1/-1 (2 lines); hunks: -75,7 +75,7 @@ export const Gemma4Deployment = () => {；`docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +1/-0 (1 lines); hunks: -111,6 +111,7 @@ For other installation methods, please refer to the [officia...。
@@ -1207,7 +1210,7 @@ diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29266
 - 状态/时间: merged / 2026-06-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；关联提交 `4d06d4c97f46`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-6，可读 patch 34 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Sync Gemma4 hardware table with Blackwell recipes」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；技术摘要: 覆盖「Sync Gemma4 hardware table with Blackwell recipes」；主要实现面是 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +6/-6 (12 lines); hunks: -133,27 +133,27 @@ For other installation methods, please refer to the [offic...。
@@ -1252,6 +1255,71 @@ diff -- python/sglang/srt/models/gemma4_mm.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/gemma4_mm.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/gemma4_mm.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22498 - [CPU] Add support for Gemma4 on Xeon
+
+- 链接: https://github.com/sgl-project/sglang/pull/22498
+- 状态/时间: merged / 2026-08-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_vision.py`；关联提交 `b6d7602914d1`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+514/-106，可读 patch 1253 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CPU] Add support for Gemma4 on Xeon」；模型线: Gemma 4；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_vision.py`；技术摘要: 覆盖「[CPU] Add support for Gemma4 on Xeon」；主要实现面是 `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_vision.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/gemma4_mm.py` modified +29/-11 (40 lines); hunks: -59,13 +59,20; -241,9 +248,15 @@ def __init__(; symbols: __init__, forward, load_weights, get_embed_and_head，涉及 `__init__, forward, load_weights`；`python/sglang/srt/models/gemma4_causal.py` modified +27/-9 (36 lines); hunks: -74,6 +74,21 @@ def get_attention_sliding_window_size(config):; -109,11 +124,12 @@ def pp_filter_load_weight(; symbols: get_attention_sliding_window_size, load_tied_lm_head, pp_filter_load_weight, __init__，涉及 `get_attention_sliding_window_size, load_tied_lm_head, pp_filter_load_weight`；`python/sglang/srt/models/gemma4_vision.py` modified +25/-6 (31 lines); hunks: -30,7 +30,17; -173,7 +183,9 @@ def __init__(; symbols: __init__, _select_backend, forward，涉及 `__init__, _select_backend, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gemma4_mm.py` modified +29/-11 (40 lines); hunks: -59,13 +59,20; -241,9 +248,15 @@ def __init__(; symbols: __init__, forward, load_weights, get_embed_and_head
+  - `python/sglang/srt/models/gemma4_causal.py` modified +27/-9 (36 lines); hunks: -74,6 +74,21 @@ def get_attention_sliding_window_size(config):; -109,11 +124,12 @@ def pp_filter_load_weight(; symbols: get_attention_sliding_window_size, load_tied_lm_head, pp_filter_load_weight, __init__
+  - `python/sglang/srt/models/gemma4_vision.py` modified +25/-6 (31 lines); hunks: -30,7 +30,17; -173,7 +183,9 @@ def __init__(; symbols: __init__, _select_backend, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gemma4_mm.py
+@@ -59,13 +59,20 @@
+-from sglang.srt.models.gemma4_causal import Gemma4TextModel, pp_filter_load_weight
++from sglang.srt.models.gemma4_causal import (
++    Gemma4TextModel,
++    load_tied_lm_head,
++    pp_filter_load_weight,
++)
+diff -- python/sglang/srt/models/gemma4_causal.py
+@@ -74,6 +74,21 @@ def get_attention_sliding_window_size(config):
++def load_tied_lm_head(
++    loaded_weight, *, params_dict, loaded_params, head_param_name="lm_head.weight"
++):
++    """Load a tied embedding into an lm_head the runtime could not alias.
++    No-op when this rank holds no lm_head.
++    """
+diff -- python/sglang/srt/models/gemma4_vision.py
+@@ -30,7 +30,17 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/gemma4_mm.py` modified +29/-11; `python/sglang/srt/models/gemma4_causal.py` modified +27/-9; `python/sglang/srt/models/gemma4_vision.py` modified +25/-6
+- 验证与风险: diff 自带测试面 `python/sglang/test/cpu_test_utils.py`, `test/registered/cpu/test_extend.py`, `test/registered/cpu/test_moe.py`, `test/registered/cpu/test_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #32440 - fix(gemma4): quantize MTP bridge projections
+
+- 链接: https://github.com/sgl-project/sglang/pull/32440
+- 状态/时间: merged / 2026-08-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gemma4_mtp.py`；关联提交 `b1707996e8c5`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-2，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(gemma4): quantize MTP bridge projections」；模型线: Gemma 4；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/gemma4_mtp.py`；技术摘要: 覆盖「fix(gemma4): quantize MTP bridge projections」；主要实现面是 `python/sglang/srt/models/gemma4_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/gemma4_mtp.py` modified +2/-2 (4 lines); hunks: -91,7 +91,7 @@ def __init__(; -103,7 +103,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gemma4_mtp.py` modified +2/-2 (4 lines); hunks: -91,7 +91,7 @@ def __init__(; -103,7 +103,7 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gemma4_mtp.py
+@@ -91,7 +91,7 @@ def __init__(
+-            quant_config=None,
++            quant_config=quant_config,
+@@ -103,7 +103,7 @@ def __init__(
+-            quant_config=None,
++            quant_config=quant_config,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/gemma4_mtp.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/gemma4_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

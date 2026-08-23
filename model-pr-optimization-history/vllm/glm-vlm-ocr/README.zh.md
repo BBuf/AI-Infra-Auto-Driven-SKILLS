@@ -380,6 +380,7 @@ diff -- vllm/model_executor/models/glm4_1v.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/39986
 - 状态/时间: merged / 2026-04-22
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/39986/files?per_page=100 --paginate Get "https://api.github.com/repos/vllm-project/vllm/pulls/39986/files?per_page=100": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+290/-118，可读 patch 622 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Multimodal] Add PyAV video backend for concurrent video decoding」；模型线: GLM VLM/OCR；类别: 文档/测试/CI；主要 diff: `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py`；技术摘要: 覆盖「[Multimodal] Add PyAV video backend for concurrent video decoding」；主要实现面是 `vllm/multimodal/video.py`, `tests/multimodal/test_video.py`, `tests/models/multimodal/processing/test_glm4_1v.py`。下方保留文件级证据、代码摘录和验证风险。
