@@ -4,8 +4,8 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Llama/Llama3.1.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/llama31-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Meta/Llama3.1.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/llama31-deployment.jsx` | 无直接 PR 号提交 |
 | `examples/chat_template/tool_chat_template_llama3.1_json.jinja` | [#13935](https://github.com/sgl-project/sglang/pull/13935) |
 | `test/manual/quant/kv_cache_scales_llama3_1_8b.json` | 无直接 PR 号提交 |
 

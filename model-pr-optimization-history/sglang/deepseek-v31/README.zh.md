@@ -13,9 +13,11 @@
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/__init__.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha_rocm.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_rocm.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/utils.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_v2.py` | [#13954](https://github.com/sgl-project/sglang/pull/13954) |
@@ -56,9 +58,6 @@
 | 2026-01-19 | [#17320](https://github.com/sgl-project/sglang/pull/17320) | closed | fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content. | `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
 | 2026-01-22 | [#17141](https://github.com/sgl-project/sglang/pull/17141) | closed | fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content. | `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
 | 2026-01-24 | [#17558](https://github.com/sgl-project/sglang/pull/17558) | closed | fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content. | `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
-| 2026-01-26 | [#17761](https://github.com/sgl-project/sglang/pull/17761) | open | fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates | `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
-| 2026-02-04 | [#18236](https://github.com/sgl-project/sglang/pull/18236) | open | Fix function call arguments missing in streaming mode for DeepSeek V3.1 | `python/sglang/srt/function_call/deepseekv31_detector.py` |
-| 2026-03-31 | [#21739](https://github.com/sgl-project/sglang/pull/21739) | open | [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-09 | [#22433](https://github.com/sgl-project/sglang/pull/22433) | open | [Test] Add unit tests for DeepSeekV31Detector | `test/registered/unit/function_call/test_deepseekv31_detector.py` |
 | 2026-04-11 | [#21593](https://github.com/sgl-project/sglang/pull/21593) | merged | Fix tool call constrained decoding and parsing for models with native formats | `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/function_call/function_call_parser.py` |
 | 2026-04-16 | [#22981](https://github.com/sgl-project/sglang/pull/22981) | open | [Test] Add unit tests for 7 missing function call detectors | `test/registered/unit/function_call/test_function_call_parser.py`, `test/manual/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py` |
@@ -142,6 +141,9 @@
 | 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | merged | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py` |
 | 2026-06-25 | [#14194](https://github.com/sgl-project/sglang/pull/14194) | merged | [feature] implement dcp for deepseek_v2 | `python/sglang/srt/layers/utils/dcp_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` |
 | 2026-06-26 | [#29142](https://github.com/sgl-project/sglang/pull/29142) | merged | [DeepSeek V3] Run routed experts on main stream in dual-stream MoE | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-08-11 | [#21739](https://github.com/sgl-project/sglang/pull/21739) | closed | [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation | `docs/platforms/ascend/ascend_npu_best_practice.md` |
+| 2026-08-19 | [#17761](https://github.com/sgl-project/sglang/pull/17761) | closed | fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates | `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
+| 2026-08-20 | [#18236](https://github.com/sgl-project/sglang/pull/18236) | closed | Fix function call arguments missing in streaming mode for DeepSeek V3.1 | `python/sglang/srt/function_call/deepseekv31_detector.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -797,98 +799,6 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
   - runtime: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4
   - docs: `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +6/-12
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/deepseekv32_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #17761 - fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates
-
-- 链接: https://github.com/sgl-project/sglang/pull/17761
-- 状态/时间: open / 2026-01-26
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+79/-2，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；主要实现面是 `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output，涉及 `test_tool_call_with_content, test_assistant_marker_after_tool_output`；`examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7。
-- 代码 diff 细节:
-  - `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output
-  - `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7
-  - `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7
-- 关键代码摘录:
-
-```diff
-diff -- test/manual/test_deepseek_chat_templates.py
-@@ -313,6 +313,83 @@ def test_tool_call_with_content(self):
-+    def test_assistant_marker_after_tool_output(self):
-+        """Test that Assistant marker is present after tool output in multi-turn conversation."""
-+        # This tests that when an assistant responds after receiving tool output,
-+        # the <｜Assistant｜> marker is correctly added
-+        for version in ["v3.1", "v3.2"]:
-+            with self.subTest(version=version):
-diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
-@@ -60,7 +60,7 @@
--    {%- if ns.is_last_user %}
-+    {%- if ns.is_last_user or ns.is_tool %}
-diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
-@@ -57,7 +57,7 @@
--    {%- if ns.is_last_user %}
-+    {%- if ns.is_last_user or ns.is_tool %}
-```
-
-- 已读文件:
-  - tests: `test/manual/test_deepseek_chat_templates.py` modified +77/-0
-  - docs: `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1; `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1
-- 验证与风险: diff 自带测试面 `test/manual/test_deepseek_chat_templates.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #18236 - Fix function call arguments missing in streaming mode for DeepSeek V3.1
-
-- 链接: https://github.com/sgl-project/sglang/pull/18236
-- 状态/时间: open / 2026-02-04
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-3，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；技术摘要: 覆盖「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；主要实现面是 `python/sglang/srt/function_call/deepseekv31_detector.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment，涉及 `__init__, has_tool_call, parse_streaming_increment`。
-- 代码 diff 细节:
-  - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/function_call/deepseekv31_detector.py
-@@ -52,6 +52,7 @@ def __init__(self):
-+        self._normal_text_sent = False
-@@ -111,6 +112,18 @@ def parse_streaming_increment(
-+        # Extract normal text before tool call on first detection
-+        normal_text_to_return = ""
-+        if not self._normal_text_sent:
-+            # Find the first tool call marker
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/deepseekv31_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #21739 - [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation
-
-- 链接: https://github.com/sgl-project/sglang/pull/21739
-- 状态/时间: open / 2026-03-31
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+163/-19，可读 patch 270 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.。
-- 代码 diff 细节:
-  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
-- 关键代码摘录:
-
-```diff
-diff -- docs/platforms/ascend/ascend_npu_best_practice.md
-@@ -20,6 +20,7 @@ you encounter issues or have any questions, please [open an issue](https://githu
-+| Deepseek-R1 | Atlas 800I A3 | 24    | PD Separation | 2K+2K     | 50ms | W8A8 INT8    | [Optimal Configuration](#deepseek-r1-2k-2k-50ms-on-a3-24-cards-separation-mode) |
-@@ -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
-+### DeepSeek-R1 2K-2K 50ms on A3 24 Cards Separation Mode
-+Model: Deepseek R1
-+Hardware: Atlas 800I A3 24Card
-+DeployMode: PD Separation
-```
-
-- 已读文件:
-  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #22433 - [Test] Add unit tests for DeepSeekV31Detector
 
@@ -4042,6 +3952,98 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +48/-46
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #21739 - [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation
+
+- 链接: https://github.com/sgl-project/sglang/pull/21739
+- 状态/时间: closed / 2026-08-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+163/-19，可读 patch 270 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；模型线: DeepSeek V3.1；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.。
+- 代码 diff 细节:
+  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
+- 关键代码摘录:
+
+```diff
+diff -- docs/platforms/ascend/ascend_npu_best_practice.md
+@@ -20,6 +20,7 @@ you encounter issues or have any questions, please [open an issue](https://githu
++| Deepseek-R1 | Atlas 800I A3 | 24    | PD Separation | 2K+2K     | 50ms | W8A8 INT8    | [Optimal Configuration](#deepseek-r1-2k-2k-50ms-on-a3-24-cards-separation-mode) |
+@@ -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
++### DeepSeek-R1 2K-2K 50ms on A3 24 Cards Separation Mode
++Model: Deepseek R1
++Hardware: Atlas 800I A3 24Card
++DeployMode: PD Separation
+```
+
+- 已读文件:
+  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #17761 - fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates
+
+- 链接: https://github.com/sgl-project/sglang/pull/17761
+- 状态/时间: closed / 2026-08-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+79/-2，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`；技术摘要: 覆盖「fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates」；主要实现面是 `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output，涉及 `test_tool_call_with_content, test_assistant_marker_after_tool_output`；`examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7；`examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7。
+- 代码 diff 细节:
+  - `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output
+  - `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7
+  - `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7
+- 关键代码摘录:
+
+```diff
+diff -- test/manual/test_deepseek_chat_templates.py
+@@ -313,6 +313,83 @@ def test_tool_call_with_content(self):
++    def test_assistant_marker_after_tool_output(self):
++        """Test that Assistant marker is present after tool output in multi-turn conversation."""
++        # This tests that when an assistant responds after receiving tool output,
++        # the <｜Assistant｜> marker is correctly added
++        for version in ["v3.1", "v3.2"]:
++            with self.subTest(version=version):
+diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
+@@ -60,7 +60,7 @@
+-    {%- if ns.is_last_user %}
++    {%- if ns.is_last_user or ns.is_tool %}
+diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
+@@ -57,7 +57,7 @@
+-    {%- if ns.is_last_user %}
++    {%- if ns.is_last_user or ns.is_tool %}
+```
+
+- 已读文件:
+  - tests: `test/manual/test_deepseek_chat_templates.py` modified +77/-0
+  - docs: `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1; `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/manual/test_deepseek_chat_templates.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #18236 - Fix function call arguments missing in streaming mode for DeepSeek V3.1
+
+- 链接: https://github.com/sgl-project/sglang/pull/18236
+- 状态/时间: closed / 2026-08-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+21/-3，可读 patch 57 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；模型线: DeepSeek V3.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/function_call/deepseekv31_detector.py`；技术摘要: 覆盖「Fix function call arguments missing in streaming mode for DeepSeek V3.1」；主要实现面是 `python/sglang/srt/function_call/deepseekv31_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment，涉及 `__init__, has_tool_call, parse_streaming_increment`。
+- 代码 diff 细节:
+  - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/function_call/deepseekv31_detector.py
+@@ -52,6 +52,7 @@ def __init__(self):
++        self._normal_text_sent = False
+@@ -111,6 +112,18 @@ def parse_streaming_increment(
++        # Extract normal text before tool call on first detection
++        normal_text_to_return = ""
++        if not self._normal_text_sent:
++            # Find the first tool call marker
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/deepseekv31_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

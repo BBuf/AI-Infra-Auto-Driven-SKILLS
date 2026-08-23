@@ -4,8 +4,8 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Llama/Llama3.1.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/llama31-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Meta/Llama3.1.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/llama31-deployment.jsx` | no direct PR-number commit |
 | `examples/chat_template/tool_chat_template_llama3.1_json.jinja` | [#13935](https://github.com/sgl-project/sglang/pull/13935) |
 | `test/manual/quant/kv_cache_scales_llama3_1_8b.json` | no direct PR-number commit |
 

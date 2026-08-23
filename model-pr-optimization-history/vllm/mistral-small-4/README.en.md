@@ -11,32 +11,34 @@
 | `tests/model_executor/test_mistral_large_3_eagle.py` | [#45217](https://github.com/vllm-project/vllm/pull/45217) |
 | `tests/models/fixtures/ministral_3b_chat.json` | no direct PR-number commit |
 | `tests/models/fixtures/mistral_small_3_chat.json` | [#14977](https://github.com/vllm-project/vllm/pull/14977) |
-| `tests/models/language/generation/test_mistral.py` | [#20093](https://github.com/vllm-project/vllm/pull/20093), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29918](https://github.com/vllm-project/vllm/pull/29918) |
-| `tests/reasoning/test_mistral_reasoning_parser.py` | [#26358](https://github.com/vllm-project/vllm/pull/26358), [#30391](https://github.com/vllm-project/vllm/pull/30391) |
+| `tests/models/language/generation/test_mistral.py` | [#20093](https://github.com/vllm-project/vllm/pull/20093), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29918](https://github.com/vllm-project/vllm/pull/29918), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/parser/mistral/__init__.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/parser/mistral/test_reasoning.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/parser/mistral/test_tool_calls.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/renderers/test_mistral.py` | no direct PR-number commit |
-| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622) |
-| `tests/tool_parsers/test_mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550) |
+| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/tool_use/mistral/__init__.py` | no direct PR-number commit |
 | `tests/tool_use/mistral/conftest.py` | no direct PR-number commit |
-| `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
+| `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/tool_use/mistral/utils.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
+| `tests/v1/structured_output/test_mistral_common_tokenizer.py` | [#52720](https://github.com/vllm-project/vllm/pull/52720) |
 | `vllm/model_executor/models/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1220](https://github.com/vllm-project/vllm/pull/1220), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#1303](https://github.com/vllm-project/vllm/pull/1303), [#2868](https://github.com/vllm-project/vllm/pull/2868), [#32780](https://github.com/vllm-project/vllm/pull/32780), [#33095](https://github.com/vllm-project/vllm/pull/33095) |
 | `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928) |
 | `vllm/model_executor/models/mistral_eagle.py` | [#41024](https://github.com/vllm-project/vllm/pull/41024) |
 | `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
 | `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232), [#45217](https://github.com/vllm-project/vllm/pull/45217), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
-| `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596) |
-| `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596) |
+| `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596), [#48947](https://github.com/vllm-project/vllm/pull/48947), [#50515](https://github.com/vllm-project/vllm/pull/50515) |
+| `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `vllm/renderers/mistral.py` | no direct PR-number commit |
-| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658) |
-| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550) |
+| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550), ... (14 total) |
 | `vllm/transformers_utils/configs/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#20570](https://github.com/vllm-project/vllm/pull/20570), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29172](https://github.com/vllm-project/vllm/pull/29172), [#29239](https://github.com/vllm-project/vllm/pull/29239), [#29757](https://github.com/vllm-project/vllm/pull/29757), [#33521](https://github.com/vllm-project/vllm/pull/33521), [#34028](https://github.com/vllm-project/vllm/pull/34028), [#34104](https://github.com/vllm-project/vllm/pull/34104), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37104](https://github.com/vllm-project/vllm/pull/37104), ... (13 total) |
-| `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043) |
+| `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 51
-- Extra PRs preserved from existing docs: 12
+- Git-traced PRs: 50
+- Extra PRs preserved from existing docs: 13
 - Total PRs in this document: 63
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -66,8 +68,8 @@
 | 2025-08-20 | [#21945](https://github.com/vllm-project/vllm/pull/21945) | merged | Migrate Mistral3ImagePixelInputs to TensorSchema | `vllm/model_executor/models/mistral3.py` |
 | 2025-10-09 | [#26358](https://github.com/vllm-project/vllm/pull/26358) | merged | Refactor MistralTokenizer | `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`, `vllm/entrypoints/chat_utils.py` |
 | 2025-11-19 | [#28542](https://github.com/vllm-project/vllm/pull/28542) | merged | Update `rope_scaling` to `rope_parameters` in preparation for Transformers v5 | `vllm/model_executor/layers/rotary_embedding/__init__.py`, `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/deepseek_v2.py` |
-| 2025-11-21 | [#29172](https://github.com/vllm-project/vllm/pull/29172) | merged | Fix mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2025-11-21 | [#28659](https://github.com/vllm-project/vllm/pull/28659) | merged | Default model load/config/tokenizer to `mistral` format if relevant files exist | `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py` |
+| 2025-11-21 | [#29172](https://github.com/vllm-project/vllm/pull/29172) | merged | Fix mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2025-11-22 | [#29239](https://github.com/vllm-project/vllm/pull/29239) | merged | [Bugfix] Use HF config fields as fallback when loading Mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2025-12-02 | [#29757](https://github.com/vllm-project/vllm/pull/29757) | merged | Add Mistral Large 3 and Ministral 3 | `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py` |
 | 2025-12-02 | [#29918](https://github.com/vllm-project/vllm/pull/29918) | merged | [BUGFIX] Fix regex pattern for Mistral Tool Call | `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py` |
@@ -83,8 +85,8 @@
 | 2026-02-12 | [#34104](https://github.com/vllm-project/vllm/pull/34104) | merged | Fix Mistral config remap to accept compressed-tensors quantization #34028 | `vllm/transformers_utils/configs/mistral.py` |
 | 2026-02-23 | [#34651](https://github.com/vllm-project/vllm/pull/34651) | merged | [Feature] Lazy import for the "mistral" tokenizer module. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py` |
 | 2026-03-06 | [#36156](https://github.com/vllm-project/vllm/pull/36156) | merged | [Bugfix] Fix simple Mistral-Small example | `examples/offline_inference/mistral-small.py` |
-| 2026-03-11 | [#36782](https://github.com/vllm-project/vllm/pull/36782) | merged | [Bugfix] Fix Mistral-small `--format` | `examples/offline_inference/mistral-small.py` |
 | 2026-03-11 | [#36163](https://github.com/vllm-project/vllm/pull/36163) | merged | Add support to Mistral large 3 eagle with dense layers | `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py` |
+| 2026-03-11 | [#36782](https://github.com/vllm-project/vllm/pull/36782) | merged | [Bugfix] Fix Mistral-small `--format` | `examples/offline_inference/mistral-small.py` |
 | 2026-03-14 | [#36971](https://github.com/vllm-project/vllm/pull/36971) | merged | Mistral common v10 | `vllm/tokenizers/mistral.py` |
 | 2026-03-16 | [#37104](https://github.com/vllm-project/vllm/pull/37104) | merged | Patch Mistral config | `vllm/transformers_utils/configs/mistral.py` |
 | 2026-03-16 | [#37232](https://github.com/vllm-project/vllm/pull/37232) | merged | Fix EagleMistralLarge3Model initialization | `vllm/model_executor/models/mistral_large_3_eagle.py` |
@@ -94,8 +96,8 @@
 | 2026-04-07 | [#37292](https://github.com/vllm-project/vllm/pull/37292) | merged | Fix Mistral yarn warning in Transformers v5 | `vllm/transformers_utils/configs/mistral.py` |
 | 2026-04-16 | [#39217](https://github.com/vllm-project/vllm/pull/39217) | merged | [Mistral Grammar] Fix tool and reasoning parsing | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py` |
 | 2026-04-22 | [#40531](https://github.com/vllm-project/vllm/pull/40531) | merged | [Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
-| 2026-04-24 | [#40043](https://github.com/vllm-project/vllm/pull/40043) | merged | [Feature] Avoid eager import of the "mistral_common" package. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py` |
 | 2026-04-24 | [#39294](https://github.com/vllm-project/vllm/pull/39294) | merged | [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers | `vllm/tool_parsers/mistral_tool_parser.py` |
+| 2026-04-24 | [#40043](https://github.com/vllm-project/vllm/pull/40043) | merged | [Feature] Avoid eager import of the "mistral_common" package. | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py` |
 | 2026-04-28 | [#41024](https://github.com/vllm-project/vllm/pull/41024) | merged | [FEATURE] Add EagleMistralForCausalLM | `vllm/model_executor/models/mistral_eagle.py` |
 | 2026-05-05 | [#41730](https://github.com/vllm-project/vllm/pull/41730) | merged | [BUGFIX] Support streamed_args_for_tool in MistralToolParser | `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py` |
 | 2026-05-06 | [#41658](https://github.com/vllm-project/vllm/pull/41658) | merged | [Mistral Tokenizer] allow more leniency in apply_chat_template | `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
@@ -115,6 +117,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/1196
 - Status/date: merged / 2023-09-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/1196 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `bb1ba58f0647`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +571/-25, 795 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Mistral] Mistral-7B-v0.1 support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "[Mistral] Mistral-7B-v0.1 support"; the main implementation surface is `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -151,6 +154,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/1220
 - Status/date: merged / 2023-09-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/1220 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `a8e98aee0c16`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +27/-14, 124 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Mistral model"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "Fix Mistral model"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -175,6 +179,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/1303
 - Status/date: merged / 2023-10-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/1303 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `b95ee898fe1c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Minor] Fix comment in mistral.py"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "[Minor] Fix comment in mistral.py"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -198,6 +203,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/1254
 - Status/date: merged / 2023-10-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/1254 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `e7c8555d0652`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +4/-81, 136 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Bump up transformers version & Remove MistralConfig"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`; technical summary: Covers "Bump up transformers version & Remove MistralConfig"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -231,6 +237,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/2868
 - Status/date: merged / 2024-02-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/2868 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `344020c926ad`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +6/-379, 421 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Migrate MistralForCausalLM to LlamaForCausalLM"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "Migrate MistralForCausalLM to LlamaForCausalLM"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -258,6 +265,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/5649
 - Status/date: merged / 2024-09-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/5649 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_mistral.jinja`, `examples/tool_chat_template_mistral_parallel.jinja`; associated commits `e02ce498be2e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 26 files, +2588/-83, 3136 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models"; model line: Mistral Small 4; category: model implementation change; main diff: `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`, `vllm/entrypoints/openai/tool_parsers/hermes_tool_parser.py`; technical summary: Covers "[Feature] OpenAI-Compatible Tools API + Streaming for Hermes & Mistral models"; the main implementation surface is `examples/tool_chat_template_mistral_parallel.jinja`, `examples/tool_chat_template_mistral.jinja`, `vllm/entrypoints/openai/tool_parsers/hermes_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -300,6 +308,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/hermes_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/14977
 - Status/date: merged / 2025-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/14977 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/fixtures/mistral_small_3_chat.json`; associated commits `f863ffc96532`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +34/-60, 204 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Mistral-Small 3.1] Update docs and tests"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/fixtures/mistral_small_3_chat.json`; technical summary: Covers "[Mistral-Small 3.1] Update docs and tests"; the main implementation surface is `tests/models/fixtures/mistral_small_3_chat.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -322,6 +331,7 @@ diff -- tests/models/fixtures/mistral_small_3_chat.json
 
 - Link: https://github.com/vllm-project/vllm/pull/15184
 - Status/date: merged / 2025-03-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/15184 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-2, 37 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Doc] Update Mistral Small 3.1/Pixtral example"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Doc] Update Mistral Small 3.1/Pixtral example"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -349,6 +359,7 @@ diff -- examples/offline_inference/mistral-small.py
 
 - Link: https://github.com/vllm-project/vllm/pull/15505
 - Status/date: merged / 2025-04-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/15505 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `51d7c6a2b23e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +723/-4, 805 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support Mistral3 in the HF Transformers format"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[Model] Support Mistral3 in the HF Transformers format"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -376,6 +387,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/15950
 - Status/date: merged / 2025-04-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/15950 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `f021b9799386`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +10/-7, 55 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V1] Support Mistral3 in V1"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[V1] Support Mistral3 in V1"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -403,6 +415,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16147
 - Status/date: merged / 2025-04-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16147 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-8, 77 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Update Mistral-3.1 example"; model line: Mistral Small 4; category: model implementation change; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Misc] Update Mistral-3.1 example"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -430,6 +443,7 @@ diff -- examples/offline_inference/mistral-small.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17270
 - Status/date: merged / 2025-04-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17270 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `cb3f2d8d10ff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-3, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Mistral3 spatial merge error"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[Bugfix] Fix Mistral3 spatial merge error"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -454,6 +468,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17195
 - Status/date: merged / 2025-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17195 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_mistral3.jinja`; associated commits `96e06e3cb73f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +119/-0, 121 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Add a Jinja template to support Mistral3 function calling"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_mistral3.jinja`; technical summary: Covers "[Misc] Add a Jinja template to support Mistral3 function calling"; the main implementation surface is `examples/tool_chat_template_mistral3.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -481,6 +496,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/17428
 - Status/date: merged / 2025-04-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17428 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `a44c4f1d2f7c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +15/-4, 51 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support LoRA for Mistral3"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "Support LoRA for Mistral3"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -508,6 +524,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17644
 - Status/date: merged / 2025-05-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17644 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_mistral3.jinja`; associated commits `ca04b97c9361`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, 23 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix tool call template validation for Mistral models"; model line: Mistral Small 4; category: bug fix; main diff: `examples/tool_chat_template_mistral3.jinja`; technical summary: Covers "[Bugfix] Fix tool call template validation for Mistral models"; the main implementation surface is `examples/tool_chat_template_mistral3.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -535,6 +552,7 @@ diff -- examples/tool_chat_template_mistral3.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/19193
 - Status/date: merged / 2025-06-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19193 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +32/-4, 70 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[mistral_common] Add v11 tokenizer"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`; technical summary: Covers "[mistral_common] Add v11 tokenizer"; the main implementation surface is `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -567,6 +585,7 @@ diff -- vllm/transformers_utils/tokenizers/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20093
 - Status/date: merged / 2025-06-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20093 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`; associated commits `754b00edb3fd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +53/-2, 73 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Mistral tool-parser regex for nested JSON"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Mistral tool-parser regex for nested JSON"; the main implementation surface is `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -602,6 +621,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20570
 - Status/date: merged / 2025-07-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20570 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `14601f5fba13`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +167/-113, 320 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Config] Refactor mistral configs"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "[Config] Refactor mistral configs"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -629,6 +649,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21945
 - Status/date: merged / 2025-08-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21945 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `c4477f55e581`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +17/-21, 69 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Migrate Mistral3ImagePixelInputs to TensorSchema"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "Migrate Mistral3ImagePixelInputs to TensorSchema"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -656,6 +677,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26358
 - Status/date: merged / 2025-10-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26358 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_mistral_reasoning_parser.py`; associated commits `c6187f55f7c4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +2349/-461, 3215 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Refactor MistralTokenizer"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`, `vllm/entrypoints/chat_utils.py`; technical summary: Covers "Refactor MistralTokenizer"; the main implementation surface is `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/transformers_utils/tokenizers/mistral.py`, `vllm/entrypoints/chat_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -735,33 +757,11 @@ diff -- vllm/model_executor/models/deepseek_v2.py
   - runtime: `vllm/model_executor/layers/rotary_embedding/__init__.py` modified +38/-38; `vllm/transformers_utils/configs/nemotron.py` modified +31/-29; `vllm/model_executor/models/deepseek_v2.py` modified +13/-30; `vllm/model_executor/models/chameleon.py` modified +4/-25; `vllm/model_executor/models/openpangu.py` modified +7/-19; `vllm/model_executor/models/hunyuan_v1.py` modified +2/-23
 - Risk and verification: The diff ships test coverage in `tests/compile/test_functionalization.py`, `tests/kernels/core/test_mrope.py`, `tests/kernels/core/test_pos_encoding.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #29172 - Fix mistral config
-
-- Link: https://github.com/vllm-project/vllm/pull/29172
-- Status/date: merged / 2025-11-21
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `434f3d3eb869`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args, touching `_remap_mistral_yarn_args`.
-- Code diff details:
-  - `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args
-- Key code excerpts:
-
-```diff
-diff -- vllm/transformers_utils/configs/mistral.py
-@@ -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:
-+    if rope_theta := config.pop("rope_theta", None):
-+        config["rope_parameters"]["rope_theta"] = rope_theta
-```
-
-- Reviewed files:
-  - runtime: `vllm/transformers_utils/configs/mistral.py` modified +4/-0
-- Risk and verification: Runtime changes concentrate in `vllm/transformers_utils/configs/mistral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #28659 - Default model load/config/tokenizer to `mistral` format if relevant files exist
 
 - Link: https://github.com/vllm-project/vllm/pull/28659
 - Status/date: merged / 2025-11-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28659 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `57430fc95c8a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +230/-34, 497 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Default model load/config/tokenizer to `mistral` format if relevant files exist"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Default model load/config/tokenizer to `mistral` format if relevant files exist"; the main implementation surface is `tests/models/language/generation/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -787,10 +787,35 @@ diff -- vllm/transformers_utils/configs/mistral.py
   - runtime: `vllm/transformers_utils/configs/mistral.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `tests/models/language/generation/test_mistral.py`, `tests/models/multimodal/test_mapping.py`, `tests/models/quantization/test_bitsandbytes.py`, `tests/tool_use/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #29172 - Fix mistral config
+
+- Link: https://github.com/vllm-project/vllm/pull/29172
+- Status/date: merged / 2025-11-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29172 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `434f3d3eb869`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args, touching `_remap_mistral_yarn_args`.
+- Code diff details:
+  - `vllm/transformers_utils/configs/mistral.py` modified +4/-0 (4 lines); hunks: -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:; symbols: _remap_mistral_yarn_args
+- Key code excerpts:
+
+```diff
+diff -- vllm/transformers_utils/configs/mistral.py
+@@ -90,6 +90,10 @@ def _remap_mistral_yarn_args(config: dict) -> dict:
++    if rope_theta := config.pop("rope_theta", None):
++        config["rope_parameters"]["rope_theta"] = rope_theta
+```
+
+- Reviewed files:
+  - runtime: `vllm/transformers_utils/configs/mistral.py` modified +4/-0
+- Risk and verification: Runtime changes concentrate in `vllm/transformers_utils/configs/mistral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #29239 - [Bugfix] Use HF config fields as fallback when loading Mistral config
 
 - Link: https://github.com/vllm-project/vllm/pull/29239
 - Status/date: merged / 2025-11-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29239 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `d1cf8214e523`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +25/-4, 69 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Use HF config fields as fallback when loading Mistral config"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "[Bugfix] Use HF config fields as fallback when loading Mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -818,6 +843,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29757
 - Status/date: merged / 2025-12-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29757 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`, `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/tokenizers/mistral.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `d8c6210eeaa7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +724/-30, 1015 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add Mistral Large 3 and Ministral 3"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Add Mistral Large 3 and Ministral 3"; the main implementation surface is `vllm/model_executor/models/mistral_large_3_eagle.py`, `tests/tokenizers_/test_mistral.py`, `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -860,6 +886,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29918
 - Status/date: merged / 2025-12-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29918 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`; associated commits `1b1e35aaf9d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +36/-1, 48 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BUGFIX] Fix regex pattern for Mistral Tool Call"; model line: Mistral Small 4; category: bug fix; main diff: `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[BUGFIX] Fix regex pattern for Mistral Tool Call"; the main implementation surface is `tests/models/language/generation/test_mistral.py`, `vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -893,6 +920,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30391
 - Status/date: merged / 2025-12-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30391 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`; associated commits `aa3c250c487e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +186/-64, 383 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[IMPROVEMENT] Change MistralReasoningParser behavior"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`; technical summary: Covers "[IMPROVEMENT] Change MistralReasoningParser behavior"; the main implementation surface is `tests/reasoning/test_mistral_reasoning_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -930,6 +958,7 @@ diff -- vllm/reasoning/mistral_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30588
 - Status/date: closed / 2025-12-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30588 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 241 files, +6757/-2646, 15228 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix edge case Mistral tool parser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`; technical summary: Covers "Fix edge case Mistral tool parser"; the main implementation surface is `vllm/model_executor/models/audioflamingo3.py`, `vllm/model_executor/models/bagel.py`, `vllm/model_executor/models/qwen3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -972,6 +1001,7 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30724
 - Status/date: merged / 2025-12-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30724 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `38c361f99dff`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +115/-56, 224 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix edge case Mistral tool parser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`; technical summary: Covers "Fix edge case Mistral tool parser"; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1009,6 +1039,7 @@ diff -- tests/tool_parsers/test_mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31138
 - Status/date: merged / 2025-12-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31138 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`; associated commits `48e744976cf4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +24/-57, 181 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Mistral common] Ensure all functions are imported from the top & only use public methods"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tokenizers/mistral.py`; technical summary: Covers "[Mistral common] Ensure all functions are imported from the top & only use public methods"; the main implementation surface is `vllm/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1036,6 +1067,7 @@ diff -- vllm/tokenizers/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32780
 - Status/date: merged / 2026-01-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32780 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `1579c9b5fd0f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +248/-115, 426 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "[Llama.py -> mistral.py] Extract mistral-only relevant code into separate file"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1063,6 +1095,7 @@ diff -- vllm/model_executor/models/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33095
 - Status/date: merged / 2026-01-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33095 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral.py`; associated commits `d56afd45fd4e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +0/-8, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Remove unused logic in `models/mistral.py`"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral.py`; technical summary: Covers "Remove unused logic in `models/mistral.py`"; the main implementation surface is `vllm/model_executor/models/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1131,6 +1164,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVI
 
 - Link: https://github.com/vllm-project/vllm/pull/33521
 - Status/date: merged / 2026-02-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33521 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `beb889948276`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +25/-22, 82 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix mistral sliding window parsing"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix mistral sliding window parsing"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1158,6 +1192,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33939
 - Status/date: merged / 2026-02-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33939 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `4df44c16ba8c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +9/-1, 31 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "Enable Eagle3 speculative decoding for Mistral3ForConditionalGeneration to support eagle3"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1185,6 +1220,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34104
 - Status/date: merged / 2026-02-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `f5897613fb27`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 15 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Mistral config remap to accept compressed-tensors quantization #34028"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix Mistral config remap to accept compressed-tensors quantization #34028"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1212,6 +1248,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34651
 - Status/date: merged / 2026-02-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34651 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; associated commits `54e2f83d0a82`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +68/-48, 399 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Lazy import for the "mistral" tokenizer module."; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`; technical summary: Covers "[Feature] Lazy import for the "mistral" tokenizer module."; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/utils/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1251,6 +1288,7 @@ diff -- vllm/utils/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36156
 - Status/date: merged / 2026-03-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36156 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-2, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix simple Mistral-Small example"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Bugfix] Fix simple Mistral-Small example"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1274,37 +1312,11 @@ diff -- examples/offline_inference/mistral-small.py
   - docs: `examples/offline_inference/mistral-small.py` modified +5/-2
 - Risk and verification: This is mostly docs/examples in `examples/offline_inference/mistral-small.py`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
-### PR #36782 - [Bugfix] Fix Mistral-small `--format`
-
-- Link: https://github.com/vllm-project/vllm/pull/36782
-- Status/date: merged / 2026-03-11
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-6, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Mistral-small `--format`"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Bugfix] Fix Mistral-small `--format`"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo, touching `run_simple_demo, run_advanced_demo`.
-- Code diff details:
-  - `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo
-- Key code excerpts:
-
-```diff
-diff -- examples/offline_inference/mistral-small.py
-@@ -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):
--        tokenizer_mode="mistral" if args.format == "mistral" else "auto",
--        config_format="mistral" if args.format == "mistral" else "auto",
--        load_format="mistral" if args.format == "mistral" else "auto",
-+        tokenizer_mode="mistral" if args.format == "mistral" else "hf",
-+        config_format="mistral" if args.format == "mistral" else "hf",
-+        load_format="mistral" if args.format == "mistral" else "hf",
-```
-
-- Reviewed files:
-  - docs: `examples/offline_inference/mistral-small.py` modified +6/-6
-- Risk and verification: This is mostly docs/examples in `examples/offline_inference/mistral-small.py`; validation should confirm the documented command still maps to current CLI flags and model repo names.
-
 ### PR #36163 - Add support to Mistral large 3 eagle with dense layers
 
 - Link: https://github.com/vllm-project/vllm/pull/36163
 - Status/date: merged / 2026-03-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36163 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/transformers_utils/configs/mistral.py`; associated commits `afebeffbfbf2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +28/-1, 61 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add support to Mistral large 3 eagle with dense layers"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; technical summary: Covers "Add support to Mistral large 3 eagle with dense layers"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1337,10 +1349,39 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
   - runtime: `vllm/transformers_utils/configs/mistral.py` modified +23/-0; `vllm/model_executor/models/mistral_large_3_eagle.py` modified +5/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mistral_large_3_eagle.py`, `vllm/transformers_utils/configs/mistral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #36782 - [Bugfix] Fix Mistral-small `--format`
+
+- Link: https://github.com/vllm-project/vllm/pull/36782
+- Status/date: merged / 2026-03-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36782 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-6, 26 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix Mistral-small `--format`"; model line: Mistral Small 4; category: bug fix; main diff: `examples/offline_inference/mistral-small.py`; technical summary: Covers "[Bugfix] Fix Mistral-small `--format`"; the main implementation surface is `examples/offline_inference/mistral-small.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo, touching `run_simple_demo, run_advanced_demo`.
+- Code diff details:
+  - `examples/offline_inference/mistral-small.py` modified +6/-6 (12 lines); hunks: -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):; -102,9 +102,9 @@ def run_advanced_demo(args: argparse.Namespace):; symbols: run_simple_demo, run_advanced_demo
+- Key code excerpts:
+
+```diff
+diff -- examples/offline_inference/mistral-small.py
+@@ -62,9 +62,9 @@ def run_simple_demo(args: argparse.Namespace):
+-        tokenizer_mode="mistral" if args.format == "mistral" else "auto",
+-        config_format="mistral" if args.format == "mistral" else "auto",
+-        load_format="mistral" if args.format == "mistral" else "auto",
++        tokenizer_mode="mistral" if args.format == "mistral" else "hf",
++        config_format="mistral" if args.format == "mistral" else "hf",
++        load_format="mistral" if args.format == "mistral" else "hf",
+```
+
+- Reviewed files:
+  - docs: `examples/offline_inference/mistral-small.py` modified +6/-6
+- Risk and verification: This is mostly docs/examples in `examples/offline_inference/mistral-small.py`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
 ### PR #36971 - Mistral common v10
 
 - Link: https://github.com/vllm-project/vllm/pull/36971
 - Status/date: merged / 2026-03-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36971 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`; associated commits `e42b49bd69d4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +22/-3, 74 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Mistral common v10"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tokenizers/mistral.py`; technical summary: Covers "Mistral common v10"; the main implementation surface is `vllm/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1368,6 +1409,7 @@ diff -- vllm/tokenizers/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37104
 - Status/date: merged / 2026-03-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `ffbc2e5bdbfb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +49/-30, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Patch Mistral config"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Patch Mistral config"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1395,6 +1437,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37232
 - Status/date: merged / 2026-03-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37232 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_large_3_eagle.py`; associated commits `7961486a9b74`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix EagleMistralLarge3Model initialization"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral_large_3_eagle.py`; technical summary: Covers "Fix EagleMistralLarge3Model initialization"; the main implementation surface is `vllm/model_executor/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1417,6 +1460,7 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37209
 - Status/date: merged / 2026-03-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37209 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `5db91f0aaf35`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +42/-34, 147 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix some Mistral parser issues"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "Fix some Mistral parser issues"; the main implementation surface is `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1453,6 +1497,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36928
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36928 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral3.py`; associated commits `5bc1da147fb0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-0, 10 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/mistral3.py`; technical summary: Covers "[LoRA][BugFix] Fix skipped LoRA adapters for Mistral3"; the main implementation surface is `vllm/model_executor/models/mistral3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1477,6 +1522,7 @@ diff -- vllm/model_executor/models/mistral3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38150
 - Status/date: merged / 2026-04-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38150 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`, `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `fef56c18555e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +601/-29, 816 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Mistral Grammar] Support Grammar Factory"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`; technical summary: Covers "[Mistral Grammar] Support Grammar Factory"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tokenizers_/test_mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1518,6 +1564,7 @@ diff -- tests/tokenizers_/test_mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37292
 - Status/date: merged / 2026-04-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37292 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/configs/mistral.py`; associated commits `edcc37a8cee2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Mistral yarn warning in Transformers v5"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/transformers_utils/configs/mistral.py`; technical summary: Covers "Fix Mistral yarn warning in Transformers v5"; the main implementation surface is `vllm/transformers_utils/configs/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1545,6 +1592,7 @@ diff -- vllm/transformers_utils/configs/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39217
 - Status/date: merged / 2026-04-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39217 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `tests/tool_use/mistral/test_mistral_tool_calls.py`, `tests/tool_use/mistral/utils.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `c0722f22de71`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +1601/-266, 2396 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Mistral Grammar] Fix tool and reasoning parsing"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`; technical summary: Covers "[Mistral Grammar] Fix tool and reasoning parsing"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/tokenizers/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1587,6 +1635,7 @@ diff -- vllm/tokenizers/mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40531
 - Status/date: merged / 2026-04-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40531 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `cfa49213d778`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +66/-18, 160 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Bugfix][Parser] Fix Mistral pre-v11 tool parser failing on trailing model output"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1620,10 +1669,39 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
   - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +17/-9
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_mistral_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #39294 - [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers
+
+- Link: https://github.com/vllm-project/vllm/pull/39294
+- Status/date: merged / 2026-04-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39294 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `2ec18f5df43e`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +13/-4, 59 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls, touching `is_valid_id, _is_pre_v11_tokeniser, __init__`.
+- Code diff details:
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:
+-    return not (is_mistral_tokenizer(model_tokenizer) and model_tokenizer.version >= 11)
++    if is_mistral_tokenizer(model_tokenizer):
++        return model_tokenizer.version < 11
++    # For HF tokenizers, check if [ARGS] token exists in vocab
++    # which indicates a v11+ equivalent tokenizer
++    vocab: dict[str, int] = getattr(model_tokenizer, "get_vocab", lambda: {})()
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4
+- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/mistral_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #40043 - [Feature] Avoid eager import of the "mistral_common" package.
 
 - Link: https://github.com/vllm-project/vllm/pull/40043
 - Status/date: merged / 2026-04-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40043 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; associated commits `56bdf85e10b8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +47/-23, 194 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Avoid eager import of the "mistral_common" package."; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`; technical summary: Covers "[Feature] Avoid eager import of the "mistral_common" package."; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/utils/mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1651,37 +1729,11 @@ diff -- vllm/utils/mistral.py
   - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +2/-0; `vllm/utils/mistral.py` modified +15/-0
 - Risk and verification: Runtime changes concentrate in `vllm/entrypoints/openai/chat_completion/serving.py`, `vllm/entrypoints/openai/engine/serving.py`, `vllm/entrypoints/serve/render/serving.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #39294 - [Bugfix][Parser] Fix Mistral tool parser for HF tokenizers
-
-- Link: https://github.com/vllm-project/vllm/pull/39294
-- Status/date: merged / 2026-04-24
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `2ec18f5df43e`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +13/-4, 59 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Bugfix][Parser] Fix Mistral tool parser for HF tokenizers"; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls, touching `is_valid_id, _is_pre_v11_tokeniser, __init__`.
-- Code diff details:
-  - `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4 (17 lines); hunks: -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:; -137,15 +142,15 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[T...; symbols: is_valid_id, _is_pre_v11_tokeniser, __init__, extract_tool_calls
-- Key code excerpts:
-
-```diff
-diff -- vllm/tool_parsers/mistral_tool_parser.py
-@@ -91,7 +91,12 @@ def is_valid_id(id: str) -> bool:
--    return not (is_mistral_tokenizer(model_tokenizer) and model_tokenizer.version >= 11)
-+    if is_mistral_tokenizer(model_tokenizer):
-+        return model_tokenizer.version < 11
-+    # For HF tokenizers, check if [ARGS] token exists in vocab
-+    # which indicates a v11+ equivalent tokenizer
-+    vocab: dict[str, int] = getattr(model_tokenizer, "get_vocab", lambda: {})()
-```
-
-- Reviewed files:
-  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +13/-4
-- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/mistral_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #41024 - [FEATURE] Add EagleMistralForCausalLM
 
 - Link: https://github.com/vllm-project/vllm/pull/41024
 - Status/date: merged / 2026-04-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41024 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_eagle.py`; associated commits `e9f8f31e9a4c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +172/-0, 187 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[FEATURE] Add EagleMistralForCausalLM"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mistral_eagle.py`; technical summary: Covers "[FEATURE] Add EagleMistralForCausalLM"; the main implementation surface is `vllm/model_executor/models/mistral_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1709,6 +1761,7 @@ diff -- vllm/model_executor/models/mistral_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41730
 - Status/date: merged / 2026-05-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41730 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `c6235ed1803e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +55/-15, 145 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BUGFIX] Support streamed_args_for_tool in MistralToolParser"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`; technical summary: Covers "[BUGFIX] Support streamed_args_for_tool in MistralToolParser"; the main implementation surface is `vllm/tool_parsers/mistral_tool_parser.py`, `tests/tool_parsers/test_mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1746,6 +1799,7 @@ diff -- tests/tool_parsers/test_mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41658
 - Status/date: merged / 2026-05-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41658 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `16e336491e96`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +144/-397, 675 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Mistral Tokenizer] allow more leniency in apply_chat_template"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[Mistral Tokenizer] allow more leniency in apply_chat_template"; the main implementation surface is `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1786,6 +1840,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42280
 - Status/date: merged / 2026-05-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42280 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 25 files, +49/-29, 302 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Fix missing `maybe_prefix`"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`; technical summary: Covers "[Model] Fix missing `maybe_prefix`"; the main implementation surface is `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1827,6 +1882,7 @@ diff -- vllm/model_executor/models/hunyuan_v1.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44131
 - Status/date: merged / 2026-06-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44131 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +201/-3, 308 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Stabilize OpenAI schema fuzzing for malformed structural tags"; model line: Mistral Small 4; category: bug fix; main diff: `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`; technical summary: Covers "[CI] Stabilize OpenAI schema fuzzing for malformed structural tags"; the main implementation surface is `vllm/entrypoints/openai/engine/protocol.py`, `tests/entrypoints/openai/chat_completion/test_chat_error.py`, `tests/entrypoints/openai/completion/test_completion_error.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1869,6 +1925,7 @@ diff -- tests/entrypoints/openai/completion/test_completion_error.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44622
 - Status/date: merged / 2026-06-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44622 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`; associated commits `d61d8566ec30`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 14 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Update mistral tokenizer test for continue_final_message fix"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tokenizers_/test_mistral.py`; technical summary: Covers "[Bugfix] Update mistral tokenizer test for continue_final_message fix"; the main implementation surface is `tests/tokenizers_/test_mistral.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1894,6 +1951,7 @@ diff -- tests/tokenizers_/test_mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/44596
 - Status/date: merged / 2026-06-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44596 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/parser/mistral.py`, `vllm/reasoning/mistral_reasoning_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `d82ac0092392`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +136/-729, 1101 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor][Mistral] Extract parsing logic into MistralParser"; model line: Mistral Small 4; category: docs/tests/CI; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`; technical summary: Covers "[Refactor][Mistral] Extract parsing logic into MistralParser"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/reasoning/mistral_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1935,6 +1993,7 @@ diff -- vllm/reasoning/mistral_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45161
 - Status/date: merged / 2026-06-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45161 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +62/-268, 612 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Deprecate Transformers v4 support"; model line: Mistral Small 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`; technical summary: Covers "Deprecate Transformers v4 support"; the main implementation surface is `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1976,6 +2035,7 @@ diff -- vllm/model_executor/model_loader/weight_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45217
 - Status/date: merged / 2026-06-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45217 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; associated commits `6f573f486bc6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +156/-0, 164 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Initialize missing attributes in mistral eagle"; model line: Mistral Small 4; category: bug fix; main diff: `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; technical summary: Covers "[Bugfix] Initialize missing attributes in mistral eagle"; the main implementation surface is `tests/model_executor/test_mistral_large_3_eagle.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2054,6 +2114,7 @@ diff -- vllm/reasoning/identity_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47550
 - Status/date: merged / 2026-07-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47550 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `5769a7382cb1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +142/-47, 302 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)"; model line: Mistral Small 4; category: bug fix; main diff: `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`; technical summary: Covers "[ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers)"; the main implementation surface is `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2091,6 +2152,7 @@ diff -- vllm/tool_parsers/mistral_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/48153
 - Status/date: merged / 2026-07-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/48153 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; associated commits `fabec87f63cd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +89/-57, 179 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader"; model line: Mistral Small 4; category: model implementation change; main diff: `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; technical summary: Covers "[Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader"; the main implementation surface is `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.

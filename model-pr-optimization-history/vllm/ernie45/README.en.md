@@ -10,7 +10,7 @@
 | `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` | no direct PR-number commit |
 | `vllm/model_executor/models/ernie45.py` | [#21735](https://github.com/vllm-project/vllm/pull/21735) |
 | `vllm/model_executor/models/ernie45_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26684](https://github.com/vllm-project/vllm/pull/26684), [#27316](https://github.com/vllm-project/vllm/pull/27316) |
-| `vllm/model_executor/models/ernie45_vl.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753) |
+| `vllm/model_executor/models/ernie45_vl.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753), [#45254](https://github.com/vllm-project/vllm/pull/45254), [#51461](https://github.com/vllm-project/vllm/pull/51461) |
 | `vllm/model_executor/models/ernie45_vl_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
 | `vllm/model_executor/models/ernie_mtp.py` | no direct PR-number commit |
 | `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973), [#46255](https://github.com/vllm-project/vllm/pull/46255) |
@@ -18,9 +18,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 9
+- Git-traced PRs: 11
 - Extra PRs preserved from existing docs: 13
-- Total PRs in this document: 22
+- Total PRs in this document: 24
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -50,6 +50,8 @@
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
 | 2026-07-01 | [#46255](https://github.com/vllm-project/vllm/pull/46255) | merged | fix(reasoning): guard rfind in ernie45 streaming branch | `vllm/reasoning/ernie45_reasoning_parser.py` |
+| 2026-08-06 | [#45254](https://github.com/vllm-project/vllm/pull/45254) | merged | [MM][CG] Support ViT full CUDA graph for Ernie-4.5-VL image inference | `vllm/model_executor/models/ernie45_vl.py` |
+| 2026-08-11 | [#51461](https://github.com/vllm-project/vllm/pull/51461) | merged | [MM][CG][BugFix] Fix Ernie-4.5-VL encoder CG postprocess for multi-path outputs | `vllm/model_executor/models/ernie45_vl.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -805,6 +807,59 @@ diff -- vllm/reasoning/ernie45_reasoning_parser.py
 - Reviewed files:
   - runtime: `vllm/reasoning/ernie45_reasoning_parser.py` modified +2/-1
 - Risk and verification: Runtime changes concentrate in `vllm/reasoning/ernie45_reasoning_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #45254 - [MM][CG] Support ViT full CUDA graph for Ernie-4.5-VL image inference
+
+- Link: https://github.com/vllm-project/vllm/pull/45254
+- Status/date: merged / 2026-08-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_vl.py`; associated commits `777b01d1a86e`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +289/-13, 374 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][CG] Support ViT full CUDA graph for Ernie-4.5-VL image inference"; model line: ERNIE 4.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/ernie45_vl.py`; technical summary: Covers "[MM][CG] Support ViT full CUDA graph for Ernie-4.5-VL image inference"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +260/-13 (273 lines); hunks: -77,12 +77,18; -453,13 +459,43 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, forward, prepare_encoder_metadata, touching `compute_attn_mask_seqlen, forward, prepare_encoder_metadata`.
+- Code diff details:
+  - `vllm/model_executor/models/ernie45_vl.py` modified +260/-13 (273 lines); hunks: -77,12 +77,18; -453,13 +459,43 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, forward, prepare_encoder_metadata
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/ernie45_vl.py
+@@ -77,12 +77,18 @@
++    SupportsEncoderCudaGraph,
+-from .utils import AutoWeightsLoader, WeightsMapper, maybe_prefix
++from .utils import (
++    AutoWeightsLoader,
++    WeightsMapper,
++    maybe_prefix,
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/ernie45_vl.py` modified +260/-13
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #51461 - [MM][CG][BugFix] Fix Ernie-4.5-VL encoder CG postprocess for multi-path outputs
+
+- Link: https://github.com/vllm-project/vllm/pull/51461
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_vl.py`; associated commits `b2506d62aec7`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][CG][BugFix] Fix Ernie-4.5-VL encoder CG postprocess for multi-path outputs"; model line: ERNIE 4.5; category: bug fix; main diff: `vllm/model_executor/models/ernie45_vl.py`; technical summary: Covers "[MM][CG][BugFix] Fix Ernie-4.5-VL encoder CG postprocess for multi-path outputs"; the main implementation surface is `vllm/model_executor/models/ernie45_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/ernie45_vl.py` modified +3/-1 (4 lines); hunks: -1721,7 +1721,7 @@ def encoder_eager_forward(; -1731,6 +1731,8 @@ def postprocess_encoder_output(; symbols: encoder_eager_forward, postprocess_encoder_output, touching `encoder_eager_forward, postprocess_encoder_output`.
+- Code diff details:
+  - `vllm/model_executor/models/ernie45_vl.py` modified +3/-1 (4 lines); hunks: -1721,7 +1721,7 @@ def encoder_eager_forward(; -1731,6 +1731,8 @@ def postprocess_encoder_output(; symbols: encoder_eager_forward, postprocess_encoder_output
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/ernie45_vl.py
+@@ -1721,7 +1721,7 @@ def encoder_eager_forward(
+-        output: torch.Tensor,
++        outputs: dict[str, torch.Tensor],
+@@ -1731,6 +1731,8 @@ def postprocess_encoder_output(
++        # Ernie only uses the single "default" encoder path.
++        output = outputs["default"]
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/ernie45_vl.py` modified +3/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/ernie45_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

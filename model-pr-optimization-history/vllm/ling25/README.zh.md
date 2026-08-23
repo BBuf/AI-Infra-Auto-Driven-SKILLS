@@ -63,6 +63,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/20680
 - 状态/时间: merged / 2025-07-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/20680 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+534/-0，可读 patch 556 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Add Ling implementation」；模型线: Ling 2.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Model] Add Ling implementation」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -105,6 +106,7 @@ diff -- vllm/model_executor/models/registry.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21059
 - 状态/时间: merged / 2025-07-16
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21059 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+0/-45，可读 patch 157 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Remove model sampler」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/bailing_moe.py`, `vllm/model_executor/models/hunyuan_v1_moe.py`；技术摘要: 覆盖「[Model] Remove model sampler」；主要实现面是 `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/bailing_moe.py`, `vllm/model_executor/models/hunyuan_v1_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -146,6 +148,7 @@ diff -- vllm/model_executor/models/hunyuan_v1_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21100
 - 状态/时间: merged / 2025-07-19
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21100 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+223/-181，可读 patch 548 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Quantization] Enable BNB support for more MoE models」；模型线: Ling 2.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/hunyuan_v1_moe.py`, `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/grok1.py`；技术摘要: 覆盖「[Quantization] Enable BNB support for more MoE models」；主要实现面是 `vllm/model_executor/models/hunyuan_v1_moe.py`, `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/grok1.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -188,6 +191,7 @@ diff -- vllm/model_executor/models/grok1.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/21664
 - 状态/时间: merged / 2025-07-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/21664 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-0，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「support `torch.compile` for bailing moe」；模型线: Ling 2.5；类别: 模型支持/运行时入口；主要 diff: `vllm/model_executor/models/bailing_moe.py`；技术摘要: 覆盖「support `torch.compile` for bailing moe」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -212,6 +216,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/19497
 - 状态/时间: merged / 2025-08-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/19497 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 65 个文件，+129/-83，可读 patch 1109 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Models] Improve iteration over layers」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/gpt_j.py`, `vllm/model_executor/models/lfm2.py`；技术摘要: 覆盖「[Models] Improve iteration over layers」；主要实现面是 `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/gpt_j.py`, `vllm/model_executor/models/lfm2.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -253,6 +258,7 @@ diff -- vllm/model_executor/models/lfm2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/24627
 - 状态/时间: merged / 2025-09-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/24627 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+170/-50，可读 patch 388 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model]: support Ling2.0」；模型线: Ling 2.5；类别: 文档/测试/CI；主要 diff: `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`；技术摘要: 覆盖「[Model]: support Ling2.0」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`。下方保留文件级证据、代码摘录和验证风险。
@@ -295,6 +301,7 @@ diff -- vllm/model_executor/models/registry.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25345
 - 状态/时间: merged / 2025-09-21
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25345 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 141 个文件，+172/-583，可读 patch 2888 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[V0 Deprecation] Remove V0 sampling metadata」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/deepseek_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`, `vllm/model_executor/models/granite.py`；技术摘要: 覆盖「[V0 Deprecation] Remove V0 sampling metadata」；主要实现面是 `vllm/model_executor/models/deepseek_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`, `vllm/model_executor/models/granite.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -336,6 +343,7 @@ diff -- vllm/model_executor/models/granite.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/25271
 - 状态/时间: merged / 2025-09-30
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/25271 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 36 个文件，+964/-905，可读 patch 2200 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Move`VllmConfig` from `config/__init__.py` to `config/vllm.py`」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/layers/quantization/utils/gptq_utils.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/auto_round.py`；技术摘要: 覆盖「Move`VllmConfig` from `config/__init__.py` to `config/vllm.py`」；主要实现面是 `vllm/model_executor/layers/quantization/utils/gptq_utils.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/auto_round.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -377,6 +385,7 @@ diff -- vllm/model_executor/layers/quantization/auto_round.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26247
 - 状态/时间: merged / 2025-10-05
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26247 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1508 个文件，+83935/-68959，可读 patch 272044 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Convert formatting to use `ruff` instead of `yapf` + `isort`」；模型线: Ling 2.5；类别: 性能/后端优化；主要 diff: `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`；技术摘要: 覆盖「Convert formatting to use `ruff` instead of `yapf` + `isort`」；主要实现面是 `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -419,6 +428,7 @@ diff -- vllm/model_executor/layers/fused_moe/fused_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26262
 - 状态/时间: merged / 2025-10-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26262 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 65 个文件，+301/-291，可读 patch 1525 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Fix per file ruff ignores related to line length」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `tests/models/multimodal/generation/test_common.py`, `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/models/longcat_flash_mtp.py`；技术摘要: 覆盖「Fix per file ruff ignores related to line length」；主要实现面是 `tests/models/multimodal/generation/test_common.py`, `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/models/longcat_flash_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -461,6 +471,7 @@ diff -- vllm/model_executor/models/longcat_flash_mtp.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26145
 - 状态/时间: merged / 2025-10-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26145 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 15 个文件，+271/-283，可读 patch 1118 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Apply shared experts overlap optimization to all models with shared experts」；模型线: Ling 2.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/ernie45_vl_moe.py`；技术摘要: 覆盖「[Model] Apply shared experts overlap optimization to all models with shared experts」；主要实现面是 `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/ernie45_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -502,6 +513,7 @@ diff -- vllm/model_executor/models/ernie45_vl_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26633
 - 状态/时间: merged / 2025-10-12
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26633 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 944 个文件，+9491/-10122，可读 patch 61484 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`」；模型线: Ling 2.5；类别: 性能/后端优化；主要 diff: `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`；技术摘要: 覆盖「Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`」；主要实现面是 `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -543,6 +555,7 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/26876
 - 状态/时间: merged / 2025-10-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/26876 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-2，可读 patch 15 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Fix] Remove divisibility requirement between num_kv_heads and tp_size in bailing_moe」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/bailing_moe.py`；技术摘要: 覆盖「[Fix] Remove divisibility requirement between num_kv_heads and tp_size in bailing_moe」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -567,6 +580,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28382
 - 状态/时间: merged / 2025-11-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28382 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 65 个文件，+197/-754，可读 patch 2645 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[LoRA][1/N]Remove LoRA extra vocab」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/phimoe.py`, `vllm/model_executor/models/lfm2_moe.py`, `vllm/model_executor/models/falcon_h1.py`；技术摘要: 覆盖「[LoRA][1/N]Remove LoRA extra vocab」；主要实现面是 `vllm/model_executor/models/phimoe.py`, `vllm/model_executor/models/lfm2_moe.py`, `vllm/model_executor/models/falcon_h1.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -649,6 +663,7 @@ diff -- vllm/model_executor/models/bert.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28277
 - 状态/时间: merged / 2025-11-14
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28277 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+3/-2，可读 patch 19 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Fix bailing_moe accuracy problem」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/bailing_moe.py`；技术摘要: 覆盖「[Model] Fix bailing_moe accuracy problem」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -676,6 +691,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/28777
 - 状态/时间: merged / 2025-11-15
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28777 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Fix lmhead init bug of bailing_moe」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/bailing_moe.py`；技术摘要: 覆盖「[Model] Fix lmhead init bug of bailing_moe」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -986,6 +1002,7 @@ diff -- vllm/model_executor/layers/attention/__init__.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33737
 - 状态/时间: merged / 2026-02-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33737 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+9/-4，可读 patch 69 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] Define router_logits_dtype for remaining MoE models」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/longcat_flash.py`, `vllm/model_executor/models/flex_olmo.py`, `vllm/model_executor/models/afmoe.py`；技术摘要: 覆盖「[Bugfix] Define router_logits_dtype for remaining MoE models」；主要实现面是 `vllm/model_executor/models/longcat_flash.py`, `vllm/model_executor/models/flex_olmo.py`, `vllm/model_executor/models/afmoe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1027,6 +1044,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/35102
 - 状态/时间: merged / 2026-02-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/35102 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+1407/-70，可读 patch 1650 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Model] Ring 2.5」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/fla/ops/layernorm_guard.py`；技术摘要: 覆盖「[Model] Ring 2.5」；主要实现面是 `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/fla/ops/layernorm_guard.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1070,6 +1088,7 @@ diff -- vllm/model_executor/layers/fla/ops/layernorm_guard.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/37195
 - 状态/时间: merged / 2026-03-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/37195 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 23 个文件，+23/-45，可读 patch 353 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[V0 Deprecation] Deprecate virtual engine」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/layers/attention/mla_attention.py`；技术摘要: 覆盖「[V0 Deprecation] Deprecate virtual engine」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/layers/attention/mla_attention.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1275,6 +1294,7 @@ diff -- vllm/model_executor/models/glm4_moe_lite.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/40859
 - 状态/时间: merged / 2026-04-28
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/40859 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-16，可读 patch 90 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix ] fix bailing_moe_linear」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`；技术摘要: 覆盖「[Bugfix ] fix bailing_moe_linear」；主要实现面是 `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1308,6 +1328,7 @@ diff -- vllm/model_executor/layers/mamba/mamba_utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41185
 - 状态/时间: merged / 2026-04-29
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41185 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-2，可读 patch 22 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] BailingMoeV2.5: rotate full qk_rope_head_dim in MLA RoPE」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/bailing_moe_linear.py`；技术摘要: 覆盖「[Bugfix] BailingMoeV2.5: rotate full qk_rope_head_dim in MLA RoPE」；主要实现面是 `vllm/model_executor/models/bailing_moe_linear.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1335,6 +1356,7 @@ diff -- vllm/model_executor/models/bailing_moe_linear.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41188
 - 状态/时间: merged / 2026-05-11
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41188 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 18 个文件，+64/-58，可读 patch 404 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Misc] Replace mamba_type string literals with MambaAttentionBackendEnum」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/layers/kda.py`, `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/linear_attn.py`；技术摘要: 覆盖「[Misc] Replace mamba_type string literals with MambaAttentionBackendEnum」；主要实现面是 `vllm/model_executor/layers/kda.py`, `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/linear_attn.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1376,6 +1398,7 @@ diff -- vllm/model_executor/layers/mamba/linear_attn.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/43410
 - 状态/时间: merged / 2026-05-26
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43410 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+262/-490，可读 patch 893 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Kernel] Porting fuse_minimax_qk_norm to manual fusion」；模型线: Ling 2.5；类别: 性能/后端优化；主要 diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`；技术摘要: 覆盖「[Kernel] Porting fuse_minimax_qk_norm to manual fusion」；主要实现面是 `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1418,6 +1441,7 @@ diff -- vllm/model_executor/layers/minimax_rms_norm/__init__.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/43770
 - 状态/时间: merged / 2026-06-01
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43770 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+6/-1，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Bugfix] fix wrong partial_rotary_factor calculation for bailing_moe model.」；模型线: Ling 2.5；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/bailing_moe.py`；技术摘要: 覆盖「[Bugfix] fix wrong partial_rotary_factor calculation for bailing_moe model.」；主要实现面是 `vllm/model_executor/models/bailing_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -1445,6 +1469,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/43556
 - 状态/时间: merged / 2026-06-04
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/43556 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+505/-551，可读 patch 1309 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Attention] Mamba attention module refactor - LINEAR」；模型线: Ling 2.5；类别: 模型实现调整；主要 diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear/bailing_linear_attn.py`, `vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py`；技术摘要: 覆盖「[Attention] Mamba attention module refactor - LINEAR」；主要实现面是 `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear/bailing_linear_attn.py`, `vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py`。下方保留文件级证据、代码摘录和验证风险。

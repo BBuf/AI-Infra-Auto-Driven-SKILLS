@@ -4,18 +4,18 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` | [#30514](https://github.com/sgl-project/sglang/pull/30514) |
-| `docs_new/docs/hardware-platforms/ascend-npus/best_practice/deepseek_r1.mdx` | 无直接 PR 号提交 |
-| `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/deepseek_r1.mdx` | 无直接 PR 号提交 |
-| `docs_new/docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/deepseek-r1-basic-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/deepseek-v3-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/deepseek-v31-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V3.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V3_1.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` | 无直接 PR 号提交 |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/deepseek_r1.mdx` | 无直接 PR 号提交 |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/deepseek_r1.mdx` | 无直接 PR 号提交 |
+| `docs/docs/references/multi_node_deployment/rbg_pd/deepseekv32_pd.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/deepseek-r1-basic-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/deepseek-v3-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/deepseek-v31-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/deepseek-v32-deployment.jsx` | 无直接 PR 号提交 |
 | `examples/chat_template/tool_chat_template_deepseekv3.jinja` | [#5908](https://github.com/sgl-project/sglang/pull/5908), [#9525](https://github.com/sgl-project/sglang/pull/9525), [#10209](https://github.com/sgl-project/sglang/pull/10209) |
 | `examples/chat_template/tool_chat_template_deepseekv31.jinja` | [#9446](https://github.com/sgl-project/sglang/pull/9446), [#9895](https://github.com/sgl-project/sglang/pull/9895), [#14837](https://github.com/sgl-project/sglang/pull/14837) |
 | `examples/chat_template/tool_chat_template_deepseekv32.jinja` | [#11063](https://github.com/sgl-project/sglang/pull/11063) |
@@ -43,12 +43,14 @@
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/__init__.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` | [#22774](https://github.com/sgl-project/sglang/pull/22774) |
-| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405), [#22774](https://github.com/sgl-project/sglang/pull/22774), [#31619](https://github.com/sgl-project/sglang/pull/31619) |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha_rocm.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | [#21405](https://github.com/sgl-project/sglang/pull/21405), [#22774](https://github.com/sgl-project/sglang/pull/22774), [#31619](https://github.com/sgl-project/sglang/pull/31619), [#31888](https://github.com/sgl-project/sglang/pull/31888) |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_rocm.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` | [#18461](https://github.com/sgl-project/sglang/pull/18461), [#22774](https://github.com/sgl-project/sglang/pull/22774) |
 | `python/sglang/srt/models/deepseek_common/utils.py` | [#18461](https://github.com/sgl-project/sglang/pull/18461), [#22774](https://github.com/sgl-project/sglang/pull/22774) |
-| `python/sglang/srt/models/deepseek_v2.py` | [#2667](https://github.com/sgl-project/sglang/pull/2667), [#3237](https://github.com/sgl-project/sglang/pull/3237), [#3550](https://github.com/sgl-project/sglang/pull/3550), [#3582](https://github.com/sgl-project/sglang/pull/3582), [#3730](https://github.com/sgl-project/sglang/pull/3730), [#3785](https://github.com/sgl-project/sglang/pull/3785), [#3888](https://github.com/sgl-project/sglang/pull/3888), [#4836](https://github.com/sgl-project/sglang/pull/4836), [#4918](https://github.com/sgl-project/sglang/pull/4918), [#5571](https://github.com/sgl-project/sglang/pull/5571), [#5662](https://github.com/sgl-project/sglang/pull/5662), [#5707](https://github.com/sgl-project/sglang/pull/5707), ... (81 total) |
+| `python/sglang/srt/models/deepseek_v2.py` | [#2667](https://github.com/sgl-project/sglang/pull/2667), [#3237](https://github.com/sgl-project/sglang/pull/3237), [#3550](https://github.com/sgl-project/sglang/pull/3550), [#3582](https://github.com/sgl-project/sglang/pull/3582), [#3730](https://github.com/sgl-project/sglang/pull/3730), [#3785](https://github.com/sgl-project/sglang/pull/3785), [#3888](https://github.com/sgl-project/sglang/pull/3888), [#4836](https://github.com/sgl-project/sglang/pull/4836), [#4918](https://github.com/sgl-project/sglang/pull/4918), [#5571](https://github.com/sgl-project/sglang/pull/5571), [#5662](https://github.com/sgl-project/sglang/pull/5662), [#5707](https://github.com/sgl-project/sglang/pull/5707), ... (82 total) |
 | `test/registered/amd/accuracy/mi30x/test_deepseek_r1_eval_amd.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_eval_mi35x.py` | [#17523](https://github.com/sgl-project/sglang/pull/17523) |
 | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_ar_fusion_eval_mi35x.py` | 无直接 PR 号提交 |
@@ -62,13 +64,12 @@
 | `test/registered/amd/perf/mi35x/test_deepseek_r1_mxfp4_perf_mi35x.py` | [#17179](https://github.com/sgl-project/sglang/pull/17179) |
 | `test/registered/amd/test_deepseek_r1_hicache_mi35x.py` | [#26395](https://github.com/sgl-project/sglang/pull/26395) |
 | `test/registered/amd/test_deepseek_r1_mxfp4_8gpu.py` | [#27163](https://github.com/sgl-project/sglang/pull/27163) |
-| `test/registered/backends/test_deepseek_r1_fp8_trtllm_backend.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 146
-- 原文档显式引用补充 PR 数: 184
-- 当前文档总 PR 数: 330
+- 原文档显式引用补充 PR 数: 185
+- 当前文档总 PR 数: 331
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -136,7 +137,6 @@
 | 2025-05-15 | [#6109](https://github.com/sgl-project/sglang/pull/6109) | merged | [Feat] Support FlashMLA backend with MTP and FP8 KV cache | `python/sglang/srt/layers/attention/flashmla_backend.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py` |
 | 2025-05-18 | [#6151](https://github.com/sgl-project/sglang/pull/6151) | closed | [Feat] optimize Qwen3 on H20 by hybrid Attention Backend | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/model_executor/cuda_graph_runner.py`, `python/sglang/srt/server_args.py` |
 | 2025-05-28 | [#6655](https://github.com/sgl-project/sglang/pull/6655) | merged | fix(deepseekv3): Fix DeepSeekV3Detector tool_index assignment and multi-tool call streaming support | `python/sglang/srt/function_call/deepseekv3_detector.py` |
-| 2025-05-29 | [#6738](https://github.com/sgl-project/sglang/pull/6738) | open | Partially supports using MHA kernels in MLA forward when page-size > 1. | `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-05-29 | [#6265](https://github.com/sgl-project/sglang/pull/6265) | merged | [fix][RL] Fix DeepSeekV3ForCausalLM.post_load_weights for multiple update weight | `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-06-05 | [#6890](https://github.com/sgl-project/sglang/pull/6890) | merged | Use deepgemm instead of triton for fused_qkv_a_proj_with_mqa | `python/sglang/srt/layers/quantization/fp8_utils.py` |
 | 2025-06-07 | [#6220](https://github.com/sgl-project/sglang/pull/6220) | merged | Fuse routed scaling factor in topk_reduce kernel | `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
@@ -268,7 +268,6 @@
 | 2026-02-12 | [#18607](https://github.com/sgl-project/sglang/pull/18607) | merged | [AMD] Fix accuracy issue when running TP4 dsv3 model with mtp | `python/sglang/srt/layers/attention/aiter_backend.py`, `docker/rocm.Dockerfile` |
 | 2026-02-15 | [#16907](https://github.com/sgl-project/sglang/pull/16907) | merged | Fix model loading for DeepSeek-V3.2-AWQ | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-02-16 | [#18389](https://github.com/sgl-project/sglang/pull/18389) | merged | Nsa trtllm mla sparse fp8 support with Deepseek v3.2 NVFP4 | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-02-16 | [#18892](https://github.com/sgl-project/sglang/pull/18892) | open | [Kernel] Add JIT support for DeepSeek V3 GEMM | `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh`, `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh`, `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` |
 | 2026-02-19 | [#18978](https://github.com/sgl-project/sglang/pull/18978) | merged | [AMD] Fix mi35x dsv32 mtp nightly | `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-02-22 | [#19041](https://github.com/sgl-project/sglang/pull/19041) | merged | [DSv32] [GLM5] Improve Model Quality by Avoiding FP32 Precision Loss in `weights_proj` | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py`, `test/registered/kernels/test_nsa_indexer.py` |
 | 2026-02-24 | [#18624](https://github.com/sgl-project/sglang/pull/18624) | merged | [AMD] DSR1/V3 use fp8 bmm in MLA for MI300X | `python/sglang/srt/models/deepseek_v2.py` |
@@ -288,7 +287,6 @@
 | 2026-03-19 | [#20841](https://github.com/sgl-project/sglang/pull/20841) | merged | Fix gpu-fault issue when run deepseek-r1 and enable dp | `python/sglang/srt/layers/attention/aiter_backend.py` |
 | 2026-03-24 | [#20438](https://github.com/sgl-project/sglang/pull/20438) | merged | [Perf] Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-24 | [#19945](https://github.com/sgl-project/sglang/pull/19945) | merged | [AMD] Tilelang sparse fwd for dsv32 mi355/mi300 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
-| 2026-03-27 | [#21526](https://github.com/sgl-project/sglang/pull/21526) | open | Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95 | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-27 | [#21529](https://github.com/sgl-project/sglang/pull/21529) | open | Add MXFP4 (including Quark W4A4) quantization support for DeepSeek-architecture on ROCm | `python/sglang/srt/layers/quantization/quark/schemes/quark_w4a4_mxfp4_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-27 | [#21530](https://github.com/sgl-project/sglang/pull/21530) | open | [ROCm] Fix fused MLA decode rope path for Kimi K2.5 and DeepSeek-variant models | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py`, `python/sglang/srt/layers/attention/triton_ops/rocm_mla_decode_rope.py` |
 | 2026-03-30 | [#18461](https://github.com/sgl-project/sglang/pull/18461) | merged | [Intel GPU] Enable DeepSeek R1 inference on XPU | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/models/deepseek_common/utils.py`, `python/sglang/srt/models/deepseek_v2.py` |
@@ -301,9 +299,7 @@
 | 2026-04-09 | [#20089](https://github.com/sgl-project/sglang/pull/20089) | merged | feat: [1/2] [DeepEP] Fuse shared expert into MoE dispatch under EP | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2026-04-09 | [#22323](https://github.com/sgl-project/sglang/pull/22323) | merged | [Lora] Lora quat info re-factor and support deepseekv3 mla lora | `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/layers/quantization/moe_wna16.py`, `python/sglang/srt/layers/quantization/w8a8_int8.py` |
 | 2026-04-10 | [#22316](https://github.com/sgl-project/sglang/pull/22316) | merged | [Reland] DeepSeek-R1-0528-w4a8: DeepEP Low Latency Dispatch Adopts FP8 Communication | `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py` |
-| 2026-04-16 | [#22938](https://github.com/sgl-project/sglang/pull/22938) | open | [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122) | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-04-17 | [#22128](https://github.com/sgl-project/sglang/pull/22128) | merged | Allow piecewise CUDA graph with speculative decoding | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/model_runner.py`, `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` |
-| 2026-04-20 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | open | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
 | 2026-04-20 | [#21599](https://github.com/sgl-project/sglang/pull/21599) | merged | [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1 | `python/sglang/srt/model_executor/cuda_graph_runner.py`, `benchmark/bench_adaptive_speculative.py`, `test/registered/unit/spec/test_adaptive_spec_params.py` |
 | 2026-04-21 | [#23315](https://github.com/sgl-project/sglang/pull/23315) | merged | Opt-in strip of thinking tokens from radix cache | `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-21 | [#22950](https://github.com/sgl-project/sglang/pull/22950) | closed | [fix] Parser-gated two-phase cache stripping for reasoning radix caches (fixes #22373) | `python/sglang/srt/parser/reasoning_parser.py`, `python/sglang/srt/configs/model_config.py`, `test/registered/unit/mem_cache/test_radix_cache_thinking.py` |
@@ -405,7 +401,13 @@
 | 2026-06-29 | [#29463](https://github.com/sgl-project/sglang/pull/29463) | merged | [DeepSeek V3] Reland: run routed experts on main stream in dual-stream MoE | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-07-01 | [#29290](https://github.com/sgl-project/sglang/pull/29290) | merged | [AMD] Cover DeepSeek-R1 MXFP4 TP4 MTP nightly CI | `test/registered/amd/accuracy/mi35x/test_deepseek_r1_mxfp4_tp4_mtp_mi35x.py` |
 | 2026-07-18 | [#31619](https://github.com/sgl-project/sglang/pull/31619) | merged | [CP] Migrate MLA prefill CP (DeepSeek V3) to CP-v2 zigzag strategy | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
-| 2026-07-19 | [#30514](https://github.com/sgl-project/sglang/pull/30514) | merged | [DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2) | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`, `python/sglang/srt/layers/attention/dsa_backend.py`, `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh` |
+| 2026-07-19 | [#30514](https://github.com/sgl-project/sglang/pull/30514) | merged | [DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2) | `python/sglang/srt/layers/attention/dsa_backend.py`, `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh`, `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py` |
+| 2026-07-30 | [#31888](https://github.com/sgl-project/sglang/pull/31888) | merged | [DSA] Q8KV8 FP8 Sparse Prefill on GLM-5.2 & DeepSeek-V3.2: Q8-Path & Shared-Path Optimizations | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
+| 2026-08-05 | [#18892](https://github.com/sgl-project/sglang/pull/18892) | closed | [Kernel] Add JIT support for DeepSeek V3 GEMM | `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh`, `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh`, `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` |
+| 2026-08-10 | [#21526](https://github.com/sgl-project/sglang/pull/21526) | closed | Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95 | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-08-13 | [#6738](https://github.com/sgl-project/sglang/pull/6738) | closed | Partially supports using MHA kernels in MLA forward when page-size > 1. | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-08-18 | [#22938](https://github.com/sgl-project/sglang/pull/22938) | closed | [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122) | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-08-19 | [#23257](https://github.com/sgl-project/sglang/pull/23257) | closed | Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2413,33 +2415,6 @@ diff -- python/sglang/srt/function_call/deepseekv3_detector.py
 - 已读文件:
   - runtime: `python/sglang/srt/function_call/deepseekv3_detector.py` modified +52/-4
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/deepseekv3_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #6738 - Partially supports using MHA kernels in MLA forward when page-size > 1.
-
-- 链接: https://github.com/sgl-project/sglang/pull/6738
-- 状态/时间: open / 2025-05-29
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+41/-0，可读 patch 83 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Partially supports using MHA kernels in MLA forward when page-size > 1.」；模型线: DeepSeek V3/R1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Partially supports using MHA kernels in MLA forward when page-size > 1.」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +41/-0 (41 lines); hunks: -152,6 +152,10 @@ class AttnForwardMethod(IntEnum):; -1005,6 +1009,7 @@ def _dispatch_mla_subtype():; symbols: AttnForwardMethod, _dispatch_mla_subtype, forward_prepare, forward_core，涉及 `AttnForwardMethod, _dispatch_mla_subtype, forward_prepare`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +41/-0 (41 lines); hunks: -152,6 +152,10 @@ class AttnForwardMethod(IntEnum):; -1005,6 +1009,7 @@ def _dispatch_mla_subtype():; symbols: AttnForwardMethod, _dispatch_mla_subtype, forward_prepare, forward_core
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -152,6 +152,10 @@ class AttnForwardMethod(IntEnum):
-+    # Use multi-head attention, but with paged KV cache.
-+    # This method only support MHA without prefix-cache for now.
-+    MHA_PAGED_PREFILL = auto()
-@@ -1005,6 +1009,7 @@ def _dispatch_mla_subtype():
-+            sum_extend_prefix_lens = 0
-@@ -1018,6 +1023,16 @@ def _dispatch_mla_subtype():
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +41/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #6265 - [fix][RL] Fix DeepSeekV3ForCausalLM.post_load_weights for multiple update weight
 
@@ -6578,48 +6553,6 @@ diff -- python/sglang/srt/models/deepseek_v2.py
   - runtime: `python/sglang/srt/layers/attention/nsa_backend.py` modified +172/-66; `python/sglang/srt/models/deepseek_v2.py` modified +6/-0
 - 验证与风险: diff 自带测试面 `test/registered/hicache/test_nsa_pool_host_unit.py`, `test/registered/kernels/test_nsa_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #18892 - [Kernel] Add JIT support for DeepSeek V3 GEMM
-
-- 链接: https://github.com/sgl-project/sglang/pull/18892
-- 状态/时间: open / 2026-02-16
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+1284/-0，可读 patch 1299 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Kernel] Add JIT support for DeepSeek V3 GEMM」；模型线: DeepSeek V3/R1；类别: 性能/后端优化；主要 diff: `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh`, `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh`, `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py`；技术摘要: 覆盖「[Kernel] Add JIT support for DeepSeek V3 GEMM」；主要实现面是 `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh`, `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh`, `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh` added +602/-0 (602 lines); hunks: -0,0 +1,602; symbols: Type，涉及 `Type`；`python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh` added +176/-0 (176 lines); hunks: -0,0 +1,176；`python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: benchmark_bf16, tflops, benchmark_fp32，涉及 `benchmark_bf16, tflops, benchmark_fp32`；`python/sglang/jit_kernel/benchmark/bench_dsv3_fused_a_gemm.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: _make_inputs, benchmark, tflops，涉及 `_make_inputs, benchmark, tflops`。
-- 代码 diff 细节:
-  - `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh` added +602/-0 (602 lines); hunks: -0,0 +1,602; symbols: Type
-  - `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh` added +176/-0 (176 lines); hunks: -0,0 +1,176
-  - `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: benchmark_bf16, tflops, benchmark_fp32
-  - `python/sglang/jit_kernel/benchmark/bench_dsv3_fused_a_gemm.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: _make_inputs, benchmark, tflops
-  - `python/sglang/jit_kernel/dsv3_fused_a_gemm.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: _jit_dsv3_fused_a_gemm_module, jit_dsv3_fused_a_gemm, dsv3_fused_a_gemm
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh
-@@ -0,0 +1,602 @@
-+/*
-+ * Adapted from
-+ * https://github.com/NVIDIA/TensorRT-LLM/blob/619709fc33bd5dc268f19d6a741fe7ed51c0f8f5/cpp/tensorrt_llm/kernels/dsv3MinLatencyKernels/dsv3FusedAGemm.cu
-+ *
-+ * Copyright (c) 2019-2024, NVIDIA CORPORATION.  All rights reserved.
-+ * Copyright (c) 2021, NAVER Corp.  Authored by CLOVA.
-diff -- python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh
-@@ -0,0 +1,176 @@
-+/*
-+ * Adapted from
-+ * https://github.com/NVIDIA/TensorRT-LLM/blob/main/cpp/tensorrt_llm/kernels/dsv3MinLatencyKernels/dsv3RouterGemm.cu
-+ * https://github.com/NVIDIA/TensorRT-LLM/blob/main/cpp/tensorrt_llm/thop/dsv3RouterGemmOp.cpp
-+ *
-+ * Copyright (c) 2019-2023, NVIDIA CORPORATION.  All rights reserved.
-diff -- python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py
-@@ -0,0 +1,118 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh` added +602/-0; `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh` added +176/-0; `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` added +118/-0; `python/sglang/jit_kernel/benchmark/bench_dsv3_fused_a_gemm.py` added +83/-0; `python/sglang/jit_kernel/dsv3_fused_a_gemm.py` added +82/-0; `python/sglang/jit_kernel/dsv3_router_gemm.py` added +76/-0
-  - tests: `python/sglang/jit_kernel/tests/test_dsv3_fused_a_gemm.py` added +69/-0; `python/sglang/jit_kernel/tests/test_dsv3_router_gemm.py` added +61/-0
-- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_dsv3_fused_a_gemm.py`, `python/sglang/jit_kernel/tests/test_dsv3_router_gemm.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #18978 - [AMD] Fix mi35x dsv32 mtp nightly
 
 - 链接: https://github.com/sgl-project/sglang/pull/18978
@@ -7227,28 +7160,6 @@ diff -- python/sglang/srt/layers/attention/nsa/tilelang_kernel.py
   - runtime: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +141/-95
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #21526 - Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95
-
-- 链接: https://github.com/sgl-project/sglang/pull/21526
-- 状态/时间: open / 2026-03-27
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95」；模型线: DeepSeek V3/R1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -330,6 +330,7 @@ def forward(; symbols: forward，涉及 `forward`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -330,6 +330,7 @@ def forward(; symbols: forward
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -330,6 +330,7 @@ def forward(
-+                and hidden_states.shape[1] == 7168  # tuned for DSR1/V3
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #21529 - Add MXFP4 (including Quark W4A4) quantization support for DeepSeek-architecture on ROCm
 
 - 链接: https://github.com/sgl-project/sglang/pull/21529
@@ -7707,38 +7618,6 @@ diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
   - runtime: `python/sglang/srt/layers/moe/ep_moe/kernels.py` modified +73/-0; `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py` modified +15/-7; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +0/-3; `python/sglang/srt/layers/quantization/w4afp8.py` modified +2/-1; `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/kernels.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #22938 - [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)
-
-- 链接: https://github.com/sgl-project/sglang/pull/22938
-- 状态/时间: open / 2026-04-16
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-8，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；模型线: DeepSeek V3/R1；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5 (17 lines); hunks: -19,7 +19,6; -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):; symbols: bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare, forward_absorb_core，涉及 `bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare`；`python/sglang/srt/models/deepseek_v2.py` modified +0/-3 (3 lines); hunks: -169,9 +169,6。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5 (17 lines); hunks: -19,7 +19,6; -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):; symbols: bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare, forward_absorb_core
-  - `python/sglang/srt/models/deepseek_v2.py` modified +0/-3 (3 lines); hunks: -169,9 +169,6
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
-@@ -19,7 +19,6 @@
--    _is_gfx95_supported,
-@@ -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):
-+    from sglang.srt.layers.rocm_linear_utils import fused_qk_rope_cat_and_cache_mla
-@@ -78,7 +80,6 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):
--    from sglang.srt.layers.rocm_linear_utils import fused_qk_rope_cat_and_cache_mla
-@@ -317,7 +318,7 @@ def forward_absorb_prepare(
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -169,9 +169,6 @@
--if _use_aiter:
--    pass
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5; `python/sglang/srt/models/deepseek_v2.py` modified +0/-3
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #22128 - Allow piecewise CUDA graph with speculative decoding
 
 - 链接: https://github.com/sgl-project/sglang/pull/22128
@@ -7779,37 +7658,6 @@ diff -- test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.
   - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +10/-0; `python/sglang/srt/model_executor/model_runner.py` modified +4/-0; `python/sglang/srt/server_args.py` modified +15/-18
   - tests: `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py` added +243/-0
 - 验证与风险: diff 自带测试面 `test/registered/piecewise_cuda_graph/test_pcg_with_speculative_decoding.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #23257 - Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention
-
-- 链接: https://github.com/sgl-project/sglang/pull/23257
-- 状态/时间: open / 2026-04-20
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+5/-0，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention」；模型线: DeepSeek V3/R1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`；技术摘要: 覆盖「Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +3/-0 (3 lines); hunks: -89,6 +89,7; -648,6 +649,7 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, _post_combine_hook，涉及 `forward_normal_dual_stream, _post_combine_hook`；`python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` modified +2/-0 (2 lines); hunks: -249,6 +249,8 @@ def ensure_cutedsl_wrapper(layer: torch.nn.Module) -> None:; symbols: ensure_cutedsl_wrapper，涉及 `ensure_cutedsl_wrapper`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +3/-0 (3 lines); hunks: -89,6 +89,7; -648,6 +649,7 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, _post_combine_hook
-  - `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` modified +2/-0 (2 lines); hunks: -249,6 +249,8 @@ def ensure_cutedsl_wrapper(layer: torch.nn.Module) -> None:; symbols: ensure_cutedsl_wrapper
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -89,6 +89,7 @@
-+    should_use_dp_reduce_scatterv,
-@@ -648,6 +649,7 @@ def forward_normal_dual_stream(
-+            and not should_use_dp_reduce_scatterv()
-@@ -736,6 +738,7 @@ def _post_combine_hook(
-+            and not should_use_dp_reduce_scatterv()
-diff -- python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py
-@@ -249,6 +249,8 @@ def ensure_cutedsl_wrapper(layer: torch.nn.Module) -> None:
-+    if server_args.enable_dp_attention:
-+        max_num_tokens *= server_args.dp_size
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +3/-0; `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` modified +2/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #21599 - [SPEC][1/N] feat: add adaptive speculative_num_steps for EAGLE topk=1
 
@@ -11531,23 +11379,19 @@ diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forwa
 
 - 链接: https://github.com/sgl-project/sglang/pull/30514
 - 状态/时间: merged / 2026-07-19
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`；关联提交 `b8ec544946f1`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+801/-95，可读 patch 1275 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)」；模型线: DeepSeek V3/R1；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`, `python/sglang/srt/layers/attention/dsa_backend.py`, `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh`；技术摘要: 覆盖「[DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)」；主要实现面是 `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx`, `python/sglang/srt/layers/attention/dsa_backend.py`, `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1 (2 lines); hunks: -64,7 +64,7 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregre...；`python/sglang/srt/layers/attention/dsa_backend.py` modified +211/-9 (220 lines); hunks: -18,7 +18,10; -29,6 +32,7; symbols: topk_transform, __init__, forward_extend, _forward_flashmla_sparse，涉及 `topk_transform, __init__, forward_extend`；`python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh` modified +190/-83 (273 lines); hunks: -14,11 +14,11 @@ limitations under the License.; -137,15 +137,36 @@ struct SparseMlaQ8Kv8PrefillKernel {；`python/sglang/kernels/ops/attention/dsa/dequant_k_cache.py` modified +132/-0 (132 lines); hunks: -285,5 +285,137 @@ def _dequantize_k_cache_paged_kernel(; symbols: _dequantize_k_cache_paged_kernel, gather_dequant_requant_fp8_paged, _gather_dequant_requant_fp8_paged_kernel，涉及 `_dequantize_k_cache_paged_kernel, gather_dequant_requant_fp8_paged, _gather_dequant_requant_fp8_paged_kernel`。
+- 动机: 标题「[DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)」；模型线: DeepSeek V3/R1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/dsa_backend.py`, `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh`, `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py`；技术摘要: 覆盖「[DSA] Integrate Q8KV8 FP8 Sparse MLA Prefill into the DSA Backend (DeepSeek-V3.2)」；主要实现面是 `python/sglang/srt/layers/attention/dsa_backend.py`, `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh`, `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/dsa_backend.py` modified +211/-9 (220 lines); hunks: -18,7 +18,10; -29,6 +32,7; symbols: topk_transform, __init__, forward_extend, _forward_flashmla_sparse，涉及 `topk_transform, __init__, forward_extend`；`python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh` modified +190/-83 (273 lines); hunks: -14,11 +14,11 @@ limitations under the License.; -137,15 +137,36 @@ struct SparseMlaQ8Kv8PrefillKernel {；`test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py` modified +186/-1 (187 lines); hunks: -9,7 +9,7; -417,5 +417,190 @@ def _call(**overrides):; symbols: _call, _ref_masked_blocked, test_sparse_mla_q8kv8_prefill_masked_sentinels, test_sparse_mla_q8kv8_prefill_sq_envelope，涉及 `_call, _ref_masked_blocked, test_sparse_mla_q8kv8_prefill_masked_sentinels`；`python/sglang/kernels/ops/attention/dsa/dequant_k_cache.py` modified +132/-0 (132 lines); hunks: -285,5 +285,137 @@ def _dequantize_k_cache_paged_kernel(; symbols: _dequantize_k_cache_paged_kernel, gather_dequant_requant_fp8_paged, _gather_dequant_requant_fp8_paged_kernel，涉及 `_dequantize_k_cache_paged_kernel, gather_dequant_requant_fp8_paged, _gather_dequant_requant_fp8_paged_kernel`。
 - 代码 diff 细节:
-  - `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1 (2 lines); hunks: -64,7 +64,7 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregre...
   - `python/sglang/srt/layers/attention/dsa_backend.py` modified +211/-9 (220 lines); hunks: -18,7 +18,10; -29,6 +32,7; symbols: topk_transform, __init__, forward_extend, _forward_flashmla_sparse
   - `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh` modified +190/-83 (273 lines); hunks: -14,11 +14,11 @@ limitations under the License.; -137,15 +137,36 @@ struct SparseMlaQ8Kv8PrefillKernel {
+  - `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py` modified +186/-1 (187 lines); hunks: -9,7 +9,7; -417,5 +417,190 @@ def _call(**overrides):; symbols: _call, _ref_masked_blocked, test_sparse_mla_q8kv8_prefill_masked_sentinels, test_sparse_mla_q8kv8_prefill_sq_envelope
   - `python/sglang/kernels/ops/attention/dsa/dequant_k_cache.py` modified +132/-0 (132 lines); hunks: -285,5 +285,137 @@ def _dequantize_k_cache_paged_kernel(; symbols: _dequantize_k_cache_paged_kernel, gather_dequant_requant_fp8_paged, _gather_dequant_requant_fp8_paged_kernel
   - `python/sglang/kernels/ops/kvcache/cache_ops.py` modified +67/-0 (67 lines); hunks: -264,3 +264,70 @@ def launch_reshape_and_cache_flash(; symbols: launch_reshape_and_cache_flash, concat_and_cast_q_fp8_pad_kernel, concat_and_cast_q_fp8_pad
 - 关键代码摘录:
 
 ```diff
-diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
-@@ -64,7 +64,7 @@ import { DeepSeekV32Deployment } from "/src/snippets/autoregressive/deepseek-v32
--- **DSA prefill/decode attention kernels (`--dsa-prefill-backend`, `--dsa-decode-backend`):** The `dsa` backend is automatically selected for DeepSeek-V3.2. Available kernels: `fl
-+- **DSA prefill/decode attention kernels (`--dsa-prefill-backend`, `--dsa-decode-backend`):** The `dsa` backend is automatically selected for DeepSeek-V3.2. Available kernels: `fl
 diff -- python/sglang/srt/layers/attention/dsa_backend.py
 @@ -18,7 +18,10 @@
 -from sglang.kernels.ops.attention.dsa.dequant_k_cache import dequantize_k_cache_paged
@@ -11562,12 +11406,207 @@ diff -- python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh
 -//
 @@ -137,15 +137,36 @@ struct SparseMlaQ8Kv8PrefillKernel {
 -    array_aligned<fp8_t, cosize_v<SmemLayoutK>> k[2];    // 2x K double-buffer, fp8
+-    array_aligned<fp8_t, cosize_v<SmemLayoutVt>> vt[2];  // 2x Vt transposed buffer, fp8
++    array_aligned<fp8_t, cosize_v<SmemLayoutK>> k[2];  // 2x K double-buffer, fp8
+diff -- test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py
+@@ -9,7 +9,7 @@
 ```
 
 - 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1
-  - runtime: `python/sglang/srt/layers/attention/dsa_backend.py` modified +211/-9; `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh` modified +190/-83; `python/sglang/kernels/ops/attention/dsa/dequant_k_cache.py` modified +132/-0; `python/sglang/kernels/ops/kvcache/cache_ops.py` modified +67/-0; `python/sglang/kernels/ops/attention/utils.py` modified +6/-0; `python/sglang/srt/server_args.py` modified +1/-0
+  - runtime: `python/sglang/srt/layers/attention/dsa_backend.py` modified +211/-9; `python/sglang/jit_kernel/csrc/sparse_mla_q8kv8_prefill_sm90/kernel.cuh` modified +190/-83; `python/sglang/kernels/ops/attention/dsa/dequant_k_cache.py` modified +132/-0; `python/sglang/kernels/ops/kvcache/cache_ops.py` modified +67/-0; `python/sglang/kernels/ops/attention/utils.py` modified +6/-0
+  - tests: `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py` modified +186/-1
+  - docs: `docs_new/docs/advanced_features/attention_backend.mdx` modified +6/-0; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/registered/jit/test_sparse_mla_q8kv8_prefill_sm90.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #31888 - [DSA] Q8KV8 FP8 Sparse Prefill on GLM-5.2 & DeepSeek-V3.2: Q8-Path & Shared-Path Optimizations
+
+- 链接: https://github.com/sgl-project/sglang/pull/31888
+- 状态/时间: merged / 2026-07-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；关联提交 `e4a40a71f84c`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 30 个文件，+3837/-52，可读 patch 4635 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[DSA] Q8KV8 FP8 Sparse Prefill on GLM-5.2 & DeepSeek-V3.2: Q8-Path & Shared-Path Optimizations」；模型线: DeepSeek V3/R1；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`；技术摘要: 覆盖「[DSA] Q8KV8 FP8 Sparse Prefill on GLM-5.2 & DeepSeek-V3.2: Q8-Path & Shared-Path Optimizations」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +180/-18 (198 lines); hunks: -241,6 +241,9; -307,6 +310,7 @@ def forward(; symbols: forward, __init__, get_moe_weights, forward_normal_dual_stream，涉及 `forward, __init__, get_moe_weights`；`python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +174/-0 (174 lines); hunks: -6,6 +6,7; -52,6 +53,7; symbols: _make_mla_bmm_fusion_plan, _q8kv8_born_fp8_q_backend, forward_absorb_prepare，涉及 `_make_mla_bmm_fusion_plan, _q8kv8_born_fp8_q_backend, forward_absorb_prepare`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +180/-18 (198 lines); hunks: -241,6 +241,9; -307,6 +310,7 @@ def forward(; symbols: forward, __init__, get_moe_weights, forward_normal_dual_stream
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +174/-0 (174 lines); hunks: -6,6 +6,7; -52,6 +53,7; symbols: _make_mla_bmm_fusion_plan, _q8kv8_born_fp8_q_backend, forward_absorb_prepare
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -241,6 +241,9 @@
++# One-time SGLANG_OPT_MOE_QUANT_ONCE engagement log (see _moe_quant_once_enabled).
++_moe_quant_once_logged = False
+@@ -307,6 +310,7 @@ def forward(
++        gateup_pre_quant: Optional[Tuple[torch.Tensor, torch.Tensor]] = None,
+@@ -336,17 +340,24 @@ def forward(
+-        if (
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -6,6 +6,7 @@
++from sglang.kernels.ops.kvcache.cache_ops import absorbed_bmm_concat_cast_q_fp8
+@@ -52,6 +53,7 @@
++    get_tc_piecewise_forward_context,
+@@ -75,6 +77,8 @@
++_ENABLE_DSA_Q8KV8_BORN_FP8_Q = envs.SGLANG_ENABLE_DSA_Q8KV8_BORN_FP8_Q.get()
++_ENABLE_DSA_Q8KV8_QPREP_OVERLAP = envs.SGLANG_ENABLE_DSA_Q8KV8_QPREP_OVERLAP.get()
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +180/-18; `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +174/-0
+- 验证与风险: diff 自带测试面 `test/manual/test_moe_quant_once.py`, `test/registered/kernels/ops/attention/test_qprep_bf16_fp8_sm90.py`, `test/registered/kernels/ops/attention/test_sparse_mla_q8kv8_prefill_sm90.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #18892 - [Kernel] Add JIT support for DeepSeek V3 GEMM
+
+- 链接: https://github.com/sgl-project/sglang/pull/18892
+- 状态/时间: closed / 2026-08-05
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+1284/-0，可读 patch 1299 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Kernel] Add JIT support for DeepSeek V3 GEMM」；模型线: DeepSeek V3/R1；类别: 性能/后端优化；主要 diff: `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh`, `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh`, `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py`；技术摘要: 覆盖「[Kernel] Add JIT support for DeepSeek V3 GEMM」；主要实现面是 `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh`, `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh`, `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh` added +602/-0 (602 lines); hunks: -0,0 +1,602; symbols: Type，涉及 `Type`；`python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh` added +176/-0 (176 lines); hunks: -0,0 +1,176；`python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: benchmark_bf16, tflops, benchmark_fp32，涉及 `benchmark_bf16, tflops, benchmark_fp32`；`python/sglang/jit_kernel/benchmark/bench_dsv3_fused_a_gemm.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: _make_inputs, benchmark, tflops，涉及 `_make_inputs, benchmark, tflops`。
+- 代码 diff 细节:
+  - `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh` added +602/-0 (602 lines); hunks: -0,0 +1,602; symbols: Type
+  - `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh` added +176/-0 (176 lines); hunks: -0,0 +1,176
+  - `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: benchmark_bf16, tflops, benchmark_fp32
+  - `python/sglang/jit_kernel/benchmark/bench_dsv3_fused_a_gemm.py` added +83/-0 (83 lines); hunks: -0,0 +1,83; symbols: _make_inputs, benchmark, tflops
+  - `python/sglang/jit_kernel/dsv3_fused_a_gemm.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: _jit_dsv3_fused_a_gemm_module, jit_dsv3_fused_a_gemm, dsv3_fused_a_gemm
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh
+@@ -0,0 +1,602 @@
++/*
++ * Adapted from
++ * https://github.com/NVIDIA/TensorRT-LLM/blob/619709fc33bd5dc268f19d6a741fe7ed51c0f8f5/cpp/tensorrt_llm/kernels/dsv3MinLatencyKernels/dsv3FusedAGemm.cu
++ *
++ * Copyright (c) 2019-2024, NVIDIA CORPORATION.  All rights reserved.
++ * Copyright (c) 2021, NAVER Corp.  Authored by CLOVA.
+diff -- python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh
+@@ -0,0 +1,176 @@
++/*
++ * Adapted from
++ * https://github.com/NVIDIA/TensorRT-LLM/blob/main/cpp/tensorrt_llm/kernels/dsv3MinLatencyKernels/dsv3RouterGemm.cu
++ * https://github.com/NVIDIA/TensorRT-LLM/blob/main/cpp/tensorrt_llm/thop/dsv3RouterGemmOp.cpp
++ *
++ * Copyright (c) 2019-2023, NVIDIA CORPORATION.  All rights reserved.
+diff -- python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py
+@@ -0,0 +1,118 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/jit_kernel/csrc/gemm/dsv3_fused_a_gemm.cuh` added +602/-0; `python/sglang/jit_kernel/csrc/gemm/dsv3_router_gemm.cuh` added +176/-0; `python/sglang/jit_kernel/benchmark/bench_dsv3_router_gemm.py` added +118/-0; `python/sglang/jit_kernel/benchmark/bench_dsv3_fused_a_gemm.py` added +83/-0; `python/sglang/jit_kernel/dsv3_fused_a_gemm.py` added +82/-0; `python/sglang/jit_kernel/dsv3_router_gemm.py` added +76/-0
+  - tests: `python/sglang/jit_kernel/tests/test_dsv3_fused_a_gemm.py` added +69/-0; `python/sglang/jit_kernel/tests/test_dsv3_router_gemm.py` added +61/-0
+- 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_dsv3_fused_a_gemm.py`, `python/sglang/jit_kernel/tests/test_dsv3_router_gemm.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #21526 - Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95
+
+- 链接: https://github.com/sgl-project/sglang/pull/21526
+- 状态/时间: closed / 2026-08-10
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95」；模型线: DeepSeek V3/R1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Fix aiter router GEMM regression for non-DSR1 MoE models on ROCm gfx95」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -330,6 +330,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +1/-0 (1 lines); hunks: -330,6 +330,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -330,6 +330,7 @@ def forward(
++                and hidden_states.shape[1] == 7168  # tuned for DSR1/V3
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #6738 - Partially supports using MHA kernels in MLA forward when page-size > 1.
+
+- 链接: https://github.com/sgl-project/sglang/pull/6738
+- 状态/时间: closed / 2026-08-13
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+41/-0，可读 patch 83 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Partially supports using MHA kernels in MLA forward when page-size > 1.」；模型线: DeepSeek V3/R1；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「Partially supports using MHA kernels in MLA forward when page-size > 1.」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +41/-0 (41 lines); hunks: -152,6 +152,10 @@ class AttnForwardMethod(IntEnum):; -1005,6 +1009,7 @@ def _dispatch_mla_subtype():; symbols: AttnForwardMethod, _dispatch_mla_subtype, forward_prepare, forward_core，涉及 `AttnForwardMethod, _dispatch_mla_subtype, forward_prepare`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +41/-0 (41 lines); hunks: -152,6 +152,10 @@ class AttnForwardMethod(IntEnum):; -1005,6 +1009,7 @@ def _dispatch_mla_subtype():; symbols: AttnForwardMethod, _dispatch_mla_subtype, forward_prepare, forward_core
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -152,6 +152,10 @@ class AttnForwardMethod(IntEnum):
++    # Use multi-head attention, but with paged KV cache.
++    # This method only support MHA without prefix-cache for now.
++    MHA_PAGED_PREFILL = auto()
+@@ -1005,6 +1009,7 @@ def _dispatch_mla_subtype():
++            sum_extend_prefix_lens = 0
+@@ -1018,6 +1023,16 @@ def _dispatch_mla_subtype():
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +41/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22938 - [AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)
+
+- 链接: https://github.com/sgl-project/sglang/pull/22938
+- 状态/时间: closed / 2026-08-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-8，可读 patch 76 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；模型线: DeepSeek V3/R1；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[AMD][MI30X] Restore DeepSeek MLA MI300X paths after MLA refactor (#19122)」；主要实现面是 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5 (17 lines); hunks: -19,7 +19,6; -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):; symbols: bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare, forward_absorb_core，涉及 `bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare`；`python/sglang/srt/models/deepseek_v2.py` modified +0/-3 (3 lines); hunks: -169,9 +169,6。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5 (17 lines); hunks: -19,7 +19,6; -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):; symbols: bmm_fp8, DeepseekMLAForwardMixin, forward_absorb_prepare, forward_absorb_core
+  - `python/sglang/srt/models/deepseek_v2.py` modified +0/-3 (3 lines); hunks: -169,9 +169,6
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py
+@@ -19,7 +19,6 @@
+-    _is_gfx95_supported,
+@@ -67,6 +66,9 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):
++    from sglang.srt.layers.rocm_linear_utils import fused_qk_rope_cat_and_cache_mla
+@@ -78,7 +80,6 @@ def bmm_fp8(A, B, A_scale, B_scale, dtype, out=None):
+-    from sglang.srt.layers.rocm_linear_utils import fused_qk_rope_cat_and_cache_mla
+@@ -317,7 +318,7 @@ def forward_absorb_prepare(
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -169,9 +169,6 @@
+-if _use_aiter:
+-    pass
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-5; `python/sglang/srt/models/deepseek_v2.py` modified +0/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23257 - Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/23257
+- 状态/时间: closed / 2026-08-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+5/-0，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention」；模型线: DeepSeek V3/R1；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`；技术摘要: 覆盖「Fix double-reduce in DeepseekV2MoE with flashinfer_cutedsl + EP + DP-attention」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +3/-0 (3 lines); hunks: -89,6 +89,7; -648,6 +649,7 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, _post_combine_hook，涉及 `forward_normal_dual_stream, _post_combine_hook`；`python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` modified +2/-0 (2 lines); hunks: -249,6 +249,8 @@ def ensure_cutedsl_wrapper(layer: torch.nn.Module) -> None:; symbols: ensure_cutedsl_wrapper，涉及 `ensure_cutedsl_wrapper`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/deepseek_v2.py` modified +3/-0 (3 lines); hunks: -89,6 +89,7; -648,6 +649,7 @@ def forward_normal_dual_stream(; symbols: forward_normal_dual_stream, _post_combine_hook
+  - `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` modified +2/-0 (2 lines); hunks: -249,6 +249,8 @@ def ensure_cutedsl_wrapper(layer: torch.nn.Module) -> None:; symbols: ensure_cutedsl_wrapper
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/deepseek_v2.py
+@@ -89,6 +89,7 @@
++    should_use_dp_reduce_scatterv,
+@@ -648,6 +649,7 @@ def forward_normal_dual_stream(
++            and not should_use_dp_reduce_scatterv()
+@@ -736,6 +738,7 @@ def _post_combine_hook(
++            and not should_use_dp_reduce_scatterv()
+diff -- python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py
+@@ -249,6 +249,8 @@ def ensure_cutedsl_wrapper(layer: torch.nn.Module) -> None:
++    if server_args.enable_dp_attention:
++        max_num_tokens *= server_args.dp_size
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +3/-0; `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py` modified +2/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/moe_runner/flashinfer_cutedsl.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

@@ -4,8 +4,8 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/InternLM/Intern-S1.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/intern-s1-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/internlm_detector.py` | [#14866](https://github.com/sgl-project/sglang/pull/14866) |
 | `python/sglang/srt/models/interns1.py` | [#8350](https://github.com/sgl-project/sglang/pull/8350), [#9299](https://github.com/sgl-project/sglang/pull/9299), [#12367](https://github.com/sgl-project/sglang/pull/12367), [#28629](https://github.com/sgl-project/sglang/pull/28629) |
 | `python/sglang/srt/models/interns1pro.py` | [#18145](https://github.com/sgl-project/sglang/pull/18145) |

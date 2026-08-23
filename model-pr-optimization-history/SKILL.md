@@ -74,13 +74,16 @@ deepseek-v4, ernie45, gemma4, glm-vlm-ocr, glm45, glm46-glm47, glm5-glm51,
 gpt-oss, hunyuan3-preview, intern-s1, internvl35, jina-reranker-m0, kimi, ling25, llada21,
 llama31, llama33-70b, llama4, mimo-v2-flash, minimax, mistral-small-4,
 mixtral-quark-int4fp8-moe, moss-vl, nemotron-super, qwen-vlm-omni-asr,
-qwen3-coder, qwen3-core, qwen3-next, qwen35, qwen36, ring25, step35
+qwen3-coder, qwen3-core, qwen3-next, qwen35, qwen36, qwen38, ring25, step35
 ```
 
 Availability is framework-specific. In particular, the current SGLang index
-includes `hunyuan3-preview`, `moss-vl`, and `qwen36`; the current vLLM index
-includes `hunyuan3-preview` and `qwen36`, but not `moss-vl` because the audited
-vLLM source head has no matching implementation surface.
+includes `hunyuan3-preview`, `moss-vl`, `qwen36`, and `qwen38`; the current
+vLLM index includes `hunyuan3-preview` and `qwen36`, but not `moss-vl` or a
+dedicated `qwen38` surface. vLLM `v0.27` lists `Qwen/Qwen3.8-27B` in the
+model registry, but it rides the existing `qwen3_5` implementation
+(`model_type=qwen3_5` in the public HF config) rather than a separate
+file tree. Query `qwen35` on vLLM when comparing that checkpoint.
 
 ## SOTA Loop Contract
 

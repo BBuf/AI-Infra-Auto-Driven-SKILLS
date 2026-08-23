@@ -10,6 +10,7 @@
 | `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml` | [#36803](https://github.com/vllm-project/vllm/pull/36803) |
 | `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml` | [#36803](https://github.com/vllm-project/vllm/pull/36803) |
 | `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml` | [#36803](https://github.com/vllm-project/vllm/pull/36803) |
+| `tests/evals/gsm8k/configs/humming/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4-humming.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml` | [#34725](https://github.com/vllm-project/vllm/pull/34725) |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml` | [#34725](https://github.com/vllm-project/vllm/pull/34725) |
 | `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-vllm-cutlass.yaml` | no direct PR-number commit |
@@ -18,10 +19,10 @@
 | `tests/models/multimodal/generation/test_nemotron_parse.py` | [#30864](https://github.com/vllm-project/vllm/pull/30864), [#37407](https://github.com/vllm-project/vllm/pull/37407), [#42498](https://github.com/vllm-project/vllm/pull/42498) |
 | `tests/models/multimodal/pooling/test_llama_nemotron_vl.py` | [#35735](https://github.com/vllm-project/vllm/pull/35735), [#37613](https://github.com/vllm-project/vllm/pull/37613) |
 | `tests/models/multimodal/processing/test_nemotron_vl.py` | [#20349](https://github.com/vllm-project/vllm/pull/20349), [#22739](https://github.com/vllm-project/vllm/pull/22739) |
-| `tests/models/multimodal/test_nano_nemotron_vl.py` | [#41205](https://github.com/vllm-project/vllm/pull/41205), [#42244](https://github.com/vllm-project/vllm/pull/42244) |
+| `tests/models/multimodal/test_nano_nemotron_vl.py` | [#41205](https://github.com/vllm-project/vllm/pull/41205), [#42244](https://github.com/vllm-project/vllm/pull/42244), [#50221](https://github.com/vllm-project/vllm/pull/50221) |
 | `tests/parser/engine/test_nemotron_v3.py` | [#45755](https://github.com/vllm-project/vllm/pull/45755) |
 | `tests/reasoning/test_nemotron_v3_reasoning_parser.py` | [#36393](https://github.com/vllm-project/vllm/pull/36393), [#36635](https://github.com/vllm-project/vllm/pull/36635), [#39091](https://github.com/vllm-project/vllm/pull/39091), [#45755](https://github.com/vllm-project/vllm/pull/45755) |
-| `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (23 total) |
+| `vllm/model_executor/models/nano_nemotron_vl.py` | [#23644](https://github.com/vllm-project/vllm/pull/23644), [#25708](https://github.com/vllm-project/vllm/pull/25708), [#26186](https://github.com/vllm-project/vllm/pull/26186), [#26269](https://github.com/vllm-project/vllm/pull/26269), [#27107](https://github.com/vllm-project/vllm/pull/27107), [#30864](https://github.com/vllm-project/vllm/pull/30864), [#32121](https://github.com/vllm-project/vllm/pull/32121), [#32682](https://github.com/vllm-project/vllm/pull/32682), [#35100](https://github.com/vllm-project/vllm/pull/35100), [#35539](https://github.com/vllm-project/vllm/pull/35539), [#35657](https://github.com/vllm-project/vllm/pull/35657), [#36808](https://github.com/vllm-project/vllm/pull/36808), ... (24 total) |
 | `vllm/model_executor/models/nemotron.py` | [#6611](https://github.com/vllm-project/vllm/pull/6611), [#7611](https://github.com/vllm-project/vllm/pull/7611), [#46495](https://github.com/vllm-project/vllm/pull/46495) |
 | `vllm/model_executor/models/nemotron_h.py` | [#18863](https://github.com/vllm-project/vllm/pull/18863), [#19249](https://github.com/vllm-project/vllm/pull/19249), [#22349](https://github.com/vllm-project/vllm/pull/22349), [#25863](https://github.com/vllm-project/vllm/pull/25863), [#27968](https://github.com/vllm-project/vllm/pull/27968), [#30802](https://github.com/vllm-project/vllm/pull/30802), [#31539](https://github.com/vllm-project/vllm/pull/31539), [#31807](https://github.com/vllm-project/vllm/pull/31807), [#31898](https://github.com/vllm-project/vllm/pull/31898), [#32265](https://github.com/vllm-project/vllm/pull/32265), [#32549](https://github.com/vllm-project/vllm/pull/32549), [#32669](https://github.com/vllm-project/vllm/pull/32669), ... (19 total) |
 | `vllm/model_executor/models/nemotron_h_mtp.py` | [#33726](https://github.com/vllm-project/vllm/pull/33726), [#37803](https://github.com/vllm-project/vllm/pull/37803), [#47440](https://github.com/vllm-project/vllm/pull/47440) |
@@ -75,8 +76,8 @@
 | 2026-01-21 | [#32682](https://github.com/vllm-project/vllm/pull/32682) | merged | [Bugfix] Fix Nemotron-Nano-v2-vlm static resolution | `vllm/model_executor/models/nano_nemotron_vl.py` |
 | 2026-01-27 | [#32265](https://github.com/vllm-project/vllm/pull/32265) | merged | [LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-01-27 | [#32549](https://github.com/vllm-project/vllm/pull/32549) | merged | Support heterogeneous NemotronHPuzzle model | `vllm/model_executor/models/nemotron_h.py` |
-| 2026-01-29 | [#33189](https://github.com/vllm-project/vllm/pull/33189) | merged | [Misc][Build] Lazy load cv2 in nemotron_parse.py | `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-01-29 | [#32669](https://github.com/vllm-project/vllm/pull/32669) | merged | Bugfix: Pass router logits dtype in nemotron shared experts | `vllm/model_executor/models/nemotron_h.py` |
+| 2026-01-29 | [#33189](https://github.com/vllm-project/vllm/pull/33189) | merged | [Misc][Build] Lazy load cv2 in nemotron_parse.py | `vllm/model_executor/models/nemotron_parse.py` |
 | 2026-02-02 | [#32790](https://github.com/vllm-project/vllm/pull/32790) | merged | [MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H) | `vllm/model_executor/models/nemotron_h.py` |
 | 2026-02-12 | [#33506](https://github.com/vllm-project/vllm/pull/33506) | merged | [Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4 | `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py` |
 | 2026-02-16 | [#34582](https://github.com/vllm-project/vllm/pull/34582) | merged | [NemotronH] Do not force router to run in fp32 | `vllm/model_executor/models/nemotron_h.py` |
@@ -133,6 +134,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/6611
 - Status/date: merged / 2024-07-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/6611 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `07278c37ddd8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +776/-1, 847 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; technical summary: Covers "[Model] Support Nemotron models (Nemotron-3, Nemotron-4, Minitron)"; the main implementation surface is `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -169,6 +171,7 @@ diff -- vllm/transformers_utils/configs/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/7611
 - Status/date: merged / 2024-08-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/7611 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the reque...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `44f26a946645`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +29/-35, 181 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Align nemotron config with final HF state and fix lm-eval-small"; model line: Nemotron Super; category: bug fix; main diff: `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/nemotron.py`; technical summary: Covers "[Model] Align nemotron config with final HF state and fix lm-eval-small"; the main implementation surface is `vllm/transformers_utils/configs/nemotron.py`, `vllm/model_executor/models/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -205,6 +208,7 @@ diff -- vllm/model_executor/models/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/15008
 - Status/date: merged / 2025-03-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/15008 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `3aa2b6a63714`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +524/-133, 764 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Update support for NemotronNAS models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_nas.py`; technical summary: Covers "[Model] Update support for NemotronNAS models"; the main implementation surface is `vllm/model_executor/models/nemotron_nas.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -232,6 +236,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - Link: https://github.com/vllm-project/vllm/pull/18427
 - Status/date: merged / 2025-05-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/18427 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `6d68030f1cac`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +67/-16, 129 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add support for YARN in NemotronNAS models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_nas.py`; technical summary: Covers "[Model] Add support for YARN in NemotronNAS models"; the main implementation surface is `vllm/model_executor/models/nemotron_nas.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -259,6 +264,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - Link: https://github.com/vllm-project/vllm/pull/18863
 - Status/date: merged / 2025-06-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/18863 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `cb6d572e85a3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +829/-0, 866 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] NemotronH support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; technical summary: Covers "[Model] NemotronH support"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -295,6 +301,7 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19249
 - Status/date: merged / 2025-06-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19249 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `7661e92ef85e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +16/-8, 88 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Optimize nemotron_h implementation"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Model] Optimize nemotron_h implementation"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -322,6 +329,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20349
 - Status/date: merged / 2025-07-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20349 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; associated commits `4ef00b5caca4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +701/-3, 837 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`; technical summary: Covers "[VLM] Add Nemotron-Nano-VL-8B-V1 support"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/transformers_utils/configs/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -362,6 +370,7 @@ diff -- vllm/transformers_utils/configs/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22349
 - Status/date: merged / 2025-08-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22349 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `14a5d903ab82`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +23/-7, 91 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] NemotronH Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; technical summary: Covers "[Model] NemotronH Support"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -397,6 +406,7 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22739
 - Status/date: merged / 2025-08-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22739 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `a01e0018b50f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +190/-4, 234 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Nemotron VL image processing"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`; technical summary: Covers "[Bugfix] Fix Nemotron VL image processing"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`, `tests/models/multimodal/processing/test_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -434,6 +444,7 @@ diff -- tests/models/multimodal/processing/test_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22023
 - Status/date: merged / 2025-08-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22023 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `e75f34226161`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-23, 43 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_vl.py`; technical summary: Covers "Migrate InternVLImagePixelInputs (in nemotron_vl.py) to TensorSchema"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -461,6 +472,7 @@ diff -- vllm/model_executor/models/nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/23644
 - Status/date: merged / 2025-09-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/23644 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `72d30108a0fe`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +1400/-1, 1423 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support for NemotronH Nano VLM"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Support for NemotronH Nano VLM"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -488,6 +500,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25708
 - Status/date: merged / 2025-09-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25708 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `57329a8c013c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +6/-6, 47 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] rename NemotronH_Nano_VL -> NemotronH_Nano_VL_V2"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -515,6 +528,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22980
 - Status/date: merged / 2025-09-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22980 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +783/-39, 1076 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "EVS Support (Video tokens pruning)"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/multimodal/evs.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`; technical summary: Covers "EVS Support (Video tokens pruning)"; the main implementation surface is `vllm/multimodal/evs.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -557,6 +571,7 @@ diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26186
 - Status/date: merged / 2025-10-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26186 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `5a05f2660370`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix issue of using only the part of video frame [Nemotron Nano]"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Fix issue of using only the part of video frame [Nemotron Nano]"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -580,6 +595,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26269
 - Status/date: merged / 2025-10-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26269 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b8f603cebe39`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +224/-31, 447 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] EVS support for nano_nemotron_vl"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] EVS support for nano_nemotron_vl"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -607,6 +623,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27107
 - Status/date: merged / 2025-10-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27107 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e93ff6c8b92b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +316/-105, 771 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Nemotron Nano V2 VL + EVS Video Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Nemotron Nano V2 VL + EVS Video Support"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -634,6 +651,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25863
 - Status/date: merged / 2025-10-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25863 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `61089465a610`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +413/-39, 765 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add MoE support for NemotronH"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`; technical summary: Covers "[Model] Add MoE support for NemotronH"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`, `vllm/transformers_utils/configs/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -670,6 +688,7 @@ diff -- vllm/transformers_utils/configs/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27968
 - Status/date: merged / 2025-11-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27968 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `77f8001f5330`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +13/-5, 67 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][Bugfix] fix pipeline parallelism support for NemotronH"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Model][Bugfix] fix pipeline parallelism support for NemotronH"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -697,6 +716,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30795
 - Status/date: merged / 2025-12-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30795 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_nas.py`; associated commits `f5db6385a19b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-4, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix nemotron_nas intermediate_size computation"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_nas.py`; technical summary: Covers "Fix nemotron_nas intermediate_size computation"; the main implementation surface is `vllm/model_executor/models/nemotron_nas.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -724,6 +744,7 @@ diff -- vllm/model_executor/models/nemotron_nas.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31539
 - Status/date: merged / 2025-12-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31539 Get "https://api.github.com/repos/vllm-project/vllm/pulls/31539": EOF`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `108a2728f74d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-10, 38 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add get_expert_mapping to NemotronHModel (for LoRA support)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Add get_expert_mapping to NemotronHModel (for LoRA support)"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -751,6 +772,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30864
 - Status/date: merged / 2026-01-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30864 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `ee212918250a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 13 files, +1117/-31, 1329 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Nemotron Parse 1.1 Support"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] Nemotron Parse 1.1 Support"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`, `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -791,6 +813,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31807
 - Status/date: merged / 2026-01-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31807 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `28c94770adfc`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-5, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NemotronH] Use ReplicatedLinear for fc1_latent_proj"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[NemotronH] Use ReplicatedLinear for fc1_latent_proj"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -818,6 +841,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31898
 - Status/date: merged / 2026-01-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31898 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `bf184a66218b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-0, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Enable quantized attention in NemotronH models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Enable quantized attention in NemotronH models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -840,6 +864,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30802
 - Status/date: merged / 2026-01-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30802 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `aa7f37ccfa16`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +497/-27, 717 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add support for LoRA adapters in Nemotron-H models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Add support for LoRA adapters in Nemotron-H models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -863,6 +888,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32121
 - Status/date: merged / 2026-01-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32121 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `cd3ac5b79703`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +755/-164, 1299 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "support dynamic resolution image encoding for Nemotron Nano VL"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "support dynamic resolution image encoding for Nemotron Nano VL"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -890,6 +916,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32682
 - Status/date: merged / 2026-01-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32682 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `27ca95b3c9e6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Nemotron-Nano-v2-vlm static resolution"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Bugfix] Fix Nemotron-Nano-v2-vlm static resolution"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -915,6 +942,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32265
 - Status/date: merged / 2026-01-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32265 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `f3a5ee705fa9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +31/-0, 106 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[LoRA][Spec Decode] Support LoRA for Nemotron-H MTP models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -938,6 +966,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32549
 - Status/date: merged / 2026-01-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32549 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `83fb2d09e8f6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +75/-5, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support heterogeneous NemotronHPuzzle model"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Support heterogeneous NemotronHPuzzle model"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -961,36 +990,11 @@ diff -- vllm/model_executor/models/nemotron_h.py
   - runtime: `vllm/model_executor/models/nemotron_h.py` modified +43/-3
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #33189 - [Misc][Build] Lazy load cv2 in nemotron_parse.py
-
-- Link: https://github.com/vllm-project/vllm/pull/33189
-- Status/date: merged / 2026-01-29
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `9e138cb01d65`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 26 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio, touching `_create_transforms, _resize_with_aspect_ratio`.
-- Code diff details:
-  - `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/nemotron_parse.py
-@@ -11,7 +11,6 @@
--import cv2
-@@ -416,6 +415,8 @@ def _create_transforms(self):
-+        import cv2
-@@ -457,6 +458,8 @@ def _resize_with_aspect_ratio(self, image: np.ndarray) -> np.ndarray:
-+        import cv2
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_parse.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #32669 - Bugfix: Pass router logits dtype in nemotron shared experts
 
 - Link: https://github.com/vllm-project/vllm/pull/32669
 - Status/date: merged / 2026-01-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32669 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `e01ff5c070f4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Bugfix: Pass router logits dtype in nemotron shared experts"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Bugfix: Pass router logits dtype in nemotron shared experts"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1013,10 +1017,38 @@ diff -- vllm/model_executor/models/nemotron_h.py
   - runtime: `vllm/model_executor/models/nemotron_h.py` modified +3/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_h.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #33189 - [Misc][Build] Lazy load cv2 in nemotron_parse.py
+
+- Link: https://github.com/vllm-project/vllm/pull/33189
+- Status/date: merged / 2026-01-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33189 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `9e138cb01d65`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 26 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Misc][Build] Lazy load cv2 in nemotron_parse.py"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio, touching `_create_transforms, _resize_with_aspect_ratio`.
+- Code diff details:
+  - `vllm/model_executor/models/nemotron_parse.py` modified +4/-1 (5 lines); hunks: -11,7 +11,6; -416,6 +415,8 @@ def _create_transforms(self):; symbols: _create_transforms, _resize_with_aspect_ratio
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/nemotron_parse.py
+@@ -11,7 +11,6 @@
+-import cv2
+@@ -416,6 +415,8 @@ def _create_transforms(self):
++        import cv2
+@@ -457,6 +458,8 @@ def _resize_with_aspect_ratio(self, image: np.ndarray) -> np.ndarray:
++        import cv2
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/nemotron_parse.py` modified +4/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/nemotron_parse.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #32790 - [MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)
 
 - Link: https://github.com/vllm-project/vllm/pull/32790
 - Status/date: merged / 2026-02-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32790 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `0aca8b8c628e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +303/-58, 499 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[MoE] Enable Shared/Routed Overlap For Latent MoE (Nemotron-H)"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1044,6 +1076,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33506
 - Status/date: merged / 2026-02-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33506 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +197/-45, 562 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`; technical summary: Covers "[Kernel] Support Flashinfer trtllm fused MoE non gated FP8 & NVFP4"; the main implementation surface is `vllm/model_executor/layers/quantization/utils/flashinfer_utils.py`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`, `vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1086,6 +1119,7 @@ diff -- vllm/model_executor/layers/fused_moe/flashinfer_trtllm_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34582
 - Status/date: merged / 2026-02-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34582 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3b30e6150777`, `3eff45d793da`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-4, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NemotronH] Do not force router to run in fp32"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[NemotronH] Do not force router to run in fp32"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1113,6 +1147,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34725
 - Status/date: merged / 2026-02-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34725 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`; associated commits `caeb887bf633`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +20/-0, 33 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; model line: Nemotron Super; category: bug fix; main diff: `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`; technical summary: Covers "[Bugfix] Fix NVFP4 TRTLLM MoE non-gated support; add gsm8k for Nemotron-3-Nano FP8+NVFP4"; the main implementation surface is `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-Fp8-ModelOpt-fi-trtllm.yaml`, `tests/evals/gsm8k/configs/moe-refactor/Nemotron-Nano-30B-NvFp4-ModelOpt-fi-cutlass.yaml`, `vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1153,6 +1188,7 @@ diff -- vllm/model_executor/layers/quantization/utils/flashinfer_fp4_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34808
 - Status/date: merged / 2026-02-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34808 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `3eff45d793da`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Revert "[NemotronH] Do not force router to run in fp32 (#34582)""; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1180,6 +1216,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33726
 - Status/date: merged / 2026-02-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33726 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`, `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`; associated commits `f5972a872fa3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 19 files, +800/-158, 1473 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Model][Spec Decode] Nemotron-H MTP and Mamba Speculative Decoding Support"; the main implementation surface is `vllm/model_executor/models/nemotron_h_mtp.py`, `vllm/transformers_utils/configs/nemotron_h.py`, `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1219,6 +1256,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35297
 - Status/date: merged / 2026-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35297 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/embed/template/nemotron_embed_vl.jinja`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `111d86906999`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +545/-31, 752 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja`; technical summary: Covers "[Model] Add nvidia/llama-nemotron-embed-vl-1b-v2 multimodal embedding model"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/embed/template/nemotron_embed_vl.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1256,6 +1294,7 @@ diff -- examples/pooling/embed/template/nemotron_embed_vl.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/35396
 - Status/date: merged / 2026-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35396 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `832a780f3aed`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-0, 12 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "Nemotron: use per-layer config in NemotronHMLPDecoderLayer for heterogeneous models"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1281,6 +1320,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35100
 - Status/date: merged / 2026-02-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35100 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `c8aca0c9e1b3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +448/-20, 678 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support parakeet as audio encoder for nemotron-nano-vl"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Support parakeet as audio encoder for nemotron-nano-vl"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1308,6 +1348,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35735
 - Status/date: merged / 2026-03-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35735 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/nemotron-vl-rerank.jinja`, `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`; associated commits `c8b678e53e37`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +503/-149, 723 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add support for nvidia/llama-nemotron-rerank-vl-1b-v2"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/score/template/nemotron-vl-rerank.jinja`; technical summary: Covers "[Model] Add support for nvidia/llama-nemotron-rerank-vl-1b-v2"; the main implementation surface is `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`, `vllm/model_executor/models/nemotron_vl.py`, `examples/pooling/score/template/nemotron-vl-rerank.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1349,6 +1390,7 @@ diff -- examples/pooling/score/template/nemotron-vl-rerank.jinja
 
 - Link: https://github.com/vllm-project/vllm/pull/35539
 - Status/date: merged / 2026-03-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35539 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `5d199ac8f25a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +225/-1, 293 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support Audio Extraction from MP4 Video for Nemotron Nano VL"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Support Audio Extraction from MP4 Video for Nemotron Nano VL"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1376,6 +1418,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36192
 - Status/date: merged / 2026-03-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36192 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `00bd08edeee5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +7/-2, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nemotron_vl.py`; technical summary: Covers "[Security] Respect user trust_remote_code setting in NemotronVL and KimiK25"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1403,6 +1446,7 @@ diff -- vllm/model_executor/models/nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35657
 - Status/date: merged / 2026-03-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35657 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `b7332b058c3b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +80/-61, 217 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Nano Nemotron VL - fast media preprocessing"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "[Model] Nano Nemotron VL - fast media preprocessing"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1430,6 +1474,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36393
 - Status/date: merged / 2026-03-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36393 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `203a7f27dac2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +186/-0, 195 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "add nemotron v3 reasoning parser"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py`; technical summary: Covers "add nemotron v3 reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/reasoning/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1470,6 +1515,7 @@ diff -- vllm/reasoning/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36635
 - Status/date: merged / 2026-03-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36635 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `e661b9ee83d9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-1, 41 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NemotronH] Small fix reasoning parser"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`; technical summary: Covers "[NemotronH] Small fix reasoning parser"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1506,6 +1552,7 @@ diff -- vllm/reasoning/nemotron_v3_reasoning_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37456
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37456 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `7476d148db99`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +0/-259, 288 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Remove unnecessary processor definition for Nemotron Parse"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Model] Remove unnecessary processor definition for Nemotron Parse"; the main implementation surface is `vllm/transformers_utils/processors/nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1542,6 +1589,7 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36808
 - Status/date: merged / 2026-03-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36808 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `0b6d52629fe8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +553/-130, 1189 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support temporal compression for Nemotron-3-VL videos"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Support temporal compression for Nemotron-3-VL videos"; the main implementation surface is `vllm/transformers_utils/processors/nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1578,6 +1626,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37407
 - Status/date: merged / 2026-03-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37407 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; associated commits `765e4610651b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +49/-19, 138 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Nemotron Parse loading"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Bugfix] Fix Nemotron Parse loading"; the main implementation surface is `tests/models/multimodal/generation/test_nemotron_parse.py`, `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1614,6 +1663,7 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37613
 - Status/date: merged / 2026-03-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37613 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`; associated commits `fb4e8bf442c5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-1, 40 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ROCm][CI] Fix accuracy for llama-nemotron-vl pooling tests"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`; technical summary: Covers "[ROCm][CI] Fix accuracy for llama-nemotron-vl pooling tests"; the main implementation surface is `tests/models/multimodal/pooling/test_llama_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1641,6 +1691,7 @@ diff -- tests/models/multimodal/pooling/test_llama_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37803
 - Status/date: merged / 2026-03-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37803 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h_mtp.py`; associated commits `e74c17e15331`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +6/-3, 28 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Enable `NemotronHPuzzle` + `NemotronHMTP`"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`; technical summary: Covers "Enable `NemotronHPuzzle` + `NemotronHMTP`"; the main implementation surface is `vllm/model_executor/models/nemotron_h_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1668,6 +1719,7 @@ diff -- vllm/model_executor/models/nemotron_h_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36803
 - Status/date: merged / 2026-03-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36803 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`; associated commits `56777b5c898d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +37/-0, 55 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Test] E2E Nemotron-3-Super tests"; model line: Nemotron Super; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`; technical summary: Covers "[Test] E2E Nemotron-3-Super tests"; the main implementation surface is `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-BF16.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-FP8.yaml`, `tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1707,6 +1759,7 @@ diff -- tests/evals/gsm8k/configs/Nemotron-3-Super-120B-A12B-NVFP4.yaml
 
 - Link: https://github.com/vllm-project/vllm/pull/37903
 - Status/date: merged / 2026-03-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37903 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `a0d487b2e1d5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +32/-44, 122 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`; technical summary: Covers "nano_nemotron_vl: suppress readonly torch.from_numpy() warning in image and video resize paths"; the main implementation surface is `vllm/transformers_utils/processors/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1734,6 +1787,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38018
 - Status/date: merged / 2026-03-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38018 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +215/-145, 595 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Use helper function to run MM processors with token inputs (where applicable)"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`; technical summary: Covers "[Model] Use helper function to run MM processors with token inputs (where applicable)"; the main implementation surface is `vllm/transformers_utils/processors/pixtral.py`, `vllm/transformers_utils/processors/voxtral.py`, `vllm/multimodal/processing/processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1775,6 +1829,7 @@ diff -- vllm/multimodal/processing/processor.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38567
 - Status/date: merged / 2026-03-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38567 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `e812bf70bd66`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +14/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Restore non-hf processor path for Nano-Nemotron-VL (bypass `call_hf_processor_mm_only`) - fixes #38018"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Restore non-hf processor path for Nano-Nemotron-VL (bypass `call_hf_processor_mm_only`) - fixes #38018"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1802,6 +1857,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38655
 - Status/date: merged / 2026-04-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38655 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `fa9e68022d29`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +84/-52, 331 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Nano Nemotron VL regressions"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; technical summary: Covers "Fix Nano Nemotron VL regressions"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1838,6 +1894,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39029
 - Status/date: merged / 2026-04-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39029 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `d56e95223917`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-2, 16 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "nano_nemotron_vl: fix tensor device mismatch exception when video profiling"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "nano_nemotron_vl: fix tensor device mismatch exception when video profiling"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1864,6 +1921,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38727
 - Status/date: merged / 2026-04-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38727 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `a9a0e0551f03`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +52/-10, 84 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "nano-nemotron-vl: get_mm_max_tokens_per_item for audio, video, image == seq_len"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "nano-nemotron-vl: get_mm_max_tokens_per_item for audio, video, image == seq_len"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1891,6 +1949,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/38538
 - Status/date: merged / 2026-04-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38538 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `df2503e125f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +74/-18, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`; technical summary: Covers "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `vllm/transformers_utils/processors/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1924,6 +1983,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37580
 - Status/date: merged / 2026-04-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37580 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `270e8a410254`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +11/-36, 73 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Nemotron Nano VL: Streamline pixel shuffle"; model line: Nemotron Super; category: model implementation change; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Nemotron Nano VL: Streamline pixel shuffle"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1951,6 +2011,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39901
 - Status/date: merged / 2026-04-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39901 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8b5531933a7b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "FIX: support language_model.backbone naming in NemotronH Nano VL quantization config"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "FIX: support language_model.backbone naming in NemotronH Nano VL quantization config"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1978,6 +2039,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40283
 - Status/date: merged / 2026-04-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40283 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/nano_nemotron_vl.py`; associated commits `982beae809b1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +116/-98, 384 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Optimize nemotron VL image/video preprocessing"; model line: Nemotron Super; category: performance/backend optimization; main diff: `vllm/transformers_utils/processors/nano_nemotron_vl.py`; technical summary: Covers "Optimize nemotron VL image/video preprocessing"; the main implementation surface is `vllm/transformers_utils/processors/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2005,6 +2067,7 @@ diff -- vllm/transformers_utils/processors/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40724
 - Status/date: merged / 2026-04-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40724 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `9ad5abe7722b`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Nano Nemotron VL static image inputs"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Fix Nano Nemotron VL static image inputs"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2030,6 +2093,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41205
 - Status/date: merged / 2026-05-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41205 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `8c780943b492`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +130/-5, 171 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Nano Nemotron text-only weight loading"; model line: Nemotron Super; category: bug fix; main diff: `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; technical summary: Covers "Fix Nano Nemotron text-only weight loading"; the main implementation surface is `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2067,6 +2131,7 @@ diff -- vllm/model_executor/models/nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42244
 - Status/date: merged / 2026-05-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42244 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_nano_nemotron_vl.py`, `vllm/model_executor/models/nano_nemotron_vl.py`; associated commits `ac062147fae7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +55/-28, 108 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming"; model line: Nemotron Super; category: docs/tests/CI; main diff: `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`; technical summary: Covers "Avoid silent weights corruption when loading Nemotron Nano VL with reusable-buffer loaders like runai distributed streaming"; the main implementation surface is `vllm/model_executor/models/nano_nemotron_vl.py`, `tests/models/multimodal/test_nano_nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2104,6 +2169,7 @@ diff -- tests/models/multimodal/test_nano_nemotron_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42498
 - Status/date: merged / 2026-05-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42498 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_nemotron_parse.py`; associated commits `67671692ace7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +12/-9, 59 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/multimodal/generation/test_nemotron_parse.py`; technical summary: Covers "[CI] Re-enable Nemotron Parse parity test and switch testing to nemotron-parse v1.2"; the main implementation surface is `tests/models/multimodal/generation/test_nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2131,6 +2197,7 @@ diff -- tests/models/multimodal/generation/test_nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42641
 - Status/date: merged / 2026-05-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42641 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_parse.py`; associated commits `b8a25d0e1216`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +5/-1, 20 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix LM detection for Nemotron Parse"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_parse.py`; technical summary: Covers "[Bugfix] Fix LM detection for Nemotron Parse"; the main implementation surface is `vllm/model_executor/models/nemotron_parse.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2154,6 +2221,7 @@ diff -- vllm/model_executor/models/nemotron_parse.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41233
 - Status/date: merged / 2026-05-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41233 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +568/-117, 960 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py`; technical summary: Covers "[Bugfix][Hybrid][NemotronH] Fix mamba_cache_mode=all + speculative decoding crash"; the main implementation surface is `vllm/model_executor/layers/mamba/mamba_mixer2.py`, `vllm/model_executor/models/config.py`, `tests/v1/attention/test_mamba_update_block_table.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2196,6 +2264,7 @@ diff -- tests/v1/attention/test_mamba_update_block_table.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43130
 - Status/date: merged / 2026-05-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43130 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `0a508743d42a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +16/-2, 60 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Spec Decode] Support non-MTP speculation for NemotronH"; model line: Nemotron Super; category: model support/runtime entry; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Spec Decode] Support non-MTP speculation for NemotronH"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2223,6 +2292,7 @@ diff -- vllm/model_executor/models/nemotron_h.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42124
 - Status/date: merged / 2026-05-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42124 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +220/-5, 315 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add LM head quantization support for ModelOpt"; model line: Nemotron Super; category: performance/backend optimization; main diff: `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py`; technical summary: Covers "Add LM head quantization support for ModelOpt"; the main implementation surface is `tests/model_executor/test_qwen3_5_quantization.py`, `tests/model_executor/test_nemotron_h_quantization.py`, `vllm/model_executor/layers/quantization/modelopt.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2265,6 +2335,7 @@ diff -- vllm/model_executor/layers/quantization/modelopt.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43581
 - Status/date: merged / 2026-05-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43581 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_vl.py`; associated commits `4ec28173139c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-4, 29 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_vl.py`; technical summary: Covers "[Model][Bugfix] Rename weight_mapper to hf_to_vllm_mapper in LlamaNemotronVL pooling models"; the main implementation surface is `vllm/model_executor/models/nemotron_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2375,6 +2446,7 @@ diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39091
 - Status/date: merged / 2026-06-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39091 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_nemotron_v3_reasoning_parser.py`; associated commits `4882fd763282`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +163/-10, 237 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; model line: Nemotron Super; category: bug fix; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py`; technical summary: Covers "[Bugfix][Reasoning] Nemotron V3: surface reasoning as content when thinking is unterminated"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_reasoning_parser.py`, `vllm/parser/abstract_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2415,6 +2487,7 @@ diff -- vllm/parser/abstract_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45128
 - Status/date: merged / 2026-06-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 14 files, +1/-17, 123 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Remove InternLMForCausalLM registry alias"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md`; technical summary: Covers "[Model] Remove InternLMForCausalLM registry alias"; the main implementation surface is `tests/models/registry.py`, `vllm/model_executor/models/registry.py`, `docs/models/supported_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2458,6 +2531,7 @@ diff -- vllm/model_executor/models/exaone.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45755
 - Status/date: merged / 2026-06-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45755 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_nemotron_v3.py`, `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/parser/nemotron_v3.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`; associated commits `f3858d5422f0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +768/-169, 1174 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine"; model line: Nemotron Super; category: docs/tests/CI; main diff: `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py`; technical summary: Covers "[Frontend] [Parser] Migrate Nemotron V3 to streaming parser engine"; the main implementation surface is `tests/reasoning/test_nemotron_v3_reasoning_parser.py`, `vllm/reasoning/nemotron_v3_engine_reasoning_parser.py`, `tests/parser/engine/test_nemotron_v3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2540,6 +2614,7 @@ diff -- vllm/model_executor/layers/quantization/moe_wna16.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46495
 - Status/date: merged / 2026-06-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46495 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron.py`; associated commits `ac1fa74616fe`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-8, 35 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron.py`; technical summary: Covers "[Bugfix] Fix NemotronLayerNorm1P hardcoded cuda device type"; the main implementation surface is `vllm/model_executor/models/nemotron.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2567,6 +2642,7 @@ diff -- vllm/model_executor/models/nemotron.py
 
 - Link: https://github.com/vllm-project/vllm/pull/47440
 - Status/date: merged / 2026-07-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47440 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h_mtp.py`; associated commits `7ff656cc8bc7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-5, 13 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix: ensure no double load of lm head in nemotron mtp"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h_mtp.py`; technical summary: Covers "fix: ensure no double load of lm head in nemotron mtp"; the main implementation surface is `vllm/model_executor/models/nemotron_h_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -2594,6 +2670,7 @@ diff -- vllm/model_executor/models/nemotron_h_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/49781
 - Status/date: merged / 2026-07-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/49781 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/nemotron_h.py`; associated commits `190be7dad2af`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 10 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Fix confusing docstring indentation in nemotron_h.py"; model line: Nemotron Super; category: bug fix; main diff: `vllm/model_executor/models/nemotron_h.py`; technical summary: Covers "[Docs] Fix confusing docstring indentation in nemotron_h.py"; the main implementation surface is `vllm/model_executor/models/nemotron_h.py`. File-level evidence, code excerpts, and validation risks are preserved below.

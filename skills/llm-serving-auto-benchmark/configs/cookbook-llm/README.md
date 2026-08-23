@@ -12,13 +12,18 @@ Scope:
 
 Current narrow additions:
 
-- `MiniMaxAI/MiniMax-M3-MXFP8`: the enabled SGLang recipe follows the verified single-node 8×B200 launch (`tp=8`, FA4 sparse attention, DeepGEMM MoE, 0.65 static-memory fraction) at SGLang head `8a311d1c889244ab1f857d7df79de7e5f0a6891c`. vLLM head `b5bcb3ce881e1d324ff7f6176ef27606558dbd74` lists the exact checkpoint, so its section is an enabled generic translation; TensorRT-LLM and TokenSpeed stay disabled because their recorded recipes use a different hardware or checkpoint contract.
+- `MiniMaxAI/MiniMax-M3-MXFP8`: the enabled SGLang recipe follows the verified single-node 8×B200 launch (`tp=8`, FA4 sparse attention, DeepGEMM MoE, 0.65 static-memory fraction). The 2026-08-23 source head is recorded below; the last GPU smoke for this recipe remains the earlier B200 run. vLLM lists the exact checkpoint, so its section is an enabled generic translation; TensorRT-LLM and TokenSpeed stay disabled because their recorded recipes use a different hardware or checkpoint contract.
 - `Qwen/Qwen3.6-35B-A3B-FP8`: the enabled SGLang recipe follows its current B200 single-GPU cookbook entry at the same recorded head. The other recorded heads do not expose this exact FP8 checkpoint contract, so those sections stay disabled.
+- `Qwen/Qwen3.8-27B-FP8`: the enabled SGLang section copies the public H200 single-GPU cookbook cell (`flashinfer`, FP8 KV, 0.85 static-memory fraction, 32768 prefill chunk). vLLM lists `Qwen/Qwen3.8-27B` through the existing `qwen3_5` loader, TensorRT-LLM has same-day Qwen3.8 wave-2 merges, and TokenSpeed still has open Hopper cookbook `#1111`; those sections stay disabled because this refresh did not GPU-verify a matching four-framework contract.
 
 Inkling, Unlimited OCR, Kimi K3, and DeepSeek V4 are intentionally excluded
 from the cross-framework cookbook in this refresh because their current
 endpoint, checkpoint, or four-framework comparison contracts are not uniform
-enough for a defensible recipe.
+enough for a defensible recipe. Kimi K3 is no longer an unmerged Day-0
+branch: SGLang `v0.5.17` and vLLM `v0.27.0` both shipped it, but the 2.8T
+hardware floor and TokenSpeed/TensorRT-LLM sidecar contracts still fail the
+four-framework cookbook bar. Use `sglang-model-day0-support` and the official
+SGLang/vLLM cookbooks instead of inventing a generic 8-GPU recipe.
 
 Before a real run, capture the target framework `--help` output and validate the configs:
 

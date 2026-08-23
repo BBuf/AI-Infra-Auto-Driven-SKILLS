@@ -4,8 +4,8 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/GLM/GLM-OCR.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/glm-ocr-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/GLM/GLM-OCR.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/glm-ocr-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/glm4v.py` | [#9884](https://github.com/sgl-project/sglang/pull/9884), [#10147](https://github.com/sgl-project/sglang/pull/10147), [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20033](https://github.com/sgl-project/sglang/pull/20033) |
 | `python/sglang/srt/models/glm4v_moe.py` | [#20463](https://github.com/sgl-project/sglang/pull/20463), [#20740](https://github.com/sgl-project/sglang/pull/20740), [#21134](https://github.com/sgl-project/sglang/pull/21134) |
 | `python/sglang/srt/models/glm_ocr.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20463](https://github.com/sgl-project/sglang/pull/20463), [#20740](https://github.com/sgl-project/sglang/pull/20740), [#21134](https://github.com/sgl-project/sglang/pull/21134) |
@@ -28,7 +28,6 @@
 | 2025-08-09 | [#8798](https://github.com/sgl-project/sglang/pull/8798) | merged | Support glm4.1v and glm4.5v | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/layers/rotary_embedding.py` |
 | 2025-08-17 | [#9245](https://github.com/sgl-project/sglang/pull/9245) | merged | Set the default attention backend for GLM-4.5v to fa3 | `python/sglang/srt/utils.py` |
 | 2025-08-18 | [#9059](https://github.com/sgl-project/sglang/pull/9059) | merged | [GLM4.1V and GLM4.5V] Add vision transformer num_dummy_head support: max tp=4 -> max tp=8 | `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/internvl.py` |
-| 2025-08-19 | [#9349](https://github.com/sgl-project/sglang/pull/9349) | open | Add support for GLM 4.5V FP8 | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` |
 | 2025-08-25 | [#9554](https://github.com/sgl-project/sglang/pull/9554) | merged | Fix GLM45v launch server cuda torch compile bug | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-09-05 | [#9884](https://github.com/sgl-project/sglang/pull/9884) | merged | [Bug Fix] Fix Glm4vVisionBlock norm | `python/sglang/srt/models/glm4v.py` |
 | 2025-09-08 | [#10147](https://github.com/sgl-project/sglang/pull/10147) | merged | Fix: (glm4v) Add missing field | `python/sglang/srt/models/glm4v.py` |
@@ -41,7 +40,6 @@
 | 2025-11-18 | [#13126](https://github.com/sgl-project/sglang/pull/13126) | merged | [VLM][feat] Support encoder DP for Qwen2.5-VL | `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/layers/attention/vision.py` |
 | 2025-11-28 | [#13724](https://github.com/sgl-project/sglang/pull/13724) | merged | support qwen3_vl vision model dp | `python/sglang/srt/models/qwen3_vl.py`, `test/nightly/test_encoder_dp.py` |
 | 2025-12-05 | [#14097](https://github.com/sgl-project/sglang/pull/14097) | merged | support GLM-V vision model dp | `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4.py`, `python/sglang/srt/models/glm4_moe.py` |
-| 2025-12-08 | [#14662](https://github.com/sgl-project/sglang/pull/14662) | open | [Glm46v] support ktransformers | `python/sglang/srt/models/glm4v_moe.py` |
 | 2025-12-10 | [#14720](https://github.com/sgl-project/sglang/pull/14720) | merged | [GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V | `python/sglang/srt/models/glm4v.py`, `test/srt/test_pp_single_node.py`, `python/sglang/test/test_utils.py` |
 | 2025-12-12 | [#14927](https://github.com/sgl-project/sglang/pull/14927) | merged | [CI]add nightly CI for glm4v_moe arch model | `test/nightly/test_vlms_mmmu_eval.py` |
 | 2025-12-13 | [#14998](https://github.com/sgl-project/sglang/pull/14998) | merged | add transformers version validation for glm-4.6v moe models | `python/sglang/srt/configs/model_config.py` |
@@ -50,7 +48,6 @@
 | 2026-01-27 | [#17582](https://github.com/sgl-project/sglang/pull/17582) | merged | [GLM-OCR] Support GLM-OCR Model | `python/sglang/srt/models/glm_ocr.py`, `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/multimodal/processors/glm4v.py` |
 | 2026-02-01 | [#17420](https://github.com/sgl-project/sglang/pull/17420) | merged | [VLM] Optimize get_rope_index for GLM4v | `python/sglang/srt/layers/rotary_embedding.py`, `benchmark/bench_rope/benchmark_rope_index.py` |
 | 2026-02-16 | [#18885](https://github.com/sgl-project/sglang/pull/18885) | merged | Fix GLM-4V processor registration when glm_ocr is unavailable | `python/sglang/srt/multimodal/processors/glm4v.py` |
-| 2026-03-03 | [#19728](https://github.com/sgl-project/sglang/pull/19728) | open | Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback | `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py` |
 | 2026-03-08 | [#20033](https://github.com/sgl-project/sglang/pull/20033) | merged | [VLM] Replace conv3d proj with linear for GLM4V | `python/sglang/srt/models/glm4v.py` |
 | 2026-03-14 | [#20463](https://github.com/sgl-project/sglang/pull/20463) | merged | [Bugfix] Fix GLM-4.6V vision regression in glm4v_moe and glm_ocr | `python/sglang/srt/models/glm4v_moe.py`, `python/sglang/srt/models/glm_ocr.py` |
 | 2026-03-15 | [#20282](https://github.com/sgl-project/sglang/pull/20282) | merged | Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug | `python/sglang/srt/layers/conv.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/pixtral.py` |
@@ -62,6 +59,9 @@
 | 2026-04-28 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Fix issue and support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
 | 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-08-11 | [#19728](https://github.com/sgl-project/sglang/pull/19728) | closed | Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback | `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py` |
+| 2026-08-12 | [#9349](https://github.com/sgl-project/sglang/pull/9349) | closed | Add support for GLM 4.5V FP8 | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` |
+| 2026-08-14 | [#14662](https://github.com/sgl-project/sglang/pull/14662) | closed | [Glm46v] support ktransformers | `python/sglang/srt/models/glm4v_moe.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -212,43 +212,6 @@ diff -- python/sglang/srt/models/internvl.py
   - runtime: `python/sglang/srt/layers/attention/vision_utils.py` added +65/-0; `python/sglang/srt/models/glm4v.py` modified +52/-1; `python/sglang/srt/models/internvl.py` modified +4/-49; `python/sglang/srt/models/interns1.py` modified +5/-46; `python/sglang/srt/models/glm4v_moe.py` modified +6/-0; `python/sglang/srt/models/qwen2_5_vl.py` modified +2/-0
   - other: `benchmark/mmmu/bench_hf.py` modified +6/-2; `benchmark/mmmu/bench_sglang.py` modified +6/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/vision_utils.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm4v_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #9349 - Add support for GLM 4.5V FP8
-
-- 链接: https://github.com/sgl-project/sglang/pull/9349
-- 状态/时间: open / 2025-08-19
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+153/-4，可读 patch 165 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add support for GLM 4.5V FP8」；模型线: GLM VLM/OCR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`；技术摘要: 覆盖「Add support for GLM 4.5V FP8」；主要实现面是 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146；`benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4 (11 lines); hunks: -441,10 +441,13 @@ def main(args: argparse.Namespace):; symbols: main，涉及 `main`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
-  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4 (11 lines); hunks: -441,10 +441,13 @@ def main(args: argparse.Namespace):; symbols: main
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json
-@@ -0,0 +1,146 @@
-+{
-+    "1": {
-+        "BLOCK_SIZE_M": 16,
-+        "BLOCK_SIZE_N": 64,
-+        "BLOCK_SIZE_K": 128,
-+        "GROUP_SIZE_M": 1,
-diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
-@@ -441,10 +441,13 @@ def main(args: argparse.Namespace):
--    elif config.architectures[0] in ["Glm4MoeForCausalLM"]:
--        E = config.n_routed_experts
--        topk = config.num_experts_per_tok
--        intermediate_size = config.moe_intermediate_size
-+    elif config.architectures[0] in ["Glm4MoeForCausalLM", "Glm4vMoeForConditionalGeneration"]:
-+        cfg_source = config
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0
-  - other: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #9554 - Fix GLM45v launch server cuda torch compile bug
 
@@ -662,33 +625,6 @@ diff -- python/sglang/srt/models/glm4_moe.py
   - tests: `test/nightly/test_encoder_dp.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `test/nightly/test_encoder_dp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #14662 - [Glm46v] support ktransformers
-
-- 链接: https://github.com/sgl-project/sglang/pull/14662
-- 状态/时间: open / 2025-12-08
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Glm46v] support ktransformers」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4v_moe.py`；技术摘要: 覆盖「[Glm46v] support ktransformers」；主要实现面是 `python/sglang/srt/models/glm4v_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunks: -16,6 +16,7; -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location，涉及 `load_weights, get_model_config_for_expert_location`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunks: -16,6 +16,7; -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/glm4v_moe.py
-@@ -16,6 +16,7 @@
-+from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
-@@ -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal
-+    @classmethod
-+    def get_model_config_for_expert_location(cls, config):
-+        return ModelConfigForExpertLocation(
-+            num_layers=config.text_config.num_hidden_layers,
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4v_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #14720 - [GLM-4.6V] Support Pipeline Parallelism for GLM-4.6V & GLM-4.1V
 
 - 链接: https://github.com/sgl-project/sglang/pull/14720
@@ -965,47 +901,6 @@ diff -- python/sglang/srt/multimodal/processors/glm4v.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/glm4v.py` modified +12/-4
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/glm4v.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #19728 - Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback
-
-- 链接: https://github.com/sgl-project/sglang/pull/19728
-- 状态/时间: open / 2026-03-03
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+104/-4，可读 patch 179 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback」；模型线: GLM VLM/OCR；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`；技术摘要: 覆盖「Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback」；主要实现面是 `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunks: -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(; -1549,10 +1566,10 @@ def _native_dynamic_per_token_quant_fp8(output, input, s...; symbols: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_tensor_quant_fp8，涉及 `per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8`；`python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0 (6 lines); hunks: -351,6 +351,12 @@ def fused_experts_impl(; symbols: fused_experts_impl，涉及 `fused_experts_impl`；`test/registered/moe/test_fused_moe.py` modified +66/-0 (66 lines); hunks: -1,9 +1,11; -239,6 +241,70 @@ def test_various_configurations(self):; symbols: test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding，涉及 `test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding`；`python/sglang/test/test_custom_ops.py` modified +11/-0 (11 lines); hunks: -3,11 +3,14; -141,6 +144,14 @@ def test_scaled_fp8_quant_with_padding(dtype) -> None:; symbols: test_scaled_fp8_quant_with_padding，涉及 `test_scaled_fp8_quant_with_padding`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunks: -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(; -1549,10 +1566,10 @@ def _native_dynamic_per_token_quant_fp8(output, input, s...; symbols: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_tensor_quant_fp8
-  - `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0 (6 lines); hunks: -351,6 +351,12 @@ def fused_experts_impl(; symbols: fused_experts_impl
-  - `test/registered/moe/test_fused_moe.py` modified +66/-0 (66 lines); hunks: -1,9 +1,11; -239,6 +241,70 @@ def test_various_configurations(self):; symbols: test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding
-  - `python/sglang/test/test_custom_ops.py` modified +11/-0 (11 lines); hunks: -3,11 +3,14; -141,6 +144,14 @@ def test_scaled_fp8_quant_with_padding(dtype) -> None:; symbols: test_scaled_fp8_quant_with_padding
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/quantization/fp8_kernel.py
-@@ -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(
-+    def _copy_with_optional_row_padding(
-+        dst: torch.Tensor,
-+        src: torch.Tensor,
-+        pad_value: float = 0.0,
-+    ) -> None:
-+        if dst.shape == src.shape:
-diff -- python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py
-@@ -351,6 +351,12 @@ def fused_experts_impl(
-+    elif hidden_states.shape[1] == w1.shape[2]:
-+        # Some ROCm FP8 MoE checkpoints load unpadded expert weights even when
-+        # SGLANG_MOE_PADDING is enabled globally. In that case the runtime
-+        # shape already matches the true hidden size and subtracting
-+        # `padding_size` would reject a valid layout.
-+        padded_size = 0
-diff -- test/registered/moe/test_fused_moe.py
-@@ -1,9 +1,11 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4; `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0
-  - tests: `test/registered/moe/test_fused_moe.py` modified +66/-0; `python/sglang/test/test_custom_ops.py` modified +11/-0
-- 验证与风险: diff 自带测试面 `python/sglang/test/test_custom_ops.py`, `test/registered/moe/test_fused_moe.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #20033 - [VLM] Replace conv3d proj with linear for GLM4V
 
@@ -1396,6 +1291,111 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #19728 - Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback
+
+- 链接: https://github.com/sgl-project/sglang/pull/19728
+- 状态/时间: closed / 2026-08-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+104/-4，可读 patch 179 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback」；模型线: GLM VLM/OCR；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`；技术摘要: 覆盖「Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback」；主要实现面是 `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunks: -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(; -1549,10 +1566,10 @@ def _native_dynamic_per_token_quant_fp8(output, input, s...; symbols: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_tensor_quant_fp8，涉及 `per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8`；`python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0 (6 lines); hunks: -351,6 +351,12 @@ def fused_experts_impl(; symbols: fused_experts_impl，涉及 `fused_experts_impl`；`test/registered/moe/test_fused_moe.py` modified +66/-0 (66 lines); hunks: -1,9 +1,11; -239,6 +241,70 @@ def test_various_configurations(self):; symbols: test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding，涉及 `test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding`；`python/sglang/test/test_custom_ops.py` modified +11/-0 (11 lines); hunks: -3,11 +3,14; -141,6 +144,14 @@ def test_scaled_fp8_quant_with_padding(dtype) -> None:; symbols: test_scaled_fp8_quant_with_padding，涉及 `test_scaled_fp8_quant_with_padding`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4 (25 lines); hunks: -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(; -1549,10 +1566,10 @@ def _native_dynamic_per_token_quant_fp8(output, input, s...; symbols: per_token_group_quant_mla_deep_gemm_masked_fp8, _copy_with_optional_row_padding, _native_dynamic_per_token_quant_fp8, _native_dynamic_per_tensor_quant_fp8
+  - `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0 (6 lines); hunks: -351,6 +351,12 @@ def fused_experts_impl(; symbols: fused_experts_impl
+  - `test/registered/moe/test_fused_moe.py` modified +66/-0 (66 lines); hunks: -1,9 +1,11; -239,6 +241,70 @@ def test_various_configurations(self):; symbols: test_various_configurations, test_fp8_unpadded_weights_with_global_moe_padding
+  - `python/sglang/test/test_custom_ops.py` modified +11/-0 (11 lines); hunks: -3,11 +3,14; -141,6 +144,14 @@ def test_scaled_fp8_quant_with_padding(dtype) -> None:; symbols: test_scaled_fp8_quant_with_padding
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/fp8_kernel.py
+@@ -1541,6 +1541,23 @@ def per_token_group_quant_mla_deep_gemm_masked_fp8(
++    def _copy_with_optional_row_padding(
++        dst: torch.Tensor,
++        src: torch.Tensor,
++        pad_value: float = 0.0,
++    ) -> None:
++        if dst.shape == src.shape:
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py
+@@ -351,6 +351,12 @@ def fused_experts_impl(
++    elif hidden_states.shape[1] == w1.shape[2]:
++        # Some ROCm FP8 MoE checkpoints load unpadded expert weights even when
++        # SGLANG_MOE_PADDING is enabled globally. In that case the runtime
++        # shape already matches the true hidden size and subtracting
++        # `padding_size` would reject a valid layout.
++        padded_size = 0
+diff -- test/registered/moe/test_fused_moe.py
+@@ -1,9 +1,11 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/quantization/fp8_kernel.py` modified +21/-4; `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py` modified +6/-0
+  - tests: `test/registered/moe/test_fused_moe.py` modified +66/-0; `python/sglang/test/test_custom_ops.py` modified +11/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/test_custom_ops.py`, `test/registered/moe/test_fused_moe.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #9349 - Add support for GLM 4.5V FP8
+
+- 链接: https://github.com/sgl-project/sglang/pull/9349
+- 状态/时间: closed / 2026-08-12
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+153/-4，可读 patch 165 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add support for GLM 4.5V FP8」；模型线: GLM VLM/OCR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`；技术摘要: 覆盖「Add support for GLM 4.5V FP8」；主要实现面是 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146；`benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4 (11 lines); hunks: -441,10 +441,13 @@ def main(args: argparse.Namespace):; symbols: main，涉及 `main`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0 (146 lines); hunks: -0,0 +1,146
+  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4 (11 lines); hunks: -441,10 +441,13 @@ def main(args: argparse.Namespace):; symbols: main
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json
+@@ -0,0 +1,146 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 16,
++        "BLOCK_SIZE_N": 64,
++        "BLOCK_SIZE_K": 128,
++        "GROUP_SIZE_M": 1,
+diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py
+@@ -441,10 +441,13 @@ def main(args: argparse.Namespace):
+-    elif config.architectures[0] in ["Glm4MoeForCausalLM"]:
+-        E = config.n_routed_experts
+-        topk = config.num_experts_per_tok
+-        intermediate_size = config.moe_intermediate_size
++    elif config.architectures[0] in ["Glm4MoeForCausalLM", "Glm4vMoeForConditionalGeneration"]:
++        cfg_source = config
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json` added +146/-0
+  - other: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +7/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #14662 - [Glm46v] support ktransformers
+
+- 链接: https://github.com/sgl-project/sglang/pull/14662
+- 状态/时间: closed / 2026-08-14
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+8/-0，可读 patch 21 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Glm46v] support ktransformers」；模型线: GLM VLM/OCR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/glm4v_moe.py`；技术摘要: 覆盖「[Glm46v] support ktransformers」；主要实现面是 `python/sglang/srt/models/glm4v_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunks: -16,6 +16,7; -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location，涉及 `load_weights, get_model_config_for_expert_location`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm4v_moe.py` modified +8/-0 (8 lines); hunks: -16,6 +16,7; -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights, get_model_config_for_expert_location
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm4v_moe.py
+@@ -16,6 +16,7 @@
++from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
+@@ -281,5 +282,12 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]], is_nextn=Fal
++    @classmethod
++    def get_model_config_for_expert_location(cls, config):
++        return ModelConfigForExpertLocation(
++            num_layers=config.text_config.num_hidden_layers,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4v_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

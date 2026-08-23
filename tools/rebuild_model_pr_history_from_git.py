@@ -74,7 +74,7 @@ MODEL_TITLES = {
     "intern-s1": "Intern-S1",
     "internvl35": "InternVL 3.5",
     "jina-reranker-m0": "Jina Reranker M0",
-    "kimi": "Kimi K2/K2.5/Linear/VL",
+    "kimi": "Kimi K2/K2.5/K3/Linear/VL",
     "ling25": "Ling 2.5",
     "llada21": "LLaDA 2.1",
     "llama31": "Llama 3.1",
@@ -92,6 +92,7 @@ MODEL_TITLES = {
     "qwen3-next": "Qwen3 Next",
     "qwen35": "Qwen3.5",
     "qwen36": "Qwen3.6",
+    "qwen38": "Qwen3.8",
     "ring25": "Ring 2.5",
     "step35": "Step 3.5",
 }
@@ -132,6 +133,7 @@ MODEL_ORDER = [
     "qwen3-next",
     "qwen35",
     "qwen36",
+    "qwen38",
     "ring25",
     "step35",
 ]
@@ -170,6 +172,7 @@ FRAMEWORK_MODEL_ORDER = {
         "qwen3-next",
         "qwen35",
         "qwen36",
+        "qwen38",
         "ring25",
         "step35",
     ],
@@ -307,12 +310,16 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "exclude": ["*qwen-image*", "*qwen_image*", "*diffusion*"],
         },
         "qwen3-coder": {"include": ["*qwen3_coder*", "*qwen3-coder*", "*qwen3.py"], "exclude": []},
-        "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
+        "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen38*", "*qwen3.8*", "*qwen3_8*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
-        "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
+        "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": ["*qwen38*", "*qwen3.8*"]},
         "qwen36": {
             "include": ["*qwen36*", "*qwen3.6*", "*qwen3_6*"],
             "exclude": [],
+        },
+        "qwen38": {
+            "include": ["*qwen38*", "*qwen3.8*", "*qwen3_8*", "*Qwen3.8*"],
+            "exclude": ["*qwen3-8b*", "*qwen3_8b*", "*qwen3.8b*"],
         },
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
@@ -388,12 +395,16 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "exclude": ["*qwen-image*", "*qwen_image*", "*diffusion*"],
         },
         "qwen3-coder": {"include": ["*qwen3_coder*", "*qwen3-coder*", "*qwen3.py"], "exclude": []},
-        "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3_dflash.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
+        "qwen3-core": {"include": ["*qwen3.py", "*qwen3_moe.py", "*qwen3_moe_mtp.py", "*qwen3_dflash.py", "*qwen3-deployment*", "*Qwen3.mdx"], "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen35*", "*qwen36*", "*qwen38*", "*qwen3.8*", "*qwen3_8*", "*qwen3_vl*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3-coder*", "*qwen-image*", "*diffusion*"]},
         "qwen3-next": {"include": ["*qwen3_next*"], "exclude": []},
-        "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
+        "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": ["*qwen38*", "*qwen3.8*"]},
         "qwen36": {
             "include": ["*qwen36*", "*qwen3.6*", "*qwen3_6*"],
             "exclude": [],
+        },
+        "qwen38": {
+            "include": ["*qwen38*", "*qwen3.8*", "*qwen3_8*", "*Qwen3.8*"],
+            "exclude": ["*qwen3-8b*", "*qwen3_8b*", "*qwen3.8b*"],
         },
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
@@ -439,6 +450,7 @@ SUBJECT_HINTS = {
     "qwen3-next": ["qwen3-next", "qwen3 next"],
     "qwen35": ["qwen3.5", "qwen35", "qwen3-5"],
     "qwen36": ["qwen3.6", "qwen36", "qwen3_6"],
+    "qwen38": ["qwen3.8", "qwen38", "qwen3_8"],
     "ring25": ["ring-2.5", "ring 2.5", "ring25"],
     "step35": ["step3.5", "step-3.5", "step35", "step3p5"],
 }

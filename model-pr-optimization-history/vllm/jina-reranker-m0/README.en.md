@@ -11,18 +11,19 @@
 | `examples/pooling/token_embed/jina_reranker_v3_offline.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800) |
 | `examples/pooling/token_embed/jina_reranker_v3_online.py` | [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` | [#49963](https://github.com/vllm-project/vllm/pull/49963) |
+| `tests/models/language/pooling/test_jina_embeddings_v5.py` | [#50337](https://github.com/vllm-project/vllm/pull/50337), [#50352](https://github.com/vllm-project/vllm/pull/50352), [#50688](https://github.com/vllm-project/vllm/pull/50688) |
 | `tests/models/language/pooling/test_jina_reranker_v3.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800), [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/models/language/pooling_mteb_test/test_bge_reranker_v2_gemma.py` | no direct PR-number commit |
-| `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575) |
+| `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#50917](https://github.com/vllm-project/vllm/pull/50917) |
 | `tests/models/multimodal/pooling/test_jinavl_reranker.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#20907](https://github.com/vllm-project/vllm/pull/20907), [#31445](https://github.com/vllm-project/vllm/pull/31445) |
-| `vllm/model_executor/models/jina.py` | [#38633](https://github.com/vllm-project/vllm/pull/38633), [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575) |
+| `vllm/model_executor/models/jina.py` | [#38633](https://github.com/vllm-project/vllm/pull/38633), [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#52037](https://github.com/vllm-project/vllm/pull/52037) |
 | `vllm/model_executor/models/jina_vl.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 10
+- Git-traced PRs: 11
 - Extra PRs preserved from existing docs: 35
-- Total PRs in this document: 45
+- Total PRs in this document: 46
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -68,13 +69,14 @@
 | 2026-05-06 | [#41832](https://github.com/vllm-project/vllm/pull/41832) | merged | [Doc] Add ModernBertForSequenceClassification to scoring.md cross-en… | `docs/models/pooling_models/scoring.md` |
 | 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | merged | [Feature] Add instruction support for score/rerank chat templates | `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-05-15 | [#42267](https://github.com/vllm-project/vllm/pull/42267) | merged | [Entrypoints] Split the pooling offline API into PoolingOfflineMixin. | `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md` |
-| 2026-05-19 | [#42626](https://github.com/vllm-project/vllm/pull/42626) | merged | [Docs] Add SVG images for pooling models. | `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg` |
 | 2026-05-19 | [#41907](https://github.com/vllm-project/vllm/pull/41907) | merged | [Docs] Reorganize online serving docs. | `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md` |
+| 2026-05-19 | [#42626](https://github.com/vllm-project/vllm/pull/42626) | merged | [Docs] Add SVG images for pooling models. | `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg` |
 | 2026-05-22 | [#43393](https://github.com/vllm-project/vllm/pull/43393) | merged | [Docs] Note image preprocessing difference between qwen_vl_utils and vllm. | `docs/models/supported_models.md`, `docs/models/pooling_models/embed.md`, `docs/models/pooling_models/scoring.md` |
 | 2026-06-15 | [#45676](https://github.com/vllm-project/vllm/pull/45676) | merged | [Docs] Update the online serving docs. | `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md` |
 | 2026-06-23 | [#46398](https://github.com/vllm-project/vllm/pull/46398) | merged | [Doc] Fix typos, grammar, and broken commands across docs | `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md` |
 | 2026-07-05 | [#47590](https://github.com/vllm-project/vllm/pull/47590) | merged | [Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts | `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-07-27 | [#49963](https://github.com/vllm-project/vllm/pull/49963) | merged | [Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
+| 2026-08-03 | [#50688](https://github.com/vllm-project/vllm/pull/50688) | merged | [Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone) | `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -82,6 +84,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/20260
 - Status/date: merged / 2025-07-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20260 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py`; associated commits `4bed167768bd`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +993/-133, 1479 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][VLM] Support JinaVL Reranker"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py`; technical summary: Covers "[Model][VLM] Support JinaVL Reranker"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -119,6 +122,7 @@ diff -- vllm/model_executor/models/jina_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20907
 - Status/date: merged / 2025-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20907 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_jinavl_reranker.py`; associated commits `dcf2a5e2088d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +85/-58, 225 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CI/Build] Fix OOM issue in Jina-VL test"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`; technical summary: Covers "[CI/Build] Fix OOM issue in Jina-VL test"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -146,6 +150,7 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21058
 - Status/date: merged / 2025-07-17
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21058 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +247/-345, 1411 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Update pooling model interface"; model line: Jina Reranker M0; category: model implementation change; main diff: `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py`; technical summary: Covers "[Model] Update pooling model interface"; the main implementation surface is `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -187,6 +192,7 @@ diff -- vllm/model_executor/models/bert.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21227
 - Status/date: merged / 2025-07-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21227 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 22 files, +550/-414, 1581 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][1/N] Support multiple poolers at model level"; model line: Jina Reranker M0; category: model support/runtime entry; main diff: `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/bert.py`, `vllm/model_executor/models/adapters.py`; technical summary: Covers "[Model][1/N] Support multiple poolers at model level"; the main implementation surface is `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/bert.py`, `vllm/model_executor/models/adapters.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -271,6 +277,7 @@ diff -- tests/models/language/generation/test_mistral.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21470
 - Status/date: merged / 2025-07-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21470 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 94 files, +1111/-1077, 4435 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Deprecation][2/N] Replace `--task` with `--runner` and `--convert`"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/model_executor/models/registry.py`, `vllm/model_executor/model_loader/utils.py`, `docs/models/supported_models.md`; technical summary: Covers "[Deprecation][2/N] Replace `--task` with `--runner` and `--convert`"; the main implementation surface is `vllm/model_executor/models/registry.py`, `vllm/model_executor/model_loader/utils.py`, `docs/models/supported_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -314,6 +321,7 @@ diff -- docs/models/supported_models.md
 
 - Link: https://github.com/vllm-project/vllm/pull/20538
 - Status/date: merged / 2025-08-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20538 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 21 files, +948/-173, 1566 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Pooling model activation supports per request control by PoolingParams"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_override_pooler_config.py`, `tests/entrypoints/llm/test_score.py`; technical summary: Covers "[Model] Pooling model activation supports per request control by PoolingParams"; the main implementation surface is `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_override_pooler_config.py`, `tests/entrypoints/llm/test_score.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -356,6 +364,7 @@ diff -- tests/entrypoints/llm/test_score.py
 
 - Link: https://github.com/vllm-project/vllm/pull/24031
 - Status/date: merged / 2025-09-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24031 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +38/-30, 143 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Classification models support logit_bias / sigmoid_normalize"; model line: Jina Reranker M0; category: model support/runtime entry; main diff: `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/config.py`; technical summary: Covers "[Model] Classification models support logit_bias / sigmoid_normalize"; the main implementation surface is `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -438,6 +447,7 @@ diff -- vllm/model_executor/models/internlm2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26247
 - Status/date: merged / 2025-10-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26247/files?per_page=100 --paginate gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1508 files, +83935/-68959, 272044 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Convert formatting to use `ruff` instead of `yapf` + `isort`"; model line: Jina Reranker M0; category: performance/backend optimization; main diff: `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`; technical summary: Covers "Convert formatting to use `ruff` instead of `yapf` + `isort`"; the main implementation surface is `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -480,6 +490,7 @@ diff -- vllm/model_executor/layers/fused_moe/fused_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26633
 - Status/date: merged / 2025-10-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26633/files?per_page=100 --paginate gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 944 files, +9491/-10122, 61484 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`"; model line: Jina Reranker M0; category: performance/backend optimization; main diff: `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`; technical summary: Covers "Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`"; the main implementation surface is `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -521,6 +532,7 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26687
 - Status/date: merged / 2025-10-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26687 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/pooling_mteb_test/test_jina.py`; associated commits `8e67b2557aae`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +13/-7, 49 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py`; technical summary: Covers "[Bugfix] Fix out of bound index issue for Jina-embedding-v3 RoPE with cuda graph"; the main implementation surface is `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -556,6 +568,7 @@ diff -- vllm/model_executor/models/config.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25370
 - Status/date: merged / 2025-10-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25370 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 41 files, +786/-399, 1862 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model][2/N] Improve all pooling task | Support multi-vector retrieval"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_pooler_config_init_behaviour.py`, `tests/models/language/pooling/test_multi_vector_retrieval.py`; technical summary: Covers "[Model][2/N] Improve all pooling task | Support multi-vector retrieval"; the main implementation surface is `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_pooler_config_init_behaviour.py`, `tests/models/language/pooling/test_multi_vector_retrieval.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -598,6 +611,7 @@ diff -- tests/models/language/pooling/test_multi_vector_retrieval.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29802
 - Status/date: merged / 2025-12-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29802 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +29/-28, 93 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix some Transformers nightly tests"; model line: Jina Reranker M0; category: bug fix; main diff: `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/models/qwen2.py`; technical summary: Covers "Fix some Transformers nightly tests"; the main implementation surface is `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/models/qwen2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -635,6 +649,7 @@ diff -- vllm/model_executor/models/qwen2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31445
 - Status/date: merged / 2025-12-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31445 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_jinavl_reranker.py`; associated commits `bf73a3e4d7e1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +316/-138, 519 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py`; technical summary: Covers "[Bugfix][Frontend] Fix Jina reranker multimodal input compatibility"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/entrypoints/score_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -670,6 +685,7 @@ diff -- vllm/entrypoints/score_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31669
 - Status/date: merged / 2026-01-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31669 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +181/-40, 753 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc][Model][Refactor] Pass the prefix into Linear layers"; model line: Jina Reranker M0; category: bug fix; main diff: `vllm/model_executor/models/molmo.py`, `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/qwen_vl.py`; technical summary: Covers "[Misc][Model][Refactor] Pass the prefix into Linear layers"; the main implementation surface is `vllm/model_executor/models/molmo.py`, `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/qwen_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -711,6 +727,7 @@ diff -- vllm/model_executor/models/qwen_vl.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31890
 - Status/date: merged / 2026-01-08
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31890 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/qwen3_vl_reranker.jinja`; associated commits `eac3b96ec04d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +287/-13, 415 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models] Allow converting Qwen3-VL into Reranker model"; model line: Jina Reranker M0; category: model implementation change; main diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py`; technical summary: Covers "[Models] Allow converting Qwen3-VL into Reranker model"; the main implementation surface is `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/model_executor/models/adapters.py`, `vllm/model_executor/models/config.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -752,6 +769,7 @@ diff -- vllm/model_executor/models/config.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31973
 - Status/date: merged / 2026-01-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31973 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 34 files, +1290/-1143, 2875 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Reorganize pooling layers"; model line: Jina Reranker M0; category: model implementation change; main diff: `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/layers/pooler/activations.py`, `vllm/model_executor/layers/pooler/seqwise/heads.py`; technical summary: Covers "[Model] Reorganize pooling layers"; the main implementation surface is `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/layers/pooler/activations.py`, `vllm/model_executor/layers/pooler/seqwise/heads.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -793,6 +811,7 @@ diff -- vllm/model_executor/layers/pooler/seqwise/heads.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32085
 - Status/date: merged / 2026-01-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32085 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 10 files, +381/-69, 538 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Improve multimodal pooling examples"; model line: Jina Reranker M0; category: model implementation change; main diff: `examples/pooling/score/openai_cross_encoder_score_for_multimodal.py`, `examples/pooling/embed/vision_embedding_online.py`, `examples/pooling/embed/vision_embedding_offline.py`; technical summary: Covers "[Model] Improve multimodal pooling examples"; the main implementation surface is `examples/pooling/score/openai_cross_encoder_score_for_multimodal.py`, `examples/pooling/embed/vision_embedding_online.py`, `examples/pooling/embed/vision_embedding_offline.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -876,6 +895,7 @@ diff -- tests/entrypoints/pooling/pooling/test_online.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32577
 - Status/date: merged / 2026-01-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32577 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +253/-113, 749 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend] Score entrypoint support data_1 & data_2 and queries & documents as inputs"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `tests/entrypoints/pooling/score/test_online_score.py`, `vllm/entrypoints/pooling/score/protocol.py`, `vllm/entrypoints/pooling/score/serving.py`; technical summary: Covers "[Frontend] Score entrypoint support data_1 & data_2 and queries & documents as inputs"; the main implementation surface is `tests/entrypoints/pooling/score/test_online_score.py`, `vllm/entrypoints/pooling/score/protocol.py`, `vllm/entrypoints/pooling/score/serving.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -918,6 +938,7 @@ diff -- vllm/entrypoints/pooling/score/serving.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32287
 - Status/date: merged / 2026-01-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32287 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +25/-3, 91 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Upgrade transformers-4.57.5"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `requirements/nightly_torch_test.txt`, `requirements/test.in`; technical summary: Covers "Upgrade transformers-4.57.5"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `requirements/nightly_torch_test.txt`, `requirements/test.in`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1000,6 +1021,7 @@ diff -- vllm/model_executor/models/gpt2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33298
 - Status/date: merged / 2026-01-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33298 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +234/-112, 457 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Qwen3-VL-Reranker load."; model line: Jina Reranker M0; category: bug fix; main diff: `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/model_executor/models/adapters.py`, `tests/entrypoints/test_utils.py`; technical summary: Covers "[Bugfix] Fix Qwen3-VL-Reranker load."; the main implementation surface is `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/model_executor/models/adapters.py`, `tests/entrypoints/test_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1043,6 +1065,7 @@ diff -- tests/entrypoints/test_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33060
 - Status/date: merged / 2026-02-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33060 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +432/-205, 1008 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend][4/n] Make pooling entrypoints request schema consensus | ScoreRequest"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/entrypoints/pooling/score/serving.py`, `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/entrypoints/llm.py`; technical summary: Covers "[Frontend][4/n] Make pooling entrypoints request schema consensus | ScoreRequest"; the main implementation surface is `vllm/entrypoints/pooling/score/serving.py`, `tests/entrypoints/pooling/score/test_online_score_vision.py`, `vllm/entrypoints/llm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1086,6 +1109,7 @@ diff -- vllm/entrypoints/llm.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33837
 - Status/date: merged / 2026-02-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33837 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +21/-44, 99 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix ScoreMultiModalParam multi-document scoring returning single result"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/multimodal/pooling/test_jinavl_reranker.py`; technical summary: Covers "[Bugfix] Fix ScoreMultiModalParam multi-document scoring returning single result"; the main implementation surface is `tests/models/multimodal/pooling/test_jinavl_reranker.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1113,6 +1137,7 @@ diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31127
 - Status/date: merged / 2026-02-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31127 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 24 files, +658/-612, 1726 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend][last/5] Make pooling entrypoints request schema consensus."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `tests/entrypoints/pooling/embed/test_online_vision.py`, `tests/entrypoints/pooling/classify/test_offline.py`, `vllm/entrypoints/pooling/score/protocol.py`; technical summary: Covers "[Frontend][last/5] Make pooling entrypoints request schema consensus."; the main implementation surface is `tests/entrypoints/pooling/embed/test_online_vision.py`, `tests/entrypoints/pooling/classify/test_offline.py`, `vllm/entrypoints/pooling/score/protocol.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1197,6 +1222,7 @@ diff -- docs/models/pooling_models/scoring.md
 
 - Link: https://github.com/vllm-project/vllm/pull/37537
 - Status/date: merged / 2026-03-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37537 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 22 files, +184/-163, 808 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Deprecate the score task (this will not affect users)."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `docs/models/pooling_models/README.md`, `vllm/model_executor/layers/pooler/seqwise/heads.py`, `vllm/entrypoints/pooling/__init__.py`; technical summary: Covers "[Model] Deprecate the score task (this will not affect users)."; the main implementation surface is `docs/models/pooling_models/README.md`, `vllm/model_executor/layers/pooler/seqwise/heads.py`, `vllm/entrypoints/pooling/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1282,6 +1308,7 @@ diff -- examples/offline_inference/encoder_decoder_multimodal.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28631
 - Status/date: merged / 2026-03-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28631 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 37 files, +1257/-1780, 3713 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend][3/n] Improve pooling entrypoints | scoring."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`, `tests/entrypoints/pooling/scoring/test_utils.py`; technical summary: Covers "[Frontend][3/n] Improve pooling entrypoints | scoring."; the main implementation surface is `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`, `tests/entrypoints/pooling/scoring/test_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1407,6 +1434,7 @@ diff -- tests/models/multimodal/generation/test_common.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39575
 - Status/date: merged / 2026-04-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39575 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/jina.py`; associated commits `2cdf86044d7e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +218/-10, 401 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add Jina Embeddings v5 model support (fixes #38633)"; model line: Jina Reranker M0; category: bug fix; main diff: `vllm/model_executor/models/jina.py`, `tests/models/language/pooling_mteb_test/test_jina.py`; technical summary: Covers "Add Jina Embeddings v5 model support (fixes #38633)"; the main implementation surface is `vllm/model_executor/models/jina.py`, `tests/models/language/pooling_mteb_test/test_jina.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1444,6 +1472,7 @@ diff -- tests/models/language/pooling_mteb_test/test_jina.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39675
 - Status/date: merged / 2026-04-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39675 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 29 files, +465/-427, 1334 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend][last/5] Improve pooling entrypoints | clean up."; model line: Jina Reranker M0; category: model implementation change; main diff: `vllm/entrypoints/pooling/factories.py`, `vllm/entrypoints/pooling/__init__.py`, `vllm/entrypoints/sagemaker/api_router.py`; technical summary: Covers "[Frontend][last/5] Improve pooling entrypoints | clean up."; the main implementation surface is `vllm/entrypoints/pooling/factories.py`, `vllm/entrypoints/pooling/__init__.py`, `vllm/entrypoints/sagemaker/api_router.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1485,6 +1514,7 @@ diff -- vllm/entrypoints/sagemaker/api_router.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41832
 - Status/date: merged / 2026-05-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41832 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Doc] Add ModernBertForSequenceClassification to scoring.md cross-en…"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `docs/models/pooling_models/scoring.md`; technical summary: Covers "[Doc] Add ModernBertForSequenceClassification to scoring.md cross-en…"; the main implementation surface is `docs/models/pooling_models/scoring.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1507,6 +1537,7 @@ diff -- docs/models/pooling_models/scoring.md
 
 - Link: https://github.com/vllm-project/vllm/pull/42412
 - Status/date: merged / 2026-05-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42412 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/score/template/qwen3_vl_reranker.jinja`; associated commits `70c00163ffa8`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +182/-12, 285 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Add instruction support for score/rerank chat templates"; model line: Jina Reranker M0; category: model support/runtime entry; main diff: `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`; technical summary: Covers "[Feature] Add instruction support for score/rerank chat templates"; the main implementation surface is `examples/pooling/score/template/qwen3_vl_reranker.jinja`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1547,6 +1578,7 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42267
 - Status/date: merged / 2026-05-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42267 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 9 files, +531/-439, 1121 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Entrypoints] Split the pooling offline API into PoolingOfflineMixin."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md`; technical summary: Covers "[Entrypoints] Split the pooling offline API into PoolingOfflineMixin."; the main implementation surface is `vllm/entrypoints/pooling/offline.py`, `vllm/entrypoints/llm.py`, `docs/models/pooling_models/README.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1585,46 +1617,11 @@ diff -- docs/models/pooling_models/README.md
   - docs: `docs/models/pooling_models/README.md` modified +4/-4; `docs/models/pooling_models/embed.md` modified +3/-3; `docs/models/pooling_models/classify.md` modified +2/-2; `docs/models/pooling_models/token_embed.md` modified +2/-2; `docs/models/pooling_models/reward.md` modified +1/-1; `docs/models/pooling_models/scoring.md` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/entrypoints/llm.py`, `vllm/entrypoints/pooling/offline.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #42626 - [Docs] Add SVG images for pooling models.
-
-- Link: https://github.com/vllm-project/vllm/pull/42626
-- Status/date: merged / 2026-05-19
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 5 files, +2336/-0, 44 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Add SVG images for pooling models."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`; technical summary: Covers "[Docs] Add SVG images for pooling models."; the main implementation surface is `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines); `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines); `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines); `docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts....
-- Code diff details:
-  - `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines)
-  - `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines)
-  - `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines)
-  - `docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts...
-  - `docs/models/pooling_models/scoring.md` modified +6/-0 (6 lines); hunks: -25,6 +25,12 @@ The score models is designed to compute similarity scores bet...
-- Key code excerpts:
-
-```diff
-diff -- docs/models/pooling_models/README.md
-@@ -33,6 +33,12 @@ from large language models, allowing them to benefit from the continuous improve
-+### Cheat Sheet
-+As illustrated in the figure below, we have summarized the relationships among the key elements of pooling models as a takeaway.
-+![Cheat Sheet](../../assets/models/pooling_models/cheat_sheet.svg)
-@@ -61,6 +67,8 @@ are a subset of classification models that accept two prompts as input and outpu
-+![Pooling Types](../../assets/models/pooling_models/pooling_types.svg)
-@@ -71,6 +79,8 @@ are a subset of classification models that accept two prompts as input and outpu
-diff -- docs/models/pooling_models/scoring.md
-@@ -25,6 +25,12 @@ The score models is designed to compute similarity scores between two input prom
-+### Score Types
-+The three supported scoring functions are as illustrated in the figure below.
-+![Score Types](../../assets/models/pooling_models/score_types.svg)
-```
-
-- Reviewed files:
-  - docs: `docs/assets/models/pooling_models/score_types.svg` added +902/-0; `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0; `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0; `docs/models/pooling_models/README.md` modified +10/-0; `docs/models/pooling_models/scoring.md` modified +6/-0
-- Risk and verification: This is mostly docs/examples in `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`, `docs/assets/models/pooling_models/score_types.svg`; validation should confirm the documented command still maps to current CLI flags and model repo names.
-
 ### PR #41907 - [Docs] Reorganize online serving docs.
 
 - Link: https://github.com/vllm-project/vllm/pull/41907
 - Status/date: merged / 2026-05-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41907 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 24 files, +1348/-1241, 1469 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Reorganize online serving docs."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md`; technical summary: Covers "[Docs] Reorganize online serving docs."; the main implementation surface is `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/models/pooling_models/README.md`, `docs/models/supported_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1661,6 +1658,42 @@ diff -- docs/models/generative_models.md
 - Reviewed files:
   - docs: `docs/assets/models/pooling_models/cheat_sheet.svg` modified +671/-660; `docs/models/pooling_models/README.md` modified +6/-6; `docs/models/supported_models.md` modified +4/-4; `docs/models/generative_models.md` modified +3/-3; `docs/models/pooling_models/scoring.md` modified +3/-3; `docs/models/pooling_models/embed.md` modified +2/-2
 - Risk and verification: This is mostly docs/examples in `docs/.nav.yml`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/configuration/README.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #42626 - [Docs] Add SVG images for pooling models.
+
+- Link: https://github.com/vllm-project/vllm/pull/42626
+- Status/date: merged / 2026-05-19
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +2336/-0, 44 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Add SVG images for pooling models."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`; technical summary: Covers "[Docs] Add SVG images for pooling models."; the main implementation surface is `docs/assets/models/pooling_models/score_types.svg`, `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines); `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines); `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines); `docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts....
+- Code diff details:
+  - `docs/assets/models/pooling_models/score_types.svg` added +902/-0 (902 lines)
+  - `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0 (785 lines)
+  - `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0 (633 lines)
+  - `docs/models/pooling_models/README.md` modified +10/-0 (10 lines); hunks: -33,6 +33,12 @@ from large language models, allowing them to benefit from the...; -61,6 +67,8 @@ are a subset of classification models that accept two prompts...
+  - `docs/models/pooling_models/scoring.md` modified +6/-0 (6 lines); hunks: -25,6 +25,12 @@ The score models is designed to compute similarity scores bet...
+- Key code excerpts:
+
+```diff
+diff -- docs/models/pooling_models/README.md
+@@ -33,6 +33,12 @@ from large language models, allowing them to benefit from the continuous improve
++### Cheat Sheet
++As illustrated in the figure below, we have summarized the relationships among the key elements of pooling models as a takeaway.
++![Cheat Sheet](../../assets/models/pooling_models/cheat_sheet.svg)
+@@ -61,6 +67,8 @@ are a subset of classification models that accept two prompts as input and outpu
++![Pooling Types](../../assets/models/pooling_models/pooling_types.svg)
+@@ -71,6 +79,8 @@ are a subset of classification models that accept two prompts as input and outpu
+diff -- docs/models/pooling_models/scoring.md
+@@ -25,6 +25,12 @@ The score models is designed to compute similarity scores between two input prom
++### Score Types
++The three supported scoring functions are as illustrated in the figure below.
++![Score Types](../../assets/models/pooling_models/score_types.svg)
+```
+
+- Reviewed files:
+  - docs: `docs/assets/models/pooling_models/score_types.svg` added +902/-0; `docs/assets/models/pooling_models/cheat_sheet.svg` added +785/-0; `docs/assets/models/pooling_models/pooling_types.svg` added +633/-0; `docs/models/pooling_models/README.md` modified +10/-0; `docs/models/pooling_models/scoring.md` modified +6/-0
+- Risk and verification: This is mostly docs/examples in `docs/assets/models/pooling_models/cheat_sheet.svg`, `docs/assets/models/pooling_models/pooling_types.svg`, `docs/assets/models/pooling_models/score_types.svg`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #43393 - [Docs] Note image preprocessing difference between qwen_vl_utils and vllm.
 
@@ -1705,6 +1738,7 @@ diff -- docs/models/pooling_models/scoring.md
 
 - Link: https://github.com/vllm-project/vllm/pull/45676
 - Status/date: merged / 2026-06-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45676 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +83/-37, 216 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] Update the online serving docs."; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md`; technical summary: Covers "[Docs] Update the online serving docs."; the main implementation surface is `docs/models/pooling_models/scoring.md`, `docs/models/pooling_models/README.md`, `docs/serving/online_serving/README.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1745,6 +1779,7 @@ diff -- docs/serving/online_serving/README.md
 
 - Link: https://github.com/vllm-project/vllm/pull/46398
 - Status/date: merged / 2026-06-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46398 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +16/-18, 149 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Doc] Fix typos, grammar, and broken commands across docs"; model line: Jina Reranker M0; category: bug fix; main diff: `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md`; technical summary: Covers "[Doc] Fix typos, grammar, and broken commands across docs"; the main implementation surface is `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1786,6 +1821,7 @@ diff -- docs/benchmarking/cli.md
 
 - Link: https://github.com/vllm-project/vllm/pull/47590
 - Status/date: merged / 2026-07-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/47590 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/pooling/token_embed/jina_reranker_v3_online.py`, `tests/models/language/pooling/test_jina_reranker_v3.py`; associated commits `922661304357`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +179/-22, 281 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`; technical summary: Covers "[Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts"; the main implementation surface is `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1827,6 +1863,7 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
 
 - Link: https://github.com/vllm-project/vllm/pull/49963
 - Status/date: merged / 2026-07-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/49963 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`; associated commits `27d7061ef62b`
 - Diff scope read: GitHub Pull Request files API returned 2 files, +69/-1, 78 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online"; model line: Jina Reranker M0; category: bug fix; main diff: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`; technical summary: Covers "[Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online"; the main implementation surface is `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1859,6 +1896,46 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
   - tests: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` added +59/-0
   - runtime: `vllm/entrypoints/pooling/scoring/io_processor.py` modified +10/-1
 - Risk and verification: The diff ships test coverage in `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #50688 - [Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)
+
+- Link: https://github.com/vllm-project/vllm/pull/50688
+- Status/date: merged / 2026-08-03
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py`, `vllm/model_executor/models/jina.py`; associated commits `9a4fd57cac19`
+- Diff scope read: GitHub Pull Request files API returned 6 files, +155/-91, 333 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)"; model line: Jina Reranker M0; category: docs/tests/CI; main diff: `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py`; technical summary: Covers "[Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)"; the main implementation surface is `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/jina.py` modified +112/-61 (173 lines); hunks: -24,6 +24,7; -185,11 +186,79 @@ def _build_lora_pairs(adapter_weights: dict) -> dict:; symbols: _build_lora_pairs, JinaEmbeddingsV5Model, _setup_jina_v5_task_and_pooler, _load_jina_v5_weights, touching `_build_lora_pairs, JinaEmbeddingsV5Model, _setup_jina_v5_task_and_pooler`; `tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12 (27 lines); hunks: -1,12 +1,13; -34,16 +35,18 @@ def test_registered_for_the_architecture():; symbols: test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_encoder_backbone_enables_bidirectional_attention, touching `test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_encoder_backbone_enables_bidirectional_attention`; `tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0 (8 lines); hunks: -38,6 +38,14.
+- Code diff details:
+  - `vllm/model_executor/models/jina.py` modified +112/-61 (173 lines); hunks: -24,6 +24,7; -185,11 +186,79 @@ def _build_lora_pairs(adapter_weights: dict) -> dict:; symbols: _build_lora_pairs, JinaEmbeddingsV5Model, _setup_jina_v5_task_and_pooler, _load_jina_v5_weights
+  - `tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12 (27 lines); hunks: -1,12 +1,13; -34,16 +35,18 @@ def test_registered_for_the_architecture():; symbols: test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_encoder_backbone_enables_bidirectional_attention
+  - `tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0 (8 lines); hunks: -38,6 +38,14
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/jina.py
+@@ -24,6 +24,7 @@
++from .llama import LlamaForCausalLM
+@@ -185,11 +186,79 @@ def _build_lora_pairs(adapter_weights: dict) -> dict:
+-class JinaEmbeddingsV5Model(Qwen3ForCausalLM, VllmModelForPooling):
+-    """Jina Embeddings V5 with task-specific LoRA adapters merged at load time.
++def _setup_jina_v5_task_and_pooler(model: nn.Module, vllm_config: VllmConfig) -> None:
++    """Shared init for jina-embeddings-v5 wrappers: select task + build pooler."""
+diff -- tests/models/language/pooling/test_jina_embeddings_v5.py
+@@ -1,12 +1,13 @@
+-"""Backbone validation for Jina Embeddings V5 (issue #50337).
++"""Backbone validation for Jina Embeddings V5.
+-a Qwen3 decoder (which vLLM implements), while `-nano` is a bidirectional
+-EuroBERT encoder (which it does not). Upstream ships a separate
+-`configuration_*.py` per repository, so the only signal distinguishing them is
+-`is_decoder`, which the encoder variant sets to False.
+diff -- tests/models/language/pooling_mteb_test/test_jina.py
+@@ -38,6 +38,14 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/jina.py` modified +112/-61
+  - tests: `tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12; `tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0
+- Risk and verification: The diff ships test coverage in `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/mteb_embed_utils.py`, `tests/models/language/pooling_mteb_test/test_jina.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -13,9 +13,11 @@
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/__init__.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_methods.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha.py` | no direct PR-number commit |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mha_rocm.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_cpu.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_fused_rope_rocm.py` | no direct PR-number commit |
+| `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla_rocm.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_common/utils.py` | no direct PR-number commit |
 | `python/sglang/srt/models/deepseek_v2.py` | [#13954](https://github.com/sgl-project/sglang/pull/13954) |
@@ -56,9 +58,6 @@
 | 2026-01-19 | [#17320](https://github.com/sgl-project/sglang/pull/17320) | closed | fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content. | `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
 | 2026-01-22 | [#17141](https://github.com/sgl-project/sglang/pull/17141) | closed | fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content. | `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
 | 2026-01-24 | [#17558](https://github.com/sgl-project/sglang/pull/17558) | closed | fix: Fixed the issue where "finish_reason":"stop" appeared when calling the tool and the tool was in the content. | `python/sglang/srt/function_call/deepseekv32_detector.py`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
-| 2026-01-26 | [#17761](https://github.com/sgl-project/sglang/pull/17761) | open | fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates | `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
-| 2026-02-04 | [#18236](https://github.com/sgl-project/sglang/pull/18236) | open | Fix function call arguments missing in streaming mode for DeepSeek V3.1 | `python/sglang/srt/function_call/deepseekv31_detector.py` |
-| 2026-03-31 | [#21739](https://github.com/sgl-project/sglang/pull/21739) | open | [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-09 | [#22433](https://github.com/sgl-project/sglang/pull/22433) | open | [Test] Add unit tests for DeepSeekV31Detector | `test/registered/unit/function_call/test_deepseekv31_detector.py` |
 | 2026-04-11 | [#21593](https://github.com/sgl-project/sglang/pull/21593) | merged | Fix tool call constrained decoding and parsing for models with native formats | `test/registered/unit/function_call/test_function_call_parser.py`, `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/function_call/function_call_parser.py` |
 | 2026-04-16 | [#22981](https://github.com/sgl-project/sglang/pull/22981) | open | [Test] Add unit tests for 7 missing function call detectors | `test/registered/unit/function_call/test_function_call_parser.py`, `test/manual/openai_server/function_call/test_tool_choice.py`, `test/registered/unit/function_call/test_kimik2_detector.py` |
@@ -142,6 +141,9 @@
 | 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | merged | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py` |
 | 2026-06-25 | [#14194](https://github.com/sgl-project/sglang/pull/14194) | merged | [feature] implement dcp for deepseek_v2 | `python/sglang/srt/layers/utils/dcp_utils.py`, `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` |
 | 2026-06-26 | [#29142](https://github.com/sgl-project/sglang/pull/29142) | merged | [DeepSeek V3] Run routed experts on main stream in dual-stream MoE | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-08-11 | [#21739](https://github.com/sgl-project/sglang/pull/21739) | closed | [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation | `docs/platforms/ascend/ascend_npu_best_practice.md` |
+| 2026-08-19 | [#17761](https://github.com/sgl-project/sglang/pull/17761) | closed | fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates | `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja` |
+| 2026-08-20 | [#18236](https://github.com/sgl-project/sglang/pull/18236) | closed | Fix function call arguments missing in streaming mode for DeepSeek V3.1 | `python/sglang/srt/function_call/deepseekv31_detector.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -797,98 +799,6 @@ diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
   - runtime: `python/sglang/srt/function_call/deepseekv32_detector.py` modified +8/-4
   - docs: `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +6/-12
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/function_call/deepseekv32_detector.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #17761 - fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates
-
-- Link: https://github.com/sgl-project/sglang/pull/17761
-- Status/date: open / 2026-01-26
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +79/-2, 102 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates"; model line: DeepSeek V3.1; category: bug fix; main diff: `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`; technical summary: Covers "fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates"; the main implementation surface is `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output, touching `test_tool_call_with_content, test_assistant_marker_after_tool_output`; `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7; `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7.
-- Code diff details:
-  - `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output
-  - `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7
-  - `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7
-- Key code excerpts:
-
-```diff
-diff -- test/manual/test_deepseek_chat_templates.py
-@@ -313,6 +313,83 @@ def test_tool_call_with_content(self):
-+    def test_assistant_marker_after_tool_output(self):
-+        """Test that Assistant marker is present after tool output in multi-turn conversation."""
-+        # This tests that when an assistant responds after receiving tool output,
-+        # the <｜Assistant｜> marker is correctly added
-+        for version in ["v3.1", "v3.2"]:
-+            with self.subTest(version=version):
-diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
-@@ -60,7 +60,7 @@
--    {%- if ns.is_last_user %}
-+    {%- if ns.is_last_user or ns.is_tool %}
-diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
-@@ -57,7 +57,7 @@
--    {%- if ns.is_last_user %}
-+    {%- if ns.is_last_user or ns.is_tool %}
-```
-
-- Reviewed files:
-  - tests: `test/manual/test_deepseek_chat_templates.py` modified +77/-0
-  - docs: `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1; `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1
-- Risk and verification: The diff ships test coverage in `test/manual/test_deepseek_chat_templates.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #18236 - Fix function call arguments missing in streaming mode for DeepSeek V3.1
-
-- Link: https://github.com/sgl-project/sglang/pull/18236
-- Status/date: open / 2026-02-04
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +21/-3, 57 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix function call arguments missing in streaming mode for DeepSeek V3.1"; model line: DeepSeek V3.1; category: bug fix; main diff: `python/sglang/srt/function_call/deepseekv31_detector.py`; technical summary: Covers "Fix function call arguments missing in streaming mode for DeepSeek V3.1"; the main implementation surface is `python/sglang/srt/function_call/deepseekv31_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment, touching `__init__, has_tool_call, parse_streaming_increment`.
-- Code diff details:
-  - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/function_call/deepseekv31_detector.py
-@@ -52,6 +52,7 @@ def __init__(self):
-+        self._normal_text_sent = False
-@@ -111,6 +112,18 @@ def parse_streaming_increment(
-+        # Extract normal text before tool call on first detection
-+        normal_text_to_return = ""
-+        if not self._normal_text_sent:
-+            # Find the first tool call marker
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/function_call/deepseekv31_detector.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #21739 - [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation
-
-- Link: https://github.com/sgl-project/sglang/pull/21739
-- Status/date: open / 2026-03-31
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +163/-19, 270 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation"; model line: DeepSeek V3.1; category: docs/tests/CI; main diff: `docs/platforms/ascend/ascend_npu_best_practice.md`; technical summary: Covers "[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation"; the main implementation surface is `docs/platforms/ascend/ascend_npu_best_practice.md`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset..
-- Code diff details:
-  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
-- Key code excerpts:
-
-```diff
-diff -- docs/platforms/ascend/ascend_npu_best_practice.md
-@@ -20,6 +20,7 @@ you encounter issues or have any questions, please [open an issue](https://githu
-+| Deepseek-R1 | Atlas 800I A3 | 24    | PD Separation | 2K+2K     | 50ms | W8A8 INT8    | [Optimal Configuration](#deepseek-r1-2k-2k-50ms-on-a3-24-cards-separation-mode) |
-@@ -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
-+### DeepSeek-R1 2K-2K 50ms on A3 24 Cards Separation Mode
-+Model: Deepseek R1
-+Hardware: Atlas 800I A3 24Card
-+DeployMode: PD Separation
-```
-
-- Reviewed files:
-  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19
-- Risk and verification: This is mostly docs/examples in `docs/platforms/ascend/ascend_npu_best_practice.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #22433 - [Test] Add unit tests for DeepSeekV31Detector
 
@@ -4042,6 +3952,98 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +48/-46
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #21739 - [NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation
+
+- Link: https://github.com/sgl-project/sglang/pull/21739
+- Status/date: closed / 2026-08-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +163/-19, 270 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation"; model line: DeepSeek V3.1; category: docs/tests/CI; main diff: `docs/platforms/ascend/ascend_npu_best_practice.md`; technical summary: Covers "[NPU] Update DeepSeek-V3.1 and DeepSeek-V3.2 model deployment instructions in documentation"; the main implementation surface is `docs/platforms/ascend/ascend_npu_best_practice.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset..
+- Code diff details:
+  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19 (182 lines); hunks: -20,6 +20,7 @@ you encounter issues or have any questions, please [open an is...; -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
+- Key code excerpts:
+
+```diff
+diff -- docs/platforms/ascend/ascend_npu_best_practice.md
+@@ -20,6 +20,7 @@ you encounter issues or have any questions, please [open an issue](https://githu
++| Deepseek-R1 | Atlas 800I A3 | 24    | PD Separation | 2K+2K     | 50ms | W8A8 INT8    | [Optimal Configuration](#deepseek-r1-2k-2k-50ms-on-a3-24-cards-separation-mode) |
+@@ -177,7 +178,148 @@ We tested it based on the `RANDOM` dataset.
++### DeepSeek-R1 2K-2K 50ms on A3 24 Cards Separation Mode
++Model: Deepseek R1
++Hardware: Atlas 800I A3 24Card
++DeployMode: PD Separation
+```
+
+- Reviewed files:
+  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +163/-19
+- Risk and verification: This is mostly docs/examples in `docs/platforms/ascend/ascend_npu_best_practice.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #17761 - fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates
+
+- Link: https://github.com/sgl-project/sglang/pull/17761
+- Status/date: closed / 2026-08-19
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +79/-2, 102 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates"; model line: DeepSeek V3.1; category: bug fix; main diff: `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`; technical summary: Covers "fix: missing Assistant token after tool output in DeepSeek v3.1/v3.2 chat templates"; the main implementation surface is `test/manual/test_deepseek_chat_templates.py`, `examples/chat_template/tool_chat_template_deepseekv31.jinja`, `examples/chat_template/tool_chat_template_deepseekv32.jinja`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output, touching `test_tool_call_with_content, test_assistant_marker_after_tool_output`; `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7; `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7.
+- Code diff details:
+  - `test/manual/test_deepseek_chat_templates.py` modified +77/-0 (77 lines); hunks: -313,6 +313,83 @@ def test_tool_call_with_content(self):; symbols: test_tool_call_with_content, test_assistant_marker_after_tool_output
+  - `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1 (2 lines); hunks: -60,7 +60,7
+  - `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1 (2 lines); hunks: -57,7 +57,7
+- Key code excerpts:
+
+```diff
+diff -- test/manual/test_deepseek_chat_templates.py
+@@ -313,6 +313,83 @@ def test_tool_call_with_content(self):
++    def test_assistant_marker_after_tool_output(self):
++        """Test that Assistant marker is present after tool output in multi-turn conversation."""
++        # This tests that when an assistant responds after receiving tool output,
++        # the <｜Assistant｜> marker is correctly added
++        for version in ["v3.1", "v3.2"]:
++            with self.subTest(version=version):
+diff -- examples/chat_template/tool_chat_template_deepseekv31.jinja
+@@ -60,7 +60,7 @@
+-    {%- if ns.is_last_user %}
++    {%- if ns.is_last_user or ns.is_tool %}
+diff -- examples/chat_template/tool_chat_template_deepseekv32.jinja
+@@ -57,7 +57,7 @@
+-    {%- if ns.is_last_user %}
++    {%- if ns.is_last_user or ns.is_tool %}
+```
+
+- Reviewed files:
+  - tests: `test/manual/test_deepseek_chat_templates.py` modified +77/-0
+  - docs: `examples/chat_template/tool_chat_template_deepseekv31.jinja` modified +1/-1; `examples/chat_template/tool_chat_template_deepseekv32.jinja` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/manual/test_deepseek_chat_templates.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #18236 - Fix function call arguments missing in streaming mode for DeepSeek V3.1
+
+- Link: https://github.com/sgl-project/sglang/pull/18236
+- Status/date: closed / 2026-08-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +21/-3, 57 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix function call arguments missing in streaming mode for DeepSeek V3.1"; model line: DeepSeek V3.1; category: bug fix; main diff: `python/sglang/srt/function_call/deepseekv31_detector.py`; technical summary: Covers "Fix function call arguments missing in streaming mode for DeepSeek V3.1"; the main implementation surface is `python/sglang/srt/function_call/deepseekv31_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment, touching `__init__, has_tool_call, parse_streaming_increment`.
+- Code diff details:
+  - `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3 (24 lines); hunks: -52,6 +52,7 @@ def __init__(self):; -111,6 +112,18 @@ def parse_streaming_increment(; symbols: __init__, has_tool_call, parse_streaming_increment
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/function_call/deepseekv31_detector.py
+@@ -52,6 +52,7 @@ def __init__(self):
++        self._normal_text_sent = False
+@@ -111,6 +112,18 @@ def parse_streaming_increment(
++        # Extract normal text before tool call on first detection
++        normal_text_to_return = ""
++        if not self._normal_text_sent:
++            # Find the first tool call marker
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/function_call/deepseekv31_detector.py` modified +21/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/function_call/deepseekv31_detector.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

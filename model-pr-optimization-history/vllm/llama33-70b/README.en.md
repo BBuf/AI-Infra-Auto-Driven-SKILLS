@@ -35,6 +35,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/28697
 - Status/date: merged / 2025-11-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28697 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +26/-0, 27 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add CPU support model"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "Add CPU support model"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -62,6 +63,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 
 - Link: https://github.com/vllm-project/vllm/pull/29380
 - Status/date: merged / 2025-11-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29380 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +82/-9, 109 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "add xpu supported model and model id for cpu"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "add xpu supported model and model id for cpu"; the main implementation surface is `docs/models/hardware_supported_models/xpu.md`, `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -98,6 +100,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 
 - Link: https://github.com/vllm-project/vllm/pull/32963
 - Status/date: merged / 2026-01-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32963 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +4/-4, 35 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update CPU doc according to feedback"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md`; technical summary: Covers "Update CPU doc according to feedback"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`, `docs/models/hardware_supported_models/xpu.md`, `docs/benchmarking/dashboard.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -133,6 +136,7 @@ diff -- docs/benchmarking/dashboard.md
 
 - Link: https://github.com/vllm-project/vllm/pull/34128
 - Status/date: merged / 2026-02-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +802/-254, 1243 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Vllm CPU benchmark suite improvement"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`; technical summary: Covers "Vllm CPU benchmark suite improvement"; the main implementation surface is `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -176,6 +180,7 @@ diff -- .buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh
 
 - Link: https://github.com/vllm-project/vllm/pull/36398
 - Status/date: merged / 2026-03-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36398 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 47 files, +394/-392, 1933 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Allow `markdownlint` to run locally"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "Allow `markdownlint` to run locally"; the main implementation surface is `docs/models/hardware_supported_models/xpu.md`, `docs/models/supported_models.md`, `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -217,6 +222,7 @@ diff -- docs/models/hardware_supported_models/cpu.md
 
 - Link: https://github.com/vllm-project/vllm/pull/35086
 - Status/date: merged / 2026-03-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35086 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +800/-119, 1301 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "more models for vLLM Benchmark Suite"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; technical summary: Covers "more models for vLLM Benchmark Suite"; the main implementation surface is `.buildkite/performance-benchmarks/scripts/compare-json-results.py`, `.buildkite/performance-benchmarks/scripts/run-performance-benchmarks.sh`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -260,6 +266,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - Link: https://github.com/vllm-project/vllm/pull/38576
 - Status/date: merged / 2026-03-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/38576 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +15/-1, 119 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "vLLM Benchmark Suite perf regression after PR#32723"; model line: Llama 3.3 70B; category: bug fix; main diff: `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`; technical summary: Covers "vLLM Benchmark Suite perf regression after PR#32723"; the main implementation surface is `.buildkite/performance-benchmarks/tests/serving-tests-hpu.json`, `.buildkite/performance-benchmarks/tests/serving-tests.json`, `.buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -301,6 +308,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-arm64-cpu.json
 
 - Link: https://github.com/vllm-project/vllm/pull/42607
 - Status/date: merged / 2026-05-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42607 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +118/-159, 465 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; model line: Llama 3.3 70B; category: performance/backend optimization; main diff: `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`; technical summary: Covers "Update Intel Xeon model list and vLLM Benchmark Suite BKMs"; the main implementation surface is `docs/models/hardware_supported_models/cpu.md`, `.buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -338,6 +346,7 @@ diff -- .buildkite/performance-benchmarks/tests/serving-tests-cpu-text.json
 
 - Link: https://github.com/vllm-project/vllm/pull/44128
 - Status/date: merged / 2026-06-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44128 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +1/-15, 100 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it"; model line: Llama 3.3 70B; category: bug fix; main diff: `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`; technical summary: Covers "[Misc] Remove dead VLLM_RPC_TIMEOUT env var and fix profiling doc that references it"; the main implementation surface is `vllm/envs.py`, `docs/contributing/profiling.md`, `.buildkite/performance-benchmarks/tests/latency-tests-arm64-cpu.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -381,6 +390,7 @@ diff -- .buildkite/performance-benchmarks/tests/latency-tests-cpu.json
 
 - Link: https://github.com/vllm-project/vllm/pull/42726
 - Status/date: merged / 2026-06-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42726 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +108/-3, 200 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[ZenCPU] Add zencpu Platform Runtime Logging and Docs"; model line: Llama 3.3 70B; category: docs/tests/CI; main diff: `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md`; technical summary: Covers "[ZenCPU] Add zencpu Platform Runtime Logging and Docs"; the main implementation surface is `tests/model_executor/test_cpu_unquantized_gemm_dispatch.py`, `vllm/model_executor/layers/utils.py`, `docs/models/hardware_supported_models/cpu.md`. File-level evidence, code excerpts, and validation risks are preserved below.

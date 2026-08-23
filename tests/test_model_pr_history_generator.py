@@ -34,7 +34,7 @@ class TestModelHistoryConfiguration(unittest.TestCase):
 
     def test_framework_orders_cover_supported_current_models(self):
         self.assertTrue(
-            {"hunyuan3-preview", "moss-vl", "qwen36"}
+            {"hunyuan3-preview", "moss-vl", "qwen36", "qwen38"}
             <= set(self.mod.FRAMEWORK_MODEL_ORDER["sglang"])
         )
         self.assertTrue(
@@ -42,6 +42,7 @@ class TestModelHistoryConfiguration(unittest.TestCase):
             <= set(self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
         )
         self.assertNotIn("moss-vl", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
+        self.assertNotIn("qwen38", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
 
     def test_every_framework_model_has_title_filter_and_subject_hints(self):
         for framework, models in self.mod.FRAMEWORK_MODEL_ORDER.items():

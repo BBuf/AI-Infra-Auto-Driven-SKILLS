@@ -4,19 +4,20 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | [#23532](https://github.com/sgl-project/sglang/pull/23532), [#30201](https://github.com/sgl-project/sglang/pull/30201) |
-| `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` | [#30201](https://github.com/sgl-project/sglang/pull/30201) |
-| `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` | [#23532](https://github.com/sgl-project/sglang/pull/23532) |
-| `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` | [#30201](https://github.com/sgl-project/sglang/pull/30201) |
-| `docs_new/src/snippets/configs/tencent/hy3.jsx` | [#30201](https://github.com/sgl-project/sglang/pull/30201) |
+| `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Tencent/Hy3.mdx` | no direct PR-number commit |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` | [#30223](https://github.com/sgl-project/sglang/pull/30223) |
+| `docs/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/configs/tencent/hy3-benchmarks.jsx` | no direct PR-number commit |
+| `docs/src/snippets/configs/tencent/hy3.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/hunyuan_detector.py` | [#23533](https://github.com/sgl-project/sglang/pull/23533) |
 | `test/registered/unit/function_call/test_hunyuan_detector.py` | [#23533](https://github.com/sgl-project/sglang/pull/23533) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 3
-- Extra PRs preserved from existing docs: 0
-- Total PRs in this document: 3
+- Git-traced PRs: 2
+- Extra PRs preserved from existing docs: 2
+- Total PRs in this document: 4
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -24,9 +25,10 @@
 
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
-| 2026-04-23 | [#23532](https://github.com/sgl-project/sglang/pull/23532) | merged | docs: add Hunyuan 3 Preview cookbook | `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` |
+| 2026-04-23 | [#23532](https://github.com/sgl-project/sglang/pull/23532) | merged | docs: add Hunyuan 3 Preview cookbook | `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`, `docs_new/docs.json` |
 | 2026-04-24 | [#23533](https://github.com/sgl-project/sglang/pull/23533) | merged | support Hy3 preview | `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py` |
 | 2026-07-06 | [#30201](https://github.com/sgl-project/sglang/pull/30201) | merged | cookbook: add Hunyuan 3 (Hy3) Day-0 page | `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` |
+| 2026-08-11 | [#30223](https://github.com/sgl-project/sglang/pull/30223) | merged | Add Hunyuan3 On Ascend Doc | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` |
 
 ## Per-PR Diff Audit Cards
 
@@ -34,13 +36,14 @@
 
 - Link: https://github.com/sgl-project/sglang/pull/23532
 - Status/date: merged / 2026-04-23
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`; associated commits `4868e367f851`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +707/-0, 716 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "docs: add Hunyuan 3 Preview cookbook"; model line: Hunyuan3 Preview; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`; technical summary: Covers "docs: add Hunyuan 3 Preview cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs, touching `GPUs`; `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs, touching `GPUs`.
+- Motivation: Title: "docs: add Hunyuan 3 Preview cookbook"; model line: Hunyuan3 Preview; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`, `docs_new/docs.json`; technical summary: Covers "docs: add Hunyuan 3 Preview cookbook"; the main implementation surface is `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`, `docs_new/docs.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs, touching `GPUs`; `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs, touching `GPUs`; `docs_new/docs.json` modified +6/-0 (6 lines); hunks: -1067,6 +1067,12.
 - Code diff details:
   - `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0 (527 lines); hunks: -0,0 +1,527; symbols: GPUs
   - `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0 (174 lines); hunks: -0,0 +1,174; symbols: GPUs
+  - `docs_new/docs.json` modified +6/-0 (6 lines); hunks: -1067,6 +1067,12
 - Key code excerpts:
 
 ```diff
@@ -60,10 +63,12 @@ diff -- docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx
 +  //   H200 (141GB): tp=8
 +  //   B200 (180GB): tp=8
 +  //   B300 (275GB): tp=4
+diff -- docs_new/docs.json
+@@ -1067,6 +1067,12 @@
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0; `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0
+  - docs: `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` added +527/-0; `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` added +174/-0; `docs_new/docs.json` modified +6/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/docs.json`, `docs_new/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23533 - support Hy3 preview
@@ -107,14 +112,15 @@ diff -- python/sglang/srt/function_call/hunyuan_detector.py
 
 - Link: https://github.com/sgl-project/sglang/pull/30201
 - Status/date: merged / 2026-07-06
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/src/snippets/configs/tencent/hy3.jsx`; associated commits `6f22790943a8`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +944/-2, 970 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "cookbook: add Hunyuan 3 (Hy3) Day-0 page"; model line: Hunyuan3 Preview; category: docs/tests/CI; main diff: `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`; technical summary: Covers "cookbook: add Hunyuan 3 (Hy3) Day-0 page"; the main implementation surface is `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0 (546 lines); hunks: -0,0 +1,546; `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0 (26 lines); hunks: -0,0 +1,26; `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0 (370 lines); hunks: -0,0 +1,370; `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6.
+- Key implementation: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0 (546 lines); hunks: -0,0 +1,546; `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0 (26 lines); hunks: -0,0 +1,26; `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0 (370 lines); hunks: -0,0 +1,370; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -136,7 +136,7 @@ metatags:.
 - Code diff details:
   - `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0 (546 lines); hunks: -0,0 +1,546
   - `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0 (26 lines); hunks: -0,0 +1,26
   - `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0 (370 lines); hunks: -0,0 +1,370
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -136,7 +136,7 @@ metatags:
   - `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6
 - Key code excerpts:
 
@@ -140,8 +146,35 @@ diff -- docs_new/cookbook/autoregressive/Tencent/Hy3.mdx
 ```
 
 - Reviewed files:
-  - docs: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0; `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0; `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0; `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1
+  - docs: `docs_new/src/snippets/configs/tencent/hy3.jsx` added +546/-0; `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx` added +26/-0; `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` added +370/-0; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1; `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +0/-1; `docs_new/docs.json` modified +1/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #30223 - Add Hunyuan3 On Ascend Doc
+
+- Link: https://github.com/sgl-project/sglang/pull/30223
+- Status/date: merged / 2026-08-11
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx`; associated commits `f148eb6e6ea5`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +389/-0, 397 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Add Hunyuan3 On Ascend Doc"; model line: Hunyuan3 Preview; category: docs/tests/CI; main diff: `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx`; technical summary: Covers "Add Hunyuan3 On Ascend Doc"; the main implementation surface is `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` added +388/-0 (388 lines); hunks: -0,0 +1,388.
+- Code diff details:
+  - `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` added +388/-0 (388 lines); hunks: -0,0 +1,388
+- Key code excerpts:
+
+```diff
+diff -- docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx
+@@ -0,0 +1,388 @@
++---
++title: "Hy3"
++metatags:
++  description: "Deploy Hy3 model with SGLang on Ascend NPUs, including single-node deployment and speculative decoding."
++---
++## Introduction
+```
+
+- Reviewed files:
+  - docs: `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` added +388/-0
+- Risk and verification: This is mostly docs/examples in `docs/docs.json`, `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ## Gap-Closure Notes
 

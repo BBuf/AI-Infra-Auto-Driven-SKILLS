@@ -92,6 +92,10 @@ The same run verified Nsight Compute availability with a tiny CUDA matmul:
 
 After server and ncu cleanup, all eight B200 GPUs reported `0 MiB` used.
 
+The 2026-08-23 source refresh did not recapture a live prefill/decode trace or
+`ncu --set basic` smoke: the assigned B200 host closed SSH on port 22. Keep
+the 2026-06-27 artifacts as the last GPU-backed profiler evidence.
+
 ## Real H100 Validation
 
 The current reference run is the `4x H100` matrix captured on `2026-04-23` on
@@ -177,7 +181,9 @@ H100 notes:
 - SGLang kernel-site reconstruction keeps sampling disabled in the mapping path so the optimized parser does not perturb SGLang table output; equality rechecks matched for `Mixtral-8x7B-Instruct-v0.1`, `Qwen3-32B`, and `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8`
 - vLLM live capture requires `--output-dir` to match the server `torch_profiler_dir`; the validated H100 flow uses `--profiler-config {"profiler":"torch","torch_profiler_dir":"..."}` and then drives `/start_profile` and `/stop_profile`
 - TensorRT-LLM validation stays on `--backend pytorch`; the H100 flow writes the trace with `TLLM_TORCH_PROFILE_TRACE` and then analyzes the saved trace
-- TensorRT-LLM current mainline was rechecked at `9fe5853263750ade5b7dc24fb31a1215ec822d45` on 2026-07-28; PyTorch profiling still uses `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
+- TensorRT-LLM current mainline was rechecked at `da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9` on 2026-08-23; PyTorch profiling still uses `record_shapes=True` and `with_modules=True`, but not `with_stack=True`; keep the override path for table-quality Python locations unless the target image proves otherwise
+- SGLang `v0.5.18` turns the DSV4 fused MHC post+pre path on by default, including SM12x. A decode trace that still shows split MHC post and pre kernels is now more likely a disabled/regressed path than a novel fuse idea
+- TokenSpeed live capture is still HTTP profiler-control plus existing-trace triage; it is not part of the older H100 validation matrix
 - TokenSpeed trace analysis has first-class registry rows for native TokenSpeed CuTe DSL MLA, MLA KV pack + FP8 quantize, fused top-k/top-p sampling, persistent lm_head GEMM, and NVFP4 GEMM + SwiGLU + quant; live capture still requires an existing torch-profiler trace until the target TokenSpeed image exposes a supported profiler API
 - on this host, keep all trace roots under `/data/...`, not `/home/...`
 

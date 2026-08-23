@@ -38,7 +38,9 @@ servers.
 
 Prefer native tooling when it gives better coverage:
 
-- SGLang: `python -m sglang.auto_benchmark` when available, otherwise
+- SGLang: current public cookbooks use `sglang serve`; `python -m
+  sglang.launch_server` remains accepted. Prefer `python -m
+  sglang.auto_benchmark` when available, otherwise
   `python -m sglang.bench_serving`
 - vLLM: `vllm bench sweep serve` for server-parameter sweeps, otherwise
   `vllm serve` plus `vllm bench serve`
@@ -120,6 +122,12 @@ frameworks were recorded as environment gaps, not as unsupported frameworks.
 | `Qwen/Qwen2.5-7B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
 | `Qwen/Qwen3-8B` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
 
+The 2026-08-23 source refresh did **not** recapture those rows. The assigned
+B200 host (`lmsys@40.142.96.44`) closed SSH on port 22, so there is no new
+GPU smoke, MiniMax-M3 revalidation, or four-framework CLI help capture from
+this date. Treat every 2026-08-23 flag or recipe note as a source check, not
+as a replacement for the 2026-06-27 B200 evidence.
+
 The same B200 refresh ran the cookbook validator against captured help
 snapshots. Missing-command help captures such as `trtllm-serve_missing.txt`
 are now ignored unless at least one real `--flag` is present, preventing a
@@ -186,11 +194,34 @@ before starting a long sweep.
   the operator has verified the image.
 - vLLM still exposes `--long-prefill-token-threshold`; verify the exact flag
   against the target image before searching it.
-- vLLM current mainline was checked on 2026-07-28 at
-  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74` and includes PR `#46735`
-  fixing CUDA graph capture in Triton / NVFP4-emulation MoE. If a target image
-  predates it, treat Triton-MoE graph-capture failures or eager fallback as an
-  image/runtime issue before scoring it against SGLang.
+- SGLang current mainline was checked on 2026-08-23 at
+  `eec794bce0808ae26cc1dcb84a56b65d2df82af5` (released tags `v0.5.17` on
+  2026-08-08 and `v0.5.18` on 2026-08-22). Record these as source notes, not
+  as GPU-smoked winners:
+  - public cookbooks now emit `sglang serve`; keep capturing
+    `python -m sglang.launch_server --help` until the target image drops it
+  - v0.5.17 adds opt-in `--enable-session-radix-cache` plus `/close_session`,
+    experimental `--dwdp-size` MoE prefill, and a weight-cache daemon
+  - v0.5.18 moves compiled-kernel caches under `SGLANG_CACHE_DIR` (first
+    launch after upgrade recompiles once) and adds
+    `--startup-weight-load-mode overlap`
+  - v0.5.18 CUDA images require torch 2.13.0 / triton 3.7.1; treat older
+    torch 2.9/2.11 images as stale before scoring them. `--torchao-config`
+    is removed. NVFP4 + `flashinfer_trtllm` MoE deferred finalize is on by
+    default for the DeepSeek-V3 family
+  - FlashInfer MNNVL pure-allreduce is auto-on for DeepSeek-V3/V3.2/V4;
+    elsewhere it is `--enable-flashinfer-pure-allreduce`
+  - v0.5.18 known issues: Kimi K3 MLA gate→QKV-A GEMM fusion landed then
+    reverted (`#33623` / `#34642`); AMD GLM-5.2 fused shared-expert append
+    also reverted (`#31323` / `#35105`); v0.5.17 gRPC parallel request
+    lifecycle tracking was reverted (`#34160`)
+- vLLM current mainline was checked on 2026-08-23 at
+  `bbe8b23e1a2b32a96240b27f63255170d09ef144` (released tags `v0.27.0` on
+  2026-08-10 and `v0.27.1` on 2026-08-11). It includes the earlier PR
+  `#46735` CUDA-graph Triton / NVFP4-emulation MoE fix, plus the Kimi K3
+  stack that landed in 0.27.0. If a target image predates either, treat
+  Triton-MoE graph-capture failures, eager fallback, or missing Kimi K3
+  loaders as an image/runtime issue before scoring it against SGLang.
 - The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
   sync-heavy profiler rows, record whether the target image exposes this debug
   knob before labeling the gap as kernel-local.
@@ -199,10 +230,24 @@ before starting a long sweep.
   scaling in the Transformers modeling backend. Treat images predating either
   change as stale when those exact paths affect a row; neither merge is itself
   benchmark evidence.
-- TensorRT-LLM mainline was checked on 2026-07-28 at
-  `9fe5853263750ade5b7dc24fb31a1215ec822d45`. Keep
+- The same vLLM head lists `Qwen/Qwen3.8-27B` in the model registry, but the
+  public HF `config.json` uses `model_type=qwen3_5`. Do not invent a separate
+  vLLM Qwen3.8 implementation tree; compare that checkpoint against the
+  existing Qwen3.5 loader. The four-framework cookbook still leaves vLLM
+  disabled until a target-image smoke exists.
+- TensorRT-LLM mainline was checked on 2026-08-23 at
+  `da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`. Keep
   `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
   `trtllm-serve serve --help` proves a shorter alias is accepted.
+  Same-day mainline also includes Qwen3.5/3.8 wave-2 (`#17700`), Qwen3.8-27B
+  FP8 VLM quant-config cleanup (`#17786`), Kimi K3 MLA decode backend
+  selection (`#17800`), and Kimi K3 NVFP4 MegaMoE SiTU (`#17865`). Record
+  those as source notes only; they do not enable a four-framework cookbook
+  lane without target-image smoke.
+- TensorRT-LLM 1.2+ and current 1.3.0rc line have removed the TensorRT engine
+  backend. PyTorch is the sole server backend, which matches this skill's
+  existing `trtllm-serve serve --backend pytorch` pin. Images that still
+  advertise `--backend tensorrt` are stale; do not search that backend.
 - TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
   affect KV block eviction and KV block-offset host staging. If a target image
   predates them, record stale-runtime risk when cache pressure, block-offset
@@ -221,8 +266,8 @@ before starting a long sweep.
   backend, which is pinned to `pytorch` by this skill.
 - `trtllm` `benchmark_serving --dataset-name random` silently falls back to
   ShareGPT sampling without `--random-ids` (or `--download-path`).
-- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-07-28 at
-  `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f` exposes `tokenspeed serve`,
+- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-08-23 at
+  `lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d` exposes `tokenspeed serve`,
   `tokenspeed bench`, `tokenspeed env`, and `tokenspeed version`. Its server
   command is `tokenspeed serve <model>`, not a `python -m tokenspeed`
   entrypoint.
@@ -230,7 +275,10 @@ before starting a long sweep.
   deployment contracts. Keep it as source guidance only: the recipe contains
   platform-specific sidecars, checkpoint-layout requirements, and explicit
   output-quality and validation caveats, so it does not enable a generic benchmark lane
-  without target-image and model smoke evidence.
+  without target-image and model smoke evidence. After 2026-07-28, TokenSpeed
+  also merged scheduler 0.1.9 (`#1208`), Kimi K3 unrouted-decode projection
+  routing (`#1200`), and an MLA FP8 KV packing fallback (`#1199`). Record the
+  target SHA; do not treat those merges as a benchmark winner.
 - TokenSpeed's SGLang/vLLM-compatible parameter names are not always identical
   in meaning. Prefer `--max-model-len`, `--max-num-seqs`,
   `--chunked-prefill-size`, `--max-prefill-tokens`, `--max-total-tokens`,
@@ -280,6 +328,7 @@ Verify SGLang plus all requested comparison frameworks before starting a search.
 Run only the commands for the requested framework set:
 
 ```bash
+sglang serve --help
 python -m sglang.launch_server --help
 python -m sglang.bench_serving --help
 vllm serve --help
@@ -528,7 +577,7 @@ TensorRT-LLM flag names are especially version-sensitive. In the validated
 TensorRT-LLM 1.0.0 image, the KV-cache memory flag accepted by
 `trtllm-serve serve` was `--kv_cache_free_gpu_memory_fraction`, not
 `--free_gpu_memory_fraction`. Current mainline was rechecked at
-`9fe5853263750ade5b7dc24fb31a1215ec822d45` on 2026-07-28. Always verify flags
+`da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9` on 2026-08-23. Always verify flags
 with `trtllm-serve serve --help` before running a search on any GPU target.
 
 TensorRT-LLM backend policy for this skill:

@@ -56,6 +56,7 @@ STATIC_SERVER_FLAGS = {
         "ep_size",
         "host",
         "kv_cache_dtype",
+        "max_prefill_tokens",
         "max_running_requests",
         "mem_fraction_static",
         "model_loader_extra_config",

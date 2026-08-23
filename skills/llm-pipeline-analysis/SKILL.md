@@ -16,7 +16,8 @@ navigation or detailed timing analysis.
 
 - when you need to know **which layers** contribute most
 - when the model has alternating layer types (e.g. models with
-  `compress_ratios` like DeepSeek-V4 NSA)
+  `compress_ratios` like DeepSeek-V4 NSA, or hybrid GDN/GQA stacks such as
+  Qwen3.8-27B)
 - when you need to compare cold-start vs steady-state forward passes
 - when you need to navigate to a specific layer in Perfetto UI
 - when you need to select representative layers for deep-dive analysis

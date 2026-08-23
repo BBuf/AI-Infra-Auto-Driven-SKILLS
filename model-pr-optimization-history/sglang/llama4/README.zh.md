@@ -4,22 +4,22 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Llama/Llama4.mdx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/llama4-maverick-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/llama4-scout-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Meta/Llama4.mdx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/llama4-maverick-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/llama4-scout-deployment.jsx` | 无直接 PR 号提交 |
 | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` | [#6679](https://github.com/sgl-project/sglang/pull/6679) |
 | `python/sglang/srt/models/llama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5127](https://github.com/sgl-project/sglang/pull/5127), [#5128](https://github.com/sgl-project/sglang/pull/5128), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5159](https://github.com/sgl-project/sglang/pull/5159), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6752](https://github.com/sgl-project/sglang/pull/6752), [#7729](https://github.com/sgl-project/sglang/pull/7729), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#8683](https://github.com/sgl-project/sglang/pull/8683), [#9101](https://github.com/sgl-project/sglang/pull/9101), [#10047](https://github.com/sgl-project/sglang/pull/10047), ... (17 total) |
 | `python/sglang/srt/models/mllama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6985](https://github.com/sgl-project/sglang/pull/6985), [#7129](https://github.com/sgl-project/sglang/pull/7129), [#8272](https://github.com/sgl-project/sglang/pull/8272), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#10042](https://github.com/sgl-project/sglang/pull/10042), [#10047](https://github.com/sgl-project/sglang/pull/10047), [#10611](https://github.com/sgl-project/sglang/pull/10611), [#11282](https://github.com/sgl-project/sglang/pull/11282) |
 | `python/sglang/srt/multimodal/processors/mllama4.py` | [#7840](https://github.com/sgl-project/sglang/pull/7840), [#8156](https://github.com/sgl-project/sglang/pull/8156) |
+| `test/manual/8-gpu-models/test_llama4.py` | 无直接 PR 号提交 |
 | `test/manual/lora/test_lora_llama4.py` | 无直接 PR 号提交 |
 | `test/manual/models/test_llama4_models.py` | 无直接 PR 号提交 |
-| `test/registered/8-gpu-models/test_llama4.py` | [#16599](https://github.com/sgl-project/sglang/pull/16599), [#16971](https://github.com/sgl-project/sglang/pull/16971) |
-| `test/registered/ascend/llm_models/test_npu_llama4_scount_17b_16e.py` | 无直接 PR 号提交 |
+| `test/registered/npu/llm_models/test_npu_llama4_scount_17b_16e.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 28
-- 原文档显式引用补充 PR 数: 6
+- git 追溯 PR 数: 26
+- 原文档显式引用补充 PR 数: 8
 - 当前文档总 PR 数: 34
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
@@ -54,7 +54,7 @@
 | 2025-11-08 | [#12811](https://github.com/sgl-project/sglang/pull/12811) | merged | use fast stream instead of torch.cuda.current_stream in llama 4 shared experts overlap | `python/sglang/srt/models/llama4.py` |
 | 2025-11-25 | [#13421](https://github.com/sgl-project/sglang/pull/13421) | merged | Add Llama4 attention backend auto-selection | `python/sglang/srt/server_args.py`, `docs/basic_usage/llama4.md` |
 | 2026-01-07 | [#16599](https://github.com/sgl-project/sglang/pull/16599) | merged | ci: adding llama4 placeholder test to nightly | `test/registered/8-gpu-models/test_llama4.py` |
-| 2026-01-14 | [#16971](https://github.com/sgl-project/sglang/pull/16971) | merged | fix: renaming test file and job names + skip blocking llama4 nightly | `test/registered/8-gpu-models/test_llama4.py` |
+| 2026-01-14 | [#16971](https://github.com/sgl-project/sglang/pull/16971) | merged | fix: renaming test file and job names + skip blocking llama4 nightly | `.github/workflows/nightly-test-nvidia.yml`, `test/registered/8-gpu-models/test_llama4.py`, `test/registered/8-gpu-models/test_deepseek_v31.py` |
 | 2026-01-30 | [#12813](https://github.com/sgl-project/sglang/pull/12813) | merged | add weightless qk norm to RMSNorm interface for Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2026-02-27 | [#17123](https://github.com/sgl-project/sglang/pull/17123) | merged | llama4 npu adapt | `python/sglang/srt/models/llama4.py` |
 | 2026-05-15 | [#25089](https://github.com/sgl-project/sglang/pull/25089) | merged | [Llama4] Use strided in-place fused QK RMSNorm to drop a redundant copy | `python/sglang/srt/models/llama4.py` |
@@ -794,7 +794,7 @@ diff -- docs/basic_usage/llama4.md
 
 - 链接: https://github.com/sgl-project/sglang/pull/16599
 - 状态/时间: merged / 2026-01-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_llama4.py`；关联提交 `2ff872311b4d`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+55/-0，可读 patch 56 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「ci: adding llama4 placeholder test to nightly」；模型线: Llama 4；类别: 文档/测试/CI；主要 diff: `test/registered/8-gpu-models/test_llama4.py`；技术摘要: 覆盖「ci: adding llama4 placeholder test to nightly」；主要实现面是 `test/registered/8-gpu-models/test_llama4.py`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `test/registered/8-gpu-models/test_llama4.py` added +55/-0 (55 lines); hunks: -0,0 +1,55; symbols: TestLlama4Unified, for, test_llama4，涉及 `TestLlama4Unified, for, test_llama4`。
@@ -821,24 +821,42 @@ diff -- test/registered/8-gpu-models/test_llama4.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/16971
 - 状态/时间: merged / 2026-01-14
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/8-gpu-models/test_llama4.py`；关联提交 `aa2b4f766179`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 10 个文件，+22/-21，可读 patch 142 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: renaming test file and job names + skip blocking llama4 nightly」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `test/registered/8-gpu-models/test_llama4.py`；技术摘要: 覆盖「fix: renaming test file and job names + skip blocking llama4 nightly」；主要实现面是 `test/registered/8-gpu-models/test_llama4.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/8-gpu-models/test_llama4.py` modified +2/-1 (3 lines); hunks: -12,7 +12,8; symbols: TestLlama4Unified, TestLlama4, for，涉及 `TestLlama4Unified, TestLlama4, for`。
+- 动机: 标题「fix: renaming test file and job names + skip blocking llama4 nightly」；模型线: Llama 4；类别: 缺陷修复；主要 diff: `.github/workflows/nightly-test-nvidia.yml`, `test/registered/8-gpu-models/test_llama4.py`, `test/registered/8-gpu-models/test_deepseek_v31.py`；技术摘要: 覆盖「fix: renaming test file and job names + skip blocking llama4 nightly」；主要实现面是 `.github/workflows/nightly-test-nvidia.yml`, `test/registered/8-gpu-models/test_llama4.py`, `test/registered/8-gpu-models/test_deepseek_v31.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `.github/workflows/nightly-test-nvidia.yml` modified +12/-12 (24 lines); hunks: -168,13 +168,16 @@ jobs:; -368,8 +371,8 @@ jobs:；`test/registered/8-gpu-models/test_llama4.py` modified +2/-1 (3 lines); hunks: -12,7 +12,8; symbols: TestLlama4Unified, TestLlama4, for，涉及 `TestLlama4Unified, TestLlama4, for`；`test/registered/8-gpu-models/test_deepseek_v31.py` modified +1/-1 (2 lines); hunks: -12,7 +12,7; symbols: TestDeepseekV31Unified, TestDeepseekV31, for，涉及 `TestDeepseekV31Unified, TestDeepseekV31, for`；`test/registered/8-gpu-models/test_deepseek_v32.py` modified +1/-1 (2 lines); hunks: -27,7 +27,7; symbols: TestDeepseekV32Unified, TestDeepseekV32, for，涉及 `TestDeepseekV32Unified, TestDeepseekV32, for`。
 - 代码 diff 细节:
+  - `.github/workflows/nightly-test-nvidia.yml` modified +12/-12 (24 lines); hunks: -168,13 +168,16 @@ jobs:; -368,8 +371,8 @@ jobs:
   - `test/registered/8-gpu-models/test_llama4.py` modified +2/-1 (3 lines); hunks: -12,7 +12,8; symbols: TestLlama4Unified, TestLlama4, for
+  - `test/registered/8-gpu-models/test_deepseek_v31.py` modified +1/-1 (2 lines); hunks: -12,7 +12,7; symbols: TestDeepseekV31Unified, TestDeepseekV31, for
+  - `test/registered/8-gpu-models/test_deepseek_v32.py` modified +1/-1 (2 lines); hunks: -27,7 +27,7; symbols: TestDeepseekV32Unified, TestDeepseekV32, for
+  - `test/registered/8-gpu-models/test_glm_46.py` modified +1/-1 (2 lines); hunks: -12,7 +12,7; symbols: TestGLM46Unified, TestGLM46, for
 - 关键代码摘录:
 
 ```diff
+diff -- .github/workflows/nightly-test-nvidia.yml
+@@ -168,13 +168,16 @@ jobs:
+-      - name: Run test
+-        timeout-minutes: 120
++      - name: Run common 8-GPU model tests
++        if: always()
++        timeout-minutes: 300
++          TRACE_BASE_URL: https://raw.githubusercontent.com/sglang-bot/sglang-ci-data/main/traces/${{ github.run_id }}
 diff -- test/registered/8-gpu-models/test_llama4.py
 @@ -12,7 +12,8 @@
 -class TestLlama4Unified(unittest.TestCase):
 +@unittest.skip("Blocked: Missing HF token permission for Llama 4 model")
 +class TestLlama4(unittest.TestCase):
+diff -- test/registered/8-gpu-models/test_deepseek_v31.py
+@@ -12,7 +12,7 @@
+-class TestDeepseekV31Unified(unittest.TestCase):
++class TestDeepseekV31(unittest.TestCase):
+diff -- test/registered/8-gpu-models/test_deepseek_v32.py
 ```
 
 - 已读文件:
-  - tests: `test/registered/8-gpu-models/test_llama4.py` modified +2/-1
+  - ci: `.github/workflows/nightly-test-nvidia.yml` modified +12/-12
+  - tests: `test/registered/8-gpu-models/test_llama4.py` modified +2/-1; `test/registered/8-gpu-models/test_deepseek_v31.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v32.py` modified +1/-1; `test/registered/8-gpu-models/test_glm_46.py` modified +1/-1; `test/registered/8-gpu-models/test_glm_46_fp8.py` modified +1/-1; `test/registered/8-gpu-models/test_kimi_k2.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_deepseek_v31.py`, `test/registered/8-gpu-models/test_deepseek_v32.py`, `test/registered/8-gpu-models/test_glm_46.py`, `test/registered/8-gpu-models/test_glm_46_fp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #12813 - add weightless qk norm to RMSNorm interface for Llama 4

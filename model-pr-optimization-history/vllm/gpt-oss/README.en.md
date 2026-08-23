@@ -17,11 +17,14 @@
 | `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-quark-mxfp4-fp8-triton.yaml` | no direct PR-number commit |
 | `tests/evals/gpt_oss/configs/gpt-oss-20b-sm100-fi-mxfp4-mxfp8-trtllm.yaml` | no direct PR-number commit |
 | `tests/evals/gpt_oss/configs/gpt-oss-20b-sm120.yaml` | no direct PR-number commit |
+| `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
+| `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
 | `tests/evals/gpt_oss/configs/models-b200.txt` | no direct PR-number commit |
 | `tests/evals/gpt_oss/configs/models-gfx942.txt` | [#36179](https://github.com/vllm-project/vllm/pull/36179) |
 | `tests/evals/gpt_oss/configs/models-gfx950.txt` | [#36179](https://github.com/vllm-project/vllm/pull/36179), [#38292](https://github.com/vllm-project/vllm/pull/38292) |
 | `tests/evals/gpt_oss/configs/models-h100.txt` | no direct PR-number commit |
 | `tests/evals/gpt_oss/configs/models-spark.txt` | no direct PR-number commit |
+| `tests/evals/gpt_oss/configs/models-xpu.txt` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
 | `tests/evals/gpt_oss/conftest.py` | [#24920](https://github.com/vllm-project/vllm/pull/24920) |
 | `tests/evals/gpt_oss/test_gpqa_correctness.py` | [#24920](https://github.com/vllm-project/vllm/pull/24920), [#26030](https://github.com/vllm-project/vllm/pull/26030) |
 | `tests/evals/gsm8k/configs/humming/gpt-oss-20b-humming-act-fp8.yaml` | no direct PR-number commit |
@@ -33,9 +36,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 40
+- Git-traced PRs: 41
 - Extra PRs preserved from existing docs: 23
-- Total PRs in this document: 63
+- Total PRs in this document: 64
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -106,6 +109,7 @@
 | 2026-06-23 | [#46142](https://github.com/vllm-project/vllm/pull/46142) | merged | [AMD][OCP MX][CI] Fix tests to not dispatch on `UNFUSED_TRITON` backend on MI300, improve w_mxfp4_a_fp8 emulation support | `vllm/model_executor/layers/fused_moe/utils.py`, `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`, `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` |
 | 2026-06-24 | [#46406](https://github.com/vllm-project/vllm/pull/46406) | merged | [Bugfix] Support non-power-of-2 top_k in legacy triton_kernels routing | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` |
 | 2026-06-24 | [#46408](https://github.com/vllm-project/vllm/pull/46408) | merged | [Bugfix] Support -1 (invalid/non-local) slots in topk_ids for Triton MoE | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` |
+| 2026-07-29 | [#48703](https://github.com/vllm-project/vllm/pull/48703) | merged | [XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci | `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2095,6 +2099,45 @@ diff -- vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.
 - Reviewed files:
   - runtime: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +88/-7
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #48703 - [XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci
+
+- Link: https://github.com/vllm-project/vllm/pull/48703
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`; associated commits `7de49bab7e91`
+- Diff scope read: GitHub Pull Request files API returned 4 files, +38/-0, 48 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci"; model line: GPT-OSS; category: performance/backend optimization; main diff: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`; technical summary: Covers "[XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci"; the main implementation surface is `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0 (6 lines); hunks: -0,0 +1,6; `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0 (5 lines); hunks: -0,0 +1,5; `tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0 (3 lines); hunks: -0,0 +1,3.
+- Code diff details:
+  - `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0 (6 lines); hunks: -0,0 +1,6
+  - `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0 (5 lines); hunks: -0,0 +1,5
+  - `tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0 (3 lines); hunks: -0,0 +1,3
+- Key code excerpts:
+
+```diff
+diff -- tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++model_name: openai/gpt-oss-20b
++metric_threshold: 0.568
++reasoning_effort: low
++server_args: "--attention-backend TRITON_ATTN"
+diff -- tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++model_name: openai/gpt-oss-20b
++metric_threshold: 0.568
++reasoning_effort: low
+diff -- tests/evals/gpt_oss/configs/models-xpu.txt
+@@ -0,0 +1,3 @@
++# Intel XPU model configurations for GPQA evaluation
+```
+
+- Reviewed files:
+  - tests: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0; `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0; `tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0
+- Risk and verification: The diff ships test coverage in `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -1,8 +1,8 @@
 # TokenSpeed Kimi Model PR Optimization History
 
-## 2026-07-28 Source Head Refresh
+## 2026-08-23 Source Head Refresh
 
-Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`.
+Rechecked TokenSpeed upstream main at `lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d`.
 The two-commit range after the previous head
 `d73bf0454422092f306d5575e803a08fd35ac41c` was read in full.
 

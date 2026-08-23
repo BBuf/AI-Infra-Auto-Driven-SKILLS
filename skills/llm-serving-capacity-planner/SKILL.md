@@ -129,6 +129,16 @@ Include:
 5. **Concurrency estimate table**: request token length / token-limit / request-limit / max concurrent
 6. **Tuning notes** based on free memory and configuration
 
+## 2026-08-23 Runtime Notes
+
+SGLang `v0.5.18` consolidates compiled-kernel caches under `SGLANG_CACHE_DIR`.
+The first launch after an upgrade can look like extra "other" memory and a
+longer startup because Triton / FlashInfer / DeepGEMM / Inductor recompile
+once. Overlapped checkpoint staging (`--startup-weight-load-mode overlap`)
+also changes the startup memory curve: weight pages and CUDA-graph capture
+can overlap, so do not treat a shorter load-weight interval as a smaller
+weight footprint.
+
 ## Known Limitations
 
 | Limitation | Detail | Workaround |

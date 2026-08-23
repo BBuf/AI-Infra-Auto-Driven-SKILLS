@@ -26,11 +26,11 @@ necessarily present in the checked-out `sglang` tree, but they should still be
 treated as upstream or analogous kernel-overlap families before labeling an
 overlap opportunity as novel.
 
-Refresh note `2026-07-28`: rechecked official main heads for SGLang
-`8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
-`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
-`9fe5853263750ade5b7dc24fb31a1215ec822d45`, and TokenSpeed
-`e41aa8b1609a9412d7ed26aa56d910828607950f`. Open SGLang `#21877`
+Refresh note `2026-08-23`: rechecked official main heads for SGLang
+`eec794bce0808ae26cc1dcb84a56b65d2df82af5`, vLLM
+`bbe8b23e1a2b32a96240b27f63255170d09ef144`, TensorRT-LLM
+`da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`, and TokenSpeed
+`2706143a8669d50a8f56466b9d340b86922b8f2d`. Open SGLang `#21877`
 and FlashInfer `#2720` remain status-sensitive references.
 The public Kimi K3 Day-0 PR
 [`sgl-project/sglang#32541`](https://github.com/sgl-project/sglang/pull/32541)

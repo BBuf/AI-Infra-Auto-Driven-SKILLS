@@ -28,6 +28,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/42242
 - Status/date: merged / 2026-05-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42242 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/lora/test_qwen36_moe_lora.py`; associated commits `7d5b03378268`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +391/-9, 607 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[LoRA] Support 2D and 3D MoE LoRA adapter at the same time"; model line: Qwen3.6; category: performance/backend optimization; main diff: `tests/lora/test_qwen36_moe_lora.py`, `vllm/entrypoints/openai/models/serving.py`, `vllm/lora/layers/fused_moe.py`; technical summary: Covers "[LoRA] Support 2D and 3D MoE LoRA adapter at the same time"; the main implementation surface is `tests/lora/test_qwen36_moe_lora.py`, `vllm/entrypoints/openai/models/serving.py`, `vllm/lora/layers/fused_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -70,6 +71,7 @@ diff -- vllm/lora/layers/fused_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41652
 - Status/date: merged / 2026-07-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41652 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/humming/Qwen3.6-35B-A3B-NVFP4-humming.yaml`; associated commits `d891b9bd51ce`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 73 files, +1336/-122, 2552 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] add humming moe backend to all dense/moe oracles"; model line: Qwen3.6; category: performance/backend optimization; main diff: `tests/evals/gsm8k/configs/humming/Qwen3.6-35B-A3B-NVFP4-humming.yaml`, `vllm/model_executor/kernels/linear/scaled_mm/humming.py`, `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py`; technical summary: Covers "[Quantization] add humming moe backend to all dense/moe oracles"; the main implementation surface is `tests/evals/gsm8k/configs/humming/Qwen3.6-35B-A3B-NVFP4-humming.yaml`, `vllm/model_executor/kernels/linear/scaled_mm/humming.py`, `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py`. File-level evidence, code excerpts, and validation risks are preserved below.

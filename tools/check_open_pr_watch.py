@@ -31,11 +31,13 @@ DEFAULT_REPOS = {
 DEFAULT_TERMS = [
     "Qwen3.5",
     "Qwen3.6",
+    "Qwen3.8",
     "DeepSeek V4",
     "Kimi K2.5",
     "Kimi K3",
     "KimiLinear",
     "MiniMax M3",
+    "MiniMax-H3",
     "Inkling",
     "Unlimited OCR",
     "GLM-5",

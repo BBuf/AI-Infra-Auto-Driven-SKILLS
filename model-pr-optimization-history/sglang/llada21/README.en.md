@@ -4,11 +4,11 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/InclusionAI/LLaDA-2.1.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/llada-21-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/InclusionAI/LLaDA-2.1.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/llada-21-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/models/llada2.py` | [#18485](https://github.com/sgl-project/sglang/pull/18485), [#27127](https://github.com/sgl-project/sglang/pull/27127), [#31772](https://github.com/sgl-project/sglang/pull/31772) |
-| `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` | [#31772](https://github.com/sgl-project/sglang/pull/31772) |
 | `test/registered/dllm/test_llada2_mini_amd.py` | no direct PR-number commit |
+| `test/registered/npu/basic_function/dllm/test_npu_llada2_mini.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
@@ -58,7 +58,7 @@
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-25 | [#29042](https://github.com/sgl-project/sglang/pull/29042) | merged | [NPU] Fix the DeepSeek-V2-Coder model accuracy issue | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/llada2.py`, `python/sglang/srt/hardware_backend/npu/moe/topk.py` |
 | 2026-07-20 | [#27127](https://github.com/sgl-project/sglang/pull/27127) | merged | use sgl_kernel_npu rmsrope accelerate llada2 | `python/sglang/srt/models/llada2.py` |
-| 2026-07-21 | [#31772](https://github.com/sgl-project/sglang/pull/31772) | merged | [NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup | `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` |
+| 2026-07-21 | [#31772](https://github.com/sgl-project/sglang/pull/31772) | merged | [NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup | `python/sglang/srt/models/llada2.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1505,13 +1505,12 @@ diff -- python/sglang/srt/models/llada2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/31772
 - Status/date: merged / 2026-07-21
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`; associated commits `c0ed009f5b56`; preserved from an explicit existing history/skill citation
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llada2.py`; associated commits `c0ed009f5b56`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +12/-11, 48 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup"; model line: LLaDA 2.1; category: bug fix; main diff: `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`; technical summary: Covers "[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup"; the main implementation surface is `python/sglang/srt/models/llada2.py`, `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location, touching `load_weights, get_model_config_for_expert_location`; `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5 (5 lines); hunks: -1,4 +1,3; -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):; symbols: TestLLaDA2Mini, touching `TestLLaDA2Mini`.
+- Motivation: Title: "[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup"; model line: LLaDA 2.1; category: bug fix; main diff: `python/sglang/srt/models/llada2.py`; technical summary: Covers "[NPU] Fix LLaDA2 MoE OOM after the FRACTAL_NZ cast, re-enabling the NZ speedup"; the main implementation surface is `python/sglang/srt/models/llada2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location, touching `load_weights, get_model_config_for_expert_location`.
 - Code diff details:
   - `python/sglang/srt/models/llada2.py` modified +12/-6 (18 lines); hunks: -83,6 +83,7; -965,12 +966,17 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights, get_model_config_for_expert_location
-  - `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5 (5 lines); hunks: -1,4 +1,3; -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):; symbols: TestLLaDA2Mini
 - Key code excerpts:
 
 ```diff
@@ -1523,19 +1522,10 @@ diff -- python/sglang/srt/models/llada2.py
 -            layer_id: layer.mlp.get_moe_weights()
 -            for layer_id, layer in enumerate(self.model.layers)
 -            if not isinstance(layer, PPMissingLayer)
-diff -- test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py
-@@ -1,4 +1,3 @@
--import os
-@@ -31,10 +30,6 @@ class TestLLaDA2Mini(GSM8KAscendMixin, CustomTestCase):
--    env = {
--        **os.environ,
--        "SGLANG_NPU_DISABLE_ACL_FORMAT_WEIGHT": "1",  # Need to avoid OOM issue
--    }
 ```
 
 - Reviewed files:
   - runtime: `python/sglang/srt/models/llada2.py` modified +12/-6
-  - tests: `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py` modified +0/-5
 - Risk and verification: The diff ships test coverage in `test/registered/ascend/basic_function/dllm/test_npu_llada2_mini.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes

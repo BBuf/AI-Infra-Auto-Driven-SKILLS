@@ -1,8 +1,8 @@
 # TensorRT-LLM Qwen3.5 Model PR Optimization History
 
-## 2026-07-28 Source Head Refresh
+## 2026-08-23 Source Head Refresh
 
-Rechecked TensorRT-LLM upstream main at `NVIDIA/TensorRT-LLM@9fe5853263750ade5b7dc24fb31a1215ec822d45`.
+Rechecked TensorRT-LLM upstream main at `NVIDIA/TensorRT-LLM@da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`.
 The seven-commit range after the previous recorded head
 `1b4ffc0291d75a21ad20118e8f44de6e3831f786` was read in full. It contains no
 new Qwen3.5-specific implementation commit; the latest PR #16677 is confined

@@ -4,12 +4,12 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2-Flash.mdx` | no direct PR-number commit |
-| `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | [#23851](https://github.com/sgl-project/sglang/pull/23851), [#23936](https://github.com/sgl-project/sglang/pull/23936), [#23945](https://github.com/sgl-project/sglang/pull/23945), [#24983](https://github.com/sgl-project/sglang/pull/24983), [#25359](https://github.com/sgl-project/sglang/pull/25359), [#29253](https://github.com/sgl-project/sglang/pull/29253) |
-| `docs_new/docs/hardware-platforms/ascend-npus/best_practice/mimo_v2_flash.mdx` | no direct PR-number commit |
-| `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` | [#29932](https://github.com/sgl-project/sglang/pull/29932) |
-| `docs_new/src/snippets/autoregressive/mimo-v2-flash-deployment.jsx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` | [#23851](https://github.com/sgl-project/sglang/pull/23851), [#23936](https://github.com/sgl-project/sglang/pull/23936), [#23945](https://github.com/sgl-project/sglang/pull/23945), [#25359](https://github.com/sgl-project/sglang/pull/25359), [#27668](https://github.com/sgl-project/sglang/pull/27668), [#29253](https://github.com/sgl-project/sglang/pull/29253) |
+| `docs/cookbook/autoregressive/Xiaomi/MiMo-V2-Flash.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | no direct PR-number commit |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_flash.mdx` | no direct PR-number commit |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/mimo_v2_flash.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/mimo-v2-flash-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/mimo-v25-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/entrypoints/openai/transcription_adapters/mimo_v2_asr.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278) |
 | `python/sglang/srt/function_call/mimo_detector.py` | [#15207](https://github.com/sgl-project/sglang/pull/15207) |
 | `python/sglang/srt/models/mimo.py` | [#6059](https://github.com/sgl-project/sglang/pull/6059) |
@@ -24,20 +24,18 @@
 | `python/sglang/srt/multimodal/processors/mimo_v2_asr.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278) |
 | `test/manual/ascend/llm_models/test_npu_mimo_v2_5_w8a8.py` | [#29131](https://github.com/sgl-project/sglang/pull/29131) |
 | `test/manual/ascend/llm_models/test_npu_mimo_v2_flash.py` | [#28223](https://github.com/sgl-project/sglang/pull/28223) |
-| `test/registered/ascend/llm_models/test_npu_mimo_7b_rl.py` | no direct PR-number commit |
-| `test/registered/ascend/performance/mimo_v2_flash/test_npu_mimo_v2_flash_1p1d_12p_in16k_out1_ttft_5s.py` | no direct PR-number commit |
-| `test/registered/ascend/performance/mimo_v2_flash/test_npu_mimo_v2_flash_1p1d_12p_in16k_out1k_tpot_20ms.py` | no direct PR-number commit |
-| `test/registered/ascend/vlm_models/test_npu_mimo_vl_7b_rl.py` | no direct PR-number commit |
-| `test/registered/cp/test_mimo_cp.py` | [#29972](https://github.com/sgl-project/sglang/pull/29972) |
-| `test/registered/disaggregation/test_disaggregation_dwdp_mimo.py` | no direct PR-number commit |
 | `test/registered/models_e2e/test_mimo_v2.py` | [#27378](https://github.com/sgl-project/sglang/pull/27378) |
 | `test/registered/models_e2e/test_mimo_v2_flash.py` | [#27378](https://github.com/sgl-project/sglang/pull/27378) |
+| `test/registered/npu/llm_models/test_npu_mimo_7b_rl.py` | no direct PR-number commit |
+| `test/registered/npu/performance/mimo_v2_flash/test_npu_mimo_v2_flash_1p1d_12p_in16k_out1_ttft_5s.py` | no direct PR-number commit |
+| `test/registered/npu/performance/mimo_v2_flash/test_npu_mimo_v2_flash_1p1d_12p_in16k_out1k_tpot_20ms.py` | no direct PR-number commit |
+| `test/registered/npu/vlm_models/test_npu_mimo_vl_7b_rl.py` | no direct PR-number commit |
 | `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_mimo.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 24
-- Extra PRs preserved from existing docs: 13
+- Git-traced PRs: 15
+- Extra PRs preserved from existing docs: 22
 - Total PRs in this document: 37
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -54,7 +52,7 @@
 | 2026-02-01 | [#18051](https://github.com/sgl-project/sglang/pull/18051) | merged | [Fix] Remove no use code in MiMo-V2-Flash | `python/sglang/srt/models/mimo_v2_flash.py` |
 | 2026-02-02 | [#17634](https://github.com/sgl-project/sglang/pull/17634) | merged | [MiMoV2Flash] [feat]: support two batch overlap | `python/sglang/srt/models/mimo_v2_flash.py`, `python/sglang/srt/batch_overlap/operations_strategy.py` |
 | 2026-04-01 | [#21414](https://github.com/sgl-project/sglang/pull/21414) | merged | fix(MiMo-V2-Flash): add mimo reasoning parser | `python/sglang/srt/entrypoints/openai/serving_chat.py`, `python/sglang/srt/parser/reasoning_parser.py` |
-| 2026-04-27 | [#23851](https://github.com/sgl-project/sglang/pull/23851) | merged | [Docs] add cookbook for MiMo-V2.5 family | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` |
+| 2026-04-27 | [#23851](https://github.com/sgl-project/sglang/pull/23851) | merged | [Docs] add cookbook for MiMo-V2.5 family | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx` |
 | 2026-04-28 | [#23808](https://github.com/sgl-project/sglang/pull/23808) | merged | [Feature] Xiaomi MiMo-V2.5-Pro day0 support | `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py` |
 | 2026-04-28 | [#23945](https://github.com/sgl-project/sglang/pull/23945) | merged | docs: enable MiMo V2.5 MTP cookbook path | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` |
 | 2026-04-29 | [#23936](https://github.com/sgl-project/sglang/pull/23936) | merged | mimo v2.5 pro sglang-jax cookbook | `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` |
@@ -78,10 +76,10 @@
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-25 | [#29253](https://github.com/sgl-project/sglang/pull/29253) | merged | Add MiMo V2.5 Blackwell vision FA4 recipe | `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` |
 | 2026-06-29 | [#29493](https://github.com/sgl-project/sglang/pull/29493) | merged | [NPU][Bugfix] Add scoring_func for mimo_v2 | `python/sglang/srt/models/mimo_v2.py` |
-| 2026-07-03 | [#29932](https://github.com/sgl-project/sglang/pull/29932) | merged | add mimo-v2-flash model tutorial | `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` |
+| 2026-07-03 | [#29932](https://github.com/sgl-project/sglang/pull/29932) | merged | add mimo-v2-flash model tutorial | `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`, `docs_new/docs.json` |
 | 2026-07-04 | [#29994](https://github.com/sgl-project/sglang/pull/29994) | merged | fix(mimo-vl): pass padded_context_dim to Qwen2_5_VisionPatchMerger | `python/sglang/srt/models/mimo_vl.py` |
 | 2026-07-15 | [#31343](https://github.com/sgl-project/sglang/pull/31343) | merged | Fix MiMo-V2 on Blackwell: FA3 fallback and TP-aware audio weight loading | `python/sglang/srt/models/mimo_audio.py`, `python/sglang/srt/models/mimo_v2_asr.py`, `python/sglang/srt/models/mimo_v2.py` |
-| 2026-07-19 | [#29972](https://github.com/sgl-project/sglang/pull/29972) | merged | Support MiMo V2.5 with zigzag context parallelism | `test/registered/cp/test_mimo_cp.py`, `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py` |
+| 2026-07-19 | [#29972](https://github.com/sgl-project/sglang/pull/29972) | merged | Support MiMo V2.5 with zigzag context parallelism | `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
 | 2026-07-21 | [#29131](https://github.com/sgl-project/sglang/pull/29131) | merged | [NPU] Adapt MiMo-V2.5-W8A8 | `test/manual/ascend/llm_models/test_npu_mimo_v2_5_w8a8.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py` |
 
 ## Per-PR Diff Audit Cards
@@ -329,13 +327,15 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
 
 - Link: https://github.com/sgl-project/sglang/pull/23851
 - Status/date: merged / 2026-04-27
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; associated commits `f34222da1b22`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +1025/-1, 1042 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] add cookbook for MiMo-V2.5 family"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; technical summary: Covers "[Docs] add cookbook for MiMo-V2.5 family"; the main implementation surface is `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` added +626/-0 (626 lines); hunks: -0,0 +1,626; `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` added +397/-0 (397 lines); hunks: -0,0 +1,397.
+- Motivation: Title: "[Docs] add cookbook for MiMo-V2.5 family"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`; technical summary: Covers "[Docs] add cookbook for MiMo-V2.5 family"; the main implementation surface is `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` added +626/-0 (626 lines); hunks: -0,0 +1,626; `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` added +397/-0 (397 lines); hunks: -0,0 +1,397; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -106,7 +106,7 @@ metatags:; `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -1061,6 +1061,7.
 - Code diff details:
   - `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` added +626/-0 (626 lines); hunks: -0,0 +1,626
   - `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` added +397/-0 (397 lines); hunks: -0,0 +1,397
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -106,7 +106,7 @@ metatags:
+  - `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -1061,6 +1061,7
 - Key code excerpts:
 
 ```diff
@@ -355,10 +355,12 @@ diff -- docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx
 +  //
 +  //   V2.5-Pro (1.02T / 42B active) — text-only:
 +  //     H200  → tp=16, 2 nodes,     FP8 (Hopper: fa3 + DeepEP)
+diff -- docs_new/cookbook/autoregressive/intro.mdx
+@@ -106,7 +106,7 @@ metatags:
 ```
 
 - Reviewed files:
-  - docs: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` added +626/-0; `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` added +397/-0
+  - docs: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` added +626/-0; `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` added +397/-0; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1; `docs_new/docs.json` modified +1/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`, `docs_new/docs.json`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #23808 - [Feature] Xiaomi MiMo-V2.5-Pro day0 support
@@ -401,7 +403,7 @@ diff -- python/sglang/srt/models/mimo_v2_nextn.py
 
 - Link: https://github.com/sgl-project/sglang/pull/23945
 - Status/date: merged / 2026-04-28
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; associated commits `e458a9248fef`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +90/-88, 308 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "docs: enable MiMo V2.5 MTP cookbook path"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; technical summary: Covers "docs: enable MiMo V2.5 MTP cookbook path"; the main implementation surface is `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +84/-80 (164 lines); hunks: -43,7 +43,7 @@ tag: NEW; -84,9 +84,10 @@ import { MiMoV25Deployment } from '/src/snippets/autoregressi...; `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` modified +6/-8 (14 lines); hunks: -15,7 +15,7 @@ export const MiMoV25Deployment = () => {; -44,7 +44,7 @@ export const MiMoV25Deployment = () => {.
@@ -437,7 +439,7 @@ diff -- docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx
 
 - Link: https://github.com/sgl-project/sglang/pull/23936
 - Status/date: merged / 2026-04-29
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; associated commits `6c7b2421816c`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +114/-16, 188 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "mimo v2.5 pro sglang-jax cookbook"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`; technical summary: Covers "mimo v2.5 pro sglang-jax cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` modified +78/-16 (94 lines); hunks: -34,10 +34,12 @@ export const MiMoV25Deployment = () => {; -93,15 +95,19 @@ export const MiMoV25Deployment = () => {; `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +36/-0 (36 lines); hunks: -65,6 +65,8 @@ Refer to the [official SGLang installation guide](../../../doc...; -95,6 +97,40 @@ import { MiMoV25Deployment } from '/src/snippets/autoregressi....
@@ -537,7 +539,7 @@ diff -- python/sglang/srt/models/mimo_vl.py
 
 - Link: https://github.com/sgl-project/sglang/pull/24983
 - Status/date: merged / 2026-05-11
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`; associated commits `d9cb38012ee7`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-4, 15 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update MiMo V2.5 cookbook image to nightly"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`; technical summary: Covers "Update MiMo V2.5 cookbook image to nightly"; the main implementation surface is `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +4/-4 (8 lines); hunks: -58,10 +58,10 @@ Refer to the [official SGLang installation guide](../../../d....
@@ -627,7 +629,7 @@ diff -- python/sglang/srt/multimodal/processors/mimo_v2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/25359
 - Status/date: merged / 2026-05-20
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; associated commits `52eebc82aed2`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +194/-12, 272 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Docs] MiMo-V2.5 cookbook: B200 benchmarks + multi-layer EAGLE acceptance profile + long-context reference"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; technical summary: Covers "[Docs] MiMo-V2.5 cookbook: B200 benchmarks + multi-layer EAGLE acceptance profile + long-context reference"; the main implementation surface is `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +191/-9 (200 lines); hunks: -83,13 +83,13 @@ import { MiMoV25Deployment } from '/src/snippets/autoregress...; -385,9 +385,11 @@ python3 -m sglang.test.run_eval \; symbols: number, touching `number`; `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` modified +3/-3 (6 lines); hunks: -328,15 +328,15 @@ export const MiMoV25Deployment = () => {; -348,7 +348,7 @@ export const MiMoV25Deployment = () => {.
@@ -888,7 +890,7 @@ diff -- python/sglang/srt/models/mimo_v2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/27668
 - Status/date: merged / 2026-06-10
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; associated commits `53ed34cb882e`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +23/-12, 60 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix MiMo-V2.5-Pro DP-attention dp size in cookbook deployment snippet"; model line: MiMo V2 Flash; category: bug fix; main diff: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; technical summary: Covers "Fix MiMo-V2.5-Pro DP-attention dp size in cookbook deployment snippet"; the main implementation surface is `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` modified +23/-12 (35 lines); hunks: -93,13 +93,17 @@ export const MiMoV25Deployment = () => {; -132,13 +136,18 @@ export const MiMoV25Deployment = () => {.
@@ -1109,7 +1111,7 @@ diff -- python/sglang/srt/models/gpt_oss.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29253
 - Status/date: merged / 2026-06-25
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`; associated commits `7c9804ef218f`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +4/-2, 27 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add MiMo V2.5 Blackwell vision FA4 recipe"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`; technical summary: Covers "Add MiMo V2.5 Blackwell vision FA4 recipe"; the main implementation surface is `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` modified +3/-2 (5 lines); hunks: -11,8 +11,8 @@ export const MiMoV25Deployment = () => {; -350,6 +350,7 @@ export const MiMoV25Deployment = () => {; `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +1/-0 (1 lines); hunks: -88,6 +88,7 @@ import { MiMoV25Deployment } from '/src/snippets/autoregressiv....
@@ -1162,12 +1164,13 @@ diff -- python/sglang/srt/models/mimo_v2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29932
 - Status/date: merged / 2026-07-03
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`; associated commits `d8a4f7a7aa23`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +216/-0, 224 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "add mimo-v2-flash model tutorial"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`; technical summary: Covers "add mimo-v2-flash model tutorial"; the main implementation surface is `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` added +215/-0 (215 lines); hunks: -0,0 +1,215.
+- Motivation: Title: "add mimo-v2-flash model tutorial"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`, `docs_new/docs.json`; technical summary: Covers "add mimo-v2-flash model tutorial"; the main implementation surface is `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`, `docs_new/docs.json`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` added +215/-0 (215 lines); hunks: -0,0 +1,215; `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -899,6 +899,7.
 - Code diff details:
   - `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` added +215/-0 (215 lines); hunks: -0,0 +1,215
+  - `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -899,6 +899,7
 - Key code excerpts:
 
 ```diff
@@ -1179,10 +1182,13 @@ diff -- docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_fla
 +  description: "Deploy MiMo-V2-Flash model with SGLang on Ascend NPUs, including multi-node PD disaggregation mode."
 +---
 +## Introduction
+diff -- docs_new/docs.json
+@@ -899,6 +899,7 @@
++                      "docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash",
 ```
 
 - Reviewed files:
-  - docs: `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` added +215/-0
+  - docs: `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx` added +215/-0; `docs_new/docs.json` modified +1/-0
 - Risk and verification: This is mostly docs/examples in `docs_new/docs.json`, `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/mimo_v2_flash.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #29994 - fix(mimo-vl): pass padded_context_dim to Qwen2_5_VisionPatchMerger
@@ -1255,27 +1261,19 @@ diff -- python/sglang/srt/models/mimo_v2.py
 
 - Link: https://github.com/sgl-project/sglang/pull/29972
 - Status/date: merged / 2026-07-19
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/cp/test_mimo_cp.py`; associated commits `7a03d3014935`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 17 files, +368/-118, 771 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support MiMo V2.5 with zigzag context parallelism"; model line: MiMo V2 Flash; category: docs/tests/CI; main diff: `test/registered/cp/test_mimo_cp.py`, `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py`; technical summary: Covers "Support MiMo V2.5 with zigzag context parallelism"; the main implementation surface is `test/registered/cp/test_mimo_cp.py`, `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/cp/test_mimo_cp.py` added +80/-0 (80 lines); hunks: -0,0 +1,80; symbols: TestMiMoV2ContextParallel, setUpClass, tearDownClass, test_gsm8k, touching `TestMiMoV2ContextParallel, setUpClass, tearDownClass`; `python/sglang/srt/layers/cp/zigzag.py` modified +47/-28 (75 lines); hunks: -47,6 +47,7; -66,6 +67,7 @@ class ZigzagContextParallelMetadata(BaseContextParallelMetadata):; symbols: ZigzagContextParallelMetadata, build_metadata, shard_hidden_states, shard_position_ids, touching `ZigzagContextParallelMetadata, build_metadata, shard_hidden_states`; `python/sglang/srt/layers/cp/padding.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: get_cp_padding_align_size, pad_logical_token_to_physical, pad_local_rows, touching `get_cp_padding_align_size, pad_logical_token_to_physical, pad_local_rows`; `python/sglang/srt/layers/utils/cp_utils.py` modified +7/-28 (35 lines); hunks: -68,21 +68,6 @@ def is_prefill_cp_in_seq_split():; -215,7 +200,7 @@ def cp_all_gather_reorganized_into_tensor(input_tensor, cp_s...; symbols: is_prefill_cp_in_seq_split, get_cp_padding_align_size, is_mla_prefill_cp_enabled, cp_all_gather_reorganized_into_tensor, touching `is_prefill_cp_in_seq_split, get_cp_padding_align_size, is_mla_prefill_cp_enabled`.
+- Motivation: Title: "Support MiMo V2.5 with zigzag context parallelism"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py`, `python/sglang/srt/layers/utils/cp_utils.py`; technical summary: Covers "Support MiMo V2.5 with zigzag context parallelism"; the main implementation surface is `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py`, `python/sglang/srt/layers/utils/cp_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/cp/zigzag.py` modified +47/-28 (75 lines); hunks: -47,6 +47,7; -66,6 +67,7 @@ class ZigzagContextParallelMetadata(BaseContextParallelMetadata):; symbols: ZigzagContextParallelMetadata, build_metadata, shard_hidden_states, shard_position_ids, touching `ZigzagContextParallelMetadata, build_metadata, shard_hidden_states`; `python/sglang/srt/layers/cp/padding.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: get_cp_padding_align_size, pad_logical_token_to_physical, pad_local_rows, touching `get_cp_padding_align_size, pad_logical_token_to_physical, pad_local_rows`; `python/sglang/srt/layers/utils/cp_utils.py` modified +7/-28 (35 lines); hunks: -68,21 +68,6 @@ def is_prefill_cp_in_seq_split():; -215,7 +200,7 @@ def cp_all_gather_reorganized_into_tensor(input_tensor, cp_s...; symbols: is_prefill_cp_in_seq_split, get_cp_padding_align_size, is_mla_prefill_cp_enabled, cp_all_gather_reorganized_into_tensor, touching `is_prefill_cp_in_seq_split, get_cp_padding_align_size, is_mla_prefill_cp_enabled`; `python/sglang/srt/layers/cp/utils.py` modified +29/-5 (34 lines); hunks: -27,6 +27,7; -39,6 +40,8; symbols: prepare_cp_forward, cp_split_before_forward, cp_gather_after_forward, touching `prepare_cp_forward, cp_split_before_forward, cp_gather_after_forward`.
 - Code diff details:
-  - `test/registered/cp/test_mimo_cp.py` added +80/-0 (80 lines); hunks: -0,0 +1,80; symbols: TestMiMoV2ContextParallel, setUpClass, tearDownClass, test_gsm8k
   - `python/sglang/srt/layers/cp/zigzag.py` modified +47/-28 (75 lines); hunks: -47,6 +47,7; -66,6 +67,7 @@ class ZigzagContextParallelMetadata(BaseContextParallelMetadata):; symbols: ZigzagContextParallelMetadata, build_metadata, shard_hidden_states, shard_position_ids
   - `python/sglang/srt/layers/cp/padding.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: get_cp_padding_align_size, pad_logical_token_to_physical, pad_local_rows
   - `python/sglang/srt/layers/utils/cp_utils.py` modified +7/-28 (35 lines); hunks: -68,21 +68,6 @@ def is_prefill_cp_in_seq_split():; -215,7 +200,7 @@ def cp_all_gather_reorganized_into_tensor(input_tensor, cp_s...; symbols: is_prefill_cp_in_seq_split, get_cp_padding_align_size, is_mla_prefill_cp_enabled, cp_all_gather_reorganized_into_tensor
   - `python/sglang/srt/layers/cp/utils.py` modified +29/-5 (34 lines); hunks: -27,6 +27,7; -39,6 +40,8; symbols: prepare_cp_forward, cp_split_before_forward, cp_gather_after_forward
+  - `python/sglang/srt/model_executor/forward_batch_info.py` modified +11/-6 (17 lines); hunks: -1160,8 +1160,9 @@ def _pad_tensor_to_size(self, tensor: torch.Tensor, size:...; -1181,9 +1182,10 @@ def prepare_mlp_sync_batch(self, model_runner: ModelRunner):; symbols: _pad_tensor_to_size, prepare_mlp_sync_batch
 - Key code excerpts:
 
 ```diff
-diff -- test/registered/cp/test_mimo_cp.py
-@@ -0,0 +1,80 @@
-+import unittest
-+from types import SimpleNamespace
-+from sglang.test.ci.ci_register import register_cuda_ci
-+from sglang.test.run_eval import run_eval
-+from sglang.test.test_utils import (
-+    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
 diff -- python/sglang/srt/layers/cp/zigzag.py
 @@ -47,6 +47,7 @@
 +from sglang.srt.layers.cp.padding import pad_local_rows
@@ -1286,10 +1284,17 @@ diff -- python/sglang/srt/layers/cp/zigzag.py
 -        return torch.cat(
 diff -- python/sglang/srt/layers/cp/padding.py
 @@ -0,0 +1,63 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/layers/utils/cp_utils.py
+@@ -68,21 +68,6 @@ def is_prefill_cp_in_seq_split():
 ```
 
 - Reviewed files:
-  - tests: `test/registered/cp/test_mimo_cp.py` added +80/-0
   - runtime: `python/sglang/srt/layers/cp/zigzag.py` modified +47/-28; `python/sglang/srt/layers/cp/padding.py` added +63/-0; `python/sglang/srt/layers/utils/cp_utils.py` modified +7/-28; `python/sglang/srt/layers/cp/utils.py` modified +29/-5; `python/sglang/srt/model_executor/forward_batch_info.py` modified +11/-6; `python/sglang/srt/entrypoints/http_server.py` modified +7/-1
 - Risk and verification: The diff ships test coverage in `test/registered/cp/test_cp_strategy_unit.py`, `test/registered/cp/test_mimo_cp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 

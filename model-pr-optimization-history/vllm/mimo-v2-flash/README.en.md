@@ -4,12 +4,13 @@
 
 | File | Git-traced PRs |
 | --- | --- |
+| `tests/models/multimodal/test_mimo_v2_omni.py` | [#49815](https://github.com/vllm-project/vllm/pull/49815) |
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
 | `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200), [#46104](https://github.com/vllm-project/vllm/pull/46104) |
 | `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
-| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
+| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#49815](https://github.com/vllm-project/vllm/pull/49815) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#43117](https://github.com/vllm-project/vllm/pull/43117) |
 
@@ -45,6 +46,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/17433
 - Status/date: merged / 2025-05-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17433 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo.py`, `vllm/model_executor/models/mimo_mtp.py`; associated commits `acee8f48aa9c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +507/-4, 576 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support MiMo-7B inference with MTP"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/mimo.py`; technical summary: Covers "[Model] Support MiMo-7B inference with MTP"; the main implementation surface is `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/mimo.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -81,6 +83,7 @@ diff -- vllm/model_executor/models/mimo.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25136
 - Status/date: merged / 2025-09-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25136 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_mtp.py`; associated commits `c4cb0af98a8e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +20/-6, 61 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[spec decode] Fix MTP inference path for MiMo-7B model"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/model_executor/models/mimo_mtp.py`; technical summary: Covers "[spec decode] Fix MTP inference path for MiMo-7B model"; the main implementation surface is `vllm/model_executor/models/mimo_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -108,6 +111,7 @@ diff -- vllm/model_executor/models/mimo_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30836
 - Status/date: merged / 2025-12-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30836 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +789/-13, 946 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add MiMo-V2-Flash support"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/linear.py`, `vllm/model_executor/layers/quantization/utils/fp8_utils.py`; technical summary: Covers "[Model] Add MiMo-V2-Flash support"; the main implementation surface is `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/linear.py`, `vllm/model_executor/layers/quantization/utils/fp8_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -151,6 +155,7 @@ diff -- vllm/model_executor/layers/quantization/utils/fp8_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/31175
 - Status/date: merged / 2026-01-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/31175 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +10/-13, 79 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Properly apply v_scale for mimo_v2_flash"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/model_executor/models/mimo_v2_flash.py`; technical summary: Covers "[Bugfix] Properly apply v_scale for mimo_v2_flash"; the main implementation surface is `vllm/model_executor/models/mimo_v2_flash.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -178,6 +183,7 @@ diff -- vllm/model_executor/models/mimo_v2_flash.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40045
 - Status/date: merged / 2026-04-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40045 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +112/-24, 270 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Attention] use diff kv backend for mimo v2 flash"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/attention/attention.py`, `tools/pre_commit/generate_attention_backend_docs.py`; technical summary: Covers "[Attention] use diff kv backend for mimo v2 flash"; the main implementation surface is `vllm/model_executor/models/mimo_v2_flash.py`, `vllm/model_executor/layers/attention/attention.py`, `tools/pre_commit/generate_attention_backend_docs.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -221,6 +227,7 @@ diff -- tools/pre_commit/generate_attention_backend_docs.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40967
 - Status/date: merged / 2026-04-27
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40967 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_audio.py`, `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`, `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/transformers_utils/configs/mimo_v2_omni.py` and 6 files; associated commits `c245d35ff467`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 16 files, +4737/-5, 4920 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add MiMo-V2.5 support"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`; technical summary: Covers "[Model] Add MiMo-V2.5 support"; the main implementation surface is `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -262,6 +269,7 @@ diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41029
 - Status/date: merged / 2026-04-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41029 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `7a1eb8ac2ec4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +10/-8, 74 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] update for mimo v25"; model line: MiMo V2 Flash; category: model implementation change; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Model] update for mimo v25"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -285,6 +293,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41905
 - Status/date: merged / 2026-05-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41905 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2_mtp.py`; associated commits `2ee8c2a56e41`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-10, 57 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[SpecDecoding] extend mtp support for mimo 2.5"; model line: MiMo V2 Flash; category: model support/runtime entry; main diff: `vllm/model_executor/models/mimo_v2_mtp.py`; technical summary: Covers "[SpecDecoding] extend mtp support for mimo 2.5"; the main implementation surface is `vllm/model_executor/models/mimo_v2_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -354,6 +363,7 @@ diff -- vllm/model_executor/layers/quantization/kv_cache.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41797
 - Status/date: merged / 2026-06-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41797 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `f81daf888063`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +1041/-9, 1103 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Attention] add triton diff-kv backend for mimo"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Attention] add triton diff-kv backend for mimo"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -381,6 +391,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45200
 - Status/date: merged / 2026-06-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45200 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `b5adb027ad03`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +170/-5, 245 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models] Fix MiMo v2.x QKV TP sharding + FP4 support"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Models] Fix MiMo v2.x QKV TP sharding + FP4 support"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -408,6 +419,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/46104
 - Status/date: merged / 2026-07-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/46104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`; associated commits `9969466a5978`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +243/-25, 500 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Spec Decode] Support SWA + DFlash for MiMo"; model line: MiMo V2 Flash; category: performance/backend optimization; main diff: `vllm/model_executor/models/mimo_v2.py`; technical summary: Covers "[Spec Decode] Support SWA + DFlash for MiMo"; the main implementation surface is `vllm/model_executor/models/mimo_v2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -435,6 +447,7 @@ diff -- vllm/model_executor/models/mimo_v2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43117
 - Status/date: merged / 2026-07-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43117 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/transformers_utils/processors/mimo_v2_omni.py`; associated commits `54503ecec0f3`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +22/-76, 190 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "fix(processor): route MiMo-V2-Omni media fetch through MediaConnector"; model line: MiMo V2 Flash; category: bug fix; main diff: `vllm/transformers_utils/processors/mimo_v2_omni.py`; technical summary: Covers "fix(processor): route MiMo-V2-Omni media fetch through MediaConnector"; the main implementation surface is `vllm/transformers_utils/processors/mimo_v2_omni.py`. File-level evidence, code excerpts, and validation risks are preserved below.

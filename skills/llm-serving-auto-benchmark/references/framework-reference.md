@@ -8,7 +8,7 @@ concrete CLI in the target container with `--help` before a long run.
 
 | Framework | Server | Benchmark | Notes |
 | --- | --- | --- | --- |
-| SGLang | `python -m sglang.launch_server` | `python -m sglang.auto_benchmark` or `python -m sglang.bench_serving` | Use `auto_benchmark` when available for server-flag search. Use `bench_serving` for direct native or OpenAI-compatible endpoint checks. |
+| SGLang | `sglang serve` or `python -m sglang.launch_server` | `python -m sglang.auto_benchmark` or `python -m sglang.bench_serving` | Current public cookbooks emit `sglang serve`. `launch_server` remains accepted. Use `auto_benchmark` when available for server-flag search. Use `bench_serving` for direct native or OpenAI-compatible endpoint checks. |
 | vLLM | `vllm serve` | `vllm bench sweep serve` or `vllm bench serve` | Prefer `bench sweep serve` when sweeping server and benchmark parameter JSON files. |
 | TensorRT-LLM | `trtllm-serve serve --backend pytorch` | TensorRT-LLM serving benchmark client or a common OpenAI-compatible client | This skill does not cover engine-backed serving or non-PyTorch server backends. |
 | TokenSpeed | `tokenspeed serve` | `tokenspeed bench serve` or a common OpenAI-compatible client | Use as a first-class baseline for agentic workloads. Some images may also expose the binary as `ts`; record the actual command. |
@@ -162,11 +162,11 @@ Framework CLIs move quickly. For every real run:
 4. Record which frameworks were model-smoked and which only passed preflight.
 
 Historical validation from April 2026 used SGLang `0.5.10rc0`, vLLM `0.19.1`,
-and TensorRT-LLM `1.0.0`. A source check on 2026-07-28 saw SGLang
-`8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
-`b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
-`9fe5853263750ade5b7dc24fb31a1215ec822d45`, and TokenSpeed
-`lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`. Treat these as source evidence,
+and TensorRT-LLM `1.0.0`. A source check on 2026-08-23 saw SGLang
+`eec794bce0808ae26cc1dcb84a56b65d2df82af5`, vLLM
+`bbe8b23e1a2b32a96240b27f63255170d09ef144`, TensorRT-LLM
+`da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`, and TokenSpeed
+`lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d`. Treat these as source evidence,
 not as a substitute for target-image `--help`. Since the prior refresh, vLLM PR
 `#46735` changed Triton/NVFP4 MoE CUDA graph capture behavior, and
 TensorRT-LLM PR `#11685` / `#15546` changed KV eviction and KV block-offset host

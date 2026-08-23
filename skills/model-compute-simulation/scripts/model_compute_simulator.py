@@ -55,6 +55,11 @@ ALIAS_MAP = {
     "qwen3.6-35b-a3b": "qwen3.6-35b-a3b",
     "qwen3.6-35b-a3b-fp8": "qwen3.6-35b-a3b",
     "qwen/qwen3.6-35b-a3b-fp8": "qwen3.6-35b-a3b",
+    "qwen3.8": "qwen3.8-27b",
+    "qwen3.8-27b": "qwen3.8-27b",
+    "qwen3.8-27b-fp8": "qwen3.8-27b",
+    "qwen/qwen3.8-27b": "qwen3.8-27b",
+    "qwen/qwen3.8-27b-fp8": "qwen3.8-27b",
     "glm-5": "glm-5",
 }
 

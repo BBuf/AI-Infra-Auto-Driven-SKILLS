@@ -4,19 +4,19 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx` | [#25971](https://github.com/sgl-project/sglang/pull/25971) |
-| `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx` | [#25971](https://github.com/sgl-project/sglang/pull/25971) |
+| `docs/cookbook/autoregressive/Qwen/Qwen3.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/qwen3-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/models/qwen3.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6990](https://github.com/sgl-project/sglang/pull/6990), [#7312](https://github.com/sgl-project/sglang/pull/7312), [#7681](https://github.com/sgl-project/sglang/pull/7681), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#10574](https://github.com/sgl-project/sglang/pull/10574), [#15223](https://github.com/sgl-project/sglang/pull/15223), [#15390](https://github.com/sgl-project/sglang/pull/15390), [#16115](https://github.com/sgl-project/sglang/pull/16115), [#17535](https://github.com/sgl-project/sglang/pull/17535), [#19532](https://github.com/sgl-project/sglang/pull/19532), ... (17 total) |
-| `python/sglang/srt/models/qwen3_moe.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#5917](https://github.com/sgl-project/sglang/pull/5917), [#6120](https://github.com/sgl-project/sglang/pull/6120), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6533](https://github.com/sgl-project/sglang/pull/6533), [#6598](https://github.com/sgl-project/sglang/pull/6598), [#6652](https://github.com/sgl-project/sglang/pull/6652), [#6709](https://github.com/sgl-project/sglang/pull/6709), [#6820](https://github.com/sgl-project/sglang/pull/6820), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#8751](https://github.com/sgl-project/sglang/pull/8751), [#9973](https://github.com/sgl-project/sglang/pull/9973), ... (31 total) |
+| `python/sglang/srt/models/qwen3_moe.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#5917](https://github.com/sgl-project/sglang/pull/5917), [#6120](https://github.com/sgl-project/sglang/pull/6120), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6533](https://github.com/sgl-project/sglang/pull/6533), [#6598](https://github.com/sgl-project/sglang/pull/6598), [#6652](https://github.com/sgl-project/sglang/pull/6652), [#6709](https://github.com/sgl-project/sglang/pull/6709), [#6820](https://github.com/sgl-project/sglang/pull/6820), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#8751](https://github.com/sgl-project/sglang/pull/8751), [#9973](https://github.com/sgl-project/sglang/pull/9973), ... (34 total) |
 | `python/sglang/srt/models/qwen3_moe_mtp.py` | [#26468](https://github.com/sgl-project/sglang/pull/26468) |
 | `test/registered/cpu/test_qwen3.py` | [#31171](https://github.com/sgl-project/sglang/pull/31171) |
 | `test/registered/lora/test_lora_qwen3.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 43
-- Extra PRs preserved from existing docs: 66
-- Total PRs in this document: 109
+- Git-traced PRs: 45
+- Extra PRs preserved from existing docs: 67
+- Total PRs in this document: 112
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -88,14 +88,11 @@
 | 2026-02-08 | [#18189](https://github.com/sgl-project/sglang/pull/18189) | merged | [ModelOpt] Fix broken Qwen3-235B-A22B-Instruct-2507-NVFP4 launch | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-03 | [#19532](https://github.com/sgl-project/sglang/pull/19532) | merged | [NPU] bugs fix: fix a condition bug when using speculative inference on Qwen3 and Qwen3 moe | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-08 | [#20127](https://github.com/sgl-project/sglang/pull/20127) | open | [Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py` |
-| 2026-03-12 | [#20474](https://github.com/sgl-project/sglang/pull/20474) | open | Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3 | `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py` |
 | 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py` |
 | 2026-03-20 | [#20931](https://github.com/sgl-project/sglang/pull/20931) | merged | [Bugifx] qwen3 rope parameter compatibility | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-22 | [#18233](https://github.com/sgl-project/sglang/pull/18233) | merged | Support Qwen3 MoE context parallel | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-24 | [#21195](https://github.com/sgl-project/sglang/pull/21195) | merged | Enable the qwen3 test | `python/sglang/srt/models/qwen3_moe.py` |
-| 2026-03-25 | [#21412](https://github.com/sgl-project/sglang/pull/21412) | open | [Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints | `python/sglang/srt/models/qwen3.py` |
 | 2026-03-27 | [#19059](https://github.com/sgl-project/sglang/pull/19059) | merged | [jit_kernel] Add fused_qknorm_rope JIT kernel | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py`, `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh` |
-| 2026-03-31 | [#21770](https://github.com/sgl-project/sglang/pull/21770) | open | [Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon | `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py` |
 | 2026-04-01 | [#21654](https://github.com/sgl-project/sglang/pull/21654) | merged | Fused_qknorm_rope kernel optimization: up to 2.4× faster | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh`, `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-09 | [#22429](https://github.com/sgl-project/sglang/pull/22429) | merged | [NPU]add Qwen3-32b and Qwen3-8b low latency md | `docs/platforms/ascend/ascend_npu_best_practice.md` |
@@ -105,7 +102,6 @@
 | 2026-04-13 | [#22687](https://github.com/sgl-project/sglang/pull/22687) | merged | [NPU]qwen3-8b and 32b md bugfix | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-14 | [#22739](https://github.com/sgl-project/sglang/pull/22739) | merged | Restore Qwen3 rope config fallback | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
-| 2026-04-21 | [#23372](https://github.com/sgl-project/sglang/pull/23372) | open | [NPU] Add CI tests for Speculative Decoding | `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` |
 | 2026-04-21 | [#23397](https://github.com/sgl-project/sglang/pull/23397) | open | [alignment-sglang] PR3: Dense Deterministic Math | `test/srt/models/test_params_mapping.py`, `python/sglang/srt/layers/on_policy_utils.py`, `python/sglang/srt/model_executor/model_runner.py` |
 | 2026-04-25 | [#23731](https://github.com/sgl-project/sglang/pull/23731) | merged | Fix Qwen3 MoE double-reduce when DP attention + EP + reduce_scatterv (#23729) | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-26 | [#23734](https://github.com/sgl-project/sglang/pull/23734) | merged | Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731) | `python/sglang/srt/models/qwen3_moe.py` |
@@ -133,6 +129,13 @@
 | 2026-06-30 | [#29627](https://github.com/sgl-project/sglang/pull/29627) | merged | [NPU] Qwen3-VL-8B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3.py` |
 | 2026-07-06 | [#22450](https://github.com/sgl-project/sglang/pull/22450) | closed | [NPU] Add Qwen3-14B low latency doc | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-07-15 | [#31171](https://github.com/sgl-project/sglang/pull/31171) | merged | [CPU] add fused input proj for qwen3.5 | `test/registered/cpu/test_qwen3.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/model_executor/cpu_graph_runner.py` |
+| 2026-07-29 | [#30768](https://github.com/sgl-project/sglang/pull/30768) | merged | :sparkles: [llm][npu][quant] Add W8A8 MXFP8 quantization for Qwen3 MoE on Ascend NPU | `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-08-08 | [#34006](https://github.com/sgl-project/sglang/pull/34006) | merged | Fix Qwen3-MoE producing garbage with the mori a2a backend | `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-08-10 | [#20474](https://github.com/sgl-project/sglang/pull/20474) | closed | Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3 | `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py` |
+| 2026-08-10 | [#21412](https://github.com/sgl-project/sglang/pull/21412) | closed | [Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints | `python/sglang/srt/models/qwen3.py` |
+| 2026-08-11 | [#21770](https://github.com/sgl-project/sglang/pull/21770) | closed | [Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon | `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py` |
+| 2026-08-14 | [#34810](https://github.com/sgl-project/sglang/pull/34810) | merged | fix(qwen3): support DeepEP-class backends and early EPLB state | `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-08-18 | [#23372](https://github.com/sgl-project/sglang/pull/23372) | closed | [NPU] Add CI tests for Speculative Decoding | `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2368,50 +2371,6 @@ diff -- python/sglang/srt/models/qwen3_next.py
   - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +25/-8; `python/sglang/srt/models/qwen2_moe.py` modified +24/-7; `python/sglang/srt/models/qwen3_next.py` modified +17/-10
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #20474 - Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3
-
-- Link: https://github.com/sgl-project/sglang/pull/20474
-- Status/date: open / 2026-03-12
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 6 files, +159/-7, 221 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py`; technical summary: Covers "Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3"; the main implementation surface is `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/rotary_embedding/mrope.py` modified +9/-0 (9 lines); hunks: -243,6 +243,15 @@ def forward_npu(; symbols: forward_npu, forward_xpu, get_rope_index, touching `forward_npu, forward_xpu, get_rope_index`; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +4/-0 (4 lines); hunks: -21,11 +21,13; -172,6 +174,8 @@ def _layer_norm_fwd_1pass_kernel(; symbols: _layer_norm_fwd_1pass_kernel, _get_sm_count, touching `_layer_norm_fwd_1pass_kernel, _get_sm_count`; `test/srt/xpu/test_qwen3.py` added +133/-0 (133 lines); hunks: -0,0 +1,133; symbols: TestQwen3, setUpClass, tearDownClass, get_request_json, touching `TestQwen3, setUpClass, tearDownClass`; `docker/xpu.Dockerfile` modified +11/-6 (17 lines); hunks: -20,6 +20,17 @@ ARG SG_LANG_KERNEL_BRANCH=main; -38,12 +49,6 @@ RUN curl -fsSL -v -o miniforge.sh -O https://github.com/conda....
-- Code diff details:
-  - `python/sglang/srt/layers/rotary_embedding/mrope.py` modified +9/-0 (9 lines); hunks: -243,6 +243,15 @@ def forward_npu(; symbols: forward_npu, forward_xpu, get_rope_index
-  - `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +4/-0 (4 lines); hunks: -21,11 +21,13; -172,6 +174,8 @@ def _layer_norm_fwd_1pass_kernel(; symbols: _layer_norm_fwd_1pass_kernel, _get_sm_count
-  - `test/srt/xpu/test_qwen3.py` added +133/-0 (133 lines); hunks: -0,0 +1,133; symbols: TestQwen3, setUpClass, tearDownClass, get_request_json
-  - `docker/xpu.Dockerfile` modified +11/-6 (17 lines); hunks: -20,6 +20,17 @@ ARG SG_LANG_KERNEL_BRANCH=main; -38,12 +49,6 @@ RUN curl -fsSL -v -o miniforge.sh -O https://github.com/conda...
-  - `.github/workflows/pr-test-xpu.yml` modified +1/-1 (2 lines); hunks: -120,7 +120,7 @@ jobs:
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/rotary_embedding/mrope.py
-@@ -243,6 +243,15 @@ def forward_npu(
-+    def forward_xpu(
-+        self,
-+        positions: torch.Tensor,
-+        query: torch.Tensor,
-+        key: torch.Tensor,
-+        fused_set_kv_buffer_arg=None,
-diff -- python/sglang/srt/layers/attention/fla/layernorm_gated.py
-@@ -21,11 +21,13 @@
-+    is_xpu,
-+_is_xpu = is_xpu()
-@@ -172,6 +174,8 @@ def _layer_norm_fwd_1pass_kernel(
-+    if _is_xpu:
-+        return torch.xpu.get_device_properties(device).gpu_eu_count
-diff -- test/srt/xpu/test_qwen3.py
-@@ -0,0 +1,133 @@
-+"""
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/rotary_embedding/mrope.py` modified +9/-0; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +4/-0
-  - tests: `test/srt/xpu/test_qwen3.py` added +133/-0; `test/srt/run_suite.py` modified +1/-0
-  - other: `docker/xpu.Dockerfile` modified +11/-6
-  - ci: `.github/workflows/pr-test-xpu.yml` modified +1/-1
-- Risk and verification: The diff ships test coverage in `test/srt/run_suite.py`, `test/srt/xpu/test_qwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #17784 - Upgrade transformers==5.3.0
 
 - Link: https://github.com/sgl-project/sglang/pull/17784
@@ -2532,32 +2491,6 @@ diff -- python/sglang/srt/models/qwen3_moe.py
   - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +4/-0
 - Risk and verification: The diff ships test coverage in `test/registered/4-gpu-models/test_qwen3_30b.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #21412 - [Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints
-
-- Link: https://github.com/sgl-project/sglang/pull/21412
-- Status/date: open / 2026-03-25
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints"; model line: Qwen3 Core; category: bug fix; main diff: `python/sglang/srt/models/qwen3.py`; technical summary: Covers "[Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints"; the main implementation surface is `python/sglang/srt/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3.py` modified +2/-2 (4 lines); hunks: -31,6 +31,7; -216,8 +217,7 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3.py` modified +2/-2 (4 lines); hunks: -31,6 +31,7; -216,8 +217,7 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3.py
-@@ -31,6 +31,7 @@
-+from sglang.srt.utils.hf_transformers_utils import get_rope_config
-@@ -216,8 +217,7 @@ def __init__(
--        rope_theta = config.rope_parameters["rope_theta"]
--        rope_scaling = config.rope_parameters
-+        rope_theta, rope_scaling = get_rope_config(config)
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3.py` modified +2/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #19059 - [jit_kernel] Add fused_qknorm_rope JIT kernel
 
 - Link: https://github.com/sgl-project/sglang/pull/19059
@@ -2599,42 +2532,6 @@ diff -- python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh
   - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +12/-3; `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh` added +307/-0; `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` added +183/-0; `python/sglang/jit_kernel/fused_qknorm_rope.py` added +181/-0
   - tests: `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py` added +444/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #21770 - [Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon
-
-- Link: https://github.com/sgl-project/sglang/pull/21770
-- Status/date: open / 2026-03-31
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +159/-0, 161 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py`; technical summary: Covers "[Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon"; the main implementation surface is `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models/test_qwen3_mlx_correctness.py` added +89/-0 (89 lines); hunks: -0,0 +1,89; symbols: TestQwen3MlxCorrectness, setUpClass, tearDownClass, _chat, touching `TestQwen3MlxCorrectness, setUpClass, tearDownClass`; `test/registered/models/test_qwen3_mlx_accuracy.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: TestQwen3MlxAccuracy, setUpClass, tearDownClass, test_gsm8k_accuracy, touching `TestQwen3MlxAccuracy, setUpClass, tearDownClass`.
-- Code diff details:
-  - `test/registered/models/test_qwen3_mlx_correctness.py` added +89/-0 (89 lines); hunks: -0,0 +1,89; symbols: TestQwen3MlxCorrectness, setUpClass, tearDownClass, _chat
-  - `test/registered/models/test_qwen3_mlx_accuracy.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: TestQwen3MlxAccuracy, setUpClass, tearDownClass, test_gsm8k_accuracy
-- Key code excerpts:
-
-```diff
-diff -- test/registered/models/test_qwen3_mlx_correctness.py
-@@ -0,0 +1,89 @@
-+import os
-+import unittest
-+import requests
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.test_utils import (
-+    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
-diff -- test/registered/models/test_qwen3_mlx_accuracy.py
-@@ -0,0 +1,70 @@
-+import os
-+import unittest
-+from types import SimpleNamespace
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.few_shot_gsm8k import run_eval
-+from sglang.test.test_utils import (
-```
-
-- Reviewed files:
-  - tests: `test/registered/models/test_qwen3_mlx_correctness.py` added +89/-0; `test/registered/models/test_qwen3_mlx_accuracy.py` added +70/-0
-- Risk and verification: The diff ships test coverage in `test/registered/models/test_qwen3_mlx_accuracy.py`, `test/registered/models/test_qwen3_mlx_correctness.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #21654 - Fused_qknorm_rope kernel optimization: up to 2.4× faster
 
@@ -2922,47 +2819,6 @@ diff -- python/sglang/srt/models/qwen3_moe.py
   - runtime: `python/sglang/srt/layers/communicator.py` modified +164/-10; `python/sglang/srt/layers/dp_attention.py` modified +28/-0; `python/sglang/srt/models/qwen3_moe.py` modified +4/-3; `python/sglang/srt/layers/utils/cp_utils.py` modified +2/-4; `python/sglang/srt/models/qwen2_moe.py` modified +5/-1; `python/sglang/srt/distributed/parallel_state.py` modified +13/-7
   - tests: `test/registered/4-gpu-models/test_qwen3_30b.py` modified +55/-0
 - Risk and verification: The diff ships test coverage in `test/registered/4-gpu-models/test_qwen3_30b.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #23372 - [NPU] Add CI tests for Speculative Decoding
-
-- Link: https://github.com/sgl-project/sglang/pull/23372
-- Status/date: open / 2026-04-21
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 7 files, +759/-14, 829 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] Add CI tests for Speculative Decoding"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py`; technical summary: Covers "[NPU] Add CI tests for Speculative Decoding"; the main implementation surface is `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0 (193 lines); hunks: -0,0 +1,193; symbols: TestAscendSpeculativeAttentionMode, setUpClass, start_prefill, start_decode, touching `TestAscendSpeculativeAttentionMode, setUpClass, start_prefill`; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0 (164 lines); hunks: -0,0 +1,164; symbols: TestNpuSpeculativeDraftParams, setUpClass, tearDownClass, test_draft_params_via_server_info, touching `TestNpuSpeculativeDraftParams, setUpClass, tearDownClass`; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0 (161 lines); hunks: -0,0 +1,161; symbols: TestNpuSpeculativeTokenMap, test_eagle3_ignores_token_map_gsm8k, test_eagle_with_valid_token_map_gsm8k, touching `TestNpuSpeculativeTokenMap, test_eagle3_ignores_token_map_gsm8k, test_eagle_with_valid_token_map_gsm8k`; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: TestAscendSpeculativeDraftAttentionAndMoeRunner, setUpClass, tearDownClass, test_a_gsm8k, touching `TestAscendSpeculativeDraftAttentionAndMoeRunner, setUpClass, tearDownClass`.
-- Code diff details:
-  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0 (193 lines); hunks: -0,0 +1,193; symbols: TestAscendSpeculativeAttentionMode, setUpClass, start_prefill, start_decode
-  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0 (164 lines); hunks: -0,0 +1,164; symbols: TestNpuSpeculativeDraftParams, setUpClass, tearDownClass, test_draft_params_via_server_info
-  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0 (161 lines); hunks: -0,0 +1,161; symbols: TestNpuSpeculativeTokenMap, test_eagle3_ignores_token_map_gsm8k, test_eagle_with_valid_token_map_gsm8k
-  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: TestAscendSpeculativeDraftAttentionAndMoeRunner, setUpClass, tearDownClass, test_a_gsm8k
-  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_moe_a2a_backend.py` added +104/-0 (104 lines); hunks: -0,0 +1,104; symbols: TestAscendSpeculativeMoeA2ABackend, setUpClass, test_a_gsm8k
-- Key code excerpts:
-
-```diff
-diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py
-@@ -0,0 +1,193 @@
-+import logging
-+import os
-+import socket
-+import unittest
-+from types import SimpleNamespace
-+from urllib.parse import urlparse
-diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py
-@@ -0,0 +1,164 @@
-+import logging
-+import os
-+import unittest
-+import requests
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.ascend.test_ascend_utils import (
-diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py
-@@ -0,0 +1,161 @@
-```
-
-- Reviewed files:
-  - tests: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_moe_a2a_backend.py` added +104/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py` modified +14/-12
-- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #23397 - [alignment-sglang] PR3: Dense Deterministic Math
 
@@ -3292,7 +3148,7 @@ diff -- python/sglang/srt/layers/utils/cp_utils.py
 
 - Link: https://github.com/sgl-project/sglang/pull/25971
 - Status/date: merged / 2026-05-26
-- Trace source: `git log --name-only -- <model-files>` found it through `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx`, `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx`; associated commits `47617cc4df1e`; preserved from an explicit existing history/skill citation
+- Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-10, 126 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[CPU Doc]Add Xeon CPU info in Qwen3 Cookbook"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx`; technical summary: Covers "[CPU Doc]Add Xeon CPU info in Qwen3 Cookbook"; the main implementation surface is `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
 - Key implementation: `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx` modified +22/-9 (31 lines); hunks: -9,7 +9,8 @@ export const Qwen3Deployment = () => {; -19,7 +20,8 @@ export const Qwen3Deployment = () => {; `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx` modified +4/-1 (5 lines); hunks: -26,13 +26,15 @@ SGLang offers multiple installation methods. You can choose...; -51,6 +53,7 @@ import { Qwen3Deployment } from "/src/snippets/autoregressive/....
@@ -3905,6 +3761,229 @@ diff -- python/sglang/srt/model_executor/cpu_graph_runner.py
   - tests: `test/registered/cpu/test_qwen3.py` modified +82/-58
   - runtime: `python/sglang/srt/models/qwen3_5.py` modified +33/-18; `python/sglang/srt/model_executor/cpu_graph_runner.py` modified +9/-0
 - Risk and verification: The diff ships test coverage in `test/registered/cpu/test_qwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #30768 - :sparkles: [llm][npu][quant] Add W8A8 MXFP8 quantization for Qwen3 MoE on Ascend NPU
+
+- Link: https://github.com/sgl-project/sglang/pull/30768
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_moe.py`; associated commits `f05c92fb6d65`
+- Diff scope read: GitHub Pull Request files API returned 18 files, +627/-42, 888 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: ":sparkles: [llm][npu][quant] Add W8A8 MXFP8 quantization for Qwen3 MoE on Ascend NPU"; model line: Qwen3 Core; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_moe.py`; technical summary: Covers ":sparkles: [llm][npu][quant] Add W8A8 MXFP8 quantization for Qwen3 MoE on Ascend NPU"; the main implementation surface is `python/sglang/srt/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_moe.py` modified +11/-1 (12 lines); hunks: -271,11 +271,21 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +11/-1 (12 lines); hunks: -271,11 +271,21 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -271,11 +271,21 @@ def __init__(
++        # Router gate: description-driven quant, mirroring vllm-ascend. Only the
++        # offline ModelSlim path (which carries a per-layer quant_model_description)
++        # may quantise the gate — if the checkpoint stored it as MXFP8 it is loaded
++        # and dequantised correctly instead of cast to bf16 without its block scale.
++        # The online Fp8/mxfp8 path keeps the gate in bf16 (unchanged, verified).
++        gate_quant_config = (
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +11/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/arg_groups/overrides.py`, `python/sglang/srt/hardware_backend/npu/moe/init_routing.py`, `python/sglang/srt/hardware_backend/npu/moe/matmul.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #34006 - Fix Qwen3-MoE producing garbage with the mori a2a backend
+
+- Link: https://github.com/sgl-project/sglang/pull/34006
+- Status/date: merged / 2026-08-08
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_moe.py`; associated commits `cea16bf22933`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Qwen3-MoE producing garbage with the mori a2a backend"; model line: Qwen3 Core; category: bug fix; main diff: `python/sglang/srt/models/qwen3_moe.py`; technical summary: Covers "Fix Qwen3-MoE producing garbage with the mori a2a backend"; the main implementation surface is `python/sglang/srt/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -300,6 +300,7 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -300,6 +300,7 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -300,6 +300,7 @@ def forward(
++            and not get_moe_a2a_backend().is_mori()
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #20474 - Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3
+
+- Link: https://github.com/sgl-project/sglang/pull/20474
+- Status/date: closed / 2026-08-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +159/-7, 221 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py`; technical summary: Covers "Intel XPU: Qwen3 support (layernorm/MRoPE) + test_qwen3"; the main implementation surface is `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/layers/attention/fla/layernorm_gated.py`, `test/srt/xpu/test_qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/rotary_embedding/mrope.py` modified +9/-0 (9 lines); hunks: -243,6 +243,15 @@ def forward_npu(; symbols: forward_npu, forward_xpu, get_rope_index, touching `forward_npu, forward_xpu, get_rope_index`; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +4/-0 (4 lines); hunks: -21,11 +21,13; -172,6 +174,8 @@ def _layer_norm_fwd_1pass_kernel(; symbols: _layer_norm_fwd_1pass_kernel, _get_sm_count, touching `_layer_norm_fwd_1pass_kernel, _get_sm_count`; `test/srt/xpu/test_qwen3.py` added +133/-0 (133 lines); hunks: -0,0 +1,133; symbols: TestQwen3, setUpClass, tearDownClass, get_request_json, touching `TestQwen3, setUpClass, tearDownClass`; `docker/xpu.Dockerfile` modified +11/-6 (17 lines); hunks: -20,6 +20,17 @@ ARG SG_LANG_KERNEL_BRANCH=main; -38,12 +49,6 @@ RUN curl -fsSL -v -o miniforge.sh -O https://github.com/conda....
+- Code diff details:
+  - `python/sglang/srt/layers/rotary_embedding/mrope.py` modified +9/-0 (9 lines); hunks: -243,6 +243,15 @@ def forward_npu(; symbols: forward_npu, forward_xpu, get_rope_index
+  - `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +4/-0 (4 lines); hunks: -21,11 +21,13; -172,6 +174,8 @@ def _layer_norm_fwd_1pass_kernel(; symbols: _layer_norm_fwd_1pass_kernel, _get_sm_count
+  - `test/srt/xpu/test_qwen3.py` added +133/-0 (133 lines); hunks: -0,0 +1,133; symbols: TestQwen3, setUpClass, tearDownClass, get_request_json
+  - `docker/xpu.Dockerfile` modified +11/-6 (17 lines); hunks: -20,6 +20,17 @@ ARG SG_LANG_KERNEL_BRANCH=main; -38,12 +49,6 @@ RUN curl -fsSL -v -o miniforge.sh -O https://github.com/conda...
+  - `.github/workflows/pr-test-xpu.yml` modified +1/-1 (2 lines); hunks: -120,7 +120,7 @@ jobs:
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/rotary_embedding/mrope.py
+@@ -243,6 +243,15 @@ def forward_npu(
++    def forward_xpu(
++        self,
++        positions: torch.Tensor,
++        query: torch.Tensor,
++        key: torch.Tensor,
++        fused_set_kv_buffer_arg=None,
+diff -- python/sglang/srt/layers/attention/fla/layernorm_gated.py
+@@ -21,11 +21,13 @@
++    is_xpu,
++_is_xpu = is_xpu()
+@@ -172,6 +174,8 @@ def _layer_norm_fwd_1pass_kernel(
++    if _is_xpu:
++        return torch.xpu.get_device_properties(device).gpu_eu_count
+diff -- test/srt/xpu/test_qwen3.py
+@@ -0,0 +1,133 @@
++"""
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/rotary_embedding/mrope.py` modified +9/-0; `python/sglang/srt/layers/attention/fla/layernorm_gated.py` modified +4/-0
+  - tests: `test/srt/xpu/test_qwen3.py` added +133/-0; `test/srt/run_suite.py` modified +1/-0
+  - other: `docker/xpu.Dockerfile` modified +11/-6
+  - ci: `.github/workflows/pr-test-xpu.yml` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/srt/run_suite.py`, `test/srt/xpu/test_qwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21412 - [Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints
+
+- Link: https://github.com/sgl-project/sglang/pull/21412
+- Status/date: closed / 2026-08-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints"; model line: Qwen3 Core; category: bug fix; main diff: `python/sglang/srt/models/qwen3.py`; technical summary: Covers "[Bugfix] Fix Qwen3 RoPE config compatibility for old-style checkpoints"; the main implementation surface is `python/sglang/srt/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3.py` modified +2/-2 (4 lines); hunks: -31,6 +31,7; -216,8 +217,7 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3.py` modified +2/-2 (4 lines); hunks: -31,6 +31,7; -216,8 +217,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3.py
+@@ -31,6 +31,7 @@
++from sglang.srt.utils.hf_transformers_utils import get_rope_config
+@@ -216,8 +217,7 @@ def __init__(
+-        rope_theta = config.rope_parameters["rope_theta"]
+-        rope_scaling = config.rope_parameters
++        rope_theta, rope_scaling = get_rope_config(config)
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #21770 - [Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon
+
+- Link: https://github.com/sgl-project/sglang/pull/21770
+- Status/date: closed / 2026-08-11
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +159/-0, 161 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py`; technical summary: Covers "[Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon"; the main implementation surface is `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models/test_qwen3_mlx_correctness.py` added +89/-0 (89 lines); hunks: -0,0 +1,89; symbols: TestQwen3MlxCorrectness, setUpClass, tearDownClass, _chat, touching `TestQwen3MlxCorrectness, setUpClass, tearDownClass`; `test/registered/models/test_qwen3_mlx_accuracy.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: TestQwen3MlxAccuracy, setUpClass, tearDownClass, test_gsm8k_accuracy, touching `TestQwen3MlxAccuracy, setUpClass, tearDownClass`.
+- Code diff details:
+  - `test/registered/models/test_qwen3_mlx_correctness.py` added +89/-0 (89 lines); hunks: -0,0 +1,89; symbols: TestQwen3MlxCorrectness, setUpClass, tearDownClass, _chat
+  - `test/registered/models/test_qwen3_mlx_accuracy.py` added +70/-0 (70 lines); hunks: -0,0 +1,70; symbols: TestQwen3MlxAccuracy, setUpClass, tearDownClass, test_gsm8k_accuracy
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models/test_qwen3_mlx_correctness.py
+@@ -0,0 +1,89 @@
++import os
++import unittest
++import requests
++from sglang.srt.utils import kill_process_tree
++from sglang.test.test_utils import (
++    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
+diff -- test/registered/models/test_qwen3_mlx_accuracy.py
+@@ -0,0 +1,70 @@
++import os
++import unittest
++from types import SimpleNamespace
++from sglang.srt.utils import kill_process_tree
++from sglang.test.few_shot_gsm8k import run_eval
++from sglang.test.test_utils import (
+```
+
+- Reviewed files:
+  - tests: `test/registered/models/test_qwen3_mlx_correctness.py` added +89/-0; `test/registered/models/test_qwen3_mlx_accuracy.py` added +70/-0
+- Risk and verification: The diff ships test coverage in `test/registered/models/test_qwen3_mlx_accuracy.py`, `test/registered/models/test_qwen3_mlx_correctness.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34810 - fix(qwen3): support DeepEP-class backends and early EPLB state
+
+- Link: https://github.com/sgl-project/sglang/pull/34810
+- Status/date: merged / 2026-08-14
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_moe.py`; associated commits `d8399af70cf6`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +11/-3, 42 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "fix(qwen3): support DeepEP-class backends and early EPLB state"; model line: Qwen3 Core; category: bug fix; main diff: `python/sglang/srt/models/qwen3_moe.py`; technical summary: Covers "fix(qwen3): support DeepEP-class backends and early EPLB state"; the main implementation surface is `python/sglang/srt/models/qwen3_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_moe.py` modified +11/-3 (14 lines); hunks: -52,6 +52,7; -284,7 +285,7 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +11/-3 (14 lines); hunks: -52,6 +52,7; -284,7 +285,7 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -52,6 +52,7 @@
++    is_deepep_class_backend,
+@@ -284,7 +285,7 @@ def __init__(
+-        if get_moe_a2a_backend().is_deepep():
++        if is_deepep_class_backend():
+@@ -299,8 +300,7 @@ def forward(
+-            not get_moe_a2a_backend().is_deepep()
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +11/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23372 - [NPU] Add CI tests for Speculative Decoding
+
+- Link: https://github.com/sgl-project/sglang/pull/23372
+- Status/date: closed / 2026-08-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 7 files, +759/-14, 829 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] Add CI tests for Speculative Decoding"; model line: Qwen3 Core; category: docs/tests/CI; main diff: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py`; technical summary: Covers "[NPU] Add CI tests for Speculative Decoding"; the main implementation surface is `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0 (193 lines); hunks: -0,0 +1,193; symbols: TestAscendSpeculativeAttentionMode, setUpClass, start_prefill, start_decode, touching `TestAscendSpeculativeAttentionMode, setUpClass, start_prefill`; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0 (164 lines); hunks: -0,0 +1,164; symbols: TestNpuSpeculativeDraftParams, setUpClass, tearDownClass, test_draft_params_via_server_info, touching `TestNpuSpeculativeDraftParams, setUpClass, tearDownClass`; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0 (161 lines); hunks: -0,0 +1,161; symbols: TestNpuSpeculativeTokenMap, test_eagle3_ignores_token_map_gsm8k, test_eagle_with_valid_token_map_gsm8k, touching `TestNpuSpeculativeTokenMap, test_eagle3_ignores_token_map_gsm8k, test_eagle_with_valid_token_map_gsm8k`; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: TestAscendSpeculativeDraftAttentionAndMoeRunner, setUpClass, tearDownClass, test_a_gsm8k, touching `TestAscendSpeculativeDraftAttentionAndMoeRunner, setUpClass, tearDownClass`.
+- Code diff details:
+  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0 (193 lines); hunks: -0,0 +1,193; symbols: TestAscendSpeculativeAttentionMode, setUpClass, start_prefill, start_decode
+  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0 (164 lines); hunks: -0,0 +1,164; symbols: TestNpuSpeculativeDraftParams, setUpClass, tearDownClass, test_draft_params_via_server_info
+  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0 (161 lines); hunks: -0,0 +1,161; symbols: TestNpuSpeculativeTokenMap, test_eagle3_ignores_token_map_gsm8k, test_eagle_with_valid_token_map_gsm8k
+  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0 (110 lines); hunks: -0,0 +1,110; symbols: TestAscendSpeculativeDraftAttentionAndMoeRunner, setUpClass, tearDownClass, test_a_gsm8k
+  - `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_moe_a2a_backend.py` added +104/-0 (104 lines); hunks: -0,0 +1,104; symbols: TestAscendSpeculativeMoeA2ABackend, setUpClass, test_a_gsm8k
+- Key code excerpts:
+
+```diff
+diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py
+@@ -0,0 +1,193 @@
++import logging
++import os
++import socket
++import unittest
++from types import SimpleNamespace
++from urllib.parse import urlparse
+diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py
+@@ -0,0 +1,164 @@
++import logging
++import os
++import unittest
++import requests
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ascend.test_ascend_utils import (
+diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py
+@@ -0,0 +1,161 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_moe_a2a_backend.py` added +104/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py` modified +14/-12
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

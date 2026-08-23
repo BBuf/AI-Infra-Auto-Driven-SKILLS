@@ -4,8 +4,8 @@
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/InclusionAI/Ling-2.5-1T.mdx` | no direct PR-number commit |
-| `docs_new/src/snippets/autoregressive/ling-25-1t-deployment.jsx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/InclusionAI/Ling-2.5-1T.mdx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/ling-25-1t-deployment.jsx` | no direct PR-number commit |
 
 ## PR Coverage Summary
 

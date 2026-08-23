@@ -189,15 +189,16 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for SGLang and every selected comparison framework. The 2026-07-28 immutable
+  for SGLang and every selected comparison framework. The 2026-08-23 immutable
   source heads checked for this skill are SGLang
-  `8a311d1c889244ab1f857d7df79de7e5f0a6891c`, vLLM
-  `b5bcb3ce881e1d324ff7f6176ef27606558dbd74`, TensorRT-LLM
-  `9fe5853263750ade5b7dc24fb31a1215ec822d45`, and
-  `lightseekorg/tokenspeed@e41aa8b1609a9412d7ed26aa56d910828607950f`;
+  `eec794bce0808ae26cc1dcb84a56b65d2df82af5`, vLLM
+  `bbe8b23e1a2b32a96240b27f63255170d09ef144`, TensorRT-LLM
+  `da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`, and
+  `lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d`;
   still prefer target-image `--help` over these source notes and re-check
   open PRs before every long SOTA run.
-- Use the target image's current commands: `python -m sglang.launch_server`,
+- Use the target image's current commands: `sglang serve` or
+  `python -m sglang.launch_server`,
   `vllm serve`, `trtllm-serve serve --backend pytorch`, and, when selected,
   `tokenspeed serve <model>` (or its verified image alias).
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless

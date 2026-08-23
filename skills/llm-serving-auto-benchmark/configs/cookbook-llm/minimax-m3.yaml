@@ -3,10 +3,10 @@ source:
   kind: llm_serving_cookbook
   source_recipe_file: sglang/docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx
   recorded_heads:
-    sglang: 8a311d1c889244ab1f857d7df79de7e5f0a6891c
-    vllm: b5bcb3ce881e1d324ff7f6176ef27606558dbd74
-    tensorrt_llm: 9fe5853263750ade5b7dc24fb31a1215ec822d45
-    tokenspeed: e41aa8b1609a9412d7ed26aa56d910828607950f
+    sglang: eec794bce0808ae26cc1dcb84a56b65d2df82af5
+    vllm: bbe8b23e1a2b32a96240b27f63255170d09ef144
+    tensorrt_llm: da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9
+    tokenspeed: 2706143a8669d50a8f56466b9d340b86922b8f2d
   translation: The enabled SGLang section preserves its verified single-node
     8xB200 MXFP8 recipe. vLLM uses a generic translation after its recorded
     supported-model table named this exact checkpoint. Other frameworks stay

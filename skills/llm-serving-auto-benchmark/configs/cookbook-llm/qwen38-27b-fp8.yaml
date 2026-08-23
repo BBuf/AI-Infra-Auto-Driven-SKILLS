@@ -1,0 +1,91 @@
+schema_version: 1
+source:
+  kind: llm_serving_cookbook
+  source_recipe_file: sglang/docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx
+  recorded_heads:
+    sglang: eec794bce0808ae26cc1dcb84a56b65d2df82af5
+    vllm: bbe8b23e1a2b32a96240b27f63255170d09ef144
+    tensorrt_llm: da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9
+    tokenspeed: 2706143a8669d50a8f56466b9d340b86922b8f2d
+  translation: The enabled SGLang section copies the public H200 single-GPU
+    FP8 cell. Other frameworks stay disabled because this refresh did not
+    re-verify a matching four-framework contract.
+model:
+  name: Qwen/Qwen3.8-27B-FP8
+  tokenizer: Qwen/Qwen3.8-27B-FP8
+  precision: fp8
+  quantization: model default
+hardware:
+  accelerator: NVIDIA H200
+  gpu_count: 1
+  multi_node: false
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names:
+  - chat
+  - summarization
+  input_len:
+  - 1000
+  - 8000
+  output_len:
+  - 1000
+  - 1000
+benchmark:
+  endpoint: /v1/chat/completions
+  backend: openai-compatible
+  tokenizer: Qwen/Qwen3.8-27B-FP8
+  max_concurrency:
+  - null
+  - 8
+  - 16
+  extra_request_body:
+    temperature: 0.0
+  qps:
+    lower: 0.25
+    upper: 4.0
+    tolerance: 0.1
+  sla:
+    max_p50_ttft_ms: 1500
+    max_p50_tpot_ms: 30
+    min_success_rate: 0.99
+  output_dir: ./auto_benchmark_results/cookbook-llm/qwen38-27b-fp8
+search:
+  tier: 2
+  max_candidates_per_framework: 6
+  candidate_generation: baseline_first_bounded_product
+  resume: true
+frameworks:
+  sglang:
+    enabled: true
+    support_status: verified_at_recorded_head
+    server_command: python -m sglang.launch_server
+    config_source: sglang_qwen38_27b_h200_public_recipe
+    base_server_flags:
+      model_path: Qwen/Qwen3.8-27B-FP8
+      trust_remote_code: true
+      kv_cache_dtype: fp8_e4m3
+      mem_fraction_static: 0.85
+      attention_backend: flashinfer
+      chunked_prefill_size: 32768
+      max_prefill_tokens: 32768
+      reasoning_parser: qwen3
+      tool_call_parser: qwen3_coder
+      host: 0.0.0.0
+      port: 30000
+    search_space:
+      chunked_prefill_size:
+      - 8192
+      - 32768
+      max_running_requests:
+      - 8
+      - 16
+  vllm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tensorrt_llm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tokenspeed:
+    enabled: false
+    support_status: not_verified_at_recorded_head

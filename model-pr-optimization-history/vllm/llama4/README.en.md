@@ -35,8 +35,8 @@
 | 2025-04-11 | [#16439](https://github.com/vllm-project/vllm/pull/16439) | merged | [Llama4] Enable attention temperature tuning by default for long context (>32k) | `vllm/model_executor/models/llama4.py` |
 | 2025-04-11 | [#16463](https://github.com/vllm-project/vllm/pull/16463) | merged | [Frontend] Added chat templates for LLaMa4 pythonic tool calling | `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py` |
 | 2025-04-12 | [#16512](https://github.com/vllm-project/vllm/pull/16512) | merged | Optimized topk for topk=1 (Llama-4) | `vllm/model_executor/models/llama4.py` |
-| 2025-04-18 | [#16801](https://github.com/vllm-project/vllm/pull/16801) | merged | [BugFix] Accuracy fix for llama4 int4 - improperly casted scales | `vllm/model_executor/models/llama4.py` |
 | 2025-04-18 | [#16746](https://github.com/vllm-project/vllm/pull/16746) | merged | [Bugfix] fix pp for llama4 | `vllm/model_executor/models/mllama4.py` |
+| 2025-04-18 | [#16801](https://github.com/vllm-project/vllm/pull/16801) | merged | [BugFix] Accuracy fix for llama4 int4 - improperly casted scales | `vllm/model_executor/models/llama4.py` |
 | 2025-04-24 | [#16428](https://github.com/vllm-project/vllm/pull/16428) | merged | Add chat template for Llama 4 models | `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py` |
 | 2025-04-29 | [#17315](https://github.com/vllm-project/vllm/pull/17315) | merged | [model] make llama4 compatible with pure dense layers | `vllm/model_executor/models/llama4.py` |
 | 2025-05-22 | [#17917](https://github.com/vllm-project/vllm/pull/17917) | merged | [Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser | `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
@@ -67,8 +67,8 @@
 | 2026-02-21 | [#34997](https://github.com/vllm-project/vllm/pull/34997) | merged | Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers " | `vllm/model_executor/models/llama4.py` |
 | 2026-02-23 | [#35033](https://github.com/vllm-project/vllm/pull/35033) | merged | [Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests | `vllm/model_executor/models/llama4.py` |
 | 2026-02-24 | [#35147](https://github.com/vllm-project/vllm/pull/35147) | merged | [Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4) | `vllm/model_executor/models/mllama4.py` |
-| 2026-03-09 | [#36436](https://github.com/vllm-project/vllm/pull/36436) | merged | [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py` |
 | 2026-03-09 | [#36281](https://github.com/vllm-project/vllm/pull/36281) | merged | [BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder` | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py` |
+| 2026-03-09 | [#36436](https://github.com/vllm-project/vllm/pull/36436) | merged | [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py` |
 | 2026-03-11 | [#36770](https://github.com/vllm-project/vllm/pull/36770) | merged | [Misc] Clean up renderers | `vllm/transformers_utils/processors/kimi_audio.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/kimi_audio.py` |
 | 2026-03-13 | [#36063](https://github.com/vllm-project/vllm/pull/36063) | merged | [Refactor] Consolidate SupportsEagle | `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/hunyuan_v1.py` |
 | 2026-03-16 | [#36288](https://github.com/vllm-project/vllm/pull/36288) | merged | [torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set | `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/mllama4.py`, `docs/design/torch_compile_multimodal.md` |
@@ -83,8 +83,8 @@
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-10 | [#39419](https://github.com/vllm-project/vllm/pull/39419) | merged | [SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding | `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/qwen3.py` |
 | 2026-06-10 | [#45047](https://github.com/vllm-project/vllm/pull/45047) | merged | [Bugfix] Fix Llama4 weight loading | `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py` |
-| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | merged | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `vllm/model_executor/models/mllama4.py` |
 | 2026-06-12 | [#39612](https://github.com/vllm-project/vllm/pull/39612) | merged | [Migration] Migrate GGUF quantization support to plugin | `vllm/model_executor/layers/quantization/gguf.py`, `vllm/model_executor/model_loader/gguf_loader.py`, `tests/models/test_gguf_download.py` |
+| 2026-06-12 | [#40660](https://github.com/vllm-project/vllm/pull/40660) | merged | [MM][Perf][CG] Support ViT full cudagraphs for mllama4 | `vllm/model_executor/models/mllama4.py` |
 | 2026-06-15 | [#44645](https://github.com/vllm-project/vllm/pull/44645) | merged | [Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders | `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 
@@ -94,6 +94,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/16104
 - Status/date: merged / 2025-04-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16104 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 35 files, +2369/-142, 3141 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Support Llama4 in vLLM"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`; technical summary: Covers "[Model] Support Llama4 in vLLM"; the main implementation surface is `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD_Instinct_MI300X.json`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -136,6 +137,7 @@ diff -- vllm/model_executor/layers/fused_moe/configs/E=16,N=1024,device_name=AMD
 
 - Link: https://github.com/vllm-project/vllm/pull/16113
 - Status/date: merged / 2025-04-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16113 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_llama4.py`, `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `55dcce91df15`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 43 files, +2436/-155, 3350 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Upstream Llama4 Support to Main"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`; technical summary: Covers "Upstream Llama4 Support to Main"; the main implementation surface is `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`, `tests/models/multimodal/processing/test_llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -176,6 +178,7 @@ diff -- tests/models/multimodal/processing/test_llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16201
 - Status/date: merged / 2025-04-07
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16201 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `ed636d99caa0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-3, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Move Llama 4 projector call into encoder execution"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[Misc] Move Llama 4 projector call into encoder execution"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -203,6 +206,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16311
 - Status/date: merged / 2025-04-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16311 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ec7da6fcf32f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-12, 33 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] llama4 qknorm should be not shared across head"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[BugFix] llama4 qknorm should be not shared across head"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -230,6 +234,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16365
 - Status/date: merged / 2025-04-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16365 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `61de3ef74b9c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +26/-7, 84 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Remove image mm limit for LLaMa4"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[Model] Remove image mm limit for LLaMa4"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -255,6 +260,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16439
 - Status/date: merged / 2025-04-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16439 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `99ef59cf7f93`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Llama4] Enable attention temperature tuning by default for long context (>32k)"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Llama4] Enable attention temperature tuning by default for long context (>32k)"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -282,6 +288,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16463
 - Status/date: merged / 2025-04-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16463 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `16eda8c43a9d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +182/-2, 223 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; model line: Llama 4; category: model implementation change; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py`; technical summary: Covers "[Frontend] Added chat templates for LLaMa4 pythonic tool calling"; the main implementation surface is `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -315,6 +322,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/pythonic_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/16512
 - Status/date: merged / 2025-04-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16512 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `bd6028d6b0bb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +11/-2, 31 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Optimized topk for topk=1 (Llama-4)"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "Optimized topk for topk=1 (Llama-4)"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -337,35 +345,11 @@ diff -- vllm/model_executor/models/llama4.py
   - runtime: `vllm/model_executor/models/llama4.py` modified +2/-2
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #16801 - [BugFix] Accuracy fix for llama4 int4 - improperly casted scales
-
-- Link: https://github.com/vllm-project/vllm/pull/16801
-- Status/date: merged / 2025-04-18
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `7eb42556281d`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +6/-9, 58 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BugFix] Accuracy fix for llama4 int4 - improperly casted scales"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[BugFix] Accuracy fix for llama4 int4 - improperly casted scales"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__, touching `custom_routing_function, __init__`.
-- Code diff details:
-  - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/llama4.py
-@@ -51,8 +51,8 @@ def custom_routing_function(
--        router_scores = torch.sigmoid(router_scores.float()).to(
--            hidden_states.dtype)
-+        # psuedo-standard is that the router scores are floats
-+        router_scores = torch.sigmoid(router_scores.float())
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/llama4.py` modified +2/-2
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #16746 - [Bugfix] fix pp for llama4
 
 - Link: https://github.com/vllm-project/vllm/pull/16746
 - Status/date: merged / 2025-04-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16746 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `e31045f95ca0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-3, 21 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] fix pp for llama4"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[Bugfix] fix pp for llama4"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -389,10 +373,37 @@ diff -- vllm/model_executor/models/mllama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +3/-3
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mllama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #16801 - [BugFix] Accuracy fix for llama4 int4 - improperly casted scales
+
+- Link: https://github.com/vllm-project/vllm/pull/16801
+- Status/date: merged / 2025-04-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16801 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `7eb42556281d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +6/-9, 58 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[BugFix] Accuracy fix for llama4 int4 - improperly casted scales"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[BugFix] Accuracy fix for llama4 int4 - improperly casted scales"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__, touching `custom_routing_function, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/llama4.py` modified +2/-2 (4 lines); hunks: -51,8 +51,8 @@ def custom_routing_function(; symbols: custom_routing_function, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/llama4.py
+@@ -51,8 +51,8 @@ def custom_routing_function(
+-        router_scores = torch.sigmoid(router_scores.float()).to(
+-            hidden_states.dtype)
++        # psuedo-standard is that the router scores are floats
++        router_scores = torch.sigmoid(router_scores.float())
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/llama4.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/llama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #16428 - Add chat template for Llama 4 models
 
 - Link: https://github.com/vllm-project/vllm/pull/16428
 - Status/date: merged / 2025-04-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/16428 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_json.jinja`; associated commits `05e1fbfc52ca`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +139/-1, 172 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Add chat template for Llama 4 models"; model line: Llama 4; category: model support/runtime entry; main diff: `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`; technical summary: Covers "Add chat template for Llama 4 models"; the main implementation surface is `examples/tool_chat_template_llama4_json.jinja`, `vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -425,6 +436,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/llama_tool_parser.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17315
 - Status/date: merged / 2025-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17315 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `b4ac4fa04da1`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[model] make llama4 compatible with pure dense layers"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[model] make llama4 compatible with pure dense layers"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -450,6 +462,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/17917
 - Status/date: merged / 2025-05-22
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/17917 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `examples/tool_chat_template_llama4_pythonic.jinja`; associated commits `c91fe7b1b9c4`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +541/-72, 720 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; model line: Llama 4; category: bug fix; main diff: `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`; technical summary: Covers "[Frontend][Bug Fix] Update llama4 pythonic jinja template and llama4_pythonic parser"; the main implementation surface is `examples/tool_chat_template_llama4_pythonic.jinja`, `vllm/entrypoints/openai/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -490,6 +503,7 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/18368
 - Status/date: merged / 2025-06-02
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/18368 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `ebb1ec931871`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +214/-68, 496 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] enable data parallel for Llama4 vision encoder"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[Model] enable data parallel for Llama4 vision encoder"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -517,6 +531,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19997
 - Status/date: merged / 2025-06-25
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19997 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1afa9948f593`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Llama4] Update `attn_temperature_tuning`"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Llama4] Update `attn_temperature_tuning`"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -541,6 +556,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20419
 - Status/date: merged / 2025-07-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20419 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `4afe687a8291`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +501/-35, 693 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Enable ModelOpt Llama4 fp8 checkpoint deployment"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`; technical summary: Covers "Enable ModelOpt Llama4 fp8 checkpoint deployment"; the main implementation surface is `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -577,6 +593,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20591
 - Status/date: merged / 2025-07-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20591 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `c11013db8b76`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +258/-18, 363 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Meta] Llama4 EAGLE Support"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/llama4_eagle.py`; technical summary: Covers "[Meta] Llama4 EAGLE Support"; the main implementation surface is `vllm/model_executor/models/llama4_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -604,6 +621,7 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21499
 - Status/date: merged / 2025-07-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21499 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ff08e51940a7`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +219/-70, 432 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[NVIDIA] Fix Llama4 Scout FP4 functionality issues"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[NVIDIA] Fix Llama4 Scout FP4 functionality issues"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -631,6 +649,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/20788
 - Status/date: merged / 2025-07-31
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20788 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/llama4_eagle.py`; associated commits `9e0726e5bfd2`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +206/-37, 487 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Meta] Official Eagle mm support, first enablement on llama4"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Meta] Official Eagle mm support, first enablement on llama4"; the main implementation surface is `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -662,6 +681,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22107
 - Status/date: merged / 2025-08-03
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22107 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `337eb23bcca6`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +5/-4, 33 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Fix] Fix llama4 modelopt weight loading error"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[Fix] Fix llama4 modelopt weight loading error"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -689,6 +709,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22511
 - Status/date: merged / 2025-08-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22511 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 3 files, +9/-5, 35 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix Llama4 FlashInfer FP4 MoE issues"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`; technical summary: Covers "Fix Llama4 FlashInfer FP4 MoE issues"; the main implementation surface is `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py`, `vllm/model_executor/layers/quantization/modelopt.py`, `vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -728,6 +749,7 @@ diff -- vllm/model_executor/layers/fused_moe/flashinfer_cutlass_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22701
 - Status/date: merged / 2025-08-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22701 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `4f0f844b1675`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-2, 17 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "Fix cuda illegal mem access with Llama4 TP8 + rms_norm custom op"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -755,6 +777,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22691
 - Status/date: merged / 2025-08-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22691 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `5bfe0dea7a34`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +4/-2, 20 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[bug fix] Fix llama4 spec decoding"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[bug fix] Fix llama4 spec decoding"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -782,6 +805,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/22021
 - Status/date: merged / 2025-08-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/22021 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `f32a5bc5058a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +23/-18, 87 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Migrate Llama4ImagePatchInputs to TensorSchema"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "Migrate Llama4ImagePatchInputs to TensorSchema"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -809,6 +833,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/24444
 - Status/date: merged / 2025-09-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24444 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +53/-30, 187 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix platform-specific routing in CustomOp implementations"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py`; technical summary: Covers "[Bugfix] Fix platform-specific routing in CustomOp implementations"; the main implementation surface is `vllm/model_executor/layers/rotary_embedding/mrope.py`, `vllm/model_executor/layers/rotary_embedding/deepseek_scaling_rope.py`, `vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -850,6 +875,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/dual_chunk_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25889
 - Status/date: merged / 2025-09-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25889 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `43b752c325d5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; technical summary: Covers "[Llama4] [multimodal] Fix misplaced dtype cast of `cos_sin_cache` in `Llama4VisionRotaryEmbedding`"; the main implementation surface is `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -875,6 +901,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25961
 - Status/date: merged / 2025-10-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25961 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `05f6846ede18`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +83/-8, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Support llama3 eagle3 head with llama4 verifier"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "Support llama3 eagle3 head with llama4 verifier"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -902,6 +929,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26790
 - Status/date: merged / 2025-10-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26790 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `87efc681dbd5`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 11 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; technical summary: Covers "llama4_vision_rope: add HIP override to accept (q, k) and avoid (positions, q, k) mismatch"; the main implementation surface is `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -929,6 +957,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/27136
 - Status/date: merged / 2025-10-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/27136 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `be4445072c4e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +17/-10, 34 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Fix][Spec Decode] Fix llama4 draft loading with different quantization"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4_eagle.py`; technical summary: Covers "[Fix][Spec Decode] Fix llama4 draft loading with different quantization"; the main implementation surface is `vllm/model_executor/models/llama4_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -956,6 +985,7 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25145
 - Status/date: merged / 2025-10-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25145 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; associated commits `b798e39f931a`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +22/-32, 116 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[XPU][bugfix] fix rope for llama4 and deepseek"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; technical summary: Covers "[XPU][bugfix] fix rope for llama4 and deepseek"; the main implementation surface is `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -983,6 +1013,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28602
 - Status/date: merged / 2025-11-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28602 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `964d65deedb9`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +34/-2, 79 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "LLaMA4 LoRA Adapter Enablement"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "LLaMA4 LoRA Adapter Enablement"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1010,6 +1041,7 @@ diff -- vllm/model_executor/models/mllama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28577
 - Status/date: merged / 2025-11-20
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28577 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `dc45efc8ef7f`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +7/-0, 28 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BugFix] Fix Llama4 Pipeline Parallelism Assert Error"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[BugFix] Fix Llama4 Pipeline Parallelism Assert Error"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1037,6 +1069,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/29926
 - Status/date: merged / 2025-12-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/29926 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4_eagle.py`; associated commits `962d703818c0`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +16/-3, 46 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4_eagle.py`; technical summary: Covers "[Bugfix][llama4_eagle] Fix missing 'lm_head' attribute"; the main implementation surface is `vllm/model_executor/models/llama4_eagle.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1064,6 +1097,7 @@ diff -- vllm/model_executor/models/llama4_eagle.py
 
 - Link: https://github.com/vllm-project/vllm/pull/30709
 - Status/date: merged / 2026-01-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/30709 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`, `vllm/model_executor/models/mllama4.py`; associated commits `ea6d067a2aeb`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +85/-20, 202 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc][LLaMa4] Compile LLaMa Vision Encoder"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`; technical summary: Covers "[Misc][LLaMa4] Compile LLaMa Vision Encoder"; the main implementation surface is `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1100,6 +1134,7 @@ diff -- vllm/model_executor/layers/rotary_embedding/llama4_vision_rope.py
 
 - Link: https://github.com/vllm-project/vllm/pull/32886
 - Status/date: merged / 2026-01-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/32886 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1fb648bf107e`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +21/-1, 36 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Bugfix] Fix FP8 MoE EP Weight Loading for ModelOpt Llama4"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1127,6 +1162,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34243
 - Status/date: merged / 2026-02-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34243 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `11c7ace34061`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +29/-5, 76 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Bugfix] Enable attn quantization of Llama-4 by correctly permuting scales for rope (int8, fp8)"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1154,6 +1190,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34471
 - Status/date: merged / 2026-02-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34471 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `ee1d25f199ee`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +29/-68, 114 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1181,6 +1218,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/34997
 - Status/date: merged / 2026-02-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/34997 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `0e22cd618b5d`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +68/-29, 114 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers ""; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "Revert "[Llama4,Quantization] Simplify and generalize logic for Q/K permutations in quantized self-attn layers ""; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1208,6 +1246,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35033
 - Status/date: merged / 2026-02-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35033 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`; associated commits `1e8438a89a64`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +31/-70, 127 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Llama4,CI] Bring back Llama-4 bug fixes, and also fix Maverick tests"; the main implementation surface is `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1235,6 +1274,7 @@ diff -- vllm/model_executor/models/llama4.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35147
 - Status/date: merged / 2026-02-24
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35147 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `012dee92331c`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +23/-1, 30 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[Feature] Add LoRA tower/connector support for Llama 4 Vision (mllama4)"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1258,50 +1298,11 @@ diff -- vllm/model_executor/models/mllama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +23/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mllama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #36436 - [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers
-
-- Link: https://github.com/vllm-project/vllm/pull/36436
-- Status/date: merged / 2026-03-09
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 4 files, +247/-452, 911 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers"; model line: Llama 4; category: model implementation change; main diff: `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`; technical summary: Covers "[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers"; the main implementation surface is `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value, touching `find_common_prefix, get_json_schema_from_tools, UnexpectedAstError`; `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming, touching `_UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls`; `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming, touching `_UnexpectedAstError, PythonicToolParser, extract_tool_calls`; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming, touching `_UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls`.
-- Code diff details:
-  - `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value
-  - `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
-  - `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
-  - `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
-- Key code excerpts:
-
-```diff
-diff -- vllm/tool_parsers/utils.py
-@@ -1,6 +1,7 @@
-+import ast
-@@ -17,6 +18,15 @@
-+from vllm.entrypoints.openai.engine.protocol import (
-+    DeltaFunctionCall,
-+    DeltaToolCall,
-+    FunctionCall,
-diff -- vllm/tool_parsers/olmo3_tool_parser.py
-@@ -1,9 +1,8 @@
--import json
--from typing import Any
-@@ -13,25 +12,23 @@
--    DeltaFunctionCall,
--    DeltaToolCall,
--    FunctionCall,
-diff -- vllm/tool_parsers/pythonic_tool_parser.py
-@@ -2,9 +2,7 @@
-```
-
-- Reviewed files:
-  - runtime: `vllm/tool_parsers/utils.py` modified +209/-0; `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156; `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147
-- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #36281 - [BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder`
 
 - Link: https://github.com/vllm-project/vllm/pull/36281
 - Status/date: merged / 2026-03-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36281 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +23/-17, 138 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder`"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[BE] Rename `should_torch_compile_mm_vit` to `should_torch_compile_mm_encoder`"; the main implementation surface is `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1340,10 +1341,52 @@ diff -- vllm/model_executor/models/mllama4.py
   - docs: `docs/design/torch_compile_multimodal.md` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/compilation/decorators.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `vllm/model_executor/models/mllama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #36436 - [Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers
+
+- Link: https://github.com/vllm-project/vllm/pull/36436
+- Status/date: merged / 2026-03-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36436 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +247/-452, 911 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers"; model line: Llama 4; category: model implementation change; main diff: `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`; technical summary: Covers "[Misc] Refactored 5 duplicate helper functions that were copied-pasted across multiple parsers"; the main implementation surface is `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value, touching `find_common_prefix, get_json_schema_from_tools, UnexpectedAstError`; `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming, touching `_UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls`; `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming, touching `_UnexpectedAstError, PythonicToolParser, extract_tool_calls`; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming, touching `_UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls`.
+- Code diff details:
+  - `vllm/tool_parsers/utils.py` modified +209/-0 (209 lines); hunks: -1,6 +1,7; -17,6 +18,15; symbols: find_common_prefix, get_json_schema_from_tools, UnexpectedAstError, get_parameter_value
+  - `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156 (169 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Olmo3PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
+  - `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149 (161 lines); hunks: -2,9 +2,7; -14,25 +12,23; symbols: _UnexpectedAstError, PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
+  - `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147 (160 lines); hunks: -1,9 +1,8; -13,25 +12,23; symbols: _UnexpectedAstError, Llama4PythonicToolParser, extract_tool_calls, extract_tool_calls_streaming
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/utils.py
+@@ -1,6 +1,7 @@
++import ast
+@@ -17,6 +18,15 @@
++from vllm.entrypoints.openai.engine.protocol import (
++    DeltaFunctionCall,
++    DeltaToolCall,
++    FunctionCall,
+diff -- vllm/tool_parsers/olmo3_tool_parser.py
+@@ -1,9 +1,8 @@
+-import json
+-from typing import Any
+@@ -13,25 +12,23 @@
+-    DeltaFunctionCall,
+-    DeltaToolCall,
+-    FunctionCall,
+diff -- vllm/tool_parsers/pythonic_tool_parser.py
+@@ -2,9 +2,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/utils.py` modified +209/-0; `vllm/tool_parsers/olmo3_tool_parser.py` modified +13/-156; `vllm/tool_parsers/pythonic_tool_parser.py` modified +12/-149; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +13/-147
+- Risk and verification: Runtime changes concentrate in `vllm/tool_parsers/llama4_pythonic_tool_parser.py`, `vllm/tool_parsers/olmo3_tool_parser.py`, `vllm/tool_parsers/pythonic_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #36770 - [Misc] Clean up renderers
 
 - Link: https://github.com/vllm-project/vllm/pull/36770
 - Status/date: merged / 2026-03-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36770 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +136/-220, 632 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Clean up renderers"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/transformers_utils/processors/kimi_audio.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/kimi_audio.py`; technical summary: Covers "[Misc] Clean up renderers"; the main implementation surface is `vllm/transformers_utils/processors/kimi_audio.py`, `tests/models/multimodal/processing/test_common.py`, `vllm/model_executor/models/kimi_audio.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1386,6 +1429,7 @@ diff -- vllm/model_executor/models/kimi_audio.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36063
 - Status/date: merged / 2026-03-13
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36063 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 24 files, +229/-235, 1149 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Refactor] Consolidate SupportsEagle"; model line: Llama 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/hunyuan_v1.py`; technical summary: Covers "[Refactor] Consolidate SupportsEagle"; the main implementation surface is `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/qwen3_moe.py`, `vllm/model_executor/models/hunyuan_v1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1427,6 +1471,7 @@ diff -- vllm/model_executor/models/hunyuan_v1.py
 
 - Link: https://github.com/vllm-project/vllm/pull/36288
 - Status/date: merged / 2026-03-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/36288 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +27/-29, 112 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/mllama4.py`, `docs/design/torch_compile_multimodal.md`; technical summary: Covers "[torch.compile][BE] Modify cudagraph callable to check for is_forward_context_set"; the main implementation surface is `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/mllama4.py`, `docs/design/torch_compile_multimodal.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1468,6 +1513,7 @@ diff -- docs/design/torch_compile_multimodal.md
 
 - Link: https://github.com/vllm-project/vllm/pull/37345
 - Status/date: merged / 2026-03-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37345 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +86/-69, 312 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[torch.compile][BE][Multimodal] Remove requirement to set_model_tag to avoid cache conflict"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `docs/design/torch_compile_multimodal.md`; technical summary: Covers "[torch.compile][BE][Multimodal] Remove requirement to set_model_tag to avoid cache conflict"; the main implementation surface is `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/lfm2_siglip2.py`, `docs/design/torch_compile_multimodal.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1510,6 +1556,7 @@ diff -- docs/design/torch_compile_multimodal.md
 
 - Link: https://github.com/vllm-project/vllm/pull/37834
 - Status/date: merged / 2026-03-23
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37834 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 11 files, +376/-353, 774 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Test] Consolidate tool parser unit tests to tests/tool_parsers"; model line: Llama 4; category: docs/tests/CI; main diff: `tests/tool_parsers/test_hermes_tool_parser.py`, `tests/entrypoints/openai/tool_parsers/test_hermes_tool_parser.py`, `tests/tool_parsers/test_granite4_tool_parser.py`; technical summary: Covers "[Test] Consolidate tool parser unit tests to tests/tool_parsers"; the main implementation surface is `tests/tool_parsers/test_hermes_tool_parser.py`, `tests/entrypoints/openai/tool_parsers/test_hermes_tool_parser.py`, `tests/tool_parsers/test_granite4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1756,6 +1803,7 @@ diff -- vllm/model_executor/models/glm4_moe_lite.py
 
 - Link: https://github.com/vllm-project/vllm/pull/42280
 - Status/date: merged / 2026-05-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/42280 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 25 files, +49/-29, 302 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Fix missing `maybe_prefix`"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`; technical summary: Covers "[Model] Fix missing `maybe_prefix`"; the main implementation surface is `vllm/model_executor/models/arcee.py`, `vllm/model_executor/models/cohere_asr.py`, `vllm/model_executor/models/hunyuan_v1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1839,6 +1887,7 @@ diff -- vllm/model_executor/layers/quantization/kv_cache.py
 
 - Link: https://github.com/vllm-project/vllm/pull/39419
 - Status/date: merged / 2026-06-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39419 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +53/-39, 169 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding"; model line: Llama 4; category: model implementation change; main diff: `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/qwen3.py`; technical summary: Covers "[SpecDecode] Reduce TP communication for large-vocab draft models speculative decoding"; the main implementation surface is `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/llama4_eagle.py`, `vllm/model_executor/models/qwen3.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1880,6 +1929,7 @@ diff -- vllm/model_executor/models/qwen3.py
 
 - Link: https://github.com/vllm-project/vllm/pull/45047
 - Status/date: merged / 2026-06-10
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/45047 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `fa8c868a3c64`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +18/-6, 92 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Fix Llama4 weight loading"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Bugfix] Fix Llama4 weight loading"; the main implementation surface is `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1909,37 +1959,11 @@ diff -- vllm/model_executor/models/llama4.py
   - runtime: `vllm/model_executor/models/mllama4.py` modified +5/-1; `vllm/model_executor/models/llama4.py` modified +2/-0
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/model_loader/weight_utils.py`, `vllm/model_executor/models/lfm2_moe.py`, `vllm/model_executor/models/llama4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #40660 - [MM][Perf][CG] Support ViT full cudagraphs for mllama4
-
-- Link: https://github.com/vllm-project/vllm/pull/40660
-- Status/date: merged / 2026-06-12
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `39dee1114a2c`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 5 files, +193/-14, 291 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MM][Perf][CG] Support ViT full cudagraphs for mllama4"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[MM][Perf][CG] Support ViT full cudagraphs for mllama4"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk, touching `Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata`.
-- Code diff details:
-  - `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/mllama4.py
-@@ -19,7 +19,7 @@
--from typing import Annotated, Literal
-+from typing import Annotated, Any, Literal
-@@ -78,6 +78,7 @@
-+    SupportsEncoderCudaGraph,
-@@ -105,7 +106,7 @@ class Llama4ImagePatchInputs(TensorSchema):
--    The number of total patches for each image in the batch.
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/mllama4.py` modified +160/-12
-- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/models/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #39612 - [Migration] Migrate GGUF quantization support to plugin
 
 - Link: https://github.com/vllm-project/vllm/pull/39612
 - Status/date: merged / 2026-06-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/39612 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 57 files, +71/-9047, 9824 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Migration] Migrate GGUF quantization support to plugin"; model line: Llama 4; category: docs/tests/CI; main diff: `vllm/model_executor/layers/quantization/gguf.py`, `vllm/model_executor/model_loader/gguf_loader.py`, `tests/models/test_gguf_download.py`; technical summary: Covers "[Migration] Migrate GGUF quantization support to plugin"; the main implementation surface is `vllm/model_executor/layers/quantization/gguf.py`, `vllm/model_executor/model_loader/gguf_loader.py`, `tests/models/test_gguf_download.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1978,10 +2002,38 @@ diff -- tests/models/test_gguf_download.py
   - tests: `tests/models/test_gguf_download.py` removed +0/-224; `tests/plugins_tests/gguf/test_gguf_plugin_multimodal.py` renamed +6/-19
 - Risk and verification: The diff ships test coverage in `requirements/test/rocm.txt`, `tests/compile/fullgraph/test_full_graph.py`, `tests/kernels/quantization/test_ggml.py`, `tests/kernels/quantization/test_gguf.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #40660 - [MM][Perf][CG] Support ViT full cudagraphs for mllama4
+
+- Link: https://github.com/vllm-project/vllm/pull/40660
+- Status/date: merged / 2026-06-12
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mllama4.py`; associated commits `39dee1114a2c`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +193/-14, 291 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][Perf][CG] Support ViT full cudagraphs for mllama4"; model line: Llama 4; category: performance/backend optimization; main diff: `vllm/model_executor/models/mllama4.py`; technical summary: Covers "[MM][Perf][CG] Support ViT full cudagraphs for mllama4"; the main implementation surface is `vllm/model_executor/models/mllama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk, touching `Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata`.
+- Code diff details:
+  - `vllm/model_executor/models/mllama4.py` modified +160/-12 (172 lines); hunks: -19,7 +19,7; -78,6 +78,7; symbols: Llama4ImagePatchInputs, Llama4ForConditionalGeneration, update_physical_experts_metadata, get_image_patches_per_chunk
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mllama4.py
+@@ -19,7 +19,7 @@
+-from typing import Annotated, Literal
++from typing import Annotated, Any, Literal
+@@ -78,6 +78,7 @@
++    SupportsEncoderCudaGraph,
+@@ -105,7 +106,7 @@ class Llama4ImagePatchInputs(TensorSchema):
+-    The number of total patches for each image in the batch.
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/mllama4.py` modified +160/-12
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/models/utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #44645 - [Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders
 
 - Link: https://github.com/vllm-project/vllm/pull/44645
 - Status/date: merged / 2026-06-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/44645 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/llama4.py`, `vllm/model_executor/models/mllama4.py`; associated commits `1801fad0ba62`; preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +64/-72, 162 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders"; model line: Llama 4; category: bug fix; main diff: `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`; technical summary: Covers "[Bugfix] Stream Llama4 weight loading to avoid host-OOM with copy-returning loaders"; the main implementation surface is `vllm/model_executor/models/mllama4.py`, `vllm/model_executor/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.

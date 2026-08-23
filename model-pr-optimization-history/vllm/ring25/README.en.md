@@ -63,6 +63,7 @@
 
 - Link: https://github.com/vllm-project/vllm/pull/20680
 - Status/date: merged / 2025-07-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/20680 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +534/-0, 556 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Add Ling implementation"; model line: Ring 2.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`; technical summary: Covers "[Model] Add Ling implementation"; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -105,6 +106,7 @@ diff -- vllm/model_executor/models/registry.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21059
 - Status/date: merged / 2025-07-16
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21059 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +0/-45, 157 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Remove model sampler"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/bailing_moe.py`, `vllm/model_executor/models/hunyuan_v1_moe.py`; technical summary: Covers "[Model] Remove model sampler"; the main implementation surface is `vllm/model_executor/models/mimo_mtp.py`, `vllm/model_executor/models/bailing_moe.py`, `vllm/model_executor/models/hunyuan_v1_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -146,6 +148,7 @@ diff -- vllm/model_executor/models/hunyuan_v1_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21100
 - Status/date: merged / 2025-07-19
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21100 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 5 files, +223/-181, 548 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Quantization] Enable BNB support for more MoE models"; model line: Ring 2.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/hunyuan_v1_moe.py`, `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/grok1.py`; technical summary: Covers "[Quantization] Enable BNB support for more MoE models"; the main implementation surface is `vllm/model_executor/models/hunyuan_v1_moe.py`, `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/grok1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -188,6 +191,7 @@ diff -- vllm/model_executor/models/grok1.py
 
 - Link: https://github.com/vllm-project/vllm/pull/21664
 - Status/date: merged / 2025-07-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/21664 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +2/-0, 16 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "support `torch.compile` for bailing moe"; model line: Ring 2.5; category: model support/runtime entry; main diff: `vllm/model_executor/models/bailing_moe.py`; technical summary: Covers "support `torch.compile` for bailing moe"; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -212,6 +216,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/19497
 - Status/date: merged / 2025-08-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/19497 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 65 files, +129/-83, 1109 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Models] Improve iteration over layers"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/gpt_j.py`, `vllm/model_executor/models/lfm2.py`; technical summary: Covers "[Models] Improve iteration over layers"; the main implementation surface is `vllm/model_executor/models/deepseek.py`, `vllm/model_executor/models/gpt_j.py`, `vllm/model_executor/models/lfm2.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -253,6 +258,7 @@ diff -- vllm/model_executor/models/lfm2.py
 
 - Link: https://github.com/vllm-project/vllm/pull/24627
 - Status/date: merged / 2025-09-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/24627 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 4 files, +170/-50, 388 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model]: support Ling2.0"; model line: Ring 2.5; category: docs/tests/CI; main diff: `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`; technical summary: Covers "[Model]: support Ling2.0"; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`, `tests/models/registry.py`, `docs/models/supported_models.md`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -295,6 +301,7 @@ diff -- vllm/model_executor/models/registry.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25345
 - Status/date: merged / 2025-09-21
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25345 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 141 files, +172/-583, 2888 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V0 Deprecation] Remove V0 sampling metadata"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/deepseek_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`, `vllm/model_executor/models/granite.py`; technical summary: Covers "[V0 Deprecation] Remove V0 sampling metadata"; the main implementation surface is `vllm/model_executor/models/deepseek_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py`, `vllm/model_executor/models/granite.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -336,6 +343,7 @@ diff -- vllm/model_executor/models/granite.py
 
 - Link: https://github.com/vllm-project/vllm/pull/25271
 - Status/date: merged / 2025-09-30
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/25271 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 36 files, +964/-905, 2200 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Move`VllmConfig` from `config/__init__.py` to `config/vllm.py`"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/layers/quantization/utils/gptq_utils.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/auto_round.py`; technical summary: Covers "Move`VllmConfig` from `config/__init__.py` to `config/vllm.py`"; the main implementation surface is `vllm/model_executor/layers/quantization/utils/gptq_utils.py`, `vllm/model_executor/layers/quantization/gptq.py`, `vllm/model_executor/layers/quantization/auto_round.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -377,6 +385,7 @@ diff -- vllm/model_executor/layers/quantization/auto_round.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26247
 - Status/date: merged / 2025-10-05
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26247 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1508 files, +83935/-68959, 272044 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Convert formatting to use `ruff` instead of `yapf` + `isort`"; model line: Ring 2.5; category: performance/backend optimization; main diff: `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`; technical summary: Covers "Convert formatting to use `ruff` instead of `yapf` + `isort`"; the main implementation surface is `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/fused_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -419,6 +428,7 @@ diff -- vllm/model_executor/layers/fused_moe/fused_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26262
 - Status/date: merged / 2025-10-06
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26262 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 65 files, +301/-291, 1525 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Fix per file ruff ignores related to line length"; model line: Ring 2.5; category: bug fix; main diff: `tests/models/multimodal/generation/test_common.py`, `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/models/longcat_flash_mtp.py`; technical summary: Covers "Fix per file ruff ignores related to line length"; the main implementation surface is `tests/models/multimodal/generation/test_common.py`, `tests/entrypoints/test_chat_utils.py`, `vllm/model_executor/models/longcat_flash_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -461,6 +471,7 @@ diff -- vllm/model_executor/models/longcat_flash_mtp.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26145
 - Status/date: merged / 2025-10-09
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26145 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 15 files, +271/-283, 1118 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Apply shared experts overlap optimization to all models with shared experts"; model line: Ring 2.5; category: performance/backend optimization; main diff: `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/ernie45_vl_moe.py`; technical summary: Covers "[Model] Apply shared experts overlap optimization to all models with shared experts"; the main implementation surface is `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe.py`, `vllm/model_executor/models/ernie45_vl_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -502,6 +513,7 @@ diff -- vllm/model_executor/models/ernie45_vl_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26633
 - Status/date: merged / 2025-10-12
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26633 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 944 files, +9491/-10122, 61484 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`"; model line: Ring 2.5; category: performance/backend optimization; main diff: `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`; technical summary: Covers "Update `Optional[x]` -> `x | None` and `Union[x, y]` to `x | y`"; the main implementation surface is `vllm/entrypoints/openai/protocol.py`, `vllm/entrypoints/llm.py`, `vllm/model_executor/layers/fused_moe/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -543,6 +555,7 @@ diff -- vllm/model_executor/layers/fused_moe/layer.py
 
 - Link: https://github.com/vllm-project/vllm/pull/26876
 - Status/date: merged / 2025-10-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/26876 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-2, 15 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Fix] Remove divisibility requirement between num_kv_heads and tp_size in bailing_moe"; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/bailing_moe.py`; technical summary: Covers "[Fix] Remove divisibility requirement between num_kv_heads and tp_size in bailing_moe"; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -567,6 +580,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28382
 - Status/date: merged / 2025-11-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28382 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 65 files, +197/-754, 2645 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[LoRA][1/N]Remove LoRA extra vocab"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/phimoe.py`, `vllm/model_executor/models/lfm2_moe.py`, `vllm/model_executor/models/falcon_h1.py`; technical summary: Covers "[LoRA][1/N]Remove LoRA extra vocab"; the main implementation surface is `vllm/model_executor/models/phimoe.py`, `vllm/model_executor/models/lfm2_moe.py`, `vllm/model_executor/models/falcon_h1.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -649,6 +663,7 @@ diff -- vllm/model_executor/models/bert.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28277
 - Status/date: merged / 2025-11-14
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28277 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +3/-2, 19 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Fix bailing_moe accuracy problem"; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/bailing_moe.py`; technical summary: Covers "[Model] Fix bailing_moe accuracy problem"; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -676,6 +691,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/28777
 - Status/date: merged / 2025-11-15
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/28777 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Fix lmhead init bug of bailing_moe"; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/bailing_moe.py`; technical summary: Covers "[Model] Fix lmhead init bug of bailing_moe"; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -986,6 +1002,7 @@ diff -- vllm/model_executor/layers/attention/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/33737
 - Status/date: merged / 2026-02-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/33737 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 6 files, +9/-4, 69 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] Define router_logits_dtype for remaining MoE models"; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/longcat_flash.py`, `vllm/model_executor/models/flex_olmo.py`, `vllm/model_executor/models/afmoe.py`; technical summary: Covers "[Bugfix] Define router_logits_dtype for remaining MoE models"; the main implementation surface is `vllm/model_executor/models/longcat_flash.py`, `vllm/model_executor/models/flex_olmo.py`, `vllm/model_executor/models/afmoe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1027,6 +1044,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/35102
 - Status/date: merged / 2026-02-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/35102 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 8 files, +1407/-70, 1650 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Model] Ring 2.5"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/fla/ops/layernorm_guard.py`; technical summary: Covers "[Model] Ring 2.5"; the main implementation surface is `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/fla/ops/layernorm_guard.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1070,6 +1088,7 @@ diff -- vllm/model_executor/layers/fla/ops/layernorm_guard.py
 
 - Link: https://github.com/vllm-project/vllm/pull/37195
 - Status/date: merged / 2026-03-18
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/37195 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 23 files, +23/-45, 353 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[V0 Deprecation] Deprecate virtual engine"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/layers/attention/mla_attention.py`; technical summary: Covers "[V0 Deprecation] Deprecate virtual engine"; the main implementation surface is `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/layers/attention/mla_attention.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1275,6 +1294,7 @@ diff -- vllm/model_executor/models/glm4_moe_lite.py
 
 - Link: https://github.com/vllm-project/vllm/pull/40859
 - Status/date: merged / 2026-04-28
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/40859 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 2 files, +15/-16, 90 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix ] fix bailing_moe_linear"; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`; technical summary: Covers "[Bugfix ] fix bailing_moe_linear"; the main implementation surface is `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/mamba_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1308,6 +1328,7 @@ diff -- vllm/model_executor/layers/mamba/mamba_utils.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41185
 - Status/date: merged / 2026-04-29
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41185 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +8/-2, 22 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] BailingMoeV2.5: rotate full qk_rope_head_dim in MLA RoPE"; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/bailing_moe_linear.py`; technical summary: Covers "[Bugfix] BailingMoeV2.5: rotate full qk_rope_head_dim in MLA RoPE"; the main implementation surface is `vllm/model_executor/models/bailing_moe_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1335,6 +1356,7 @@ diff -- vllm/model_executor/models/bailing_moe_linear.py
 
 - Link: https://github.com/vllm-project/vllm/pull/41188
 - Status/date: merged / 2026-05-11
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/41188 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 18 files, +64/-58, 404 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Misc] Replace mamba_type string literals with MambaAttentionBackendEnum"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/layers/kda.py`, `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/linear_attn.py`; technical summary: Covers "[Misc] Replace mamba_type string literals with MambaAttentionBackendEnum"; the main implementation surface is `vllm/model_executor/layers/kda.py`, `vllm/model_executor/layers/mamba/gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/linear_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1376,6 +1398,7 @@ diff -- vllm/model_executor/layers/mamba/linear_attn.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43410
 - Status/date: merged / 2026-05-26
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43410 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 12 files, +262/-490, 893 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Kernel] Porting fuse_minimax_qk_norm to manual fusion"; model line: Ring 2.5; category: performance/backend optimization; main diff: `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`; technical summary: Covers "[Kernel] Porting fuse_minimax_qk_norm to manual fusion"; the main implementation surface is `vllm/model_executor/layers/minimax_rms_norm/rms_norm_tp.py`, `vllm/model_executor/layers/mamba/linear_attn.py`, `vllm/model_executor/layers/minimax_rms_norm/__init__.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1418,6 +1441,7 @@ diff -- vllm/model_executor/layers/minimax_rms_norm/__init__.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43770
 - Status/date: merged / 2026-06-01
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43770 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 1 files, +6/-1, 14 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Bugfix] fix wrong partial_rotary_factor calculation for bailing_moe model."; model line: Ring 2.5; category: bug fix; main diff: `vllm/model_executor/models/bailing_moe.py`; technical summary: Covers "[Bugfix] fix wrong partial_rotary_factor calculation for bailing_moe model."; the main implementation surface is `vllm/model_executor/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
@@ -1445,6 +1469,7 @@ diff -- vllm/model_executor/models/bailing_moe.py
 
 - Link: https://github.com/vllm-project/vllm/pull/43556
 - Status/date: merged / 2026-06-04
+- Metadata refresh note: the current GitHub API lookup failed (`command failed: gh api repos/vllm-project/vllm/pulls/43556 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`); this previously audited card is retained instead of discarding immutable commit and diff evidence.
 - Trace source: preserved from an explicit existing history/skill citation
 - Diff scope read: GitHub Pull Request files API returned 7 files, +505/-551, 1309 readable patch lines; this card prioritizes model-related and high-change files.
 - Motivation: Title: "[Attention] Mamba attention module refactor - LINEAR"; model line: Ring 2.5; category: model implementation change; main diff: `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear/bailing_linear_attn.py`, `vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py`; technical summary: Covers "[Attention] Mamba attention module refactor - LINEAR"; the main implementation surface is `vllm/model_executor/models/bailing_moe_linear.py`, `vllm/model_executor/layers/mamba/linear/bailing_linear_attn.py`, `vllm/model_executor/layers/mamba/linear/minimax_linear_attn.py`. File-level evidence, code excerpts, and validation risks are preserved below.

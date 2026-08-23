@@ -553,6 +553,10 @@ class TestModelConfigIndex(unittest.TestCase):
             sim.resolve_model("Qwen/Qwen3.6-35B-A3B-FP8", configs)["display_name"],
             "Qwen3.6-35B-A3B",
         )
+        self.assertEqual(
+            sim.resolve_model("Qwen/Qwen3.8-27B", configs)["display_name"],
+            "Qwen3.8-27B",
+        )
 
     def test_compress_ratios_lengths_are_explained(self):
         configs = json.loads(CONFIG_INDEX.read_text())

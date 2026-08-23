@@ -9,18 +9,26 @@
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP_MI325.yaml` | 无直接 PR 号提交 |
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP.yaml` | [#33566](https://github.com/vllm-project/vllm/pull/33566) |
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP_MI325.yaml` | 无直接 PR 号提交 |
-| `tests/kernels/test_fused_deepseek_v32_norm_rope.py` | [#46876](https://github.com/vllm-project/vllm/pull/46876) |
+| `tests/kernels/test_fused_deepseek_v32_norm_rope.py` | [#46876](https://github.com/vllm-project/vllm/pull/46876), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#52381](https://github.com/vllm-project/vllm/pull/52381) |
+| `tests/models/deepseek_v32/test_sequence_parallel.py` | [#51434](https://github.com/vllm-project/vllm/pull/51434) |
 | `tests/parser/engine/test_deepseek_v32.py` | 无直接 PR 号提交 |
 | `tests/tool_parsers/test_deepseekv32_tool_parser.py` | [#33703](https://github.com/vllm-project/vllm/pull/33703), [#36056](https://github.com/vllm-project/vllm/pull/36056), [#41198](https://github.com/vllm-project/vllm/pull/41198), [#41801](https://github.com/vllm-project/vllm/pull/41801), [#43019](https://github.com/vllm-project/vllm/pull/43019), [#43255](https://github.com/vllm-project/vllm/pull/43255) |
 | `vllm/model_executor/models/deepseek_mtp.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#38684](https://github.com/vllm-project/vllm/pull/38684), [#38870](https://github.com/vllm-project/vllm/pull/38870), [#48036](https://github.com/vllm-project/vllm/pull/48036) |
 | `vllm/model_executor/models/deepseek_v2.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#25999](https://github.com/vllm-project/vllm/pull/25999), [#26456](https://github.com/vllm-project/vllm/pull/26456), [#26465](https://github.com/vllm-project/vllm/pull/26465), [#26670](https://github.com/vllm-project/vllm/pull/26670), [#26763](https://github.com/vllm-project/vllm/pull/26763), [#27532](https://github.com/vllm-project/vllm/pull/27532), [#27568](https://github.com/vllm-project/vllm/pull/27568), [#28968](https://github.com/vllm-project/vllm/pull/28968), [#29287](https://github.com/vllm-project/vllm/pull/29287), [#30841](https://github.com/vllm-project/vllm/pull/30841), [#31046](https://github.com/vllm-project/vllm/pull/31046), ... (22 total) |
-| `vllm/models/deepseek_v32/__init__.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808) |
+| `vllm/models/deepseek_v32/__init__.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#47207](https://github.com/vllm-project/vllm/pull/47207) |
+| `vllm/models/deepseek_v32/amd/__init__.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
+| `vllm/models/deepseek_v32/amd/model.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
+| `vllm/models/deepseek_v32/amd/mtp.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
+| `vllm/models/deepseek_v32/amd/rocm.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50904](https://github.com/vllm-project/vllm/pull/50904), [#51425](https://github.com/vllm-project/vllm/pull/51425) |
+| `vllm/models/deepseek_v32/attention.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50904](https://github.com/vllm-project/vllm/pull/50904), [#51298](https://github.com/vllm-project/vllm/pull/51298), [#51425](https://github.com/vllm-project/vllm/pull/51425), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#53021](https://github.com/vllm-project/vllm/pull/53021) |
+| `vllm/models/deepseek_v32/common/__init__.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
+| `vllm/models/deepseek_v32/common/kernels.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#52381](https://github.com/vllm-project/vllm/pull/52381) |
 | `vllm/models/deepseek_v32/nvidia/__init__.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808) |
-| `vllm/models/deepseek_v32/nvidia/attention.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#46876](https://github.com/vllm-project/vllm/pull/46876) |
-| `vllm/models/deepseek_v32/nvidia/fused_ops.py` | [#46876](https://github.com/vllm-project/vllm/pull/46876) |
-| `vllm/models/deepseek_v32/nvidia/kernels.py` | [#46876](https://github.com/vllm-project/vllm/pull/46876) |
-| `vllm/models/deepseek_v32/nvidia/model.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#46876](https://github.com/vllm-project/vllm/pull/46876) |
-| `vllm/models/deepseek_v32/nvidia/mtp.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#46876](https://github.com/vllm-project/vllm/pull/46876), [#48036](https://github.com/vllm-project/vllm/pull/48036) |
+| `vllm/models/deepseek_v32/nvidia/glm52_low_latency_gemm.py` | 无直接 PR 号提交 |
+| `vllm/models/deepseek_v32/nvidia/model.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#46876](https://github.com/vllm-project/vllm/pull/46876), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#51434](https://github.com/vllm-project/vllm/pull/51434) |
+| `vllm/models/deepseek_v32/nvidia/mtp.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#46876](https://github.com/vllm-project/vllm/pull/46876), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#48036](https://github.com/vllm-project/vllm/pull/48036), [#51434](https://github.com/vllm-project/vllm/pull/51434) |
+| `vllm/models/deepseek_v32/nvidia/ops/__init__.py` | 无直接 PR 号提交 |
+| `vllm/models/deepseek_v32/nvidia/ops/fused_q_cutedsl.py` | 无直接 PR 号提交 |
 | `vllm/parser/deepseek_v32.py` | 无直接 PR 号提交 |
 | `vllm/renderers/deepseek_v32.py` | [#33855](https://github.com/vllm-project/vllm/pull/33855) |
 | `vllm/tokenizers/deepseek_v32.py` | [#30658](https://github.com/vllm-project/vllm/pull/30658), [#33855](https://github.com/vllm-project/vllm/pull/33855), [#37004](https://github.com/vllm-project/vllm/pull/37004) |
@@ -29,9 +37,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 39
+- git 追溯 PR 数: 47
 - 原文档显式引用补充 PR 数: 15
-- 当前文档总 PR 数: 54
+- 当前文档总 PR 数: 62
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -89,10 +97,18 @@
 | 2026-06-19 | [#45895](https://github.com/vllm-project/vllm/pull/45895) | merged | [bugfix]Indexer init skip and MTP TopK share for iteration | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_mtp.py`, `vllm/model_executor/layers/attention/mla_attention.py` |
 | 2026-06-20 | [#46199](https://github.com/vllm-project/vllm/pull/46199) | merged | [Bugfix] Move extract_layer_index back inside is_v32 guard | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-06-25 | [#46651](https://github.com/vllm-project/vllm/pull/46651) | merged | [Perf] Remove redundant clone for GLM, Deepseek etc | `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
-| 2026-06-26 | [#46808](https://github.com/vllm-project/vllm/pull/46808) | merged | [GLM-5] Add DSV3.2/GLM5 to `vllm/models/` | `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`, `vllm/models/deepseek_v32/nvidia/model.py` |
+| 2026-06-26 | [#46808](https://github.com/vllm-project/vllm/pull/46808) | merged | [GLM-5] Add DSV3.2/GLM5 to `vllm/models/` | `vllm/models/deepseek_v32/nvidia/mtp.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/__init__.py` |
 | 2026-06-28 | [#46600](https://github.com/vllm-project/vllm/pull/46600) | merged | [Bugfix][DSv3.2] Skip indexer weights for index-cache-skipped layers | `vllm/model_executor/models/deepseek_v2.py` |
-| 2026-06-28 | [#46876](https://github.com/vllm-project/vllm/pull/46876) | merged | [GLM5] Implement op fusion for GLM5/DSV3.2 | `vllm/models/deepseek_v32/nvidia/kernels.py`, `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/fused_ops.py` |
+| 2026-06-28 | [#46876](https://github.com/vllm-project/vllm/pull/46876) | merged | [GLM5] Implement op fusion for GLM5/DSV3.2 | `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
 | 2026-07-14 | [#48036](https://github.com/vllm-project/vllm/pull/48036) | merged | [CI Bug] Fully solve accuracy issue for DSv3.2 + MTP + Sequence Parallel | `vllm/model_executor/models/deepseek_mtp.py`, `vllm/models/deepseek_v32/nvidia/mtp.py` |
+| 2026-07-30 | [#47207](https://github.com/vllm-project/vllm/pull/47207) | merged | [ROCm]Migrating Deepseek V3.2 to vllm/models/deepseek_v32/ | `vllm/models/deepseek_v32/amd/mtp.py`, `vllm/models/deepseek_v32/amd/model.py`, `vllm/models/deepseek_v32/amd/rocm.py` |
+| 2026-08-06 | [#50904](https://github.com/vllm-project/vllm/pull/50904) | merged | [GLM Perf] DSv32/glm use skip topk for MTP case, 2.0x kernel performance improvement | `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py` |
+| 2026-08-07 | [#51298](https://github.com/vllm-project/vllm/pull/51298) | merged | [DSv32/GLM Perf] Skip short prefill topk for dense mha layer, 97.9% kernel level latency reduction | `vllm/models/deepseek_v32/attention.py` |
+| 2026-08-07 | [#51425](https://github.com/vllm-project/vllm/pull/51425) | merged | [Perf] Narrow DeepSeek V3.2 eager CUDA graph region | `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/amd/rocm.py` |
+| 2026-08-07 | [#51434](https://github.com/vllm-project/vllm/pull/51434) | merged | [Perf] Optimize DeepSeek V3.2 sequence parallelism | `tests/models/deepseek_v32/test_sequence_parallel.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py` |
+| 2026-08-18 | [#52381](https://github.com/vllm-project/vllm/pull/52381) | merged | Harden DeepSeek V3.2 fused kernel grids | `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
+| 2026-08-18 | [#52046](https://github.com/vllm-project/vllm/pull/52046) | merged | [nv] add pcp support in dsv3.2 | `vllm/models/deepseek_v32/common/kernels.py`, `vllm/models/deepseek_v32/attention.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
+| 2026-08-20 | [#53021](https://github.com/vllm-project/vllm/pull/53021) | merged | [Model] Remove unused DeepseekV32Indexer forward | `vllm/models/deepseek_v32/attention.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -778,6 +794,7 @@ diff -- vllm/distributed/kv_transfer/kv_connector/utils.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/33566
 - 状态/时间: merged / 2026-02-02
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/33566/files?per_page=100 --paginate Get "https://api.github.com/repos/vllm-project/vllm/pulls/33566/files?per_page=100": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP.yaml`, `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP.yaml`；关联提交 `9f8cb81b44ce`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+24/-0，可读 patch 29 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[CI] Add DeepSeek V3.2 nightly eval」；模型线: DeepSeek V3.2；类别: 文档/测试/CI；主要 diff: `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP.yaml`, `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP.yaml`；技术摘要: 覆盖「[CI] Add DeepSeek V3.2 nightly eval」；主要实现面是 `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP.yaml`, `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP.yaml`。下方保留文件级证据、代码摘录和验证风险。
@@ -1657,12 +1674,11 @@ diff -- vllm/model_executor/models/openpangu.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46808
 - 状态/时间: merged / 2026-06-26
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/deepseek_v32/__init__.py`, `vllm/models/deepseek_v32/nvidia/__init__.py`, `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`；关联提交 `65e655d29591`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/deepseek_v32/__init__.py`, `vllm/models/deepseek_v32/nvidia/__init__.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`；关联提交 `65e655d29591`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+1170/-0，可读 patch 1175 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[GLM-5] Add DSV3.2/GLM5 to `vllm/models/`」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`, `vllm/models/deepseek_v32/nvidia/model.py`；技术摘要: 覆盖「[GLM-5] Add DSV3.2/GLM5 to `vllm/models/`」；主要实现面是 `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`, `vllm/models/deepseek_v32/nvidia/model.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/models/deepseek_v32/nvidia/attention.py` added +423/-0 (423 lines); hunks: -0,0 +1,423; symbols: DeepseekV32Indexer, __init__, forward, DeepseekV32Attention，涉及 `DeepseekV32Indexer, __init__, forward`；`vllm/models/deepseek_v32/nvidia/mtp.py` added +390/-0 (390 lines); hunks: -0,0 +1,390; symbols: DeepseekV32MultiTokenPredictorLayer, __init__, forward, DeepseekV32MultiTokenPredictor，涉及 `DeepseekV32MultiTokenPredictorLayer, __init__, forward`；`vllm/models/deepseek_v32/nvidia/model.py` added +333/-0 (333 lines); hunks: -0,0 +1,333; symbols: DeepseekV32DecoderLayer, __init__, forward, DeepseekV32Model，涉及 `DeepseekV32DecoderLayer, __init__, forward`；`vllm/models/deepseek_v32/__init__.py` added +22/-0 (22 lines); hunks: -0,0 +1,22。
+- 动机: 标题「[GLM-5] Add DSV3.2/GLM5 to `vllm/models/`」；模型线: DeepSeek V3.2；类别: 模型支持/运行时入口；主要 diff: `vllm/models/deepseek_v32/nvidia/mtp.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/__init__.py`；技术摘要: 覆盖「[GLM-5] Add DSV3.2/GLM5 to `vllm/models/`」；主要实现面是 `vllm/models/deepseek_v32/nvidia/mtp.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/__init__.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/nvidia/mtp.py` added +390/-0 (390 lines); hunks: -0,0 +1,390; symbols: DeepseekV32MultiTokenPredictorLayer, __init__, forward, DeepseekV32MultiTokenPredictor，涉及 `DeepseekV32MultiTokenPredictorLayer, __init__, forward`；`vllm/models/deepseek_v32/nvidia/model.py` added +333/-0 (333 lines); hunks: -0,0 +1,333; symbols: DeepseekV32DecoderLayer, __init__, forward, DeepseekV32Model，涉及 `DeepseekV32DecoderLayer, __init__, forward`；`vllm/models/deepseek_v32/__init__.py` added +22/-0 (22 lines); hunks: -0,0 +1,22；`vllm/models/deepseek_v32/nvidia/__init__.py` added +2/-0 (2 lines); hunks: -0,0 +1,2。
 - 代码 diff 细节:
-  - `vllm/models/deepseek_v32/nvidia/attention.py` added +423/-0 (423 lines); hunks: -0,0 +1,423; symbols: DeepseekV32Indexer, __init__, forward, DeepseekV32Attention
   - `vllm/models/deepseek_v32/nvidia/mtp.py` added +390/-0 (390 lines); hunks: -0,0 +1,390; symbols: DeepseekV32MultiTokenPredictorLayer, __init__, forward, DeepseekV32MultiTokenPredictor
   - `vllm/models/deepseek_v32/nvidia/model.py` added +333/-0 (333 lines); hunks: -0,0 +1,333; symbols: DeepseekV32DecoderLayer, __init__, forward, DeepseekV32Model
   - `vllm/models/deepseek_v32/__init__.py` added +22/-0 (22 lines); hunks: -0,0 +1,22
@@ -1670,14 +1686,6 @@ diff -- vllm/model_executor/models/openpangu.py
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/models/deepseek_v32/nvidia/attention.py
-@@ -0,0 +1,423 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+from typing import TYPE_CHECKING
-+import torch
-+import torch.nn as nn
-+from transformers import DeepseekV2Config, DeepseekV3Config
 diff -- vllm/models/deepseek_v32/nvidia/mtp.py
 @@ -0,0 +1,390 @@
 +# SPDX-License-Identifier: Apache-2.0
@@ -1688,10 +1696,18 @@ diff -- vllm/models/deepseek_v32/nvidia/mtp.py
 +import torch.nn as nn
 diff -- vllm/models/deepseek_v32/nvidia/model.py
 @@ -0,0 +1,333 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import typing
++from collections.abc import Callable, Iterable
++from itertools import islice
++import torch
+diff -- vllm/models/deepseek_v32/__init__.py
+@@ -0,0 +1,22 @@
 ```
 
 - 已读文件:
-  - runtime: `vllm/models/deepseek_v32/nvidia/attention.py` added +423/-0; `vllm/models/deepseek_v32/nvidia/mtp.py` added +390/-0; `vllm/models/deepseek_v32/nvidia/model.py` added +333/-0; `vllm/models/deepseek_v32/__init__.py` added +22/-0; `vllm/models/deepseek_v32/nvidia/__init__.py` added +2/-0
+  - runtime: `vllm/models/deepseek_v32/nvidia/mtp.py` added +390/-0; `vllm/models/deepseek_v32/nvidia/model.py` added +333/-0; `vllm/models/deepseek_v32/__init__.py` added +22/-0; `vllm/models/deepseek_v32/nvidia/__init__.py` added +2/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/models/deepseek_v32/__init__.py`, `vllm/models/deepseek_v32/nvidia/__init__.py`, `vllm/models/deepseek_v32/nvidia/attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #46600 - [Bugfix][DSv3.2] Skip indexer weights for index-cache-skipped layers
@@ -1725,41 +1741,39 @@ diff -- vllm/model_executor/models/deepseek_v2.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/46876
 - 状态/时间: merged / 2026-06-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/fused_ops.py`, `vllm/models/deepseek_v32/nvidia/kernels.py`, `vllm/models/deepseek_v32/nvidia/model.py` 等 6 个文件；关联提交 `89876b0c548a`；保留自原 history/skill 显式引用
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`；关联提交 `89876b0c548a`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+1530/-91，可读 patch 1825 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[GLM5] Implement op fusion for GLM5/DSV3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/nvidia/kernels.py`, `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/fused_ops.py`；技术摘要: 覆盖「[GLM5] Implement op fusion for GLM5/DSV3.2」；主要实现面是 `vllm/models/deepseek_v32/nvidia/kernels.py`, `vllm/models/deepseek_v32/nvidia/attention.py`, `vllm/models/deepseek_v32/nvidia/fused_ops.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/models/deepseek_v32/nvidia/kernels.py` added +823/-0 (823 lines); hunks: -0,0 +1,823; symbols: _dummy, _rms_norm, _get_cos_sin, _fp8_ue8m0_quantize，涉及 `_dummy, _rms_norm, _get_cos_sin`；`vllm/models/deepseek_v32/nvidia/attention.py` modified +168/-81 (249 lines); hunks: -1,7 +1,5; -23,7 +21,10; symbols: DeepseekV32Indexer, forward, DeepseekV32Attention, __init__，涉及 `DeepseekV32Indexer, forward, DeepseekV32Attention`；`vllm/models/deepseek_v32/nvidia/fused_ops.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: fused_allreduce_rms_norm，涉及 `fused_allreduce_rms_norm`；`vllm/models/deepseek_v32/nvidia/model.py` modified +21/-3 (24 lines); hunks: -36,6 +36,7; -77,13 +78,18 @@ def __init__(; symbols: DeepseekV32DecoderLayer, __init__, forward，涉及 `DeepseekV32DecoderLayer, __init__, forward`。
+- 动机: 标题「[GLM5] Implement op fusion for GLM5/DSV3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；技术摘要: 覆盖「[GLM5] Implement op fusion for GLM5/DSV3.2」；主要实现面是 `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/nvidia/model.py` modified +21/-3 (24 lines); hunks: -36,6 +36,7; -77,13 +78,18 @@ def __init__(; symbols: DeepseekV32DecoderLayer, __init__, forward，涉及 `DeepseekV32DecoderLayer, __init__, forward`；`vllm/models/deepseek_v32/nvidia/mtp.py` modified +15/-6 (21 lines); hunks: -1,6 +1,5; -9,6 +8,7; symbols: forward，涉及 `forward`；`tests/kernels/test_fused_deepseek_v32_norm_rope.py` added +423/-0 (423 lines); hunks: -0,0 +1,423; symbols: make_cos_sin, rms_norm, layer_norm, rope，涉及 `make_cos_sin, rms_norm, layer_norm`。
 - 代码 diff 细节:
-  - `vllm/models/deepseek_v32/nvidia/kernels.py` added +823/-0 (823 lines); hunks: -0,0 +1,823; symbols: _dummy, _rms_norm, _get_cos_sin, _fp8_ue8m0_quantize
-  - `vllm/models/deepseek_v32/nvidia/attention.py` modified +168/-81 (249 lines); hunks: -1,7 +1,5; -23,7 +21,10; symbols: DeepseekV32Indexer, forward, DeepseekV32Attention, __init__
-  - `vllm/models/deepseek_v32/nvidia/fused_ops.py` added +63/-0 (63 lines); hunks: -0,0 +1,63; symbols: fused_allreduce_rms_norm
   - `vllm/models/deepseek_v32/nvidia/model.py` modified +21/-3 (24 lines); hunks: -36,6 +36,7; -77,13 +78,18 @@ def __init__(; symbols: DeepseekV32DecoderLayer, __init__, forward
   - `vllm/models/deepseek_v32/nvidia/mtp.py` modified +15/-6 (21 lines); hunks: -1,6 +1,5; -9,6 +8,7; symbols: forward
+  - `tests/kernels/test_fused_deepseek_v32_norm_rope.py` added +423/-0 (423 lines); hunks: -0,0 +1,423; symbols: make_cos_sin, rms_norm, layer_norm, rope
 - 关键代码摘录:
 
 ```diff
-diff -- vllm/models/deepseek_v32/nvidia/kernels.py
-@@ -0,0 +1,823 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+import torch
-+from vllm.triton_utils import tl, triton
-+# Cache of tiny 1-element dummy tensors (per device, dtype) reused by the
-+# has_indexer=False path so the indexer args don't allocate every call.
-diff -- vllm/models/deepseek_v32/nvidia/attention.py
-@@ -1,7 +1,5 @@
--from typing import TYPE_CHECKING
-@@ -23,7 +21,10 @@
--from vllm.model_executor.layers.sparse_attn_indexer import SparseAttnIndexer
-+from vllm.model_executor.layers.sparse_attn_indexer import (
-+    SparseAttnIndexer,
-+    sparse_attn_indexer,
-diff -- vllm/models/deepseek_v32/nvidia/fused_ops.py
-@@ -0,0 +1,63 @@
+diff -- vllm/models/deepseek_v32/nvidia/model.py
+@@ -36,6 +36,7 @@
++from .fused_ops import fused_allreduce_rms_norm
+@@ -77,13 +78,18 @@ def __init__(
++            # Defer the MoE cross-rank all-reduce; it is fused into the next
++            # layer's input_layernorm (or the final norm) via
++            # fused_allreduce_rms_norm. self.mlp.experts is the MoERunner.
++            self.mlp.experts.moe_config.skip_final_all_reduce = True
+diff -- vllm/models/deepseek_v32/nvidia/mtp.py
+@@ -1,6 +1,5 @@
+@@ -9,6 +8,7 @@
++from vllm.distributed import tensor_model_parallel_all_reduce
+@@ -35,6 +35,7 @@
++from .kernels import fused_eh_norm
+@@ -75,15 +76,23 @@ def forward(
+-        inputs_embeds = torch.where(positions.unsqueeze(-1) == 0, 0, inputs_embeds)
+diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
+@@ -0,0 +1,423 @@
 ```
 
 - 已读文件:
-  - runtime: `vllm/models/deepseek_v32/nvidia/kernels.py` added +823/-0; `vllm/models/deepseek_v32/nvidia/attention.py` modified +168/-81; `vllm/models/deepseek_v32/nvidia/fused_ops.py` added +63/-0; `vllm/models/deepseek_v32/nvidia/model.py` modified +21/-3; `vllm/models/deepseek_v32/nvidia/mtp.py` modified +15/-6
+  - runtime: `vllm/models/deepseek_v32/nvidia/model.py` modified +21/-3; `vllm/models/deepseek_v32/nvidia/mtp.py` modified +15/-6
   - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` added +423/-0
 - 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
@@ -1798,6 +1812,290 @@ diff -- vllm/models/deepseek_v32/nvidia/mtp.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_mtp.py` modified +24/-0; `vllm/models/deepseek_v32/nvidia/mtp.py` modified +10/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/config/parallel.py`, `vllm/model_executor/models/deepseek_mtp.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #47207 - [ROCm]Migrating Deepseek V3.2 to vllm/models/deepseek_v32/
+
+- 链接: https://github.com/vllm-project/vllm/pull/47207
+- 状态/时间: merged / 2026-07-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/__init__.py`, `vllm/models/deepseek_v32/amd/__init__.py`, `vllm/models/deepseek_v32/amd/model.py`, `vllm/models/deepseek_v32/amd/mtp.py` 等 11 个文件；关联提交 `e2efe79695e0`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+1031/-70，可读 patch 1274 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[ROCm]Migrating Deepseek V3.2 to vllm/models/deepseek_v32/」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `vllm/models/deepseek_v32/amd/mtp.py`, `vllm/models/deepseek_v32/amd/model.py`, `vllm/models/deepseek_v32/amd/rocm.py`；技术摘要: 覆盖「[ROCm]Migrating Deepseek V3.2 to vllm/models/deepseek_v32/」；主要实现面是 `vllm/models/deepseek_v32/amd/mtp.py`, `vllm/models/deepseek_v32/amd/model.py`, `vllm/models/deepseek_v32/amd/rocm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/amd/mtp.py` added +392/-0 (392 lines); hunks: -0,0 +1,392; symbols: DeepseekV32MultiTokenPredictorLayer, __init__, forward, DeepseekV32MultiTokenPredictor，涉及 `DeepseekV32MultiTokenPredictorLayer, __init__, forward`；`vllm/models/deepseek_v32/amd/model.py` added +327/-0 (327 lines); hunks: -0,0 +1,327; symbols: DeepseekV32DecoderLayer, __init__, forward, DeepseekV32Model，涉及 `DeepseekV32DecoderLayer, __init__, forward`；`vllm/models/deepseek_v32/amd/rocm.py` added +263/-0 (263 lines); hunks: -0,0 +1,263; symbols: DeepseekV32MLASparseBackend, get_supported_kernel_block_sizes, DeepseekV32ROCmIndexerBackend, DeepseekV32ROCmIndexerCache，涉及 `DeepseekV32MLASparseBackend, get_supported_kernel_block_sizes, DeepseekV32ROCmIndexerBackend`；`vllm/models/deepseek_v32/attention.py` renamed +32/-60 (92 lines); hunks: -31,12 +31,13; -55,16 +56,14 @@ def __init__(; symbols: DeepseekV32Indexer, __init__, forward，涉及 `DeepseekV32Indexer, __init__, forward`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/amd/mtp.py` added +392/-0 (392 lines); hunks: -0,0 +1,392; symbols: DeepseekV32MultiTokenPredictorLayer, __init__, forward, DeepseekV32MultiTokenPredictor
+  - `vllm/models/deepseek_v32/amd/model.py` added +327/-0 (327 lines); hunks: -0,0 +1,327; symbols: DeepseekV32DecoderLayer, __init__, forward, DeepseekV32Model
+  - `vllm/models/deepseek_v32/amd/rocm.py` added +263/-0 (263 lines); hunks: -0,0 +1,263; symbols: DeepseekV32MLASparseBackend, get_supported_kernel_block_sizes, DeepseekV32ROCmIndexerBackend, DeepseekV32ROCmIndexerCache
+  - `vllm/models/deepseek_v32/attention.py` renamed +32/-60 (92 lines); hunks: -31,12 +31,13; -55,16 +56,14 @@ def __init__(; symbols: DeepseekV32Indexer, __init__, forward
+  - `vllm/models/deepseek_v32/__init__.py` modified +9/-5 (14 lines); hunks: -10,11 +10,15
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/amd/mtp.py
+@@ -0,0 +1,392 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import typing
++from collections.abc import Callable, Iterable
++import torch
++import torch.nn as nn
+diff -- vllm/models/deepseek_v32/amd/model.py
+@@ -0,0 +1,327 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import typing
++from collections.abc import Callable, Iterable
++from itertools import islice
++import torch
+diff -- vllm/models/deepseek_v32/amd/rocm.py
+@@ -0,0 +1,263 @@
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/amd/mtp.py` added +392/-0; `vllm/models/deepseek_v32/amd/model.py` added +327/-0; `vllm/models/deepseek_v32/amd/rocm.py` added +263/-0; `vllm/models/deepseek_v32/attention.py` renamed +32/-60; `vllm/models/deepseek_v32/__init__.py` modified +9/-5; `vllm/models/deepseek_v32/nvidia/model.py` modified +2/-3
+- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #50904 - [GLM Perf] DSv32/glm use skip topk for MTP case, 2.0x kernel performance improvement
+
+- 链接: https://github.com/vllm-project/vllm/pull/50904
+- 状态/时间: merged / 2026-08-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py`；关联提交 `ad5280255ba6`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+7/-6，可读 patch 55 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[GLM Perf] DSv32/glm use skip topk for MTP case, 2.0x kernel performance improvement」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py`；技术摘要: 覆盖「[GLM Perf] DSv32/glm use skip topk for MTP case, 2.0x kernel performance improvement」；主要实现面是 `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/amd/rocm.py` modified +4/-3 (7 lines); hunks: -167,7 +167,7 @@ def _fused_attention(; -222,7 +222,7 @@ def _fused_attention(; symbols: _fused_attention，涉及 `_fused_attention`；`vllm/models/deepseek_v32/attention.py` modified +3/-3 (6 lines); hunks: -372,7 +372,7 @@ def _fused_attention(; -430,7 +430,7 @@ def _fused_attention(; symbols: _fused_attention，涉及 `_fused_attention`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/amd/rocm.py` modified +4/-3 (7 lines); hunks: -167,7 +167,7 @@ def _fused_attention(; -222,7 +222,7 @@ def _fused_attention(; symbols: _fused_attention
+  - `vllm/models/deepseek_v32/attention.py` modified +3/-3 (6 lines); hunks: -372,7 +372,7 @@ def _fused_attention(; -430,7 +430,7 @@ def _fused_attention(; symbols: _fused_attention
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/amd/rocm.py
+@@ -167,7 +167,7 @@ def _fused_attention(
+-        if self.indexer is not None:
++        if self.indexer is not None and not self.skip_topk:
+@@ -222,7 +222,7 @@ def _fused_attention(
+-        if self.indexer is not None:
++        if self.indexer is not None and not self.skip_topk:
+@@ -244,7 +244,8 @@ def _fused_attention(
+diff -- vllm/models/deepseek_v32/attention.py
+@@ -372,7 +372,7 @@ def _fused_attention(
+-        if self.indexer is not None:
++        if self.indexer is not None and not self.skip_topk:
+@@ -430,7 +430,7 @@ def _fused_attention(
+-        if self.indexer is not None:
++        if self.indexer is not None and not self.skip_topk:
+@@ -452,7 +452,7 @@ def _fused_attention(
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/amd/rocm.py` modified +4/-3; `vllm/models/deepseek_v32/attention.py` modified +3/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #51298 - [DSv32/GLM Perf] Skip short prefill topk for dense mha layer, 97.9% kernel level latency reduction
+
+- 链接: https://github.com/vllm-project/vllm/pull/51298
+- 状态/时间: merged / 2026-08-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/deepseek_v32/attention.py`；关联提交 `4a11ed5bc4c2`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+11/-1，可读 patch 33 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[DSv32/GLM Perf] Skip short prefill topk for dense mha layer, 97.9% kernel level latency reduction」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/attention.py`；技术摘要: 覆盖「[DSv32/GLM Perf] Skip short prefill topk for dense mha layer, 97.9% kernel level latency reduction」；主要实现面是 `vllm/models/deepseek_v32/attention.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/attention.py` modified +11/-1 (12 lines); hunks: -32,6 +32,7; -259,6 +260,15 @@ def __init__(; symbols: __init__, _fused_attention，涉及 `__init__, _fused_attention`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/attention.py` modified +11/-1 (12 lines); hunks: -32,6 +32,7; -259,6 +260,15 @@ def __init__(; symbols: __init__, _fused_attention
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/attention.py
+@@ -32,6 +32,7 @@
++from vllm.platforms import current_platform
+@@ -259,6 +260,15 @@ def __init__(
++        enable_short_prefill_scoring_skip = (
++            not is_mtp_layer
++            and not skip_topk
++            and not self.use_pcp
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/attention.py` modified +11/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/models/deepseek_v32/attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #51425 - [Perf] Narrow DeepSeek V3.2 eager CUDA graph region
+
+- 链接: https://github.com/vllm-project/vllm/pull/51425
+- 状态/时间: merged / 2026-08-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py`；关联提交 `46b586405412`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+61/-16，可读 patch 112 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf] Narrow DeepSeek V3.2 eager CUDA graph region」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/amd/rocm.py`；技术摘要: 覆盖「[Perf] Narrow DeepSeek V3.2 eager CUDA graph region」；主要实现面是 `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/amd/rocm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/attention.py` modified +32/-16 (48 lines); hunks: -343,22 +343,6 @@ def forward( # type: ignore[override]; -452,6 +436,26 @@ def _fused_attention(; symbols: forward, _fused_attention, _sparse_indexer_and_attn，涉及 `forward, _fused_attention, _sparse_indexer_and_attn`；`vllm/models/deepseek_v32/amd/rocm.py` modified +29/-0 (29 lines); hunks: -66,6 +66,35 @@ def __init__(self, vllm_config, config, prefix, topk_indices_...; symbols: __init__, forward, _compute_ql_nope，涉及 `__init__, forward, _compute_ql_nope`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/attention.py` modified +32/-16 (48 lines); hunks: -343,22 +343,6 @@ def forward( # type: ignore[override]; -452,6 +436,26 @@ def _fused_attention(; symbols: forward, _fused_attention, _sparse_indexer_and_attn
+  - `vllm/models/deepseek_v32/amd/rocm.py` modified +29/-0 (29 lines); hunks: -66,6 +66,35 @@ def __init__(self, vllm_config, config, prefix, topk_indices_...; symbols: __init__, forward, _compute_ql_nope
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/attention.py
+@@ -343,22 +343,6 @@ def forward(  # type: ignore[override]
+-        self._fused_attention(
+-            positions, q_c, kv_c, k_pe, index_k, index_weights, output
+-        )
+-        return self.o_proj(output)[0]
+-    @eager_break_during_capture
+-    def _fused_attention(
+diff -- vllm/models/deepseek_v32/amd/rocm.py
+@@ -66,6 +66,35 @@ def __init__(self, vllm_config, config, prefix, topk_indices_buffer=None):
++    def forward(  # type: ignore[override]
++        self,
++        positions: torch.Tensor,
++        hidden_states: torch.Tensor,
++    ) -> torch.Tensor:
++        qkv_lora = self.fused_qkv_a_proj(hidden_states)[0]
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/attention.py` modified +32/-16; `vllm/models/deepseek_v32/amd/rocm.py` modified +29/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #51434 - [Perf] Optimize DeepSeek V3.2 sequence parallelism
+
+- 链接: https://github.com/vllm-project/vllm/pull/51434
+- 状态/时间: merged / 2026-08-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/deepseek_v32/test_sequence_parallel.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`；关联提交 `e644c8cd8c73`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+222/-77，可读 patch 444 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Perf] Optimize DeepSeek V3.2 sequence parallelism」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `tests/models/deepseek_v32/test_sequence_parallel.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`；技术摘要: 覆盖「[Perf] Optimize DeepSeek V3.2 sequence parallelism」；主要实现面是 `tests/models/deepseek_v32/test_sequence_parallel.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/deepseek_v32/test_sequence_parallel.py` added +148/-0 (148 lines); hunks: -0,0 +1,148; symbols: _IdentityNorm, __init__, forward, _RecordingModule，涉及 `_IdentityNorm, __init__, forward`；`vllm/models/deepseek_v32/nvidia/model.py` modified +57/-70 (127 lines); hunks: -6,12 +6,10; -36,27 +34,20; symbols: _all_gather_sp_states, DeepseekV32DecoderLayer, __init__，涉及 `_all_gather_sp_states, DeepseekV32DecoderLayer, __init__`；`vllm/models/deepseek_v32/nvidia/mtp.py` modified +17/-7 (24 lines); hunks: -6,12 +6,11; -38,6 +37,11; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `tests/models/deepseek_v32/test_sequence_parallel.py` added +148/-0 (148 lines); hunks: -0,0 +1,148; symbols: _IdentityNorm, __init__, forward, _RecordingModule
+  - `vllm/models/deepseek_v32/nvidia/model.py` modified +57/-70 (127 lines); hunks: -6,12 +6,10; -36,27 +34,20; symbols: _all_gather_sp_states, DeepseekV32DecoderLayer, __init__
+  - `vllm/models/deepseek_v32/nvidia/mtp.py` modified +17/-7 (24 lines); hunks: -6,12 +6,11; -38,6 +37,11; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/deepseek_v32/test_sequence_parallel.py
+@@ -0,0 +1,148 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from types import SimpleNamespace
++from unittest.mock import Mock
++import torch
++from torch import nn
+diff -- vllm/models/deepseek_v32/nvidia/model.py
+@@ -6,12 +6,10 @@
++import vllm.envs as envs
+-from vllm.distributed import (
+-    get_pp_group,
+-    tensor_model_parallel_all_gather,
+-    tensor_model_parallel_reduce_scatter,
+-)
+diff -- vllm/models/deepseek_v32/nvidia/mtp.py
+@@ -6,12 +6,11 @@
+```
+
+- 已读文件:
+  - tests: `tests/models/deepseek_v32/test_sequence_parallel.py` added +148/-0
+  - runtime: `vllm/models/deepseek_v32/nvidia/model.py` modified +57/-70; `vllm/models/deepseek_v32/nvidia/mtp.py` modified +17/-7
+- 验证与风险: diff 自带测试面 `tests/models/deepseek_v32/test_sequence_parallel.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52381 - Harden DeepSeek V3.2 fused kernel grids
+
+- 链接: https://github.com/vllm-project/vllm/pull/52381
+- 状态/时间: merged / 2026-08-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/common/kernels.py`；关联提交 `eab1cff5b0ca`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+79/-6，可读 patch 127 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Harden DeepSeek V3.2 fused kernel grids」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；技术摘要: 覆盖「Harden DeepSeek V3.2 fused kernel grids」；主要实现面是 `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6 (12 lines); hunks: -152,8 +152,8 @@ def _fused_norm_rope_kernel(; -479,7 +479,7 @@ def fused_norm_rope(; symbols: _fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel, fused_q，涉及 `_fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel`；`tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0 (73 lines); hunks: -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):; -539,6 +579,39 @@ def test_fused_q_bf16_query(num_tokens: int, has_indexer: b...; symbols: test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query, test_fused_q_triton_supports_large_token_count，涉及 `test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6 (12 lines); hunks: -152,8 +152,8 @@ def _fused_norm_rope_kernel(; -479,7 +479,7 @@ def fused_norm_rope(; symbols: _fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel, fused_q
+  - `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0 (73 lines); hunks: -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):; -539,6 +579,39 @@ def test_fused_q_bf16_query(num_tokens: int, has_indexer: b...; symbols: test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query, test_fused_q_triton_supports_large_token_count
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/common/kernels.py
+@@ -152,8 +152,8 @@ def _fused_norm_rope_kernel(
+-    pid = tl.program_id(0)
+-    tok_idx = tl.program_id(1)
++    tok_idx = tl.program_id(0).to(tl.int64)
++    pid = tl.program_id(1)
+@@ -479,7 +479,7 @@ def fused_norm_rope(
+-    _fused_norm_rope_kernel[(4, num_tokens)](
+diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
+@@ -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):
++def test_fused_norm_rope_supports_large_token_count():
++    """Keep the token count off CUDA grid-y at its 65,536-block boundary."""
++    num_tokens = 65536
++    dev = "cuda"
++    dtype = torch.bfloat16
++    positions = torch.zeros(num_tokens, device=dev, dtype=torch.int64)
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6
+  - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52046 - [nv] add pcp support in dsv3.2
+
+- 链接: https://github.com/vllm-project/vllm/pull/52046
+- 状态/时间: merged / 2026-08-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/common/kernels.py`；关联提交 `5f7a20b3162e`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 6 个文件，+376/-119，可读 patch 819 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[nv] add pcp support in dsv3.2」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/common/kernels.py`, `vllm/models/deepseek_v32/attention.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；技术摘要: 覆盖「[nv] add pcp support in dsv3.2」；主要实现面是 `vllm/models/deepseek_v32/common/kernels.py`, `vllm/models/deepseek_v32/attention.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/common/kernels.py` modified +130/-85 (215 lines); hunks: -103,12 +103,16 @@ def _fused_norm_rope_kernel(; -121,6 +125,8 @@ def _fused_norm_rope_kernel(; symbols: _fused_norm_rope_kernel，涉及 `_fused_norm_rope_kernel`；`vllm/models/deepseek_v32/attention.py` modified +103/-20 (123 lines); hunks: -1,14 +1,22; -35,6 +43,9; symbols: DeepseekV32Indexer, forward，涉及 `DeepseekV32Indexer, forward`；`tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +90/-6 (96 lines); hunks: -292,6 +292,81 @@ def test_fused_norm_rope_no_indexer(num_tokens: int):; -405,19 +480,29 @@ def test_fused_norm_rope_supports_large_token_count():; symbols: test_fused_norm_rope_no_indexer, test_fused_norm_rope_materializes_pcp_cache_inputs, test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count，涉及 `test_fused_norm_rope_no_indexer, test_fused_norm_rope_materializes_pcp_cache_inputs, test_fused_norm_rope_ds_mla`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/common/kernels.py` modified +130/-85 (215 lines); hunks: -103,12 +103,16 @@ def _fused_norm_rope_kernel(; -121,6 +125,8 @@ def _fused_norm_rope_kernel(; symbols: _fused_norm_rope_kernel
+  - `vllm/models/deepseek_v32/attention.py` modified +103/-20 (123 lines); hunks: -1,14 +1,22; -35,6 +43,9; symbols: DeepseekV32Indexer, forward
+  - `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +90/-6 (96 lines); hunks: -292,6 +292,81 @@ def test_fused_norm_rope_no_indexer(num_tokens: int):; -405,19 +480,29 @@ def test_fused_norm_rope_supports_large_token_count():; symbols: test_fused_norm_rope_no_indexer, test_fused_norm_rope_materializes_pcp_cache_inputs, test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/common/kernels.py
+@@ -103,12 +103,16 @@ def _fused_norm_rope_kernel(
++    kv_out_ptr,
++    kv_out_stride,
++    kpe_out_ptr,
++    kpe_out_stride,
+@@ -121,6 +125,8 @@ def _fused_norm_rope_kernel(
++    index_k_out_ptr,
+diff -- vllm/models/deepseek_v32/attention.py
+@@ -1,14 +1,22 @@
++from typing import TYPE_CHECKING, cast
++from vllm.distributed.parallel_state import get_tp_group
++from vllm.model_executor.layers.attention.attention import get_attention_context
++from vllm.model_executor.layers.attention.pcp import (
++    finalize_mla_pcp_decode,
++    maybe_gather_mla_latent_cache_inputs,
+diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
+@@ -292,6 +292,81 @@ def test_fused_norm_rope_no_indexer(num_tokens: int):
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/common/kernels.py` modified +130/-85; `vllm/models/deepseek_v32/attention.py` modified +103/-20
+  - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +90/-6
+- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `tests/model_executor/layers/test_mla_short_prefill_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #53021 - [Model] Remove unused DeepseekV32Indexer forward
+
+- 链接: https://github.com/vllm-project/vllm/pull/53021
+- 状态/时间: merged / 2026-08-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/deepseek_v32/attention.py`；关联提交 `c0233fcf0100`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-51，可读 patch 65 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Remove unused DeepseekV32Indexer forward」；模型线: DeepSeek V3.2；类别: 模型实现调整；主要 diff: `vllm/models/deepseek_v32/attention.py`；技术摘要: 覆盖「[Model] Remove unused DeepseekV32Indexer forward」；主要实现面是 `vllm/models/deepseek_v32/attention.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/attention.py` modified +0/-51 (51 lines); hunks: -25,9 +25,6; -117,54 +114,6 @@ def __init__(; symbols: __init__, forward, DeepseekV32Attention，涉及 `__init__, forward, DeepseekV32Attention`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/attention.py` modified +0/-51 (51 lines); hunks: -25,9 +25,6; -117,54 +114,6 @@ def __init__(; symbols: __init__, forward, DeepseekV32Attention
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/attention.py
+@@ -25,9 +25,6 @@
+-from vllm.model_executor.layers.quantization.utils.fp8_utils import (
+-    per_token_group_quant_fp8,
+-)
+@@ -117,54 +114,6 @@ def __init__(
+-    def forward(
+-        self,
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/attention.py` modified +0/-51
+- 验证与风险: runtime 路径改动集中在 `vllm/models/deepseek_v32/attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

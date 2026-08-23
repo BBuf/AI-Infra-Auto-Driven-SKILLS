@@ -28,6 +28,7 @@
 
 - 链接: https://github.com/vllm-project/vllm/pull/42242
 - 状态/时间: merged / 2026-05-18
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/42242 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/lora/test_qwen36_moe_lora.py`；关联提交 `7d5b03378268`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 16 个文件，+391/-9，可读 patch 607 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[LoRA] Support 2D and 3D MoE LoRA adapter at the same time」；模型线: Qwen3.6；类别: 性能/后端优化；主要 diff: `tests/lora/test_qwen36_moe_lora.py`, `vllm/entrypoints/openai/models/serving.py`, `vllm/lora/layers/fused_moe.py`；技术摘要: 覆盖「[LoRA] Support 2D and 3D MoE LoRA adapter at the same time」；主要实现面是 `tests/lora/test_qwen36_moe_lora.py`, `vllm/entrypoints/openai/models/serving.py`, `vllm/lora/layers/fused_moe.py`。下方保留文件级证据、代码摘录和验证风险。
@@ -70,6 +71,7 @@ diff -- vllm/lora/layers/fused_moe.py
 
 - 链接: https://github.com/vllm-project/vllm/pull/41652
 - 状态/时间: merged / 2026-07-06
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/41652 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
 - 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gsm8k/configs/humming/Qwen3.6-35B-A3B-NVFP4-humming.yaml`；关联提交 `d891b9bd51ce`；保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 73 个文件，+1336/-122，可读 patch 2552 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Quantization] add humming moe backend to all dense/moe oracles」；模型线: Qwen3.6；类别: 性能/后端优化；主要 diff: `tests/evals/gsm8k/configs/humming/Qwen3.6-35B-A3B-NVFP4-humming.yaml`, `vllm/model_executor/kernels/linear/scaled_mm/humming.py`, `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py`；技术摘要: 覆盖「[Quantization] add humming moe backend to all dense/moe oracles」；主要实现面是 `tests/evals/gsm8k/configs/humming/Qwen3.6-35B-A3B-NVFP4-humming.yaml`, `vllm/model_executor/kernels/linear/scaled_mm/humming.py`, `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py`。下方保留文件级证据、代码摘录和验证风险。

@@ -20,10 +20,10 @@ class LlmServingDocsTest(unittest.TestCase):
             "references", "framework-reference.md"
         )
         heads = [
-            "8a311d1c889244ab1f857d7df79de7e5f0a6891c",
-            "b5bcb3ce881e1d324ff7f6176ef27606558dbd74",
-            "9fe5853263750ade5b7dc24fb31a1215ec822d45",
-            "e41aa8b1609a9412d7ed26aa56d910828607950f",
+            "eec794bce0808ae26cc1dcb84a56b65d2df82af5",
+            "bbe8b23e1a2b32a96240b27f63255170d09ef144",
+            "da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9",
+            "2706143a8669d50a8f56466b9d340b86922b8f2d",
         ]
 
         for head in heads:

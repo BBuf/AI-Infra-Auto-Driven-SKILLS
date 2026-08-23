@@ -4,21 +4,24 @@
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#23968](https://github.com/sgl-project/sglang/pull/23968), [#23998](https://github.com/sgl-project/sglang/pull/23998), [#25198](https://github.com/sgl-project/sglang/pull/25198), [#27240](https://github.com/sgl-project/sglang/pull/27240) |
-| `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Super.mdx` | 无直接 PR 号提交 |
-| `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` | [#26969](https://github.com/sgl-project/sglang/pull/26969), [#27240](https://github.com/sgl-project/sglang/pull/27240), [#28087](https://github.com/sgl-project/sglang/pull/28087), [#28675](https://github.com/sgl-project/sglang/pull/28675), [#31094](https://github.com/sgl-project/sglang/pull/31094) |
-| `docs_new/src/snippets/autoregressive/nemotron3-nano-deployment.jsx` | 无直接 PR 号提交 |
-| `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` | [#23907](https://github.com/sgl-project/sglang/pull/23907), [#25198](https://github.com/sgl-project/sglang/pull/25198) |
-| `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx` | [#27184](https://github.com/sgl-project/sglang/pull/27184), [#31094](https://github.com/sgl-project/sglang/pull/31094) |
-| `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` | [#26969](https://github.com/sgl-project/sglang/pull/26969), [#28087](https://github.com/sgl-project/sglang/pull/28087), [#28675](https://github.com/sgl-project/sglang/pull/28675), [#29200](https://github.com/sgl-project/sglang/pull/29200), [#31094](https://github.com/sgl-project/sglang/pull/31094) |
+| `docs/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/NVIDIA/Nemotron3-Nano.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/NVIDIA/Nemotron3-Super.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx` | [#33481](https://github.com/sgl-project/sglang/pull/33481) |
+| `docs/src/snippets/autoregressive/nemotron3-nano-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/nemotron3-super-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx` | [#33481](https://github.com/sgl-project/sglang/pull/33481) |
+| `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` | [#33481](https://github.com/sgl-project/sglang/pull/33481), [#34573](https://github.com/sgl-project/sglang/pull/34573) |
 | `python/sglang/srt/configs/jet_nemotron.py` | [#12448](https://github.com/sgl-project/sglang/pull/12448) |
 | `python/sglang/srt/configs/nano_nemotron_vl.py` | [#12277](https://github.com/sgl-project/sglang/pull/12277), [#23568](https://github.com/sgl-project/sglang/pull/23568), [#23857](https://github.com/sgl-project/sglang/pull/23857), [#25023](https://github.com/sgl-project/sglang/pull/25023) |
 | `python/sglang/srt/configs/nemotron_h.py` | [#10909](https://github.com/sgl-project/sglang/pull/10909), [#12690](https://github.com/sgl-project/sglang/pull/12690), [#16227](https://github.com/sgl-project/sglang/pull/16227), [#19950](https://github.com/sgl-project/sglang/pull/19950), [#20458](https://github.com/sgl-project/sglang/pull/20458), [#24429](https://github.com/sgl-project/sglang/pull/24429) |
 | `python/sglang/srt/models/jet_nemotron.py` | [#12448](https://github.com/sgl-project/sglang/pull/12448) |
 | `python/sglang/srt/models/nano_nemotron_vl.py` | [#12277](https://github.com/sgl-project/sglang/pull/12277), [#14051](https://github.com/sgl-project/sglang/pull/14051), [#23568](https://github.com/sgl-project/sglang/pull/23568), [#23857](https://github.com/sgl-project/sglang/pull/23857), [#25023](https://github.com/sgl-project/sglang/pull/25023) |
-| `python/sglang/srt/models/nemotron_h.py` | [#10909](https://github.com/sgl-project/sglang/pull/10909), [#11866](https://github.com/sgl-project/sglang/pull/11866), [#12015](https://github.com/sgl-project/sglang/pull/12015), [#12277](https://github.com/sgl-project/sglang/pull/12277), [#12690](https://github.com/sgl-project/sglang/pull/12690), [#16172](https://github.com/sgl-project/sglang/pull/16172), [#16227](https://github.com/sgl-project/sglang/pull/16227), [#16569](https://github.com/sgl-project/sglang/pull/16569), [#17013](https://github.com/sgl-project/sglang/pull/17013), [#18546](https://github.com/sgl-project/sglang/pull/18546), [#19903](https://github.com/sgl-project/sglang/pull/19903), [#20580](https://github.com/sgl-project/sglang/pull/20580), ... (25 total) |
-| `python/sglang/srt/models/nemotron_h_mtp.py` | [#17013](https://github.com/sgl-project/sglang/pull/17013), [#19433](https://github.com/sgl-project/sglang/pull/19433), [#24429](https://github.com/sgl-project/sglang/pull/24429), [#24955](https://github.com/sgl-project/sglang/pull/24955), [#28346](https://github.com/sgl-project/sglang/pull/28346) |
+| `python/sglang/srt/models/nemotron_h.py` | [#10909](https://github.com/sgl-project/sglang/pull/10909), [#11866](https://github.com/sgl-project/sglang/pull/11866), [#12015](https://github.com/sgl-project/sglang/pull/12015), [#12277](https://github.com/sgl-project/sglang/pull/12277), [#12690](https://github.com/sgl-project/sglang/pull/12690), [#16172](https://github.com/sgl-project/sglang/pull/16172), [#16227](https://github.com/sgl-project/sglang/pull/16227), [#16569](https://github.com/sgl-project/sglang/pull/16569), [#17013](https://github.com/sgl-project/sglang/pull/17013), [#18546](https://github.com/sgl-project/sglang/pull/18546), [#19903](https://github.com/sgl-project/sglang/pull/19903), [#20580](https://github.com/sgl-project/sglang/pull/20580), ... (26 total) |
+| `python/sglang/srt/models/nemotron_h_mtp.py` | [#17013](https://github.com/sgl-project/sglang/pull/17013), [#19433](https://github.com/sgl-project/sglang/pull/19433), [#24429](https://github.com/sgl-project/sglang/pull/24429), [#24955](https://github.com/sgl-project/sglang/pull/24955), [#28346](https://github.com/sgl-project/sglang/pull/28346), [#33123](https://github.com/sgl-project/sglang/pull/33123) |
 | `python/sglang/srt/models/nemotron_h_utils.py` | [#24955](https://github.com/sgl-project/sglang/pull/24955), [#28102](https://github.com/sgl-project/sglang/pull/28102), [#28309](https://github.com/sgl-project/sglang/pull/28309), [#28346](https://github.com/sgl-project/sglang/pull/28346) |
 | `python/sglang/srt/models/nemotron_nas.py` | [#9067](https://github.com/sgl-project/sglang/pull/9067) |
 | `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` | [#12277](https://github.com/sgl-project/sglang/pull/12277), [#14051](https://github.com/sgl-project/sglang/pull/14051), [#23568](https://github.com/sgl-project/sglang/pull/23568), [#23857](https://github.com/sgl-project/sglang/pull/23857) |
@@ -28,7 +31,7 @@
 | `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` | [#25655](https://github.com/sgl-project/sglang/pull/25655) |
 | `test/manual/models/test_nvidia_nemotron_nano_v2.py` | 无直接 PR 号提交 |
 | `test/manual/models/test_nvidia_nemotron_nano_v2_vl.py` | 无直接 PR 号提交 |
-| `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` | [#20575](https://github.com/sgl-project/sglang/pull/20575), [#20616](https://github.com/sgl-project/sglang/pull/20616), [#21516](https://github.com/sgl-project/sglang/pull/21516), [#27838](https://github.com/sgl-project/sglang/pull/27838) |
+| `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` | [#20575](https://github.com/sgl-project/sglang/pull/20575), [#20616](https://github.com/sgl-project/sglang/pull/20616), [#21516](https://github.com/sgl-project/sglang/pull/21516), [#27838](https://github.com/sgl-project/sglang/pull/27838), [#33123](https://github.com/sgl-project/sglang/pull/33123), [#34538](https://github.com/sgl-project/sglang/pull/34538), [#34561](https://github.com/sgl-project/sglang/pull/34561) |
 | `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py` | [#20616](https://github.com/sgl-project/sglang/pull/20616), [#27838](https://github.com/sgl-project/sglang/pull/27838) |
 | `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` | [#23594](https://github.com/sgl-project/sglang/pull/23594) |
 | `test/registered/models_e2e/test_nvidia_nemotron_3_nano.py` | [#30945](https://github.com/sgl-project/sglang/pull/30945), [#30968](https://github.com/sgl-project/sglang/pull/30968) |
@@ -39,9 +42,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 53
-- 原文档显式引用补充 PR 数: 20
-- 当前文档总 PR 数: 73
+- git 追溯 PR 数: 47
+- 原文档显式引用补充 PR 数: 31
+- 当前文档总 PR 数: 78
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -74,7 +77,7 @@
 | 2026-03-17 | [#20580](https://github.com/sgl-project/sglang/pull/20580) | merged | [Model] Fix NemotronH OOM on unified-mem systems: stream weights | `python/sglang/srt/models/nemotron_h.py` |
 | 2026-03-27 | [#21516](https://github.com/sgl-project/sglang/pull/21516) | merged | [CI] Fix nemotron nvfp4 test estimated time | `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` |
 | 2026-04-25 | [#23568](https://github.com/sgl-project/sglang/pull/23568) | merged | Parakeet nemotron encoder | `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py`, `python/sglang/srt/configs/nano_nemotron_vl.py` |
-| 2026-04-28 | [#23907](https://github.com/sgl-project/sglang/pull/23907) | merged | [Docs] add Nemotron 3 Nano Omni cookbook | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
+| 2026-04-28 | [#23907](https://github.com/sgl-project/sglang/pull/23907) | merged | [Docs] add Nemotron 3 Nano Omni cookbook | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx` |
 | 2026-04-28 | [#23874](https://github.com/sgl-project/sglang/pull/23874) | merged | Fix failing `test_nvidia_nemotron_3_nano` by fixing `test_grouped_topk` | `python/sglang/srt/models/nemotron_h.py` |
 | 2026-04-28 | [#23968](https://github.com/sgl-project/sglang/pull/23968) | merged | [Docs] update Docker image for Nemotron 3 Nano Omni | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
 | 2026-04-29 | [#23857](https://github.com/sgl-project/sglang/pull/23857) | merged | Nemotron-omni-v3-alias | `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/configs/nano_nemotron_vl.py`, `python/sglang/srt/models/nano_nemotron_vl.py` |
@@ -102,8 +105,8 @@
 | 2026-06-03 | [#25655](https://github.com/sgl-project/sglang/pull/25655) | merged | Feat/add w4a16 moe support to nemotron | `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `test/lm_eval_configs/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4.yaml`, `python/sglang/srt/layers/quantization/marlin_utils_fp4.py` |
 | 2026-06-03 | [#27184](https://github.com/sgl-project/sglang/pull/27184) | merged | docs: fix Nemotron Super MTP deployment command (spec-v2 + B200) | `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx` |
 | 2026-06-03 | [#25198](https://github.com/sgl-project/sglang/pull/25198) | merged | [Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` |
-| 2026-06-04 | [#26969](https://github.com/sgl-project/sglang/pull/26969) | merged | docs: add Nemotron 3 Ultra cookbook entry | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` |
-| 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | merged | [Docs] re-organize nemotron cookbook | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
+| 2026-06-04 | [#26969](https://github.com/sgl-project/sglang/pull/26969) | merged | docs: add Nemotron 3 Ultra cookbook entry | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`, `docs_new/docs.json` |
+| 2026-06-04 | [#27240](https://github.com/sgl-project/sglang/pull/27240) | merged | [Docs] re-organize nemotron cookbook | `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
 | 2026-06-06 | [#26733](https://github.com/sgl-project/sglang/pull/26733) | merged | Nemotron perf changes | `python/sglang/srt/models/nemotron_h.py` |
 | 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
 | 2026-06-10 | [#27838](https://github.com/sgl-project/sglang/pull/27838) | merged | Disable async assert in Nemotron nightly tests | `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_nightly.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` |
@@ -121,7 +124,12 @@
 | 2026-07-16 | [#29692](https://github.com/sgl-project/sglang/pull/29692) | merged | Use fused A GEMM for `fc1_latent_proj` in NemotronH | `python/sglang/srt/models/nemotron_h.py` |
 | 2026-07-16 | [#28309](https://github.com/sgl-project/sglang/pull/28309) | merged | Support Flashinfer one-sided A2A + CuteDSL MoE for Nemotron Ultra | `python/sglang/srt/models/nemotron_h.py`, `python/sglang/srt/models/nemotron_h_utils.py` |
 | 2026-07-16 | [#30456](https://github.com/sgl-project/sglang/pull/30456) | merged | [NemotronH] Load shared embed_tokens/lm_head in MTP draft weights | `test/registered/unit/models/test_nemotron_h_weight_loading.py`, `python/sglang/srt/models/nemotron_h.py` |
-| 2026-07-17 | [#31094](https://github.com/sgl-project/sglang/pull/31094) | merged | Remove deprecated Mamba flags from doc, wrong FP8 GEMM docstrings and change Nemotron image to 0.5.15 | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` |
+| 2026-07-17 | [#31094](https://github.com/sgl-project/sglang/pull/31094) | merged | Remove deprecated Mamba flags from doc, wrong FP8 GEMM docstrings and change Nemotron image to 0.5.15 | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx`, `python/sglang/srt/server_args.py` |
+| 2026-08-05 | [#33123](https://github.com/sgl-project/sglang/pull/33123) | merged | Fix broken Nemotron DP attention | `python/sglang/srt/models/nemotron_h_mtp.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` |
+| 2026-08-11 | [#33481](https://github.com/sgl-project/sglang/pull/33481) | merged | Add NVIDIA Nemotron 3.5 Lightning cookbook | `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`, `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx`, `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx` |
+| 2026-08-12 | [#34573](https://github.com/sgl-project/sglang/pull/34573) | merged | docs(cookbook): add BF16 recipes to Nemotron 3.5 Lightning | `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` |
+| 2026-08-13 | [#34538](https://github.com/sgl-project/sglang/pull/34538) | merged | Reenable breakable CUDA graph for NemotronH | `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py` |
+| 2026-08-19 | [#34561](https://github.com/sgl-project/sglang/pull/34561) | merged | [Fix] Fix Nemotron-H Mamba illegal memory access under DP attention with CUDA graph | `python/sglang/srt/models/nemotron_h.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -918,13 +926,16 @@ diff -- python/sglang/srt/configs/nano_nemotron_vl.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/23907
 - 状态/时间: merged / 2026-04-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`；关联提交 `ad785a229911`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+746/-1，可读 patch 771 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Docs] add Nemotron 3 Nano Omni cookbook」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`；技术摘要: 覆盖「[Docs] add Nemotron 3 Nano Omni cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` added +542/-0 (542 lines); hunks: -0,0 +1,542；`docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` added +200/-0 (200 lines); hunks: -0,0 +1,200。
+- 动机: 标题「[Docs] add Nemotron 3 Nano Omni cookbook」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`；技术摘要: 覆盖「[Docs] add Nemotron 3 Nano Omni cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` added +542/-0 (542 lines); hunks: -0,0 +1,542；`docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` added +200/-0 (200 lines); hunks: -0,0 +1,200；`docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -58,7 +58,7 @@ metatags:；`docs_new/cookbook/intro copy.mdx` modified +2/-0 (2 lines); hunks: -79,7 +79,9 @@ Each recipe provides step-by-step instructions to help you qui...。
 - 代码 diff 细节:
   - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` added +542/-0 (542 lines); hunks: -0,0 +1,542
   - `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` added +200/-0 (200 lines); hunks: -0,0 +1,200
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -58,7 +58,7 @@ metatags:
+  - `docs_new/cookbook/intro copy.mdx` modified +2/-0 (2 lines); hunks: -79,7 +79,9 @@ Each recipe provides step-by-step instructions to help you qui...
+  - `docs_new/docs.json` modified +1/-0 (1 lines); hunks: -1006,6 +1006,7
 - 关键代码摘录:
 
 ```diff
@@ -944,10 +955,12 @@ diff -- docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx
 +    bf16: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-BF16',
 +    fp8: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-FP8',
 +    nvfp4: 'nvidia/Nemotron-3-Nano-Omni-30B-A3B-NVFP4',
+diff -- docs_new/cookbook/autoregressive/intro.mdx
+@@ -58,7 +58,7 @@ metatags:
 ```
 
 - 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` added +542/-0; `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` added +200/-0
+  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` added +542/-0; `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` added +200/-0; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1; `docs_new/cookbook/intro copy.mdx` modified +2/-0; `docs_new/docs.json` modified +1/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`, `docs_new/cookbook/intro copy.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #23874 - Fix failing `test_nvidia_nemotron_3_nano` by fixing `test_grouped_topk`
@@ -977,7 +990,7 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/23968
 - 状态/时间: merged / 2026-04-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`；关联提交 `387c932dfc88`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] update Docker image for Nemotron 3 Nano Omni」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`；技术摘要: 覆盖「[Docs] update Docker image for Nemotron 3 Nano Omni」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +1/-1 (2 lines); hunks: -52,7 +52,7 @@ pip install sglang。
@@ -1180,7 +1193,7 @@ diff -- python/sglang/srt/server_args.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/23998
 - 状态/时间: merged / 2026-05-05
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`；关联提交 `83b48fd5237a`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+119/-4，可读 patch 165 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「update Nemotron3 Nano Omni cookbook benchmarks」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`；技术摘要: 覆盖「update Nemotron3 Nano Omni cookbook benchmarks」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +119/-4 (123 lines); hunks: -478,7 +478,7 @@ Nemotron 3 Nano Omni achieves **9x higher throughput** than...; -492,6 +492,7 @@ sglang serve \。
@@ -1875,7 +1888,7 @@ diff -- python/sglang/srt/layers/quantization/marlin_utils_fp4.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/27184
 - 状态/时间: merged / 2026-06-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`；关联提交 `90985117a5f7`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-3，可读 patch 31 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「docs: fix Nemotron Super MTP deployment command (spec-v2 + B200)」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`；技术摘要: 覆盖「docs: fix Nemotron Super MTP deployment command (spec-v2 + B200)」；主要实现面是 `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx` modified +7/-3 (10 lines); hunks: -39,7 +39,10 @@ export const Nemotron3SuperDeployment = () => {; -75,7 +78,8 @@ export const Nemotron3SuperDeployment = () => {。
@@ -1902,7 +1915,7 @@ diff -- docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/25198
 - 状态/时间: merged / 2026-06-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`；关联提交 `8980eb82de90`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+25/-28，可读 patch 194 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`；技术摘要: 覆盖「[Docs] Update Nemotron3-Nano-Omni cookbook to reflect new model paths」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +20/-21 (41 lines); hunks: -30,10 +30,9 @@ Architecture and key features:; -76,7 +75,7 @@ This section provides a progressive guide from quick deploymen...；`docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` modified +5/-7 (12 lines); hunks: -1,18 +1,16; -77,7 +75,7 @@ export const Nemotron3NanoOmniDeployment = () => {。
@@ -1938,13 +1951,15 @@ diff -- docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/26969
 - 状态/时间: merged / 2026-06-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；关联提交 `1463e5fbdd54`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+1045/-1，可读 patch 1062 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: add Nemotron 3 Ultra cookbook entry」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；技术摘要: 覆盖「docs: add Nemotron 3 Ultra cookbook entry」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` added +535/-0 (535 lines); hunks: -0,0 +1,535; symbols: support, defined, is, RadixCache，涉及 `support, defined, is`；`docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` added +507/-0 (507 lines); hunks: -0,0 +1,507。
+- 动机: 标题「docs: add Nemotron 3 Ultra cookbook entry」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`, `docs_new/docs.json`；技术摘要: 覆盖「docs: add Nemotron 3 Ultra cookbook entry」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`, `docs_new/docs.json`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` added +535/-0 (535 lines); hunks: -0,0 +1,535; symbols: support, defined, is, RadixCache，涉及 `support, defined, is`；`docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` added +507/-0 (507 lines); hunks: -0,0 +1,507；`docs_new/docs.json` modified +2/-1 (3 lines); hunks: -1007,7 +1007,8；`docs_new/cookbook/intro copy.mdx` modified +1/-0 (1 lines); hunks: -82,6 +82,7 @@ Each recipe provides step-by-step instructions to help you qui...。
 - 代码 diff 细节:
   - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` added +535/-0 (535 lines); hunks: -0,0 +1,535; symbols: support, defined, is, RadixCache
   - `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` added +507/-0 (507 lines); hunks: -0,0 +1,507
+  - `docs_new/docs.json` modified +2/-1 (3 lines); hunks: -1007,7 +1007,8
+  - `docs_new/cookbook/intro copy.mdx` modified +1/-0 (1 lines); hunks: -82,6 +82,7 @@ Each recipe provides step-by-step instructions to help you qui...
 - 关键代码摘录:
 
 ```diff
@@ -1964,26 +1979,36 @@ diff -- docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx
 +    nvfp4: 'nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4',
 +  };
 +  // Verified {model, hardware, tp} combinations. Any tuple not in this list is
+diff -- docs_new/docs.json
+@@ -1007,7 +1007,8 @@
 ```
 
 - 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` added +535/-0; `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` added +507/-0
+  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` added +535/-0; `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` added +507/-0; `docs_new/docs.json` modified +2/-1; `docs_new/cookbook/intro copy.mdx` modified +1/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/intro copy.mdx`, `docs_new/docs.json`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #27240 - [Docs] re-organize nemotron cookbook
 
 - 链接: https://github.com/sgl-project/sglang/pull/27240
 - 状态/时间: merged / 2026-06-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`；关联提交 `b89686710d2d`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+4/-7，可读 patch 40 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Docs] re-organize nemotron cookbook」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`；技术摘要: 覆盖「[Docs] re-organize nemotron cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2 (3 lines); hunks: -1,7 +1,6；`docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2 (2 lines); hunks: -2,8 +2,6。
+- 动机: 标题「[Docs] re-organize nemotron cookbook」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`；技术摘要: 覆盖「[Docs] re-organize nemotron cookbook」；主要实现面是 `docs_new/docs.json`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/docs.json` modified +2/-2 (4 lines); hunks: -1005,10 +1005,10；`docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2 (3 lines); hunks: -1,7 +1,6；`docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2 (2 lines); hunks: -2,8 +2,6；`docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -58,7 +58,7 @@ metatags:。
 - 代码 diff 细节:
+  - `docs_new/docs.json` modified +2/-2 (4 lines); hunks: -1005,10 +1005,10
   - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2 (3 lines); hunks: -1,7 +1,6
   - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2 (2 lines); hunks: -2,8 +2,6
+  - `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1 (2 lines); hunks: -58,7 +58,7 @@ metatags:
 - 关键代码摘录:
 
 ```diff
+diff -- docs_new/docs.json
+@@ -1005,10 +1005,10 @@
++                      "cookbook/autoregressive/NVIDIA/Nemotron3-Ultra",
+-                      "cookbook/autoregressive/NVIDIA/Nemotron3-Super",
+-                      "cookbook/autoregressive/NVIDIA/Nemotron3-Ultra"
++                      "cookbook/autoregressive/NVIDIA/Nemotron3-Super"
 diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx
 @@ -1,7 +1,6 @@
 -metatags:
@@ -1993,10 +2018,13 @@ diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx
 @@ -2,8 +2,6 @@
 -tag:
 -    NEW
+diff -- docs_new/cookbook/autoregressive/intro.mdx
+@@ -58,7 +58,7 @@ metatags:
+-    href="/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni"
 ```
 
 - 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2
+  - docs: `docs_new/docs.json` modified +2/-2; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +1/-2; `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` modified +0/-2; `docs_new/cookbook/autoregressive/intro.mdx` modified +1/-1
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/intro.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #26733 - Nemotron perf changes
@@ -2146,7 +2174,7 @@ diff -- python/sglang/srt/models/nemotron_h_mtp.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/28087
 - 状态/时间: merged / 2026-06-12
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；关联提交 `95867f0932a6`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+54/-39，可读 patch 230 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Doc] Fix some inconsistencies in the Nemotron Cookbook」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`；技术摘要: 覆盖「[Doc] Fix some inconsistencies in the Nemotron Cookbook」；主要实现面是 `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` modified +26/-23 (49 lines); hunks: -97,6 +97,16 @@ export const Nemotron3UltraDeployment = () => {; -126,25 +136,14 @@ export const Nemotron3UltraDeployment = () => {；`docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +28/-16 (44 lines); hunks: -60,7 +60,11 @@ The generator only emits a runnable command for combinations...; -76,6 +80,14 @@ The generator only emits a runnable command for combinations...; symbols: defined，涉及 `defined`。
@@ -2336,7 +2364,7 @@ diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/28675
 - 状态/时间: merged / 2026-06-22
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；关联提交 `34e5e38604bb`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+31/-5，可读 patch 75 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Cookbook] Nemotron3-Ultra: Add mamba-backend and SSM dtype flags」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；技术摘要: 覆盖「[Cookbook] Nemotron3-Ultra: Add mamba-backend and SSM dtype flags」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +13/-5 (18 lines); hunks: -60,12 +60,20 @@ The generator only emits a runnable command for combinations...; -82,23 +90,23 @@ The generator only emits a runnable command for combinations...；`docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` modified +18/-0 (18 lines); hunks: -154,6 +154,24 @@ export const Nemotron3UltraDeployment = () => {。
@@ -2372,7 +2400,7 @@ diff -- docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx
 
 - 链接: https://github.com/sgl-project/sglang/pull/29200
 - 状态/时间: merged / 2026-06-24
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；关联提交 `2c697daf5f92`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
 - 动机: 标题「[Cookbook] Nemotron3-Ultra: align MTP draft depth with NVIDIA reference (num_steps 5)」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；技术摘要: 覆盖「[Cookbook] Nemotron3-Ultra: align MTP draft depth with NVIDIA reference (num_steps 5)」；主要实现面是 `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
 - 实现要点: `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` modified +1/-1 (2 lines); hunks: -143,7 +143,7 @@ export const Nemotron3UltraDeployment = () => {。
@@ -2590,15 +2618,16 @@ diff -- python/sglang/srt/models/nemotron_h.py
 
 - 链接: https://github.com/sgl-project/sglang/pull/31094
 - 状态/时间: merged / 2026-07-17
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；关联提交 `7fc3fb9657a5`；保留自原 history/skill 显式引用
+- 反查来源: 保留自原 history/skill 显式引用
 - 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+46/-50，可读 patch 377 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Remove deprecated Mamba flags from doc, wrong FP8 GEMM docstrings and change Nemotron image to 0.5.15」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`；技术摘要: 覆盖「Remove deprecated Mamba flags from doc, wrong FP8 GEMM docstrings and change Nemotron image to 0.5.15」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx`, `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +6/-10 (16 lines); hunks: -34,14 +34,10 @@ Available model variants on HuggingFace:; -64,7 +60,7 @@ The generator only emits a runnable command for combinations t...；`docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx` modified +1/-1 (2 lines); hunks: -43,7 +43,7 @@ export const Nemotron3SuperDeployment = () => {；`docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` modified +1/-1 (2 lines); hunks: -251,7 +251,7 @@ export const Nemotron3UltraDeployment = () => {；`python/sglang/srt/server_args.py` modified +4/-4 (8 lines); hunks: -1427,7 +1427,7 @@ class ServerArgs:; -2136,7 +2136,7 @@ class ServerArgs:; symbols: ServerArgs, _handle_linear_attn_backend，涉及 `ServerArgs, _handle_linear_attn_backend`。
+- 动机: 标题「Remove deprecated Mamba flags from doc, wrong FP8 GEMM docstrings and change Nemotron image to 0.5.15」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Remove deprecated Mamba flags from doc, wrong FP8 GEMM docstrings and change Nemotron image to 0.5.15」；主要实现面是 `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx`, `docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +6/-10 (16 lines); hunks: -34,14 +34,10 @@ Available model variants on HuggingFace:; -64,7 +60,7 @@ The generator only emits a runnable command for combinations t...；`docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx` modified +4/-4 (8 lines); hunks: -51,9 +51,9 @@ import { MiniCPMV46Deployment } from '/src/snippets/autoregres...; -73,7 +73,7 @@ sglang serve --model-path openbmb/MiniCPM-V-4.6 \；`python/sglang/srt/server_args.py` modified +4/-4 (8 lines); hunks: -1427,7 +1427,7 @@ class ServerArgs:; -2136,7 +2136,7 @@ class ServerArgs:; symbols: ServerArgs, _handle_linear_attn_backend，涉及 `ServerArgs, _handle_linear_attn_backend`；`docs_new/docs/advanced_features/server_arguments.mdx` modified +3/-3 (6 lines); hunks: -1430,7 +1430,7 @@ Please consult the documentation below and [server_args.py...; -1943,14 +1943,14 @@ Please consult the documentation below and [server_args....。
 - 代码 diff 细节:
   - `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +6/-10 (16 lines); hunks: -34,14 +34,10 @@ Available model variants on HuggingFace:; -64,7 +60,7 @@ The generator only emits a runnable command for combinations t...
-  - `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx` modified +1/-1 (2 lines); hunks: -43,7 +43,7 @@ export const Nemotron3SuperDeployment = () => {
-  - `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` modified +1/-1 (2 lines); hunks: -251,7 +251,7 @@ export const Nemotron3UltraDeployment = () => {
+  - `docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx` modified +4/-4 (8 lines); hunks: -51,9 +51,9 @@ import { MiniCPMV46Deployment } from '/src/snippets/autoregres...; -73,7 +73,7 @@ sglang serve --model-path openbmb/MiniCPM-V-4.6 \
   - `python/sglang/srt/server_args.py` modified +4/-4 (8 lines); hunks: -1427,7 +1427,7 @@ class ServerArgs:; -2136,7 +2136,7 @@ class ServerArgs:; symbols: ServerArgs, _handle_linear_attn_backend
+  - `docs_new/docs/advanced_features/server_arguments.mdx` modified +3/-3 (6 lines); hunks: -1430,7 +1430,7 @@ Please consult the documentation below and [server_args.py...; -1943,14 +1943,14 @@ Please consult the documentation below and [server_args....
+  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +3/-3 (6 lines); hunks: -359,7 +359,7 @@ export const Qwen35Deployment = () => {; -373,7 +373,7 @@ export const Qwen35Deployment = () => {
 - 关键代码摘录:
 
 ```diff
@@ -2610,22 +2639,198 @@ diff -- docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx
 -docker pull lmsysorg/sglang:dev-nemotron3-ultra
 -# CUDA 12
 -docker pull lmsysorg/sglang:dev-cu12-nemotron3-ultra
-diff -- docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx
-@@ -43,7 +43,7 @@ export const Nemotron3SuperDeployment = () => {
--      commandRule: (value, state) => value === 'enabled' ? '--speculative-algorithm EAGLE \\\n  --speculative-num-steps 3 \\\n  --speculative-eagle-topk 1 \\\n  --speculative-num-
-+      commandRule: (value, state) => value === 'enabled' ? '--speculative-algorithm EAGLE \\\n  --speculative-num-steps 3 \\\n  --speculative-eagle-topk 1 \\\n  --speculative-num-
-diff -- docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx
-@@ -251,7 +251,7 @@ export const Nemotron3UltraDeployment = () => {
--    cmd += `  --mamba-scheduler-strategy extra_buffer \\\n`;
-+    cmd += `  --mamba-radix-cache-strategy extra_buffer \\\n`;
+diff -- docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx
+@@ -51,9 +51,9 @@ import { MiniCPMV46Deployment } from '/src/snippets/autoregressive/minicpm-v-4_6
+-- **Mamba Radix Cache**: Qwen3.5's hybrid Gated Delta Networks architecture supports two mamba scheduling strategies via `--mamba-scheduler-strategy`:
++- **Mamba Radix Cache**: Qwen3.5's hybrid Gated Delta Networks architecture supports two mamba scheduling strategies via `--mamba-radix-cache-strategy`:
+-  - **V2 (`extra_buffer`)**: Enables overlap scheduling and branching point caching with `--mamba-scheduler-strategy extra_buffer --page-size 64`. Requires FLA kernel backend (NVI
++  - **V2 (`extra_buffer`)**: Enables overlap scheduling and branching point caching with `--mamba-radix-cache-strategy extra_buffer --page-size 64`. Requires FLA kernel backend (N
+@@ -73,7 +73,7 @@ sglang serve --model-path openbmb/MiniCPM-V-4.6 \
+-  --mamba-scheduler-strategy extra_buffer \
 diff -- python/sglang/srt/server_args.py
 @@ -1427,7 +1427,7 @@ class ServerArgs:
 ```
 
 - 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +6/-10; `docs_new/src/snippets/autoregressive/nemotron3-super-deployment.jsx` modified +1/-1; `docs_new/src/snippets/autoregressive/nemotron3-ultra-deployment.jsx` modified +1/-1
+  - docs: `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Ultra.mdx` modified +6/-10; `docs_new/cookbook/autoregressive/OpenBMB/MiniCPM-V-4_6.mdx` modified +4/-4; `docs_new/docs/advanced_features/server_arguments.mdx` modified +3/-3; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +3/-3; `docs_new/cookbook/autoregressive/Qwen/Qwen3-Coder-Next.mdx` modified +2/-2; `docs_new/cookbook/autoregressive/Qwen/Qwen3-Next.mdx` modified +2/-2
   - runtime: `python/sglang/srt/server_args.py` modified +4/-4
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #33123 - Fix broken Nemotron DP attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/33123
+- 状态/时间: merged / 2026-08-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/nemotron_h_mtp.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；关联提交 `a14c870886bc`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 7 个文件，+74/-14，可读 patch 186 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix broken Nemotron DP attention」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/nemotron_h_mtp.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；技术摘要: 覆盖「Fix broken Nemotron DP attention」；主要实现面是 `python/sglang/srt/models/nemotron_h_mtp.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/nemotron_h_mtp.py` modified +3/-4 (7 lines); hunks: -288,13 +288,14 @@ def get_input_embeddings(self, input_ids: torch.Tensor) ->...; -352,11 +353,9 @@ def forward(; symbols: get_input_embeddings, forward，涉及 `get_input_embeddings, forward`；`test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +53/-1 (54 lines); hunks: -12,7 +12,7; -29,6 +29,31; symbols: test_gsm8k, TestNvidiaNemotron3SuperNVFP4DPAttentionEP, setUpClass, tearDownClass，涉及 `test_gsm8k, TestNvidiaNemotron3SuperNVFP4DPAttentionEP, setUpClass`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/nemotron_h_mtp.py` modified +3/-4 (7 lines); hunks: -288,13 +288,14 @@ def get_input_embeddings(self, input_ids: torch.Tensor) ->...; -352,11 +353,9 @@ def forward(; symbols: get_input_embeddings, forward
+  - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +53/-1 (54 lines); hunks: -12,7 +12,7; -29,6 +29,31; symbols: test_gsm8k, TestNvidiaNemotron3SuperNVFP4DPAttentionEP, setUpClass, tearDownClass
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/nemotron_h_mtp.py
+@@ -288,13 +288,14 @@ def get_input_embeddings(self, input_ids: torch.Tensor) -> torch.Tensor:
+-        hidden_states: torch.Tensor,
++        positions: torch.Tensor,
++        hidden_states = forward_batch.spec_info.hidden_states
+@@ -352,11 +353,9 @@ def forward(
+-        hidden_states = forward_batch.spec_info.hidden_states
+-            hidden_states,
+diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
+@@ -12,7 +12,7 @@
+-register_cuda_ci(est_time=540, suite="nightly-4-gpu-b200", nightly=True)
++register_cuda_ci(est_time=810, suite="nightly-4-gpu-b200", nightly=True)
+@@ -29,6 +29,31 @@
++DP_ATTENTION_EP_ARGS = [
++    "--dp-size",
++    "4",
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/nemotron_h_mtp.py` modified +3/-4
+  - tests: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +53/-1
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #33481 - Add NVIDIA Nemotron 3.5 Lightning cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/33481
+- 状态/时间: merged / 2026-08-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx`, `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx`, `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`；关联提交 `3add7e19ffa1`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+537/-1，可读 patch 555 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add NVIDIA Nemotron 3.5 Lightning cookbook」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`, `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx`, `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx`；技术摘要: 覆盖「Add NVIDIA Nemotron 3.5 Lightning cookbook」；主要实现面是 `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`, `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx`, `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` added +355/-0 (355 lines); hunks: -0,0 +1,355；`docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx` added +18/-0 (18 lines); hunks: -0,0 +1,18；`docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx` added +162/-0 (162 lines); hunks: -0,0 +1,162。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` added +355/-0 (355 lines); hunks: -0,0 +1,355
+  - `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx` added +18/-0 (18 lines); hunks: -0,0 +1,18
+  - `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx` added +162/-0 (162 lines); hunks: -0,0 +1,162
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx
+@@ -0,0 +1,355 @@
++// Single `export const config` literal — no spreads/calls/IIFE (Mintlify re-evals at hydration).
++//
++// `{{MODEL_NAME}}` resolves to `modelNames` below (HF repos under the nvidia org).
++export const config = {
++  modelName: "Nemotron 3.5 Lightning",
++  // Three validated single-GPU platforms, all at TP1/EP1.
+diff -- docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx
+@@ -0,0 +1,18 @@
++// One entry per cell `match`. Numbers pending — the card renders "pending"
++// until speed/accuracy data is filled in from a measured run.
++export const benchmarks = [
++  { match: { hw: "b200", variant: "default", quant: "nvfp4", strategy: "balanced", nodes: "single" } },
++  { match: { hw: "b200", variant: "default", quant: "nvfp4", strategy: "mtp",      nodes: "single" } },
++  { match: { hw: "b200", variant: "default", quant: "nvfp4", strategy: "dflash",   nodes: "single" } },
+diff -- docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx
+@@ -0,0 +1,162 @@
+```
+
+- 已读文件:
+  - docs: `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` added +355/-0; `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning-benchmarks.jsx` added +18/-0; `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx` added +162/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/NVIDIA/Nemotron3.5-Lightning.mdx`, `docs/cookbook/autoregressive/intro.mdx`, `docs/docs.json`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #34573 - docs(cookbook): add BF16 recipes to Nemotron 3.5 Lightning
+
+- 链接: https://github.com/sgl-project/sglang/pull/34573
+- 状态/时间: merged / 2026-08-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`；关联提交 `f28bc5a6de37`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+233/-1，可读 patch 254 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs(cookbook): add BF16 recipes to Nemotron 3.5 Lightning」；模型线: Nemotron Super；类别: 文档/测试/CI；主要 diff: `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`；技术摘要: 覆盖「docs(cookbook): add BF16 recipes to Nemotron 3.5 Lightning」；主要实现面是 `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` modified +233/-1 (234 lines); hunks: -10,7 +10,7 @@ export const config = {; -24,6 +24,7 @@ export const config = {。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` modified +233/-1 (234 lines); hunks: -10,7 +10,7 @@ export const config = {; -24,6 +24,7 @@ export const config = {
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx
+@@ -10,7 +10,7 @@ export const config = {
+-  quantizations: [{ id: "nvfp4", label: "NVFP4" }],
++  quantizations: [{ id: "nvfp4", label: "NVFP4" }, { id: "bf16", label: "BF16" }],
+@@ -24,6 +24,7 @@ export const config = {
++    "default|bf16": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+@@ -351,5 +352,236 @@ sgl-eval run gsm8k \\
++    // ==== NVIDIA B200 (SM100) + BF16, single GPU ====
+```
+
+- 已读文件:
+  - docs: `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx` modified +233/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/nvidia/nemotron-3.5-lightning.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #34538 - Reenable breakable CUDA graph for NemotronH
+
+- 链接: https://github.com/sgl-project/sglang/pull/34538
+- 状态/时间: merged / 2026-08-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；关联提交 `035c622a14c5`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+3/-16，可读 patch 43 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Reenable breakable CUDA graph for NemotronH」；模型线: Nemotron Super；类别: 性能/后端优化；主要 diff: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`；技术摘要: 覆盖「Reenable breakable CUDA graph for NemotronH」；主要实现面是 `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/server_args.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +2/-0 (2 lines); hunks: -52,6 +52,8；`python/sglang/srt/configs/model_config.py` modified +0/-8 (8 lines); hunks: -133,14 +133,6 @@ def is_deepseek_v4(config) -> bool:; symbols: is_deepseek_v4, is_nemotron_h, get_dsa_index_head_dim，涉及 `is_deepseek_v4, is_nemotron_h, get_dsa_index_head_dim`；`python/sglang/srt/server_args.py` modified +1/-8 (9 lines); hunks: -4568,17 +4568,10 @@ def _disable_breakable_cudagraph_if_incompatible(self):; symbols: _disable_breakable_cudagraph_if_incompatible，涉及 `_disable_breakable_cudagraph_if_incompatible`。
+- 代码 diff 细节:
+  - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +2/-0 (2 lines); hunks: -52,6 +52,8
+  - `python/sglang/srt/configs/model_config.py` modified +0/-8 (8 lines); hunks: -133,14 +133,6 @@ def is_deepseek_v4(config) -> bool:; symbols: is_deepseek_v4, is_nemotron_h, get_dsa_index_head_dim
+  - `python/sglang/srt/server_args.py` modified +1/-8 (9 lines); hunks: -4568,17 +4568,10 @@ def _disable_breakable_cudagraph_if_incompatible(self):; symbols: _disable_breakable_cudagraph_if_incompatible
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
+@@ -52,6 +52,8 @@
++    "--cuda-graph-backend-prefill",
++    "disabled",
+diff -- python/sglang/srt/configs/model_config.py
+@@ -133,14 +133,6 @@ def is_deepseek_v4(config) -> bool:
+-def is_nemotron_h(config) -> bool:
+-    return _hf_arch(config) in (
+-        "NemotronHForCausalLM",
+-        "NemotronHPuzzleForCausalLM",
+-        "NemotronHForCausalLMMTP",
+-    )
+diff -- python/sglang/srt/server_args.py
+@@ -4568,17 +4568,10 @@ def _disable_breakable_cudagraph_if_incompatible(self):
+-        from sglang.srt.configs.model_config import is_deepseek_v4, is_nemotron_h
++        from sglang.srt.configs.model_config import is_deepseek_v4
+-            # NemotronH's hybrid Mamba2 prefill is not BCG-safe: the mamba
+-            # state-track write is not wired into the captured buffers, so a
+```
+
+- 已读文件:
+  - tests: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +2/-0
+  - runtime: `python/sglang/srt/configs/model_config.py` modified +0/-8; `python/sglang/srt/server_args.py` modified +1/-8
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #34561 - [Fix] Fix Nemotron-H Mamba illegal memory access under DP attention with CUDA graph
+
+- 链接: https://github.com/sgl-project/sglang/pull/34561
+- 状态/时间: merged / 2026-08-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/nemotron_h.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；关联提交 `a6bc0532c936`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+10/-3，可读 patch 27 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Fix] Fix Nemotron-H Mamba illegal memory access under DP attention with CUDA graph」；模型线: Nemotron Super；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/nemotron_h.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；技术摘要: 覆盖「[Fix] Fix Nemotron-H Mamba illegal memory access under DP attention with CUDA graph」；主要实现面是 `python/sglang/srt/models/nemotron_h.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/nemotron_h.py` modified +10/-1 (11 lines); hunks: -563,7 +563,16 @@ def forward(; symbols: forward，涉及 `forward`；`test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +0/-2 (2 lines); hunks: -52,8 +52,6。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/nemotron_h.py` modified +10/-1 (11 lines); hunks: -563,7 +563,16 @@ def forward(; symbols: forward
+  - `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +0/-2 (2 lines); hunks: -52,8 +52,6
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/nemotron_h.py
+@@ -563,7 +563,16 @@ def forward(
+-            output = self._forward_mamba(hidden_states, forward_batch)
++            if is_in_breakable_cuda_graph():
++                output = torch.empty_like(hidden_states)
++                breakable_nemotron_mamba2_with_output(
++                    hidden_states, output, self.layer_id, False
++                )
+diff -- test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py
+@@ -52,8 +52,6 @@
+-    "--cuda-graph-backend-prefill",
+-    "disabled",
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/nemotron_h.py` modified +10/-1
+  - tests: `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +0/-2
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

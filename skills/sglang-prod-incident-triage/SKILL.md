@@ -18,6 +18,14 @@ Use one loop:
 
 Do not start with profiling.
 
+As of SGLang `v0.5.17` / `v0.5.18`, two extra live-server signals matter:
+
+- `--enable-session-radix-cache` plus `/close_session`: agent or RL rollouts
+  that forget to close sessions can look like unexplained KV growth
+- the opt-in Rust ingress does not yet enforce `api_key` on all routes; if
+  the incident is auth-related, confirm which server binary is actually
+  serving before blaming application tokens
+
 This skill should work with more focused skills instead of re-implementing them:
 
 - `debug-cuda-crash` when replay plus coredump points to a CUDA crash path
