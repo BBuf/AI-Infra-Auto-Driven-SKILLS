@@ -10,7 +10,7 @@ and model PR intelligence.**
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-11-2f80ed?style=flat-square)](#core-skills)
+[![Core skills](https://img.shields.io/badge/core_skills-12-2f80ed?style=flat-square)](#core-skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-72-2ea44f?style=flat-square)](#model-pr-history-catalog)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
@@ -49,6 +49,7 @@ find it.
 | [`llm-serving-capacity-planner`](skills/llm-serving-capacity-planner/) | You need to explain SGLang or vLLM startup memory, KV cache budget, request capacity, or OOM pressure from logs. |
 | [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
 | [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
+| [`torch-profiler-layer-track`](skills/torch-profiler-layer-track/) | You want numbered layer guide tracks next to GPU kernels in Perfetto, with verified anchors and preserved CPU/GPU events. |
 | [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
 | [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | You need to turn a new SGLang model architecture into a public Day-0 PR DAG, parallel/kernel adaptation plan, seven-gate validation matrix, release lock, and sanitized evidence bundle. |
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in full human PR review episodes from project start through the latest corpus refresh (collected through 2026-07-27), including inline code context, top-level discussion, review summaries, and multi-round replies. Every review opens with a PR comprehension pass — a change summary plus a Mermaid execution flowchart with the diff's modified steps marked — so the reviewer sees how the PR runs before the findings. |
@@ -180,7 +181,7 @@ installed as a single Claude Code plugin via the built-in marketplace flow:
 /reload-plugins
 ```
 
-After reload, the 11 skills appear namespaced as
+After reload, the 12 skills appear namespaced as
 `ai-infra-auto-driven-skills:<skill-name>` (for example
 `ai-infra-auto-driven-skills:sglang-sota-humanize-loop`). Update later with
 `/plugin marketplace update ai-infra-auto-driven-skills`.
@@ -200,6 +201,7 @@ ln -s "$PWD/skills/llm-serving-auto-benchmark" ~/.claude/skills/llm-serving-auto
 ln -s "$PWD/skills/llm-serving-capacity-planner" ~/.claude/skills/llm-serving-capacity-planner
 ln -s "$PWD/skills/llm-torch-profiler-analysis" ~/.claude/skills/llm-torch-profiler-analysis
 ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
+ln -s "$PWD/skills/torch-profiler-layer-track" ~/.claude/skills/torch-profiler-layer-track
 ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
 ln -s "$PWD/skills/model-optimization/sglang-model-day0-support" ~/.claude/skills/sglang-model-day0-support
 ln -s "$PWD/skills/sglang-humanize-review" ~/.claude/skills/sglang-humanize-review
@@ -213,7 +215,7 @@ ln -s "$PWD/model-pr-optimization-history" ~/.claude/skills/model-pr-history-kno
 Restart Claude Code after installing. The skills can then be invoked by name,
 for example `[$llm-serving-auto-benchmark]`,
 `[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
-`[$llm-pipeline-analysis]`, `[$model-compute-simulation]`,
+`[$llm-pipeline-analysis]`, `[$torch-profiler-layer-track]`, `[$model-compute-simulation]`,
 `[$sglang-model-day0-support]`,
 `[$sglang-humanize-review]`,
 `[$sglang-sota-humanize-loop]`, or `[$vllm-sota-humanize-loop]`.
@@ -233,6 +235,7 @@ cp -R skills/llm-serving-auto-benchmark <agent-skill-dir>/llm-serving-auto-bench
 cp -R skills/llm-serving-capacity-planner <agent-skill-dir>/llm-serving-capacity-planner
 cp -R skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
 cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
+cp -R skills/torch-profiler-layer-track <agent-skill-dir>/torch-profiler-layer-track
 cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
 cp -R skills/model-optimization/sglang-model-day0-support <agent-skill-dir>/sglang-model-day0-support
 cp -R skills/sglang-humanize-review <agent-skill-dir>/sglang-humanize-review
@@ -277,6 +280,7 @@ skills/
 ├── llm-serving-capacity-planner/     # startup memory and request capacity analysis
 ├── llm-torch-profiler-analysis/     # profiler capture and trace triage
 ├── llm-pipeline-analysis/           # forward/layer/kernel trace analysis
+├── torch-profiler-layer-track/      # numbered GPU layer guide tracks
 ├── model-compute-simulation/        # operator FLOPs, tensor shapes, and MFU
 ├── sglang-humanize-review/          # human SGLang PR review corpus and workflow
 ├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
