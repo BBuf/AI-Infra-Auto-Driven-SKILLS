@@ -1,0 +1,4 @@
+interface:
+  display_name: "Torch Profiler Layer Track"
+  short_description: "Add layer-number guide tracks to GPU profiler traces"
+  default_prompt: "Use $torch-profiler-layer-track to add verified layer-number guide tracks to my local Torch Profiler trace."
