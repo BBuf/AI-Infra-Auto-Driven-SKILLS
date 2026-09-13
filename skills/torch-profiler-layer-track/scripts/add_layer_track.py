@@ -249,6 +249,11 @@ def main():
         "--device", help="GPU device from kernel args.device, when needed"
     )
     parser.add_argument("--end-anchor-regex")
+    parser.add_argument(
+        "--max-gpu-lanes",
+        type=int,
+        help="Also pack GPU activity into at most this many synthetic lanes (1-10)",
+    )
     args = parser.parse_args()
     report_path = Path(str(args.output) + ".layers.json")
     try:
@@ -279,6 +284,12 @@ def main():
                 digest.update(chunk)
         report["source_sha256"] = digest.hexdigest()
         report["source_file"] = args.trace.name
+        if args.max_gpu_lanes is not None:
+            from compact_gpu_tracks import compact
+
+            output, report["compaction"] = compact(
+                output, max_lanes=args.max_gpu_lanes, pid=args.pid
+            )
         write_trace(args.output, output)
         with report_path.open("x", encoding="utf-8") as handle:
             json.dump(report, handle, ensure_ascii=False, indent=2)
@@ -287,9 +298,12 @@ def main():
         parser.exit(2, f"error: {exc}\n")
     print(f"Annotated trace: {args.output}")
     print(f"Mapping report: {report_path}")
-    print(
-        f"Added {args.num_layers * args.passes} labels; original {report['original_event_count']} events retained."
-    )
+    print(f"Added {args.num_layers * args.passes} labels.")
+    if "compaction" in report:
+        print(json.dumps(report["compaction"]["groups"]))
+        print(report["compaction"]["notice"])
+    else:
+        print(f"Original {report['original_event_count']} events retained unchanged.")
     print(NOTICE)
 
 
