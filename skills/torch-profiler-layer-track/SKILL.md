@@ -1,13 +1,15 @@
 ---
 name: torch-profiler-layer-track
-description: Add numbered layer guide tracks to an existing Torch Profiler Chrome JSON trace for Perfetto navigation. Use when a user wants L0/L1/... labels next to GPU kernels, help counting model layers, or an annotated local trace and screenshot.
+description: Add verified layer-number guides and compact GPU display lanes to an existing Torch Profiler Chrome JSON trace. Use for L0/L1/... navigation or traces with hundreds of CUDA Graph stream rows. Changes visualization, not runtime streams.
 ---
 
 # Torch Profiler Layer Track
 
-Turn a verified, once-per-layer GPU anchor into a separate `L0, L1, ...`
-navigation track. Preserve original CPU/GPU events and timestamps. The output
-is a normal Chrome JSON trace; it does not depend on a saved browser workspace.
+Create a normal Chrome JSON trace with `L0, L1, ...` guides beside at most ten
+synthetic GPU activity lanes per device. Keep the source file. Compaction
+changes event placement, not execution: original kernel names, timestamps,
+durations and `args.stream` remain intact. CPU events stay unchanged. Label
+the output as a **compact view**, not a runtime stream optimization.
 
 ## Establish what the labels mean
 
@@ -42,6 +44,7 @@ python3 scripts/add_layer_track.py \
   --output /path/to/TP-0.layers.trace.json \
   --anchor-regex '^YOUR_ONCE_PER_LAYER_KERNEL$' \
   --num-layers 40 --anchor-offset 0 --passes 1 \
+  --max-gpu-lanes 10 \
   --phase target-verify \
   --evidence 'Config/source revision ...; first L0 verified; 40 anchors per target pass; draft uses a different path.'
 ```
@@ -56,6 +59,32 @@ python3 scripts/add_layer_track.py \
   across a draft pass or an inter-iteration gap.
 - `.json` and `.json.gz` input/output work. Output must be a new file. A mapping
   report is saved as `<output>.layers.json`.
+- Use `--max-gpu-lanes 10` by default for a compact view; omit it when the user
+  wants the original stream layout. The helper assigns non-overlapping activity
+  to reusable display lanes and remaps matching GPU flow endpoints. It refuses
+  selections needing more than ten lanes, rather than hiding concurrent work.
+  Other unsupported or ambiguous events also fail with an explanation.
+- Original GPU `pid`/`tid` and source event index are retained in
+  `args._compact_gpu_track`; retired stream-name metadata is in the report.
+  GPU user scopes are preserved in a separate `GPU scopes` process so they do
+  not recreate hundreds of rows beside the kernel lanes. CPU scopes and flows
+  stay in their original process.
+
+For a trace that already has **verified guides beside the GPU**, compact it
+without adding duplicate labels:
+
+```bash
+python3 scripts/compact_gpu_tracks.py \
+  --trace /path/to/TP-0.layers.trace.json \
+  --output /path/to/TP-0.compact-layers.trace.json \
+  --max-gpu-lanes 10
+```
+
+This saves `<output>.compact.json`. Existing guides are preserved. If a guide
+is missing, under the wrong process, or has unverified boundaries, regenerate
+it from the original trace with `add_layer_track.py` first. Never treat the
+number of synthetic lanes as the number of real CUDA streams. The original
+trace remains necessary for stream scheduling and synchronization analysis.
 
 Every interval is a **guide**, from this layer's anchor to the next layer's
 anchor. Work before the anchor is outside its guide. The last interval, when
@@ -70,7 +99,7 @@ floating-point overlaps; original timestamps and report anchor values stay intac
 
 Open the annotated file with Perfetto's **Open trace file**. Expand the selected
 GPU/process, locate `Layer guide (...) — anchor intervals`, and pin it beside
-the GPU streams. Use relative times in the report to locate L0, L1, a middle
+the `GPU lane N (synthetic; ...)` tracks. Use relative times in the report to locate L0, L1, a middle
 layer and the final layer.
 
 If the browser cannot fetch a local trace URL, use the loopback viewer. It
@@ -94,12 +123,16 @@ time units, and the DeepSeek-V4.1 example.
 1. Check the report's PID, layer count, anchor offset, phase and source hash
    against the intended trace. Check two passes when claiming the mapping
    repeats across iterations.
-2. Verify every original event and metadata value is retained and Perfetto
-   imports the expected marker count. The report records counts; direct JSON
-   comparison provides stronger verification.
+2. Verify that reversing the recorded placement changes and restoring retired
+   metadata reconstructs the source event array exactly. Without compaction,
+   the source array remains an unchanged prefix. Check the original file hash.
+   In Perfetto, check both kernel count and actual imported track count: every
+   GPU activity lane and layer guide should have depth zero. A raw JSON tid
+   count alone can miss additional overflow tracks created by the importer.
 3. Inspect the guide beside the GPU kernels. If requested, capture the real
    viewer with readable labels and relevant streams. Preserve CPU tracks/flows
    when present; labels cannot reconstruct CPU events absent from the capture.
-4. Return the annotated trace, report, and screenshot if requested. State the
-   numbering convention and anchor-boundary limitation. Keep large traces and
+4. Return the compact trace, report, and screenshot if requested. State the
+   original stream count, synthetic lane count, numbering convention and
+   anchor-boundary limitation. Keep large traces and
    private capture paths out of public skill/PR artifacts.
