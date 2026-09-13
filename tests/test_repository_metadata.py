@@ -49,8 +49,8 @@ def test_marketplace_has_top_level_description() -> None:
     assert marketplace["description"]
     assert "LLM serving" in marketplace["description"]
     assert marketplace["plugins"][0]["description"]
-    assert marketplace["plugins"][0]["version"] == "0.6.0"
-    assert plugin["version"] == "0.6.0"
+    assert marketplace["plugins"][0]["version"] == "0.6.1"
+    assert plugin["version"] == "0.6.1"
     assert marketplace["plugins"][0]["version"] == plugin["version"]
     assert "Day-0" in marketplace["description"]
     assert "Day-0" in plugin["description"]
