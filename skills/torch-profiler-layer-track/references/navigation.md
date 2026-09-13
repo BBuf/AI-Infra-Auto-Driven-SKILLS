@@ -23,6 +23,7 @@ python3 scripts/add_layer_track.py \
   --anchor-regex '^_q_rope_store$' \
   --end-anchor-regex 'moe_finalize_all_reduce_kernel<4u, 5120u, 6u' \
   --num-layers 40 --anchor-offset 0 --passes 20 \
+  --max-gpu-lanes 10 \
   --phase target-verify \
   --evidence 'Matching source confirms one Q-store per target layer; 800 Q stores and 800 main MoE finalizers; first anchor verified as L0; draft uses a distinct path.'
 ```
@@ -81,11 +82,61 @@ WHERE s.category = 'layer_guide' ORDER BY s.ts;
 ```
 
 Expect `num_layers * passes` slices; each layer appears `passes` times. Zero
-last-layer duration is intentional without a terminal anchor. Compare original
-and annotated JSON event arrays and top-level metadata to verify preservation.
+last-layer duration is intentional without a terminal anchor. Without
+compaction, compare the unchanged prefix and top-level metadata. With
+compaction, reverse the recorded pid/tid changes and restore the report's
+retired stream metadata to compare the original event array exactly.
 For a CPU/GPU trace, check CPU event categories and flow events too. This helper
 loads the JSON in memory; for multi-GB traces, use an existing Trace Processor
 and a SQL debug track rather than exhausting local memory with a rewrite.
+
+## Compact lanes and CUDA Graph streams
+
+CUDA Graph replay can use many internal streams even when the model shares a
+small stream pool. The compact helper partitions kernel/memcpy/memset intervals
+into non-overlapping lanes, independently per GPU PID/device. The ten-lane
+limit is a display constraint, not permission to serialize or hide activity.
+If more than ten intervals overlap (including conservative ns import bounds),
+the helper fails before writing output. It never changes `ts` or `dur` to fit.
+Select a useful smaller time range or retain the original stream view in that
+case; disclose any selection. Preserve concurrent work in the selected range.
+
+One synthetic lane can contain several original streams, and one original
+stream can span several synthetic lanes. Click a kernel and inspect
+`args.stream` or `args._compact_gpu_track.tid` for the original identity.
+The compaction report gives the original stream count (including copy streams)
+and the kernel-only count separately. GPU flow endpoints follow their original
+activity to its new lane; ambiguous endpoints are rejected. CUDA Graph flows
+already lacking a matching CPU launch in the source are not reconstructed.
+
+`gpu_user_annotation` scopes retain their names/timing/provenance in a separate
+auxiliary process. Expand `GPU scopes (original PID ...)` when needed; these
+scope lanes do not represent additional kernel execution. CPU scopes are not
+moved. Layer guides stay beside GPU activity and are not counted against the
+ten activity lanes.
+
+Check actual imported lanes, not just distinct JSON tids:
+
+```sql
+SELECT p.pid, th.tid, th.name, count(*) AS events,
+       count(DISTINCT s.track_id) AS imported_tracks, max(s.depth) AS max_depth
+FROM slice s
+JOIN thread_track tt ON s.track_id = tt.id
+JOIN thread th ON tt.utid = th.utid
+JOIN process p ON th.upid = p.upid
+WHERE s.category IN ('kernel', 'gpu_memcpy', 'gpu_memset')
+GROUP BY p.pid, th.tid, th.name;
+```
+
+Every row should have one imported track and depth zero. For exact preservation,
+remove the trailing `new_metadata_count` events, insert each
+`retired_track_metadata` event at its `source_event_index` in ascending order,
+then restore each relocated event's original pid/tid and remove its provenance.
+Remove the `args` key too when `had_args` is false. The array must equal the
+source array in order, and non-event top-level metadata must match. When using
+the combined annotation command, first compare to the annotated intermediate;
+its original-event prefix must equal the raw source. This checks preservation
+without asserting that the generated lanes are real CUDA streams.
 
 ## Browser viewing and screenshots
 
