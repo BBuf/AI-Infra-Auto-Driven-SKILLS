@@ -463,6 +463,91 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
             self.mod.kernel_helpers.pattern_supports_framework(spec, "tokenspeed")
         )
 
+    def test_omni_source_roots_normalize_to_their_own_prefix(self) -> None:
+        profile_common = sys.modules["profile_common"]
+        for path, expected in (
+            (
+                "/work/sglang-omni/sglang_omni/models/qwen3_omni.py",
+                "sglang_omni/models/qwen3_omni.py",
+            ),
+            (
+                "/work/sglang-omni/sglang_omni_router/dispatch.py",
+                "sglang_omni_router/dispatch.py",
+            ),
+        ):
+            with self.subTest(path=path):
+                self.assertEqual(
+                    profile_common.normalize_repo_relative_path(path), expected
+                )
+
+    def test_omni_source_roots_win_the_kernel_source_ladder(self) -> None:
+        kernel = self.mod.kernel_helpers
+        omni_frame = "/work/sglang-omni/sglang_omni/models/qwen3_omni.py(214): forward"
+        torch_frame = (
+            "/usr/lib/python3.11/site-packages/torch/nn/modules/"
+            "linear.py(125): forward"
+        )
+        omni = kernel.normalize_source_location(omni_frame)
+        self.assertTrue(kernel.is_preferred_source_location(omni))
+        self.assertGreater(
+            kernel.source_location_priority(omni),
+            kernel.source_location_priority(
+                kernel.normalize_source_location(torch_frame)
+            ),
+        )
+        self.assertGreater(
+            kernel.frame_priority(omni_frame), kernel.frame_priority(torch_frame)
+        )
+
+    def test_omni_source_roots_win_the_overlap_scope_ladder(self) -> None:
+        overlap = self.mod.overlap_helpers
+        omni = overlap.canonicalize_python_scope_name(
+            "/work/sglang-omni/sglang_omni/models/qwen3_omni.py(214): forward"
+        )
+        torch_scope = overlap.canonicalize_python_scope_name(
+            "/usr/lib/python3.11/site-packages/torch/nn/modules/"
+            "linear.py(125): forward"
+        )
+        self.assertGreater(
+            overlap.source_scope_priority(omni),
+            overlap.source_scope_priority(torch_scope),
+        )
+        self.assertEqual(overlap.choose_best_scope((omni, torch_scope)), omni)
+
+    def test_overlap_scope_prefers_model_code_over_the_torch_runtime(self) -> None:
+        overlap = self.mod.overlap_helpers
+        torch_scope = overlap.canonicalize_python_scope_name(
+            "/usr/lib/python3.11/site-packages/torch/nn/modules/"
+            "linear.py(125): forward"
+        )
+        for frame in (
+            "/usr/lib/python3.11/site-packages/transformers/models/whisper/"
+            "modeling_whisper.py(310): forward",
+            "/usr/lib/python3.11/site-packages/torchaudio/functional/"
+            "filtering.py(90): lfilter",
+        ):
+            with self.subTest(frame=frame):
+                owner = overlap.canonicalize_python_scope_name(frame)
+                self.assertGreater(
+                    overlap.source_scope_priority(owner),
+                    overlap.source_scope_priority(torch_scope),
+                )
+                self.assertEqual(overlap.choose_best_scope((owner, torch_scope)), owner)
+
+    def test_overlap_scope_keeps_an_all_torch_chain_usable(self) -> None:
+        overlap = self.mod.overlap_helpers
+        chain = tuple(
+            overlap.canonicalize_python_scope_name(frame)
+            for frame in (
+                "/usr/lib/python3.11/site-packages/torch/nn/modules/"
+                "linear.py(125): forward",
+                "/usr/lib/python3.11/site-packages/torch/functional.py(650): einsum",
+            )
+        )
+        best = overlap.choose_best_scope(chain)
+        self.assertIn(best, chain)
+        self.assertGreater(overlap.source_scope_priority(best), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1390,6 +1390,8 @@ def source_location_priority(location: str) -> int:
     if not text or text == "unresolved":
         return -100
     penalty = 80 if is_low_signal_source_location(text) else 0
+    if text.startswith("sglang_omni/") or text.startswith("sglang_omni_router/"):
+        return 305 - penalty
     if text.startswith("python/sglang/"):
         return 300 - penalty
     if text.startswith("sglang/"):
@@ -1414,7 +1416,9 @@ def source_location_priority(location: str) -> int:
 def is_preferred_source_location(location: str) -> bool:
     text = str(location).strip()
     return (
-        text.startswith("python/sglang/")
+        text.startswith("sglang_omni/")
+        or text.startswith("sglang_omni_router/")
+        or text.startswith("python/sglang/")
         or text.startswith("sglang/")
         or text.startswith("vllm/")
         or text.startswith("python/tokenspeed/")
@@ -1475,6 +1479,10 @@ def frame_priority(frame_name: str) -> int:
     penalty = 80 if is_low_signal_source_location(normalized_text) else 0
     if raw_text.startswith(NOISE_FRAME_PREFIXES):
         return -20
+    if normalized_text.startswith("sglang_omni/") or normalized_text.startswith(
+        "sglang_omni_router/"
+    ):
+        return 305 - penalty
     if normalized_text.startswith("python/sglang/"):
         return 300 - penalty
     if normalized_text.startswith("sglang/"):
