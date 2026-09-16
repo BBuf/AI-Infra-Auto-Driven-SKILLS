@@ -106,6 +106,8 @@ def _normalize_repo_relative_path_cached(text: str) -> str:
     text = text.replace("\\", "/")
     lowered = text.lower()
     for marker, normalized_marker in (
+        ("sglang_omni_router/", "sglang_omni_router/"),
+        ("sglang_omni/", "sglang_omni/"),
         ("python/sglang/", "python/sglang/"),
         ("sgl_kernel/", "sgl_kernel/"),
         ("vllm/", "vllm/"),

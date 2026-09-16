@@ -1,6 +1,6 @@
 ---
 name: llm-torch-profiler-analysis
-description: "Unified LLM torch-profiler triage skill for `sglang`, `vllm`, `TensorRT-LLM`, and `TokenSpeed`. Use it to inspect an existing `trace.json(.gz)` or profile directory, or to drive live profiling against a running server when supported and return one three-table report with kernel, overlap-opportunity, and fuse-pattern tables."
+description: "Unified LLM torch-profiler triage skill for `sglang`, including existing traces from SGLang Omni workloads, plus `vllm`, `TensorRT-LLM`, and `TokenSpeed`. Use it to inspect an existing `trace.json(.gz)` or profile directory, or to drive live profiling against a running server when supported and return one three-table report with kernel, overlap-opportunity, and fuse-pattern tables."
 ---
 
 # Unified LLM Torch Profiler Analysis
@@ -9,10 +9,15 @@ description: "Unified LLM torch-profiler triage skill for `sglang`, `vllm`, `Ten
 
 Use this skill for `torch.profiler` analysis across:
 
-- `sglang`
+- `sglang`, including existing traces from SGLang Omni (`sglang-omni`) workloads
 - `vllm`
 - `TensorRT-LLM`
 - `TokenSpeed`
+
+SGLang Omni is not a separate framework. It serves through the SGLang runtime,
+so use `--framework sglang` and analyze its traces with `--input` or with
+`--mapping-input` and `--formal-input`. The SGLang live-capture path has not
+been validated against Omni servers.
 
 There is only one public workflow:
 
@@ -191,6 +196,8 @@ H100 notes:
 
 - inspect a `torch.profiler` trace or profile directory from `sglang`, `vllm`,
   `TensorRT-LLM`, or `TokenSpeed`
+- analyze an existing SGLang Omni trace and attribute GPU time to
+  `sglang_omni/` or `sglang_omni_router/` python source
 - profile a live serving endpoint and analyze the result
 - summarize which kernel families dominate prefill or decode
 - map kernels back to Python code paths
