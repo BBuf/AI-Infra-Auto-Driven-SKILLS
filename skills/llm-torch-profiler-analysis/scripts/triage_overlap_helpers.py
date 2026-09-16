@@ -695,7 +695,9 @@ def choose_best_scope(scope_chain: Sequence[str]) -> Optional[str]:
     ranked: List[Tuple[float, str]] = []
     for index, scope in enumerate(scope_chain):
         score = float(index)
-        if scope.startswith("python/sglang/"):
+        if scope.startswith("sglang_omni/") or scope.startswith("sglang_omni_router/"):
+            score += 52.0
+        elif scope.startswith("python/sglang/"):
             score += 50.0
         elif scope.startswith("sglang/"):
             score += 48.0
@@ -744,6 +746,10 @@ def source_scope_priority(scope: Optional[str]) -> int:
     if not normalized or normalized == "unmapped":
         return 0
     penalty = 80 if is_low_signal_scope(normalized) else 0
+    if normalized.startswith("sglang_omni/") or normalized.startswith(
+        "sglang_omni_router/"
+    ):
+        return 305 - penalty
     if normalized.startswith("python/sglang/"):
         return 300 - penalty
     if normalized.startswith("sglang/"):
