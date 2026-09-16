@@ -514,6 +514,40 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
         )
         self.assertEqual(overlap.choose_best_scope((omni, torch_scope)), omni)
 
+    def test_overlap_scope_prefers_model_code_over_the_torch_runtime(self) -> None:
+        overlap = self.mod.overlap_helpers
+        torch_scope = overlap.canonicalize_python_scope_name(
+            "/usr/lib/python3.11/site-packages/torch/nn/modules/"
+            "linear.py(125): forward"
+        )
+        for frame in (
+            "/usr/lib/python3.11/site-packages/transformers/models/whisper/"
+            "modeling_whisper.py(310): forward",
+            "/usr/lib/python3.11/site-packages/torchaudio/functional/"
+            "filtering.py(90): lfilter",
+        ):
+            with self.subTest(frame=frame):
+                owner = overlap.canonicalize_python_scope_name(frame)
+                self.assertGreater(
+                    overlap.source_scope_priority(owner),
+                    overlap.source_scope_priority(torch_scope),
+                )
+                self.assertEqual(overlap.choose_best_scope((owner, torch_scope)), owner)
+
+    def test_overlap_scope_keeps_an_all_torch_chain_usable(self) -> None:
+        overlap = self.mod.overlap_helpers
+        chain = tuple(
+            overlap.canonicalize_python_scope_name(frame)
+            for frame in (
+                "/usr/lib/python3.11/site-packages/torch/nn/modules/"
+                "linear.py(125): forward",
+                "/usr/lib/python3.11/site-packages/torch/functional.py(650): einsum",
+            )
+        )
+        best = overlap.choose_best_scope(chain)
+        self.assertIn(best, chain)
+        self.assertGreater(overlap.source_scope_priority(best), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

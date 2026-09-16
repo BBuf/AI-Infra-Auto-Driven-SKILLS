@@ -709,6 +709,8 @@ def choose_best_scope(scope_chain: Sequence[str]) -> Optional[str]:
             score += 44.0
         elif scope.startswith("sgl_kernel/"):
             score += 30.0
+        elif scope.startswith("torch/") or "/torch/" in scope:
+            score += 2.0
         elif ".py(" in scope:
             score += 10.0
         if "utils.py" in scope and "__call__" in scope:
@@ -764,6 +766,8 @@ def source_scope_priority(scope: Optional[str]) -> int:
         return 280 - penalty
     if normalized.startswith("sgl_kernel/"):
         return 260 - penalty
+    if normalized.startswith("torch/") or "/torch/" in normalized:
+        return 20
     if ".py(" in normalized:
         return 120 - penalty
     return 0
