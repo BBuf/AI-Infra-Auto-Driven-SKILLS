@@ -77,6 +77,16 @@ baseline, sweep a small set of high-impact runtime knobs, and cap the first
 pass around 10 candidates per framework. Do not search memory fractions by
 default.
 
+## Source and experiment contracts
+
+Use the [2026-09-18 source contracts](../../docs/upstream-source-contracts.md)
+for current profiler APIs, branch-specific defaults and KV sizing semantics.
+Before combining PRs or claiming kernel performance/accuracy equivalence, use
+[paired-validation.md](references/paired-validation.md). It distinguishes
+code-only A/B from deployment tuning, real from simulated acceptance, and
+interactivity from aggregate output throughput. Profile after timing to prove
+that the candidate backend actually ran.
+
 ## Validation Environment
 
 This skill is target-agnostic. It assumes any one of the following is
@@ -96,43 +106,11 @@ framework installed.
 Reference files are optional and version-sensitive. Treat historical flag notes
 as evidence from one image, not as a compatibility guarantee for the next run.
 
-Additional H100 validation on `2026-05-01` used two 2-card models with a
-bounded search of two SGLang memory-fraction candidates and two vLLM
-memory-utilization candidates. The workload was random input `512`, output
-`64`, 8 prompts, and 2 warmup requests, only to prove the search and summary
-path can finish quickly.
-
-| Model | GPUs | Best SGLang | Best vLLM | Artifact root |
-| --- | --- | --- | --- | --- |
-| `Qwen/Qwen3-8B` | 2x H100, TP=2 | `sglang_mem086`, 21.64 req/s, 1385.05 output tok/s, mean TTFT 70.54 ms | `vllm_mem080`, 22.88 req/s, 1464.25 output tok/s, mean TTFT 60.56 ms | `/data/bbuf/validate/core_skill_validation_20260501/qwen3_8b/auto_benchmark` |
-| `mistralai/Mistral-7B-Instruct-v0.3` | 2x H100, TP=2 | `sglang_mem080`, 24.09 req/s, 1541.92 output tok/s, mean TTFT 61.47 ms | `vllm_mem090`, 24.76 req/s, 1584.54 output tok/s, mean TTFT 58.63 ms | `/data/bbuf/validate/core_skill_validation_20260501/mistral_7b_instruct_v03/auto_benchmark` |
-
-Additional B200 smoke validation on `2026-06-27` used `GPUC5A6`
-(`cirrascale-gpuc5a6`) in container `sglang_bbuf`, artifact root
-`/data/bbuf/ai_infra_skills_pr72_20260627`. The target image had SGLang
-`0.5.13.post1` installed, but no `vllm`, `trtllm-serve`, or `tokenspeed`
-CLI in that container, so only SGLang was model-smoked and the missing
-frameworks were recorded as environment gaps, not as unsupported frameworks.
-
-| Model | GPU | Result |
-| --- | --- | --- |
-| `Qwen/Qwen2.5-0.5B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
-| `Qwen/Qwen2.5-1.5B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
-| `Qwen/Qwen2.5-3B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
-| `Qwen/Qwen2.5-7B-Instruct` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
-| `Qwen/Qwen3-8B` | 1x B200 | 5 random prompts completed; GPU memory returned to 0 MiB |
-
-The 2026-08-23 source refresh did **not** recapture those rows. The assigned
-B200 host (`lmsys@40.142.96.44`) closed SSH on port 22, so there is no new
-GPU smoke, MiniMax-M3 revalidation, or four-framework CLI help capture from
-this date. Treat every 2026-08-23 flag or recipe note as a source check, not
-as a replacement for the 2026-06-27 B200 evidence.
-
-The same B200 refresh ran the cookbook validator against captured help
-snapshots. Missing-command help captures such as `trtllm-serve_missing.txt`
-are now ignored unless at least one real `--flag` is present, preventing a
-missing framework binary from being misreported as hundreds of unsupported
-framework flags.
+Historical smoke validation on 2026-05-01 (H100) and 2026-06-27 (B200) exercised
+small serving/search workloads. The B200 image provided only SGLang; missing
+vLLM/TRT-LLM/TokenSpeed CLIs were environment gaps. Those runs are not current
+cross-framework speed or accuracy results. The September source refresh ran
+offline tooling, not a new GPU matrix.
 
 ## Skill Scope
 
@@ -177,123 +155,35 @@ the profiler workload must reuse the slow SGLang benchmark scenario lengths
 instead of falling back to its generic prefill `4090->1` and decode `1->2048`
 defaults.
 
-## Known Gotchas
+## Version-sensitive deployment checks
 
-Short list of failure modes that have bitten past validation runs. Check these
-before starting a long sweep.
-
-- SGLang `fa3` attention backends need Hopper or newer. On A100, L40S, RTX
-  5090, and older GPUs, drop `fa3` from the SGLang `search_space` and keep
-  `flashinfer` (or `triton` when FlashInfer is unavailable).
-- SGLang `bench_serving` has two SGLang-facing backends: `--backend sglang` for
-  the native `/generate` endpoint and `--backend sglang-oai` for the
-  OpenAI-compatible endpoint. For cross-framework comparisons, prefer
-  `sglang-oai` so every framework is measured on the same request path.
-- vLLM `--enable-dbo` only works when the target vLLM image is built with a
-  supported all2all backend. Keep DBO out of the default candidate list unless
-  the operator has verified the image.
-- vLLM still exposes `--long-prefill-token-threshold`; verify the exact flag
-  against the target image before searching it.
-- SGLang current mainline was checked on 2026-08-23 at
-  `eec794bce0808ae26cc1dcb84a56b65d2df82af5` (released tags `v0.5.17` on
-  2026-08-08 and `v0.5.18` on 2026-08-22). Record these as source notes, not
-  as GPU-smoked winners:
-  - public cookbooks now emit `sglang serve`; keep capturing
-    `python -m sglang.launch_server --help` until the target image drops it
-  - v0.5.17 adds opt-in `--enable-session-radix-cache` plus `/close_session`,
-    experimental `--dwdp-size` MoE prefill, and a weight-cache daemon
-  - v0.5.18 moves compiled-kernel caches under `SGLANG_CACHE_DIR` (first
-    launch after upgrade recompiles once) and adds
-    `--startup-weight-load-mode overlap`
-  - v0.5.18 CUDA images require torch 2.13.0 / triton 3.7.1; treat older
-    torch 2.9/2.11 images as stale before scoring them. `--torchao-config`
-    is removed. NVFP4 + `flashinfer_trtllm` MoE deferred finalize is on by
-    default for the DeepSeek-V3 family
-  - FlashInfer MNNVL pure-allreduce is auto-on for DeepSeek-V3/V3.2/V4;
-    elsewhere it is `--enable-flashinfer-pure-allreduce`
-  - v0.5.18 known issues: Kimi K3 MLA gate→QKV-A GEMM fusion landed then
-    reverted (`#33623` / `#34642`); AMD GLM-5.2 fused shared-expert append
-    also reverted (`#31323` / `#35105`); v0.5.17 gRPC parallel request
-    lifecycle tracking was reverted (`#34160`)
-- vLLM current mainline was checked on 2026-08-23 at
-  `bbe8b23e1a2b32a96240b27f63255170d09ef144` (released tags `v0.27.0` on
-  2026-08-10 and `v0.27.1` on 2026-08-11). It includes the earlier PR
-  `#46735` CUDA-graph Triton / NVFP4-emulation MoE fix, plus the Kimi K3
-  stack that landed in 0.27.0. If a target image predates either, treat
-  Triton-MoE graph-capture failures, eager fallback, or missing Kimi K3
-  loaders as an image/runtime issue before scoring it against SGLang.
-- The same vLLM refresh includes PR `#44800` (`VLLM_GPU_SYNC_CHECK`). For
-  sync-heavy profiler rows, record whether the target image exposes this debug
-  knob before labeling the gap as kernel-local.
-- vLLM PR `#42669` extends FlashAttention-4 SM100 support to head dimension
-  256, while PR `#49982` fixes MLA padding, grouped top-k routing, and routed
-  scaling in the Transformers modeling backend. Treat images predating either
-  change as stale when those exact paths affect a row; neither merge is itself
-  benchmark evidence.
-- The same vLLM head lists `Qwen/Qwen3.8-27B` in the model registry, but the
-  public HF `config.json` uses `model_type=qwen3_5`. Do not invent a separate
-  vLLM Qwen3.8 implementation tree; compare that checkpoint against the
-  existing Qwen3.5 loader. The four-framework cookbook still leaves vLLM
-  disabled until a target-image smoke exists.
-- TensorRT-LLM mainline was checked on 2026-08-23 at
-  `da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`. Keep
-  `kv_cache_free_gpu_memory_fraction` in shipped configs until the target
-  `trtllm-serve serve --help` proves a shorter alias is accepted.
-  Same-day mainline also includes Qwen3.5/3.8 wave-2 (`#17700`), Qwen3.8-27B
-  FP8 VLM quant-config cleanup (`#17786`), Kimi K3 MLA decode backend
-  selection (`#17800`), and Kimi K3 NVFP4 MegaMoE SiTU (`#17865`). Record
-  those as source notes only; they do not enable a four-framework cookbook
-  lane without target-image smoke.
-- TensorRT-LLM 1.2+ and current 1.3.0rc line have removed the TensorRT engine
-  backend. PyTorch is the sole server backend, which matches this skill's
-  existing `trtllm-serve serve --backend pytorch` pin. Images that still
-  advertise `--backend tensorrt` are stale; do not search that backend.
-- TensorRT-LLM current mainline includes PR `#11685` and PR `#15546`, which
-  affect KV block eviction and KV block-offset host staging. If a target image
-  predates them, record stale-runtime risk when cache pressure, block-offset
-  races, or prefix/KV residency affect benchmark rows.
-- TensorRT-LLM PR `#16805` fixes disaggregated draft-token adoption and
-  sequence-length accounting; PR `#16763` unifies phase-1 CUDA graph cleanup
-  before final KV-cache allocation. Record the image SHA when disaggregated
-  speculative output or startup memory differs across runs.
-- The historical TensorRT-LLM 1.0.0 multi-GPU PyTorch-backend validation used
-  `--ipc=host`, `--ulimit memlock=-1`, `--ulimit stack=67108864`,
-  `--shm-size=16g`, and `NCCL_IB_DISABLE=1` (for single-node) or an equivalent
-  NCCL setup. Keep these as a starting point, not as a version-independent
-  requirement.
-- TensorRT-LLM current mainline still exposes benchmark client backends
-  `openai` and `openai-chat`, not `trtllm`. This is separate from the server
-  backend, which is pinned to `pytorch` by this skill.
-- `trtllm` `benchmark_serving --dataset-name random` silently falls back to
-  ShareGPT sampling without `--random-ids` (or `--download-path`).
-- TokenSpeed is a fast-moving engine. Current mainline checked on 2026-08-23 at
-  `lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d` exposes `tokenspeed serve`,
-  `tokenspeed bench`, `tokenspeed env`, and `tokenspeed version`. Its server
-  command is `tokenspeed serve <model>`, not a `python -m tokenspeed`
-  entrypoint.
-- TokenSpeed PR `#821` documents Kimi K3 FlatKV, KDA/MLA, and B300/AMD
-  deployment contracts. Keep it as source guidance only: the recipe contains
-  platform-specific sidecars, checkpoint-layout requirements, and explicit
-  output-quality and validation caveats, so it does not enable a generic benchmark lane
-  without target-image and model smoke evidence. After 2026-07-28, TokenSpeed
-  also merged scheduler 0.1.9 (`#1208`), Kimi K3 unrouted-decode projection
-  routing (`#1200`), and an MLA FP8 KV packing fallback (`#1199`). Record the
-  target SHA; do not treat those merges as a benchmark winner.
-- TokenSpeed's SGLang/vLLM-compatible parameter names are not always identical
-  in meaning. Prefer `--max-model-len`, `--max-num-seqs`,
-  `--chunked-prefill-size`, `--max-prefill-tokens`, `--max-total-tokens`,
-  `--tensor-parallel-size`, `--attn-tp-size`, `--moe-tp-size`,
-  `--enable-expert-parallel`, `--attention-backend`, `--moe-backend`,
-  `--kv-cache-dtype`, and speculative flags only after confirming the target
-  `tokenspeed serve --help` output.
-- TokenSpeed has an agentic benchmark path in-tree. When the workload is
-  multi-turn or tool-heavy, add a TokenSpeed-native `tokenspeed bench serve` or
-  EvalScope-style run beside the common OpenAI-compatible client and record both
-  result files in the same normalized row set.
-- `max_seq_len` / `max_model_len` / `context_length` candidates must cover
-  `max(input_len + output_len)` across every scenario, including values inside
-  `search_space`, not just the baseline. The validator checks this; do not
-  bypass it.
+- Consult the [source contracts](../../docs/upstream-source-contracts.md) for
+  exact inspected revisions. Preserve installed-image `--help` and effective
+  environment values; do not copy a historical release's defaults forward.
+- SGLang main and dsv4.1 differ on FlashInfer fused finalize at the inspected
+  heads. A numerical default change is part of the experiment, not noise.
+  The current kernel roots are `python/sglang/kernels/{aot,jit,ops}`.
+- SGLang's native `/generate` and OpenAI-compatible paths are different
+  benchmark lanes. Use one common endpoint/client when comparing frameworks;
+  separately label any native-client result.
+- Match attention/GEMM backend support to the GPU architecture and dtype.
+  “Blackwell” includes different SM targets; B200/GB300/RTX 5090 are not one
+  interchangeable backend contract. Verify support in the installed code.
+- vLLM DBO depends on a supported all-to-all backend. Compile fusion depends
+  on platform, graph partition and dtype guards. Confirm dispatch using the
+  [fusion reference](../llm-torch-profiler-analysis/references/vllm-torch-compile-fusions.md).
+- The shipped TensorRT-LLM lane uses `trtllm-serve serve --backend pytorch`.
+  Server backend is distinct from OpenAI benchmark-client backend. Verify the
+  model format, KV-memory flag spelling and random-dataset sampling options
+  from the selected CLI; do not silently fall back to another dataset.
+- TokenSpeed uses `tokenspeed serve <model>` and `tokenspeed bench serve`.
+  Its TP/attention-TP/MoE-TP/EP and memory flags need their own interpretation;
+  similarly named SGLang/vLLM options are not an equivalence guarantee.
+- Every max-context candidate must cover `max(input_len + output_len)` across
+  all scenarios, not just the baseline. The cookbook validator checks this.
+- Profile after timing. For a fixed simulated-acceptance curve, label it as
+  such; restart in real acceptance mode for model accuracy tests. Never promote
+  an unused replacement kernel because end-to-end scores happen to match.
 
 ## Secrets Hygiene
 

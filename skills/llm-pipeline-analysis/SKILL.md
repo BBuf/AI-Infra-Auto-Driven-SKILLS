@@ -22,22 +22,13 @@ navigation or detailed timing analysis.
 - when you need to navigate to a specific layer in Perfetto UI
 - when you need to select representative layers for deep-dive analysis
 
-## Confirmation Required
+## Verify inputs from artifacts
 
-Before running scripts, collect or verify these inputs:
-
-| Item | Why it matters | How to obtain | Default if user skips |
-|---|---|---|---|
-| Model name | Determines which `config.json` to use; affects layer classification | Ask user | — (required) |
-| Model profile | Determines anchor kernel, blocks-per-layer, and kernel classification rules | Ask user or auto-infer from config | Auto-inferred from config |
-| `config.json` path | Provides `compress_ratios`, `num_hidden_layers`, `num_hash_layers` etc. | Ask user or search filesystem | — (required) |
-| GPU type | Optional context for reports and hardware notes | Ask user | — |
-| TP / EP | Parallelism config affects kernel naming and AllReduce count | Ask user or infer from trace filename (e.g. `TP-0`) | TP=8, EP=8 |
-| Serving mode | Decode vs prefill changes kernel mix and FLOPs profile | Ask user | decode B=1 |
-
-If the user cannot provide `config.json`, search common locations such as
-`/root/workspace/*/config.json` and the HuggingFace cache. If it is still not
-available, require an explicit `--profile`.
+Resolve model config, phase, rank/device and TP/EP/DP from the run manifest,
+server arguments and trace. Ask only for missing information that changes the
+analysis. `TP-0` identifies a rank, not TP world size; do not default an unknown
+run to TP8/EP8 or decode BS1. Speculative request BS and target-verify M differ.
+If no config is available, use an explicit profile and verified layer count.
 
 ## Model Profiles
 
@@ -47,6 +38,7 @@ via `--profile`:
 
 | Profile | Anchor kernel | Blocks/layer | Layer structure | Auto-infer condition |
 |---|---|---|---|---|
+| `dsv41` | explicit verified `--anchor-kernel` | 1 | target or draft phase, verified separately | `model_type=deepseek_v41` |
 | `dsv4_csa_hca` | `mhc_post_tilelang` | 2 | attn + ffn halves | `compress_ratios` non-empty |
 | `dsv3_mla` | `flash_fwd_mla_combine` | 1 | full layer | `kv_lora_rank > 0` |
 | `generic` | repeated RMSNorm/AllReduce or `--anchor-kernel` | 1 | full layer | fallback |
@@ -67,7 +59,15 @@ anchor without requiring an NCCL AllReduce marker.
 The scripts use an anchor kernel as a layer-boundary marker. The anchor and
 layer structure are determined by the active **ModelProfile**.
 
-For example, with the `dsv4_csa_hca` profile, each transformer layer produces
+The legacy `dsv4_csa_hca` profile assumes an unfused trace with two matching
+mHC post calls per layer. This does not hold for every current V4/V4.1 path.
+The `dsv41` profile refuses automatic anchor selection: verify a once-per-layer
+anchor in one phase and use the matching config. Read
+[DSV4.1 lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+before interpreting mHC/AR fusion, PDL or shared-expert overlap. Anchor intervals
+are navigation guides; kernels on another stream can cross their boundaries.
+
+For an unfused trace compatible with `dsv4_csa_hca`, each transformer layer produces
 **2 consecutive** `mhc_post_tilelang` calls:
 
 ```

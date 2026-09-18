@@ -12,7 +12,7 @@ went. The analyzer reads SGLang/vLLM startup logs, extracts weight load, KV
 pool, CUDA graph, framework overhead, and token-capacity lines, then estimates
 concurrent requests for common token lengths.
 
-## Confirmation Required
+## Inputs
 
 Before running analysis, collect or verify these inputs:
 
@@ -101,7 +101,12 @@ SGLang-only fields.
 
 ### mem-fraction-static
 
-Controls what fraction of **available GPU memory after weight loading** is reserved for the KV cache pool. Higher values give more KV capacity but less headroom for CUDA graph and other runtime buffers.
+The inspected SGLang source reserves runtime headroom from **pre-model-load
+free memory**: `headroom = pre_model_load_memory * (1 - mem_fraction_static)`.
+The KV budget starts from currently free memory minus this headroom and other
+model-specific reservations. It is not `post_weight_free * fraction`.
+Post-capture sizing may update the pool again. Use final logged capacity and
+rank-local evidence; see [source contracts](../../docs/upstream-source-contracts.md).
 
 - `0.88` (default): aggressive — 88% of post-weight memory goes to KV pool
 - `0.60`: conservative — more free memory left for runtime, but significantly less KV capacity

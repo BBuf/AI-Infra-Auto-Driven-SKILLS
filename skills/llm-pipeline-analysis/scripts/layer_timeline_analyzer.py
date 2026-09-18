@@ -58,6 +58,12 @@ def find_anchor_kernel(gpu_kernels, profile: ModelProfile) -> str:
     """
     if profile.anchor_kernel:
         return profile.anchor_kernel
+    if profile.name == "dsv41":
+        raise ValueError(
+            "DSV4.1 fused boundaries depend on the active path. Supply a verified "
+            "once-per-layer --anchor-kernel and the matching --config/--num-layers; "
+            "separate target verify from draft passes first."
+        )
 
     # Common anchor candidates across model families
     candidates = [
@@ -431,7 +437,7 @@ def main():
     ap.add_argument(
         "--profile",
         default=None,
-        help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
+        help="Model profile name (dsv41, dsv4_csa_hca, dsv3_mla, generic). "
         "Auto-inferred from config if not specified.",
     )
     ap.add_argument(

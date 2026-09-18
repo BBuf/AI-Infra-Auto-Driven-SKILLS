@@ -258,9 +258,6 @@ def build_layer_ops(
             )
         is_sparse_attention = bool(sparse_attention_freq[layer_idx])
 
-    n_hash_layers = cfg.get("num_hash_layers", 0)
-    is_hash = n_hash_layers > 0 and layer_idx >= n_layers - n_hash_layers
-
     # ---- Input Layernorm (RMSNorm) ----
     ops.append(
         Op(
@@ -425,7 +422,6 @@ def build_layer_ops(
         # ---- NSA-specific ops for C128 layers ----
         index_n_heads = cfg.get("index_n_heads", 0)
         index_head_dim = cfg.get("index_head_dim", 0)
-        index_topk = cfg.get("index_topk", 0)
         sliding_window = cfg.get("sliding_window", 128)
 
         if compress_ratio == 128 and index_n_heads > 0:
@@ -457,8 +453,6 @@ def build_layer_ops(
             )
 
             # Paged MQA (indexer attention: index_n_heads Q, 1 KV head, topk blocks)
-            n_blocks = (S + sliding_window - 1) // sliding_window
-            paged_mqa_kv_len = min(index_topk * sliding_window, S)
             paged_mqa_flops = (
                 matmul_flops(B * index_n_heads, S, index_head_dim) if S > 1 else 0
             )
@@ -479,9 +473,6 @@ def build_layer_ops(
         # C4 sparse attention (for layers with compress_ratio > 0)
         if compress_ratio > 0 and S > 1:
             c4_kv_len = max(S // compress_ratio, sliding_window)
-            c4_attn = (
-                matmul_flops(B * n_heads, S * c4_kv_len, d_head) // S
-            )  # per-query-token
             c4_attn_total = matmul_flops(B * n_heads, S, d_head)  # score: Q @ K^T
             ops.append(
                 Op(
@@ -1286,7 +1277,6 @@ def map_kernel_detail_to_ops(kernel_detail: dict, ops: list, tp: int, ep: int) -
           direct_matched: {kernel_category: [op_names]} for info
           gemm_distributed: [op_names] for info
     """
-    kernels = kernel_detail.get("kernels", [])
     cat_summary = kernel_detail.get("category_summary", {})
 
     # Build op name → list of indices mapping (same name may appear multiple times)

@@ -32,8 +32,11 @@ This is the baseline for all subsequent memory calculations:
 Extracts: rank, available_gpu_memory, total_gpu_memory, mem_fraction_static, rest_memory
 
 Key semantics:
-- `total_gpu_memory`: available GPU memory after weight loading (before KV pool)
-- `available_gpu_memory`: `total_gpu_memory * mem_fraction_static`
+- `total_gpu_memory`: historical reservation baseline, not post-weight free memory
+- `available_gpu_memory`: currently free memory before allocating the KV pool
+- For this example, `57.01 - 93.58 * (1 - 0.60) ≈ 19.58 GiB`.
+  Current sizing also accounts for model-specific reservations and post-capture
+  resizing; see [source contracts](../../../docs/upstream-source-contracts.md).
 - `rest_memory`: actual memory reserved for KV pool (after subtracting framework buffers from `available_gpu_memory`)
 
 ### 4. SW KV Memory Calculation (SWA models)
@@ -91,7 +94,7 @@ Key semantics:
 
 ```
 framework_overhead = GPU_HBM - avail_before_weight
-model_weights      = avail_before_weight - memory_profiling.total_gpu_memory
+model_weights      = avail_before_weight - memory_profiling.available_gpu_memory
 kv_pool            = memory_profiling.rest_memory
 cuda_graph         = cuda_graph_end.mem_usage
 other              = nvidia_smi_used - sum(above)

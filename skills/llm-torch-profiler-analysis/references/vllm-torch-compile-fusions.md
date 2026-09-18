@@ -1,11 +1,14 @@
 # vLLM Torch Compile Fusion Patterns
 
-Refresh: `2026-08-23`.
-Source tree: vLLM `origin/main` at
-`bbe8b23e1a2b32a96240b27f63255170d09ef144`. This refresh adds the
-ROCm-specific `QkNormRopeKvCacheFusionPass` introduced by merged PR `#42749`;
-it supersedes the separate QK-norm/RoPE and RoPE/KV-cache passes for supported
-attention layers and head dimensions.
+Source inspection: **2026-09-18**, vLLM
+`d5f0a6e829faa69d1db289bf62b14dae136c02b2`.
+[Pass manager](https://github.com/vllm-project/vllm/blob/d5f0a6e829faa69d1db289bf62b14dae136c02b2/vllm/compilation/passes/pass_manager.py)
+and [configuration](https://github.com/vllm-project/vllm/blob/d5f0a6e829faa69d1db289bf62b14dae136c02b2/vllm/config/compilation.py)
+are the registration/gating authority. The previous MiniMax-specific pass is
+not registered in this snapshot. Transformers norm canonicalization now adds
+`AddRMSNormFusionPass` before AR+RMS matching and `RMSNormReshapeFusionPass`
+afterward, exposing remaining norms to quant fusion. Current CUDA C++ sources
+are under `csrc/libtorch_stable/`.
 
 Use this file when the fuse-pattern table reports split kernels in a trace and
 you need to decide whether the shape is already covered by vLLM's
@@ -22,7 +25,6 @@ vLLM registers these passes from
 | `enable_sp` | `SequenceParallelismPass` | all-reduce around residual/norm blocks becomes reduce-scatter, local work, and all-gather |
 | `fuse_gemm_comms` | `AsyncTPPass` | GEMM plus reduce-scatter / all-gather overlap through symmetric-memory collectives |
 | `fuse_allreduce_rms` | `AllReduceFusionPass` or ROCm AITER variant | all-reduce followed by RMSNorm, optional residual add, optional FP8 / NVFP4 quant; current pass ordering runs AITER add-RMSNorm-pad before this fusion when available |
-| `fuse_minimax_qk_norm` | `MiniMaxQKNormPass` | MiniMax Q/K all-reduce plus RMSNorm decode path |
 | `fuse_norm_quant` | `RMSNormQuantFusionPass` | RMSNorm or fused-add-RMSNorm followed by FP8 / FP4 quant |
 | `fuse_norm_quant` + AITER | `RocmAiterRMSNormQuantFusionPass` | ROCm AITER RMSNorm / fused-add-RMSNorm followed by AITER or vLLM quant |
 | `fuse_act_quant` | `ActivationQuantFusionPass` | SiLU-and-mul followed by FP8 / NVFP4 / block quant |
@@ -53,7 +55,6 @@ vLLM registers these passes from
 | `fusion/mla_rope_kvcache_cat_fusion.py` | `MLARoPEKVCacheCatPattern` | MLA RoPE on `q_pe` and `k_pe` flows into `unified_mla_kv_cache_update` | `vllm.fused_rope_unified_mla_kv_cache_update`, backed by `concat_and_cache_mla_rope_fused` |
 | `fusion/attn_quant_fusion.py` | `AttnFp8StaticQuantPattern`, `AttnNvfp4QuantPattern` | attention output followed by FP8 static quant or NVFP4 quant | backend attention op with fused output quant when supported |
 | `fusion/mla_attn_quant_fusion.py` | `MLAAttnFp8StaticQuantPattern`, `MLAAttnNvfp4QuantPattern`, `MLAAttnFp8GroupQuantPattern` | MLA attention output followed by static FP8, NVFP4, or FP8 group quant | MLA attention op with fused output quant when supported |
-| `fusion/minimax_qk_norm_fusion.py` | `MiniMaxQKNormPattern` | MiniMax `forward_qk`: Q/K variance all-reduce divided by TP world size, then RMS apply | `vllm.minimax_qk_norm_fused` / Lamport fused kernel |
 | `fusion/sequence_parallelism.py` | `FirstAllReduceRMSNormPattern`, `MiddleAllReduceRMSNormPattern`, `FirstAllReduceRMSNormStaticFP8Pattern`, `MiddleAllReduceRMSNormStaticFP8Pattern` | all-reduce plus norm block in a full-graph TP model | sequence-parallel reduce-scatter, local norm, all-gather staging |
 | `fusion/collective_fusion.py` | `GEMMReduceScatterPattern`, `AllGatherGEMMPattern`, `ScaledMMReduceScatterPattern`, `AllGatherScaledMMPattern`, `CutlassScaledMMReduceScatterPattern`, `AllGatherCutlassScaledMMPattern`, `FlashInferBMMFP8ReduceScatterPattern`, `FlashInferAllGatherBMMFP8Pattern` | matmul / scaled-mm / FlashInfer BMM adjacent to TP collectives | symmetric-memory fused matmul+reduce-scatter or all-gather+matmul |
 
