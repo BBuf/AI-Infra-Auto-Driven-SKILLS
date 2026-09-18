@@ -77,7 +77,6 @@ CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
             "gemv",
             "matmul",
             "cublas",
-            "cutlass",
             "wgmma",
             "mma",
             "bmm",
@@ -1335,6 +1334,7 @@ def canonicalize_name(name: str) -> str:
 def classify_kernel(name: str) -> str:
     # Keep the matching order explicit: strong communication/memory signals win
     # first, then we fall back to weaker category hints.
+    # CUTLASS also implements norm/quant kernels; its namespace is not a GEMM hint.
     lowered = name.lower()
     if contains_any_keyword(lowered, COMMUNICATION_STRONG_KEYWORDS):
         return "communication"

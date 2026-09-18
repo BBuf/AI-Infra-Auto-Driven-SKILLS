@@ -193,6 +193,15 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
             ("_hc_mix_reduce_sinkhorn_kernel", "hyperconnection"),
             ("void sglang::wo_a_mega::wo_a_kernel", "attention_projection"),
             ("void sglang::moe_finalize_all_reduce_kernel", "communication"),
+            ("kernel_cutlass_kernel_flashinfernormkernelsrmsnormRMSNormKernel", "norm"),
+            (
+                "kernel_cutlass_kernel_flashinferquantizationMxfp8QuantizeKernel",
+                "quantize",
+            ),
+            (
+                "kernel_cutlass_kernel_flashinfergemmkernelsdense_blockscaled_gemm_sm100Sm100BlockScaledPersistentDenseGemmKernel",
+                "gemm",
+            ),
         ]:
             with self.subTest(name=name):
                 self.assertEqual(classify(name), expected)
