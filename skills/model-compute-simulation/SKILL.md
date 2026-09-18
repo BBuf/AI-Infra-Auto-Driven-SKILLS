@@ -12,7 +12,7 @@ MFU, or parallelism checks. The simulator loads a model config, builds the
 representative operator sequence, prints tensor shapes and FLOPs, and can
 estimate MFU from measured latency.
 
-## Confirmation Required
+## Inputs
 
 Before running a simulation, collect or verify these inputs:
 
@@ -23,7 +23,7 @@ Before running a simulation, collect or verify these inputs:
 | GPU type | Determines peak FLOPS for MFU denominator | Ask user | — (required for MFU) |
 | dtype (bf16 / fp8) | Affects peak FLOPS selection; fp8 doubles peak | Ask user | bf16 |
 | Batch size & seq len | Directly affects FLOPs and tensor shapes | Ask user | B=1, S=1 (decode) |
-| TP / DP / EP | TP splits GEMM FLOPs across GPUs; EP splits expert FLOPs | Ask user | TP=8, DP=1, EP=8 |
+| TP / DP / EP | TP splits GEMM FLOPs across GPUs; EP splits expert FLOPs | Ask user | Read the run manifest; otherwise report assumptions explicitly |
 | Measured latency (ms) | Required for MFU numerator; must be per-GPU forward-pass wall-clock | Ask user or extract from a profiler trace | — (optional, no MFU without it) |
 
 If the model is not in `model-config-index.json`, ask the user for a
@@ -31,6 +31,21 @@ If the model is not in `model-config-index.json`, ask the user for a
 The 2026-08-23 refresh added public `Qwen/Qwen3.8-27B` (`qwen3.8-27b`):
 64-layer hybrid GDN/GQA, no MoE. The 2.4T Qwen3.8-A95B checkpoint is not
 indexed here because this pass did not lock a serving config.json.
+
+## Shape and timing limits for speculative MoE
+
+For DSV4.1, obtain actual target/draft row counts from the trace: request BS=1
+can issue six target-verify rows with DSPARK block size 5. Do not substitute
+acceptance length for the number of rows computed. Account for TP-sharded
+shared-expert shapes separately from routed expert assignments and EP.
+Do not divide an unverified model template by TP/EP and call it measured FLOPs.
+The indexed model configs are historical examples, not an automatic V4.1 config.
+
+Kernel-duration sums include overlap and possibly PDL dependency waits. Use
+wall-clock time for a whole-pass MFU denominator, and measured GPU SKU/dtype
+peaks rather than assuming every FP8 operation doubles useful FLOPs. Follow the
+[DSV4.1 source and profiling lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+when assigning kernel names to attention, shared experts, routing or mHC.
 
 ## Workflow
 

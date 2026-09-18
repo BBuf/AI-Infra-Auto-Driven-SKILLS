@@ -1,137 +1,22 @@
-# AI-Infra-Auto-Driven-SKILLS Refresh Prompt
+# Refresh the skills from source
 
-Use this prompt when refreshing a branch or pull request for
-`BBuf/AI-Infra-Auto-Driven-SKILLS`.
+刷新目标由用户指定；不要把历史机器、日期、模型矩阵或 PR 当成当前环境。
 
-目标：把仓库里的 skills、model PR history、open PR watch、benchmark/profiler
-说明和真实验证证据更新到当前日期，避免过期 SHA、幻觉式框架支持、以及未验证的
-benchmark/profiler 结论。完成后提交并推送到当前 PR 分支。
-
-## B200 机器
-
-先读取当前 B200/Radix 机器 skill，并确认分配仍然有效：
-
-```bash
-radix machines mine --json
-```
-
-使用 skill 里当前有效的 SSH 或 `radix shell` 命令。不要把历史机器名、IP 或已过期
-assignment 当成永久入口；连接后先核对 hostname、GPU 型号/数量、进程所有者和容器
-归属。如果指定节点不可用，可以使用另一个已分配的 8x B200 skill，但必须在最终报告
-中记录实际节点和环境差异。
-
-Main container:
-
-```bash
-sudo docker exec -it sglang_bbuf bash
-```
-
-MiniMax-M3-only container:
-
-```bash
-sudo docker start sglang_m3
-sudo docker exec -it sglang_m3 bash
-```
-
-每做完一个模型验证，都要 kill server、确认 `nvidia-smi` 显存回到 0，再做下一个。
-MiniMax-M3 验证结束后如果是本轮启动的 `sglang_m3`，要停止容器。
-
-## 必做步骤
-
-1. 在本地确认分支、PR、dirty 状态，不要覆盖用户未要求回退的改动。
-2. 读取相关 skill 说明：`model-pr-history-knowledge`、`llm-serving-auto-benchmark`、
-   `llm-torch-profiler-analysis`、以及当前 B200/Radix 机器 skill。
-3. 用 live upstream state 更新证据锚点：
-
-   ```bash
-   git ls-remote https://github.com/sgl-project/sglang.git refs/heads/main
-   git ls-remote https://github.com/vllm-project/vllm.git refs/heads/main
-   git ls-remote https://github.com/NVIDIA/TensorRT-LLM.git refs/heads/main
-   git ls-remote https://github.com/lightseekorg/tokenspeed.git refs/heads/main
-   ```
-
-4. 刷新 SGLang/vLLM merged PR history：
-
-   ```bash
-   SGLANG_PR_HISTORY_ROOT=/tmp/model-history-upstreams/sglang \
-   VLLM_PR_HISTORY_ROOT=/tmp/model-history-upstreams/vllm \
-   MODEL_PR_HISTORY_CACHE=/tmp/model_pr_history_git_trace_cache_v5.json \
-   python3 tools/rebuild_model_pr_history_from_git.py
-   ```
-
-   如果 SGLang/vLLM head 又变化，先 fetch/fast-forward mirror，再重跑。
-
-5. 刷新 open PR watch：
-
-   ```bash
-   python3 tools/check_open_pr_watch.py --format markdown \
-     --output model-pr-optimization-history/open-pr-watch.md
-   ```
-
-   如果 GitHub rate limit 触发，脚本应走匿名 REST fallback；如果所有 repo 都失败，
-   不允许写空报告。
-
-6. 对手写 TensorRT-LLM/TokenSpeed history 页做 head refresh，但不要把未人工读 diff
-   的 open PR 或新 merged PR 写成已审计卡片。
-7. 做 targeted stale scan，至少覆盖旧日期标题和旧 head：
-
-   ```bash
-   rg -n '2026-..-.. Latest Source Scan|2026-..-.. 最新源码扫描|OLD_SHA_1|OLD_SHA_2' \
-     model-pr-optimization-history skills README.md tests tools
-   ```
-
-8. 在当前 B200 skill 指定的个人 `sglang_bbuf` 容器里建立 artifact root，例如：
-
-   ```bash
-   ART=/data/bbuf/ai_infra_skills_refresh_$(date +%Y%m%d)
-   mkdir -p "$ART"/{help,serving,profiler,logs,minimax_m3}
-   ```
-
-   记录 Python、torch、CUDA、SGLang 版本，保存 server/benchmark `--help`。
-   如果 vLLM/TensorRT-LLM/TokenSpeed CLI 缺失，只记录 environment gap，
-   不要说该框架不支持。
-
-9. 用 5 个不同规模模型做 SGLang serving smoke，每次单独启动/benchmark/kill：
-
-   - `Qwen/Qwen2.5-0.5B-Instruct`
-   - `Qwen/Qwen2.5-1.5B-Instruct`
-   - `Qwen/Qwen2.5-3B-Instruct`
-   - `Qwen/Qwen2.5-7B-Instruct`
-   - `Qwen/Qwen3-8B`
-
-   固定单卡 B200、小 workload 即可，目标是验证 skill 命令、OpenAI path、benchmark
-   path 和清理流程，不要把它包装成公平跨框架性能结论。
-
-10. MiniMax-M3 只在 `sglang_m3` 容器验证。优先跑仓库里和 MiniMax-M3 loader/cache/JIT
-    相关的 unit/JIT smoke；只有环境已经满足官方 2x4 B200 disagg recipe 时，才做完整
-    serving。
-11. 跑 `llm-torch-profiler-analysis` live capture，至少对一个小 SGLang 模型抓
-    prefill/decode 分离 trace，并确认输出 kernel、overlap、fuse 三张表。
-12. 跑一个很小的 `ncu --set basic` CUDA matmul smoke，保存 `.ncu-rep` 和 log。
-13. 把当前 repo 快照同步到远端临时目录，远端跑：
-
-    ```bash
-    python3 -m pytest -q tests/test_model_pr_dossier_quality.py \
-      tests/test_open_pr_watch.py tests/test_llm_serving_cookbook_configs.py
-    python3 skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py \
-      --help-dir "$ART/help" \
-      skills/llm-serving-auto-benchmark/configs/cookbook-llm/*.yaml
-    ```
-
-14. 本地跑全量 pytest、py_compile/stale scan、必要的 query smoke。
-15. 更新 README、相关 skill 文档和 `model-pr-optimization-history/README.md`，
-    只写真实验证过的结论，明确环境 gap。
-16. 清理远端临时 repo、kill 任何 server、确认 8 张 B200 都回到 0 MiB。停止本轮启动的
-    `sglang_m3`。
-17. 提交、推送当前分支，更新当前 PR 描述或评论，等待 GitHub checks。若 CI 失败，
-    读取日志并修到通过。
-
-## 完成标准
-
-- 没有旧 head/旧 scan 标题残留。
-- `open-pr-watch.md` 不是 rate-limit 造成的空报告。
-- 5 个 SGLang 模型 smoke 都有 artifact，且每个模型后 GPU 清干净。
-- MiniMax-M3 有独立容器验证记录。
-- profiler live capture 和 ncu smoke 都有 artifact。
-- 本地和远端测试都通过。
-- PR 已推送，CI 状态已核对。
+1. 在干净分支/worktree 工作，记录仓库基线。对相关上游冻结 SHA，阅读调用方、
+   dispatch、实现与验证接口。更新 `docs/upstream-source-contracts.md`，不只改日期。
+2. 区分 main、模型开发分支、open PR 与安装的 wheel。历史 PR 卡片保留原始审计
+   日期；新增卡片需要逐份读 diff。不要把刷新一个 source head 写成全部模型已复测。
+3. 更新受影响的 skill、引用路径、HTTP/CLI 协议和脚本。详细案例放 references，
+   入口只保留判断流程。对于 PDL、fusion、split-K、metadata，核对模型实际 dispatch、
+   shape、布局和数值约定，不能用未命中的 microbenchmark 证明端到端收益。
+4. 删除过期机器脚本、无调用的 helper、重复描述，以及只锁定固定文字/日期/SHA/
+   版本号的测试。保留行为测试：数据丢失、错误归因、解析失败、fallback、数值、
+   边界条件、超时和路径处理。删除前查调用方，修好文档与入口。
+5. 跑剩余 CPU 测试、cookbook 校验、相关脚本真实输入 smoke、skill frontmatter 和
+   相对链接检查。新 capture 不得悄悄复用旧 trace；compact trace 必须保留原始事件。
+6. 修改 GPU/模型执行路径才按需要安排 live 验证。先核对有效分配和进程归属，
+   保存依赖版本、实际参数和产物；不可用时明确哪些项未运行。只清理由本任务启动
+   的服务，不要求共享机器全卡显存清零。
+7. 性能测量与 profiler 分开；精度必须是真实接受模式。报告 kernel correctness、
+   实际 dispatch、GSM8K/AIME 等任务评测和无 profiler 性能各自的覆盖范围。
+8. 提交一个聚焦 PR，写清实际修改、删除项、检查结果及未覆盖项。不要合并 PR。

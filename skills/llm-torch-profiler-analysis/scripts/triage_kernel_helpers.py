@@ -28,6 +28,12 @@ from profile_common import (
 
 CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
     (
+        "hyperconnection",
+        ("_hc_mix_", "_hc_combine", "mhc_post", "mhc_pre", "hc_post", "hc_head"),
+    ),
+    ("router", ("_router_triton_kernel", "moe_fused_gate")),
+    ("attention_projection", ("wo_a_",)),
+    (
         "hybrid_linear",
         (
             "gdn",
@@ -71,7 +77,6 @@ CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
             "gemv",
             "matmul",
             "cublas",
-            "cutlass",
             "wgmma",
             "mma",
             "bmm",
@@ -640,6 +645,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         active_keywords=(
             "fused_topk_deepseek",
             "moe_fused_gate",
+            "_router_triton_kernel",
             "aiter_fused_topk",
             "kimi_k2_moe_fused_gate",
         ),
@@ -648,8 +654,10 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("gate", "router", "renorm", "routed scaling"),
         ),
         rationale_hint=(
-            "Grouped-topk, bias handling, and routed scaling already have fused"
-            " gate kernels."
+            "Grouped-topk, bias handling, and routed scaling have fused gate kernels."
+            " Confirm packed IDs, padding, token-dependent bias, epsilon and"
+            " actual dispatch before replacing a router; a microbenchmark may"
+            " exercise a different backend from the model."
         ),
         min_share=0.3,
         likely_share=1.5,
@@ -660,8 +668,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="Qwen-style shared-expert append into routed top-k output",
         candidate_path=(
             "python/sglang/srt/models/qwen2_moe.py"
-            "<br>python/sglang/srt/layers/moe/moe_runner/triton_utils/"
-            "fused_moe_triton_kernels.py"
+            "<br>python/sglang/kernels/ops/moe/fused_moe_triton_kernels.py"
         ),
         active_keywords=(
             "_append_shared_to_topk_output",
@@ -715,7 +722,9 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
             ("quant", "fp8", "mxfp", "nvfp4", "dequant"),
         ),
         rationale_hint=(
-            "Quantized MoE backends already fuse activation with re-quantization."
+            "Some routed MoE backends fuse activation with re-quantization."
+            " Shared-expert MLPs can use a separate path: match clamp, BF16"
+            " rounding, quant group size and scale layout before reusing it."
         ),
         min_share=0.3,
         likely_share=1.5,
@@ -791,40 +800,9 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         likely_share=0.2,
     ),
     FusionPatternSpec(
-        pattern="PR #20667 Qwen3.5 fused QK norm + RoPE + KV cache write",
-        candidate_path=(
-            "PR #20667"
-            "<br>python/sglang/srt/models/qwen3_5.py"
-            "<br>python/sglang/srt/models/utils.py"
-        ),
-        active_keywords=(
-            "fused_qk_norm_rope_cache_pts_quant_shuffle",
-            "fused_qk_norm_mrope_3d_cache_pts_quant_shuffle",
-        ),
-        split_groups=(
-            ("apply_qk_norm", "qknorm", "q_norm", "k_norm"),
-            ("rotary", "rope", "mrope"),
-            ("cache", "kv_buffer", "cache write"),
-        ),
-        rationale_hint=(
-            "Open SGLang ROCm PR wires a fused QK-norm plus RoPE plus KV-cache"
-            " family for Qwen3.5."
-        ),
-        origin="inflight",
-        model_include=("qwen3.5", "qwen3_5"),
-        min_share=0.4,
-        likely_share=2.0,
-        priority=100,
-        subsumes=(
-            "Fused QK RMSNorm + RoPE",
-            "Fused QK RoPE reshape + KV cache write",
-            "Fused RoPE + KV cache store",
-        ),
-    ),
-    FusionPatternSpec(
         pattern="SGLang mainline FP8 scaled MM",
         candidate_path=(
-            "sgl-kernel/python/sgl_kernel/gemm.py"
+            "python/sglang/kernels/aot/python/sgl_kernel/gemm.py"
             "<br>python/sglang/srt/layers/quantization/fp8_utils.py"
         ),
         active_keywords=("cutlass_scaled_mm", "fp8_scaled_mm"),
@@ -846,7 +824,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="SGLang LTX2 fused Ada values",
         candidate_path=(
             "PR #29390"
-            "<br>python/sglang/kernels/ops/diffusion/triton/ltx2_ada_values.py"
+            "<br>python/sglang/kernels/ops/diffusion/modulate/ltx2_ada_values_triton.py"
             "<br>python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py"
         ),
         active_keywords=(
@@ -873,8 +851,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="SGLang LTX2 residual-gate add CUDA fast path",
         candidate_path=(
             "PR #29361"
-            "<br>python/sglang/kernels/ops/diffusion/residual_gate_add.py"
-            "<br>python/sglang/kernels/jit/csrc/diffusion/residual_gate_add.cuh"
+            "<br>python/sglang/kernels/kda_kernels/residual_gate_add_jit.py"
+            "<br>python/sglang/kernels/kda_kernels/csrc/diffusion/residual_gate_add.cuh"
             "<br>python/sglang/multimodal_gen/runtime/models/dits/ltx_2.py"
         ),
         active_keywords=(
@@ -901,7 +879,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="TokenSpeed CuTe DSL MLA prefill / decode",
         candidate_path=(
-            "python/tokenspeed/runtime/layers/attention/backends/tokenspeed_mla.py"
+            "python/tokenspeed/runtime/layers/attention/backends/paged/tokenspeed_mla.py"
             "<br>tokenspeed-mla/python/tokenspeed_mla/mla_decode.py"
             "<br>tokenspeed-mla/python/tokenspeed_mla/mla_prefill.py"
             "<br>tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/"
@@ -1021,8 +999,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         candidate_path=(
             "vllm/compilation/passes/fusion/attn_quant_fusion.py"
             "<br>vllm/v1/attention/ops/merge_attn_states.py"
-            "<br>vllm/csrc/attention/merge_attn_states.cu"
-            "<br>vllm/docs/design/fusions.md"
+            "<br>csrc/libtorch_stable/attention/merge_attn_states.cu"
+            "<br>docs/design/fusions.md"
         ),
         active_keywords=(
             "merge_attn_states",
@@ -1064,7 +1042,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="vLLM-origin RMSNorm + Quantization",
         candidate_path=(
             "vllm/compilation/passes/fusion/rms_quant_fusion.py"
-            "<br>vllm/docs/design/fusions.md"
+            "<br>docs/design/fusions.md"
         ),
         active_keywords=(
             "fused_add_rms_norm_static_fp8_quant",
@@ -1086,7 +1064,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="vLLM-origin SiLU+Mul + Quantization",
         candidate_path=(
             "vllm/compilation/passes/fusion/act_quant_fusion.py"
-            "<br>vllm/docs/design/fusions.md"
+            "<br>docs/design/fusions.md"
         ),
         active_keywords=(
             "silu_mul_quant_fp4",
@@ -1106,7 +1084,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="vLLM-origin DSV3 router GEMM",
         candidate_path=(
             "vllm/model_executor/layers/fused_moe/router/gate_linear.py"
-            "<br>vllm/csrc/moe/dsv3_router_gemm_entry.cu"
+            "<br>csrc/libtorch_stable/fp32_router_gemm_entry.cu"
         ),
         active_keywords=("dsv3_router_gemm", "fp32_router_gemm"),
         split_groups=(
@@ -1126,7 +1104,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         candidate_path=(
             "vllm/_custom_ops.py"
             "<br>vllm/model_executor/layers/fused_moe/router/gate_linear.py"
-            "<br>vllm/csrc/moe/gpt_oss_router_gemm.cu"
+            "<br>csrc/libtorch_stable/fp32_router_gemm.cu"
         ),
         active_keywords=("gpt_oss_router_gemm",),
         split_groups=(
@@ -1143,7 +1121,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="vLLM-origin DeepSeek min-latency fused QKV-A projection",
         candidate_path=(
             "vllm/model_executor/models/deepseek_v2.py"
-            "<br>vllm/csrc/dsv3_fused_a_gemm.cu"
+            "<br>csrc/libtorch_stable/dsv3_fused_a_gemm.cu"
         ),
         active_keywords=("dsv3_fused_a_gemm", "fused_qkv_a_proj"),
         split_groups=(
@@ -1356,6 +1334,7 @@ def canonicalize_name(name: str) -> str:
 def classify_kernel(name: str) -> str:
     # Keep the matching order explicit: strong communication/memory signals win
     # first, then we fall back to weaker category hints.
+    # CUTLASS also implements norm/quant kernels; its namespace is not a GEMM hint.
     lowered = name.lower()
     if contains_any_keyword(lowered, COMMUNICATION_STRONG_KEYWORDS):
         return "communication"

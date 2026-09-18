@@ -9,6 +9,12 @@ Turn a model release into a reviewable SGLang support program. Produce evidence,
 implementation boundaries, validation gates, and public release artifacts—not
 only a launch command.
 
+Use the maintained [source contracts](../../../docs/upstream-source-contracts.md)
+when applying historical evidence to a current branch. The review/history
+corpora retain their own capture dates; they do not certify today's dispatch
+or numerical defaults. For kernel replacements, verify that the real model
+executes the candidate before treating end-to-end tests as coverage.
+
 ## Start Here
 
 1. Read [day0-contract.md](references/day0-contract.md) completely.

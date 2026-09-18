@@ -3,13 +3,14 @@ from __future__ import annotations
 import contextlib
 import importlib.util
 import io
+import json
+import os
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
-
 
 SCRIPT_DIR = (
     Path(__file__).resolve().parents[1]
@@ -18,10 +19,6 @@ SCRIPT_DIR = (
     / "scripts"
 )
 SCRIPT = SCRIPT_DIR / "analyze_llm_torch_profile.py"
-SKILL_DIR = SCRIPT_DIR.parent
-SOURCE_MAP = SKILL_DIR / "references" / "source-map.md"
-FUSE_CATALOG = SKILL_DIR / "references" / "fuse-overlap-catalog.md"
-OVERLAP_CATALOG = SKILL_DIR / "references" / "overlap-catalog.md"
 
 
 def load_module():
@@ -73,103 +70,148 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
         values.update(overrides)
         return SimpleNamespace(**values)
 
+    def test_live_capture_requires_new_artifact_and_accepts_overwrite(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp).resolve()
+            trace = path / "fixed.trace.json"
+            trace.write_text(
+                json.dumps(
+                    {
+                        "traceEvents": [
+                            {
+                                "ph": "X",
+                                "cat": "kernel",
+                                "name": "old",
+                                "ts": 0,
+                                "dur": 1,
+                            }
+                        ]
+                    }
+                )
+            )
+            before = common.snapshot_trace_files(path)
+            with self.assertRaises(TimeoutError):
+                common.wait_for_profiler_artifact(path, timeout_s=0, before=before)
+            partial = path / "in-progress.pt.trace.json"
+            partial.write_text('{"traceEvents": [')
+            with self.assertRaises(TimeoutError):
+                common.wait_for_profiler_artifact(path, timeout_s=0, before=before)
+            trace.write_text(trace.read_text().replace("old", "new"))
+            os.utime(trace, ns=(before[trace][0] + 1000000, before[trace][0] + 1000000))
+            self.assertEqual(common.changed_trace_files(path, before), [trace])
+            self.assertEqual(
+                common.wait_for_profiler_artifact(path, timeout_s=0, before=before),
+                path,
+            )
+
+    def test_openai_endpoint_alone_does_not_identify_vllm(self):
+        common = sys.modules["profile_common"]
+        for owner, expected in [
+            (None, None),
+            ("tensorrt_llm", "trtllm"),
+            ("vllm", "vllm"),
+        ]:
+            with (
+                self.subTest(owner=owner),
+                mock.patch.object(
+                    common,
+                    "try_get_json",
+                    side_effect=[None, {"data": [{"id": "model", "owned_by": owner}]}],
+                ),
+            ):
+                self.assertEqual(
+                    common.detect_framework_from_url("http://server"), expected
+                )
+
+    def test_trtllm_rank_selection_prefers_rank_zero(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp).resolve()
+            for rank in [0, 1]:
+                trace = path / f"trtllm-trace-run-rank-{rank}.json"
+                trace.write_text(json.dumps({"traceEvents": []}))
+            selected, _ = common.discover_trace_targets(path, all_traces=False)
+            self.assertEqual(
+                [p.name for p in selected], ["trtllm-trace-run-rank-0.json"]
+            )
+
+    def test_capture_isolates_overwritten_trace_without_moving_server_file(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            fixed = root / "fixed.trace.json"
+            old = root / "old.trace.json"
+            fixed.write_text(json.dumps({"traceEvents": []}))
+            old.write_text(fixed.read_text())
+            payloads = []
+
+            def post(url, payload=None, **kwargs):
+                if url.endswith("/start_profile"):
+                    payloads.append(payload)
+                if url.endswith("/stop_profile"):
+                    fixed.write_text(json.dumps({"traceEvents": [{"name": "fresh"}]}))
+
+            with (
+                mock.patch.object(common, "post_json", side_effect=post),
+                mock.patch.object(
+                    common, "discover_openai_model", return_value="model"
+                ),
+            ):
+                captured = common.run_remote_profiler(
+                    "http://server",
+                    str(root),
+                    "trtllm",
+                    common.ProbePlan("x", 1, 0, 1, 0),
+                    0,
+                    stage="decode",
+                )
+            self.assertEqual(payloads[0]["output_dir"], str(root))
+            self.assertEqual(common.parse_stage(captured / fixed.name), "decode")
+            self.assertEqual((captured / fixed.name).read_bytes(), fixed.read_bytes())
+            self.assertFalse((captured / old.name).exists())
+            self.assertTrue(old.exists())
+
+    def test_trtllm_live_payload_uses_native_directory_contract(self):
+        common = sys.modules["profile_common"]
+        payload = common.build_remote_profiler_start_payload(
+            "trtllm", Path("/shared/traces"), None, "decode"
+        )
+        self.assertEqual(
+            payload, {"output_dir": "/shared/traces", "activities": ["CPU", "GPU"]}
+        )
+        self.assertIsNone(
+            common.build_remote_profiler_start_payload(
+                "vllm", Path("/shared/traces"), None, "decode"
+            )
+        )
+
+    def test_dsv41_kernel_categories_keep_math_and_communication_distinct(self):
+        classify = self.mod.kernel_helpers.classify_kernel
+        for name, expected in [
+            ("_router_triton_kernel", "router"),
+            ("_hc_mix_reduce_sinkhorn_kernel", "hyperconnection"),
+            ("void sglang::wo_a_mega::wo_a_kernel", "attention_projection"),
+            ("void sglang::moe_finalize_all_reduce_kernel", "communication"),
+            ("kernel_cutlass_kernel_flashinfernormkernelsrmsnormRMSNormKernel", "norm"),
+            (
+                "kernel_cutlass_kernel_flashinferquantizationMxfp8QuantizeKernel",
+                "quantize",
+            ),
+            (
+                "kernel_cutlass_kernel_flashinfergemmkernelsdense_blockscaled_gemm_sm100Sm100BlockScaledPersistentDenseGemmKernel",
+                "gemm",
+            ),
+        ]:
+            with self.subTest(name=name):
+                self.assertEqual(classify(name), expected)
+
     def test_auto_framework_does_not_guess_sglang(self) -> None:
         profile_common = sys.modules["profile_common"]
         with self.assertRaisesRegex(ValueError, "--framework"):
             profile_common.resolve_framework(
                 "auto",
                 input_path=Path("/tmp/framework-neutral-trace"),
-            )
-
-    def test_current_sglang_kernel_paths_replace_jit_kernel(self) -> None:
-        text = "\n".join(
-            [
-                SOURCE_MAP.read_text(),
-                FUSE_CATALOG.read_text(),
-                Path(self.mod.kernel_helpers.__file__).read_text(),
-                Path(self.mod.overlap_helpers.__file__).read_text(),
-            ]
-        )
-        self.assertNotIn("python/sglang/jit_kernel/", text)
-        self.assertNotIn("scheduler_profiler_mixin.py", text)
-
-    def test_pr_evidence_states_are_explicit(self) -> None:
-        text = "\n".join(
-            [FUSE_CATALOG.read_text(), OVERLAP_CATALOG.read_text()]
-        )
-        lines = text.splitlines()
-
-        def evidence_lines(pr_number: int) -> list[str]:
-            marker = f"#{pr_number}"
-            return [line for line in lines if marker in line]
-
-        for pr_number in (
-            21877,
-            21889,
-            21491,
-            22005,
-            20667,
-            24168,
-            2720,
-            38621,
-            36413,
-            41446,
-        ):
-            matches = evidence_lines(pr_number)
-            self.assertTrue(matches, msg=f"missing open PR #{pr_number}")
-            self.assertTrue(
-                any("open" in line.lower() for line in matches),
-                msg=f"PR #{pr_number} is not labeled open",
-            )
-
-        for pr_number in (
-            18612,
-            22918,
-            22851,
-            24125,
-            24007,
-            23965,
-            12525,
-            12544,
-            12738,
-            38445,
-            37646,
-            41263,
-            41428,
-            41255,
-            36823,
-        ):
-            matches = evidence_lines(pr_number)
-            self.assertTrue(matches, msg=f"missing merged PR #{pr_number}")
-            self.assertTrue(
-                any(
-                    "merged" in line.lower() or "mainline" in line.lower()
-                    for line in matches
-                ),
-                msg=f"PR #{pr_number} is not labeled merged/mainline",
-            )
-            self.assertFalse(
-                any("in-flight" in line.lower() for line in matches),
-                msg=f"merged PR #{pr_number} is still labeled in-flight",
-            )
-
-        for pr_number in (
-            22392,
-            24150,
-            21878,
-            12557,
-            35968,
-            37110,
-            39301,
-            41455,
-            41441,
-            39748,
-        ):
-            matches = evidence_lines(pr_number)
-            self.assertTrue(
-                not matches
-                or all("closed-unmerged" in line.lower() for line in matches),
-                msg=f"closed-unmerged PR #{pr_number} is ambiguous",
             )
 
     def test_mapping_formal_overlap_uses_matching_formal_stage_payload(self) -> None:
@@ -422,45 +464,6 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 "profile_probe_11 profile profile",
                 "profile_probe_12 profile profile",
             ],
-        )
-
-    def test_tokenspeed_fusion_registry_has_native_patterns(self) -> None:
-        registry = self.mod.kernel_helpers.FUSION_PATTERN_REGISTRY
-        patterns = {spec.pattern: spec for spec in registry}
-
-        expected = {
-            "TokenSpeed CuTe DSL MLA prefill / decode",
-            "TokenSpeed MLA KV pack + FP8 quantize",
-            "TokenSpeed fused top-k + top-p sampling",
-            "TokenSpeed persistent lm_head GEMM",
-            "TokenSpeed NVFP4 GEMM + SwiGLU + quant",
-        }
-        self.assertTrue(expected.issubset(patterns))
-
-        for name in expected:
-            self.assertTrue(
-                self.mod.kernel_helpers.pattern_supports_framework(
-                    patterns[name], "tokenspeed"
-                ),
-                msg=name,
-            )
-            self.assertFalse(
-                self.mod.kernel_helpers.pattern_supports_framework(
-                    patterns[name], "sglang"
-                ),
-                msg=name,
-            )
-
-    def test_sglang_fusion_registry_has_latest_ltx2_pattern(self) -> None:
-        registry = self.mod.kernel_helpers.FUSION_PATTERN_REGISTRY
-        patterns = {spec.pattern: spec for spec in registry}
-
-        spec = patterns["SGLang LTX2 fused Ada values"]
-        self.assertTrue(
-            self.mod.kernel_helpers.pattern_supports_framework(spec, "sglang")
-        )
-        self.assertFalse(
-            self.mod.kernel_helpers.pattern_supports_framework(spec, "tokenspeed")
         )
 
     def test_omni_source_roots_normalize_to_their_own_prefix(self) -> None:

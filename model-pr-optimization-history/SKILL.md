@@ -13,6 +13,12 @@ and validation/risk notes.
 Use it before patching model-specific serving paths, choosing an SGLang SOTA
 optimization target, or explaining why a framework already has a faster path.
 
+Use the maintained [source contracts](../docs/upstream-source-contracts.md)
+when applying historical evidence to a current branch. The review/history
+corpora retain their own capture dates; they do not certify today's dispatch
+or numerical defaults. For kernel replacements, verify that the real model
+executes the candidate before treating end-to-end tests as coverage.
+
 ## Query
 
 Run commands from this directory:

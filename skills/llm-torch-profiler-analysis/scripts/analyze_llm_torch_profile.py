@@ -85,8 +85,8 @@ def build_triage_parser() -> argparse.ArgumentParser:
         default=None,
         help=(
             "Trace output dir when using --url. For vLLM this should match the "
-            "server's torch_profiler_dir. For TensorRT-LLM it should match the "
-            "directory or file path configured by TLLM_TORCH_PROFILE_TRACE. "
+            "server's torch_profiler_dir. For TensorRT-LLM it is passed as "
+            "the native start_profile.output_dir. "
             "For TokenSpeed this is passed as start_profile.output_dir."
         ),
     )

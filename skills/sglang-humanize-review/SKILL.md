@@ -5,6 +5,12 @@ description: "Perform SGLang code review in the style of human maintainers by co
 
 # SGLang Humanize Review
 
+Use the maintained [source contracts](../../docs/upstream-source-contracts.md)
+when applying historical evidence to a current branch. The review/history
+corpora retain their own capture dates; they do not certify today's dispatch
+or numerical defaults. For kernel replacements, verify that the real model
+executes the candidate before treating end-to-end tests as coverage.
+
 ## Overview
 
 Use this skill when the user asks for a human-style SGLang code review or wants

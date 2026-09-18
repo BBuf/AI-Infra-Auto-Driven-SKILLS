@@ -169,13 +169,15 @@ Hard requirements:
 - Use the same model weights, tokenizer, precision, quantization, GPU type/count,
   GPU ids, endpoint path, sampling settings, and SLA.
 - Record package version or git commit plus server/benchmark `--help` snapshots
-  for every selected framework. The 2026-08-23 immutable source heads checked
-  for this skill are vLLM
-  `bbe8b23e1a2b32a96240b27f63255170d09ef144`, SGLang
-  `eec794bce0808ae26cc1dcb84a56b65d2df82af5`, and TensorRT-LLM
-  `da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`. Prefer the target image's
-  current `--help`, re-check open PRs, and do not add TokenSpeed to this scoped
-  workflow unless its executable benchmark path is verified end to end.
+  for every selected framework. Consult the maintained
+  [source contracts](../../docs/upstream-source-contracts.md), then prefer the
+  installed image's `--help` and recheck candidate PR heads. A source refresh
+  does not rerun historical GPU evidence.
+- Before promoting a kernel patch, follow
+  [paired validation](../llm-serving-auto-benchmark/references/paired-validation.md):
+  prove actual dispatch, keep timing unprofiled, and run accuracy with real
+  acceptance. Use the [DSV4.1 lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+  for PDL, mHC/AR, WO-A, shared-expert and metadata changes.
 - Use the target image's current commands: `vllm serve`,
   `sglang serve` or `python -m sglang.launch_server`, and
   `trtllm-serve serve --backend pytorch`.
