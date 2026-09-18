@@ -428,12 +428,16 @@ def detect_framework_from_url(
         or "decode" in server_info
     ):
         return "sglang"
-    readiness = try_get_json(url.rstrip("/") + "/readiness", timeout=5.0)
-    if readiness is not None:
-        return "tokenspeed"
     models = try_get_json(url.rstrip("/") + "/v1/models")
     if isinstance(models, dict) and isinstance(models.get("data"), list):
-        return "vllm"
+        # OpenAI-compatible model listing alone does not identify an engine.
+        owners = {
+            canonicalize_framework(card.get("owned_by", ""))
+            for card in models["data"]
+            if isinstance(card, dict)
+        } - {"auto"}
+        if len(owners) == 1:
+            return owners.pop()
     return None
 
 
@@ -483,7 +487,7 @@ def parse_tp_rank(path: Path) -> Optional[int]:
     for pattern in (
         r"(?:^|[_-])tp(\d+)(?:[_.-]|$)",
         r"TP-(\d+)",
-        r"(?:^|[_-])rank(\d+)(?:[_.-]|$)",
+        r"(?:^|[_-])rank[_-]?(\d+)(?:[_.-]|$)",
         r"(?:^|[_-])worker(\d+)(?:[_.-]|$)",
     ):
         match = re.search(pattern, path.name, re.IGNORECASE)
@@ -492,15 +496,17 @@ def parse_tp_rank(path: Path) -> Optional[int]:
     return None
 
 
-def file_looks_like_trace(path: Path) -> bool:
+def file_looks_like_trace(path: Path, *, validate_content: bool = False) -> bool:
     name = path.name.lower()
     if name in TRACE_FILE_IGNORE_NAMES:
         return False
     if path.is_dir():
         return False
-    if any(name.endswith(suffix) for suffix in (".trace.json", ".trace.json.gz")):
+    if not validate_content and any(
+        name.endswith(suffix) for suffix in (".trace.json", ".trace.json.gz")
+    ):
         return True
-    if ".pt.trace.json" in name:
+    if not validate_content and ".pt.trace.json" in name:
         return True
     if not any(name.endswith(suffix) for suffix in (".json", ".json.gz")):
         return False
@@ -805,25 +811,40 @@ def ensure_remote_profiler_output_path(
     return output_path
 
 
-def wait_for_profiler_artifact(path: Path, timeout_s: float = 60.0) -> Path:
-    deadline = time.time() + timeout_s
-    while time.time() < deadline:
-        if path.is_file() and file_looks_like_trace(path):
-            return path
-        if path.exists():
-            trace_files = discover_trace_files(path, recursive=True)
-            if trace_files:
-                return newest_trace_dir(path)
-            if path.is_dir():
-                child_dirs = [item for item in path.iterdir() if item.is_dir()]
-                if child_dirs:
-                    child_dirs.sort(key=lambda item: item.stat().st_mtime)
-                    newest_child = child_dirs[-1]
-                    child_traces = discover_trace_files(newest_child, recursive=True)
-                    if child_traces:
-                        return newest_child
+def snapshot_trace_files(path: Path) -> Dict[Path, Tuple[int, int]]:
+    """Track replacements as well as newly named traces in a shared directory."""
+    return (
+        {
+            trace: (trace.stat().st_mtime_ns, trace.stat().st_size)
+            for trace in discover_trace_files(path, recursive=True)
+        }
+        if path.exists()
+        else {}
+    )
+
+
+def changed_trace_files(path: Path, before: Dict[Path, Tuple[int, int]]) -> List[Path]:
+    return sorted(
+        trace
+        for trace, signature in snapshot_trace_files(path).items()
+        if before.get(trace) != signature
+        and file_looks_like_trace(trace, validate_content=True)
+    )
+
+
+def wait_for_profiler_artifact(
+    path: Path,
+    timeout_s: float = 60.0,
+    before: Optional[Dict[Path, Tuple[int, int]]] = None,
+) -> Path:
+    deadline = time.monotonic() + timeout_s
+    while True:
+        fresh = changed_trace_files(path, before or {})
+        if fresh:
+            return path if path.is_file() else fresh[-1].parent
+        if time.monotonic() >= deadline:
+            raise TimeoutError(f"No new profiler trace appeared under {path}")
         time.sleep(0.5)
-    return path
 
 
 def start_remote_profiler(
@@ -841,9 +862,8 @@ def start_remote_profiler(
         if framework == "trtllm":
             raise RuntimeError(
                 "TensorRT-LLM live torch profiling requires "
-                "a server build that exposes POST /start_profile plus the env vars "
-                "TLLM_PROFILE_START_STOP=<start>-<stop> and "
-                "TLLM_TORCH_PROFILE_TRACE=/shared/path."
+                "a server build that exposes POST /start_profile with output_dir "
+                "and activities, and a trace directory visible to this client."
             ) from exc
         if framework == "tokenspeed":
             raise RuntimeError(
@@ -860,6 +880,8 @@ def build_remote_profiler_start_payload(
     profile_prefix: Optional[str],
     stage: Optional[str],
 ) -> Optional[dict]:
+    if framework == "trtllm":
+        return {"output_dir": str(output_path), "activities": ["CPU", "GPU"]}
     if framework != "tokenspeed":
         return None
 
@@ -902,11 +924,7 @@ def run_remote_profiler(
             "--profile-workload both requires a directory output path for "
             f"{framework_display_name(framework)} so each stage trace can be labeled."
         )
-    before_traces = (
-        set(discover_trace_files(output_path, recursive=True))
-        if output_path.exists()
-        else set()
-    )
+    before_traces = snapshot_trace_files(output_path)
     model = (
         discover_openai_model(url)
         if framework in {"vllm", "trtllm", "tokenspeed"}
@@ -951,21 +969,20 @@ def run_remote_profiler(
             stop_error = exc
     if stop_error is not None:
         raise stop_error
-    artifact = wait_for_profiler_artifact(output_path)
-    if stage and output_path.is_dir():
-        after_traces = set(discover_trace_files(output_path, recursive=True))
-        new_traces = sorted(after_traces - before_traces, key=lambda item: item.name)
-        if new_traces:
-            stage_dir = output_path / stage
-            stage_dir.mkdir(parents=True, exist_ok=True)
-            for trace in new_traces:
-                if stage_dir in trace.parents:
-                    continue
-                target = stage_dir / trace.name
-                if target.exists():
-                    target = stage_dir / f"{time.time_ns()}-{trace.name}"
-                shutil.move(str(trace), str(target))
-            return stage_dir
+    artifact = wait_for_profiler_artifact(output_path, before=before_traces)
+    if output_path.is_dir():
+        # Isolate this capture without moving files out from under the server.
+        # A fixed output filename can be overwritten on every capture.
+        new_traces = changed_trace_files(output_path, before_traces)
+        capture_dir = output_path / f"capture-{time.time_ns()}"
+        if stage:
+            capture_dir = capture_dir / stage
+        capture_dir.mkdir(parents=True)
+        for trace in new_traces:
+            target = capture_dir / trace.relative_to(output_path)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(trace, target)
+        return capture_dir
     return artifact
 
 

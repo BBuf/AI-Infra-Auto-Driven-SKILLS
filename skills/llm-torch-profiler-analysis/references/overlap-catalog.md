@@ -1,5 +1,12 @@
 # Overlap Catalog
 
+Historical catalog: PR states below belong to their original dated scan, not a
+live status feed. Recheck head/base, merge status and actual caller guards before
+using a row. September source changes and DSV4.1 guidance are maintained in
+[source contracts](../../../docs/upstream-source-contracts.md) and
+[DSV4.1 lessons](dsv41-kernel-optimization.md). Mainline availability is not proof
+that a given deployment executes the path.
+
 This catalog is the overlap-only companion to
 `references/fuse-overlap-catalog.md`.
 

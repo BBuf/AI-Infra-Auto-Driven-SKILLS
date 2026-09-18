@@ -11,6 +11,10 @@ changes event placement, not execution: original kernel names, timestamps,
 durations and `args.stream` remain intact. CPU events stay unchanged. Label
 the output as a **compact view**, not a runtime stream optimization.
 
+For DSV4.1, first read the [kernel/source and timing lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md).
+Fused mHC/AR can remove old anchors; graph-launch host gaps and synthetic lane
+counts do not establish GPU idle time or runtime stream counts.
+
 ## Establish what the labels mean
 
 Use the user's existing local trace, including a Desktop copy when requested.

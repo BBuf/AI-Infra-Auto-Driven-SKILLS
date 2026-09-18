@@ -512,7 +512,7 @@ def main():
     ap.add_argument(
         "--profile",
         default=None,
-        help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
+        help="Model profile name (dsv41, dsv4_csa_hca, dsv3_mla, generic). "
         "Auto-inferred from config if not specified.",
     )
     ap.add_argument(
@@ -652,7 +652,7 @@ def main():
             trace_start_ts=trace_start_ts,
         )
     else:
-        names_a = print_layer_breakdown(
+        print_layer_breakdown(
             kernels, args.layer, compress_ratios, num_hash_layers, num_layers, profile
         )
 

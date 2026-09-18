@@ -802,14 +802,12 @@ def decompose_memory(
             f"= (avail_before_weight - avail_after_pool) - kv_pool"
         )
     elif mp_info and avail_before_weight is not None:
-        # With Memory profiling: weight = avail_before_weight - total_gpu_memory_after_weight
-        # But total_gpu_memory in mp is the same as avail_before_weight minus weight,
-        # so: weight = avail_before_weight - mp.total_gpu_memory_gb (if they differ)
-        # Actually: mp.total_gpu_memory is avail mem AFTER weight loading, before KV pool
-        bd.model_weights_gib = avail_before_weight - mp_info.total_gpu_memory_gb
+        # The profiling field is currently-free memory after loading; the
+        # historical total_gpu_memory field is the reservation baseline.
+        bd.model_weights_gib = avail_before_weight - mp_info.available_gpu_memory_gb
         bd.derivation["model_weights"] = (
-            f"{avail_before_weight:.2f} - {mp_info.total_gpu_memory_gb:.2f} "
-            f"= avail_before_weight - total_gpu_memory (from Memory profiling)"
+            f"{avail_before_weight:.2f} - {mp_info.available_gpu_memory_gb:.2f} "
+            "= avail_before_weight - available_gpu_memory (from Memory profiling)"
         )
     else:
         bd.derivation["model_weights"] = "insufficient data to calculate"

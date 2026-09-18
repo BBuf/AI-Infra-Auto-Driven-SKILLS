@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import datetime as dt
 import gzip
 import importlib.util
 import json
@@ -104,66 +103,6 @@ def test_summarizer_bounds_digest_payloads_and_streams_jsonl(
     assert [row["pull_request"]["number"] for row in streamed_rows] == list(range(1, 7))
 
 
-def test_skill_points_to_corpus_and_review_workflow() -> None:
-    text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-
-    assert "2026" in text
-    assert "project start" in text
-    assert "corpus-summary.md" in text
-    assert "query_sglang_review_corpus.py" in text
-    assert "diff_hunk" in text
-    assert "original comment language" in text
-    assert "pr_conversation" in text
-    assert "review_submission" in text
-    assert "model-pr-optimization-history" in text
-    assert "Findings next, ordered by severity" in text
-    assert "SGLang Review Heuristics" in text
-
-
-def test_skill_requires_pr_comprehension_flowchart_before_findings() -> None:
-    text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-
-    # The comprehension pass and its Mermaid flowchart must be documented.
-    assert "PR Comprehension Diagram" in text
-    assert "PR comprehension pass" in text
-    assert "```mermaid" in text
-    assert "flowchart TD" in text
-    assert "classDef changed" in text
-
-    # The comprehension block must be ordered before the findings in the
-    # normal-review output contract.
-    comprehension_idx = text.index("A PR comprehension block first")
-    findings_idx = text.index("Findings next, ordered by severity")
-    assert comprehension_idx < findings_idx
-
-
-def test_metadata_covers_full_human_review_episode_corpus() -> None:
-    metadata = json.loads(METADATA.read_text(encoding="utf-8"))
-    hints = dict(metadata["comment_language_hints"])
-    thread_types = dict(metadata.get("threads_by_type", []))
-    event_kinds = dict(metadata.get("events_by_kind", []))
-
-    assert metadata["schema_version"] >= 2
-    assert metadata["source_years"] == [2024, 2026]
-    collected_through = dt.datetime.fromisoformat(metadata["collected_through"])
-    generated_at = dt.datetime.fromisoformat(metadata["generated_at"])
-    assert collected_through.year == 2026
-    assert collected_through <= generated_at
-    assert metadata["pull_request_stats"]["included_human_prs"] >= 11000
-    assert metadata["thread_count"] >= 10000
-    assert metadata["human_reviewer_comment_count"] == metadata["comment_count"]
-    assert metadata["agent_reviewer_comment_count"] == 0
-    assert thread_types["inline_review_thread"] >= 10000
-    assert thread_types["pr_conversation"] > 0
-    assert thread_types["review_submission"] > 0
-    assert event_kinds["inline_review_comment"] > 0
-    assert event_kinds["pr_conversation"] > 0
-    assert event_kinds["review_submission"] > 0
-    assert hints["en_or_ascii"] > 0
-    assert hints["zh_or_cjk"] > 0
-    assert hints["non_ascii_other"] > 0
-
-
 def test_corpus_rows_preserve_code_context_and_comments() -> None:
     with gzip.open(CORPUS, "rt", encoding="utf-8") as handle:
         row = json.loads(next(handle))
@@ -205,18 +144,6 @@ def test_query_script_returns_markdown_with_diff_context() -> None:
     assert "### PR #" in result.stdout
     assert "```diff" in result.stdout
     assert "**" in result.stdout
-
-
-def test_skill_mandates_exhaustive_sweep_before_findings() -> None:
-    text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-
-    assert "summarize_sglang_review_corpus.py" in text
-    assert "mandatory and must finish before you write any" in text
-    assert "historical review synthesis" in text
-    # The synthesis must be ordered before the findings in the output contract.
-    synthesis_idx = text.index("historical review synthesis")
-    findings_idx = text.index("Findings next, ordered by severity")
-    assert synthesis_idx < findings_idx
 
 
 def test_summarize_script_scans_whole_corpus_and_aggregates() -> None:

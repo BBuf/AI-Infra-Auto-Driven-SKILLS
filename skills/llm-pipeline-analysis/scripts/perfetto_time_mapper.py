@@ -34,7 +34,7 @@ def main():
     ap.add_argument(
         "--profile",
         default=None,
-        help="Model profile name (dsv4_csa_hca, dsv3_mla, generic). "
+        help="Model profile name (dsv41, dsv4_csa_hca, dsv3_mla, generic). "
         "Auto-inferred from config if not specified.",
     )
     ap.add_argument(

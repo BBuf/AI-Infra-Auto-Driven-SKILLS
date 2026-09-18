@@ -112,6 +112,11 @@ _UNIVERSAL_SIMPLIFY_RULES: List[Tuple[str, str]] = [
 
 _DSV4_CATEGORY_RULES: List[Tuple[str, str, Callable[[str], bool]]] = [
     # Model-specific rules (evaluated before universal rules)
+    ("  mHC stats", "mhc_stats", _sub("_hc_mix_stats_")),
+    ("  mHC Sinkhorn", "mhc_sinkhorn", _sub("_hc_mix_reduce_sinkhorn")),
+    ("  Router scoring/top-k", "moe_gate", _sub("_router_triton_kernel")),
+    ("  WO-A projection", "wo_a", _sub("wo_a_")),
+    ("  MoE finalize + AllReduce", "allreduce", _sub("moe_finalize_all_reduce")),
     ("★ MLA Attention", "mla", _sub("flash_fwd_splitkv_mla")),
     ("★ MoE Fused", "moe", _sub("fused_moe_kernel")),
     ("  Hadamard Xform", "hadamard", lambda n: "hadamard" in n.lower()),
@@ -194,6 +199,17 @@ PROFILE_DSV4_CSA_HCA = ModelProfile(
     default_num_layers=43,
 )
 
+# Fused boundaries differ across V4.1 branches and batch sizes. Require a
+# caller-verified once-per-layer anchor instead of assuming two mHC post calls.
+PROFILE_DSV41 = ModelProfile(
+    name="dsv41",
+    anchor_kernel=None,
+    blocks_per_layer=1,
+    half_labels=["full"],
+    category_rules=_DSV4_CATEGORY_RULES + _UNIVERSAL_CATEGORY_RULES,
+    simplify_rules=_UNIVERSAL_SIMPLIFY_RULES + _DSV4_SIMPLIFY_RULES,
+)
+
 PROFILE_DSV3_MLA = ModelProfile(
     name="dsv3_mla",
     anchor_kernel="flash_fwd_mla_combine",
@@ -221,6 +237,7 @@ PROFILE_GENERIC = ModelProfile(
 
 BUILTIN_PROFILES: Dict[str, ModelProfile] = {
     "dsv4_csa_hca": PROFILE_DSV4_CSA_HCA,
+    "dsv41": PROFILE_DSV41,
     "dsv3_mla": PROFILE_DSV3_MLA,
     "generic": PROFILE_GENERIC,
 }
@@ -271,10 +288,13 @@ def infer_profile(config: dict) -> ModelProfile:
     """Auto-detect the model profile from a config.json dict.
 
     Priority:
-      1. Has non-empty ``compress_ratios`` → dsv4_csa_hca
-      2. Has ``kv_lora_rank > 0`` → dsv3_mla
-      3. Otherwise → generic
+      1. ``model_type=deepseek_v41`` → explicit-anchor dsv41
+      2. Has non-empty ``compress_ratios`` → legacy dsv4_csa_hca
+      3. Has ``kv_lora_rank > 0`` → dsv3_mla
+      4. Otherwise → generic
     """
+    if config.get("model_type") == "deepseek_v41":
+        return PROFILE_DSV41
     cr = config.get("compress_ratios", [])
     if cr:
         return PROFILE_DSV4_CSA_HCA

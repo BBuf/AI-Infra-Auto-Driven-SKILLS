@@ -702,7 +702,6 @@ def extract_compute_flow(
         # Extract input dimensions
         args = ev.get("args", {})
         input_dims = args.get("Input Dims", [])
-        input_types = args.get("Input type", [])
         output_dims = args.get("Output Dims", [])
 
         # Resolve scope
