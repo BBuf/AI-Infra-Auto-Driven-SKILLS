@@ -41,6 +41,12 @@ If this saves you one stale model-support assumption, one misleading profiler
 trace, or one late-night benchmark loop, a star helps more AI-infra engineers
 find it.
 
+Current source contracts and scope are recorded in
+[upstream-source-contracts.md](docs/upstream-source-contracts.md). The September
+refresh adds DSV4.1 PDL/fusion/metadata lessons, paired performance/accuracy
+validation, current profiler interfaces and removes obsolete host scripts.
+Historical model/PR evidence keeps its original audit date.
+
 ## Core Skills
 
 | Skill | Use it when |

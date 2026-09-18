@@ -13,17 +13,10 @@ SCRIPT_DIR = Path(__file__).resolve().parents[1] / "skills" / "llm-serving-capac
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from capacity_analyzer import (
-    CudaGraphInfo,
     GPU_ALIAS,
     GPU_SPECS_PATH,
-    SwKvMemoryCalc,
     FinalInfo,
-    MemoryBreakdown,
-    MemoryProfiling,
     ModelConfig,
-    NvidiaSmiEntry,
-    ParsedLog,
-    ServerArgs,
     calc_kv_bytes_per_token,
     decompose_memory,
     estimate_concurrency,
@@ -609,3 +602,12 @@ class TestEndToEnd:
             assert data["vllm"]["cuda_graph_max_bs"] is None
         finally:
             os.unlink(log_path)
+
+
+def test_weight_estimate_uses_free_memory_not_reservation_baseline():
+    log = "\n".join(
+        line for line in SGLANG_LOG_MFS060.splitlines()
+        if "Memory pool end" not in line
+    )
+    bd = decompose_memory(parse_log(log), 96.0, target_rank=0)
+    assert abs(bd.model_weights_gib - (93.61 - 57.01)) < 1e-6

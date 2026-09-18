@@ -11,7 +11,6 @@ import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
-
 SCRIPT_DIR = (
     Path(__file__).resolve().parents[1] / "skills" / "llm-pipeline-analysis" / "scripts"
 )
@@ -198,7 +197,6 @@ class TestClassifyKernel(unittest.TestCase):
         self.generic = self.mod.get_profile("generic")
 
     def test_dsv4_classifies_mla(self):
-        label, key = self.dsv4.category_rules[0][0], self.dsv4.category_rules[0][1]
         for label_i, key_i, rule in self.dsv4.category_rules:
             if rule("flash_fwd_splitkv_mla_kernel"):
                 self.assertEqual(key_i, "mla")
@@ -715,6 +713,19 @@ class TestSimplifyName(unittest.TestCase):
         long_name = "x" * 100
         result = self.mod.simplify_name(long_name, profile)
         self.assertLessEqual(len(result), 80)
+
+
+def test_dsv41_does_not_reuse_unfused_v4_layer_anchor():
+    profiles = load_profiles()
+    profile = profiles.infer_profile(
+        {"model_type": "deepseek_v41", "compress_ratios": [4, 128]}
+    )
+    timeline = _load_module(
+        "layer_timeline_analyzer", SCRIPT_DIR / "layer_timeline_analyzer.py"
+    )
+    # Even a tempting repeated old anchor is not proof of V4.1 boundaries.
+    with unittest.TestCase().assertRaisesRegex(ValueError, "once-per-layer"):
+        timeline.find_anchor_kernel([{"name": "mhc_post_tilelang"}] * 80, profile)
 
 
 if __name__ == "__main__":

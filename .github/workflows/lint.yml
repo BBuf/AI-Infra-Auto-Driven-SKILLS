@@ -17,6 +17,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Test offline tooling
+        run: |
+          python -m pip install pytest pyyaml requests
+          python -m pytest -q
+
       - name: Install pre-commit hook
         run: |
           python -m pip install pre-commit
