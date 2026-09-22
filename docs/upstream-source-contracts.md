@@ -14,6 +14,26 @@ FlashInfer/CUDA/Triton versions for every run. Later commits may change dispatch
 | tensorrt-llm | `main` | [`dcc95a8bf527`](https://github.com/NVIDIA/TensorRT-LLM/commit/dcc95a8bf527583bed803606083c37585a08fc14) |
 | tokenspeed | `main` | [`b41ea7d762ac`](https://github.com/lightseekorg/tokenspeed/commit/b41ea7d762ac176a63c16e8fcb7eaf52124015ca) |
 
+## DSV4.1 kernel addendum: 2026-09-22
+
+This scoped update inspects SGLang main
+[`771c9d782d9e`](https://github.com/sgl-project/sglang/commit/771c9d782d9ecf0324e70b7f5a08c32644d652c5).
+It does not redate the other framework snapshots or profiler APIs above.
+
+- [Five integration PR dossiers](../skills/llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md)
+  cover DeepGEMM sparse candidate logits, DSA top-k v2, dual raw/page output,
+  the DeepSelect BF16 consumer and FlashMLA FP8/FP4 KV layouts. Full diffs and
+  current callers were inspected separately; obsolete opt-in flags are identified.
+- New-format support is not the default: main still declares
+  `SGLANG_DSV4_KV_LAYOUT=v4`. FP8 528 B and FP4 288 B count payload plus scales
+  per stored token before page padding; they are not whole-model KV capacity.
+- [mHC fusion eligibility](../skills/llm-torch-profiler-analysis/references/dsv41-mhc-fusions.md)
+  records exact row ranges, backend/parallelism guards, BF16 boundaries and
+  which epilogues include RMSNorm or quantization.
+- #39704 and #39957 are now merged into main; #39941 was folded into #39704.
+  The [profiling lessons](../skills/llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+  retain historical experiment context while updating their implementation status.
+
 ## Profiler control and output
 
 | Framework | Inspected contract | Consequence for the skill |

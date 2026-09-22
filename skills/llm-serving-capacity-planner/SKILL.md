@@ -12,6 +12,12 @@ went. The analyzer reads SGLang/vLLM startup logs, extracts weight load, KV
 pool, CUDA graph, framework overhead, and token-capacity lines, then estimates
 concurrent requests for common token lengths.
 
+For DeepSeek-V4.1, read the
+[KV layout and page-allocation contract](../llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md#current-dispatch-and-kv-storage-contract)
+before using 528 B/288 B in an estimate. These are per-stored-token payload and
+scale sizes, not allocation after page padding or total model KV bytes. Verify
+actual pool layout, compression ratios and sharing from the pinned source and logs.
+
 ## Inputs
 
 Before running analysis, collect or verify these inputs:
