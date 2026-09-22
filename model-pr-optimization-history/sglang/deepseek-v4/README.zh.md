@@ -1,5 +1,21 @@
 # sglang DeepSeek V4 模型 PR 优化历史
 
+## DSV4.1 kernel 集成补充，核对日期 2026-09-22
+
+[五个逐 PR 人工审阅的 dossier](../../../skills/llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md)
+补充了本页较早 V4 历史之外的九月 DSV4.1 工作，包含动机、实现片段、审阅文件和验证边界：
+
+- **#38829**：DSA top-k v2 长上下文 cluster 调度、NaN padding。
+- **#38944**：DeepGEMM 两级 candidate indexer、paged sparse MQA logits、共享候选块元数据及 verify 行调度。
+- **#39098**：top-k v2 同时输出原始逻辑索引和物理 page 索引。
+- **#39123**：FlashMLA FP8 528 B/token、FP4 288 B/token KV 格式，及 norm/RoPE 写入、compression、memory pool、prefill 解量化适配。
+- **#39305**：由 DeepSelect 改写的精确 BF16 consumer top-k，融合 page transform；属于 attention token 选择，不是 MoE expert router。
+
+原始 PR 与 main `771c9d782d9e` 的当前调用条件分别核对。另见
+[mHC 融合范围](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-fusions.md)及
+[PDL、shared expert、WO-A 优化经验](../../../skills/llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)，
+其中更新了 batch/阶段限制和 #39704、#39957 的 main 合入状态。本次为源码审阅，没有新增 GPU 性能或任务精度测量。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

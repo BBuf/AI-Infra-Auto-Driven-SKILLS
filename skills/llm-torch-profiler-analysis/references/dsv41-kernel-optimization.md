@@ -2,10 +2,17 @@
 
 Use for GB300/Blackwell DSV4.1 target verify, draft and medium-batch decode.
 These are shape- and revision-specific decisions, not universal CUDA rules.
-Source inspection is dated **2026-09-18**; see the
-[source contracts](../../../docs/upstream-source-contracts.md) for exact upstream
-SHAs. This refresh ran offline tooling against saved traces; it did not rerun
-GPU performance or GSM8K/AIME.
+The September 18 experiment lessons below retain their pinned sources.
+**2026-09-22 update:** current SGLang main dispatch was inspected at
+[`771c9d782d9e`](https://github.com/sgl-project/sglang/commit/771c9d782d9ecf0324e70b7f5a08c32644d652c5);
+see the [source contracts](../../../docs/upstream-source-contracts.md).
+This documentation refresh did not rerun GPU performance or GSM8K/AIME.
+
+Read [DeepGEMM, FlashMLA and attention top-k integration](dsv41-upstream-kernels.md)
+for the five diff-reviewed integration PRs, current dispatch and FP8 528 B /
+FP4 288 B KV storage contracts. Read [mHC fusion boundaries](dsv41-mhc-fusions.md)
+for the current batch/phase eligibility matrix and stream handoff. DeepSelect
+consumer top-k selects attention tokens; it is separate from the MoE router.
 
 ## Establish the experiment before interpreting a kernel
 
@@ -51,9 +58,9 @@ that concurrent work cannot delay them.
 [#39941](https://github.com/sgl-project/sglang/pull/39941) disabled both the
 PDL launch flag and in-kernel PDL operations for SM103, sqrtsoftplus,
 384 experts, top-6, `0 < M <= 8`, retaining ordinary stream dependencies.
-It changed scheduling rather than router arithmetic. As of this audit the PR
-is **closed, folded into open #39704**, not independently merged into main.
-The inspected main/dsv4.1 snapshots must not be assumed to contain this guard.
+It changed scheduling rather than router arithmetic. #39941 is **closed and
+folded into #39704**, which merged into main on 2026-09-19. The guard is present
+in the [September 22 main router](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/kernels/ops/moe/moe_fused_gate.py).
 
 Validate with graph replay: PDL on/off at fixed warps, then a separate warp
 count sweep; isolated router versus real mHC/shared-expert overlap; all-rank
@@ -92,18 +99,23 @@ activation win need not reduce wall time.
   paths for exact TP4 shapes `[T,2,4096] @ [2,1024,4096]`. The small target path
   can return `Mxfp8SwizzledInput` to avoid quantizing again at WO-B. Check dtype,
   strides, phase and token count at the caller, including draft warmup/capture.
-- **Inverse RoPE + WO-A + quant:** open
-  [#39957](https://github.com/sgl-project/sglang/pull/39957), inspected head
-  `e919e8be784473d2fb7ea10d10f45c23af658f68`, uses 32 output-column clusters
-  and eight K-slice CTAs per cluster, folding the RoPE window into its K tile
-  and reducing FP32 partials before the output epilogue. Treat this as PR-head
-  evidence, not mainline. Check int32/int64 positions, strided inputs, padded
-  scales and graph buffer reuse, plus changes to its benchmark's cache flush.
+- **Inverse RoPE + WO-A + quant:**
+  [#39957](https://github.com/sgl-project/sglang/pull/39957) merged into main on
+  2026-09-19. Its inspected implementation uses 32 output-column clusters and
+  eight K-slice CTAs per cluster, folding the RoPE window into its K tile and
+  reducing FP32 partials before the output epilogue. Current main defaults
+  `SGLANG_DSV41_FUSED_WO_A=True`, but still checks architecture, BF16 weights,
+  exact grouped shape, row count and WO-B input format in the
+  [model caller](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/srt/models/deepseek_v4.py).
+  Check int32/int64 positions, strided inputs, padded scales, graph buffer
+  reuse and benchmark cache state. A default-on flag is not dispatch proof.
 - **mHC boundaries + all-reduce:** merged
   [#39370](https://github.com/sgl-project/sglang/pull/39370) is the starting
-  point; open [#39704](https://github.com/sgl-project/sglang/pull/39704), head
-  `46a204a5eca58ec5aba316f9c538a871ddf5be69`, extends medium-batch post/combine,
-  collective epilogues and prefill overlap, and incorporates the PDL guard.
+  point; [#39704](https://github.com/sgl-project/sglang/pull/39704), merged into
+  main on 2026-09-19, extends medium-batch post/combine, collective epilogues
+  and prefill overlap, and incorporates the PDL guard. The
+  [current fusion matrix](dsv41-mhc-fusions.md) distinguishes tiny, medium
+  and large-prefill paths: not all include RMSNorm or quantization.
   Preserve communicator buffer/counter bounds, graph replay ordering, and
   BF16 rounding boundaries. Cross-layer cached input must be invalidated when
   Engram or row selection changes it. Compare AR-fused and non-AR-fused paths;

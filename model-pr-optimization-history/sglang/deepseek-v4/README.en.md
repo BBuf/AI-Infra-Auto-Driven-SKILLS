@@ -1,5 +1,26 @@
 # sglang DeepSeek V4 Model PR Optimization History
 
+## DSV4.1 kernel integrations, reviewed 2026-09-22
+
+The [five manually reviewed PR dossiers](../../../skills/llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md)
+add the September DSV4.1 evidence to this earlier V4 history. They include
+motivation, implementation excerpts, reviewed files and validation boundaries:
+
+- **#38829:** DSA top-k v2 long-context cluster scheduling and NaN padding.
+- **#38944:** DeepGEMM two-level candidate indexer, paged sparse MQA logits,
+  shared block metadata and verify-row scheduling.
+- **#39098:** top-k v2 dual raw logical indices and physical page indices.
+- **#39123:** FlashMLA KV layouts, FP8 528 B/token and FP4 288 B/token;
+  norm/RoPE writers, compression, pools and prefill dequantization.
+- **#39305:** exact BF16 consumer top-k adapted from DeepSelect, with fused
+  page transformation. This is attention token selection, not MoE routing.
+
+Current-main source at `771c9d782d9e` is checked separately from the original
+PRs. See [mHC fusion boundaries](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-fusions.md)
+and [PDL, shared-expert and WO-A lessons](../../../skills/llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+for batch/phase guards and #39704/#39957 mainline status. These are source
+reviews, not fresh GPU benchmark or task-accuracy measurements.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

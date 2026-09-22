@@ -12,9 +12,12 @@ choosing a fast path. Existing traces need no GPU or framework installation.
 The Python analyzers use the standard library.
 
 Read [source contracts](../../docs/upstream-source-contracts.md) for the
-2026-09-18 source inspection and version-sensitive profiler APIs. For DSV4.1,
+dated source inspections and version-sensitive profiler APIs. For DSV4.1,
 PDL, shared experts, WO-A, mHC or DSPARK, read
 [the kernel optimization lessons](references/dsv41-kernel-optimization.md).
+For DeepGEMM candidate indexing, FlashMLA KV formats or DeepSelect/top-k, read
+[the integration evidence](references/dsv41-upstream-kernels.md); for single-pass
+mHC, read [the fusion eligibility matrix](references/dsv41-mhc-fusions.md).
 Source checks and old model captures are not fresh GPU validation.
 
 ## Choose the evidence
