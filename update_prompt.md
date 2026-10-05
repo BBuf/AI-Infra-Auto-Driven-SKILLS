@@ -6,6 +6,15 @@
    dispatch、实现与验证接口。更新 `docs/upstream-source-contracts.md`，不只改日期。
 2. 区分 main、模型开发分支、open PR 与安装的 wheel。历史 PR 卡片保留原始审计
    日期；新增卡片需要逐份读 diff。不要把刷新一个 source head 写成全部模型已复测。
+   模型 PR 历史用 `tools/rebuild_model_pr_history_from_git.py` 重建：四个框架的
+   blobless clone 放在 `../_worktrees/{sglang,vllm,trtllm,tokenspeed}-pr-history`
+   （或用 `*_PR_HISTORY_ROOT` 环境变量指定），先 `--dry-run` 看每个模型的
+   reuse/fetching 数，再按 `--framework`/`--model` 分批运行。已审计的 merged 卡片
+   与时间线行会原样复用，只为新 PR 或 open PR 调 GitHub API；`--refetch-existing`
+   才会重渲染旧卡片。标题与文件覆盖表之间的人工补充段会保留。
+   生成器产出是明确标注的机器 diff 清单，不能自动成为人工审计卡；优化结论
+   需阅读完整 diff 与当前调用方后手写补充。新增模型先补
+   `MODEL_TITLES`、`FRAMEWORK_MODEL_ORDER`、`MODEL_FILTERS`、`SUBJECT_HINTS`。
 3. 更新受影响的 skill、引用路径、HTTP/CLI 协议和脚本。详细案例放 references，
    入口只保留判断流程。对于 PDL、fusion、split-K、metadata，核对模型实际 dispatch、
    shape、布局和数值约定，不能用未命中的 microbenchmark 证明端到端收益。

@@ -1,4 +1,4 @@
-# vllm DeepSeek V3.2 模型 PR 优化历史
+# vLLM DeepSeek V3.2 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -7,22 +7,24 @@
 | `examples/ray_serving/elastic_ep/serve_deepseek_v2.sh` | 无直接 PR 号提交 |
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP.yaml` | [#33566](https://github.com/vllm-project/vllm/pull/33566) |
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP_MI325.yaml` | 无直接 PR 号提交 |
+| `tests/evals/gsm8k/configs/DeepSeek-V3.2-DP_MI355.yaml` | 无直接 PR 号提交 |
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP.yaml` | [#33566](https://github.com/vllm-project/vllm/pull/33566) |
 | `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP_MI325.yaml` | 无直接 PR 号提交 |
-| `tests/kernels/test_fused_deepseek_v32_norm_rope.py` | [#46876](https://github.com/vllm-project/vllm/pull/46876), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#52381](https://github.com/vllm-project/vllm/pull/52381) |
+| `tests/evals/gsm8k/configs/DeepSeek-V3.2-TP_MI355.yaml` | 无直接 PR 号提交 |
+| `tests/kernels/test_fused_deepseek_v32_norm_rope.py` | [#46876](https://github.com/vllm-project/vllm/pull/46876), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50005](https://github.com/vllm-project/vllm/pull/50005), [#51915](https://github.com/vllm-project/vllm/pull/51915), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#52381](https://github.com/vllm-project/vllm/pull/52381) |
 | `tests/models/deepseek_v32/test_sequence_parallel.py` | [#51434](https://github.com/vllm-project/vllm/pull/51434) |
 | `tests/parser/engine/test_deepseek_v32.py` | 无直接 PR 号提交 |
 | `tests/tool_parsers/test_deepseekv32_tool_parser.py` | [#33703](https://github.com/vllm-project/vllm/pull/33703), [#36056](https://github.com/vllm-project/vllm/pull/36056), [#41198](https://github.com/vllm-project/vllm/pull/41198), [#41801](https://github.com/vllm-project/vllm/pull/41801), [#43019](https://github.com/vllm-project/vllm/pull/43019), [#43255](https://github.com/vllm-project/vllm/pull/43255) |
 | `vllm/model_executor/models/deepseek_mtp.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#38684](https://github.com/vllm-project/vllm/pull/38684), [#38870](https://github.com/vllm-project/vllm/pull/38870), [#48036](https://github.com/vllm-project/vllm/pull/48036) |
-| `vllm/model_executor/models/deepseek_v2.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#25999](https://github.com/vllm-project/vllm/pull/25999), [#26456](https://github.com/vllm-project/vllm/pull/26456), [#26465](https://github.com/vllm-project/vllm/pull/26465), [#26670](https://github.com/vllm-project/vllm/pull/26670), [#26763](https://github.com/vllm-project/vllm/pull/26763), [#27532](https://github.com/vllm-project/vllm/pull/27532), [#27568](https://github.com/vllm-project/vllm/pull/27568), [#28968](https://github.com/vllm-project/vllm/pull/28968), [#29287](https://github.com/vllm-project/vllm/pull/29287), [#30841](https://github.com/vllm-project/vllm/pull/30841), [#31046](https://github.com/vllm-project/vllm/pull/31046), ... (22 total) |
-| `vllm/models/deepseek_v32/__init__.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#47207](https://github.com/vllm-project/vllm/pull/47207) |
+| `vllm/model_executor/models/deepseek_v2.py` | [#25896](https://github.com/vllm-project/vllm/pull/25896), [#25999](https://github.com/vllm-project/vllm/pull/25999), [#26456](https://github.com/vllm-project/vllm/pull/26456), [#26465](https://github.com/vllm-project/vllm/pull/26465), [#26670](https://github.com/vllm-project/vllm/pull/26670), [#26763](https://github.com/vllm-project/vllm/pull/26763), [#27532](https://github.com/vllm-project/vllm/pull/27532), [#27568](https://github.com/vllm-project/vllm/pull/27568), [#28968](https://github.com/vllm-project/vllm/pull/28968), [#29287](https://github.com/vllm-project/vllm/pull/29287), [#30841](https://github.com/vllm-project/vllm/pull/30841), [#31046](https://github.com/vllm-project/vllm/pull/31046), ... (23 total) |
+| `vllm/models/deepseek_v32/__init__.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#51915](https://github.com/vllm-project/vllm/pull/51915) |
 | `vllm/models/deepseek_v32/amd/__init__.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
 | `vllm/models/deepseek_v32/amd/model.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
 | `vllm/models/deepseek_v32/amd/mtp.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
-| `vllm/models/deepseek_v32/amd/rocm.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50904](https://github.com/vllm-project/vllm/pull/50904), [#51425](https://github.com/vllm-project/vllm/pull/51425) |
-| `vllm/models/deepseek_v32/attention.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50904](https://github.com/vllm-project/vllm/pull/50904), [#51298](https://github.com/vllm-project/vllm/pull/51298), [#51425](https://github.com/vllm-project/vllm/pull/51425), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#53021](https://github.com/vllm-project/vllm/pull/53021) |
+| `vllm/models/deepseek_v32/amd/rocm.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50904](https://github.com/vllm-project/vllm/pull/50904), [#51425](https://github.com/vllm-project/vllm/pull/51425), [#51915](https://github.com/vllm-project/vllm/pull/51915) |
+| `vllm/models/deepseek_v32/attention.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50005](https://github.com/vllm-project/vllm/pull/50005), [#50904](https://github.com/vllm-project/vllm/pull/50904), [#51298](https://github.com/vllm-project/vllm/pull/51298), [#51425](https://github.com/vllm-project/vllm/pull/51425), [#51915](https://github.com/vllm-project/vllm/pull/51915), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#53021](https://github.com/vllm-project/vllm/pull/53021) |
 | `vllm/models/deepseek_v32/common/__init__.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207) |
-| `vllm/models/deepseek_v32/common/kernels.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#52381](https://github.com/vllm-project/vllm/pull/52381) |
+| `vllm/models/deepseek_v32/common/kernels.py` | [#47207](https://github.com/vllm-project/vllm/pull/47207), [#50005](https://github.com/vllm-project/vllm/pull/50005), [#51915](https://github.com/vllm-project/vllm/pull/51915), [#52046](https://github.com/vllm-project/vllm/pull/52046), [#52381](https://github.com/vllm-project/vllm/pull/52381) |
 | `vllm/models/deepseek_v32/nvidia/__init__.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808) |
 | `vllm/models/deepseek_v32/nvidia/glm52_low_latency_gemm.py` | 无直接 PR 号提交 |
 | `vllm/models/deepseek_v32/nvidia/model.py` | [#46808](https://github.com/vllm-project/vllm/pull/46808), [#46876](https://github.com/vllm-project/vllm/pull/46876), [#47207](https://github.com/vllm-project/vllm/pull/47207), [#51434](https://github.com/vllm-project/vllm/pull/51434) |
@@ -37,9 +39,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 47
+- git 追溯 PR 数: 49
 - 原文档显式引用补充 PR 数: 15
-- 当前文档总 PR 数: 62
+- 当前文档总 PR 数: 64
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -50,13 +52,13 @@
 | 2025-09-30 | [#25896](https://github.com/vllm-project/vllm/pull/25896) | merged | [New Model] DeepSeek-V3.2 (Rebased to Main) | `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/deepseek_mtp.py` |
 | 2025-10-02 | [#25999](https://github.com/vllm-project/vllm/pull/25999) | merged | [Deepseek v3.2] Support indexer prefill chunking | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-10-15 | [#26456](https://github.com/vllm-project/vllm/pull/26456) | merged | [Deepseek-V3.2][Kernel] Integrate cuda indexer k cache gather | `vllm/model_executor/models/deepseek_v2.py` |
-| 2025-10-21 | [#26763](https://github.com/vllm-project/vllm/pull/26763) | merged | [Deepseek v3.2] Optimize top_k_per_row | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-10-21 | [#26465](https://github.com/vllm-project/vllm/pull/26465) | merged | [Deepseek v3.2] Remove extra logics in indexer | `vllm/model_executor/models/deepseek_v2.py` |
+| 2025-10-21 | [#26763](https://github.com/vllm-project/vllm/pull/26763) | merged | [Deepseek v3.2] Optimize top_k_per_row | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-11-19 | [#28968](https://github.com/vllm-project/vllm/pull/28968) | merged | [DeepSeek] Fix DeepSeek V3.2 Rope Embedding | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-11-20 | [#26670](https://github.com/vllm-project/vllm/pull/26670) | merged | [ROCm] Add AMD GPU support on Deepseek v3.2 and SparseMLA | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-12-03 | [#29837](https://github.com/vllm-project/vllm/pull/29837) | merged | [Frontend] supports deepseekv32 chat template | `vllm/tokenizers/deepseek_v32_encoding.py` |
-| 2025-12-04 | [#30025](https://github.com/vllm-project/vllm/pull/30025) | merged | [Bugfix] fixed deepseekv32 tool calling error | `vllm/tokenizers/deepseek_v32_encoding.py` |
 | 2025-12-04 | [#29848](https://github.com/vllm-project/vllm/pull/29848) | merged | Add DeepSeek-V3.2 tool parser. | `vllm/entrypoints/openai/tool_parsers/deepseekv32_tool_parser.py`, `vllm/entrypoints/openai/tool_parsers/__init__.py` |
+| 2025-12-04 | [#30025](https://github.com/vllm-project/vllm/pull/30025) | merged | [Bugfix] fixed deepseekv32 tool calling error | `vllm/tokenizers/deepseek_v32_encoding.py` |
 | 2025-12-08 | [#27568](https://github.com/vllm-project/vllm/pull/27568) | merged | [DeepSeek v3.2] Make top-k work for any logit values. | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-12-12 | [#27532](https://github.com/vllm-project/vllm/pull/27532) | merged | [Attention] Use sparse prefill kernel for fp8 kv-cache in DeepSeek-v3.2 | `vllm/model_executor/models/deepseek_v2.py` |
 | 2025-12-13 | [#30609](https://github.com/vllm-project/vllm/pull/30609) | merged | [Refactor] `TokenizerRegistry` only uses lazy imports | `vllm/tokenizers/registry.py`, `tests/tokenizers_/test_basic.py`, `vllm/tokenizers/deepseekv32.py` |
@@ -106,9 +108,11 @@
 | 2026-08-07 | [#51298](https://github.com/vllm-project/vllm/pull/51298) | merged | [DSv32/GLM Perf] Skip short prefill topk for dense mha layer, 97.9% kernel level latency reduction | `vllm/models/deepseek_v32/attention.py` |
 | 2026-08-07 | [#51425](https://github.com/vllm-project/vllm/pull/51425) | merged | [Perf] Narrow DeepSeek V3.2 eager CUDA graph region | `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/amd/rocm.py` |
 | 2026-08-07 | [#51434](https://github.com/vllm-project/vllm/pull/51434) | merged | [Perf] Optimize DeepSeek V3.2 sequence parallelism | `tests/models/deepseek_v32/test_sequence_parallel.py`, `vllm/models/deepseek_v32/nvidia/model.py`, `vllm/models/deepseek_v32/nvidia/mtp.py` |
-| 2026-08-18 | [#52381](https://github.com/vllm-project/vllm/pull/52381) | merged | Harden DeepSeek V3.2 fused kernel grids | `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
 | 2026-08-18 | [#52046](https://github.com/vllm-project/vllm/pull/52046) | merged | [nv] add pcp support in dsv3.2 | `vllm/models/deepseek_v32/common/kernels.py`, `vllm/models/deepseek_v32/attention.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
+| 2026-08-18 | [#52381](https://github.com/vllm-project/vllm/pull/52381) | merged | Harden DeepSeek V3.2 fused kernel grids | `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
 | 2026-08-20 | [#53021](https://github.com/vllm-project/vllm/pull/53021) | merged | [Model] Remove unused DeepseekV32Indexer forward | `vllm/models/deepseek_v32/attention.py` |
+| 2026-08-31 | [#50005](https://github.com/vllm-project/vllm/pull/50005) | merged | [Bugfix][DCP] Fix NVIDIA DeepSeek-V3.2 / GLM-5.2 fused attention | `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py` |
+| 2026-09-22 | [#51915](https://github.com/vllm-project/vllm/pull/51915) | merged | [ROCm][Model][Bugfix] Enable GLM-5.2-MXFP4 on the deepseek_v32 path and fix sparse attention correctness | `vllm/models/deepseek_v32/common/kernels.py`, `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/__init__.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -202,33 +206,6 @@ diff -- vllm/model_executor/models/deepseek_v2.py
   - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +6/-68
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #26763 - [Deepseek v3.2] Optimize top_k_per_row
-
-- 链接: https://github.com/vllm-project/vllm/pull/26763
-- 状态/时间: merged / 2025-10-21
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_v2.py`；关联提交 `80e94529845d`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+13/-49，可读 patch 203 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Deepseek v3.2] Optimize top_k_per_row」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_v2.py`；技术摘要: 覆盖「[Deepseek v3.2] Optimize top_k_per_row」；主要实现面是 `vllm/model_executor/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/deepseek_v2.py` modified +0/-8 (8 lines); hunks: -577,15 +577,11 @@ def sparse_attn_indexer(; -642,15 +638,11 @@ def sparse_attn_indexer(; symbols: sparse_attn_indexer，涉及 `sparse_attn_indexer`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/deepseek_v2.py` modified +0/-8 (8 lines); hunks: -577,15 +577,11 @@ def sparse_attn_indexer(; -642,15 +638,11 @@ def sparse_attn_indexer(; symbols: sparse_attn_indexer
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/deepseek_v2.py
-@@ -577,15 +577,11 @@ def sparse_attn_indexer(
--            topk_values = torch.empty(
--                num_rows, topk_tokens, dtype=logits.dtype, device=logits.device
--            )
--                topk_values,
-@@ -642,15 +638,11 @@ def sparse_attn_indexer(
--        topk_values = torch.empty(
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +0/-8
-- 验证与风险: diff 自带测试面 `tests/kernels/test_top_k_per_row.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #26465 - [Deepseek v3.2] Remove extra logics in indexer
 
 - 链接: https://github.com/vllm-project/vllm/pull/26465
@@ -254,6 +231,33 @@ diff -- vllm/model_executor/models/deepseek_v2.py
 
 - 已读文件:
   - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +11/-26
+- 验证与风险: diff 自带测试面 `tests/kernels/test_top_k_per_row.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #26763 - [Deepseek v3.2] Optimize top_k_per_row
+
+- 链接: https://github.com/vllm-project/vllm/pull/26763
+- 状态/时间: merged / 2025-10-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/deepseek_v2.py`；关联提交 `80e94529845d`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+13/-49，可读 patch 203 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Deepseek v3.2] Optimize top_k_per_row」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/deepseek_v2.py`；技术摘要: 覆盖「[Deepseek v3.2] Optimize top_k_per_row」；主要实现面是 `vllm/model_executor/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/deepseek_v2.py` modified +0/-8 (8 lines); hunks: -577,15 +577,11 @@ def sparse_attn_indexer(; -642,15 +638,11 @@ def sparse_attn_indexer(; symbols: sparse_attn_indexer，涉及 `sparse_attn_indexer`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/deepseek_v2.py` modified +0/-8 (8 lines); hunks: -577,15 +577,11 @@ def sparse_attn_indexer(; -642,15 +638,11 @@ def sparse_attn_indexer(; symbols: sparse_attn_indexer
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_v2.py
+@@ -577,15 +577,11 @@ def sparse_attn_indexer(
+-            topk_values = torch.empty(
+-                num_rows, topk_tokens, dtype=logits.dtype, device=logits.device
+-            )
+-                topk_values,
+@@ -642,15 +638,11 @@ def sparse_attn_indexer(
+-        topk_values = torch.empty(
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/deepseek_v2.py` modified +0/-8
 - 验证与风险: diff 自带测试面 `tests/kernels/test_top_k_per_row.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #28968 - [DeepSeek] Fix DeepSeek V3.2 Rope Embedding
@@ -337,32 +341,6 @@ diff -- vllm/tokenizers/deepseek_v32_encoding.py
   - runtime: `vllm/tokenizers/deepseek_v32_encoding.py` added +456/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/config/model.py`, `vllm/entrypoints/openai/serving_engine.py`, `vllm/tokenizers/__init__.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #30025 - [Bugfix] fixed deepseekv32 tool calling error
-
-- 链接: https://github.com/vllm-project/vllm/pull/30025
-- 状态/时间: merged / 2025-12-04
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/deepseek_v32_encoding.py`；关联提交 `82a64b3d8f93`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-3，可读 patch 23 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] fixed deepseekv32 tool calling error」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `vllm/tokenizers/deepseek_v32_encoding.py`；技术摘要: 覆盖「[Bugfix] fixed deepseekv32 tool calling error」；主要实现面是 `vllm/tokenizers/deepseek_v32_encoding.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/tokenizers/deepseek_v32_encoding.py` modified +4/-2 (6 lines); hunks: -95,8 +95,10 @@ def tool_calls_to_openai_format(tool_calls):; symbols: tool_calls_to_openai_format, encode_arguments_to_dsml，涉及 `tool_calls_to_openai_format, encode_arguments_to_dsml`。
-- 代码 diff 细节:
-  - `vllm/tokenizers/deepseek_v32_encoding.py` modified +4/-2 (6 lines); hunks: -95,8 +95,10 @@ def tool_calls_to_openai_format(tool_calls):; symbols: tool_calls_to_openai_format, encode_arguments_to_dsml
-- 关键代码摘录:
-
-```diff
-diff -- vllm/tokenizers/deepseek_v32_encoding.py
-@@ -95,8 +95,10 @@ def tool_calls_to_openai_format(tool_calls):
--    arguments = json.loads(tool_call["arguments"])
-+    if isinstance(tool_call["arguments"], str):
-+        arguments = json.loads(tool_call["arguments"])
-+    else:
-+        arguments = tool_call["arguments"]
-```
-
-- 已读文件:
-  - runtime: `vllm/tokenizers/deepseek_v32_encoding.py` modified +4/-2
-- 验证与风险: runtime 路径改动集中在 `vllm/tokenizers/deepseek_v32_encoding.py`, `vllm/tokenizers/deepseekv32.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #29848 - Add DeepSeek-V3.2 tool parser.
 
 - 链接: https://github.com/vllm-project/vllm/pull/29848
@@ -396,6 +374,32 @@ diff -- vllm/entrypoints/openai/tool_parsers/__init__.py
 - 已读文件:
   - runtime: `vllm/entrypoints/openai/tool_parsers/deepseekv32_tool_parser.py` added +591/-0; `vllm/entrypoints/openai/tool_parsers/__init__.py` modified +4/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/entrypoints/openai/tool_parsers/__init__.py`, `vllm/entrypoints/openai/tool_parsers/deepseekv32_tool_parser.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #30025 - [Bugfix] fixed deepseekv32 tool calling error
+
+- 链接: https://github.com/vllm-project/vllm/pull/30025
+- 状态/时间: merged / 2025-12-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/tokenizers/deepseek_v32_encoding.py`；关联提交 `82a64b3d8f93`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-3，可读 patch 23 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] fixed deepseekv32 tool calling error」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `vllm/tokenizers/deepseek_v32_encoding.py`；技术摘要: 覆盖「[Bugfix] fixed deepseekv32 tool calling error」；主要实现面是 `vllm/tokenizers/deepseek_v32_encoding.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/tokenizers/deepseek_v32_encoding.py` modified +4/-2 (6 lines); hunks: -95,8 +95,10 @@ def tool_calls_to_openai_format(tool_calls):; symbols: tool_calls_to_openai_format, encode_arguments_to_dsml，涉及 `tool_calls_to_openai_format, encode_arguments_to_dsml`。
+- 代码 diff 细节:
+  - `vllm/tokenizers/deepseek_v32_encoding.py` modified +4/-2 (6 lines); hunks: -95,8 +95,10 @@ def tool_calls_to_openai_format(tool_calls):; symbols: tool_calls_to_openai_format, encode_arguments_to_dsml
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tokenizers/deepseek_v32_encoding.py
+@@ -95,8 +95,10 @@ def tool_calls_to_openai_format(tool_calls):
+-    arguments = json.loads(tool_call["arguments"])
++    if isinstance(tool_call["arguments"], str):
++        arguments = json.loads(tool_call["arguments"])
++    else:
++        arguments = tool_call["arguments"]
+```
+
+- 已读文件:
+  - runtime: `vllm/tokenizers/deepseek_v32_encoding.py` modified +4/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/tokenizers/deepseek_v32_encoding.py`, `vllm/tokenizers/deepseekv32.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #27568 - [DeepSeek v3.2] Make top-k work for any logit values.
 
@@ -1993,43 +1997,6 @@ diff -- vllm/models/deepseek_v32/nvidia/mtp.py
   - runtime: `vllm/models/deepseek_v32/nvidia/model.py` modified +57/-70; `vllm/models/deepseek_v32/nvidia/mtp.py` modified +17/-7
 - 验证与风险: diff 自带测试面 `tests/models/deepseek_v32/test_sequence_parallel.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #52381 - Harden DeepSeek V3.2 fused kernel grids
-
-- 链接: https://github.com/vllm-project/vllm/pull/52381
-- 状态/时间: merged / 2026-08-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/common/kernels.py`；关联提交 `eab1cff5b0ca`
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+79/-6，可读 patch 127 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Harden DeepSeek V3.2 fused kernel grids」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；技术摘要: 覆盖「Harden DeepSeek V3.2 fused kernel grids」；主要实现面是 `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6 (12 lines); hunks: -152,8 +152,8 @@ def _fused_norm_rope_kernel(; -479,7 +479,7 @@ def fused_norm_rope(; symbols: _fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel, fused_q，涉及 `_fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel`；`tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0 (73 lines); hunks: -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):; -539,6 +579,39 @@ def test_fused_q_bf16_query(num_tokens: int, has_indexer: b...; symbols: test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query, test_fused_q_triton_supports_large_token_count，涉及 `test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query`。
-- 代码 diff 细节:
-  - `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6 (12 lines); hunks: -152,8 +152,8 @@ def _fused_norm_rope_kernel(; -479,7 +479,7 @@ def fused_norm_rope(; symbols: _fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel, fused_q
-  - `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0 (73 lines); hunks: -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):; -539,6 +579,39 @@ def test_fused_q_bf16_query(num_tokens: int, has_indexer: b...; symbols: test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query, test_fused_q_triton_supports_large_token_count
-- 关键代码摘录:
-
-```diff
-diff -- vllm/models/deepseek_v32/common/kernels.py
-@@ -152,8 +152,8 @@ def _fused_norm_rope_kernel(
--    pid = tl.program_id(0)
--    tok_idx = tl.program_id(1)
-+    tok_idx = tl.program_id(0).to(tl.int64)
-+    pid = tl.program_id(1)
-@@ -479,7 +479,7 @@ def fused_norm_rope(
--    _fused_norm_rope_kernel[(4, num_tokens)](
-diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
-@@ -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):
-+def test_fused_norm_rope_supports_large_token_count():
-+    """Keep the token count off CUDA grid-y at its 65,536-block boundary."""
-+    num_tokens = 65536
-+    dev = "cuda"
-+    dtype = torch.bfloat16
-+    positions = torch.zeros(num_tokens, device=dev, dtype=torch.int64)
-```
-
-- 已读文件:
-  - runtime: `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6
-  - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0
-- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #52046 - [nv] add pcp support in dsv3.2
 
 - 链接: https://github.com/vllm-project/vllm/pull/52046
@@ -2070,6 +2037,43 @@ diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
   - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +90/-6
 - 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `tests/model_executor/layers/test_mla_short_prefill_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #52381 - Harden DeepSeek V3.2 fused kernel grids
+
+- 链接: https://github.com/vllm-project/vllm/pull/52381
+- 状态/时间: merged / 2026-08-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/common/kernels.py`；关联提交 `eab1cff5b0ca`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+79/-6，可读 patch 127 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Harden DeepSeek V3.2 fused kernel grids」；模型线: DeepSeek V3.2；类别: 性能/后端优化；主要 diff: `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；技术摘要: 覆盖「Harden DeepSeek V3.2 fused kernel grids」；主要实现面是 `vllm/models/deepseek_v32/common/kernels.py`, `tests/kernels/test_fused_deepseek_v32_norm_rope.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6 (12 lines); hunks: -152,8 +152,8 @@ def _fused_norm_rope_kernel(; -479,7 +479,7 @@ def fused_norm_rope(; symbols: _fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel, fused_q，涉及 `_fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel`；`tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0 (73 lines); hunks: -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):; -539,6 +579,39 @@ def test_fused_q_bf16_query(num_tokens: int, has_indexer: b...; symbols: test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query, test_fused_q_triton_supports_large_token_count，涉及 `test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6 (12 lines); hunks: -152,8 +152,8 @@ def _fused_norm_rope_kernel(; -479,7 +479,7 @@ def fused_norm_rope(; symbols: _fused_norm_rope_kernel, fused_norm_rope, _fused_q_kernel, fused_q
+  - `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0 (73 lines); hunks: -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):; -539,6 +579,39 @@ def test_fused_q_bf16_query(num_tokens: int, has_indexer: b...; symbols: test_fused_norm_rope_ds_mla, test_fused_norm_rope_supports_large_token_count, test_fused_q_bf16_query, test_fused_q_triton_supports_large_token_count
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/common/kernels.py
+@@ -152,8 +152,8 @@ def _fused_norm_rope_kernel(
+-    pid = tl.program_id(0)
+-    tok_idx = tl.program_id(1)
++    tok_idx = tl.program_id(0).to(tl.int64)
++    pid = tl.program_id(1)
+@@ -479,7 +479,7 @@ def fused_norm_rope(
+-    _fused_norm_rope_kernel[(4, num_tokens)](
+diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
+@@ -362,6 +362,46 @@ def test_fused_norm_rope_ds_mla(num_tokens: int):
++def test_fused_norm_rope_supports_large_token_count():
++    """Keep the token count off CUDA grid-y at its 65,536-block boundary."""
++    num_tokens = 65536
++    dev = "cuda"
++    dtype = torch.bfloat16
++    positions = torch.zeros(num_tokens, device=dev, dtype=torch.int64)
+```
+
+- 已读文件:
+  - runtime: `vllm/models/deepseek_v32/common/kernels.py` modified +6/-6
+  - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +73/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #53021 - [Model] Remove unused DeepseekV32Indexer forward
 
 - 链接: https://github.com/vllm-project/vllm/pull/53021
@@ -2096,6 +2100,88 @@ diff -- vllm/models/deepseek_v32/attention.py
 - 已读文件:
   - runtime: `vllm/models/deepseek_v32/attention.py` modified +0/-51
 - 验证与风险: runtime 路径改动集中在 `vllm/models/deepseek_v32/attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #50005 - [Bugfix][DCP] Fix NVIDIA DeepSeek-V3.2 / GLM-5.2 fused attention
+
+- 链接: https://github.com/vllm-project/vllm/pull/50005
+- 状态/时间: merged / 2026-08-31
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/models/deepseek_v32/attention.py`, `vllm/models/deepseek_v32/common/kernels.py`；关联提交 `2cf82bcdd17f`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+102/-22，可读 patch 162 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/deepseek_v32/attention.py` modified +29/-13 (42 lines); hunks: -521,29 +521,45 @@ def _sparse_indexer_and_attn(; symbols: _sparse_indexer_and_attn，涉及 `_sparse_indexer_and_attn`；`vllm/models/deepseek_v32/common/kernels.py` modified +16/-9 (25 lines); hunks: -181,22 +181,29 @@ def _fused_norm_rope_kernel(; symbols: _fused_norm_rope_kernel，涉及 `_fused_norm_rope_kernel`；`tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +57/-0 (57 lines); hunks: -234,6 +234,63 @@ def test_fused_norm_rope(num_tokens: int, index_interleave:...; symbols: test_fused_norm_rope, test_fused_norm_rope_normalizes_query_without_local_cache_slots, test_fused_norm_rope_no_indexer，涉及 `test_fused_norm_rope, test_fused_norm_rope_normalizes_query_without_local_cache_slots, test_fused_norm_rope_no_indexer`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/attention.py` modified +29/-13 (42 lines); hunks: -521,29 +521,45 @@ def _sparse_indexer_and_attn(; symbols: _sparse_indexer_and_attn
+  - `vllm/models/deepseek_v32/common/kernels.py` modified +16/-9 (25 lines); hunks: -181,22 +181,29 @@ def _fused_norm_rope_kernel(; symbols: _fused_norm_rope_kernel
+  - `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +57/-0 (57 lines); hunks: -234,6 +234,63 @@ def test_fused_norm_rope(num_tokens: int, index_interleave:...; symbols: test_fused_norm_rope, test_fused_norm_rope_normalizes_query_without_local_cache_slots, test_fused_norm_rope_no_indexer
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/attention.py
+@@ -521,29 +521,45 @@ def _sparse_indexer_and_attn(
++        elif not self.use_pcp and self.impl.dcp_world_size > 1:
++            assert self.dcp_manager is not None
++            if isinstance(mqa_q_arg, tuple):
++                mqa_q_arg = torch.cat(mqa_q_arg, dim=-1)
++            assert self.dcp_manager.query_gather is not None
++            mqa_q_arg = self.dcp_manager.query_gather(mqa_q_arg)
+diff -- vllm/models/deepseek_v32/common/kernels.py
+@@ -181,22 +181,29 @@ def _fused_norm_rope_kernel(
+-    if slot_mapping_ptr is None:
+-        if kv_out_ptr is None and kpe_out_ptr is None and index_k_out_ptr is None:
+-            return
+-    elif tl.load(slot_mapping_ptr + tok_idx) < 0:
+-        # Padding
+-        return
+diff -- tests/kernels/test_fused_deepseek_v32_norm_rope.py
+@@ -234,6 +234,63 @@ def test_fused_norm_rope(num_tokens: int, index_interleave: bool, mla_dtype: str
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/deepseek_v32/attention.py` modified +29/-13; `vllm/models/deepseek_v32/common/kernels.py` modified +16/-9
+  - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +57/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #51915 - [ROCm][Model][Bugfix] Enable GLM-5.2-MXFP4 on the deepseek_v32 path and fix sparse attention correctness
+
+- 链接: https://github.com/vllm-project/vllm/pull/51915
+- 状态/时间: merged / 2026-09-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/models/deepseek_v32/__init__.py`, `vllm/models/deepseek_v32/amd/rocm.py`, `vllm/models/deepseek_v32/attention.py` 等 6 个文件；关联提交 `1c0eee919db3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 8 个文件，+319/-212，可读 patch 1215 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/deepseek_v32/common/kernels.py` modified +97/-27 (124 lines); hunks: -12,6 +12,18; -47,16 +59,17 @@ def _get_cos_sin(; symbols: _dummy, _get_cos_sin, _fp8_ue8m0_quantize, _fp8_quant_and_cache_write，涉及 `_dummy, _get_cos_sin, _fp8_ue8m0_quantize`；`vllm/models/deepseek_v32/amd/rocm.py` modified +16/-25 (41 lines); hunks: -3,34 +3,30; -46,7 +42,7 @@ def __init__(self, vllm_config, config, prefix, topk_indices_b...; symbols: DeepseekV32MLASparseBackend, get_supported_kernel_block_sizes, DeepseekV32ROCmIndexerBackend, DeepseekV32ROCmIndexerCache，涉及 `DeepseekV32MLASparseBackend, get_supported_kernel_block_sizes, DeepseekV32ROCmIndexerBackend`；`vllm/models/deepseek_v32/__init__.py` modified +8/-4 (12 lines); hunks: -7,9 +7,9; -20,8 +20,12；`vllm/model_executor/models/deepseek_v2.py` modified +5/-0 (5 lines); hunks: -665,6 +665,11 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVC...; symbols: get_kv_cache_spec, forward, uses_shuffled_layout, get_attn_backend，涉及 `get_kv_cache_spec, forward, uses_shuffled_layout`。
+- 代码 diff 细节:
+  - `vllm/models/deepseek_v32/common/kernels.py` modified +97/-27 (124 lines); hunks: -12,6 +12,18; -47,16 +59,17 @@ def _get_cos_sin(; symbols: _dummy, _get_cos_sin, _fp8_ue8m0_quantize, _fp8_quant_and_cache_write
+  - `vllm/models/deepseek_v32/amd/rocm.py` modified +16/-25 (41 lines); hunks: -3,34 +3,30; -46,7 +42,7 @@ def __init__(self, vllm_config, config, prefix, topk_indices_b...; symbols: DeepseekV32MLASparseBackend, get_supported_kernel_block_sizes, DeepseekV32ROCmIndexerBackend, DeepseekV32ROCmIndexerCache
+  - `vllm/models/deepseek_v32/__init__.py` modified +8/-4 (12 lines); hunks: -7,9 +7,9; -20,8 +20,12
+  - `vllm/model_executor/models/deepseek_v2.py` modified +5/-0 (5 lines); hunks: -665,6 +665,11 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVC...; symbols: get_kv_cache_spec, forward, uses_shuffled_layout, get_attn_backend
+  - `vllm/models/deepseek_v32/attention.py` modified +4/-1 (5 lines); hunks: -327,6 +327,7 @@ def forward( # type: ignore[override]; -338,6 +339,7 @@ def forward( # type: ignore[override]; symbols: forward, _sparse_indexer_and_attn
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/deepseek_v32/common/kernels.py
+@@ -12,6 +12,18 @@
++# Tile shape of the indexer-K cache's shuffled layout, used when the cache reports
++# uses_shuffled_layout. The block tile is a token count; the head tile is a byte
++# count, which the kernel converts to cache elements.
++_INDEXER_CACHE_BLOCK_TILE = 16
++_INDEXER_CACHE_HEAD_TILE_BYTES = 16
++# FNUZ (e4m3fnuz) on gfx942, OCP (e4m3fn) elsewhere. 224.0 keeps the ue8m0
+diff -- vllm/models/deepseek_v32/amd/rocm.py
+@@ -3,34 +3,30 @@
++from vllm._aiter_ops import rocm_aiter_ops
++from vllm.platforms import current_platform
+-class DeepseekV32MLASparseBackend(ROCMAiterMLASparseBackend):
+-    @staticmethod
+-    def get_supported_kernel_block_sizes() -> list:
+-        return [16, 32]
+diff -- vllm/models/deepseek_v32/__init__.py
+@@ -7,9 +7,9 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/deepseek_v32/common/kernels.py` modified +97/-27; `vllm/models/deepseek_v32/amd/rocm.py` modified +16/-25; `vllm/models/deepseek_v32/__init__.py` modified +8/-4; `vllm/model_executor/models/deepseek_v2.py` modified +5/-0; `vllm/models/deepseek_v32/attention.py` modified +4/-1; `vllm/model_executor/layers/attention/mla_attention.py` modified +1/-3
+  - tests: `tests/kernels/test_fused_deepseek_v32_norm_rope.py` modified +187/-151
+- 验证与风险: diff 自带测试面 `tests/kernels/test_fused_deepseek_v32_norm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

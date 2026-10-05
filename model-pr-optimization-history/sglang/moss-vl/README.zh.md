@@ -1,9 +1,10 @@
-# sglang MOSS-VL 模型 PR 优化历史
+# SGLang MOSS-VL 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
+| `python/sglang/srt/arg_groups/model_overrides/moss_vl.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/moss_vl.py` | [#23454](https://github.com/sgl-project/sglang/pull/23454), [#23932](https://github.com/sgl-project/sglang/pull/23932), [#28940](https://github.com/sgl-project/sglang/pull/28940) |
 | `python/sglang/srt/multimodal/processors/moss_vl.py` | [#23454](https://github.com/sgl-project/sglang/pull/23454) |
 | `test/registered/unit/models/test_moss_vl_processor.py` | 无直接 PR 号提交 |

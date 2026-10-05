@@ -5,7 +5,7 @@ source:
   recorded_heads:
     sglang: eec794bce0808ae26cc1dcb84a56b65d2df82af5
     vllm: bbe8b23e1a2b32a96240b27f63255170d09ef144
-    tensorrt_llm: da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9
+    tensorrt_llm: bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60
     tokenspeed: 2706143a8669d50a8f56466b9d340b86922b8f2d
   translation: The enabled SGLang section copies the public H200 single-GPU
     FP8 cell. Other frameworks stay disabled because this refresh did not

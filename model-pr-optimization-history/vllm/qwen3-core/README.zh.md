@@ -1,12 +1,12 @@
-# vllm Qwen3 Core 模型 PR 优化历史
+# vLLM Qwen3 Core 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `tests/models/multimodal/pooling/test_colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574) |
+| `tests/models/multimodal/pooling/test_colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574), [#55588](https://github.com/vllm-project/vllm/pull/55588), [#55878](https://github.com/vllm-project/vllm/pull/55878), [#55889](https://github.com/vllm-project/vllm/pull/55889) |
 | `tests/parser/engine/test_qwen3.py` | [#45413](https://github.com/vllm-project/vllm/pull/45413), [#46047](https://github.com/vllm-project/vllm/pull/46047), [#46351](https://github.com/vllm-project/vllm/pull/46351), [#48846](https://github.com/vllm-project/vllm/pull/48846) |
-| `vllm/model_executor/models/colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574) |
+| `vllm/model_executor/models/colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574), [#51289](https://github.com/vllm-project/vllm/pull/51289) |
 | `vllm/model_executor/models/qwen3.py` | [#15289](https://github.com/vllm-project/vllm/pull/15289), [#17735](https://github.com/vllm-project/vllm/pull/17735), [#19260](https://github.com/vllm-project/vllm/pull/19260), [#21924](https://github.com/vllm-project/vllm/pull/21924), [#29816](https://github.com/vllm-project/vllm/pull/29816) |
 | `vllm/model_executor/models/qwen3_dflash.py` | [#52560](https://github.com/vllm-project/vllm/pull/52560) |
 | `vllm/model_executor/models/qwen3_moe.py` | [#15289](https://github.com/vllm-project/vllm/pull/15289), [#16203](https://github.com/vllm-project/vllm/pull/16203), [#17735](https://github.com/vllm-project/vllm/pull/17735), [#18118](https://github.com/vllm-project/vllm/pull/18118), [#19598](https://github.com/vllm-project/vllm/pull/19598), [#19860](https://github.com/vllm-project/vllm/pull/19860), [#20101](https://github.com/vllm-project/vllm/pull/20101), [#20815](https://github.com/vllm-project/vllm/pull/20815), [#21924](https://github.com/vllm-project/vllm/pull/21924), [#22017](https://github.com/vllm-project/vllm/pull/22017), [#22785](https://github.com/vllm-project/vllm/pull/22785), [#23169](https://github.com/vllm-project/vllm/pull/23169), ... (24 total) |
@@ -15,9 +15,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 33
+- git 追溯 PR 数: 38
 - 原文档显式引用补充 PR 数: 4
-- 当前文档总 PR 数: 37
+- 当前文档总 PR 数: 42
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -62,6 +62,11 @@
 | 2026-06-23 | [#46351](https://github.com/vllm-project/vllm/pull/46351) | merged | fix: stream Qwen3 tool call string arguments | `tests/parser/engine/test_qwen3.py`, `vllm/parser/qwen3.py` |
 | 2026-06-25 | [#46314](https://github.com/vllm-project/vllm/pull/46314) | merged | [Frontend] Port seed_oss to the streaming parser engine as a Qwen3 subclass | `vllm/parser/qwen3.py` |
 | 2026-07-17 | [#48846](https://github.com/vllm-project/vllm/pull/48846) | merged | [Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML) | `vllm/parser/qwen3.py`, `tests/parser/engine/test_qwen3.py` |
+| 2026-08-22 | [#52560](https://github.com/vllm-project/vllm/pull/52560) | merged | [Model] Add Qwen3-Omni DSpark support | `vllm/model_executor/models/qwen3_dflash.py` |
+| 2026-09-07 | [#55588](https://github.com/vllm-project/vllm/pull/55588) | merged | [CI/Build] Unskip ColQwen3 multimodal pooling tests on Transformers v5 | `tests/models/multimodal/pooling/test_colqwen3.py` |
+| 2026-09-08 | [#55878](https://github.com/vllm-project/vllm/pull/55878) | merged | [CI] Increase ColQwen3 pooling test memory budget on H200 MIG | `tests/models/multimodal/pooling/test_colqwen3.py` |
+| 2026-09-08 | [#55889](https://github.com/vllm-project/vllm/pull/55889) | merged | [CI] Reuse ColQwen3 models across pooling tests | `tests/models/multimodal/pooling/test_colqwen3.py` |
+| 2026-09-29 | [#51289](https://github.com/vllm-project/vllm/pull/51289) | merged | [Model] Extend device-side mm normalization to Qwen3VL/Qwen3.5/Qwen4Next | `vllm/model_executor/models/colqwen3.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1220,6 +1225,133 @@ diff -- tests/parser/engine/test_qwen3.py
   - runtime: `vllm/parser/qwen3.py` modified +11/-2
   - tests: `tests/parser/engine/test_qwen3.py` modified +2/-2
 - 验证与风险: diff 自带测试面 `tests/parser/engine/test_qwen3.py`, `tests/tool_parsers/test_minicpm5xml_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_parsers/test_qwen3coder_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52560 - [Model] Add Qwen3-Omni DSpark support
+
+- 链接: https://github.com/vllm-project/vllm/pull/52560
+- 状态/时间: merged / 2026-08-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/qwen3_dflash.py`；关联提交 `2f55ef254c70`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 11 个文件，+731/-22，可读 patch 952 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/qwen3_dflash.py` modified +8/-8 (16 lines); hunks: -377,8 +377,6 @@ def forward(; -412,10 +410,10 @@ def __init__(; symbols: forward, DFlashQwen3Model, __init__，涉及 `forward, DFlashQwen3Model, __init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_dflash.py` modified +8/-8 (16 lines); hunks: -377,8 +377,6 @@ def forward(; -412,10 +410,10 @@ def __init__(; symbols: forward, DFlashQwen3Model, __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_dflash.py
+@@ -377,8 +377,6 @@ def forward(
+-    decoder_layer_cls = DFlashQwen3DecoderLayer
+@@ -412,10 +410,10 @@ def __init__(
+-        if drafter_config is not None and "use_aux_hidden_state" in drafter_config:
+-            self.use_aux_hidden_state = drafter_config["use_aux_hidden_state"]
+-        else:
+-            self.use_aux_hidden_state = True
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/qwen3_dflash.py` modified +8/-8
+- 验证与风险: diff 自带测试面 `tests/model_executor/test_qwen3_omni.py`, `tests/models/registry.py`, `tests/test_config.py`, `tests/transformers_utils/test_speculators_dspark_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #55588 - [CI/Build] Unskip ColQwen3 multimodal pooling tests on Transformers v5
+
+- 链接: https://github.com/vllm-project/vllm/pull/55588
+- 状态/时间: merged / 2026-09-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_colqwen3.py`；关联提交 `51da0ca66c80`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+0/-5，可读 patch 12 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/multimodal/pooling/test_colqwen3.py` modified +0/-5 (5 lines); hunks: -22,11 +22,6。
+- 代码 diff 细节:
+  - `tests/models/multimodal/pooling/test_colqwen3.py` modified +0/-5 (5 lines); hunks: -22,11 +22,6
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_colqwen3.py
+@@ -22,11 +22,6 @@
+-pytestmark = pytest.mark.skip(
+-    reason="ColQwen3 model's weight tying is incompatible with "
+-    "transformers v5 (missing all_tied_weights_keys)"
+-)
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/multimodal/pooling/test_colqwen3.py` modified +0/-5
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/pooling/test_colqwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #55878 - [CI] Increase ColQwen3 pooling test memory budget on H200 MIG
+
+- 链接: https://github.com/vllm-project/vllm/pull/55878
+- 状态/时间: merged / 2026-09-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_colqwen3.py`；关联提交 `34b9899c8f13`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+3/-1，可读 patch 11 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/multimodal/pooling/test_colqwen3.py` modified +3/-1 (4 lines); hunks: -45,7 +45,9; symbols: _make_base64_image，涉及 `_make_base64_image`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/pooling/test_colqwen3.py` modified +3/-1 (4 lines); hunks: -45,7 +45,9; symbols: _make_base64_image
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_colqwen3.py
+@@ -45,7 +45,9 @@
+-GPU_MEMORY_UTILIZATION = 0.7
++# The Tomoro model needs room for its vision encoder and a 4096-token KV cache
++# on the 16 GiB devices used by the H200 MIG test lane.
++GPU_MEMORY_UTILIZATION = 0.8
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/multimodal/pooling/test_colqwen3.py` modified +3/-1
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/pooling/test_colqwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #55889 - [CI] Reuse ColQwen3 models across pooling tests
+
+- 链接: https://github.com/vllm-project/vllm/pull/55889
+- 状态/时间: merged / 2026-09-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_colqwen3.py`；关联提交 `cb222346875b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+81/-162，可读 patch 327 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/multimodal/pooling/test_colqwen3.py` modified +81/-162 (243 lines); hunks: -48,6 +48,20; -85,75 +99,51 @@ def _make_text_mm_param(text: str) -> ScoreMultiModalParam:; symbols: colqwen3_model, _make_base64_image, _make_text_mm_param, _run_token_embed_test，涉及 `colqwen3_model, _make_base64_image, _make_text_mm_param`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/pooling/test_colqwen3.py` modified +81/-162 (243 lines); hunks: -48,6 +48,20; -85,75 +99,51 @@ def _make_text_mm_param(text: str) -> ScoreMultiModalParam:; symbols: colqwen3_model, _make_base64_image, _make_text_mm_param, _run_token_embed_test
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_colqwen3.py
+@@ -48,6 +48,20 @@
++@pytest.fixture(scope="module", params=MODELS)
++def colqwen3_model(request, vllm_runner):
++    model = request.param
++    with vllm_runner(
++        model,
++        runner="pooling",
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/multimodal/pooling/test_colqwen3.py` modified +81/-162
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/pooling/test_colqwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #51289 - [Model] Extend device-side mm normalization to Qwen3VL/Qwen3.5/Qwen4Next
+
+- 链接: https://github.com/vllm-project/vllm/pull/51289
+- 状态/时间: merged / 2026-09-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/colqwen3.py`；关联提交 `491f44adfa42`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 11 个文件，+87/-25，可读 patch 321 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/colqwen3.py` modified +2/-0 (2 lines); hunks: -134,6 +134,8 @@ class ColQwen3Model(Qwen3VLForConditionalGeneration, Support...; symbols: ColQwen3Model，涉及 `ColQwen3Model`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/colqwen3.py` modified +2/-0 (2 lines); hunks: -134,6 +134,8 @@ class ColQwen3Model(Qwen3VLForConditionalGeneration, Support...; symbols: ColQwen3Model
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/colqwen3.py
+@@ -134,6 +134,8 @@ class ColQwen3Model(Qwen3VLForConditionalGeneration, SupportsLateInteraction):
++    # Mark as false to avoid collision with the checkpoint's custom code path
++    supports_mm_device_do_normalize = False
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/colqwen3.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation_ppl_test/ppl_utils.py`, `tests/models/multimodal/generation_ppl_test/test_qwen.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

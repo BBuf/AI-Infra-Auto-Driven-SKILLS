@@ -1,4 +1,4 @@
-# vllm ERNIE 4.5 模型 PR 优化历史
+# vLLM ERNIE 4.5 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -7,20 +7,20 @@
 | `tests/model_executor/test_ernie45_vl_mrope.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753) |
 | `tests/reasoning/test_ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027) |
 | `tests/tool_parsers/test_ernie45_moe_tool_parser.py` | 无直接 PR 号提交 |
-| `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` | 无直接 PR 号提交 |
-| `vllm/model_executor/models/ernie45.py` | [#21735](https://github.com/vllm-project/vllm/pull/21735) |
-| `vllm/model_executor/models/ernie45_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26684](https://github.com/vllm-project/vllm/pull/26684), [#27316](https://github.com/vllm-project/vllm/pull/27316) |
-| `vllm/model_executor/models/ernie45_vl.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753), [#45254](https://github.com/vllm-project/vllm/pull/45254), [#51461](https://github.com/vllm-project/vllm/pull/51461) |
-| `vllm/model_executor/models/ernie45_vl_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
-| `vllm/model_executor/models/ernie_mtp.py` | 无直接 PR 号提交 |
+| `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` | [#22514](https://github.com/vllm-project/vllm/pull/22514), [#55942](https://github.com/vllm-project/vllm/pull/55942) |
+| `vllm/model_executor/models/ernie45.py` | [#20220](https://github.com/vllm-project/vllm/pull/20220), [#21735](https://github.com/vllm-project/vllm/pull/21735) |
+| `vllm/model_executor/models/ernie45_moe.py` | [#20220](https://github.com/vllm-project/vllm/pull/20220), [#21586](https://github.com/vllm-project/vllm/pull/21586), [#21717](https://github.com/vllm-project/vllm/pull/21717), [#22100](https://github.com/vllm-project/vllm/pull/22100), [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26684](https://github.com/vllm-project/vllm/pull/26684), [#27316](https://github.com/vllm-project/vllm/pull/27316) |
+| `vllm/model_executor/models/ernie45_vl.py` | [#22514](https://github.com/vllm-project/vllm/pull/22514), [#24074](https://github.com/vllm-project/vllm/pull/24074), [#31274](https://github.com/vllm-project/vllm/pull/31274), [#39753](https://github.com/vllm-project/vllm/pull/39753), [#45254](https://github.com/vllm-project/vllm/pull/45254), [#51461](https://github.com/vllm-project/vllm/pull/51461) |
+| `vllm/model_executor/models/ernie45_vl_moe.py` | [#22514](https://github.com/vllm-project/vllm/pull/22514), [#24074](https://github.com/vllm-project/vllm/pull/24074), [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
+| `vllm/model_executor/models/ernie_mtp.py` | [#22169](https://github.com/vllm-project/vllm/pull/22169) |
 | `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973), [#46255](https://github.com/vllm-project/vllm/pull/46255) |
 | `vllm/tool_parsers/ernie45_tool_parser.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 11
-- 原文档显式引用补充 PR 数: 13
-- 当前文档总 PR 数: 24
+- git 追溯 PR 数: 20
+- 原文档显式引用补充 PR 数: 7
+- 当前文档总 PR 数: 27
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -29,8 +29,10 @@
 | 日期 | PR | 状态 | 标题 | 主要文件 |
 | --- | --- | --- | --- | --- |
 | 2025-07-02 | [#20220](https://github.com/vllm-project/vllm/pull/20220) | merged | [Model] Add Ernie4.5 and Ernie4.5MoE Model Support | `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py` |
+| 2025-07-25 | [#21586](https://github.com/vllm-project/vllm/pull/21586) | merged | [Model] Fix Ernie4.5MoE e_score_correction_bias parameter | `vllm/model_executor/models/ernie45_moe.py` |
 | 2025-07-28 | [#21717](https://github.com/vllm-project/vllm/pull/21717) | merged | [Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts | `vllm/model_executor/models/ernie45_moe.py` |
 | 2025-07-28 | [#21735](https://github.com/vllm-project/vllm/pull/21735) | merged | [`Ernie 4.5`] Name Change for Base 0.3B Model | `vllm/model_executor/models/ernie45.py` |
+| 2025-08-20 | [#22169](https://github.com/vllm-project/vllm/pull/22169) | merged | [Model][V1] Support Ernie MTP | `vllm/model_executor/models/ernie_mtp.py` |
 | 2025-08-27 | [#22514](https://github.com/vllm-project/vllm/pull/22514) | merged | [Model] Add Ernie4.5 VL Model Support | `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/layers/rotary_embedding/mrope.py` |
 | 2025-09-09 | [#24074](https://github.com/vllm-project/vllm/pull/24074) | merged | [BugFix][Model] Fix Ernie4.5-VL hanging on long inputs | `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py` |
 | 2025-09-30 | [#25936](https://github.com/vllm-project/vllm/pull/25936) | merged | [Bugfix][Model]fix ernie45 moe gate&bias dtype to float32 | `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/models/ernie45_moe.py` |
@@ -52,6 +54,7 @@
 | 2026-07-01 | [#46255](https://github.com/vllm-project/vllm/pull/46255) | merged | fix(reasoning): guard rfind in ernie45 streaming branch | `vllm/reasoning/ernie45_reasoning_parser.py` |
 | 2026-08-06 | [#45254](https://github.com/vllm-project/vllm/pull/45254) | merged | [MM][CG] Support ViT full CUDA graph for Ernie-4.5-VL image inference | `vllm/model_executor/models/ernie45_vl.py` |
 | 2026-08-11 | [#51461](https://github.com/vllm-project/vllm/pull/51461) | merged | [MM][CG][BugFix] Fix Ernie-4.5-VL encoder CG postprocess for multi-path outputs | `vllm/model_executor/models/ernie45_vl.py` |
+| 2026-09-10 | [#55942](https://github.com/vllm-project/vllm/pull/55942) | merged | [XPU][Bugfix] Add forward_xpu to Ernie4_5_VLRotaryEmbedding | `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -97,6 +100,33 @@ diff -- tests/models/registry.py
   - tests: `tests/models/registry.py` modified +4/-0
   - docs: `docs/models/supported_models.md` modified +2/-0
 - 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #21586 - [Model] Fix Ernie4.5MoE e_score_correction_bias parameter
+
+- 链接: https://github.com/vllm-project/vllm/pull/21586
+- 状态/时间: merged / 2025-07-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/ernie45_moe.py`；关联提交 `c72f049cb4c9`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+17/-8，可读 patch 39 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/ernie45_moe.py` modified +17/-8 (25 lines); hunks: -123,14 +123,19 @@ def __init__(; -459,6 +464,10 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: __init__, load_weights，涉及 `__init__, load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/ernie45_moe.py` modified +17/-8 (25 lines); hunks: -123,14 +123,19 @@ def __init__(; -459,6 +464,10 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: __init__, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/ernie45_moe.py
+@@ -123,14 +123,19 @@ def __init__(
+-        self.experts = FusedMoE(num_experts=config.moe_num_experts,
+-                                top_k=config.moe_k,
+-                                hidden_size=config.hidden_size,
+-                                intermediate_size=config.moe_intermediate_size,
+-                                reduce_results=False,
+-                                renormalize=True,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/ernie45_moe.py` modified +17/-8
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/ernie45_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #21717 - [Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts
 
@@ -146,6 +176,33 @@ diff -- vllm/model_executor/models/ernie45.py
 
 - 已读文件:
   - runtime: `vllm/model_executor/models/ernie45.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #22169 - [Model][V1] Support Ernie MTP
+
+- 链接: https://github.com/vllm-project/vllm/pull/22169
+- 状态/时间: merged / 2025-08-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/ernie_mtp.py`；关联提交 `7cd17e22d764`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+320/-7，可读 patch 398 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/ernie_mtp.py` added +287/-0 (287 lines); hunks: -0,0 +1,287; symbols: ErnieMultiTokenPredictorLayer, __init__, forward, ErnieMultiTokenPredictor，涉及 `ErnieMultiTokenPredictorLayer, __init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/ernie_mtp.py` added +287/-0 (287 lines); hunks: -0,0 +1,287; symbols: ErnieMultiTokenPredictorLayer, __init__, forward, ErnieMultiTokenPredictor
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/ernie_mtp.py
+@@ -0,0 +1,287 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# Copyright 2025 The Baidu team.
++# Copyright 2023 The vLLM team.
++# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
++#
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/ernie_mtp.py` added +287/-0
 - 验证与风险: diff 自带测试面 `tests/models/registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #22514 - [Model] Add Ernie4.5 VL Model Support
@@ -860,6 +917,33 @@ diff -- vllm/model_executor/models/ernie45_vl.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/ernie45_vl.py` modified +3/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/ernie45_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #55942 - [XPU][Bugfix] Add forward_xpu to Ernie4_5_VLRotaryEmbedding
+
+- 链接: https://github.com/vllm-project/vllm/pull/55942
+- 状态/时间: merged / 2026-09-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py`；关联提交 `c9355e25e8cf`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+11/-0，可读 patch 15 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +11/-0 (11 lines); hunks: -80,3 +80,14 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_xpu，涉及 `forward_cuda, forward_xpu`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +11/-0 (11 lines); hunks: -80,3 +80,14 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_xpu
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py
+@@ -80,3 +80,14 @@ def forward_cuda(  # type: ignore[override]
++    def forward_xpu(  # type: ignore[override]
++        self,
++        positions: torch.Tensor,
++        query: torch.Tensor,
++        key: torch.Tensor | None = None,
++    ) -> tuple[torch.Tensor, torch.Tensor | None]:
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +11/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

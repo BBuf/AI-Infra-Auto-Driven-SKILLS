@@ -195,3 +195,23 @@ At that point, switch to `llm-torch-profiler-analysis`.
 - what was ruled out
 - next step
 - production risk
+
+## Additional signals at the 2026-10-05 source head
+
+- KV corruption suspicion (HiCache, PD, speculation): `--kv-canary log` logs
+  mismatches while serving; `--kv-canary-sweep-interval N` adds full-pool sweeps.
+  Use these observations before kernel bisect.
+- Hung forward batch: `--watchdog-timeout` defaults to 300 s and triggers crash
+  artifacts; `--soft-watchdog-timeout` dumps debug information without crashing.
+  A configured CUDA coredump pipe permits a user-triggered dump of a wedged kernel.
+- Deploy drift: `SGLANG_EXPOSE_OWN_ENV_VARS=1` exposes rank environment variables
+  in `/server_info.internal_states[*].env_vars`; compare resolved config,
+  `launch_command`, `kv_events` and image commit with the previous deployment.
+- Speculation collapse: compare `internal_states[*].avg_spec_accept_length`,
+  `loads[*].speculative.accept_length` and `sglang:spec_accept_length` with the
+  earlier healthy baseline. An isolated value does not prove a regression.
+- OTel: record `SGLANG_TRACE_LEVEL`, `SGLANG_TRACE_ASYNC` and service/module
+  options; `convert_otel_2_perfetto.py --torch-file` provides the profiler handoff.
+
+Evidence: [observability flags](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/arg_groups/fields/observability.py),
+[watchdogs](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/arg_groups/fields/device.py).

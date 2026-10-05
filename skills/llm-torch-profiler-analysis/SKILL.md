@@ -74,6 +74,14 @@ python3 scripts/analyze_llm_torch_profile.py \
 `--profile-workload` accepts `both`, `prefill`, `decode`, or `legacy` (explicit
 probe prompt/token settings). Workload labels alone do not make a trace purely
 decode: inspect stage annotations and exclude request prefill when needed.
+The helper targets SGLang profiler v1 (default). Declare `--sglang-profile-v2`
+if the remote server enables `SGLANG_PROFILE_V2=1`; the helper refuses this
+incompatible flow before issuing control requests. `/server_info` does not
+expose remote environment variables. Native v2 needs `profile_by_stage:true`
+and `num_steps`, without `start_step`, `merge_profiles` or `/stop_profile`.
+The Rust frontend has no HTTP profiler routes; use Python or offline capture.
+The host launcher explicitly sets `SGLANG_PROFILE_V2=0`.
+The helper puts its label in `profile_id`, so merging can discover rank files.
 SGLang can emit stage-specific traces; its scheduler stop counter may require
 a final forward to close the window. The helper's SGLang workload adds a guard
 request/step. Check actual trace counts instead of assuming identical windows
@@ -83,12 +91,19 @@ For other frameworks add `--no-profile-by-stage`. Their HTTP windows and
 iteration controls differ:
 
 - **vLLM:** launch with
-  `--profiler-config '{"profiler":"torch","torch_profiler_dir":"/shared/profiles/run-001"}'`.
+  `--profiler-config '{"profiler":"torch","torch_profiler_dir":"/shared/profiles/run-001","max_iterations":5,"ignore_frontend":true}'`.
   Start/stop has no per-request output/steps body. Configure iteration limits
   and optional profiler warmup at server launch. The helper's `--num-steps`
   controls probe planning, not vLLM's internal profile schedule.
   `torch_profiler_with_stack` defaults true in the inspected source. Frontend
   traces can contain no kernels; select GPU-worker traces for GPU analysis.
+  `active_iterations` only takes effect with a warmup/wait schedule; use
+  `max_iterations` to bound workers. The host option is `--profiler-max-iterations`
+  (`--profiler-active-iterations` remains an alias). Two capture rounds require
+  [vLLM #57460](https://github.com/vllm-project/vllm/pull/57460), merged
+  2026-09-21; older images need separate launches for prefill and decode.
+  Keep CPU in `torch_profiler_activities` for source attribution and step
+  annotations; CUDA-only activities omit both Python stacks and annotations.
 - **TensorRT-LLM:** the inspected PyTorch server accepts runtime start with
   `output_dir` and `activities`; the helper sends both and stops after probes.
   Native traces are uniquely named per request and rank. There is no need for
@@ -100,7 +115,11 @@ iteration controls differ:
 - **TokenSpeed:** the helper sends `output_dir`, CPU/GPU activities,
   `with_stack=true`, `record_shapes=false`, and a stage-qualified `profile_id`.
   Current servers expose start/stop; verify the deployed image. Proton's
-  native Hatchet artifacts are not Torch Chrome traces.
+  native Hatchet artifacts are not Torch Chrome traces. The control sidecar
+  uses `--control-port` or serve port + 1; external pinned gateway wheels
+  control JSON forwarding, so validate payload fields on the installed image.
+  `EXPERT_LOAD` writes `.expert-load.pt`, not Chrome traces.
+  `TOKENSPEED_CUPTI_GRAPH_WARMUP=1` can leave zero GPU events in later captures.
 
 ```bash
 python3 scripts/analyze_llm_torch_profile.py \
@@ -116,10 +135,20 @@ without moving the server's originals. Preserve that returned directory rather
 than analyzing every historical run under a shared root. Concurrent profiling
 sessions still need separate output directories.
 
+Native alternatives include SGLang graph-capture traces under
+`graph_capture_profile/`, `MEM` snapshots, and `CUDA_PROFILER` with nsys;
+vLLM `capture_torch_profiler`, CUDA/NVTX and Proton Chrome export;
+TRT-LLM `TLLM_PROFILE_START_STOP`/`TLLM_TORCH_PROFILE_TRACE`; and TokenSpeed
+VizTracer/Proton plus `tokenspeed merge-traces`. Graph-capture and VizTracer
+artifacts are excluded from default runtime-trace discovery. Pass a file
+explicitly when intentionally studying one of these artifacts. Native Hatchet,
+MEM and expert-load outputs require their own readers.
+
 ## Interpret before optimizing
 
 1. Confirm nonzero GPU events, a complete warmed forward, actual dispatch and
-   target/draft separation. BS=1 need not mean kernel M=1 during speculation.
+   target/draft separation (`step[VERIFY ...]` versus `step[DRAFT ...]` in
+   SGLang; vLLM uses `execute_context_*_generation_*`). BS=1 need not mean kernel M=1 during speculation.
 2. Read all relevant GPU streams. A CPU `cudaGraphLaunch` span is host time;
    missing lanes or dropped CUPTI records can look like GPU idle time.
 3. Separate sum of kernel durations, union of GPU busy intervals, and end-to-end
@@ -153,6 +182,8 @@ Load only relevant references:
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.
+  The overlap catalog also covers GPU idle gaps, scheduler overlap, phase
+  graphs, metadata glue graphs, replay streams, PDL and collective dispatch.
 - [heuristics.md](references/heuristics.md): heuristic labels and limitations.
 
 Return the trace/report path, framework and available model/server arguments;

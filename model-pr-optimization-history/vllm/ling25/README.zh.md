@@ -1,4 +1,4 @@
-# vllm Ling 2.5 模型 PR 优化历史
+# vLLM Ling 2.5 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 

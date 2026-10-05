@@ -37,6 +37,14 @@ def _tokenize(value: str) -> list[str]:
 
 def _preferred_model_slug(query: str) -> str | None:
     normalized = query.lower().replace("_", "-")
+    if "qwen3.8-flash-next" in normalized or "qwen4-exp" in normalized:
+        return "qwen4-exp"
+    if re.search(r"deepseek-v4\.1|dsv4\.1|deepseek-v41|dsv41", normalized):
+        return "deepseek-v41"
+    if re.search(r"(?:^|[/\-\s])(?:hy4|hunyuan-v4|hy-v4)", normalized):
+        return "hunyuan4"
+    if "glm-5" in normalized or "glm5" in normalized:
+        return "glm5-glm51"
     if "qwen3.5" in normalized or "qwen3-5" in normalized or "qwen35" in normalized:
         return "qwen35"
     if "qwen3-next" in normalized:

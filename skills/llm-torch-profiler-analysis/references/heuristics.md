@@ -117,3 +117,13 @@ The recommendation labels are also intentionally short:
 - Two kernels on different streams do not prove they are dependency-free.
 - A mapped Python scope is a launch-site clue, not the only relevant code location.
 - A hidden kernel can still matter if it changes occupancy, launch count, or surrounding schedule.
+
+## GPU idle gaps and launch overhead
+
+Use the [launch-overhead families](overlap-catalog.md) before interpreting an
+empty GPU interval as an unfused kernel. Scheduler dispatch, phase graph
+coverage, metadata glue graphs, replay-stream joins and CPU frontend work can
+all expose gaps. Check worker step annotations and CUPTI completeness first.
+PDL kernel time includes dependency waits; overlap duration alone does not
+establish removable latency. FlashInfer main at 0.7.1 is newer than the
+0.7.0.post1 framework pins: source existence does not prove installed dispatch.

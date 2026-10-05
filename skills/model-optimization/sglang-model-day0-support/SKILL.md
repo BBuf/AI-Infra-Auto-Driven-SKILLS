@@ -25,6 +25,8 @@ executes the candidate before treating end-to-end tests as coverage.
 5. If any input is non-public, read
    [sanitization.md](references/sanitization.md) before writing public output.
 6. Read only the relevant case study:
+   - [deepseek-v41-case-study.md](references/deepseek-v41-case-study.md) for
+     image-first release locks, linear extraction stacks and equivalence proofs.
    - [kimi-k3-case-study.md](references/kimi-k3-case-study.md) for hybrid
      KDA/MLA, VLM, DSpark, ReplaySSM, DCP, or dense internal-to-public delivery.
    - [deepseek-v4-case-study.md](references/deepseek-v4-case-study.md) for
@@ -216,3 +218,7 @@ Finish only when:
 - the release lock uses immutable artifacts;
 - the sanitization report records the public-evidence and denylist results;
 - the public PR body matches the actual release cut.
+
+For image-first spines, lock the image digest/source commit while the branch is
+unstable. Companion upstream skills: `.agents/skills/cookbook-add-model/` and
+`.agents/skills/mechanical-refactor-verify/`.

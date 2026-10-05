@@ -245,3 +245,7 @@ unless the current in-loop evidence proves no patch is needed.
 - Mention exact changed files, commands, result deltas, and remaining risk in
   each Humanize round summary.
 ```
+
+Record active runner (`use_v2_model_runner`, startup log, env overrides) and
+patch its actual source path. V2 defaults to `vllm/v1/worker/gpu/model_runner.py`;
+V1 `gpu_model_runner.py` is fallback-only at the 2026-10-05 source cut.

@@ -89,3 +89,11 @@ def test_list_known_returns_indexed_originals() -> None:
 
     assert "DeepSeek V3 architecture" in result
     assert "Qwen3-VL" in result
+
+
+def test_new_diagrams_do_not_alias_nearby_architectures():
+    assert MODULE.find_existing("Qwen3.8-Flash-Next-FP8", 1)[0]["id"] == "qwen38-flash-next-architecture"
+    assert MODULE.find_existing("MiMo-V2.6-Pro", 1)[0]["id"] == "mimo-v26-architecture"
+    assert MODULE.find_existing("GLM-5.2", 1)[0]["id"] == "glm52-architecture-changes"
+    for query in ("Qwen3.8", "GLM-5.3", "Qwen3-VL-Embedding", "Qwen3-VL-Reranker"):
+        assert MODULE.find_existing(query, 4) == []

@@ -57,7 +57,6 @@ frameworks:
       tool_call_parser: llama3
       model_path: meta-llama/Llama-3.3-70B-Instruct
       mem_fraction_static: 0.82
-      schedule_policy: lpm
     search_space:
       chunked_prefill_size:
       - 4096
@@ -90,8 +89,6 @@ frameworks:
       - 4096
       enable_prefix_caching:
       - true
-      block_size:
-      - 16
   tensorrt_llm:
     enabled: true
     server_command: trtllm-serve serve

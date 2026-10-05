@@ -1,4 +1,4 @@
-# vllm Jina Reranker M0 模型 PR 优化历史
+# vLLM Jina Reranker M0 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -10,20 +10,20 @@
 | `examples/pooling/token_embed/jina_embeddings_v4_offline.py` | 无直接 PR 号提交 |
 | `examples/pooling/token_embed/jina_reranker_v3_offline.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800) |
 | `examples/pooling/token_embed/jina_reranker_v3_online.py` | [#47590](https://github.com/vllm-project/vllm/pull/47590) |
-| `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` | [#49963](https://github.com/vllm-project/vllm/pull/49963) |
+| `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` | [#49963](https://github.com/vllm-project/vllm/pull/49963), [#56415](https://github.com/vllm-project/vllm/pull/56415) |
 | `tests/models/language/pooling/test_jina_embeddings_v5.py` | [#50337](https://github.com/vllm-project/vllm/pull/50337), [#50352](https://github.com/vllm-project/vllm/pull/50352), [#50688](https://github.com/vllm-project/vllm/pull/50688) |
 | `tests/models/language/pooling/test_jina_reranker_v3.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800), [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/models/language/pooling_mteb_test/test_bge_reranker_v2_gemma.py` | 无直接 PR 号提交 |
 | `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#50917](https://github.com/vllm-project/vllm/pull/50917) |
-| `tests/models/multimodal/pooling/test_jinavl_reranker.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#20907](https://github.com/vllm-project/vllm/pull/20907), [#31445](https://github.com/vllm-project/vllm/pull/31445) |
+| `tests/models/multimodal/pooling/test_jinavl_reranker.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#20907](https://github.com/vllm-project/vllm/pull/20907), [#31445](https://github.com/vllm-project/vllm/pull/31445), [#57347](https://github.com/vllm-project/vllm/pull/57347) |
 | `vllm/model_executor/models/jina.py` | [#38633](https://github.com/vllm-project/vllm/pull/38633), [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#52037](https://github.com/vllm-project/vllm/pull/52037) |
-| `vllm/model_executor/models/jina_vl.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260) |
+| `vllm/model_executor/models/jina_vl.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#53553](https://github.com/vllm-project/vllm/pull/53553) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 11
+- git 追溯 PR 数: 17
 - 原文档显式引用补充 PR 数: 35
-- 当前文档总 PR 数: 46
+- 当前文档总 PR 数: 52
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -34,8 +34,8 @@
 | 2025-07-10 | [#20260](https://github.com/vllm-project/vllm/pull/20260) | merged | [Model][VLM] Support JinaVL Reranker | `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/jina_vl.py` |
 | 2025-07-14 | [#20907](https://github.com/vllm-project/vllm/pull/20907) | merged | [CI/Build] Fix OOM issue in Jina-VL test | `tests/models/multimodal/pooling/test_jinavl_reranker.py` |
 | 2025-07-17 | [#21058](https://github.com/vllm-project/vllm/pull/21058) | merged | [Model] Update pooling model interface | `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/bert.py` |
-| 2025-07-21 | [#21227](https://github.com/vllm-project/vllm/pull/21227) | merged | [Model][1/N] Support multiple poolers at model level | `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/bert.py`, `vllm/model_executor/models/adapters.py` |
 | 2025-07-21 | [#20996](https://github.com/vllm-project/vllm/pull/20996) | merged | [Misc] unify variable for LLM instance | `tests/detokenizer/test_stop_strings.py`, `tests/models/language/pooling/mteb_utils.py`, `tests/models/language/generation/test_mistral.py` |
+| 2025-07-21 | [#21227](https://github.com/vllm-project/vllm/pull/21227) | merged | [Model][1/N] Support multiple poolers at model level | `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/bert.py`, `vllm/model_executor/models/adapters.py` |
 | 2025-07-28 | [#21470](https://github.com/vllm-project/vllm/pull/21470) | merged | [Deprecation][2/N] Replace `--task` with `--runner` and `--convert` | `vllm/model_executor/models/registry.py`, `vllm/model_executor/model_loader/utils.py`, `docs/models/supported_models.md` |
 | 2025-08-05 | [#20538](https://github.com/vllm-project/vllm/pull/20538) | merged | [Model] Pooling model activation supports per request control by PoolingParams | `vllm/model_executor/layers/pooler.py`, `tests/models/language/pooling/test_override_pooler_config.py`, `tests/entrypoints/llm/test_score.py` |
 | 2025-09-02 | [#24031](https://github.com/vllm-project/vllm/pull/24031) | merged | [Model] Classification models support logit_bias / sigmoid_normalize | `vllm/model_executor/models/jina_vl.py`, `vllm/model_executor/layers/pooler.py`, `vllm/model_executor/models/config.py` |
@@ -76,7 +76,13 @@
 | 2026-06-23 | [#46398](https://github.com/vllm-project/vllm/pull/46398) | merged | [Doc] Fix typos, grammar, and broken commands across docs | `docs/models/pooling_models/README.md`, `docs/models/pooling_models/scoring.md`, `docs/benchmarking/cli.md` |
 | 2026-07-05 | [#47590](https://github.com/vllm-project/vllm/pull/47590) | merged | [Bugfix][Pooling] Forward instruction to Jina reranker scoring prompts | `tests/models/language/pooling/test_jina_reranker_v3.py`, `examples/pooling/token_embed/jina_reranker_v3_online.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-07-27 | [#49963](https://github.com/vllm-project/vllm/pull/49963) | merged | [Bugfix] Restore truncate_prompt_tokens for Jina rerank/score online | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
+| 2026-07-31 | [#50352](https://github.com/vllm-project/vllm/pull/50352) | merged | [Bugfix][Model] Reject encoder-backbone jina-embeddings-v5 checkpoints with a clear error (fixes #50337) | `tests/models/language/pooling/test_jina_embeddings_v5.py`, `vllm/model_executor/models/config.py` |
 | 2026-08-03 | [#50688](https://github.com/vllm-project/vllm/pull/50688) | merged | [Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone) | `vllm/model_executor/models/jina.py`, `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/test_jina.py` |
+| 2026-08-04 | [#50917](https://github.com/vllm-project/vllm/pull/50917) | merged | [ROCm][Test] Use BF16 for Jina v5 nano MTEB test | `tests/models/language/pooling_mteb_test/test_jina.py` |
+| 2026-08-13 | [#52037](https://github.com/vllm-project/vllm/pull/52037) | merged | [Model] Skip unused Jina V5 output layers | `vllm/model_executor/models/jina.py` |
+| 2026-08-25 | [#53553](https://github.com/vllm-project/vllm/pull/53553) | merged | [Bugfix][MM] Fix JinaVL processing cache order | `vllm/model_executor/models/jina_vl.py` |
+| 2026-09-11 | [#56415](https://github.com/vllm-project/vllm/pull/56415) | merged | [Bugfix][Pooling] Restore token limits for offline Jina scoring | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
+| 2026-09-24 | [#57347](https://github.com/vllm-project/vllm/pull/57347) | merged | [Bugfix][Pooling] Fix JinaVL label configuration and restore multimodal tests | `tests/models/multimodal/pooling/test_jinavl_reranker.py`, `vllm/model_executor/models/config.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -188,6 +194,48 @@ diff -- vllm/model_executor/models/bert.py
   - runtime: `vllm/model_executor/layers/pooler.py` modified +112/-64; `vllm/model_executor/models/interfaces.py` modified +12/-74; `vllm/model_executor/models/bert.py` modified +18/-19; `vllm/entrypoints/openai/protocol.py` modified +5/-29; `vllm/model_executor/models/interfaces_base.py` modified +16/-17; `vllm/model_executor/models/adapters.py` modified +8/-23
 - 验证与风险: diff 自带测试面 `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #20996 - [Misc] unify variable for LLM instance
+
+- 链接: https://github.com/vllm-project/vllm/pull/20996
+- 状态/时间: merged / 2025-07-21
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 53 个文件，+237/-236，可读 patch 1417 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Misc] unify variable for LLM instance」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `tests/detokenizer/test_stop_strings.py`, `tests/models/language/pooling/mteb_utils.py`, `tests/models/language/generation/test_mistral.py`；技术摘要: 覆盖「[Misc] unify variable for LLM instance」；主要实现面是 `tests/detokenizer/test_stop_strings.py`, `tests/models/language/pooling/mteb_utils.py`, `tests/models/language/generation/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/detokenizer/test_stop_strings.py` modified +21/-21 (42 lines); hunks: -101,42 +101,42 @@ def _stop_token_id(llm):; symbols: _stop_token_id, test_stop_strings，涉及 `_stop_token_id, test_stop_strings`；`tests/models/language/pooling/mteb_utils.py` modified +9/-9 (18 lines); hunks: -30,7 +30,7 @@ class VllmMtebEncoder(mteb.Encoder):; -43,7 +43,7 @@ def encode(; symbols: VllmMtebEncoder, __init__, encode, predict，涉及 `VllmMtebEncoder, __init__, encode`；`tests/models/language/generation/test_mistral.py` modified +7/-7 (14 lines); hunks: -238,8 +238,8 @@ def test_mistral_symbolic_languages(vllm_runner, model: str,; -253,11 +253,11 @@ def test_mistral_function_calling(vllm_runner, model: str,...; symbols: test_mistral_symbolic_languages, test_mistral_function_calling, test_mistral_guided_decoding，涉及 `test_mistral_symbolic_languages, test_mistral_function_calling, test_mistral_guided_decoding`；`docs/models/pooling_models.md` modified +5/-5 (10 lines); hunks: -149,11 +149,11 @@ You can change the output dimensions of embedding models t...。
+- 代码 diff 细节:
+  - `tests/detokenizer/test_stop_strings.py` modified +21/-21 (42 lines); hunks: -101,42 +101,42 @@ def _stop_token_id(llm):; symbols: _stop_token_id, test_stop_strings
+  - `tests/models/language/pooling/mteb_utils.py` modified +9/-9 (18 lines); hunks: -30,7 +30,7 @@ class VllmMtebEncoder(mteb.Encoder):; -43,7 +43,7 @@ def encode(; symbols: VllmMtebEncoder, __init__, encode, predict
+  - `tests/models/language/generation/test_mistral.py` modified +7/-7 (14 lines); hunks: -238,8 +238,8 @@ def test_mistral_symbolic_languages(vllm_runner, model: str,; -253,11 +253,11 @@ def test_mistral_function_calling(vllm_runner, model: str,...; symbols: test_mistral_symbolic_languages, test_mistral_function_calling, test_mistral_guided_decoding
+  - `docs/models/pooling_models.md` modified +5/-5 (10 lines); hunks: -149,11 +149,11 @@ You can change the output dimensions of embedding models t...
+  - `tests/model_executor/test_model_load_with_params.py` modified +5/-5 (10 lines); hunks: -32,8 +32,8 @@ def test_model_loading_with_params(vllm_runner):; -70,8 +70,8 @@ def test_roberta_model_loading_with_params(vllm_runner):; symbols: test_model_loading_with_params, test_roberta_model_loading_with_params, test_facebook_roberta_model_loading_with_params, check_model
+- 关键代码摘录:
+
+```diff
+diff -- tests/detokenizer/test_stop_strings.py
+@@ -101,42 +101,42 @@ def _stop_token_id(llm):
+-    vllm_model = LLM(MODEL, enforce_eager=envs.VLLM_USE_V1)
++    llm = LLM(MODEL, enforce_eager=envs.VLLM_USE_V1)
+-        _stop_basic(vllm_model)
++        _stop_basic(llm)
+-        _set_async_mode(vllm_model, True)
+-        _stop_basic(vllm_model)
+diff -- tests/models/language/pooling/mteb_utils.py
+@@ -30,7 +30,7 @@ class VllmMtebEncoder(mteb.Encoder):
+-        self.model = vllm_model
++        self.llm = vllm_model
+@@ -43,7 +43,7 @@ def encode(
+-        outputs = self.model.embed(sentences, use_tqdm=False)
++        outputs = self.llm.embed(sentences, use_tqdm=False)
+@@ -61,10 +61,10 @@ def predict(
+diff -- tests/models/language/generation/test_mistral.py
+@@ -238,8 +238,8 @@ def test_mistral_symbolic_languages(vllm_runner, model: str,
+```
+
+- 已读文件:
+  - tests: `tests/detokenizer/test_stop_strings.py` modified +21/-21; `tests/models/language/pooling/mteb_utils.py` modified +9/-9; `tests/models/language/generation/test_mistral.py` modified +7/-7; `tests/model_executor/test_model_load_with_params.py` modified +5/-5; `tests/models/language/pooling/test_nomic_max_model_len.py` modified +3/-3; `tests/models/language/pooling/test_truncation_control.py` modified +3/-3
+  - docs: `docs/models/pooling_models.md` modified +5/-5
+- 验证与风险: diff 自带测试面 `tests/basic_correctness/test_basic_correctness.py`, `tests/basic_correctness/test_preemption.py`, `tests/conftest.py`, `tests/core/test_num_computed_tokens_update.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #21227 - [Model][1/N] Support multiple poolers at model level
 
 - 链接: https://github.com/vllm-project/vllm/pull/21227
@@ -230,48 +278,6 @@ diff -- vllm/model_executor/models/adapters.py
   - runtime: `vllm/model_executor/layers/pooler.py` modified +175/-171; `vllm/model_executor/models/bert.py` modified +99/-33; `vllm/model_executor/models/adapters.py` modified +51/-57; `vllm/model_executor/models/modernbert.py` modified +38/-12; `vllm/model_executor/models/roberta.py` modified +27/-17; `vllm/model_executor/models/gritlm.py` modified +19/-20
   - docs: `docs/models/pooling_models.md` modified +39/-14
 - 验证与风险: diff 自带测试面 `tests/models/test_transformers.py`, `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #20996 - [Misc] unify variable for LLM instance
-
-- 链接: https://github.com/vllm-project/vllm/pull/20996
-- 状态/时间: merged / 2025-07-21
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 53 个文件，+237/-236，可读 patch 1417 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Misc] unify variable for LLM instance」；模型线: Jina Reranker M0；类别: 文档/测试/CI；主要 diff: `tests/detokenizer/test_stop_strings.py`, `tests/models/language/pooling/mteb_utils.py`, `tests/models/language/generation/test_mistral.py`；技术摘要: 覆盖「[Misc] unify variable for LLM instance」；主要实现面是 `tests/detokenizer/test_stop_strings.py`, `tests/models/language/pooling/mteb_utils.py`, `tests/models/language/generation/test_mistral.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/detokenizer/test_stop_strings.py` modified +21/-21 (42 lines); hunks: -101,42 +101,42 @@ def _stop_token_id(llm):; symbols: _stop_token_id, test_stop_strings，涉及 `_stop_token_id, test_stop_strings`；`tests/models/language/pooling/mteb_utils.py` modified +9/-9 (18 lines); hunks: -30,7 +30,7 @@ class VllmMtebEncoder(mteb.Encoder):; -43,7 +43,7 @@ def encode(; symbols: VllmMtebEncoder, __init__, encode, predict，涉及 `VllmMtebEncoder, __init__, encode`；`tests/models/language/generation/test_mistral.py` modified +7/-7 (14 lines); hunks: -238,8 +238,8 @@ def test_mistral_symbolic_languages(vllm_runner, model: str,; -253,11 +253,11 @@ def test_mistral_function_calling(vllm_runner, model: str,...; symbols: test_mistral_symbolic_languages, test_mistral_function_calling, test_mistral_guided_decoding，涉及 `test_mistral_symbolic_languages, test_mistral_function_calling, test_mistral_guided_decoding`；`docs/models/pooling_models.md` modified +5/-5 (10 lines); hunks: -149,11 +149,11 @@ You can change the output dimensions of embedding models t...。
-- 代码 diff 细节:
-  - `tests/detokenizer/test_stop_strings.py` modified +21/-21 (42 lines); hunks: -101,42 +101,42 @@ def _stop_token_id(llm):; symbols: _stop_token_id, test_stop_strings
-  - `tests/models/language/pooling/mteb_utils.py` modified +9/-9 (18 lines); hunks: -30,7 +30,7 @@ class VllmMtebEncoder(mteb.Encoder):; -43,7 +43,7 @@ def encode(; symbols: VllmMtebEncoder, __init__, encode, predict
-  - `tests/models/language/generation/test_mistral.py` modified +7/-7 (14 lines); hunks: -238,8 +238,8 @@ def test_mistral_symbolic_languages(vllm_runner, model: str,; -253,11 +253,11 @@ def test_mistral_function_calling(vllm_runner, model: str,...; symbols: test_mistral_symbolic_languages, test_mistral_function_calling, test_mistral_guided_decoding
-  - `docs/models/pooling_models.md` modified +5/-5 (10 lines); hunks: -149,11 +149,11 @@ You can change the output dimensions of embedding models t...
-  - `tests/model_executor/test_model_load_with_params.py` modified +5/-5 (10 lines); hunks: -32,8 +32,8 @@ def test_model_loading_with_params(vllm_runner):; -70,8 +70,8 @@ def test_roberta_model_loading_with_params(vllm_runner):; symbols: test_model_loading_with_params, test_roberta_model_loading_with_params, test_facebook_roberta_model_loading_with_params, check_model
-- 关键代码摘录:
-
-```diff
-diff -- tests/detokenizer/test_stop_strings.py
-@@ -101,42 +101,42 @@ def _stop_token_id(llm):
--    vllm_model = LLM(MODEL, enforce_eager=envs.VLLM_USE_V1)
-+    llm = LLM(MODEL, enforce_eager=envs.VLLM_USE_V1)
--        _stop_basic(vllm_model)
-+        _stop_basic(llm)
--        _set_async_mode(vllm_model, True)
--        _stop_basic(vllm_model)
-diff -- tests/models/language/pooling/mteb_utils.py
-@@ -30,7 +30,7 @@ class VllmMtebEncoder(mteb.Encoder):
--        self.model = vllm_model
-+        self.llm = vllm_model
-@@ -43,7 +43,7 @@ def encode(
--        outputs = self.model.embed(sentences, use_tqdm=False)
-+        outputs = self.llm.embed(sentences, use_tqdm=False)
-@@ -61,10 +61,10 @@ def predict(
-diff -- tests/models/language/generation/test_mistral.py
-@@ -238,8 +238,8 @@ def test_mistral_symbolic_languages(vllm_runner, model: str,
-```
-
-- 已读文件:
-  - tests: `tests/detokenizer/test_stop_strings.py` modified +21/-21; `tests/models/language/pooling/mteb_utils.py` modified +9/-9; `tests/models/language/generation/test_mistral.py` modified +7/-7; `tests/model_executor/test_model_load_with_params.py` modified +5/-5; `tests/models/language/pooling/test_nomic_max_model_len.py` modified +3/-3; `tests/models/language/pooling/test_truncation_control.py` modified +3/-3
-  - docs: `docs/models/pooling_models.md` modified +5/-5
-- 验证与风险: diff 自带测试面 `tests/basic_correctness/test_basic_correctness.py`, `tests/basic_correctness/test_preemption.py`, `tests/conftest.py`, `tests/core/test_num_computed_tokens_update.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #21470 - [Deprecation][2/N] Replace `--task` with `--runner` and `--convert`
 
@@ -1897,6 +1903,43 @@ diff -- vllm/entrypoints/pooling/scoring/io_processor.py
   - runtime: `vllm/entrypoints/pooling/scoring/io_processor.py` modified +10/-1
 - 验证与风险: diff 自带测试面 `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #50352 - [Bugfix][Model] Reject encoder-backbone jina-embeddings-v5 checkpoints with a clear error (fixes #50337)
+
+- 链接: https://github.com/vllm-project/vllm/pull/50352
+- 状态/时间: merged / 2026-07-31
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/pooling/test_jina_embeddings_v5.py`；关联提交 `bebf918044ae`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+96/-0，可读 patch 111 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/language/pooling/test_jina_embeddings_v5.py` added +64/-0 (64 lines); hunks: -0,0 +1,64; symbols: _model_config, test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_supported_decoder_backbone_is_accepted，涉及 `_model_config, test_registered_for_the_architecture, test_encoder_backbone_is_rejected`；`vllm/model_executor/models/config.py` modified +32/-0 (32 lines); hunks: -474,6 +474,37 @@ def verify_and_update_model_config(model_config: "ModelConf...; -915,6 +946,7 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> N...; symbols: verify_and_update_model_config, JinaEmbeddingsV5ModelConfig, JinaForRankingConfig，涉及 `verify_and_update_model_config, JinaEmbeddingsV5ModelConfig, JinaForRankingConfig`。
+- 代码 diff 细节:
+  - `tests/models/language/pooling/test_jina_embeddings_v5.py` added +64/-0 (64 lines); hunks: -0,0 +1,64; symbols: _model_config, test_registered_for_the_architecture, test_encoder_backbone_is_rejected, test_supported_decoder_backbone_is_accepted
+  - `vllm/model_executor/models/config.py` modified +32/-0 (32 lines); hunks: -474,6 +474,37 @@ def verify_and_update_model_config(model_config: "ModelConf...; -915,6 +946,7 @@ def verify_and_update_config(vllm_config: "VllmConfig") -> N...; symbols: verify_and_update_model_config, JinaEmbeddingsV5ModelConfig, JinaForRankingConfig
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/language/pooling/test_jina_embeddings_v5.py
+@@ -0,0 +1,64 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Backbone validation for Jina Embeddings V5 (issue #50337).
++The V5 family ships two backbones under one `architectures` entry: `-small` is
++a Qwen3 decoder (which vLLM implements), while `-nano` is a bidirectional
++EuroBERT encoder (which it does not). Upstream ships a separate
+diff -- vllm/model_executor/models/config.py
+@@ -474,6 +474,37 @@ def verify_and_update_model_config(model_config: "ModelConfig") -> None:
++class JinaEmbeddingsV5ModelConfig(VerifyAndUpdateConfig):
++    """Config handler for Jina Embeddings V5 embedding models."""
++    @staticmethod
++    def verify_and_update_model_config(model_config: "ModelConfig") -> None:
++        """Reject checkpoints whose backbone is not the Qwen3 decoder.
++        The V5 family ships more than one backbone under a single
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/language/pooling/test_jina_embeddings_v5.py` added +64/-0
+  - runtime: `vllm/model_executor/models/config.py` modified +32/-0
+- 验证与风险: diff 自带测试面 `tests/models/language/pooling/test_jina_embeddings_v5.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #50688 - [Model] Support jina-embeddings-v5-text-nano (EuroBERT encoder backbone)
 
 - 链接: https://github.com/vllm-project/vllm/pull/50688
@@ -1936,6 +1979,153 @@ diff -- tests/models/language/pooling_mteb_test/test_jina.py
   - runtime: `vllm/model_executor/models/jina.py` modified +112/-61
   - tests: `tests/models/language/pooling/test_jina_embeddings_v5.py` modified +15/-12; `tests/models/language/pooling_mteb_test/test_jina.py` modified +8/-0
 - 验证与风险: diff 自带测试面 `tests/models/language/pooling/test_jina_embeddings_v5.py`, `tests/models/language/pooling_mteb_test/mteb_embed_utils.py`, `tests/models/language/pooling_mteb_test/test_jina.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #50917 - [ROCm][Test] Use BF16 for Jina v5 nano MTEB test
+
+- 链接: https://github.com/vllm-project/vllm/pull/50917
+- 状态/时间: merged / 2026-08-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/language/pooling_mteb_test/test_jina.py`；关联提交 `8adc840c4553`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+2/-0，可读 patch 16 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/language/pooling_mteb_test/test_jina.py` modified +2/-0 (2 lines); hunks: -14,6 +14,7; -41,6 +42,7。
+- 代码 diff 细节:
+  - `tests/models/language/pooling_mteb_test/test_jina.py` modified +2/-0 (2 lines); hunks: -14,6 +14,7; -41,6 +42,7
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/language/pooling_mteb_test/test_jina.py
+@@ -14,6 +14,7 @@
++from vllm.platforms import current_platform
+@@ -41,6 +42,7 @@
++        dtype="bfloat16" if current_platform.is_rocm() else "auto",
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/language/pooling_mteb_test/test_jina.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `tests/models/language/pooling_mteb_test/test_jina.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52037 - [Model] Skip unused Jina V5 output layers
+
+- 链接: https://github.com/vllm-project/vllm/pull/52037
+- 状态/时间: merged / 2026-08-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/jina.py`；关联提交 `89c8401c8aeb`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+21/-3，可读 patch 52 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/jina.py` modified +21/-3 (24 lines); hunks: -11,6 +11,8; -26,7 +28,13; symbols: JinaEmbeddingsV5DecoderModel, __init__, load_weights, JinaEmbeddingsV5EncoderModel，涉及 `JinaEmbeddingsV5DecoderModel, __init__, load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/jina.py` modified +21/-3 (24 lines); hunks: -11,6 +11,8; -26,7 +28,13; symbols: JinaEmbeddingsV5DecoderModel, __init__, load_weights, JinaEmbeddingsV5EncoderModel
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/jina.py
+@@ -11,6 +11,8 @@
++from vllm.model_executor.layers.logits_processor import LogitsProcessor
++from vllm.model_executor.layers.vocab_parallel_embedding import ParallelLMHead
+@@ -26,7 +28,13 @@
+-from .utils import AutoWeightsLoader, WeightsMapper, maybe_prefix
++from .utils import (
++    AutoWeightsLoader,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/jina.py` modified +21/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/jina.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #53553 - [Bugfix][MM] Fix JinaVL processing cache order
+
+- 链接: https://github.com/vllm-project/vllm/pull/53553
+- 状态/时间: merged / 2026-08-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/jina_vl.py`；关联提交 `06ecec7a8424`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+88/-29，可读 patch 167 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/jina_vl.py` modified +37/-21 (58 lines); hunks: -1,18 +1,22; -55,28 +59,40 @@ def forward(self, x, **kwargs):; symbols: forward, JinaVLMultiModalProcessor, _apply_hf_processor_main, _cached_apply_hf_processor，涉及 `forward, JinaVLMultiModalProcessor, _apply_hf_processor_main`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/jina_vl.py` modified +37/-21 (58 lines); hunks: -1,18 +1,22; -55,28 +59,40 @@ def forward(self, x, **kwargs):; symbols: forward, JinaVLMultiModalProcessor, _apply_hf_processor_main, _cached_apply_hf_processor
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/jina_vl.py
+@@ -1,18 +1,22 @@
+-from collections.abc import Iterable, Mapping
++from collections.abc import Iterable
+-from transformers import BatchFeature
+-from vllm.multimodal.parse import MultiModalDataItems
++from vllm.multimodal.inputs import MultiModalKwargsItems
++from vllm.multimodal.processing.processor import (
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/jina_vl.py` modified +37/-21
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_common.py`, `tests/models/multimodal/processing/test_qwen2_vl.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #56415 - [Bugfix][Pooling] Restore token limits for offline Jina scoring
+
+- 链接: https://github.com/vllm-project/vllm/pull/56415
+- 状态/时间: merged / 2026-09-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`；关联提交 `a2bc2ffb2c8b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+93/-1，可读 patch 121 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` modified +86/-1 (87 lines); hunks: -1,15 +1,21; -57,3 +63,82 @@ def _spy_base(self, ctx):; symbols: _spy_base, offline_processor_and_context, test_offline_truncates_text_before_formatting, test_offline_rejects_invalid_token_limits，涉及 `_spy_base, offline_processor_and_context, test_offline_truncates_text_before_formatting`；`vllm/entrypoints/pooling/scoring/io_processor.py` modified +7/-0 (7 lines); hunks: -845,7 +845,14 @@ def get_request_factory_offline(; symbols: get_request_factory_offline，涉及 `get_request_factory_offline`。
+- 代码 diff 细节:
+  - `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` modified +86/-1 (87 lines); hunks: -1,15 +1,21; -57,3 +63,82 @@ def _spy_base(self, ctx):; symbols: _spy_base, offline_processor_and_context, test_offline_truncates_text_before_formatting, test_offline_rejects_invalid_token_limits
+  - `vllm/entrypoints/pooling/scoring/io_processor.py` modified +7/-0 (7 lines); hunks: -845,7 +845,14 @@ def get_request_factory_offline(; symbols: get_request_factory_offline
+- 关键代码摘录:
+
+```diff
+diff -- tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py
+@@ -1,15 +1,21 @@
+-"""Unit tests for JinaRankingIOProcessor online request building."""
++"""Unit tests for JinaRankingIOProcessor request building."""
++from types import SimpleNamespace
++from tokenizers import Tokenizer, models, pre_tokenizers
++from transformers import PreTrainedTokenizerFast
++from vllm import PoolingParams
+diff -- vllm/entrypoints/pooling/scoring/io_processor.py
+@@ -845,7 +845,14 @@ def get_request_factory_offline(
++        max_tokens_per_query, max_tokens_per_doc = self._get_token_limits(
++            pooling_params=ctx.pooling_params
++        )
++        if max_tokens_per_query > 0 or max_tokens_per_doc > 0:
++            scoring_data = self._truncate_scoring_data(
++                scoring_data, max_tokens_per_query, max_tokens_per_doc
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` modified +86/-1
+  - runtime: `vllm/entrypoints/pooling/scoring/io_processor.py` modified +7/-0
+- 验证与风险: diff 自带测试面 `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #57347 - [Bugfix][Pooling] Fix JinaVL label configuration and restore multimodal tests
+
+- 链接: https://github.com/vllm-project/vllm/pull/57347
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/pooling/test_jinavl_reranker.py`；关联提交 `484c211fe80d`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+3/-7，可读 patch 31 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +2/-7 (9 lines); hunks: -14,11 +14,6; -29,8 +24,8；`vllm/model_executor/models/config.py` modified +1/-0 (1 lines); hunks: -546,6 +546,7 @@ class JinaVLForSequenceClassificationConfig(VerifyAndUpdateC...; symbols: JinaVLForSequenceClassificationConfig, verify_and_update_model_config，涉及 `JinaVLForSequenceClassificationConfig, verify_and_update_model_config`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +2/-7 (9 lines); hunks: -14,11 +14,6; -29,8 +24,8
+  - `vllm/model_executor/models/config.py` modified +1/-0 (1 lines); hunks: -546,6 +546,7 @@ class JinaVLForSequenceClassificationConfig(VerifyAndUpdateC...; symbols: JinaVLForSequenceClassificationConfig, verify_and_update_model_config
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_jinavl_reranker.py
+@@ -14,11 +14,6 @@
+-pytestmark = pytest.mark.skip(
+-    reason="jinaai/jina-reranker-m0 custom code is incompatible with "
+-    "transformers v5 (missing all_tied_weights_keys)"
+-)
+@@ -29,8 +24,8 @@
+-    "visual.": "model.visual.",
+diff -- vllm/model_executor/models/config.py
+@@ -546,6 +546,7 @@ class JinaVLForSequenceClassificationConfig(VerifyAndUpdateConfig):
++        config.get_text_config().num_labels = 1
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/multimodal/pooling/test_jinavl_reranker.py` modified +2/-7
+  - runtime: `vllm/model_executor/models/config.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/pooling/test_jinavl_reranker.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

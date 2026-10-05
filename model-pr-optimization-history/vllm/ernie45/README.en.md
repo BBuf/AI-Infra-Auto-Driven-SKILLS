@@ -1,4 +1,4 @@
-# vllm ERNIE 4.5 Model PR Optimization History
+# vLLM ERNIE 4.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -7,20 +7,20 @@
 | `tests/model_executor/test_ernie45_vl_mrope.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753) |
 | `tests/reasoning/test_ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027) |
 | `tests/tool_parsers/test_ernie45_moe_tool_parser.py` | no direct PR-number commit |
-| `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` | no direct PR-number commit |
-| `vllm/model_executor/models/ernie45.py` | [#21735](https://github.com/vllm-project/vllm/pull/21735) |
-| `vllm/model_executor/models/ernie45_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26684](https://github.com/vllm-project/vllm/pull/26684), [#27316](https://github.com/vllm-project/vllm/pull/27316) |
-| `vllm/model_executor/models/ernie45_vl.py` | [#39753](https://github.com/vllm-project/vllm/pull/39753), [#45254](https://github.com/vllm-project/vllm/pull/45254), [#51461](https://github.com/vllm-project/vllm/pull/51461) |
-| `vllm/model_executor/models/ernie45_vl_moe.py` | [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
-| `vllm/model_executor/models/ernie_mtp.py` | no direct PR-number commit |
+| `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` | [#22514](https://github.com/vllm-project/vllm/pull/22514), [#55942](https://github.com/vllm-project/vllm/pull/55942) |
+| `vllm/model_executor/models/ernie45.py` | [#20220](https://github.com/vllm-project/vllm/pull/20220), [#21735](https://github.com/vllm-project/vllm/pull/21735) |
+| `vllm/model_executor/models/ernie45_moe.py` | [#20220](https://github.com/vllm-project/vllm/pull/20220), [#21586](https://github.com/vllm-project/vllm/pull/21586), [#21717](https://github.com/vllm-project/vllm/pull/21717), [#22100](https://github.com/vllm-project/vllm/pull/22100), [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26684](https://github.com/vllm-project/vllm/pull/26684), [#27316](https://github.com/vllm-project/vllm/pull/27316) |
+| `vllm/model_executor/models/ernie45_vl.py` | [#22514](https://github.com/vllm-project/vllm/pull/22514), [#24074](https://github.com/vllm-project/vllm/pull/24074), [#31274](https://github.com/vllm-project/vllm/pull/31274), [#39753](https://github.com/vllm-project/vllm/pull/39753), [#45254](https://github.com/vllm-project/vllm/pull/45254), [#51461](https://github.com/vllm-project/vllm/pull/51461) |
+| `vllm/model_executor/models/ernie45_vl_moe.py` | [#22514](https://github.com/vllm-project/vllm/pull/22514), [#24074](https://github.com/vllm-project/vllm/pull/24074), [#25936](https://github.com/vllm-project/vllm/pull/25936), [#26885](https://github.com/vllm-project/vllm/pull/26885) |
+| `vllm/model_executor/models/ernie_mtp.py` | [#22169](https://github.com/vllm-project/vllm/pull/22169) |
 | `vllm/reasoning/ernie45_reasoning_parser.py` | [#25027](https://github.com/vllm-project/vllm/pull/25027), [#27973](https://github.com/vllm-project/vllm/pull/27973), [#46255](https://github.com/vllm-project/vllm/pull/46255) |
 | `vllm/tool_parsers/ernie45_tool_parser.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 11
-- Extra PRs preserved from existing docs: 13
-- Total PRs in this document: 24
+- Git-traced PRs: 20
+- Extra PRs preserved from existing docs: 7
+- Total PRs in this document: 27
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -29,8 +29,10 @@
 | Date | PR | State | Title | Main files |
 | --- | --- | --- | --- | --- |
 | 2025-07-02 | [#20220](https://github.com/vllm-project/vllm/pull/20220) | merged | [Model] Add Ernie4.5 and Ernie4.5MoE Model Support | `vllm/model_executor/models/ernie45_moe.py`, `vllm/model_executor/models/ernie45.py`, `tests/models/registry.py` |
+| 2025-07-25 | [#21586](https://github.com/vllm-project/vllm/pull/21586) | merged | [Model] Fix Ernie4.5MoE e_score_correction_bias parameter | `vllm/model_executor/models/ernie45_moe.py` |
 | 2025-07-28 | [#21717](https://github.com/vllm-project/vllm/pull/21717) | merged | [Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts | `vllm/model_executor/models/ernie45_moe.py` |
 | 2025-07-28 | [#21735](https://github.com/vllm-project/vllm/pull/21735) | merged | [`Ernie 4.5`] Name Change for Base 0.3B Model | `vllm/model_executor/models/ernie45.py` |
+| 2025-08-20 | [#22169](https://github.com/vllm-project/vllm/pull/22169) | merged | [Model][V1] Support Ernie MTP | `vllm/model_executor/models/ernie_mtp.py` |
 | 2025-08-27 | [#22514](https://github.com/vllm-project/vllm/pull/22514) | merged | [Model] Add Ernie4.5 VL Model Support | `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/layers/rotary_embedding/mrope.py` |
 | 2025-09-09 | [#24074](https://github.com/vllm-project/vllm/pull/24074) | merged | [BugFix][Model] Fix Ernie4.5-VL hanging on long inputs | `vllm/model_executor/models/ernie45_vl.py`, `vllm/model_executor/models/ernie45_vl_moe.py` |
 | 2025-09-30 | [#25936](https://github.com/vllm-project/vllm/pull/25936) | merged | [Bugfix][Model]fix ernie45 moe gate&bias dtype to float32 | `vllm/model_executor/models/ernie45_vl_moe.py`, `vllm/model_executor/models/ernie45_moe.py` |
@@ -52,6 +54,7 @@
 | 2026-07-01 | [#46255](https://github.com/vllm-project/vllm/pull/46255) | merged | fix(reasoning): guard rfind in ernie45 streaming branch | `vllm/reasoning/ernie45_reasoning_parser.py` |
 | 2026-08-06 | [#45254](https://github.com/vllm-project/vllm/pull/45254) | merged | [MM][CG] Support ViT full CUDA graph for Ernie-4.5-VL image inference | `vllm/model_executor/models/ernie45_vl.py` |
 | 2026-08-11 | [#51461](https://github.com/vllm-project/vllm/pull/51461) | merged | [MM][CG][BugFix] Fix Ernie-4.5-VL encoder CG postprocess for multi-path outputs | `vllm/model_executor/models/ernie45_vl.py` |
+| 2026-09-10 | [#55942](https://github.com/vllm-project/vllm/pull/55942) | merged | [XPU][Bugfix] Add forward_xpu to Ernie4_5_VLRotaryEmbedding | `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -97,6 +100,33 @@ diff -- tests/models/registry.py
   - tests: `tests/models/registry.py` modified +4/-0
   - docs: `docs/models/supported_models.md` modified +2/-0
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21586 - [Model] Fix Ernie4.5MoE e_score_correction_bias parameter
+
+- Link: https://github.com/vllm-project/vllm/pull/21586
+- Status/date: merged / 2025-07-25
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie45_moe.py`; associated commits `c72f049cb4c9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +17/-8, 39 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/ernie45_moe.py` modified +17/-8 (25 lines); hunks: -123,14 +123,19 @@ def __init__(; -459,6 +464,10 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: __init__, load_weights, touching `__init__, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/ernie45_moe.py` modified +17/-8 (25 lines); hunks: -123,14 +123,19 @@ def __init__(; -459,6 +464,10 @@ def load_weights(self, weights: Iterable[tuple[str,; symbols: __init__, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/ernie45_moe.py
+@@ -123,14 +123,19 @@ def __init__(
+-        self.experts = FusedMoE(num_experts=config.moe_num_experts,
+-                                top_k=config.moe_k,
+-                                hidden_size=config.hidden_size,
+-                                intermediate_size=config.moe_intermediate_size,
+-                                reduce_results=False,
+-                                renormalize=True,
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/ernie45_moe.py` modified +17/-8
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/ernie45_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #21717 - [Bugfix] Fix Ernie4_5_MoeForCausalLM shared experts
 
@@ -146,6 +176,33 @@ diff -- vllm/model_executor/models/ernie45.py
 
 - Reviewed files:
   - runtime: `vllm/model_executor/models/ernie45.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #22169 - [Model][V1] Support Ernie MTP
+
+- Link: https://github.com/vllm-project/vllm/pull/22169
+- Status/date: merged / 2025-08-20
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/ernie_mtp.py`; associated commits `7cd17e22d764`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 6 files, +320/-7, 398 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/ernie_mtp.py` added +287/-0 (287 lines); hunks: -0,0 +1,287; symbols: ErnieMultiTokenPredictorLayer, __init__, forward, ErnieMultiTokenPredictor, touching `ErnieMultiTokenPredictorLayer, __init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/ernie_mtp.py` added +287/-0 (287 lines); hunks: -0,0 +1,287; symbols: ErnieMultiTokenPredictorLayer, __init__, forward, ErnieMultiTokenPredictor
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/ernie_mtp.py
+@@ -0,0 +1,287 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# Copyright 2025 The Baidu team.
++# Copyright 2023 The vLLM team.
++# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
++#
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/ernie_mtp.py` added +287/-0
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #22514 - [Model] Add Ernie4.5 VL Model Support
@@ -860,6 +917,33 @@ diff -- vllm/model_executor/models/ernie45_vl.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/ernie45_vl.py` modified +3/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/ernie45_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #55942 - [XPU][Bugfix] Add forward_xpu to Ernie4_5_VLRotaryEmbedding
+
+- Link: https://github.com/vllm-project/vllm/pull/55942
+- Status/date: merged / 2026-09-10
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py`; associated commits `c9355e25e8cf`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +11/-0, 15 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +11/-0 (11 lines); hunks: -80,3 +80,14 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_xpu, touching `forward_cuda, forward_xpu`.
+- Code diff details:
+  - `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +11/-0 (11 lines); hunks: -80,3 +80,14 @@ def forward_cuda( # type: ignore[override]; symbols: forward_cuda, forward_xpu
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py
+@@ -80,3 +80,14 @@ def forward_cuda(  # type: ignore[override]
++    def forward_xpu(  # type: ignore[override]
++        self,
++        positions: torch.Tensor,
++        query: torch.Tensor,
++        key: torch.Tensor | None = None,
++    ) -> tuple[torch.Tensor, torch.Tensor | None]:
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py` modified +11/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/rotary_embedding/ernie45_vl_rope.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

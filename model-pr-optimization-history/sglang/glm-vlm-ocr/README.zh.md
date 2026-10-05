@@ -1,4 +1,4 @@
-# sglang GLM VLM/OCR 模型 PR 优化历史
+# SGLang GLM VLM/OCR 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -6,17 +6,18 @@
 | --- | --- |
 | `docs/cookbook/autoregressive/GLM/GLM-OCR.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/glm-ocr-deployment.jsx` | 无直接 PR 号提交 |
-| `python/sglang/srt/models/glm4v.py` | [#9884](https://github.com/sgl-project/sglang/pull/9884), [#10147](https://github.com/sgl-project/sglang/pull/10147), [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20033](https://github.com/sgl-project/sglang/pull/20033) |
+| `python/sglang/srt/models/glm4v.py` | [#9884](https://github.com/sgl-project/sglang/pull/9884), [#10147](https://github.com/sgl-project/sglang/pull/10147), [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20033](https://github.com/sgl-project/sglang/pull/20033), [#39088](https://github.com/sgl-project/sglang/pull/39088) |
 | `python/sglang/srt/models/glm4v_moe.py` | [#20463](https://github.com/sgl-project/sglang/pull/20463), [#20740](https://github.com/sgl-project/sglang/pull/20740), [#21134](https://github.com/sgl-project/sglang/pull/21134) |
 | `python/sglang/srt/models/glm_ocr.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20463](https://github.com/sgl-project/sglang/pull/20463), [#20740](https://github.com/sgl-project/sglang/pull/20740), [#21134](https://github.com/sgl-project/sglang/pull/21134) |
-| `python/sglang/srt/models/glm_ocr_nextn.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582) |
-| `python/sglang/srt/multimodal/processors/glm4v.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#18885](https://github.com/sgl-project/sglang/pull/18885) |
+| `python/sglang/srt/models/glm_ocr_nextn.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#39088](https://github.com/sgl-project/sglang/pull/39088) |
+| `python/sglang/srt/multimodal/processors/glm4v.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#18885](https://github.com/sgl-project/sglang/pull/18885), [#37971](https://github.com/sgl-project/sglang/pull/37971) |
+| `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` | [#37971](https://github.com/sgl-project/sglang/pull/37971) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 8
+- git 追溯 PR 数: 10
 - 原文档显式引用补充 PR 数: 30
-- 当前文档总 PR 数: 38
+- 当前文档总 PR 数: 40
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -62,6 +63,8 @@
 | 2026-08-11 | [#19728](https://github.com/sgl-project/sglang/pull/19728) | closed | Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback | `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py` |
 | 2026-08-12 | [#9349](https://github.com/sgl-project/sglang/pull/9349) | closed | Add support for GLM 4.5V FP8 | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` |
 | 2026-08-14 | [#14662](https://github.com/sgl-project/sglang/pull/14662) | closed | [Glm46v] support ktransformers | `python/sglang/srt/models/glm4v_moe.py` |
+| 2026-09-05 | [#37971](https://github.com/sgl-project/sglang/pull/37971) | merged | fix(glm4v): disambiguate mixed image video offsets | `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py`, `python/sglang/srt/multimodal/processors/glm4v.py` |
+| 2026-09-19 | [#39088](https://github.com/sgl-project/sglang/pull/39088) | merged | Fix GLM-OCR MTP multimodal embeddings and positions | `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/models/glm4v.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1396,6 +1399,75 @@ diff -- python/sglang/srt/models/glm4v_moe.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4v_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #37971 - fix(glm4v): disambiguate mixed image video offsets
+
+- 链接: https://github.com/sgl-project/sglang/pull/37971
+- 状态/时间: merged / 2026-09-05
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/glm4v.py`, `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py`；关联提交 `e980c1a2f133`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+153/-7，可读 patch 194 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` added +101/-0 (101 lines); hunks: -0,0 +1,101; symbols: _processor, test_glm4v_partitions_shared_image_and_video_token_offsets, test_glm4v_keeps_interleaved_media_offsets_in_their_modalities, test_glm4v_uses_default_offsets_when_token_ids_are_distinct，涉及 `_processor, test_glm4v_partitions_shared_image_and_video_token_offsets, test_glm4v_keeps_interleaved_media_offsets_in_their_modalities`；`python/sglang/srt/multimodal/processors/glm4v.py` modified +33/-2 (35 lines); hunks: -1,12 +1,12; -296,6 +296,37 @@ def __init__(self, hf_config, server_args, _processor, *arg...; symbols: __init__, get_mm_item_offsets, is_video_offset, compute_mrope_positions，涉及 `__init__, get_mm_item_offsets, is_video_offset`。
+- 代码 diff 细节:
+  - `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` added +101/-0 (101 lines); hunks: -0,0 +1,101; symbols: _processor, test_glm4v_partitions_shared_image_and_video_token_offsets, test_glm4v_keeps_interleaved_media_offsets_in_their_modalities, test_glm4v_uses_default_offsets_when_token_ids_are_distinct
+  - `python/sglang/srt/multimodal/processors/glm4v.py` modified +33/-2 (35 lines); hunks: -1,12 +1,12; -296,6 +296,37 @@ def __init__(self, hf_config, server_args, _processor, *arg...; symbols: __init__, get_mm_item_offsets, is_video_offset, compute_mrope_positions
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/multimodal/test_glm4v_mixed_offsets.py
+@@ -0,0 +1,101 @@
++import pytest
++import torch
++from sglang.srt.managers.schedule_batch import Modality
++from sglang.srt.multimodal.processors.base_processor import MultimodalSpecialTokens
++from sglang.srt.multimodal.processors.glm4v import Glm4vImageProcessor
++from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/multimodal/processors/glm4v.py
+@@ -1,12 +1,12 @@
+-from typing import List, Union
++from typing import List, Tuple, Union
+-from sglang.srt.managers.schedule_batch import MultimodalProcessorOutput
++from sglang.srt.managers.schedule_batch import Modality, MultimodalProcessorOutput
+@@ -296,6 +296,37 @@ def __init__(self, hf_config, server_args, _processor, *args, **kwargs):
++    def get_mm_item_offsets(
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` added +101/-0
+  - runtime: `python/sglang/srt/multimodal/processors/glm4v.py` modified +33/-2
+- 验证与风险: diff 自带测试面 `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #39088 - Fix GLM-OCR MTP multimodal embeddings and positions
+
+- 链接: https://github.com/sgl-project/sglang/pull/39088
+- 状态/时间: merged / 2026-09-19
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm_ocr_nextn.py`；关联提交 `929230a6f015`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 17 个文件，+108/-6，可读 patch 248 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm_ocr_nextn.py` modified +19/-3 (22 lines); hunks: -36,6 +36,7; -86,9 +87,20 @@ def forward(; symbols: forward, __init__，涉及 `forward, __init__`；`python/sglang/srt/models/glm4v.py` modified +1/-1 (2 lines); hunks: -668,7 +668,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm_ocr_nextn.py` modified +19/-3 (22 lines); hunks: -36,6 +36,7; -86,9 +87,20 @@ def forward(; symbols: forward, __init__
+  - `python/sglang/srt/models/glm4v.py` modified +1/-1 (2 lines); hunks: -668,7 +668,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm_ocr_nextn.py
+@@ -36,6 +36,7 @@
++from sglang.srt.utils.hf_transformers_utils import get_rope_config
+@@ -86,9 +87,20 @@ def forward(
+-            hidden_states = self.embed_tokens(input_ids)
+-        else:
+-            hidden_states = input_embeds
++            input_embeds = forward_batch.mm_input_embeds
+diff -- python/sglang/srt/models/glm4v.py
+@@ -668,7 +668,7 @@ def forward(
+-        if self.is_mrope_enabled:
++        if self.is_mrope_enabled and forward_batch.mrope_positions is not None:
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm_ocr_nextn.py` modified +19/-3; `python/sglang/srt/models/glm4v.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/gdn_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

@@ -1,21 +1,21 @@
-# vllm GLM VLM/OCR 模型 PR 优化历史
+# vLLM GLM VLM/OCR 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `tests/models/multimodal/processing/test_glm4_1v.py` | [#48729](https://github.com/vllm-project/vllm/pull/48729) |
-| `vllm/model_executor/models/glm4_1v.py` | [#21678](https://github.com/vllm-project/vllm/pull/21678), [#22751](https://github.com/vllm-project/vllm/pull/22751), [#33005](https://github.com/vllm-project/vllm/pull/33005), [#34483](https://github.com/vllm-project/vllm/pull/34483), [#37962](https://github.com/vllm-project/vllm/pull/37962), [#47155](https://github.com/vllm-project/vllm/pull/47155), [#48729](https://github.com/vllm-project/vllm/pull/48729) |
+| `vllm/model_executor/models/glm4_1v.py` | [#21678](https://github.com/vllm-project/vllm/pull/21678), [#22751](https://github.com/vllm-project/vllm/pull/22751), [#33005](https://github.com/vllm-project/vllm/pull/33005), [#34483](https://github.com/vllm-project/vllm/pull/34483), [#37962](https://github.com/vllm-project/vllm/pull/37962), [#47155](https://github.com/vllm-project/vllm/pull/47155), [#48729](https://github.com/vllm-project/vllm/pull/48729), [#55389](https://github.com/vllm-project/vllm/pull/55389) |
 | `vllm/model_executor/models/glm4v.py` | 无直接 PR 号提交 |
-| `vllm/model_executor/models/glm_ocr.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005), [#33350](https://github.com/vllm-project/vllm/pull/33350), [#37962](https://github.com/vllm-project/vllm/pull/37962) |
-| `vllm/model_executor/models/glm_ocr_mtp.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005) |
+| `vllm/model_executor/models/glm_ocr.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005), [#33350](https://github.com/vllm-project/vllm/pull/33350), [#37962](https://github.com/vllm-project/vllm/pull/37962), [#55389](https://github.com/vllm-project/vllm/pull/55389) |
+| `vllm/model_executor/models/glm_ocr_mtp.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005), [#56447](https://github.com/vllm-project/vllm/pull/56447) |
 | `vllm/transformers_utils/processors/glm4v.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 8
+- git 追溯 PR 数: 10
 - 原文档显式引用补充 PR 数: 10
-- 当前文档总 PR 数: 18
+- 当前文档总 PR 数: 20
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -41,6 +41,8 @@
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 | 2026-07-03 | [#47155](https://github.com/vllm-project/vllm/pull/47155) | merged | [GLM4V] Avoid GLM4V processor init during startup metadata reads | `vllm/model_executor/models/glm4_1v.py` |
 | 2026-07-17 | [#48729](https://github.com/vllm-project/vllm/pull/48729) | merged | [Bugfix][GLM4V] Fix video dummy profiling and memory usage | `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/processing/test_glm4_1v.py` |
+| 2026-09-11 | [#56447](https://github.com/vllm-project/vllm/pull/56447) | merged | [Bugfix] Fix GLM-OCR MTP position masking during CUDA graph capture | `vllm/model_executor/models/glm_ocr_mtp.py` |
+| 2026-09-30 | [#55389](https://github.com/vllm-project/vllm/pull/55389) | merged | [Model] Extend device-side mm normalization to GLM4V/GLM5Next | `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -689,6 +691,66 @@ diff -- tests/models/multimodal/processing/test_glm4_1v.py
   - runtime: `vllm/model_executor/models/glm4_1v.py` modified +20/-49
   - tests: `tests/models/multimodal/processing/test_glm4_1v.py` modified +52/-0
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_glm4_1v.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #56447 - [Bugfix] Fix GLM-OCR MTP position masking during CUDA graph capture
+
+- 链接: https://github.com/vllm-project/vllm/pull/56447
+- 状态/时间: merged / 2026-09-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/glm_ocr_mtp.py`；关联提交 `89dbb2644552`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 10 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/glm_ocr_mtp.py` modified +2/-1 (3 lines); hunks: -86,7 +86,8 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/glm_ocr_mtp.py` modified +2/-1 (3 lines); hunks: -86,7 +86,8 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/glm_ocr_mtp.py
+@@ -86,7 +86,8 @@ def forward(
+-        inputs_embeds[positions[0] == 0] = 0
++        token_positions = positions[0] if positions.ndim == 2 else positions
++        inputs_embeds.masked_fill_((token_positions == 0).unsqueeze(-1), 0)
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/glm_ocr_mtp.py` modified +2/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/glm_ocr_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #55389 - [Model] Extend device-side mm normalization to GLM4V/GLM5Next
+
+- 链接: https://github.com/vllm-project/vllm/pull/55389
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py`；关联提交 `0a30bc3f9ac3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 7 个文件，+114/-10，可读 patch 279 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/glm4_1v.py` modified +16/-7 (23 lines); hunks: -61,6 +61,10; -616,6 +620,7 @@ def __init__(; symbols: __init__, forward, Glm4vForConditionalGeneration, get_placeholder_str，涉及 `__init__, forward, Glm4vForConditionalGeneration`；`vllm/model_executor/models/glm_ocr.py` modified +12/-2 (14 lines); hunks: -48,6 +48,7; -254,9 +255,17 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/glm4_1v.py` modified +16/-7 (23 lines); hunks: -61,6 +61,10; -616,6 +620,7 @@ def __init__(; symbols: __init__, forward, Glm4vForConditionalGeneration, get_placeholder_str
+  - `vllm/model_executor/models/glm_ocr.py` modified +12/-2 (14 lines); hunks: -48,6 +48,7; -254,9 +255,17 @@ def __init__(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/glm4_1v.py
+@@ -61,6 +61,10 @@
++from vllm.model_executor.layers.fusion.mm_input_norm import (
++    IdentityInputNorm,
++    build_mm_input_norm,
++)
+@@ -616,6 +620,7 @@ def __init__(
++        input_norm: nn.Module | None = None,
+diff -- vllm/model_executor/models/glm_ocr.py
+@@ -48,6 +48,7 @@
++from vllm.model_executor.layers.fusion.mm_input_norm import build_mm_input_norm
+@@ -254,9 +255,17 @@ def __init__(
++        input_norm: nn.Module | None = None,
+-        super().__init__(text_config, vision_config, norm_eps, quant_config, prefix)
++        super().__init__(
++            text_config,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/glm4_1v.py` modified +16/-7; `vllm/model_executor/models/glm_ocr.py` modified +12/-2
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation_ppl_test/test_glm.py`, `tests/models/multimodal/processing/test_glm5next.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

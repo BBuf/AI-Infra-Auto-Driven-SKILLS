@@ -284,7 +284,7 @@ class TestMemoryDecomposition:
         bd = decompose_memory(parsed, gpu_hbm, smi_entries, target_rank=0)
 
         # Framework overhead
-        assert abs(bd.framework_overhead_gib - (95.58 - 93.61)) < 0.01
+        assert abs(bd.framework_overhead_gib - ((smi_entries[0].memory_used_mib + smi_entries[0].memory_free_mib) / 1024 - 93.61)) < 0.01
 
         # KV pool from Memory profiling rest_memory
         assert abs(bd.kv_pool_gib - 19.58) < 0.01
@@ -358,14 +358,15 @@ class TestKVBytesCalculation:
         assert abs(per_token - expected) < 1
 
     def test_mla_kv_bytes(self):
-        """MLA: per_token = 2 * L * kv_lora_rank * dtype_bytes"""
+        """MLA stores one latent and one RoPE key per layer."""
         mc = ModelConfig(
             num_hidden_layers=61,
             kv_lora_rank=512,
+            qk_rope_head_dim=64,
             attention_type="mla",
         )
         per_token = calc_kv_bytes_per_token(mc, tp_size=8, kv_dtype_bytes=2)
-        expected = 2 * 61 * 512 * 2  # 124928 bytes
+        expected = 61 * (512 + 64) * 2  # 70272 bytes
         assert abs(per_token - expected) < 1
 
     def test_csa_hca_returns_zero(self):
@@ -611,3 +612,42 @@ def test_weight_estimate_uses_free_memory_not_reservation_baseline():
     )
     bd = decompose_memory(parse_log(log), 96.0, target_rank=0)
     assert abs(bd.model_weights_gib - (93.61 - 57.01)) < 1e-6
+
+
+def test_head_sglang_config_pool_and_phase_capture():
+    log = """[time] server_args={'model_path': 'test', 'tp_size': 1, 'mem_fraction_static': 0.75, 'kv_cache_dtype': 'nvfp4'}
+[time] Load weight begin. avail mem=80 GB
+[time] Load weight end. elapsed=1 s, type=Model, avail mem=60 GB, mem usage=20 GB.
+[time] KV Cache is allocated. dtype: bf16, #tokens: 128, K size: 10 GB, V size: 5 GB
+[time] Capture target decode CUDA graph end. elapsed=2 s, mem usage=1 GB, avail mem=44 GB.
+[time] Capture draft decode CUDA graph end. elapsed=1 s, mem usage=0.5 GB, avail mem=43.5 GB.
+[time] max_total_num_tokens=128, chunked_prefill_size=-1, max_prefill_tokens=128, max_running_requests=8, context_len=8192, available_cpu_mem=43.5 GB"""
+    parsed = parse_log(log)
+    assert parsed.framework == "sglang"
+    assert parsed.server_args.mem_fraction_static == .75
+    assert parsed.final_info.chunked_prefill_size == -1
+    bd = decompose_memory(parsed, 80)
+    assert (bd.model_weights_gib, bd.kv_pool_gib, bd.cuda_graph_gib) == (20, 15, 1.5)
+    assert kv_dtype_bytes("nvfp4") == .5
+
+
+def test_head_rank_tags_dsv4_keys_and_vllm_scheduler_cap():
+    line = "[time TP2 EP2] DSV4 memory calculation: unified=True, bytes_per_full_token=528, available_bytes=12 GB, c128_state_fixed=1 GB, full_token=100"
+    calc = parse_sw_kv_memory_calc(line)
+    assert (calc.rank, calc.full_token) == (2, 100)
+    parsed = parse_log("vllm non-default args: {'max_num_seqs': 512}\nXPU KV cache size: 1,572,864 tokens, Maximum concurrency for 8,192 tokens per request: 192.00x")
+    assert parsed.final_info.max_running_requests == 512
+    assert parsed.final_info.max_total_num_tokens // 4096 == 384
+    unknown = parse_log("vllm\nGPU KV cache size: 1,572,864 tokens, Maximum concurrency for 8,192 tokens per request: 192.00x")
+    assert unknown.final_info.max_running_requests is None
+    estimates = estimate_concurrency(unknown.final_info, 0, 0, "auto", [4096])
+    assert estimates[0].max_concurrent == 384
+
+
+def test_vllm_info_memory_total_and_explicit_kv_budget():
+    parsed = parse_log("vllm Free memory on device (75.0/80.0 GiB) on startup. Desired GPU memory utilization is (0.9, 72.0 GiB). Actual usage is 20.0 GiB for consumed memory (weights + non-torch), 2.0 GiB for peak activation, and 1.0 GiB for CUDAGraph memory. Current kv cache memory in use is 49.0 GiB.")
+    bd = decompose_memory(parsed, 96)
+    assert bd.gpu_hbm_gib == 80
+    assert bd.kv_pool_gib == 49
+    explicit = parse_log("vllm Initial free memory 75.0 GiB, reserved 40.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling")
+    assert explicit.vllm.available_kv_cache_gib == 40

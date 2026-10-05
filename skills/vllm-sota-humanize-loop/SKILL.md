@@ -180,7 +180,7 @@ Hard requirements:
   for PDL, mHC/AR, WO-A, shared-expert and metadata changes.
 - Use the target image's current commands: `vllm serve`,
   `sglang serve` or `python -m sglang.launch_server`, and
-  `trtllm-serve serve --backend pytorch`.
+  `trtllm-serve serve <model>`.
 - Use the default two dataset scenarios from `llm-serving-auto-benchmark` unless
   the user explicitly provides a production workload:
   - dataset kind `random`, `num_prompts: 80`
@@ -190,8 +190,8 @@ Hard requirements:
     product
 - Do not replace those scenarios with an easier smoke dataset for the real SOTA
   decision. Smoke runs are allowed only when labeled as flow checks.
-- For TensorRT-LLM, keep `trtllm-serve serve --backend pytorch`; reject
-  non-PyTorch TensorRT-LLM server backends for this skill.
+- Record `trtllm-serve --help`; current main is PyTorch-only and its backend
+  option is deprecated. On older images listing other backends, select pytorch.
 - Keep failed, skipped, and SLA-failing candidates in the benchmark artifact.
 
 Before finishing or reporting a blocker, stop only the server, benchmark,
@@ -459,3 +459,17 @@ The final report must include the fixed benchmark table, post-patch benchmark
 table, all winner commands, model PR history paths, profile paths,
 layer-pipeline paths when used, NCU digest paths when used, vLLM changed files,
 tests, and whether vLLM reached target-environment SOTA.
+
+## Model Runner Dispatch — 2026-10-05
+
+vLLM #53183 made Model Runner V2 the default on 2026-08-27. Before targeting a
+runner patch, record `VllmConfig.use_v2_model_runner` or the startup `Model Runner
+V2` log in the benchmark/profile snapshot. Current V2 is
+`vllm/v1/worker/gpu/model_runner.py` and its `cudagraph_utils.py`, `async_utils.py`,
+`sample/`, `spec_decode/`, `model_states/` helpers. V1
+`vllm/v1/worker/gpu_model_runner.py` remains a fallback for
+`VLLM_USE_V2_MODEL_RUNNER=0`, missing Triton, unsupported features and listed
+ROCm architectures. A patch to the inactive runner is not coverage.
+
+Evidence: [runner selection](https://github.com/vllm-project/vllm/blob/0c16eee3f1ff777298cc894c3eeb85f3880c6d6a/vllm/config/vllm.py),
+[V2 runner](https://github.com/vllm-project/vllm/blob/0c16eee3f1ff777298cc894c3eeb85f3880c6d6a/vllm/v1/worker/gpu/model_runner.py).

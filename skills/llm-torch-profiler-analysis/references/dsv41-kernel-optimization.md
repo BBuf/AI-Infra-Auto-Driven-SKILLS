@@ -14,6 +14,18 @@ FP4 288 B KV storage contracts. Read [mHC fusion boundaries](dsv41-mhc-fusions.m
 for the current batch/phase eligibility matrix and stream handoff. DeepSelect
 consumer top-k selects attention tokens; it is separate from the MoE router.
 
+
+**2026-10-05 source refresh:** DSV4.1 is served from SGLang main
+[`b1bbd74f287f`](https://github.com/sgl-project/sglang/commit/b1bbd74f287f13ed1276b0403a01ebb55c597e93);
+the historical `dsv4.1` branch has been removed. Historical PR merge bases and
+experiment pins below retain their original dates. Main still sets
+`SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=False` and `SGLANG_DSV4_KV_LAYOUT=v4`.
+The WO-A caller still checks V4.1, BF16 weights, `(2,1024)` local group/rank
+shape and the token bound; `SGLANG_DSV41_FUSED_WO_A=True` is not dispatch proof.
+See the refreshed [mHC matrix](dsv41-mhc-fusions.md) and
+[source contracts](../../../docs/upstream-source-contracts.md). No GPU rerun
+or claim of numerical equivalence across these revisions is included.
+
 ## Establish the experiment before interpreting a kernel
 
 Record model/checkpoint revision, target vs draft, request concurrency, actual
@@ -111,7 +123,7 @@ activation win need not reduce wall time.
   reuse and benchmark cache state. A default-on flag is not dispatch proof.
 - **mHC boundaries + all-reduce:** merged
   [#39370](https://github.com/sgl-project/sglang/pull/39370) is the starting
-  point; [#39704](https://github.com/sgl-project/sglang/pull/39704), merged into
+  point (merged into historical `dsv4.1` on 2026-09-15); [#39704](https://github.com/sgl-project/sglang/pull/39704), merged into
   main on 2026-09-19, extends medium-batch post/combine, collective epilogues
   and prefill overlap, and incorporates the PDL guard. The
   [current fusion matrix](dsv41-mhc-fusions.md) distinguishes tiny, medium

@@ -18,7 +18,8 @@ Profiles can be auto-inferred from a model's config.json via
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import re
+from dataclasses import dataclass, replace
 from typing import Callable, Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
@@ -63,12 +64,12 @@ class ModelProfile:
 
 def _any_sub(*substrings: str) -> Callable[[str], bool]:
     """Return a rule that matches if *any* substring is found in the name."""
-    return lambda n: any(s in n for s in substrings)
+    return lambda n: any(s.lower() in n.lower() for s in substrings)
 
 
 def _sub(s: str) -> Callable[[str], bool]:
     """Return a rule that matches a single substring."""
-    return lambda n: s in n
+    return lambda n: s.lower() in n.lower()
 
 
 # ---------------------------------------------------------------------------
@@ -76,8 +77,26 @@ def _sub(s: str) -> Callable[[str], bool]:
 # ---------------------------------------------------------------------------
 
 _UNIVERSAL_CATEGORY_RULES: List[Tuple[str, str, Callable[[str], bool]]] = [
-    ("● NCCL AllReduce", "allreduce", _sub("AllReduce")),
-    ("  RMSNorm", "rmsnorm", _any_sub("RMSNorm", "rms_normalize")),
+    (
+        "● Communication",
+        "allreduce",
+        _any_sub(
+            "allreduce",
+            "all_reduce",
+            "cross_device_reduce",
+            "reduce_scatter",
+            "allgather",
+            "all_gather",
+            "lamport",
+            "multimem",
+            "nccl",
+        ),
+    ),
+    (
+        "  RMSNorm",
+        "rmsnorm",
+        lambda n: bool(re.search(r"rms_?norm|rms_normalize|layernorm", n, re.I)),
+    ),
     ("  FP8 Quant", "quant", lambda n: "quant" in n.lower() or "Quant" in n),
     ("  TopK", "topk", lambda n: "topk" in n.lower()),
     ("  GEMM fp8", "gemm_fp8", _sub("deep_gemm")),
@@ -191,12 +210,12 @@ _DSV3_SIMPLIFY_RULES: List[Tuple[str, str]] = [
 
 PROFILE_DSV4_CSA_HCA = ModelProfile(
     name="dsv4_csa_hca",
-    anchor_kernel="mhc_post_tilelang",
+    anchor_kernel="mhc_pre_big_fuse",
     blocks_per_layer=2,
     half_labels=["attn", "ffn"],
     category_rules=_DSV4_CATEGORY_RULES + _UNIVERSAL_CATEGORY_RULES,
     simplify_rules=_UNIVERSAL_SIMPLIFY_RULES + _DSV4_SIMPLIFY_RULES,
-    default_num_layers=43,
+    default_num_layers=1,
 )
 
 # Fused boundaries differ across V4.1 branches and batch sizes. Require a
@@ -212,12 +231,12 @@ PROFILE_DSV41 = ModelProfile(
 
 PROFILE_DSV3_MLA = ModelProfile(
     name="dsv3_mla",
-    anchor_kernel="flash_fwd_mla_combine",
+    anchor_kernel=None,
     blocks_per_layer=1,
     half_labels=["full"],
     category_rules=_DSV3_CATEGORY_RULES + _UNIVERSAL_CATEGORY_RULES,
     simplify_rules=_UNIVERSAL_SIMPLIFY_RULES + _DSV3_SIMPLIFY_RULES,
-    default_num_layers=61,
+    default_num_layers=1,
 )
 
 PROFILE_GENERIC = ModelProfile(
@@ -262,6 +281,7 @@ def normalize_compress_ratios(
     so that trailing nextn ratio is intentionally excluded instead of being
     silently sliced by callers.
     """
+    config = normalize_model_config(config)
     ratios = list(config.get("compress_ratios") or [])
     if not ratios:
         return []
@@ -284,23 +304,228 @@ def normalize_compress_ratios(
     )
 
 
-def infer_profile(config: dict) -> ModelProfile:
-    """Auto-detect the model profile from a config.json dict.
+def normalize_model_config(raw: dict) -> dict:
+    """Flatten public text configs and normalize HF dimension aliases.
 
-    Priority:
-      1. ``model_type=deepseek_v41`` → explicit-anchor dsv41
-      2. Has non-empty ``compress_ratios`` → legacy dsv4_csa_hca
-      3. Has ``kv_lora_rank > 0`` → dsv3_mla
-      4. Otherwise → generic
+    Preserve the wrapper identity as outer_model_type for profile inference.
+    Derived shared width is total width, not width per shared expert.
     """
-    if config.get("model_type") == "deepseek_v41":
-        return PROFILE_DSV41
-    cr = config.get("compress_ratios", [])
-    if cr:
+    config = dict(raw)
+    for key in ("text_config", "language_config", "llm_config"):
+        inner = raw.get(key)
+        if isinstance(inner, dict):
+            config["outer_model_type"] = raw.get("model_type", "")
+            config.update(inner)
+            break
+    if not config.get("num_hidden_layers"):
+        config["num_hidden_layers"] = config.get("num_layers") or len(
+            config.get("layers_block_type")
+            or config.get("hybrid_override_pattern")
+            or []
+        )
+    aliases = {
+        "num_experts": ("n_routed_experts", "num_local_experts", "moe_num_experts"),
+        "num_experts_per_tok": (
+            "num_experts_per_token",
+            "moe_topk",
+            "moe_top_k",
+            "top_k_experts",
+        ),
+        "num_shared_experts": ("n_shared_experts",),
+        "routed_expert_intermediate_size": (
+            "moe_intermediate_size",
+            "expert_ffn_hidden_size",
+        ),
+        "shared_expert_intermediate_size": (
+            "shared_intermediate_size",
+            "moe_shared_expert_intermediate_size",
+            "share_expert_dim",
+        ),
+    }
+    for target, sources in aliases.items():
+        if target not in config:
+            for source in sources:
+                if source in config:
+                    config[target] = config[source]
+                    break
+    if "shared_expert_intermediate_size" not in config and "n_shared_experts" in config:
+        config["shared_expert_intermediate_size"] = config.get(
+            "moe_intermediate_size", 0
+        ) * (config.get("n_shared_experts") or 0)
+    config["moe"] = bool(config.get("moe") or (config.get("num_experts") or 0) > 0)
+    config["mhc"] = bool(
+        config.get("mhc") or config.get("hc_mult") or config.get("hc_count")
+    )
+    return config
+
+
+def infer_profile(config: dict) -> ModelProfile:
+    """Dispatch model identity before structural MLA/compression fallbacks."""
+    config = normalize_model_config(config)
+    types = {config.get("model_type", ""), config.get("outer_model_type", "")}
+    dispatch = [
+        (("deepseek_v41", "deepseek_v41_text"), "dsv41"),
+        (("deepseek_v4",), "dsv4_csa_hca"),
+        (("kimi_k3",), "kimi_k3"),
+        (("glm5_next", "glm5_next_text"), "glm5_next"),
+        (("hy_v4",), "hy_v4"),
+        (("qwen4_exp", "qwen4_exp_text"), "qwen4_exp"),
+        (("nemotron_h",), "nemotron_h"),
+        (("gemma4", "gemma4_text", "gemma4_unified", "gemma4_unified_text"), "gemma4"),
+        (("glm_moe_dsa", "deepseek_v32"), "mla_dsa"),
+    ]
+    if "kv_source_layer_ids" in config:
+        return get_profile("dsv41")
+    if "kimi_linear" in types and config.get("attn_res_block_size"):
+        return get_profile("kimi_k3")
+    for identities, profile in dispatch:
+        if types.intersection(identities):
+            return get_profile(profile)
+    if any("longcatflash" in a.lower() for a in config.get("architectures", [])):
+        return get_profile("longcat_flash")
+    if config.get("compress_ratios"):
         return PROFILE_DSV4_CSA_HCA
-
-    kv_lora_rank = config.get("kv_lora_rank", 0)
-    if kv_lora_rank and kv_lora_rank > 0:
+    if config.get("index_topk") and config.get("kv_lora_rank"):
+        return get_profile("mla_dsa")
+    # Hybrid SWA/MLA is not a homogeneous V3 stack.
+    if config.get("layer_types") or "dots3_note" in types:
+        return get_profile("generic_addnorm")
+    if config.get("kv_lora_rank", 0) > 0:
         return PROFILE_DSV3_MLA
+    return (
+        get_profile("generic_addnorm")
+        if config.get("num_hidden_layers")
+        else PROFILE_GENERIC
+    )
 
-    return PROFILE_GENERIC
+
+_NEW_CATEGORY_RULES = [
+    (
+        "  Fused mHC",
+        "mhc_fused",
+        _any_sub(
+            "mhc_fused_post_pre_fma",
+            "mhc_fused_tilelang",
+            "all_reduce_mhc",
+            "mega_mhc",
+            "mhc_post_split_h",
+        ),
+    ),
+    (
+        "  HC combine",
+        "mhc_combine",
+        _any_sub("hc_combine", "hc_mix", "hc_head_fuse", "ihc_", "attn_res"),
+    ),
+    ("  HC prenorm", "mhc_pre_gemm", _sub("hc_prenorm_gemm")),
+    ("  Indexer Q preparation", "indexer", _sub("fused_q_indexer_rope_hadamard")),
+    ("  Indexer top-k", "topk", _sub("topk_transform")),
+    (
+        "  Linear/SSM",
+        "hybrid_linear",
+        _any_sub("kda", "fused_recurrent", "chunk_gla", "causal_conv1d", "sconv"),
+    ),
+    ("  Activation", "activation", _sub("situ_and_mul")),
+    ("  QKV norm", "rmsnorm", _any_sub("gemma_qkv_rmsnorm", "grouped_gemma_rmsnorm")),
+    ("  Sparse attention", "mla", _any_sub("sparse_attn", "qsa", "fmhaSm100")),
+    ("  Router", "moe_gate", _any_sub("inkling_gate", "gemma4_routing")),
+]
+for _name, _anchor, _bpl in [
+    ("mla_dsa", None, 2),
+    ("kimi_k3", None, 2),
+    ("glm5_next", "mhc_pre_big_fuse", 2),
+    ("hy_v4", None, 2),
+    ("qwen4_exp", None, 2),
+    ("nemotron_h", None, 1),
+    ("longcat_flash", None, 4),
+    ("gemma4", None, 1),
+    ("generic_addnorm", None, 2),
+]:
+    BUILTIN_PROFILES[_name] = ModelProfile(
+        _name,
+        _anchor,
+        _bpl,
+        ["attn", "ffn"] if _bpl == 2 else [f"part{i}" for i in range(_bpl)],
+        _NEW_CATEGORY_RULES + _DSV4_CATEGORY_RULES + _UNIVERSAL_CATEGORY_RULES,
+        _UNIVERSAL_SIMPLIFY_RULES,
+    )
+for _profile in (PROFILE_DSV4_CSA_HCA, PROFILE_DSV41):
+    _profile.category_rules = _NEW_CATEGORY_RULES + _profile.category_rules
+
+
+def layer_label(layer_id, compress_ratio, num_layers, num_hash_layers=0):
+    """Composable work/routing flags; hash routing belongs to the prefix."""
+    flags = []
+    if layer_id == 0:
+        flags.append("FIRST")
+    if layer_id == num_layers - 1:
+        flags.append("FINAL")
+    flags.append(
+        {0: "SWA_ONLY", 4: "CSA_C4", 128: "HCA_C128", 2: "V41_C2", 1: "V41_C1"}.get(
+            compress_ratio, "GENERIC"
+        )
+    )
+    if layer_id < num_hash_layers:
+        flags.append("HASH")
+    return "+".join(flags)
+
+
+RESIDUAL_ANCHORS = (
+    "FusedAddRMSNorm",
+    "fused_add_rms_norm",
+    "fused_add_rmsnorm",
+    "allreduce_fusion",
+)
+
+
+def choose_anchor(gpu, profile):
+    if profile.anchor_kernel:
+        return profile.anchor_kernel
+    if profile.name in ("generic", "generic_addnorm", "mla_dsa", "dsv3_mla"):
+        for candidate in RESIDUAL_ANCHORS:
+            if sum(candidate.lower() in e.get("name", "").lower() for e in gpu) >= 4:
+                return candidate
+    raise ValueError(
+        "Supply a verified once-per-layer or sublayer --anchor-kernel and matching --config/--num-layers; phase and backend must be checked first"
+    )
+
+
+def select_gpu(events, pid=None, device=None):
+    gpu = [e for e in events if "kernel" in e.get("cat", "").split(",")]
+    if pid is not None:
+        gpu = [e for e in gpu if str(e.get("pid")) == str(pid)]
+    if device is not None:
+        gpu = [e for e in gpu if str(e.get("args", {}).get("device")) == str(device)]
+    if len({(e.get("pid"), e.get("args", {}).get("device")) for e in gpu}) > 1:
+        raise ValueError("GPU kernels span ranks/devices; select --pid and --device")
+    return sorted(gpu, key=lambda e: e.get("ts", 0))
+
+
+def configure_anchor_profile(profile, anchor, blocks_per_layer=None):
+    bpl = blocks_per_layer or (
+        2
+        if any(x.lower() in anchor.lower() for x in RESIDUAL_ANCHORS)
+        else profile.blocks_per_layer
+    )
+    if bpl < 1:
+        raise ValueError("--blocks-per-layer must be positive")
+    return replace(
+        profile,
+        blocks_per_layer=bpl,
+        half_labels=["attn", "ffn"] if bpl == 2 else [f"part{i}" for i in range(bpl)],
+    )
+
+
+def checked_anchor_indices(gpu, anchor, num_layers, bpl, offset=0):
+    indices = [
+        i for i, e in enumerate(gpu) if anchor.lower() in e.get("name", "").lower()
+    ]
+    if offset < 0 or offset >= len(indices):
+        raise ValueError("--anchor-offset is outside the matching anchors")
+    indices = indices[offset:]
+    residue = len(indices) % (num_layers * bpl)
+    if residue:
+        raise ValueError(
+            f"Anchor count {len(indices)} has residue {residue} for {num_layers} layers × {bpl} blocks; refuse automatic pass splitting"
+        )
+    # Final complete pass has no next-pass anchor: use end-of-selected-GPU sentinel.
+    return indices + [len(gpu)]

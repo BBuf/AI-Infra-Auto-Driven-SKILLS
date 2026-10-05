@@ -1,11 +1,28 @@
 # TensorRT-LLM Model PR Optimization History
 
+Refresh: `2026-10-05`. Source head: `NVIDIA/TensorRT-LLM@bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60`.
+
 Current model families:
 
+- `deepseek-v3-r1`
+- `deepseek-v32`
+- `deepseek-v4`
+- `exaone4`
+- `gemma4`
+- `glm5-glm51`
+- `gpt-oss`
 - `kimi`
+- `minimax`
+- `nemotron-super`
+- `qwen3-core`
+- `qwen3-next`
 - `qwen35`
+- `qwen4-exp`
+- `step37`
 
-## Current Watch / Landed Items
+Open and recently landed work is tracked by `tools/check_open_pr_watch.py`; regenerate that report before a long model-history refresh so open PRs are not confused with missing support.
+
+## Curated Watch / Landed Items (2026-08-23 audit)
 
 Refresh: `2026-08-23`. Source head:
 `NVIDIA/TensorRT-LLM@da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9`.

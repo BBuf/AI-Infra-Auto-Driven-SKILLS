@@ -7,6 +7,18 @@ were read on **2026-09-22**. Current dispatch was checked separately at SGLang
 main [`771c9d782d9e`](https://github.com/sgl-project/sglang/commit/771c9d782d9ecf0324e70b7f5a08c32644d652c5).
 This is implementation evidence, not a new GPU performance or accuracy result.
 
+
+**2026-10-05 source refresh:** DSV4.1 is served from SGLang main
+[`b1bbd74f287f`](https://github.com/sgl-project/sglang/commit/b1bbd74f287f13ed1276b0403a01ebb55c597e93);
+the historical `dsv4.1` branch has been removed. Historical PR merge bases and
+experiment pins below retain their original dates. Main still sets
+`SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=False` and `SGLANG_DSV4_KV_LAYOUT=v4`.
+The WO-A caller still checks V4.1, BF16 weights, `(2,1024)` local group/rank
+shape and the token bound; `SGLANG_DSV41_FUSED_WO_A=True` is not dispatch proof.
+See the refreshed [mHC matrix](dsv41-mhc-fusions.md) and
+[source contracts](../../../docs/upstream-source-contracts.md). No GPU rerun
+or claim of numerical equivalence across these revisions is included.
+
 ## Choose the right operation
 
 | Operation | Integration | Boundary to preserve |

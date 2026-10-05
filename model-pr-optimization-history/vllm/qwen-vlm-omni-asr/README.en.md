@@ -1,4 +1,4 @@
-# vllm Qwen VLM/Omni/ASR Model PR Optimization History
+# vLLM Qwen VLM/Omni/ASR Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -10,30 +10,34 @@
 | `examples/pooling/embed/template/dse_qwen2_vl.jinja` | no direct PR-number commit |
 | `examples/pooling/score/template/qwen3_vl_reranker.jinja` | [#31890](https://github.com/vllm-project/vllm/pull/31890) |
 | `tests/entrypoints/speech_to_text/transcription/test_qwen3_asr_sanitize_prompt.py` | [#35415](https://github.com/vllm-project/vllm/pull/35415) |
-| `tests/model_executor/test_qwen3_omni.py` | [#27721](https://github.com/vllm-project/vllm/pull/27721), [#52560](https://github.com/vllm-project/vllm/pull/52560) |
+| `tests/model_executor/test_qwen3_asr_mrope.py` | no direct PR-number commit |
+| `tests/model_executor/test_qwen3_omni.py` | [#27721](https://github.com/vllm-project/vllm/pull/27721), [#52560](https://github.com/vllm-project/vllm/pull/52560), [#54886](https://github.com/vllm-project/vllm/pull/54886), [#56011](https://github.com/vllm-project/vllm/pull/56011), [#56600](https://github.com/vllm-project/vllm/pull/56600), [#57044](https://github.com/vllm-project/vllm/pull/57044) |
+| `tests/model_executor/test_qwen3_omni_mrope.py` | [#58890](https://github.com/vllm-project/vllm/pull/58890) |
 | `tests/model_executor/test_qwen3_vl_mrope.py` | no direct PR-number commit |
-| `tests/models/multimodal/generation/test_qwen2_5_vl.py` | [#40830](https://github.com/vllm-project/vllm/pull/40830), [#48072](https://github.com/vllm-project/vllm/pull/48072) |
+| `tests/model_executor/test_qwen_vl_triton_warmup.py` | no direct PR-number commit |
+| `tests/models/multimodal/generation/test_qwen2_5_vl.py` | [#40830](https://github.com/vllm-project/vllm/pull/40830), [#47736](https://github.com/vllm-project/vllm/pull/47736), [#48072](https://github.com/vllm-project/vllm/pull/48072) |
 | `tests/models/multimodal/generation/test_qwen2_vl.py` | no direct PR-number commit |
 | `tests/models/multimodal/pooling/test_dse_qwen2_vl.py` | no direct PR-number commit |
 | `tests/models/multimodal/pooling/test_qwen3_asr_forced_aligner.py` | no direct PR-number commit |
 | `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py` | [#35368](https://github.com/vllm-project/vllm/pull/35368), [#46213](https://github.com/vllm-project/vllm/pull/46213) |
-| `tests/models/multimodal/processing/test_qwen2_vl.py` | no direct PR-number commit |
+| `tests/models/multimodal/processing/test_qwen2_vl.py` | [#47736](https://github.com/vllm-project/vllm/pull/47736) |
 | `tests/models/multimodal/processing/test_qwen3_omni.py` | [#29255](https://github.com/vllm-project/vllm/pull/29255) |
-| `tests/models/multimodal/processing/test_qwen3_vl.py` | [#36136](https://github.com/vllm-project/vllm/pull/36136), [#46026](https://github.com/vllm-project/vllm/pull/46026), [#46305](https://github.com/vllm-project/vllm/pull/46305) |
+| `tests/models/multimodal/processing/test_qwen3_vl.py` | [#36136](https://github.com/vllm-project/vllm/pull/36136), [#46026](https://github.com/vllm-project/vllm/pull/46026), [#46305](https://github.com/vllm-project/vllm/pull/46305), [#54380](https://github.com/vllm-project/vllm/pull/54380) |
 | `tests/models/multimodal/test_mimo_v2_omni.py` | no direct PR-number commit |
 | `vllm/model_executor/models/glmasr.py` | [#31436](https://github.com/vllm-project/vllm/pull/31436), [#31779](https://github.com/vllm-project/vllm/pull/31779), [#32540](https://github.com/vllm-project/vllm/pull/32540), [#40160](https://github.com/vllm-project/vllm/pull/40160) |
 | `vllm/model_executor/models/glmasr_utils.py` | [#31436](https://github.com/vllm-project/vllm/pull/31436), [#31779](https://github.com/vllm-project/vllm/pull/31779) |
 | `vllm/model_executor/models/mimo_v2_omni.py` | no direct PR-number commit |
-| `vllm/model_executor/models/qwen2_5_omni_thinker.py` | [#15130](https://github.com/vllm-project/vllm/pull/15130), [#16872](https://github.com/vllm-project/vllm/pull/16872), [#17301](https://github.com/vllm-project/vllm/pull/17301), [#17838](https://github.com/vllm-project/vllm/pull/17838), [#23058](https://github.com/vllm-project/vllm/pull/23058), [#24231](https://github.com/vllm-project/vllm/pull/24231), [#24420](https://github.com/vllm-project/vllm/pull/24420), [#26004](https://github.com/vllm-project/vllm/pull/26004), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#30883](https://github.com/vllm-project/vllm/pull/30883), [#32772](https://github.com/vllm-project/vllm/pull/32772), ... (20 total) |
-| `vllm/model_executor/models/qwen2_5_vl.py` | [#12944](https://github.com/vllm-project/vllm/pull/12944), [#13155](https://github.com/vllm-project/vllm/pull/13155), [#13286](https://github.com/vllm-project/vllm/pull/13286), [#13533](https://github.com/vllm-project/vllm/pull/13533), [#13968](https://github.com/vllm-project/vllm/pull/13968), [#14377](https://github.com/vllm-project/vllm/pull/14377), [#15130](https://github.com/vllm-project/vllm/pull/15130), [#15200](https://github.com/vllm-project/vllm/pull/15200), [#15273](https://github.com/vllm-project/vllm/pull/15273), [#16907](https://github.com/vllm-project/vllm/pull/16907), [#16974](https://github.com/vllm-project/vllm/pull/16974), [#17726](https://github.com/vllm-project/vllm/pull/17726), ... (29 total) |
+| `vllm/model_executor/models/qwen2_5_omni_thinker.py` | [#15130](https://github.com/vllm-project/vllm/pull/15130), [#16872](https://github.com/vllm-project/vllm/pull/16872), [#17301](https://github.com/vllm-project/vllm/pull/17301), [#17838](https://github.com/vllm-project/vllm/pull/17838), [#23058](https://github.com/vllm-project/vllm/pull/23058), [#24231](https://github.com/vllm-project/vllm/pull/24231), [#24420](https://github.com/vllm-project/vllm/pull/24420), [#26004](https://github.com/vllm-project/vllm/pull/26004), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#30883](https://github.com/vllm-project/vllm/pull/30883), [#32772](https://github.com/vllm-project/vllm/pull/32772), ... (21 total) |
+| `vllm/model_executor/models/qwen2_5_vl.py` | [#12944](https://github.com/vllm-project/vllm/pull/12944), [#13155](https://github.com/vllm-project/vllm/pull/13155), [#13286](https://github.com/vllm-project/vllm/pull/13286), [#13533](https://github.com/vllm-project/vllm/pull/13533), [#13968](https://github.com/vllm-project/vllm/pull/13968), [#14377](https://github.com/vllm-project/vllm/pull/14377), [#15130](https://github.com/vllm-project/vllm/pull/15130), [#15200](https://github.com/vllm-project/vllm/pull/15200), [#15273](https://github.com/vllm-project/vllm/pull/15273), [#16907](https://github.com/vllm-project/vllm/pull/16907), [#16974](https://github.com/vllm-project/vllm/pull/16974), [#17726](https://github.com/vllm-project/vllm/pull/17726), ... (31 total) |
 | `vllm/model_executor/models/qwen2_audio.py` | [#11258](https://github.com/vllm-project/vllm/pull/11258), [#35994](https://github.com/vllm-project/vllm/pull/35994) |
 | `vllm/model_executor/models/qwen2_vl.py` | [#7905](https://github.com/vllm-project/vllm/pull/7905), [#8442](https://github.com/vllm-project/vllm/pull/8442), [#8696](https://github.com/vllm-project/vllm/pull/8696), [#8770](https://github.com/vllm-project/vllm/pull/8770), [#8837](https://github.com/vllm-project/vllm/pull/8837), [#9250](https://github.com/vllm-project/vllm/pull/9250), [#10112](https://github.com/vllm-project/vllm/pull/10112), [#10169](https://github.com/vllm-project/vllm/pull/10169), [#10221](https://github.com/vllm-project/vllm/pull/10221), [#11258](https://github.com/vllm-project/vllm/pull/11258), [#11430](https://github.com/vllm-project/vllm/pull/11430), [#11663](https://github.com/vllm-project/vllm/pull/11663), ... (32 total) |
 | `vllm/model_executor/models/qwen3_asr.py` | [#33312](https://github.com/vllm-project/vllm/pull/33312), [#33410](https://github.com/vllm-project/vllm/pull/33410), [#33644](https://github.com/vllm-project/vllm/pull/33644), [#35415](https://github.com/vllm-project/vllm/pull/35415), [#37247](https://github.com/vllm-project/vllm/pull/37247), [#42478](https://github.com/vllm-project/vllm/pull/42478) |
 | `vllm/model_executor/models/qwen3_asr_forced_aligner.py` | no direct PR-number commit |
 | `vllm/model_executor/models/qwen3_asr_realtime.py` | [#34613](https://github.com/vllm-project/vllm/pull/34613), [#35869](https://github.com/vllm-project/vllm/pull/35869) |
-| `vllm/model_executor/models/qwen3_omni_moe_thinker.py` | [#25550](https://github.com/vllm-project/vllm/pull/25550), [#26608](https://github.com/vllm-project/vllm/pull/26608), [#26815](https://github.com/vllm-project/vllm/pull/26815), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#29255](https://github.com/vllm-project/vllm/pull/29255), [#29828](https://github.com/vllm-project/vllm/pull/29828), [#29896](https://github.com/vllm-project/vllm/pull/29896), [#29974](https://github.com/vllm-project/vllm/pull/29974), [#31007](https://github.com/vllm-project/vllm/pull/31007), [#31790](https://github.com/vllm-project/vllm/pull/31790), ... (29 total) |
-| `vllm/model_executor/models/qwen3_vl.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25337](https://github.com/vllm-project/vllm/pull/25337), [#25347](https://github.com/vllm-project/vllm/pull/25347), [#25557](https://github.com/vllm-project/vllm/pull/25557), [#25646](https://github.com/vllm-project/vllm/pull/25646), [#25648](https://github.com/vllm-project/vllm/pull/25648), [#25788](https://github.com/vllm-project/vllm/pull/25788), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#27104](https://github.com/vllm-project/vllm/pull/27104), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#28663](https://github.com/vllm-project/vllm/pull/28663), ... (26 total) |
-| `vllm/model_executor/models/qwen3_vl_moe.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25300](https://github.com/vllm-project/vllm/pull/25300), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#42394](https://github.com/vllm-project/vllm/pull/42394), [#42716](https://github.com/vllm-project/vllm/pull/42716), [#44863](https://github.com/vllm-project/vllm/pull/44863) |
+| `vllm/model_executor/models/qwen3_omni_moe_thinker.py` | [#25550](https://github.com/vllm-project/vllm/pull/25550), [#26608](https://github.com/vllm-project/vllm/pull/26608), [#26815](https://github.com/vllm-project/vllm/pull/26815), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#27721](https://github.com/vllm-project/vllm/pull/27721), [#27920](https://github.com/vllm-project/vllm/pull/27920), [#29255](https://github.com/vllm-project/vllm/pull/29255), [#29828](https://github.com/vllm-project/vllm/pull/29828), [#29896](https://github.com/vllm-project/vllm/pull/29896), [#29974](https://github.com/vllm-project/vllm/pull/29974), [#31007](https://github.com/vllm-project/vllm/pull/31007), [#31790](https://github.com/vllm-project/vllm/pull/31790), ... (34 total) |
+| `vllm/model_executor/models/qwen3_vl.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25337](https://github.com/vllm-project/vllm/pull/25337), [#25347](https://github.com/vllm-project/vllm/pull/25347), [#25557](https://github.com/vllm-project/vllm/pull/25557), [#25646](https://github.com/vllm-project/vllm/pull/25646), [#25648](https://github.com/vllm-project/vllm/pull/25648), [#25788](https://github.com/vllm-project/vllm/pull/25788), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#27104](https://github.com/vllm-project/vllm/pull/27104), [#27705](https://github.com/vllm-project/vllm/pull/27705), [#28663](https://github.com/vllm-project/vllm/pull/28663), ... (29 total) |
+| `vllm/model_executor/models/qwen3_vl_moe.py` | [#24727](https://github.com/vllm-project/vllm/pull/24727), [#24955](https://github.com/vllm-project/vllm/pull/24955), [#25300](https://github.com/vllm-project/vllm/pull/25300), [#26000](https://github.com/vllm-project/vllm/pull/26000), [#42394](https://github.com/vllm-project/vllm/pull/42394), [#42716](https://github.com/vllm-project/vllm/pull/42716), [#43272](https://github.com/vllm-project/vllm/pull/43272), [#44863](https://github.com/vllm-project/vllm/pull/44863) |
+| `vllm/model_executor/warmup/qwen_vl_triton_warmup.py` | no direct PR-number commit |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | no direct PR-number commit |
 | `vllm/transformers_utils/configs/qwen3_asr.py` | [#33312](https://github.com/vllm-project/vllm/pull/33312) |
 | `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#43117](https://github.com/vllm-project/vllm/pull/43117) |
@@ -41,9 +45,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 120
+- Git-traced PRs: 137
 - Extra PRs preserved from existing docs: 14
-- Total PRs in this document: 134
+- Total PRs in this document: 151
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -154,13 +158,13 @@
 | 2026-04-10 | [#37247](https://github.com/vllm-project/vllm/pull/37247) | merged | [Model] Implement LoRA support for Qwen3ASRForConditionalGeneration | `vllm/model_executor/models/qwen3_asr.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-04-14 | [#38061](https://github.com/vllm-project/vllm/pull/38061) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Qwen3-VL video inference | `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-04-18 | [#40160](https://github.com/vllm-project/vllm/pull/40160) | merged | [Bugfix] Fix k_proj's bias for GLM-ASR | `vllm/model_executor/models/glmasr.py` |
+| 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | merged | [Examples] Resettle generate examples. | `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md` |
 | 2026-04-27 | [#38065](https://github.com/vllm-project/vllm/pull/38065) | merged | [Perf] FP8 FlashInfer Attn for ViT | `vllm/model_executor/layers/attention/mm_encoder_attention.py`, `vllm/model_executor/models/vision.py`, `vllm/config/multimodal.py` |
 | 2026-04-27 | [#40932](https://github.com/vllm-project/vllm/pull/40932) | merged | [Bugfix] Remove invalid deepstack boundary check for Qwen3-VL | `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/models/qwen3_vl.py` |
 | 2026-04-27 | [#40967](https://github.com/vllm-project/vllm/pull/40967) | merged | [Model] Add MiMo-V2.5 support | `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/mimo_audio.py`, `vllm/transformers_utils/processors/mimo_v2_omni.py` |
-| 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | merged | [Examples] Resettle generate examples. | `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md` |
 | 2026-05-02 | [#40830](https://github.com/vllm-project/vllm/pull/40830) | merged | [MM][CG] Support ViT CG for Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py` |
-| 2026-05-13 | [#42394](https://github.com/vllm-project/vllm/pull/42394) | merged | [Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2026-05-13 | [#41736](https://github.com/vllm-project/vllm/pull/41736) | merged | [MM][CG] Support ViT CG for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py` |
+| 2026-05-13 | [#42394](https://github.com/vllm-project/vllm/pull/42394) | merged | [Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2026-05-14 | [#38040](https://github.com/vllm-project/vllm/pull/38040) | merged | [Fix] Misc Fixes in ViT CUDA Graph | `vllm/model_executor/models/qwen3_vl.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`, `vllm/v1/worker/encoder_cudagraph.py` |
 | 2026-05-14 | [#42412](https://github.com/vllm-project/vllm/pull/42412) | merged | [Feature] Add instruction support for score/rerank chat templates | `tests/entrypoints/pooling/scoring/test_cross_encoder_online_vision.py`, `vllm/entrypoints/pooling/scoring/protocol.py`, `vllm/entrypoints/pooling/scoring/io_processor.py` |
 | 2026-05-17 | [#42716](https://github.com/vllm-project/vllm/pull/42716) | merged | Fix Weight loading for Qwen3.5-MTP and Qwen3-VL using runai_streamer | `vllm/model_executor/models/qwen3_vl_moe.py` |
@@ -185,6 +189,23 @@
 | 2026-07-13 | [#44863](https://github.com/vllm-project/vllm/pull/44863) | merged | [BugFix] Initialize model_config for Qwen3-VL MoE | `vllm/model_executor/models/qwen3_vl_moe.py` |
 | 2026-07-17 | [#46213](https://github.com/vllm-project/vllm/pull/46213) | merged | [Bugfix][Multimodal] Fix Qwen3-Omni use_audio_in_video with mixed image/video inputs | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `tests/models/multimodal/processing/test_qwen2_5_omni_embed.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 | 2026-07-18 | [#49015](https://github.com/vllm-project/vllm/pull/49015) | merged | [Bugfix] Qwen3-VL/Qwen-Omni: honor max_pixels/min_pixels for video prompts | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py` |
+| 2026-08-03 | [#48420](https://github.com/vllm-project/vllm/pull/48420) | merged | [Bugfix] Fix Qwen3-Omni crash on video with no audio track when use_audio_in_video=True | `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-08-08 | [#40116](https://github.com/vllm-project/vllm/pull/40116) | merged | Add torch compile for qwen3_vl encoder | `vllm/model_executor/models/qwen3_vl.py` |
+| 2026-08-22 | [#52560](https://github.com/vllm-project/vllm/pull/52560) | merged | [Model] Add Qwen3-Omni DSpark support | `tests/model_executor/test_qwen3_omni.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-08-24 | [#52786](https://github.com/vllm-project/vllm/pull/52786) | merged | [LoRA] Add Qwen3-Omni multimodal LoRA support | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-08-26 | [#53557](https://github.com/vllm-project/vllm/pull/53557) | merged | [Bugfix][LoRA] Enable tower/connector LoRA for Qwen3-Omni | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-08-29 | [#50858](https://github.com/vllm-project/vllm/pull/50858) | merged | [BugFix] Disable TP for Qwen3-Omni audio encoder when heads % TP != 0 | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-08-30 | [#54346](https://github.com/vllm-project/vllm/pull/54346) | merged | [Bugfix][Multimodal] Release Qwen2.5-VL and Qwen3-VL RoPE caches with the model | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen2_5_vl.py` |
+| 2026-08-30 | [#54380](https://github.com/vllm-project/vllm/pull/54380) | merged | [Model] Honor cap_pixels_per_frame in Qwen3-VL memory profiling | `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py` |
+| 2026-09-04 | [#54886](https://github.com/vllm-project/vllm/pull/54886) | merged | [Bugfix] Reject tokenizer-less Qwen VL processor init | `tests/model_executor/test_qwen3_omni.py`, `vllm/multimodal/processing/processor.py`, `vllm/model_executor/models/terratorch.py` |
+| 2026-09-05 | [#55415](https://github.com/vllm-project/vllm/pull/55415) | merged | [Perf][Multimodal] Avoid duplicate text embedding in Qwen2.5-Omni | `vllm/model_executor/models/qwen2_5_omni_thinker.py` |
+| 2026-09-09 | [#56011](https://github.com/vllm-project/vllm/pull/56011) | merged | [CI][Test][Spec Decode] Fix CI failure of Qwen3 Omni DSpark loader mock | `tests/model_executor/test_qwen3_omni.py` |
+| 2026-09-09 | [#45900](https://github.com/vllm-project/vllm/pull/45900) | merged | [ROCm][Perf] Fix Qwen3-vLLM audio encoder TP when heads are not divisible by TP size | `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
+| 2026-09-10 | [#43272](https://github.com/vllm-project/vllm/pull/43272) | merged | [Bugfix] Qwen3-VL(-MoE): pass architectures to with_hf_config for pipeline parallelism | `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py` |
+| 2026-09-12 | [#56600](https://github.com/vllm-project/vllm/pull/56600) | merged | [CI] Fix Qwen3 Omni DSpark load test config | `tests/model_executor/test_qwen3_omni.py` |
+| 2026-09-15 | [#57044](https://github.com/vllm-project/vllm/pull/57044) | merged | [CI] Keep Qwen3 Omni DSpark config fixture complete | `tests/model_executor/test_qwen3_omni.py` |
+| 2026-09-22 | [#47736](https://github.com/vllm-project/vllm/pull/47736) | merged | [Bugfix][Qwen2.5-VL] Honor video fps for temporal M-RoPE | `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/processing/test_qwen2_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py` |
+| 2026-10-03 | [#58890](https://github.com/vllm-project/vllm/pull/58890) | merged | [Bugfix][Model] Fix M-RoPE offset double-count in Qwen3-Omni | `tests/model_executor/test_qwen3_omni_mrope.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -3414,6 +3435,47 @@ diff -- vllm/model_executor/models/glmasr.py
   - runtime: `vllm/model_executor/models/glmasr.py` modified +3/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glmasr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #36464 - [Examples] Resettle generate examples.
+
+- Link: https://github.com/vllm-project/vllm/pull/36464
+- Status/date: merged / 2026-04-27
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 36 files, +46/-50, 267 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Examples] Resettle generate examples."; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md`; technical summary: Covers "[Examples] Resettle generate examples."; the main implementation surface is `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/features/multimodal_inputs.md` modified +7/-7 (14 lines); hunks: -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the mult...; -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, y...; `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6 (12 lines); hunks: -6,15 +6,15 @@ This folder provides several example scripts on how to inferen...; -24,16 +24,16 @@ You can also test Qwen2.5-Omni on a single modality:; `docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -202,7 +202,7 @@ The reasoning content is also available when both tool calli...; `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1 (2 lines); hunks: -1402,7 +1402,7 @@ def run_mantis(questions: list[str], modality: str) -> Mod...; symbols: run_mantis, run_minicpmv_base, touching `run_mantis, run_minicpmv_base`.
+- Code diff details:
+  - `docs/features/multimodal_inputs.md` modified +7/-7 (14 lines); hunks: -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the mult...; -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, y...
+  - `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6 (12 lines); hunks: -6,15 +6,15 @@ This folder provides several example scripts on how to inferen...; -24,16 +24,16 @@ You can also test Qwen2.5-Omni on a single modality:
+  - `docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -202,7 +202,7 @@ The reasoning content is also available when both tool calli...
+  - `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1 (2 lines); hunks: -1402,7 +1402,7 @@ def run_mantis(questions: list[str], modality: str) -> Mod...; symbols: run_mantis, run_minicpmv_base
+  - `examples/generate/multimodal/audio_language_offline.py` renamed +0/-0 (0 lines)
+- Key code excerpts:
+
+```diff
+diff -- docs/features/multimodal_inputs.md
+@@ -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the multi-modal dictionary
+-Full example: [examples/offline_inference/vision_language.py](../../examples/offline_inference/vision_language.py)
++Full example: [examples/generate/multimodal/vision_language_offline.py](../../examples/generate/multimodal/vision_language_offline.py)
+@@ -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, you can pass in a lis
+-Full example: [examples/offline_inference/vision_language_multi_image.py](../../examples/offline_inference/vision_language_multi_image.py)
++Full example: [examples/generate/multimodal/vision_language_multi_image_offline.py](../../examples/generate/multimodal/vision_language_multi_image_offline.py)
+@@ -287,13 +287,13 @@ Instead of NumPy arrays, you can also pass `'torch.Tensor'` instances, as shown
+diff -- examples/generate/multimodal/qwen2_5_omni/README.md
+@@ -6,15 +6,15 @@ This folder provides several example scripts on how to inference Qwen2.5-Omni of
+-python examples/offline_inference/qwen2_5_omni/only_thinker.py \
++python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
+-python examples/offline_inference/qwen2_5_omni/only_thinker.py \
++python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
+-python examples/offline_inference/qwen2_5_omni/only_thinker.py \
++python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
+diff -- docs/features/reasoning_outputs.md
+@@ -202,7 +202,7 @@ The reasoning content is also available when both tool calling and the reasoning
+```
+
+- Reviewed files:
+  - docs: `docs/features/multimodal_inputs.md` modified +7/-7; `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6; `docs/features/reasoning_outputs.md` modified +1/-1; `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1; `examples/generate/multimodal/audio_language_offline.py` renamed +0/-0; `examples/generate/multimodal/encoder_decoder_multimodal_offline.py` renamed +0/-0
+- Risk and verification: This is mostly docs/examples in `docs/features/multimodal_inputs.md`, `docs/features/reasoning_outputs.md`, `docs/serving/openai_compatible_server.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
 ### PR #38065 - [Perf] FP8 FlashInfer Attn for ViT
 
 - Link: https://github.com/vllm-project/vllm/pull/38065
@@ -3538,47 +3600,6 @@ diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
   - tests: `tests/models/registry.py` modified +18/-0
 - Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #36464 - [Examples] Resettle generate examples.
-
-- Link: https://github.com/vllm-project/vllm/pull/36464
-- Status/date: merged / 2026-04-27
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 36 files, +46/-50, 267 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Examples] Resettle generate examples."; model line: Qwen VLM/Omni/ASR; category: docs/tests/CI; main diff: `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md`; technical summary: Covers "[Examples] Resettle generate examples."; the main implementation surface is `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/features/multimodal_inputs.md` modified +7/-7 (14 lines); hunks: -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the mult...; -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, y...; `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6 (12 lines); hunks: -6,15 +6,15 @@ This folder provides several example scripts on how to inferen...; -24,16 +24,16 @@ You can also test Qwen2.5-Omni on a single modality:; `docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -202,7 +202,7 @@ The reasoning content is also available when both tool calli...; `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1 (2 lines); hunks: -1402,7 +1402,7 @@ def run_mantis(questions: list[str], modality: str) -> Mod...; symbols: run_mantis, run_minicpmv_base, touching `run_mantis, run_minicpmv_base`.
-- Code diff details:
-  - `docs/features/multimodal_inputs.md` modified +7/-7 (14 lines); hunks: -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the mult...; -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, y...
-  - `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6 (12 lines); hunks: -6,15 +6,15 @@ This folder provides several example scripts on how to inferen...; -24,16 +24,16 @@ You can also test Qwen2.5-Omni on a single modality:
-  - `docs/features/reasoning_outputs.md` modified +1/-1 (2 lines); hunks: -202,7 +202,7 @@ The reasoning content is also available when both tool calli...
-  - `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1 (2 lines); hunks: -1402,7 +1402,7 @@ def run_mantis(questions: list[str], modality: str) -> Mod...; symbols: run_mantis, run_minicpmv_base
-  - `examples/generate/multimodal/audio_language_offline.py` renamed +0/-0 (0 lines)
-- Key code excerpts:
-
-```diff
-diff -- docs/features/multimodal_inputs.md
-@@ -68,7 +68,7 @@ You can pass a single image to the `'image'` field of the multi-modal dictionary
--Full example: [examples/offline_inference/vision_language.py](../../examples/offline_inference/vision_language.py)
-+Full example: [examples/generate/multimodal/vision_language_offline.py](../../examples/generate/multimodal/vision_language_offline.py)
-@@ -101,7 +101,7 @@ To substitute multiple images inside the same text prompt, you can pass in a lis
--Full example: [examples/offline_inference/vision_language_multi_image.py](../../examples/offline_inference/vision_language_multi_image.py)
-+Full example: [examples/generate/multimodal/vision_language_multi_image_offline.py](../../examples/generate/multimodal/vision_language_multi_image_offline.py)
-@@ -287,13 +287,13 @@ Instead of NumPy arrays, you can also pass `'torch.Tensor'` instances, as shown
-diff -- examples/generate/multimodal/qwen2_5_omni/README.md
-@@ -6,15 +6,15 @@ This folder provides several example scripts on how to inference Qwen2.5-Omni of
--python examples/offline_inference/qwen2_5_omni/only_thinker.py \
-+python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
--python examples/offline_inference/qwen2_5_omni/only_thinker.py \
-+python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
--python examples/offline_inference/qwen2_5_omni/only_thinker.py \
-+python examples/generate/multimodal/qwen2_5_omni/only_thinker.py \
-diff -- docs/features/reasoning_outputs.md
-@@ -202,7 +202,7 @@ The reasoning content is also available when both tool calling and the reasoning
-```
-
-- Reviewed files:
-  - docs: `docs/features/multimodal_inputs.md` modified +7/-7; `examples/generate/multimodal/qwen2_5_omni/README.md` renamed +6/-6; `docs/features/reasoning_outputs.md` modified +1/-1; `examples/generate/multimodal/vision_language_offline.py` renamed +1/-1; `examples/generate/multimodal/audio_language_offline.py` renamed +0/-0; `examples/generate/multimodal/encoder_decoder_multimodal_offline.py` renamed +0/-0
-- Risk and verification: This is mostly docs/examples in `docs/features/multimodal_inputs.md`, `docs/features/reasoning_outputs.md`, `docs/serving/openai_compatible_server.md`; validation should confirm the documented command still maps to current CLI flags and model repo names.
-
 ### PR #40830 - [MM][CG] Support ViT CG for Qwen2.5-VL
 
 - Link: https://github.com/vllm-project/vllm/pull/40830
@@ -3616,6 +3637,33 @@ diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
   - tests: `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +95/-0
 - Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
+
+- Link: https://github.com/vllm-project/vllm/pull/41736
+- Status/date: merged / 2026-05-13
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen2_vl.py`; associated commits `b3c69595a63f`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +315/-21, 415 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[MM][CG] Support ViT CG for Qwen2-VL"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen2_vl.py`; technical summary: Covers "[MM][CG] Support ViT CG for Qwen2-VL"; the main implementation surface is `vllm/model_executor/models/qwen2_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20 (320 lines); hunks: -89,9 +89,11; -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, prepare_encoder_metadata, forward, _get_mm_fields_config, touching `compute_attn_mask_seqlen, prepare_encoder_metadata, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen2_vl.py` modified +300/-20 (320 lines); hunks: -89,9 +89,11; -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, prepare_encoder_metadata, forward, _get_mm_fields_config
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_vl.py
+@@ -89,9 +89,11 @@
++from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
++    SupportsEncoderCudaGraph,
+@@ -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tensor) -> int | None:
++    def prepare_encoder_metadata(
++        self,
++        grid_thw: list[list[int]],
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #42394 - [Bugfix][Qwen3-VL] Fix pipeline-parallel deepstack initialization
 
 - Link: https://github.com/vllm-project/vllm/pull/42394
@@ -3644,33 +3692,6 @@ diff -- vllm/model_executor/models/qwen3_vl_moe.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +1/-1; `vllm/model_executor/models/qwen3_vl_moe.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
-
-- Link: https://github.com/vllm-project/vllm/pull/41736
-- Status/date: merged / 2026-05-13
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen2_vl.py`; associated commits `b3c69595a63f`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 4 files, +315/-21, 415 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[MM][CG] Support ViT CG for Qwen2-VL"; model line: Qwen VLM/Omni/ASR; category: model support/runtime entry; main diff: `vllm/model_executor/models/qwen2_vl.py`; technical summary: Covers "[MM][CG] Support ViT CG for Qwen2-VL"; the main implementation surface is `vllm/model_executor/models/qwen2_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20 (320 lines); hunks: -89,9 +89,11; -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, prepare_encoder_metadata, forward, _get_mm_fields_config, touching `compute_attn_mask_seqlen, prepare_encoder_metadata, forward`.
-- Code diff details:
-  - `vllm/model_executor/models/qwen2_vl.py` modified +300/-20 (320 lines); hunks: -89,9 +89,11; -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tenso...; symbols: compute_attn_mask_seqlen, prepare_encoder_metadata, forward, _get_mm_fields_config
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/qwen2_vl.py
-@@ -89,9 +89,11 @@
-+from vllm.v1.worker.encoder_cudagraph_defs import EncoderCudaGraphReplayBuffers
-+    SupportsEncoderCudaGraph,
-@@ -646,38 +648,84 @@ def compute_attn_mask_seqlen(self, cu_seqlens: torch.Tensor) -> int | None:
-+    def prepare_encoder_metadata(
-+        self,
-+        grid_thw: list[list[int]],
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
-- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #38040 - [Fix] Misc Fixes in ViT CUDA Graph
 
@@ -4495,6 +4516,533 @@ diff -- vllm/model_executor/models/qwen3_vl.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +17/-0; `vllm/model_executor/models/qwen3_vl.py` modified +13/-0
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #48420 - [Bugfix] Fix Qwen3-Omni crash on video with no audio track when use_audio_in_video=True
+
+- Link: https://github.com/vllm-project/vllm/pull/48420
+- Status/date: merged / 2026-08-03
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen2_5_omni_thinker.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `6a9109d865d8`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +57/-1, 83 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +18/-1 (19 lines); hunks: -508,6 +508,20 @@ def _call_hf_processor(; -911,7 +925,10 @@ def _apply_hf_processor_mm_only(; symbols: _call_hf_processor, _apply_hf_processor_mm_only, touching `_call_hf_processor, _apply_hf_processor_mm_only`; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +7/-0 (7 lines); hunks: -1224,6 +1224,13 @@ def pad_to_hop_length(x: np.ndarray, hop_length: int) ->...; symbols: pad_to_hop_length, touching `pad_to_hop_length`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +18/-1 (19 lines); hunks: -508,6 +508,20 @@ def _call_hf_processor(; -911,7 +925,10 @@ def _apply_hf_processor_mm_only(; symbols: _call_hf_processor, _apply_hf_processor_mm_only
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +7/-0 (7 lines); hunks: -1224,6 +1224,13 @@ def pad_to_hop_length(x: np.ndarray, hop_length: int) ->...; symbols: pad_to_hop_length
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -508,6 +508,20 @@ def _call_hf_processor(
++        elif (
++            mm_kwargs.get("use_audio_in_video")
++            and "audio" not in mm_data
++            and mm_data.get("videos")
++        ):
++            # A subclass (e.g. Qwen3-Omni) may have already popped "audios"
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -1224,6 +1224,13 @@ def pad_to_hop_length(x: np.ndarray, hop_length: int) -> np.ndarray:
++        elif mm_kwargs.get("use_audio_in_video") and mm_data.get("videos"):
++            # mm_data can be empty on a multimodal-processor-cache hit, where
++            # there's nothing to (re-)process this call and the real result
++            # comes from the cache — not a genuine "no audio" case.
++            raise ValueError(
++                "Video doesn't have audio track with `audio_in_video=True`"
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +18/-1; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +7/-0
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_audio_in_video.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40116 - Add torch compile for qwen3_vl encoder
+
+- Link: https://github.com/vllm-project/vllm/pull/40116
+- Status/date: merged / 2026-08-08
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_vl.py`; associated commits `653ebb52dffd`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +22/-1, 44 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_vl.py` modified +22/-1 (23 lines); hunks: -48,7 +48,10; -356,6 +359,13 @@ def pos_embed_interpolate_native(; symbols: pos_embed_interpolate_native, Qwen3_VisionPatchEmbed, __init__, forward, touching `pos_embed_interpolate_native, Qwen3_VisionPatchEmbed, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +22/-1 (23 lines); hunks: -48,7 +48,10; -356,6 +359,13 @@ def pos_embed_interpolate_native(; symbols: pos_embed_interpolate_native, Qwen3_VisionPatchEmbed, __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -48,7 +48,10 @@
+-from vllm.compilation.decorators import support_torch_compile
++from vllm.compilation.decorators import (
++    should_torch_compile_mm_encoder,
++    support_torch_compile,
++)
+@@ -356,6 +359,13 @@ def pos_embed_interpolate_native(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +22/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #52560 - [Model] Add Qwen3-Omni DSpark support
+
+- Link: https://github.com/vllm-project/vllm/pull/52560
+- Status/date: merged / 2026-08-22
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_qwen3_omni.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `2f55ef254c70`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 11 files, +731/-22, 952 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/model_executor/test_qwen3_omni.py` modified +171/-1 (172 lines); hunks: -1,9 +1,13; -218,5 +222,171 @@ def test_qwen3_omni_get_updates_use_audio_in_video(; symbols: test_qwen3_omni_get_updates_use_audio_in_video, test_qwen3_omni_exposes_eagle3_to_its_text_backbone, DummyBackbone, __init__, touching `test_qwen3_omni_get_updates_use_audio_in_video, test_qwen3_omni_exposes_eagle3_to_its_text_backbone, DummyBackbone`; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +11/-1 (12 lines); hunks: -83,6 +83,7; -1067,7 +1068,7 @@ def forward(; symbols: forward, Qwen3OmniMoeThinkerForConditionalGeneration, touching `forward, Qwen3OmniMoeThinkerForConditionalGeneration`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_omni.py` modified +171/-1 (172 lines); hunks: -1,9 +1,13; -218,5 +222,171 @@ def test_qwen3_omni_get_updates_use_audio_in_video(; symbols: test_qwen3_omni_get_updates_use_audio_in_video, test_qwen3_omni_exposes_eagle3_to_its_text_backbone, DummyBackbone, __init__
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +11/-1 (12 lines); hunks: -83,6 +83,7; -1067,7 +1068,7 @@ def forward(; symbols: forward, Qwen3OmniMoeThinkerForConditionalGeneration
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_omni.py
+@@ -1,9 +1,13 @@
+-from unittest.mock import Mock
++from contextlib import nullcontext
++from types import SimpleNamespace
++from unittest.mock import Mock, patch
++import torch
++import torch.nn as nn
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -83,6 +83,7 @@
++    SupportsEagle3,
+@@ -1067,7 +1068,7 @@ def forward(
+-    ) -> torch.Tensor | IntermediateTensors:
++    ) -> torch.Tensor | IntermediateTensors | tuple[torch.Tensor, list[torch.Tensor]]:
+@@ -1078,6 +1079,9 @@ def forward(
++        aux_hidden_states = self._maybe_add_hidden_state(
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/model_executor/test_qwen3_omni.py` modified +171/-1
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +11/-1
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni.py`, `tests/models/registry.py`, `tests/test_config.py`, `tests/transformers_utils/test_speculators_dspark_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #52786 - [LoRA] Add Qwen3-Omni multimodal LoRA support
+
+- Link: https://github.com/vllm-project/vllm/pull/52786
+- Status/date: merged / 2026-08-24
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `460c08bc8a52`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +40/-7, 125 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +40/-7 (47 lines); hunks: -66,7 +66,11; -84,6 +88,7; symbols: __init__, forward, Qwen3OmniMoeAudioEncoder, _process_audio_input, touching `__init__, forward, Qwen3OmniMoeAudioEncoder`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +40/-7 (47 lines); hunks: -66,7 +66,11; -84,6 +88,7; symbols: __init__, forward, Qwen3OmniMoeAudioEncoder, _process_audio_input
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -66,7 +66,11 @@
+-from vllm.multimodal.inputs import MultiModalFeatureSpec, MultiModalKwargsItems
++from vllm.multimodal.inputs import (
++    MultiModalFeatureSpec,
++    MultiModalKwargsItem,
++    MultiModalKwargsItems,
++)
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +40/-7
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #53557 - [Bugfix][LoRA] Enable tower/connector LoRA for Qwen3-Omni
+
+- Link: https://github.com/vllm-project/vllm/pull/53557
+- Status/date: merged / 2026-08-26
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `f6130145c827`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +1/-0, 8 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +1/-0 (1 lines); hunks: -1597,6 +1597,7 @@ class Qwen3OmniMoeThinkerForConditionalGeneration(; symbols: Qwen3OmniMoeThinkerForConditionalGeneration, touching `Qwen3OmniMoeThinkerForConditionalGeneration`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +1/-0 (1 lines); hunks: -1597,6 +1597,7 @@ class Qwen3OmniMoeThinkerForConditionalGeneration(; symbols: Qwen3OmniMoeThinkerForConditionalGeneration
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -1597,6 +1597,7 @@ class Qwen3OmniMoeThinkerForConditionalGeneration(
++    supports_tower_connector_lora: bool = True
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +1/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #50858 - [BugFix] Disable TP for Qwen3-Omni audio encoder when heads % TP != 0
+
+- Link: https://github.com/vllm-project/vllm/pull/50858
+- Status/date: merged / 2026-08-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `738bc8811ae3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +8/-1, 31 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +8/-1 (9 lines); hunks: -196,8 +196,13 @@ def __init__(; -214,13 +219,15 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +8/-1 (9 lines); hunks: -196,8 +196,13 @@ def __init__(; -214,13 +219,15 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -196,8 +196,13 @@ def __init__(
++        # Audio encoder uses 20 heads. Shard across TP when divisible
++        # (e.g. TP=2/4); otherwise keep unreplicated (e.g. TP=8).
+-        self.num_local_heads = self.num_heads // tp_size
++        self.disable_tp = self.num_heads % tp_size != 0
++        self.num_local_heads = (
++            self.num_heads if self.disable_tp else self.num_heads // tp_size
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +8/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #54346 - [Bugfix][Multimodal] Release Qwen2.5-VL and Qwen3-VL RoPE caches with the model
+
+- Link: https://github.com/vllm-project/vllm/pull/54346
+- Status/date: merged / 2026-08-30
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen3_vl.py`; associated commits `b016ed8ea3dd`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +20/-7, 97 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_vl.py` modified +10/-4 (14 lines); hunks: -110,6 +110,7; -581,6 +582,7 @@ def __init__(; symbols: __init__, dtype, device, rot_pos_ids, touching `__init__, dtype, device`; `vllm/model_executor/models/qwen2_5_vl.py` modified +10/-3 (13 lines); hunks: -27,7 +27,7; -82,6 +82,7; symbols: __init__, get_window_index_thw, get_rope_by_thw, compute_attn_mask_seqlen, touching `__init__, get_window_index_thw, get_rope_by_thw`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +10/-4 (14 lines); hunks: -110,6 +110,7; -581,6 +582,7 @@ def __init__(; symbols: __init__, dtype, device, rot_pos_ids
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +10/-3 (13 lines); hunks: -27,7 +27,7; -82,6 +82,7; symbols: __init__, get_window_index_thw, get_rope_by_thw, compute_attn_mask_seqlen
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -110,6 +110,7 @@
++from vllm.utils.cache import LRUCache
+@@ -581,6 +582,7 @@ def __init__(
++        self._rot_pos_ids_cache = LRUCache(capacity=1024)
+@@ -672,9 +674,11 @@ def dtype(self) -> torch.dtype:
+-    @staticmethod
+-    @lru_cache(maxsize=1024)
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -27,7 +27,7 @@
+-from functools import lru_cache, partial
++from functools import partial
+@@ -82,6 +82,7 @@
++from vllm.utils.cache import LRUCache
+@@ -647,6 +648,7 @@ def __init__(
++        self._rope_by_thw_cache = LRUCache(capacity=1024)
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +10/-4; `vllm/model_executor/models/qwen2_5_vl.py` modified +10/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/qwen3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #54380 - [Model] Honor cap_pixels_per_frame in Qwen3-VL memory profiling
+
+- Link: https://github.com/vllm-project/vllm/pull/54380
+- Status/date: merged / 2026-08-30
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl.py`; associated commits `4f78a8fdd0b0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +66/-1, 85 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/processing/test_qwen3_vl.py` modified +43/-0 (43 lines); hunks: -184,3 +184,46 @@ def test_processor_multi_video_list_kwargs(; symbols: test_processor_multi_video_list_kwargs, test_dummy_video_spreads_budget_when_frame_cap_enabled, touching `test_processor_multi_video_list_kwargs, test_dummy_video_spreads_budget_when_frame_cap_enabled`; `vllm/model_executor/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -111,7 +111,7; -1140,6 +1140,28 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, touching `get_dummy_mm_data`.
+- Code diff details:
+  - `tests/models/multimodal/processing/test_qwen3_vl.py` modified +43/-0 (43 lines); hunks: -184,3 +184,46 @@ def test_processor_multi_video_list_kwargs(; symbols: test_processor_multi_video_list_kwargs, test_dummy_video_spreads_budget_when_frame_cap_enabled
+  - `vllm/model_executor/models/qwen3_vl.py` modified +23/-1 (24 lines); hunks: -111,7 +111,7; -1140,6 +1140,28 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/processing/test_qwen3_vl.py
+@@ -184,3 +184,46 @@ def test_processor_multi_video_list_kwargs(
++@pytest.mark.parametrize("model_id", [MODEL_ID])
++def test_dummy_video_spreads_budget_when_frame_cap_enabled(model_id: str) -> None:
++    """Regression test for memory profiling with ``cap_pixels_per_frame``.
++    With the HF per-frame pixel cap enabled (transformers#48071) and a
++    raised video budget, a 2-frame profiling dummy would be processed at
++    only 2 * cap pixels, underestimating the largest possible video (a
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -111,7 +111,7 @@
+-from vllm.utils.math_utils import round_up
++from vllm.utils.math_utils import cdiv, round_up
+@@ -1140,6 +1140,28 @@ def get_dummy_mm_data(
++        # With the HF processor's per-frame pixel cap enabled
++        # (cap_pixels_per_frame, huggingface/transformers#48071), a 2-frame
++        # dummy is processed at only 2 * cap pixels, so memory profiling
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/processing/test_qwen3_vl.py` modified +43/-0
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +23/-1
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_qwen3_vl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #54886 - [Bugfix] Reject tokenizer-less Qwen VL processor init
+
+- Link: https://github.com/vllm-project/vllm/pull/54886
+- Status/date: merged / 2026-09-04
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_qwen3_omni.py`; associated commits `8a728663c1c3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +14/-0, 49 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/model_executor/test_qwen3_omni.py` modified +1/-0 (1 lines); hunks: -144,6 +144,7 @@ def test_qwen3_omni_get_updates_use_audio_in_video(; symbols: test_qwen3_omni_get_updates_use_audio_in_video, touching `test_qwen3_omni_get_updates_use_audio_in_video`; `vllm/multimodal/processing/processor.py` modified +10/-0 (10 lines); hunks: -8,6 +8,7; -1033,6 +1034,8 @@ class BaseMultiModalProcessor(ABC, Generic[_I]):; symbols: BaseMultiModalProcessor, __init__, touching `BaseMultiModalProcessor, __init__`; `vllm/model_executor/models/terratorch.py` modified +3/-0 (3 lines); hunks: -169,6 +169,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, TerratorchMultiModalProcessor, _get_mm_fields_config, touching `get_dummy_mm_data, TerratorchMultiModalProcessor, _get_mm_fields_config`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_omni.py` modified +1/-0 (1 lines); hunks: -144,6 +144,7 @@ def test_qwen3_omni_get_updates_use_audio_in_video(; symbols: test_qwen3_omni_get_updates_use_audio_in_video
+  - `vllm/multimodal/processing/processor.py` modified +10/-0 (10 lines); hunks: -8,6 +8,7; -1033,6 +1034,8 @@ class BaseMultiModalProcessor(ABC, Generic[_I]):; symbols: BaseMultiModalProcessor, __init__
+  - `vllm/model_executor/models/terratorch.py` modified +3/-0 (3 lines); hunks: -169,6 +169,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, TerratorchMultiModalProcessor, _get_mm_fields_config
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_omni.py
+@@ -144,6 +144,7 @@ def test_qwen3_omni_get_updates_use_audio_in_video(
++    mock_ctx.tokenizer = mock_tokenizer
+diff -- vllm/multimodal/processing/processor.py
+@@ -8,6 +8,7 @@
++    ClassVar,
+@@ -1033,6 +1034,8 @@ class BaseMultiModalProcessor(ABC, Generic[_I]):
++    requires_tokenizer: ClassVar[bool] = True
+@@ -1042,6 +1045,13 @@ def __init__(
++        if self.requires_tokenizer and info.ctx.tokenizer is None:
++            raise ValueError(
+diff -- vllm/model_executor/models/terratorch.py
+@@ -169,6 +169,9 @@ def get_dummy_mm_data(
++    # Terratorch models, including Prithvi, consume tokenizer-free inputs.
++    requires_tokenizer = False
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/model_executor/test_qwen3_omni.py` modified +1/-0
+  - runtime: `vllm/multimodal/processing/processor.py` modified +10/-0; `vllm/model_executor/models/terratorch.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55415 - [Perf][Multimodal] Avoid duplicate text embedding in Qwen2.5-Omni
+
+- Link: https://github.com/vllm-project/vllm/pull/55415
+- Status/date: merged / 2026-09-05
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen2_5_omni_thinker.py`; associated commits `32601ef7a1ce`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +5/-7, 20 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-7 (12 lines); hunks: -1472,14 +1472,12 @@ def embed_input_ids(; symbols: embed_input_ids, touching `embed_input_ids`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-7 (12 lines); hunks: -1472,14 +1472,12 @@ def embed_input_ids(; symbols: embed_input_ids
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_omni_thinker.py
+@@ -1472,14 +1472,12 @@ def embed_input_ids(
+-        inputs_embeds = self._embed_text_input_ids(
+-            input_ids,
+-            self.get_language_model().embed_input_ids,
+-            is_multimodal=is_multimodal,
+-        )
+-            return inputs_embeds
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen2_5_omni_thinker.py` modified +5/-7
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen2_5_omni_thinker.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #56011 - [CI][Test][Spec Decode] Fix CI failure of Qwen3 Omni DSpark loader mock
+
+- Link: https://github.com/vllm-project/vllm/pull/56011
+- Status/date: merged / 2026-09-09
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_qwen3_omni.py`; associated commits `95cf420ac171`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +2/-1, 13 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/model_executor/test_qwen3_omni.py` modified +2/-1 (3 lines); hunks: -347,10 +347,11 @@ def test_dspark_shares_target_embedding_with_smaller_draft...; symbols: test_dspark_shares_target_embedding_with_smaller_draft_vocabulary, touching `test_dspark_shares_target_embedding_with_smaller_draft_vocabulary`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_omni.py` modified +2/-1 (3 lines); hunks: -347,10 +347,11 @@ def test_dspark_shares_target_embedding_with_smaller_draft...; symbols: test_dspark_shares_target_embedding_with_smaller_draft_vocabulary
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_omni.py
+@@ -347,10 +347,11 @@ def test_dspark_shares_target_embedding_with_smaller_draft_vocabulary():
+-            draft_parallel_config=SimpleNamespace(),
++            draft_parallel_config=SimpleNamespace(tensor_parallel_size=1),
++        parallel_config=SimpleNamespace(tensor_parallel_size=1),
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/model_executor/test_qwen3_omni.py` modified +2/-1
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #45900 - [ROCm][Perf] Fix Qwen3-vLLM audio encoder TP when heads are not divisible by TP size
+
+- Link: https://github.com/vllm-project/vllm/pull/45900
+- Status/date: merged / 2026-09-09
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `08b3e67b669d`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +9/-6, 54 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +9/-6 (15 lines); hunks: -199,10 +199,9 @@ def __init__(; -218,16 +217,16 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +9/-6 (15 lines); hunks: -199,10 +199,9 @@ def __init__(; -218,16 +217,16 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -199,10 +199,9 @@ def __init__(
+-        self.disable_tp = self.num_heads % tp_size != 0
+-        self.num_local_heads = (
+-            self.num_heads if self.disable_tp else self.num_heads // tp_size
+-        )
++        disable_tp = self.num_heads % tp_size != 0
++        effective_tp = 1 if disable_tp else tp_size
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +9/-6
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #43272 - [Bugfix] Qwen3-VL(-MoE): pass architectures to with_hf_config for pipeline parallelism
+
+- Link: https://github.com/vllm-project/vllm/pull/43272
+- Status/date: merged / 2026-09-10
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`; associated commits `7d8d71e9897e`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +8/-2, 24 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_vl.py` modified +4/-1 (5 lines); hunks: -1892,7 +1892,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: st...; symbols: __init__, touching `__init__`; `vllm/model_executor/models/qwen3_vl_moe.py` modified +4/-1 (5 lines); hunks: -275,7 +275,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_vl.py` modified +4/-1 (5 lines); hunks: -1892,7 +1892,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: st...; symbols: __init__
+  - `vllm/model_executor/models/qwen3_vl_moe.py` modified +4/-1 (5 lines); hunks: -275,7 +275,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_vl.py
+@@ -1892,7 +1892,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "model"):
+-                vllm_config=vllm_config.with_hf_config(config.text_config),
++                vllm_config=vllm_config.with_hf_config(
++                    config.text_config,
++                    architectures=["Qwen3ForCausalLM"],
++                ),
+diff -- vllm/model_executor/models/qwen3_vl_moe.py
+@@ -275,7 +275,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
+-                vllm_config=vllm_config.with_hf_config(config.text_config),
++                vllm_config=vllm_config.with_hf_config(
++                    config.text_config,
++                    architectures=["Qwen3MoeForCausalLM"],
++                ),
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_vl.py` modified +4/-1; `vllm/model_executor/models/qwen3_vl_moe.py` modified +4/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_vl.py`, `vllm/model_executor/models/qwen3_vl_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #56600 - [CI] Fix Qwen3 Omni DSpark load test config
+
+- Link: https://github.com/vllm-project/vllm/pull/56600
+- Status/date: merged / 2026-09-12
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_qwen3_omni.py`; associated commits `fd7cd4b883e7`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +5/-0, 19 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/model_executor/test_qwen3_omni.py` modified +5/-0 (5 lines); hunks: -354,6 +354,7 @@ def test_dspark_shares_target_embedding_with_smaller_draft_v...; -368,6 +369,10 @@ def fake_replace(config, **changes):; symbols: test_dspark_shares_target_embedding_with_smaller_draft_vocabulary, fake_replace, touching `test_dspark_shares_target_embedding_with_smaller_draft_vocabulary, fake_replace`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_omni.py` modified +5/-0 (5 lines); hunks: -354,6 +354,7 @@ def test_dspark_shares_target_embedding_with_smaller_draft_v...; -368,6 +369,10 @@ def fake_replace(config, **changes):; symbols: test_dspark_shares_target_embedding_with_smaller_draft_vocabulary, fake_replace
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_omni.py
+@@ -354,6 +354,7 @@ def test_dspark_shares_target_embedding_with_smaller_draft_vocabulary():
++        load_config=SimpleNamespace(),
+@@ -368,6 +369,10 @@ def fake_replace(config, **changes):
++        patch(
++            "vllm.v1.worker.gpu.spec_decode.utils.get_pp_group",
++            return_value=SimpleNamespace(world_size=1),
++        ),
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/model_executor/test_qwen3_omni.py` modified +5/-0
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #57044 - [CI] Keep Qwen3 Omni DSpark config fixture complete
+
+- Link: https://github.com/vllm-project/vllm/pull/57044
+- Status/date: merged / 2026-09-15
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_qwen3_omni.py`; associated commits `2f46a1d9c6ab`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +2/-1, 17 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/model_executor/test_qwen3_omni.py` modified +2/-1 (3 lines); hunks: -10,6 +10,7; -371,7 +372,7 @@ def test_dspark_shares_target_embedding_with_smaller_draft_v...; symbols: test_dspark_shares_target_embedding_with_smaller_draft_vocabulary, touching `test_dspark_shares_target_embedding_with_smaller_draft_vocabulary`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_omni.py` modified +2/-1 (3 lines); hunks: -10,6 +10,7; -371,7 +372,7 @@ def test_dspark_shares_target_embedding_with_smaller_draft_v...; symbols: test_dspark_shares_target_embedding_with_smaller_draft_vocabulary
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_omni.py
+@@ -10,6 +10,7 @@
++from vllm.config import ParallelConfig
+@@ -371,7 +372,7 @@ def test_dspark_shares_target_embedding_with_smaller_draft_vocabulary():
+-        parallel_config=SimpleNamespace(tensor_parallel_size=1),
++        parallel_config=ParallelConfig(),
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/model_executor/test_qwen3_omni.py` modified +2/-1
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #47736 - [Bugfix][Qwen2.5-VL] Honor video fps for temporal M-RoPE
+
+- Link: https://github.com/vllm-project/vllm/pull/47736
+- Status/date: merged / 2026-09-22
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/processing/test_qwen2_vl.py`, `vllm/model_executor/models/qwen2_5_vl.py`; associated commits `a33b3bac5dad`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 7 files, +117/-8, 261 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen2_5_vl.py` modified +67/-1 (68 lines); hunks: -41,12 +41,14; -72,9 +74,11; symbols: load_weights, Qwen2_5_VLDummyInputsBuilder, _get_dummy_videos, Qwen2_5_VLProcessingInfo, touching `load_weights, Qwen2_5_VLDummyInputsBuilder, _get_dummy_videos`; `tests/models/multimodal/processing/test_qwen2_vl.py` modified +32/-0 (32 lines); hunks: -1,6 +1,9; -208,6 +211,35 @@ def test_get_image_size_with_most_features(; symbols: test_get_image_size_with_most_features, _build_qwen2_5_vl_video_mm_data, test_qwen2_5_vl_video_fps_to_second_per_grid_ts, touching `test_get_image_size_with_most_features, _build_qwen2_5_vl_video_mm_data, test_qwen2_5_vl_video_fps_to_second_per_grid_ts`; `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +7/-3 (10 lines); hunks: -4,10 +4,10; -81,7 +81,9 @@ def test_qwen2_5_vl_evs_functionality(; symbols: test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos, touching `test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen2_5_vl.py` modified +67/-1 (68 lines); hunks: -41,12 +41,14; -72,9 +74,11; symbols: load_weights, Qwen2_5_VLDummyInputsBuilder, _get_dummy_videos, Qwen2_5_VLProcessingInfo
+  - `tests/models/multimodal/processing/test_qwen2_vl.py` modified +32/-0 (32 lines); hunks: -1,6 +1,9; -208,6 +211,35 @@ def test_get_image_size_with_most_features(; symbols: test_get_image_size_with_most_features, _build_qwen2_5_vl_video_mm_data, test_qwen2_5_vl_video_fps_to_second_per_grid_ts
+  - `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +7/-3 (10 lines); hunks: -4,10 +4,10; -81,7 +81,9 @@ def test_qwen2_5_vl_evs_functionality(; symbols: test_qwen2_5_vl_evs_functionality, test_qwen2_5_vl_evs_batched_videos
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen2_5_vl.py
+@@ -41,12 +41,14 @@
++from transformers.video_utils import VideoMetadata
++from vllm.config.multimodal import VideoDummyOptions
+@@ -72,9 +74,11 @@
++    VideoItem,
++from vllm.multimodal.processing.processor import HFMultiModalInputs
+@@ -102,8 +106,9 @@
+diff -- tests/models/multimodal/processing/test_qwen2_vl.py
+@@ -1,6 +1,9 @@
++from typing import Any
++import numpy as np
+@@ -208,6 +211,35 @@ def test_get_image_size_with_most_features(
++def _build_qwen2_5_vl_video_mm_data(num_frames: int, fps: float) -> dict[str, Any]:
++    video = np.zeros((num_frames, 56, 56, 3), dtype=np.uint8)
++    metadata = {
+diff -- tests/models/multimodal/generation/test_qwen2_5_vl.py
+@@ -4,10 +4,10 @@
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen2_5_vl.py` modified +67/-1
+  - tests: `tests/models/multimodal/processing/test_qwen2_vl.py` modified +32/-0; `tests/models/multimodal/generation/test_qwen2_5_vl.py` modified +7/-3
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_common.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/models/multimodal/processing/test_qwen2_vl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #58890 - [Bugfix][Model] Fix M-RoPE offset double-count in Qwen3-Omni
+
+- Link: https://github.com/vllm-project/vllm/pull/58890
+- Status/date: merged / 2026-10-03
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/model_executor/test_qwen3_omni_mrope.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`; associated commits `44198f577fe5`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +202/-8, 246 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/model_executor/test_qwen3_omni_mrope.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: _force_cpu_default_device, DummyVisionConfig, DummyConfig, make_model, touching `_force_cpu_default_device, DummyVisionConfig, DummyConfig`; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +4/-8 (12 lines); hunks: -2260,10 +2260,6 @@ def get_mrope_input_positions(; -2276,7 +2272,7 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions, touching `get_mrope_input_positions`.
+- Code diff details:
+  - `tests/model_executor/test_qwen3_omni_mrope.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: _force_cpu_default_device, DummyVisionConfig, DummyConfig, make_model
+  - `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +4/-8 (12 lines); hunks: -2260,10 +2260,6 @@ def get_mrope_input_positions(; -2276,7 +2272,7 @@ def get_mrope_input_positions(; symbols: get_mrope_input_positions
+- Key code excerpts:
+
+```diff
+diff -- tests/model_executor/test_qwen3_omni_mrope.py
+@@ -0,0 +1,198 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import dataclasses
++from dataclasses import dataclass
++import pytest
++import torch
+diff -- vllm/model_executor/models/qwen3_omni_moe_thinker.py
+@@ -2260,10 +2260,6 @@ def get_mrope_input_positions(
+-            bos_pos = np.broadcast_to(np.array([st_idx]), (3, 1))
+-            llm_pos_ids_list.append(bos_pos)
+-            st_idx += 1
+@@ -2276,7 +2272,7 @@ def get_mrope_input_positions(
+-                st = offset + 1 + audio_tokens + 1
++                st = offset + audio_tokens + 1
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/model_executor/test_qwen3_omni_mrope.py` added +198/-0
+  - runtime: `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +4/-8
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni_mrope.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

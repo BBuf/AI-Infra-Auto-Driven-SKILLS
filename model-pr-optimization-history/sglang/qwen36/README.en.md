@@ -1,4 +1,4 @@
-# sglang Qwen3.6 Model PR Optimization History
+# SGLang Qwen3.6 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -10,8 +10,8 @@
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/qwen3_6_27b.mdx` | no direct PR-number commit |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/qwen3_6_35b_a3b.mdx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/qwen36-deployment.jsx` | no direct PR-number commit |
-| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` | no direct PR-number commit |
-| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` | no direct PR-number commit |
+| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` | [#39813](https://github.com/sgl-project/sglang/pull/39813) |
+| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` | [#39813](https://github.com/sgl-project/sglang/pull/39813) |
 | `test/registered/npu/accuracy/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_aime26.py` | no direct PR-number commit |
 | `test/registered/npu/accuracy/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in64k_out1k_prefix90_50ms_aime26.py` | no direct PR-number commit |
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_1p_in1024x1024_30_out1024_50ms.py` | no direct PR-number commit |
@@ -21,7 +21,6 @@
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in64k_out1k_50ms.py` | no direct PR-number commit |
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_2p_in128k_out1k_50ms.py` | no direct PR-number commit |
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_2p_in16k_out1k_50ms.py` | no direct PR-number commit |
-| `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_2p_in64k_out1k_50ms.py` | no direct PR-number commit |
 | `test/registered/npu/performance/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in128k_out1k_50ms.py` | no direct PR-number commit |
 | `test/registered/npu/performance/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in128k_out1k_prefix90_50ms.py` | no direct PR-number commit |
 | `test/registered/npu/performance/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in3k5_out1k5_50ms.py` | no direct PR-number commit |
@@ -30,9 +29,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 0
+- Git-traced PRs: 1
 - Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 4
+- Total PRs in this document: 5
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -44,6 +43,7 @@
 | 2026-07-02 | [#29905](https://github.com/sgl-project/sglang/pull/29905) | merged | docs: add Qwen3.6-27B-NVFP4 variant to cookbook | `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` |
 | 2026-07-07 | [#29964](https://github.com/sgl-project/sglang/pull/29964) | merged | [Docs] Use trtllm_mha for Qwen3.6 B300 | `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` |
 | 2026-07-25 | [#31413](https://github.com/sgl-project/sglang/pull/31413) | merged | [Docs] Add Qwen3.6 35B NVFP4 to cookbook | `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` |
+| 2026-09-16 | [#39813](https://github.com/sgl-project/sglang/pull/39813) | merged | [NPU][CI] Fail fast and speed up long-running qwen3.6 accuracy cases | `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -180,6 +180,34 @@ diff -- docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
 - Reviewed files:
   - docs: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +21/-3; `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +5/-6
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #39813 - [NPU][CI] Fail fast and speed up long-running qwen3.6 accuracy cases
+
+- Link: https://github.com/sgl-project/sglang/pull/39813
+- Status/date: merged / 2026-09-16
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py`; associated commits `00a9a81b6777`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +12/-3, 52 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` modified +2/-1 (3 lines); hunks: -86,9 +86,10 @@ class TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa(TestNpuAccuracy...; symbols: TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa, touching `TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa`; `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` modified +1/-0 (1 lines); hunks: -91,6 +91,7 @@ class TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa(TestNpuA...; symbols: TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa, touching `TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa`.
+- Code diff details:
+  - `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` modified +2/-1 (3 lines); hunks: -86,9 +86,10 @@ class TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa(TestNpuAccuracy...; symbols: TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa
+  - `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` modified +1/-0 (1 lines); hunks: -91,6 +91,7 @@ class TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa(TestNpuA...; symbols: TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa
+- Key code excerpts:
+
+```diff
+diff -- test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py
+@@ -86,9 +86,10 @@ class TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa(TestNpuAccuracyTestCaseBase):
++    max_retries = 1
+-    eval_batch_size = 8
++    eval_batch_size = 16
+diff -- test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py
+@@ -91,6 +91,7 @@ class TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa(TestNpuAccuracyTestCaseBas
++    max_retries = 1
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` modified +2/-1; `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` modified +1/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/e2e/test_npu_accuracy_utils.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -59,7 +59,6 @@ frameworks:
       tool_call_parser: glm45
       model_path: zai-org/Glyph
       mem_fraction_static: 0.82
-      schedule_policy: lpm
     search_space:
       prefill_attention_backend:
       - fa3
@@ -98,8 +97,6 @@ frameworks:
       - 4096
       enable_prefix_caching:
       - true
-      block_size:
-      - 16
   tensorrt_llm:
     enabled: true
     server_command: trtllm-serve serve

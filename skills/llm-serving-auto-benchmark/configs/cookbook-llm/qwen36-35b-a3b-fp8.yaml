@@ -1,11 +1,11 @@
 schema_version: 1
 source:
   kind: llm_serving_cookbook
-  source_recipe_file: sglang/docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
+  source_recipe_file: sglang/docs/src/snippets/autoregressive/qwen36-deployment.jsx
   recorded_heads:
     sglang: eec794bce0808ae26cc1dcb84a56b65d2df82af5
     vllm: bbe8b23e1a2b32a96240b27f63255170d09ef144
-    tensorrt_llm: da38c1d2e0dffd073b7dfb6d69e15ee7b45d84a9
+    tensorrt_llm: bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60
     tokenspeed: 2706143a8669d50a8f56466b9d340b86922b8f2d
   translation: The enabled SGLang section preserves the current B200
     single-GPU FP8 recipe. Other frameworks stay disabled because the exact

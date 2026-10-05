@@ -1,18 +1,20 @@
-# vllm Step 3.5 Model PR Optimization History
+# vLLM Step 3.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
 | `tests/models/multimodal/processing/test_step3_vl_image_embeds.py` | no direct PR-number commit |
-| `tests/reasoning/test_step3p5_reasoning_parser.py` | [#34211](https://github.com/vllm-project/vllm/pull/34211) |
-| `tests/tool_parsers/test_step3p5_tool_parser.py` | [#33690](https://github.com/vllm-project/vllm/pull/33690) |
+| `tests/parser/engine/test_step3p5.py` | [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `tests/reasoning/test_step3p5_reasoning_parser.py` | [#34211](https://github.com/vllm-project/vllm/pull/34211), [#53174](https://github.com/vllm-project/vllm/pull/53174), [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `tests/tool_parsers/test_step3p5_tool_parser.py` | [#33690](https://github.com/vllm-project/vllm/pull/33690), [#51810](https://github.com/vllm-project/vllm/pull/51810), [#59321](https://github.com/vllm-project/vllm/pull/59321) |
 | `vllm/model_executor/models/step3_text.py` | no direct PR-number commit |
 | `vllm/model_executor/models/step3_vl.py` | no direct PR-number commit |
 | `vllm/model_executor/models/step3p5.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33755](https://github.com/vllm-project/vllm/pull/33755), [#34478](https://github.com/vllm-project/vllm/pull/34478), [#41892](https://github.com/vllm-project/vllm/pull/41892) |
 | `vllm/model_executor/models/step3p5_mtp.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#48883](https://github.com/vllm-project/vllm/pull/48883) |
-| `vllm/reasoning/step3p5_reasoning_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#34211](https://github.com/vllm-project/vllm/pull/34211) |
-| `vllm/tool_parsers/step3p5_tool_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33690](https://github.com/vllm-project/vllm/pull/33690) |
+| `vllm/parser/step3p5.py` | [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `vllm/reasoning/step3p5_engine_reasoning_parser.py` | [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `vllm/tool_parsers/step3p5_tool_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33690](https://github.com/vllm-project/vllm/pull/33690), [#51810](https://github.com/vllm-project/vllm/pull/51810), [#59321](https://github.com/vllm-project/vllm/pull/59321) |
 | `vllm/transformers_utils/configs/step3_vl.py` | no direct PR-number commit |
 | `vllm/transformers_utils/configs/step3p5.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523) |
 | `vllm/transformers_utils/processors/step3_vl.py` | no direct PR-number commit |
@@ -20,9 +22,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 6
+- Git-traced PRs: 10
 - Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 10
+- Total PRs in this document: 14
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -40,6 +42,10 @@
 | 2026-06-03 | [#44346](https://github.com/vllm-project/vllm/pull/44346) | merged | [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`, `vllm/tool_parsers/minicpm5xml_tool_parser.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-07-29 | [#48883](https://github.com/vllm-project/vllm/pull/48883) | merged | fix(step3p5-mtp): honor exclude_modules for the MTP head via prefix | `vllm/model_executor/models/step3p5_mtp.py` |
+| 2026-09-09 | [#53174](https://github.com/vllm-project/vllm/pull/53174) | merged | [Bugfix] Fix Step-3.5 reasoning parser for structured outputs | `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py` |
+| 2026-09-29 | [#51810](https://github.com/vllm-project/vllm/pull/51810) | merged | [Bugfix] Route Step3p5 forced tool choices through XML parser | `vllm/tool_parsers/step3p5_tool_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py` |
+| 2026-10-01 | [#59321](https://github.com/vllm-project/vllm/pull/59321) | merged | [Frontend] Port Step-3.5 parsers to the streaming parser engine | `vllm/tool_parsers/step3p5_tool_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`, `tests/reasoning/test_step3p5_reasoning_parser.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -411,6 +417,149 @@ diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
   - docs: `docs/design/cuda_graphs_multimodal.md` modified +63/-16; `examples/generate/multimodal/vision_language_offline.py` modified +3/-2
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15
 - Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48883 - fix(step3p5-mtp): honor exclude_modules for the MTP head via prefix
+
+- Link: https://github.com/vllm-project/vllm/pull/48883
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/step3p5_mtp.py`; associated commits `f98061ce6cb0`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +11/-2, 31 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/step3p5_mtp.py` modified +11/-2 (13 lines); hunks: -32,11 +32,18 @@ def __init__(; -55,7 +62,9 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/step3p5_mtp.py` modified +11/-2 (13 lines); hunks: -32,11 +32,18 @@ def __init__(; -55,7 +62,9 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/step3p5_mtp.py
+@@ -32,11 +32,18 @@ def __init__(
++        prefix: str = "",
++        # Give the head its prefix so the quant config's exclude_modules matcher
++        # can skip it; without one it defaults to "" and never matches, so a
++        # checkpoint-excluded (BF16) MTP head gets quantized -> load crash.
+-            config.vocab_size, config.hidden_size, quant_config=quant_config
++            config.vocab_size,
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/step3p5_mtp.py` modified +11/-2
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/step3p5_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #53174 - [Bugfix] Fix Step-3.5 reasoning parser for structured outputs
+
+- Link: https://github.com/vllm-project/vllm/pull/53174
+- Status/date: merged / 2026-09-09
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/reasoning/test_step3p5_reasoning_parser.py`; associated commits `26fec6d183c3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +26/-91, 201 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/reasoning/test_step3p5_reasoning_parser.py` modified +20/-23 (43 lines); hunks: -25,12 +25,11 @@ def step3p5_tokenizer():; -72,7 +71,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning, touching `step3p5_tokenizer, test_reasoning`; `vllm/reasoning/step3p5_reasoning_parser.py` modified +6/-68 (74 lines); hunks: -1,7 +1,7; -18,9 +18,11 @@ class Step3p5ReasoningParser(BaseThinkingReasoningParser):; symbols: Step3p5ReasoningParser, __init__, is_reasoning_end, is_reasoning_end_streaming, touching `Step3p5ReasoningParser, __init__, is_reasoning_end`.
+- Code diff details:
+  - `tests/reasoning/test_step3p5_reasoning_parser.py` modified +20/-23 (43 lines); hunks: -25,12 +25,11 @@ def step3p5_tokenizer():; -72,7 +71,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning
+  - `vllm/reasoning/step3p5_reasoning_parser.py` modified +6/-68 (74 lines); hunks: -1,7 +1,7; -18,9 +18,11 @@ class Step3p5ReasoningParser(BaseThinkingReasoningParser):; symbols: Step3p5ReasoningParser, __init__, is_reasoning_end, is_reasoning_end_streaming
+- Key code excerpts:
+
+```diff
+diff -- tests/reasoning/test_step3p5_reasoning_parser.py
+@@ -25,12 +25,11 @@ def step3p5_tokenizer():
+-# need to get into parser again to remove newline after </think>
+-    "is_reasoning_end": False,
++    "is_reasoning_end": True,
+@@ -72,7 +71,7 @@ def step3p5_tokenizer():
+-    "is_reasoning_end": False,
++    "is_reasoning_end": True,
+diff -- vllm/reasoning/step3p5_reasoning_parser.py
+@@ -1,7 +1,7 @@
+-from collections.abc import Iterable, Sequence
++from collections.abc import Sequence
+@@ -18,9 +18,11 @@ class Step3p5ReasoningParser(BaseThinkingReasoningParser):
+-    newline immediately before and/or after the </think> token. This parser trims:
+-      - the newline right before </think>
+-      - the newline right after </think>
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/reasoning/test_step3p5_reasoning_parser.py` modified +20/-23
+  - runtime: `vllm/reasoning/step3p5_reasoning_parser.py` modified +6/-68
+- Risk and verification: The diff ships test coverage in `tests/reasoning/test_step3p5_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #51810 - [Bugfix] Route Step3p5 forced tool choices through XML parser
+
+- Link: https://github.com/vllm-project/vllm/pull/51810
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`; associated commits `5e887a078b76`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +83/-82, 240 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tool_parsers/step3p5_tool_parser.py` modified +15/-61 (76 lines); hunks: -22,7 +22,11; -421,43 +425,14 @@ def _fix_missing_equals_in_function_tag(self, chunk: str)...; symbols: _fix_missing_equals_in_function_tag, _validate_function_name, _validate_parameter_name, _should_skip_element, touching `_fix_missing_equals_in_function_tag, _validate_function_name, _validate_parameter_name`; `tests/tool_parsers/test_step3p5_tool_parser.py` modified +25/-21 (46 lines); hunks: -5,6 +5,7; -386,26 +387,29 @@ def test_extract_tool_calls_fallback_no_tags(step3p5_tool_...; symbols: test_extract_tool_calls_fallback_no_tags, test_extract_tool_calls_type_conversion, touching `test_extract_tool_calls_fallback_no_tags, test_extract_tool_calls_type_conversion`.
+- Code diff details:
+  - `vllm/tool_parsers/step3p5_tool_parser.py` modified +15/-61 (76 lines); hunks: -22,7 +22,11; -421,43 +425,14 @@ def _fix_missing_equals_in_function_tag(self, chunk: str)...; symbols: _fix_missing_equals_in_function_tag, _validate_function_name, _validate_parameter_name, _should_skip_element
+  - `tests/tool_parsers/test_step3p5_tool_parser.py` modified +25/-21 (46 lines); hunks: -5,6 +5,7; -386,26 +387,29 @@ def test_extract_tool_calls_fallback_no_tags(step3p5_tool_...; symbols: test_extract_tool_calls_fallback_no_tags, test_extract_tool_calls_type_conversion
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/step3p5_tool_parser.py
+@@ -22,7 +22,11 @@
+-from vllm.tool_parsers.utils import safe_literal_eval
++from vllm.tool_parsers.utils import (
++    find_tool_name,
++    find_tool_properties,
++    safe_literal_eval,
++)
+diff -- tests/tool_parsers/test_step3p5_tool_parser.py
+@@ -5,6 +5,7 @@
++from openai.types.responses import FunctionTool
+@@ -386,26 +387,29 @@ def test_extract_tool_calls_fallback_no_tags(step3p5_tool_parser, sample_tools):
+-def test_extract_tool_calls_type_conversion(step3p5_tokenizer):
+-    """Test parameter type conversion based on tool schema."""
+-    tools = [
+-        ChatCompletionToolsParam(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tool_parsers/step3p5_tool_parser.py` modified +15/-61
+  - tests: `tests/tool_parsers/test_step3p5_tool_parser.py` modified +25/-21
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_step3p5_tool_parser.py`, `tests/tool_parsers/test_structural_tag_registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #59321 - [Frontend] Port Step-3.5 parsers to the streaming parser engine
+
+- Link: https://github.com/vllm-project/vllm/pull/59321
+- Status/date: merged / 2026-10-01
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/parser/engine/test_step3p5.py`, `tests/reasoning/test_step3p5_reasoning_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/parser/step3p5.py`, `vllm/reasoning/step3p5_engine_reasoning_parser.py` and 6 files; associated commits `a5105dba0561`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 12 files, +236/-1647, 2026 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tool_parsers/step3p5_tool_parser.py` modified +2/-1458 (1460 lines); hunks: -1,1464 +1,8; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks, touching `StreamingXMLToolCallParser, __init__, reset_streaming_state`; `tests/tool_parsers/test_step3p5_tool_parser.py` modified +12/-57 (69 lines); hunks: -847,7 +847,7 @@ def test_extract_tool_calls_streaming_incremental(; -867,43 +867,6 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental, test_extract_tool_calls_complex_type_with_single_quote, test_extract_tool_calls_streaming_mixed_content_and_multiple_tool_calls, test_extract_tool_calls_non_streaming_mixed_content_and_multiple_tool_calls, touching `test_extract_tool_calls_streaming_incremental, test_extract_tool_calls_complex_type_with_single_quote, test_extract_tool_calls_streaming_mixed_content_and_multiple_tool_calls`; `tests/reasoning/test_step3p5_reasoning_parser.py` modified +9/-9 (18 lines); hunks: -4,8 +4,8; -112,7 +112,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning, touching `step3p5_tokenizer, test_reasoning`; `vllm/reasoning/step3p5_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6.
+- Code diff details:
+  - `vllm/tool_parsers/step3p5_tool_parser.py` modified +2/-1458 (1460 lines); hunks: -1,1464 +1,8; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks
+  - `tests/tool_parsers/test_step3p5_tool_parser.py` modified +12/-57 (69 lines); hunks: -847,7 +847,7 @@ def test_extract_tool_calls_streaming_incremental(; -867,43 +867,6 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental, test_extract_tool_calls_complex_type_with_single_quote, test_extract_tool_calls_streaming_mixed_content_and_multiple_tool_calls, test_extract_tool_calls_non_streaming_mixed_content_and_multiple_tool_calls
+  - `tests/reasoning/test_step3p5_reasoning_parser.py` modified +9/-9 (18 lines); hunks: -4,8 +4,8; -112,7 +112,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning
+  - `vllm/reasoning/step3p5_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6
+  - `tests/parser/engine/test_step3p5.py` added +122/-0 (122 lines); hunks: -0,0 +1,122; symbols: mock_tokenizer, parser, test_parser_names_resolve_to_engine_adapters, test_enable_thinking_false_is_ignored
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/step3p5_tool_parser.py
+@@ -1,1464 +1,8 @@
+-import json
+-from collections.abc import Sequence
+-from typing import Any
+-from xml.parsers.expat import ParserCreate
+-import regex as re
++from vllm.parser.engine.registered_adapters import Step3p5ParserToolAdapter
+diff -- tests/tool_parsers/test_step3p5_tool_parser.py
+@@ -847,7 +847,7 @@ def test_extract_tool_calls_streaming_incremental(
+-            assert chunk.tool_calls[0].function.arguments == ""
++            assert not chunk.tool_calls[0].function.arguments
+@@ -867,43 +867,6 @@ def test_extract_tool_calls_streaming_incremental(
+-def test_extract_tool_calls_complex_type_with_single_quote(step3p5_tokenizer):
+-    """Test parameter type conversion based on tool schema."""
+-    tools = [
+diff -- tests/reasoning/test_step3p5_reasoning_parser.py
+@@ -4,8 +4,8 @@
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tool_parsers/step3p5_tool_parser.py` modified +2/-1458; `vllm/reasoning/step3p5_engine_reasoning_parser.py` added +6/-0; `vllm/parser/step3p5.py` added +49/-0
+  - tests: `tests/tool_parsers/test_step3p5_tool_parser.py` modified +12/-57; `tests/reasoning/test_step3p5_reasoning_parser.py` modified +9/-9; `tests/parser/engine/test_step3p5.py` added +122/-0
+- Risk and verification: The diff ships test coverage in `tests/parser/engine/test_step3p5.py`, `tests/parser/engine/trace_builder.py`, `tests/reasoning/test_step3p5_reasoning_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 
