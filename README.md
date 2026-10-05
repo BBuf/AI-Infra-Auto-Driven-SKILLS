@@ -21,6 +21,13 @@ solved a similar problem. Kernel campaigns live in the sibling
 **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)**; per-model diffusion runs
 live in [`sglang-diffusion-optimization-flows/`](sglang-diffusion-optimization-flows/).
 
+## Releases
+
+**[v0.1.5](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/v0.1.5)**
+— [Release notes (中文)](release-notes/v0.1.5.md), covering model Day-0 support,
+profiler layer guides, 118 bilingual model histories, and the October source audit.
+Previous release: [v0.1.0](release-notes/v0.1.0.md).
+
 ## Skills
 
 | Skill | Use it when |
