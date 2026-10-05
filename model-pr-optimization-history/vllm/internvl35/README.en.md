@@ -1,4 +1,4 @@
-# vllm InternVL 3.5 Model PR Optimization History
+# vLLM InternVL 3.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -7,14 +7,14 @@
 | `tests/models/multimodal/pooling/test_intern_vit.py` | no direct PR-number commit |
 | `tests/models/multimodal/processing/test_internvl.py` | [#12553](https://github.com/vllm-project/vllm/pull/12553), [#37260](https://github.com/vllm-project/vllm/pull/37260) |
 | `vllm/model_executor/models/intern_vit.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#9528](https://github.com/vllm-project/vllm/pull/9528), [#23909](https://github.com/vllm-project/vllm/pull/23909), [#38049](https://github.com/vllm-project/vllm/pull/38049) |
-| `vllm/model_executor/models/internvl.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#7164](https://github.com/vllm-project/vllm/pull/7164), [#7860](https://github.com/vllm-project/vllm/pull/7860), [#8201](https://github.com/vllm-project/vllm/pull/8201), [#8250](https://github.com/vllm-project/vllm/pull/8250), [#8299](https://github.com/vllm-project/vllm/pull/8299), [#8375](https://github.com/vllm-project/vllm/pull/8375), [#8614](https://github.com/vllm-project/vllm/pull/8614), [#8946](https://github.com/vllm-project/vllm/pull/8946), [#9351](https://github.com/vllm-project/vllm/pull/9351), [#9528](https://github.com/vllm-project/vllm/pull/9528), ... (29 total) |
+| `vllm/model_executor/models/internvl.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#7164](https://github.com/vllm-project/vllm/pull/7164), [#7860](https://github.com/vllm-project/vllm/pull/7860), [#8201](https://github.com/vllm-project/vllm/pull/8201), [#8250](https://github.com/vllm-project/vllm/pull/8250), [#8299](https://github.com/vllm-project/vllm/pull/8299), [#8375](https://github.com/vllm-project/vllm/pull/8375), [#8614](https://github.com/vllm-project/vllm/pull/8614), [#8946](https://github.com/vllm-project/vllm/pull/8946), [#9351](https://github.com/vllm-project/vllm/pull/9351), [#9528](https://github.com/vllm-project/vllm/pull/9528), ... (30 total) |
 | `vllm/transformers_utils/processors/internvl.py` | [#37260](https://github.com/vllm-project/vllm/pull/37260), [#37324](https://github.com/vllm-project/vllm/pull/37324) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 30
+- Git-traced PRs: 31
 - Extra PRs preserved from existing docs: 7
-- Total PRs in this document: 37
+- Total PRs in this document: 38
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -52,13 +52,14 @@
 | 2026-03-18 | [#37324](https://github.com/vllm-project/vllm/pull/37324) | merged | [2/3] Refactor InternVL-based processors | `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py` |
 | 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py` |
 | 2026-03-26 | [#38049](https://github.com/vllm-project/vllm/pull/38049) | merged | [Model] Add torch.compile support for InternVL vision encoder | `vllm/model_executor/models/intern_vit.py` |
-| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | merged | refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor | `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py` |
 | 2026-04-15 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | merged | Update to transformers v5 | `tests/models/registry.py`, `vllm/model_executor/models/gemma4_mm.py`, `tests/models/multimodal/generation/test_common.py` |
+| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | merged | refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor | `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py` |
 | 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | merged | [Perf][4/n] Eliminate various GPU CPU syncs | `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py` |
 | 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | merged | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vllm/model_executor/models/internvl.py` |
 | 2026-06-12 | [#45129](https://github.com/vllm-project/vllm/pull/45129) | merged | [Model] Remove Mono-InternVL (InternLM2VEForCausalLM) | `vllm/model_executor/models/internvl.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 | 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | merged | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py` |
+| 2026-09-08 | [#55779](https://github.com/vllm-project/vllm/pull/55779) | merged | [Bugfix][InternVL] Stop the video parser consuming image_embeds | `vllm/model_executor/models/internvl.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1009,47 +1010,6 @@ diff -- vllm/model_executor/models/intern_vit.py
   - runtime: `vllm/model_executor/models/intern_vit.py` modified +11/-2
 - Risk and verification: Runtime changes concentrate in `vllm/config/utils.py`, `vllm/model_executor/models/intern_vit.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #38901 - refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor
-
-- Link: https://github.com/vllm-project/vllm/pull/38901
-- Status/date: merged / 2026-04-15
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 24 files, +122/-66, 760 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor"; model line: InternVL 3.5; category: docs/tests/CI; main diff: `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`; technical summary: Covers "refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor"; the main implementation surface is `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test, touching `run_intern_vit_test`; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test, touching `run_radio_test`; `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync, touching `ModuleWithBatchNorm, __init__, __exit__`; `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10.
-- Code diff details:
-  - `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test
-  - `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test
-  - `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync
-  - `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10
-  - `tests/basic_correctness/test_cumem.py` modified +10/-8 (18 lines); hunks: -13,6 +13,8; -26,13 +28,13 @@ def test_python_error():; symbols: test_python_error, test_basic_cumem
-- Key code excerpts:
-
-```diff
-diff -- tests/models/multimodal/pooling/test_intern_vit.py
-@@ -7,6 +7,7 @@
-+from vllm.platforms import current_platform
-@@ -15,6 +16,8 @@
-+DEVICE_TYPE = current_platform.device_type
-@@ -39,9 +42,9 @@ def run_intern_vit_test(
--    ).to("cuda")
-+    ).to(DEVICE_TYPE)
-diff -- tests/models/multimodal/pooling/test_radio.py
-@@ -8,6 +8,7 @@
-+from vllm.platforms import current_platform
-@@ -17,6 +18,8 @@
-+DEVICE_TYPE = current_platform.device_type
-@@ -51,7 +54,7 @@ def run_radio_test(
--    ).to("cuda")
-+    ).to(DEVICE_TYPE)
-diff -- tests/models/test_utils.py
-@@ -10,6 +10,8 @@
-```
-
-- Reviewed files:
-  - tests: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4; `tests/models/test_utils.py` modified +8/-2; `tests/model_executor/test_eagle_quantization.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +10/-8; `tests/quantization/test_torchao.py` modified +9/-8
-- Risk and verification: The diff ships test coverage in `tests/basic_correctness/test_cumem.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_fusion_all_reduce.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #30566 - Update to transformers v5
 
 - Link: https://github.com/vllm-project/vllm/pull/30566
@@ -1091,6 +1051,47 @@ diff -- tests/models/multimodal/generation/test_common.py
   - tests: `tests/models/registry.py` modified +130/-9; `tests/models/multimodal/generation/test_common.py` modified +38/-6; `tests/model_executor/test_weight_utils.py` modified +0/-18; `tests/models/multimodal/generation/test_phi4siglip.py` modified +11/-0; `tests/models/utils.py` modified +10/-1
   - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +36/-15; `vllm/tokenizers/registry.py` modified +34/-1; `vllm/model_executor/model_loader/gguf_loader.py` modified +12/-0
 - Risk and verification: The diff ships test coverage in `requirements/test/cuda.in`, `requirements/test/cuda.txt`, `requirements/test/nightly-torch.txt`, `requirements/test/rocm.in`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38901 - refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor
+
+- Link: https://github.com/vllm-project/vllm/pull/38901
+- Status/date: merged / 2026-04-15
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 24 files, +122/-66, 760 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor"; model line: InternVL 3.5; category: docs/tests/CI; main diff: `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`; technical summary: Covers "refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor"; the main implementation surface is `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test, touching `run_intern_vit_test`; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test, touching `run_radio_test`; `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync, touching `ModuleWithBatchNorm, __init__, __exit__`; `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10.
+- Code diff details:
+  - `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test
+  - `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test
+  - `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync
+  - `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10
+  - `tests/basic_correctness/test_cumem.py` modified +10/-8 (18 lines); hunks: -13,6 +13,8; -26,13 +28,13 @@ def test_python_error():; symbols: test_python_error, test_basic_cumem
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_intern_vit.py
+@@ -7,6 +7,7 @@
++from vllm.platforms import current_platform
+@@ -15,6 +16,8 @@
++DEVICE_TYPE = current_platform.device_type
+@@ -39,9 +42,9 @@ def run_intern_vit_test(
+-    ).to("cuda")
++    ).to(DEVICE_TYPE)
+diff -- tests/models/multimodal/pooling/test_radio.py
+@@ -8,6 +8,7 @@
++from vllm.platforms import current_platform
+@@ -17,6 +18,8 @@
++DEVICE_TYPE = current_platform.device_type
+@@ -51,7 +54,7 @@ def run_radio_test(
+-    ).to("cuda")
++    ).to(DEVICE_TYPE)
+diff -- tests/models/test_utils.py
+@@ -10,6 +10,8 @@
+```
+
+- Reviewed files:
+  - tests: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4; `tests/models/test_utils.py` modified +8/-2; `tests/model_executor/test_eagle_quantization.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +10/-8; `tests/quantization/test_torchao.py` modified +9/-8
+- Risk and verification: The diff ships test coverage in `tests/basic_correctness/test_cumem.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_fusion_all_reduce.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #42347 - [Perf][4/n] Eliminate various GPU CPU syncs
 
@@ -1270,6 +1271,29 @@ diff -- vllm/model_executor/layers/quantization/moe_wna16.py
 - Reviewed files:
   - runtime: `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71; `vllm/model_executor/layers/quantization/awq.py` removed +0/-286; `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24; `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10; `vllm/model_executor/layers/quantization/inc/schemes/inc_wna16_linear.py` modified +11/-9; `vllm/model_executor/layers/quantization/__init__.py` modified +5/-4
 - Risk and verification: The diff ships test coverage in `tests/quantization/test_auto_awq.py`, `tests/quantization/test_auto_round.py`, `tests/quantization/test_configs.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55779 - [Bugfix][InternVL] Stop the video parser consuming image_embeds
+
+- Link: https://github.com/vllm-project/vllm/pull/55779
+- Status/date: merged / 2026-09-08
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/internvl.py`; associated commits `782f36cd0c79`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +1/-1, 9 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/internvl.py` modified +1/-1 (2 lines); hunks: -755,7 +755,7 @@ def _parse_and_validate_video_input(; symbols: _parse_and_validate_video_input, touching `_parse_and_validate_video_input`.
+- Code diff details:
+  - `vllm/model_executor/models/internvl.py` modified +1/-1 (2 lines); hunks: -755,7 +755,7 @@ def _parse_and_validate_video_input(; symbols: _parse_and_validate_video_input
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/internvl.py
+@@ -755,7 +755,7 @@ def _parse_and_validate_video_input(
+-        video_embeds = kwargs.pop("image_embeds", None)
++        video_embeds = kwargs.pop("video_embeds", None)
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/internvl.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/internvl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

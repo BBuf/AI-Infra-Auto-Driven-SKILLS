@@ -10,11 +10,11 @@ Usage:
 
   # Simulate decode batch=1
   python3 model_compute_simulator.py "DeepSeek-V4-Flash" \
-    --batch-size 1 --seq-len 1 --tp 8 --dp 1 --ep 8 --gpu h20 --dtype bf16
+    --batch-size 1 --seq-len 1 --tp 8 --dp 1 --ep 8 --gpu b200 --dtype bf16
 
   # With MFU
   python3 model_compute_simulator.py "DeepSeek-V4-Flash" \
-    --batch-size 1 --seq-len 1 --tp 8 --dp 1 --ep 8 --gpu h20 --dtype bf16 \
+    --batch-size 1 --seq-len 1 --tp 8 --dp 1 --ep 8 --gpu b200 --dtype bf16 \
     --measured-ms 15.0
 """
 
@@ -23,7 +23,10 @@ import json
 import os
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional
+
+from config_normalization import normalize_model_config, profile_name
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -82,6 +85,14 @@ GPU_ALIAS = {
     "b200-180gb": "b200-sxm-180gb",
     "b200-sxm-180gb": "b200-sxm-180gb",
     "nvidia-b200": "b200-sxm-180gb",
+    "b300": "b300-sxm-288gb",
+    "hgx-b300": "b300-sxm-288gb",
+    "rtx-pro-6000": "rtx-pro-6000-blackwell-server",
+    "rtx6000-pro": "rtx-pro-6000-blackwell-server",
+    "pro6000": "rtx-pro-6000-blackwell-server",
+    "gb10": "dgx-spark-gb10",
+    "spark": "dgx-spark-gb10",
+    "dgx-spark": "dgx-spark-gb10",
 }
 
 
@@ -116,6 +127,9 @@ class SimResult:
     ep: int
     gpu: str
     dtype: str
+    context_len: Optional[int] = None
+    all_token_logits: bool = False
+    epilogue_flops: int = 0
     layers: List[LayerResult] = field(default_factory=list)
     total_flops: int = 0
     embed_flops: int = 0
@@ -143,18 +157,26 @@ def load_json_argument(value: str) -> dict:
     return json.loads(value)
 
 
-def measured_ms_from_kernel_detail(detail: dict, num_layers: int) -> float:
-    """Convert one measured layer's kernel duration into full-model latency."""
-    layer_us = float(detail.get("metadata", {}).get("total_dur_us", 0))
-    if layer_us <= 0:
-        raise ValueError("kernel detail metadata.total_dur_us must be positive")
-    return layer_us / 1000.0 * num_layers
-
-
 def resolve_model(name: str, config_index: dict) -> Optional[dict]:
     key = name.lower().strip().replace(" ", "-")
     key = ALIAS_MAP.get(key, key)
-    return config_index.get(key)
+    cfg = config_index.get(key)
+    if cfg is None:
+        cfg = next(
+            (
+                v
+                for v in config_index.values()
+                if v.get("hf_config_source", "").lower() == key
+            ),
+            None,
+        )
+    return cfg
+
+
+def peak_dtype_key(dtype):
+    if dtype in ("fp4", "mxfp4", "nvfp4"):
+        return "fp4_tflops"
+    return "bf16_tflops" if dtype == "bf16" else "fp8_tflops"
 
 
 def resolve_gpu(name: str, gpu_specs: dict) -> Optional[dict]:
@@ -199,749 +221,461 @@ def fmt_shape(*dims):
 # ---------------------------------------------------------------------------
 # Build per-layer ops
 # ---------------------------------------------------------------------------
-def build_layer_ops(
-    cfg: dict,
-    B: int,
-    S: int,
-    tp: int,
-    ep: int,
-    compress_ratio: int = 0,
-    layer_idx: int = 0,
-) -> List[Op]:
-    """Build operator list for one transformer layer.
+def _layer_moe(cfg, i):
+    active = bool(cfg.get("moe")) and i >= cfg.get("first_k_dense_replace", 0)
+    for key in ("mlp_layer_types", "moe_layer_freq"):
+        pattern = cfg.get(key)
+        if isinstance(pattern, list):
+            value = pattern[i]
+            active = active and value not in (0, "dense", "mlp")
+        elif isinstance(pattern, int) and pattern > 0:
+            active = active and i % pattern == 0
+    if cfg.get("moe_layers_enum") is not None:
+        active = active and i in cfg["moe_layers_enum"]
+    if cfg.get("dense_mlp_idx") is not None:
+        active = active and i not in cfg["dense_mlp_idx"]
+    return active
 
-    Args:
-        cfg: model configuration dict
-        B: batch size
-        S: sequence length
-        tp: tensor parallelism
-        ep: expert parallelism
-        compress_ratio: 0=full_attn, 4=C4_LIGHT, 128=C128_HEAVY (from compress_ratios)
-        layer_idx: layer index (for hash layer detection)
+
+def attention_pairs(S, context_len=None, limit=None):
+    """Causal query/KV pairs: context_len is total KV for decode, prefix for extend."""
+    if S == 1:
+        return min(context_len or 1, limit) if limit else (context_len or 1)
+    prefix = context_len or 0
+    total = sum(
+        min(prefix + q, limit) if limit else prefix + q for q in range(1, S + 1)
+    )
+    return total
+
+
+def build_layer_ops(cfg, B, S, tp, ep, compress_ratio=0, layer_idx=0, context_len=None):
+    """Public-config operator template; full-model FLOPs before TP/EP estimates.
+
+    Dense attention uses causal pairs; sparse/linear/SSM scalar work is an
+    architectural estimate, not an instruction count or benchmark result.
     """
+    cfg = normalize_model_config(cfg)
+    if min(B, S, tp, ep) < 1 or (context_len is not None and context_len < 1):
+        raise ValueError(
+            "Batch, sequence, parallelism and provided context must be positive"
+        )
+    H, T = cfg["hidden_size"], B * S
+    nh = cfg["num_attention_heads"]
+    nk = cfg.get("num_key_value_heads", nh)
+    dh = cfg.get("head_dim", H // nh)
+    n = cfg["num_hidden_layers"]
+    lt = cfg.get("layer_types") or []
+    if lt and len(lt) not in (n, n + cfg.get("num_nextn_predict_layers", 0)):
+        raise ValueError("layer_types length mismatch")
+    typ = lt[layer_idx] if lt else ""
+    profile = profile_name(cfg)
+    family = cfg.get("attention_type") or "gqa"
+    if not cfg.get("attention_type"):
+        profile = profile_name(cfg)
+        family = {
+            "dsv4_csa_hca": "csa_hca",
+            "dsv41": "csa_hca_v41",
+            "mla_dsa": "mla_dsa",
+            "dsv3_mla": "mla",
+            "kimi_k3": "hybrid_kda_mla",
+            "glm5_next": "hybrid_kda_mla_dsa",
+            "nemotron_h": "hybrid_mamba2_gqa",
+            "qwen4_exp": "hybrid_gated_delta_qsa",
+        }.get(profile, "mla" if cfg.get("kv_lora_rank") else "gqa")
+    attn = family
+    if family == "hybrid_kda_mla":
+        kda_layers = cfg.get("kda_layers_1_indexed", cfg.get("kda_layers", []))
+        attn = "kda" if layer_idx + 1 in kda_layers else "mla"
+    elif family == "hybrid_kda_mla_dsa":
+        attn = (
+            "kda"
+            if typ == "linear_attention" or layer_idx in cfg.get("kda_layers", [])
+            else "mla_dsa"
+        )
+    elif family in ("hybrid_swa_gqa", "hybrid_swa_gqa_relpos"):
+        attn = "gqa_qk_norm"
+    elif family == "hybrid_swa_mla":
+        attn = "mla"
+    elif family == "hybrid_gated_delta_qsa":
+        attn = "gated_delta" if typ == "linear_attention" else "qsa"
+    elif family in ("hybrid_gated_delta_gqa_qk_norm", "hybrid_gated_delta_gqa"):
+        attn = "gated_delta" if typ == "linear_attention" else "gqa_qk_norm"
+    elif typ == "linear_attention":
+        attn = "gated_delta"
+    elif typ == "deepseek_sparse_attention":
+        attn = "mla_dsa"
+    block = None
+    pattern = cfg.get("layers_block_type") or cfg.get("hybrid_override_pattern")
+    if family == "hybrid_mamba2_gqa" and pattern:
+        block = pattern[layer_idx]
+        block = {"M": "mamba", "E": "moe", "*": "attention", "-": "mlp"}.get(
+            block, block
+        )
+        attn = (
+            "mamba" if block == "mamba" else "gqa" if block == "attention" else "none"
+        )
+    is_moe = _layer_moe(cfg, layer_idx)
+    if block:
+        is_moe = block == "moe"
+    window = cfg.get("sliding_window") if typ == "sliding_attention" else None
+    if typ == "sliding_attention":
+        nh = cfg.get("swa_num_attention_heads", nh)
+        nk = cfg.get("swa_num_key_value_heads", nk)
+        dh = cfg.get("swa_head_dim", dh)
+    elif cfg.get("global_head_dim"):
+        dh = cfg["global_head_dim"]
+        nk = cfg.get("num_global_key_value_heads", nk)
+    pairs = attention_pairs(S, context_len, window)
+    ctx = (context_len or 1) if S == 1 else (context_len or 0) + S
     ops = []
-    H = cfg["hidden_size"]
-    n_heads = cfg["num_attention_heads"]
-    n_kv_heads = cfg.get("num_key_value_heads", n_heads)
-    d_head = cfg.get("head_dim", H // n_heads)
-    n_layers = cfg.get("num_hidden_layers", 1)
-    layer_types = cfg.get("layer_types")
-    if layer_types:
-        if len(layer_types) != n_layers:
-            raise ValueError(
-                "layer_types length mismatch: "
-                f"got {len(layer_types)}, expected num_hidden_layers={n_layers}"
-            )
-        layer_type = layer_types[layer_idx]
-        attn_type = "gated_delta" if layer_type == "linear_attention" else "gqa_qk_norm"
-    else:
-        attn_type = cfg.get("attention_type", "gqa")
 
-    is_moe = cfg.get("moe", False)
-    moe_layer_freq = cfg.get("moe_layer_freq")
-    if moe_layer_freq is not None:
-        if len(moe_layer_freq) != n_layers:
-            raise ValueError(
-                "moe_layer_freq length mismatch: "
-                f"got {len(moe_layer_freq)}, expected num_hidden_layers={n_layers}"
-            )
-        is_moe = is_moe and bool(moe_layer_freq[layer_idx])
-
-    sparse_attention_freq = cfg.get("sparse_attention_freq")
-    is_sparse_attention = False
-    if sparse_attention_freq is not None:
-        if len(sparse_attention_freq) != n_layers:
-            raise ValueError(
-                "sparse_attention_freq length mismatch: "
-                f"got {len(sparse_attention_freq)}, "
-                f"expected num_hidden_layers={n_layers}"
-            )
-        is_sparse_attention = bool(sparse_attention_freq[layer_idx])
-
-    # ---- Input Layernorm (RMSNorm) ----
-    ops.append(
-        Op(
-            "rmsnorm",
-            2 * H * 3,  # mean + (x-mean)*rsqrt(var+eps) + *gamma
-            fmt_shape(B, S, H),
-            fmt_shape(B, S, H),
-            "norm",
-        )
-    )
-
-    # ---- Attention ----
-    if attn_type == "mla":
-        # MLA: compress KV then attend
-        compress_dim = cfg.get("mla_compress_dim", 512)
-        # Q projection
-        q_flops = matmul_flops(B * S, n_heads * d_head, H)
+    def add(name, flops, din, output_dim, category="attention"):
         ops.append(
             Op(
-                "q_proj",
-                q_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, n_heads, d_head),
-                "attention",
-            )
-        )
-        # KV compress
-        kv_comp_flops = matmul_flops(B * S, 2 * compress_dim, H)
-        ops.append(
-            Op(
-                "kv_compress",
-                kv_comp_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, 2, compress_dim),
-                "attention",
-            )
-        )
-        # Attention score: Q @ K^T
-        attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
-        if attn_score_flops > 0:
-            ops.append(
-                Op(
-                    "attn_score",
-                    attn_score_flops,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, S),
-                    "attention",
-                )
-            )
-        # Attn @ V
-        attn_v_flops = (
-            matmul_flops(B * n_heads, S, compress_dim // n_heads)
-            if S > 1
-            else matmul_flops(B * n_heads, 1, compress_dim // n_heads)
-        )
-        ops.append(
-            Op(
-                "attn_v",
-                attn_v_flops,
-                fmt_shape(B, n_heads, S, compress_dim // n_heads),
-                fmt_shape(B, n_heads, S, d_head),
-                "attention",
-            )
-        )
-        # O projection
-        o_flops = matmul_flops(B * S, H, n_heads * d_head)
-        ops.append(
-            Op(
-                "o_proj",
-                o_flops,
-                fmt_shape(B, S, n_heads, d_head),
-                fmt_shape(B, S, H),
-                "attention",
-            )
-        )
-        # KV upcast (decompress)
-        kv_decomp_flops = matmul_flops(B * S, 2 * H, compress_dim)
-        ops.append(
-            Op(
-                "kv_decompress",
-                kv_decomp_flops,
-                fmt_shape(B, S, compress_dim),
-                fmt_shape(B, S, 2 * H),
-                "attention",
+                name,
+                int(flops),
+                fmt_shape(B, S, din),
+                fmt_shape(B, S, output_dim),
+                category,
             )
         )
 
-    elif attn_type == "csa_hca":
-        # CSA/HCA: Compressed Sparse Attention + Heavily Compressed Attention
-        # Standard QKV when q_lora_rank=0; LoRA Q/O projections when q_lora_rank > 0
-        q_lora_rank = cfg.get("q_lora_rank", 0)
-        o_lora_rank = cfg.get("o_lora_rank", 0)
-        o_groups = cfg.get("o_groups", 1)
-        rope_dim = cfg.get("qk_rope_head_dim", 0)
+    def proj(name, din, output_dim, category="attention", rows=T):
+        add(name, matmul_flops(rows, output_dim, din), din, output_dim, category)
 
-        if q_lora_rank > 0:
-            # MLA-style Q: H → q_lora_rank → n_heads * d_head
-            q_down_flops = matmul_flops(B * S, q_lora_rank, H)
-            ops.append(
-                Op(
-                    "q_lora_down",
-                    q_down_flops,
-                    fmt_shape(B, S, H),
-                    fmt_shape(B, S, q_lora_rank),
-                    "attention",
-                )
-            )
-            q_up_flops = matmul_flops(B * S, n_heads * d_head, q_lora_rank)
-            ops.append(
-                Op(
-                    "q_lora_up",
-                    q_up_flops,
-                    fmt_shape(B, S, q_lora_rank),
-                    fmt_shape(B, S, n_heads, d_head),
-                    "attention",
-                )
-            )
-            # KV compress (MLA): H → n_kv_heads * d_head
-            kv_dim = n_kv_heads * d_head
-            kv_comp_flops = matmul_flops(B * S, kv_dim, H)
-            ops.append(
-                Op(
-                    "kv_compress",
-                    kv_comp_flops,
-                    fmt_shape(B, S, H),
-                    fmt_shape(B, S, kv_dim),
-                    "attention",
-                )
-            )
+    add("rmsnorm", 6 * T * H, H, H, "norm")
+    if attn in ("mla", "mla_dsa", "dsa"):
+        qr = cfg.get("q_lora_rank", 0)
+        kr = (
+            cfg.get("swa_kv_lora_rank", cfg.get("kv_lora_rank", 512))
+            if window
+            else cfg.get("kv_lora_rank", 512)
+        )
+        nope = (
+            cfg.get("swa_qk_nope_head_dim", cfg.get("qk_nope_head_dim", dh))
+            if window
+            else cfg.get("qk_nope_head_dim", dh)
+        )
+        rope = cfg.get("qk_rope_head_dim", 0)
+        vd = (
+            cfg.get("swa_v_head_dim", cfg.get("v_head_dim", nope))
+            if window
+            else cfg.get("v_head_dim", nope)
+        )
+        if qr:
+            proj("q_lora_down", H, qr)
+            proj("q_lora_up", qr, nh * (nope + rope))
         else:
-            # Standard QKV projection
-            qkv_flops = matmul_flops(B * S, (n_heads + 2 * n_kv_heads) * d_head, H)
-            ops.append(
-                Op(
-                    "qkv_proj",
-                    qkv_flops,
-                    fmt_shape(B, S, H),
-                    fmt_shape(B, S, (n_heads + 2 * n_kv_heads) * d_head),
-                    "attention",
+            proj("q_proj", H, nh * (nope + rope))
+        proj("kv_compress", H, kr + rope)
+        if attn in ("mla_dsa", "dsa"):
+            ih, idim = cfg.get("index_n_heads", 32), cfg.get("index_head_dim", 128)
+            index_types = cfg.get("indexer_types")
+            if not index_types or index_types[layer_idx] != "shared":
+                proj("indexer_proj", qr or H, ih * idim)
+                proj("indexer_k_proj", H, idim)
+                add(
+                    "paged_mqa",
+                    2 * B * ih * attention_pairs(S, context_len) * idim,
+                    ih * idim,
+                    ctx,
                 )
+                add("indexer_topk", 4 * T * ctx, ctx, cfg.get("index_topk", 2048))
+            pairs = attention_pairs(S, context_len, cfg.get("index_topk", 2048))
+        if S == 1:
+            add("q_absorb_uk", 2 * T * nh * nope * kr, nh * nope, nh * kr)
+            add("attn_score", 2 * B * nh * pairs * (kr + rope), nh * (kr + rope), ctx)
+            add("attn_v", 2 * B * nh * pairs * kr, ctx, nh * kr)
+            add("v_absorb_uv", 2 * T * nh * kr * vd, nh * kr, nh * vd)
+        else:
+            kv_rows = B * ctx
+            proj("kv_expand", kr, nh * (nope + vd), rows=kv_rows)
+            add(
+                "attn_score",
+                2 * B * nh * pairs * (nope + rope),
+                nh * (nope + rope),
+                ctx,
             )
-
-        # FP8 quantization (before attention)
-        quant_flops = 2 * B * S * H  # scale + quantize per element
-        ops.append(
-            Op("quant", quant_flops, fmt_shape(B, S, H), fmt_shape(B, S, H), "quant")
-        )
-
-        # RoPE (rotary position embedding)
-        if rope_dim > 0:
-            rope_flops = 2 * B * S * rope_dim * 4  # cos/sin multiply for Q and K
-            ops.append(
-                Op(
-                    "rope",
-                    rope_flops,
-                    fmt_shape(B, S, rope_dim),
-                    fmt_shape(B, S, rope_dim),
-                    "attention",
-                )
-            )
-
-        # ---- NSA-specific ops for C128 layers ----
-        index_n_heads = cfg.get("index_n_heads", 0)
-        index_head_dim = cfg.get("index_head_dim", 0)
-        sliding_window = cfg.get("sliding_window", 128)
-
-        if compress_ratio == 128 and index_n_heads > 0:
-            # Hadamard transform (before indexer)
-            hadamard_dim = n_heads * d_head  # transform dimension
-            hadamard_flops = B * S * hadamard_dim * 14  # ~N*log2(N)/N=14 for 16K
-            ops.append(
-                Op(
+            add("attn_v", 2 * B * nh * pairs * vd, ctx, nh * vd)
+        proj("o_proj", nh * vd, H)
+        if cfg.get("gated_mla"):
+            proj("mla_output_gate", H, nh)
+        if cfg.get("attention_gate_type") or cfg.get("head_wise_attn_gate"):
+            proj("attention_gate", H, nh)
+    elif attn in ("csa_hca", "csa_hca_v41"):
+        qr = cfg.get("q_lora_rank", 0)
+        if qr:
+            proj("q_lora_down", H, qr)
+            proj("q_lora_up", qr, nh * dh)
+        else:
+            proj("q_proj", H, nh * dh)
+        proj("kv_compress", H, nk * dh)
+        ratio = compress_ratio
+        kv_src = ratio in (4, 128) or layer_idx in cfg.get("kv_source_layer_ids", [])
+        idx_src = ratio == 4 or layer_idx in cfg.get("index_source_layer_ids", [])
+        if ratio and kv_src:
+            # C4 overlaps two compression windows; V41 ratio 1 has no gate.
+            coeff = 4 if ratio == 4 else 1 if ratio == 1 else 2
+            proj("compressor_proj", H, coeff * dh)
+        if idx_src:
+            ih, idim = cfg.get("index_n_heads", 32), cfg.get("index_head_dim", 128)
+            proj("indexer_proj", qr or H, ih * idim)
+            proj("indexer_weights_proj", H, ih)
+            if ratio == 4:
+                proj("indexer_compressor_proj", H, 4 * idim)
+            if ratio == 4:
+                add(
                     "hadamard",
-                    hadamard_flops,
-                    fmt_shape(B, S, hadamard_dim),
-                    fmt_shape(B, S, hadamard_dim),
-                    "attention",
+                    T * ih * idim * (idim.bit_length() - 1),
+                    ih * idim,
+                    ih * idim,
                 )
-            )
-
-            # Indexer Q/K projection
-            indexer_q_flops = matmul_flops(
-                B * S, index_n_heads * index_head_dim, q_lora_rank
-            )
-            ops.append(
-                Op(
-                    "indexer_proj",
-                    indexer_q_flops,
-                    fmt_shape(B, S, q_lora_rank),
-                    fmt_shape(B, S, index_n_heads, index_head_dim),
-                    "attention",
-                )
-            )
-
-            # Paged MQA (indexer attention: index_n_heads Q, 1 KV head, topk blocks)
-            paged_mqa_flops = (
-                matmul_flops(B * index_n_heads, S, index_head_dim) if S > 1 else 0
-            )
-            paged_mqa_flops += matmul_flops(
-                B * index_n_heads, S if S > 1 else 1, index_head_dim
-            )
-            if paged_mqa_flops > 0:
-                ops.append(
-                    Op(
-                        "paged_mqa",
-                        paged_mqa_flops,
-                        fmt_shape(B, index_n_heads, S, index_head_dim),
-                        fmt_shape(B, index_n_heads, S, index_head_dim),
-                        "attention",
-                    )
-                )
-
-        # C4 sparse attention (for layers with compress_ratio > 0)
-        if compress_ratio > 0 and S > 1:
-            c4_kv_len = max(S // compress_ratio, sliding_window)
-            c4_attn_total = matmul_flops(B * n_heads, S, d_head)  # score: Q @ K^T
-            ops.append(
-                Op(
-                    "c4_attn",
-                    c4_attn_total,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, c4_kv_len),
-                    "attention",
-                )
-            )
-            c4_v = matmul_flops(B * n_heads, S, d_head)
-            ops.append(
-                Op(
-                    "c4_attn_v",
-                    c4_v,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, d_head),
-                    "attention",
-                )
-            )
-        elif S > 1:
-            # Full attention (compress_ratio == 0)
-            csa_attn = matmul_flops(B * n_heads, S, d_head)
-            ops.append(
-                Op(
-                    "csa_attn_score",
-                    csa_attn,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, S),
-                    "attention",
-                )
-            )
-            csa_v = matmul_flops(B * n_heads, S, d_head)
-            ops.append(
-                Op(
-                    "csa_attn_v",
-                    csa_v,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, d_head),
-                    "attention",
-                )
-            )
-
-        # HCA attention (heavily compressed, always present for csa_hca)
-        hca_attn = matmul_flops(B * n_kv_heads, S, d_head) if S > 1 else 0
-        if hca_attn > 0:
-            ops.append(
-                Op(
-                    "hca_attn_score",
-                    hca_attn,
-                    fmt_shape(B, n_kv_heads, S, d_head),
-                    fmt_shape(B, n_kv_heads, S, S),
-                    "attention",
-                )
-            )
-        hca_v = matmul_flops(B * n_kv_heads, S if S > 1 else 1, d_head)
-        ops.append(
-            Op(
-                "hca_attn_v",
-                hca_v,
-                fmt_shape(B, n_kv_heads, S, d_head),
-                fmt_shape(B, n_kv_heads, S, d_head),
-                "attention",
-            )
+            indexed = max(1, (ctx + max(ratio, 1) - 1) // max(ratio, 1))
+            add("paged_mqa", 2 * T * ih * indexed * idim, ih * idim, indexed)
+            add("indexer_topk", 4 * T * indexed, indexed, cfg.get("index_topk", 512))
+        win = min(ctx, cfg.get("sliding_window", 128))
+        compressed = (ctx + max(ratio, 1) - 1) // max(ratio, 1) if ratio else 0
+        if ratio in (1, 2, 4):
+            compressed = min(compressed, cfg.get("index_topk", 512))
+        effective = win + compressed
+        # Sparse rows are budget estimates; no second, fictitious HCA branch.
+        sparse_pairs = (
+            T * effective if ratio else B * attention_pairs(S, context_len, win)
         )
-
-        # MLA cache store
-        mla_cache_flops = 2 * B * S * (n_kv_heads * d_head + rope_dim)  # write KV cache
-        ops.append(
-            Op(
-                "mla_cache_store",
-                mla_cache_flops,
-                fmt_shape(B, S, n_kv_heads * d_head),
-                fmt_shape(B, S, n_kv_heads * d_head),
-                "attention",
-            )
+        add(
+            (
+                "c4_attn"
+                if ratio in (1, 2, 4)
+                else "hca_attn_score" if ratio == 128 else "csa_attn_score"
+            ),
+            2 * nh * sparse_pairs * dh,
+            nh * dh,
+            effective,
         )
-
-        # O projection
-        if o_lora_rank > 0:
-            # Grouped O-LoRA: each group d_head → o_lora_rank/o_groups, then up → H
-            per_group_down = o_lora_rank // o_groups
-            o_down_flops = matmul_flops(B * S * o_groups, per_group_down, d_head)
-            ops.append(
-                Op(
-                    "o_lora_down",
-                    o_down_flops,
-                    fmt_shape(B, S, o_groups, d_head),
-                    fmt_shape(B, S, o_groups, per_group_down),
-                    "attention",
-                )
-            )
-            o_up_flops = matmul_flops(B * S, H, o_lora_rank)
-            ops.append(
-                Op(
-                    "o_lora_up",
-                    o_up_flops,
-                    fmt_shape(B, S, o_lora_rank),
-                    fmt_shape(B, S, H),
-                    "attention",
-                )
-            )
+        add(
+            (
+                "c4_attn_v"
+                if ratio in (1, 2, 4)
+                else "hca_attn_v" if ratio == 128 else "csa_attn_v"
+            ),
+            2 * nh * sparse_pairs * dh,
+            effective,
+            nh * dh,
+        )
+        groups, rank = cfg.get("o_groups", 1), cfg.get("o_lora_rank", 0)
+        if rank:
+            proj("o_lora_down", nh * dh // groups, rank, rows=T * groups)
+            proj("o_lora_up", groups * rank, H)
         else:
-            o_flops = matmul_flops(B * S, H, n_heads * d_head)
-            ops.append(
-                Op(
-                    "o_proj",
-                    o_flops,
-                    fmt_shape(B, S, n_heads * d_head),
-                    fmt_shape(B, S, H),
-                    "attention",
-                )
+            proj("o_proj", nh * dh, H)
+    elif attn in ("gated_delta", "kda"):
+        kh = cfg.get("linear_num_key_heads", cfg.get("kda_num_heads", nh))
+        vh = cfg.get("linear_num_value_heads", kh)
+        kd = cfg.get("linear_key_head_dim", cfg.get("kda_head_dim", 128))
+        vd = cfg.get("linear_value_head_dim", kd)
+        key, value = kh * kd, vh * vd
+        if attn == "kda":
+            # K3 has a full-rank output gate; GLM5-next/Kimi Linear use
+            # two low-rank gates. Beta is head-wise, not value-channel-wise.
+            linear_cfg = cfg.get("linear_attn_config") or {}
+            full_gate = linear_cfg.get("use_full_rank_gate", profile == "kimi_k3")
+            proj(
+                "linear_in_proj_qkvz", H, 2 * key + value + (value if full_gate else 0)
             )
-
-    elif attn_type == "gated_delta":
-        n_k_heads = cfg["linear_num_key_heads"]
-        n_v_heads = cfg["linear_num_value_heads"]
-        k_head_dim = cfg["linear_key_head_dim"]
-        v_head_dim = cfg["linear_value_head_dim"]
-        conv_kernel = cfg["linear_conv_kernel_dim"]
-        key_dim = n_k_heads * k_head_dim
-        value_dim = n_v_heads * v_head_dim
-        qkvz_dim = 2 * key_dim + 2 * value_dim
-
-        ops.append(
-            Op(
-                "linear_in_proj_qkvz",
-                matmul_flops(B * S, qkvz_dim, H),
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, qkvz_dim),
-                "attention",
-            )
-        )
-        ops.append(
-            Op(
-                "linear_in_proj_ba",
-                matmul_flops(B * S, 2 * n_v_heads, H),
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, 2 * n_v_heads),
-                "attention",
-            )
-        )
-        conv_dim = 2 * key_dim + value_dim
-        ops.append(
-            Op(
-                "linear_conv1d",
-                2 * B * S * conv_dim * conv_kernel,
-                fmt_shape(B, S, conv_dim),
-                fmt_shape(B, S, conv_dim),
-                "attention",
-            )
-        )
-        ops.append(
-            Op(
-                "gated_delta_attention",
-                2 * B * S * (key_dim + value_dim) * v_head_dim,
-                fmt_shape(B, S, n_k_heads, k_head_dim),
-                fmt_shape(B, S, n_v_heads, v_head_dim),
-                "attention",
-            )
-        )
-        ops.append(
-            Op(
-                "linear_gated_norm",
-                6 * B * S * value_dim,
-                fmt_shape(B, S, n_v_heads, v_head_dim),
-                fmt_shape(B, S, value_dim),
-                "attention",
-            )
-        )
-        ops.append(
-            Op(
-                "linear_out_proj",
-                matmul_flops(B * S, H, value_dim),
-                fmt_shape(B, S, value_dim),
-                fmt_shape(B, S, H),
-                "attention",
-            )
-        )
-
-    elif attn_type == "gqa" or attn_type == "gqa_qk_norm":
-        # GQA: grouped-query attention
-        q_flops = matmul_flops(B * S, n_heads * d_head, H)
-        ops.append(
-            Op(
-                "q_proj",
-                q_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, n_heads, d_head),
-                "attention",
-            )
-        )
-        kv_flops = matmul_flops(B * S, 2 * n_kv_heads * d_head, H)
-        ops.append(
-            Op(
-                "kv_proj",
-                kv_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, 2, n_kv_heads, d_head),
-                "attention",
-            )
-        )
-        # QK norm (optional)
-        if attn_type == "gqa_qk_norm":
-            ops.append(
-                Op(
-                    "qk_norm",
-                    2 * (n_heads + n_kv_heads) * d_head * 3,
-                    fmt_shape(B, n_heads, d_head),
-                    fmt_shape(B, n_heads, d_head),
-                    "attention",
-                )
-            )
-        if is_sparse_attention:
-            index_heads = cfg["sparse_num_index_heads"]
-            index_dim = cfg["sparse_index_dim"]
-            disable_values = cfg.get("sparse_disable_index_value")
-            disable_index_value = (
-                bool(disable_values[layer_idx]) if disable_values else False
-            )
-            index_qkv_heads = index_heads + 1 + (0 if disable_index_value else 1)
-            index_qkv_dim = index_qkv_heads * index_dim
-            ops.append(
-                Op(
-                    (
-                        "sparse_index_qk_proj"
-                        if disable_index_value
-                        else "sparse_index_qkv_proj"
-                    ),
-                    matmul_flops(B * S, index_qkv_dim, H),
-                    fmt_shape(B, S, H),
-                    fmt_shape(B, S, index_qkv_heads, index_dim),
-                    "attention",
-                )
-            )
-            ops.append(
-                Op(
-                    "sparse_index_topk",
-                    2 * B * index_heads * S * S * index_dim,
-                    fmt_shape(B, index_heads, S, index_dim),
-                    fmt_shape(B, S, cfg["sparse_topk_blocks"]),
-                    "attention",
-                )
-            )
-        # Attention
-        sparse_kv_len = min(
-            S,
-            cfg.get("sparse_topk_blocks", 0) * cfg.get("sparse_block_size", 0),
-        )
-        if is_sparse_attention and S > 1:
-            attn_score_flops = 2 * B * n_heads * S * sparse_kv_len * d_head
+            proj("linear_in_proj_ba", H, vh + kd)
+            proj("linear_forget_gate_up", kd, value)
+            if not full_gate:
+                proj("linear_output_gate_down", H, kd)
+                proj("linear_output_gate_up", kd, value)
         else:
-            attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
-        if attn_score_flops > 0:
-            ops.append(
-                Op(
-                    "sparse_attn_score" if is_sparse_attention else "attn_score",
-                    attn_score_flops,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(
-                        B,
-                        n_heads,
-                        S,
-                        sparse_kv_len if is_sparse_attention else S,
-                    ),
-                    "attention",
-                )
-            )
-        if is_sparse_attention and S > 1:
-            attn_v_flops = 2 * B * n_heads * S * sparse_kv_len * d_head
-        else:
-            attn_v_flops = matmul_flops(B * n_heads, S if S > 1 else 1, d_head)
-        ops.append(
-            Op(
-                "sparse_attn_v" if is_sparse_attention else "attn_v",
-                attn_v_flops,
-                fmt_shape(
-                    B,
-                    n_heads,
-                    sparse_kv_len if is_sparse_attention else S,
-                    d_head,
-                ),
-                fmt_shape(B, n_heads, S, d_head),
-                "attention",
-            )
+            proj("linear_in_proj_qkvz", H, 2 * key + 2 * value)
+            proj("linear_in_proj_ba", H, 2 * vh)
+        conv = cfg.get(
+            "linear_conv_kernel_dim",
+            cfg.get(
+                "kda_short_conv_kernel_size",
+                cfg.get("kda_conv_kernel_dim", cfg.get("conv_kernel", 4)),
+            ),
         )
-        # O projection
-        o_flops = matmul_flops(B * S, H, n_heads * d_head)
-        ops.append(
-            Op(
-                "o_proj",
-                o_flops,
-                fmt_shape(B, S, n_heads, d_head),
-                fmt_shape(B, S, H),
-                "attention",
-            )
+        add(
+            "linear_conv1d",
+            2 * T * (2 * key + value) * conv,
+            2 * key + value,
+            2 * key + value,
         )
-
-    elif attn_type == "dsa":
-        # DSA: DeepSeek-style sparse attention (similar to GQA for FLOPs)
-        q_flops = matmul_flops(B * S, n_heads * d_head, H)
-        ops.append(
-            Op(
-                "q_proj",
-                q_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, n_heads, d_head),
-                "attention",
-            )
+        add(
+            "kda_attention" if attn == "kda" else "gated_delta_attention",
+            8 * T * vh * kd * vd,
+            key,
+            value,
         )
-        kv_flops = matmul_flops(B * S, 2 * n_kv_heads * d_head, H)
-        ops.append(
-            Op(
-                "kv_proj",
-                kv_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, 2, n_kv_heads, d_head),
-                "attention",
-            )
+        add("linear_gated_norm", 6 * T * value, value, value)
+        proj("linear_out_proj", value, H)
+    elif attn == "mamba":
+        heads, hd = cfg.get("mamba_num_heads", 128), cfg.get("mamba_head_dim", 64)
+        state, groups = cfg.get("ssm_state_size", 128), cfg.get("mamba_n_groups", 8)
+        inner = heads * hd
+        conv_dim = inner + 2 * groups * state
+        proj("mamba_in_proj", H, 2 * inner + 2 * groups * state + heads)
+        add(
+            "mamba_conv1d",
+            2 * T * conv_dim * cfg.get("conv_kernel", 4),
+            conv_dim,
+            conv_dim,
         )
-        attn_score_flops = matmul_flops(B * n_heads, S, d_head) if S > 1 else 0
-        if attn_score_flops > 0:
-            ops.append(
-                Op(
-                    "attn_score",
-                    attn_score_flops,
-                    fmt_shape(B, n_heads, S, d_head),
-                    fmt_shape(B, n_heads, S, S),
-                    "attention",
-                )
+        add("mamba_ssd_scan", 6 * T * inner * state, conv_dim, inner)
+        proj("mamba_out_proj", inner, H)
+    elif attn in ("gqa", "gqa_qk_norm", "qsa", "hybrid_mamba2_gqa"):
+        proj("q_proj", H, nh * dh)
+        proj("kv_proj", H, (1 if cfg.get("attention_k_eq_v") else 2) * nk * dh)
+        if attn == "gqa_qk_norm":
+            add("qk_norm", 6 * T * (nh + nk) * dh, (nh + nk) * dh, (nh + nk) * dh)
+        sparse = cfg.get("sparse_attention_freq")
+        is_sparse = bool(sparse and sparse[layer_idx]) or attn == "qsa"
+        if is_sparse:
+            ih = cfg.get(
+                "sparse_num_index_heads",
+                cfg.get("indexer_n_heads", cfg.get("index_n_heads", 4)),
             )
-        attn_v_flops = matmul_flops(B * n_heads, S if S > 1 else 1, d_head)
-        ops.append(
-            Op(
-                "attn_v",
-                attn_v_flops,
-                fmt_shape(B, n_heads, S, d_head),
-                fmt_shape(B, n_heads, S, d_head),
-                "attention",
+            idim = cfg.get(
+                "sparse_index_dim",
+                cfg.get("indexer_head_dim", cfg.get("index_head_dim", 128)),
             )
+            disabled = cfg.get("sparse_disable_index_value")
+            disable_v = bool(disabled and disabled[layer_idx])
+            proj(
+                "sparse_index_qk_proj" if disable_v else "sparse_index_qkv_proj",
+                H,
+                (ih + 1 + (not disable_v)) * idim,
+            )
+            add(
+                "sparse_index_topk",
+                2 * B * ih * attention_pairs(S, context_len) * idim,
+                ih * idim,
+                ctx,
+            )
+            budget = cfg.get(
+                "sparse_topk", cfg.get("indexer_budget", cfg.get("index_topk", 2048))
+            )
+            pairs = attention_pairs(S, context_len, budget)
+        add(
+            "sparse_attn_score" if is_sparse else "attn_score",
+            2 * B * nh * pairs * dh,
+            nh * dh,
+            ctx,
         )
-        o_flops = matmul_flops(B * S, H, n_heads * d_head)
-        ops.append(
-            Op(
-                "o_proj",
-                o_flops,
-                fmt_shape(B, S, n_heads, d_head),
-                fmt_shape(B, S, H),
-                "attention",
-            )
+        add(
+            "sparse_attn_v" if is_sparse else "attn_v",
+            2 * B * nh * pairs * dh,
+            ctx,
+            nh * dh,
         )
-    else:
-        raise ValueError(f"Unknown attention_type: {attn_type}")
-
-    # ---- Post-attention RMSNorm ----
-    ops.append(Op("rmsnorm", 2 * H * 3, fmt_shape(B, S, H), fmt_shape(B, S, H), "norm"))
-
-    # ---- Residual add ----
-    ops.append(
-        Op("residual_add", H, fmt_shape(B, S, H), fmt_shape(B, S, H), "residual")
-    )
-
-    # ---- MoE / FFN ----
-    if is_moe:
-        topk = cfg["num_experts_per_tok"]
-        n_experts = cfg["num_experts"]
-        routed_inter = cfg.get("routed_expert_intermediate_size", 0)
-        shared_inter = cfg.get("shared_expert_intermediate_size", 0)
-        n_shared = cfg.get("num_shared_experts", 0)
-
-        # Router
-        router_flops = matmul_flops(B * S, n_experts, H)
-        ops.append(
-            Op(
-                "router",
-                router_flops,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, n_experts),
+        proj("o_proj", nh * dh, H)
+        if cfg.get("head_wise_attn_gate"):
+            proj("attention_gate", H, nh)
+        if cfg.get("d_rel"):
+            add(
+                "relative_position_bias",
+                2 * B * nh * pairs * cfg["d_rel"],
+                nh * cfg["d_rel"],
+                ctx,
+            )
+    elif attn != "none":
+        raise ValueError(f"Unknown attention_type: {attn}")
+    if block not in ("mamba", "attention", "moe", "mlp"):
+        add("rmsnorm", 6 * T * H, H, H, "norm")
+        add("residual_add", T * H, H, H, "residual")
+    if block not in ("mamba", "attention"):
+        if is_moe:
+            k, experts = cfg["num_experts_per_tok"], cfg["num_experts"]
+            if layer_idx < cfg.get("num_hash_layers", 0):
+                add("hash_route", 0, H, k, "moe")
+            else:
+                proj("router", H, experts + cfg.get("zero_expert_num", 0), "moe")
+                add("topk", 4 * T * experts, experts, k, "moe")
+            latent = (
+                cfg.get("routed_expert_hidden_size", cfg.get("moe_latent_size", H)) or H
+            )
+            if latent != H:
+                proj("routed_latent_down", H, latent, "moe")
+                if cfg.get("latent_moe_use_norm"):
+                    add("latent_rmsnorm", 6 * T * latent, latent, latent, "norm")
+            inter = cfg.get("routed_expert_intermediate_size", 0)
+            # Zero experts are identity slots; expected nonzero assignments are
+            # unavailable without routing evidence, so count k as an upper bound.
+            relu2 = cfg.get("mlp_hidden_act") == "relu2"
+            add(
+                "routed_experts_relu2" if relu2 else "routed_experts_swiglu",
+                (4 if relu2 else 6) * T * k * latent * inter,
+                k * latent,
+                k * latent,
                 "moe",
             )
-        )
-
-        # TopK selection
-        topk_flops = B * S * n_experts * 4  # comparison + selection per token
-        ops.append(
-            Op(
-                "topk",
-                topk_flops,
-                fmt_shape(B, S, n_experts),
-                fmt_shape(B, S, topk),
-                "moe",
-            )
-        )
-
-        # Routed experts (top-k selected per token, SwiGLU)
-        # Per expert: gate(H→inter) + up(H→inter) + silu_mul + down(inter→H)
-        routed_gate = matmul_flops(B * S * topk, routed_inter, H)
-        routed_up = matmul_flops(B * S * topk, routed_inter, H)
-        routed_down = matmul_flops(B * S * topk, H, routed_inter)
-        routed_total = routed_gate + routed_up + routed_down
-        ops.append(
-            Op(
-                "routed_experts_swiglu",
-                routed_total,
-                fmt_shape(B, S, topk, H),
-                fmt_shape(B, S, topk, H),
-                "moe",
-            )
-        )
-
-        # Activation (silu_mul in MoE)
-        act_flops = 3 * B * S * topk * routed_inter  # silu(x)*gate(x)
-        ops.append(
-            Op(
+            add(
                 "activation",
-                act_flops,
-                fmt_shape(B, S, topk, routed_inter),
-                fmt_shape(B, S, topk, routed_inter),
+                (2 if relu2 else 3) * T * k * inter,
+                k * inter,
+                k * inter,
                 "moe",
             )
-        )
-
-        # Shared experts (if any)
-        if n_shared > 0 and shared_inter > 0:
-            shared_gate = matmul_flops(B * S, shared_inter, H)
-            shared_up = matmul_flops(B * S, shared_inter, H)
-            shared_down = matmul_flops(B * S, H, shared_inter)
-            shared_total = shared_gate + shared_up + shared_down
-            ops.append(
-                Op(
-                    "shared_experts_swiglu",
-                    shared_total,
-                    fmt_shape(B, S, H),
-                    fmt_shape(B, S, H),
+            if latent != H:
+                proj("routed_latent_up", latent, H, "moe")
+            shared = cfg.get("shared_expert_intermediate_size", 0)
+            if cfg.get("num_shared_experts", 0) and shared:
+                add(
+                    "shared_experts_relu2" if relu2 else "shared_experts_swiglu",
+                    (4 if relu2 else 6) * T * H * shared,
+                    H,
+                    H,
                     "moe",
                 )
+            if cfg.get("parallel_dense_mlp"):
+                add("ffn_swiglu", 6 * T * H * cfg["intermediate_size"], H, H, "ffn")
+        else:
+            inter = cfg.get("intermediate_size", 4 * H)
+            relu2 = cfg.get("mlp_hidden_act") == "relu2"
+            add(
+                "ffn_relu2" if relu2 else "ffn_swiglu",
+                (4 if relu2 else 6) * T * H * inter,
+                H,
+                H,
+                "ffn",
             )
-    else:
-        # Dense FFN (SwiGLU)
-        inter = cfg.get("intermediate_size", 4 * H)
-        gate_flops = matmul_flops(B * S, inter, H)
-        up_flops = matmul_flops(B * S, inter, H)
-        down_flops = matmul_flops(B * S, H, inter)
-        ffn_total = gate_flops + up_flops + down_flops
-        ops.append(
-            Op("ffn_swiglu", ffn_total, fmt_shape(B, S, H), fmt_shape(B, S, H), "ffn")
-        )
-
-    # ---- Residual add ----
-    ops.append(
-        Op("residual_add", H, fmt_shape(B, S, H), fmt_shape(B, S, H), "residual")
-    )
-
-    # ---- MHC (Manifold-Constrained Hyper-Connections) ----
-    if cfg.get("mhc", False):
-        mhc_dim = cfg.get("mhc_bottleneck_dim", H // 4)
-        mhc_down = matmul_flops(B * S, mhc_dim, H)
-        mhc_up = matmul_flops(B * S, H, mhc_dim)
-        mhc_total = mhc_down + mhc_up
-        ops.append(
-            Op(
-                "mhc_post_tilelang",
-                mhc_total,
-                fmt_shape(B, S, H),
-                fmt_shape(B, S, H),
+    add("residual_add", T * H, H, H, "residual")
+    hc = cfg.get("hc_mult", cfg.get("hc_count", 0))
+    if hc:
+        if cfg.get("hc_lowrank"):
+            rank = cfg["hc_lowrank"]
+            add(
+                "hc_lowrank_mix",
+                4 * T * (hc * H * rank + rank * hc * hc),
+                hc * H,
+                hc * hc,
                 "mhc",
             )
-        )
-
+        elif profile_name(cfg) == "hy_v4" or cfg.get("ihc"):
+            add("ihc_pre", 4 * T * hc * H * (2 * hc), hc * H, 2 * hc, "mhc")
+        else:
+            mix = (2 + hc) * hc
+            add("mhc_pre_gemm", 4 * T * hc * H * mix, hc * H, mix, "mhc")
+            add(
+                "mhc_sinkhorn",
+                2 * T * cfg.get("hc_sinkhorn_iters", 20) * hc * hc * 4,
+                hc * hc,
+                hc * hc,
+                "mhc",
+            )
+        add("mhc_post_tilelang", 4 * T * hc * H, hc * H, hc * H, "mhc")
+    if cfg.get("attn_res_block_size"):
+        bank = min(8, 2 + 2 * layer_idx // cfg["attn_res_block_size"])
+        add("attn_res", 8 * T * bank * H + 12 * T * H, bank * H, H, "mhc")
+    if cfg.get("use_sconv"):
+        add("short_conv", 4 * T * H * cfg.get("sconv_kernel_size", 4), H, H)
+    if cfg.get("sublayers_per_layer"):
+        # LongCat: two attention and dense branches, one shortcut MoE branch.
+        attention_ops = [op for op in ops if op.category == "attention"]
+        ops.extend(attention_ops)
+        add("ffn_swiglu", 12 * T * H * cfg["intermediate_size"], H, H, "ffn")
     return ops
 
 
@@ -959,36 +693,31 @@ def simulate(
     gpu_name: str,
     dtype: str,
     measured_ms: Optional[float] = None,
+    context_len: Optional[int] = None,
+    all_token_logits: bool = False,
 ) -> SimResult:
     """Run the full simulation."""
     gpu_specs = load_json(GPU_SPECS)
     gpu_info = resolve_gpu(gpu_name, gpu_specs) if gpu_name else None
 
+    cfg = normalize_model_config(cfg)
     n_layers = cfg["num_hidden_layers"]
     H = cfg["hidden_size"]
     V = cfg.get("vocab_size", 0)
 
     # Embedding
-    embed_flops = matmul_flops(B * S, H, V) if V > 0 else 0
+    embed_flops = matmul_flops(B * (S if all_token_logits else 1), H, V) if V > 0 else 0
 
     # Per-layer (with per-layer compress_ratio)
     compress_ratios = normalize_compress_ratios(cfg, n_layers)
-    layer_ops_cache = {}  # layer-shape signature → ops list
 
     total_layer_flops = 0
     layers = []
     for i in range(n_layers):
         cr = compress_ratios[i] if compress_ratios and i < len(compress_ratios) else 0
-        layer_type = (cfg.get("layer_types") or [None] * n_layers)[i]
-        moe_layer = (cfg.get("moe_layer_freq") or [None] * n_layers)[i]
-        sparse_layer = (cfg.get("sparse_attention_freq") or [None] * n_layers)[i]
-        cache_key = (cr, layer_type, moe_layer, sparse_layer)
-        if cache_key not in layer_ops_cache:
-            layer_ops_cache[cache_key] = build_layer_ops(
-                cfg, B, S, tp, ep, compress_ratio=cr, layer_idx=i
-            )
-        layer_ops = layer_ops_cache[cache_key]
-
+        layer_ops = build_layer_ops(
+            cfg, B, S, tp, ep, compress_ratio=cr, layer_idx=i, context_len=context_len
+        )
         lr = LayerResult(layer_idx=i)
         lr.compress_ratio = cr
         for op in layer_ops:
@@ -1001,7 +730,16 @@ def simulate(
         total_layer_flops += layer_total
         layers.append(lr)
 
-    total_flops = embed_flops + total_layer_flops
+    # Final norm/HC head and attention-residual output are pass-level work.
+    epilogue = 6 * B * S * H
+    hc = cfg.get("hc_mult", cfg.get("hc_count", 0))
+    if hc:
+        epilogue += 2 * B * S * hc * H * hc + 2 * B * S * hc * H
+    if cfg.get("attn_res_block_size"):
+        epilogue += (
+            4 * B * S * min(8, 2 + 2 * n_layers // cfg["attn_res_block_size"]) * H
+        )
+    total_flops = embed_flops + total_layer_flops + epilogue
 
     # Model architecture summary
     model_arch = {
@@ -1030,14 +768,18 @@ def simulate(
     per_layer_mfu_pct = None
     per_op_mfu = []  # per-operator MFU for single-layer analysis
     if measured_ms is not None and gpu_info is not None:
-        dtype_key = "bf16_tflops" if dtype == "bf16" else "fp8_tflops"
-        peak_tflops = gpu_info.get(dtype_key, 0)
+        dtype_key = peak_dtype_key(dtype)
+        peak_tflops = gpu_info.get(dtype_key) or 0
+        if not peak_tflops:
+            raise ValueError(
+                f"No verified dense {dtype} peak for {gpu_name}; MFU unavailable"
+            )
         if peak_tflops > 0:
             # Per-GPU FLOPs: attention/shared/MHC split by TP, routed MoE split by EP
             def flops_per_gpu_for_ops(ops_list):
                 total = 0
                 for op in ops_list:
-                    if op.category == "moe" and "routed" in op.name:
+                    if op.category == "moe" and op.name.startswith("routed_experts"):
                         total += op.flops / ep if ep > 0 else op.flops
                     else:
                         total += op.flops / tp if tp > 0 else op.flops
@@ -1046,7 +788,7 @@ def simulate(
             # Overall MFU: measured_ms = total forward pass
             embed_per_gpu = embed_flops / tp if tp > 0 else embed_flops
             # Weight each layer's FLOPs by its compress_ratio
-            total_per_gpu = embed_per_gpu
+            total_per_gpu = embed_per_gpu + epilogue / tp
             for lr in layers:
                 total_per_gpu += flops_per_gpu_for_ops(lr.ops)
             theoretical_time_s = total_per_gpu / (peak_tflops * 1e12)
@@ -1062,7 +804,7 @@ def simulate(
                 * 100.0
             )
 
-            # Per-operator FLOPs proportion — show a representative C128_HEAVY layer if available
+            # Per-operator FLOPs proportion — show a representative HCA_C128 layer if available
             # otherwise show layer 0
             repr_layer = None
             if compress_ratios:
@@ -1076,7 +818,7 @@ def simulate(
                 l_ops = repr_layer.ops
                 layer_total_flops = sum(op.flops for op in l_ops)
                 for op in l_ops:
-                    if op.category == "moe" and "routed" in op.name:
+                    if op.category == "moe" and op.name.startswith("routed_experts"):
                         per_gpu = op.flops / ep if ep > 0 else op.flops
                     else:
                         per_gpu = op.flops / tp if tp > 0 else op.flops
@@ -1106,6 +848,9 @@ def simulate(
         ep=ep,
         gpu=gpu_name or "",
         dtype=dtype,
+        context_len=context_len,
+        all_token_logits=all_token_logits,
+        epilogue_flops=epilogue,
         layers=layers,
         total_flops=total_flops,
         embed_flops=embed_flops,
@@ -1207,7 +952,7 @@ def map_kernel_ms_to_ops(kernel_ms: dict, ops: list, tp: int, ep: int) -> list:
 
 # Kernel categories that internally use fp8 compute even when --dtype bf16 is specified.
 # For these kernels, the MFU denominator should use fp8 peak FLOPS (2x bf16).
-FP8_INTERNAL_KERNEL_CATEGORIES = {"moe", "gemm_fp8"}
+FP8_INTERNAL_KERNEL_CATEGORIES = {"gemm_fp8"}
 
 KERNEL_DETAIL_DIRECT_MAP = {
     # Fused kernels: directly map to specific operator groups
@@ -1221,11 +966,30 @@ KERNEL_DETAIL_DIRECT_MAP = {
         "attn_score",
         "attn_v",
     ],  # flash attention compute
-    "moe": ["routed_experts_swiglu"],  # fused MoE: gate+up+silu+down
+    "moe": [
+        "routed_experts_swiglu",
+        "routed_experts_relu2",
+    ],  # fused MoE: gate+up+silu+down
     "mhc_post": ["mhc_post_tilelang"],
-    "mhc_pre_gemm": ["mhc_pre"],
-    "mhc_pre_fuse": ["mhc_pre"],
-    "mhc": ["mhc_post_tilelang", "mhc_pre"],  # fallback
+    "mhc_pre_gemm": ["mhc_pre_gemm", "hc_lowrank_mix", "ihc_pre"],
+    "mhc_pre_fuse": ["mhc_sinkhorn"],
+    "mhc": [
+        "mhc_post_tilelang",
+        "mhc_pre_gemm",
+        "mhc_sinkhorn",
+        "hc_lowrank_mix",
+        "ihc_pre",
+        "attn_res",
+    ],  # fallback
+    "mhc_fused": ["mhc_pre_gemm", "mhc_sinkhorn", "mhc_post_tilelang"],
+    "mhc_combine": ["mhc_post_tilelang", "ihc_pre", "hc_lowrank_mix", "attn_res"],
+    "hybrid_linear": [
+        "kda_attention",
+        "gated_delta_attention",
+        "linear_conv1d",
+        "mamba_ssd_scan",
+        "mamba_conv1d",
+    ],
     "rmsnorm": ["rmsnorm"],
     "topk": ["topk"],
     "moe_gate": ["router"],
@@ -1234,7 +998,7 @@ KERNEL_DETAIL_DIRECT_MAP = {
     "indexer": [],  # trace kernel is fused_store_indexer_cache only; proj compute is in gemm_bf16
     "paged_mqa": ["paged_mqa"],
     "c4_prefill": ["c4_attn", "c4_attn_v"],
-    "c128_prefill": ["c4_attn", "c4_attn_v"],
+    "c128_prefill": ["hca_attn_score", "hca_attn_v"],
     "rope": ["rope"],
     "quant": ["quant"],
     "activation": ["activation"],
@@ -1435,13 +1199,13 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
     lines.append(f"  SERVING CONFIGURATION")
     lines.append(f"{'=' * 70}")
     lines.append(
-        f"  B={result.batch_size}  S={result.seq_len}  TP={result.tp}  DP={result.dp}  EP={result.ep}"
+        f"  B={result.batch_size}  S={result.seq_len}  context/prefix={result.context_len}  TP={result.tp}  DP={result.dp}  EP={result.ep}"
     )
     lines.append(f"  GPU={result.gpu}  dtype={result.dtype}")
 
     # Embedding
     if result.embed_flops > 0:
-        lines.append(f"[Embedding]  FLOPs: {fmt_flops(result.embed_flops)}")
+        lines.append(f"[LM head]  FLOPs: {fmt_flops(result.embed_flops)}")
 
     # Per-layer (skip when kernel-flow mode — redundant with kernel-flow table)
     if result.layers and not skip_compute_flow:
@@ -1454,7 +1218,7 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
         l0 = result.layers[repr_idx]
         cr_val = getattr(l0, "compress_ratio", 0)
         cr_label = f" (compress_ratio={cr_val})" if cr_val else ""
-        type_label = {0: "FULL_ATTN", 4: "C4_LIGHT", 128: "C128_HEAVY"}.get(cr_val, "")
+        type_label = {0: "SWA_ONLY", 4: "CSA_C4", 128: "HCA_C128"}.get(cr_val, "")
         layer_type_str = f" [{type_label}]" if type_label else ""
         lines.append(f"\n--- Layer {repr_idx} (detail){layer_type_str}{cr_label} ---")
         attn_pct = (
@@ -1486,8 +1250,12 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
     lines.append(f"{'='*70}")
     lines.append(f"  Total (1 forward pass): {fmt_flops(result.total_flops)}")
     if result.embed_flops > 0:
-        lines.append(f"  Embedding:             {fmt_flops(result.embed_flops)}")
-    layer_total = result.total_flops - result.embed_flops
+        lines.append(f"  LM head:               {fmt_flops(result.embed_flops)}")
+    lines.append(f"  Pass epilogue:         {fmt_flops(result.epilogue_flops)}")
+    lines.append(
+        "  Parallelism: uniform TP/EP estimate; replicated/backend-specific ownership is not modeled"
+    )
+    layer_total = result.total_flops - result.embed_flops - result.epilogue_flops
     lines.append(f"  Transformer layers:    {fmt_flops(layer_total)}")
 
     # MFU
@@ -1628,7 +1396,9 @@ def format_kernel_flow(
     for i, op in enumerate(ops):
         per_gpu = (
             op.flops / ep
-            if (op.category == "moe" and "routed" in op.name and ep > 0)
+            if (
+                op.category == "moe" and op.name.startswith("routed_experts") and ep > 0
+            )
             else op.flops / tp if tp > 0 else op.flops
         )
         theo_us = per_gpu / (peak_tflops * 1e6) if peak_tflops > 0 else 0
@@ -1737,7 +1507,7 @@ def format_kernel_flow(
     layer_id = meta.get("layer_id", 0)
     cr = meta.get("compress_ratio", compress_ratio)
     cr_label = f" (compress_ratio={cr})" if cr >= 0 else ""
-    type_label = {0: "FULL_ATTN", 4: "C4_LIGHT", 128: "C128_HEAVY"}.get(cr, "")
+    type_label = {0: "SWA_ONLY", 4: "CSA_C4", 128: "HCA_C128"}.get(cr, "")
     type_str = f" [{type_label}]" if type_label else ""
 
     lines.append(f"\n{'=' * 140}")
@@ -1856,6 +1626,9 @@ def format_json(result: SimResult) -> str:
         "config_source": result.config_source,
         "batch_size": result.batch_size,
         "seq_len": result.seq_len,
+        "context_len": result.context_len,
+        "all_token_logits": result.all_token_logits,
+        "epilogue_flops": result.epilogue_flops,
         "tp": result.tp,
         "dp": result.dp,
         "ep": result.ep,
@@ -1884,6 +1657,10 @@ def format_json(result: SimResult) -> str:
         "per_op_mfu": result.per_op_mfu if result.per_op_mfu else [],
         "kernel_flow": result.kernel_flow,
         "model_arch": result.model_arch,
+        "compute_assumptions": [
+            "Architecture template; sparse/linear/SSM scalar work is estimated",
+            "Uniform TP/EP division; replicated and backend-specific operator ownership is not modeled",
+        ],
     }
     return json.dumps(data, indent=2)
 
@@ -1902,12 +1679,23 @@ def main():
     parser.add_argument(
         "--seq-len", type=int, default=1, help="Sequence length (1 for decode)"
     )
+    parser.add_argument("--config", type=Path, help="Public or local model config.json")
+    parser.add_argument(
+        "--context-len",
+        type=int,
+        default=None,
+        help="Total KV length for decode; prefix KV length for extend",
+    )
+    parser.add_argument("--all-token-logits", action="store_true")
     parser.add_argument("--tp", type=int, default=8, help="Tensor parallelism")
     parser.add_argument("--dp", type=int, default=1, help="Data parallelism")
     parser.add_argument("--ep", type=int, default=8, help="Expert parallelism")
     parser.add_argument("--gpu", default="h20", help="GPU type")
     parser.add_argument(
-        "--dtype", default="bf16", choices=["bf16", "fp8"], help="Data type"
+        "--dtype",
+        default="bf16",
+        choices=["bf16", "fp8", "mxfp8", "fp4", "mxfp4", "nvfp4"],
+        help="Data type",
     )
     parser.add_argument(
         "--measured-ms",
@@ -1947,6 +1735,8 @@ def main():
     args = parser.parse_args()
 
     config_index = load_json(CONFIG_INDEX)
+    for key, value in config_index.items():
+        ALIAS_MAP[value.get("hf_config_source", key).lower()] = key
     gpu_specs = load_json(GPU_SPECS)
 
     if args.list_models:
@@ -1963,16 +1753,28 @@ def main():
             aliases = [k for k, v in GPU_ALIAS.items() if v == key and k != key]
             alias_str = f"  (aliases: {', '.join(aliases)})" if aliases else ""
             print(
-                f"  {key}: {val['display_name']}  BF16={val['bf16_tflops']} TFLOPS{alias_str}"
+                f"  {key}: {val['display_name']}  BF16={val['bf16_tflops'] if val['bf16_tflops'] is not None else 'unknown'} TFLOPS{alias_str}"
             )
         return
 
-    if not args.model:
+    if not args.model and not args.config:
         parser.error(
             "model name is required (use --list-models to see available models)"
         )
 
-    cfg = resolve_model(args.model, config_index)
+    cfg = (
+        normalize_model_config(load_json(args.config))
+        if args.config
+        else resolve_model(args.model, config_index)
+    )
+    if args.config and not args.model:
+        args.model = cfg.get("model_type", args.config.stem)
+    print(
+        f"Assumptions: B={args.batch_size}, S={args.seq_len}, KV/prefix={args.context_len}, TP={args.tp}, DP={args.dp}, EP={args.ep}, GPU={args.gpu}, dtype={args.dtype}. Sparse/SSM work and zero-expert top-k are estimates; LM head uses last-token logits unless --all-token-logits.",
+        file=sys.stderr,
+    )
+    if args.context_len is not None and args.context_len < 1:
+        parser.error("--context-len must be positive")
     if cfg is None:
         print(
             f"Error: model '{args.model}' not found in config index.", file=sys.stderr
@@ -2002,21 +1804,30 @@ def main():
     try:
         if args.kernel_flow is not None:
             kernel_flow_detail = load_json_argument(args.kernel_flow)
-            measured_ms = measured_ms_from_kernel_detail(kernel_flow_detail, n_layers)
+            if measured_ms is None:
+                raise ValueError(
+                    "--kernel-flow requires --measured-ms wall-clock latency; kernel-duration sums are not elapsed time"
+                )
         elif args.kernel_detail is not None:
             kernel_detail = load_json_argument(args.kernel_detail)
-            measured_ms = measured_ms_from_kernel_detail(kernel_detail, n_layers)
+            if measured_ms is None:
+                raise ValueError(
+                    "--kernel-detail requires --measured-ms wall-clock latency; kernel-duration sums are not elapsed time"
+                )
         elif args.kernel_ms is not None:
             kernel_ms = json.loads(args.kernel_ms)
             layer_measured = sum(float(value) for value in kernel_ms.values())
             if layer_measured <= 0:
                 raise ValueError("--kernel-ms durations must sum to a positive value")
-            measured_ms = layer_measured * n_layers
+            if measured_ms is None:
+                raise ValueError(
+                    "--kernel-ms requires --measured-ms wall-clock latency; kernel-duration sums are not elapsed time"
+                )
         elif args.per_layer_ms is not None:
             if args.per_layer_ms <= 0:
                 raise ValueError("--per-layer-ms must be positive")
             measured_ms = args.per_layer_ms * n_layers
-        elif measured_ms is not None and measured_ms <= 0:
+        if measured_ms is not None and measured_ms <= 0:
             raise ValueError("--measured-ms must be positive")
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         parser.error(str(exc))
@@ -2032,6 +1843,8 @@ def main():
         args.gpu,
         args.dtype,
         measured_ms,
+        context_len=args.context_len,
+        all_token_logits=args.all_token_logits,
     )
     # If per-layer-ms was used, show the per-layer measured time in output
     if args.per_layer_ms is not None:
@@ -2102,9 +1915,9 @@ def main():
             peak_tflops = 0
             fp8_peak_tflops = 0
             if gpu_info:
-                dtype_key = "bf16_tflops" if args.dtype == "bf16" else "fp8_tflops"
-                peak_tflops = gpu_info.get(dtype_key, 0)
-                fp8_peak_tflops = gpu_info.get("fp8_tflops", 0)
+                dtype_key = peak_dtype_key(args.dtype)
+                peak_tflops = gpu_info.get(dtype_key) or 0
+                fp8_peak_tflops = gpu_info.get("fp8_tflops") or 0
 
             print(
                 format_kernel_flow(

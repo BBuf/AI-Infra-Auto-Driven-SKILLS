@@ -1,4 +1,4 @@
-# vllm DeepSeek V3.1 Model PR Optimization History
+# vLLM DeepSeek V3.1 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -31,8 +31,8 @@
 | 2026-01-16 | [#32175](https://github.com/vllm-project/vllm/pull/32175) | merged | [Bugfix] [DeepSeek-V3.2] fix sparse_attn_indexer padding | `vllm/model_executor/models/deepseek_v2.py` |
 | 2026-01-20 | [#32652](https://github.com/vllm-project/vllm/pull/32652) | merged | [Bugfix] Fix the fp8_mqa_logits dim mismatch | `vllm/model_executor/models/deepseek_v2.py`, `vllm/utils/deep_gemm.py` |
 | 2026-01-21 | [#29287](https://github.com/vllm-project/vllm/pull/29287) | merged | [ROCm][Deepseekv3.2] Refactor Sparse Indexer as CustomOp | `vllm/model_executor/layers/sparse_attn_indexer.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` |
-| 2026-01-26 | [#33063](https://github.com/vllm-project/vllm/pull/33063) | merged | [Chore] Update type annotation of `input_ids` in model forward | `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/gemma3n.py`, `vllm/model_executor/models/gpt2.py` |
 | 2026-01-26 | [#33018](https://github.com/vllm-project/vllm/pull/33018) | merged | [ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp | `vllm/model_executor/models/deepseek_mtp.py` |
+| 2026-01-26 | [#33063](https://github.com/vllm-project/vllm/pull/33063) | merged | [Chore] Update type annotation of `input_ids` in model forward | `vllm/model_executor/models/modernbert.py`, `vllm/model_executor/models/gemma3n.py`, `vllm/model_executor/models/gpt2.py` |
 | 2026-01-27 | [#32064](https://github.com/vllm-project/vllm/pull/32064) | merged | [5/N][Attention] Finish eliminating `vllm/attention` folder | `vllm/model_executor/layers/attention/mla_attention.py`, `vllm/model_executor/layers/attention/attention.py`, `vllm/model_executor/layers/attention/__init__.py` |
 | 2026-01-28 | [#33191](https://github.com/vllm-project/vllm/pull/33191) | merged | Add flake8-implicit-str-concat rules to Ruff | `tests/tool_parsers/test_deepseekv31_tool_parser.py`, `vllm/model_executor/layers/quantization/kernels/scaled_mm/aiter.py`, `vllm/entrypoints/openai/translations/speech_to_text.py` |
 | 2026-01-31 | [#33174](https://github.com/vllm-project/vllm/pull/33174) | merged | Add support for Mistral Large 3 inference with Flashinfer MoE | `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200,dtype=fp8_w8a8.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_B200.json`, `vllm/model_executor/layers/fused_moe/configs/E=128,N=512,device_name=NVIDIA_GB200,dtype=fp8_w8a8.json` |
@@ -361,6 +361,33 @@ diff -- vllm/v1/attention/ops/rocm_aiter_mla_sparse.py
   - runtime: `vllm/model_executor/layers/sparse_attn_indexer.py` added +318/-0; `vllm/model_executor/models/deepseek_v2.py` modified +14/-233; `vllm/v1/attention/ops/rocm_aiter_mla_sparse.py` modified +518/-80; `vllm/v1/attention/backends/mla/rocm_aiter_mla_sparse.py` modified +110/-10; `vllm/_aiter_ops.py` modified +12/-0; `vllm/v1/attention/backends/mla/indexer.py` modified +6/-0
 - Risk and verification: Runtime changes concentrate in `vllm/_aiter_ops.py`, `vllm/config/compilation.py`, `vllm/model_executor/layers/sparse_attn_indexer.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #33018 - [ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp
+
+- Link: https://github.com/vllm-project/vllm/pull/33018
+- Status/date: merged / 2026-01-26
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +11/-8, 34 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp"; model line: DeepSeek V3.1; category: bug fix; main diff: `vllm/model_executor/models/deepseek_mtp.py`; technical summary: Covers "[ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp"; the main implementation surface is `vllm/model_executor/models/deepseek_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/deepseek_mtp.py` modified +11/-8 (19 lines); hunks: -316,7 +316,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -329,14 +333,13 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/deepseek_mtp.py` modified +11/-8 (19 lines); hunks: -316,7 +316,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -329,14 +333,13 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/deepseek_mtp.py
+@@ -316,7 +316,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-                    split_dim = 1 if "down_proj.weight" in name else 0
++                    split_dim = (
++                        1
++                        if ("down_proj.weight" in name and loaded_weight.ndim > 1)
++                        else 0
++                    )
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/deepseek_mtp.py` modified +11/-8
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/deepseek_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #33063 - [Chore] Update type annotation of `input_ids` in model forward
 
 - Link: https://github.com/vllm-project/vllm/pull/33063
@@ -401,33 +428,6 @@ diff -- vllm/model_executor/models/gpt2.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/modernbert.py` modified +4/-5; `vllm/model_executor/models/gemma3n.py` modified +4/-4; `vllm/model_executor/models/gpt2.py` modified +3/-3; `vllm/model_executor/models/internlm2.py` modified +3/-3; `vllm/model_executor/models/opt.py` modified +3/-3; `vllm/model_executor/models/afmoe.py` modified +2/-2
 - Risk and verification: The diff ships test coverage in `tests/plugins/vllm_add_dummy_model/vllm_add_dummy_model/my_gemma_embedding.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #33018 - [ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp
-
-- Link: https://github.com/vllm-project/vllm/pull/33018
-- Status/date: merged / 2026-01-26
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +11/-8, 34 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp"; model line: DeepSeek V3.1; category: bug fix; main diff: `vllm/model_executor/models/deepseek_mtp.py`; technical summary: Covers "[ROCm][Bugfix] Fix ptpc scale load issue for fused shared expert path in deepseek mtp"; the main implementation surface is `vllm/model_executor/models/deepseek_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/deepseek_mtp.py` modified +11/-8 (19 lines); hunks: -316,7 +316,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -329,14 +333,13 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights, touching `load_weights`.
-- Code diff details:
-  - `vllm/model_executor/models/deepseek_mtp.py` modified +11/-8 (19 lines); hunks: -316,7 +316,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; -329,14 +333,13 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/deepseek_mtp.py
-@@ -316,7 +316,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
--                    split_dim = 1 if "down_proj.weight" in name else 0
-+                    split_dim = (
-+                        1
-+                        if ("down_proj.weight" in name and loaded_weight.ndim > 1)
-+                        else 0
-+                    )
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/deepseek_mtp.py` modified +11/-8
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/deepseek_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #32064 - [5/N][Attention] Finish eliminating `vllm/attention` folder
 

@@ -14,7 +14,7 @@
 ## Public Evidence Boundary
 
 This case study uses only public `sgl-project/sglang` pull requests, their
-public diffs, and public source paths. The audit snapshot is **2026-08-23**.
+public diffs, and public source paths. The state audit snapshot is **2026-10-05** (original diff review retained).
 An open PR is evidence of proposed implementation, not evidence that support
 has shipped. A merged documentation, image, or follow-up PR does not make an
 open runtime spine release-ready by itself.
@@ -52,7 +52,7 @@ invariant and a fallback invariant before discussing peak throughput.
 
 ## Day-0 Support Spine
 
-The open support spine adds `kimi_k3.py` and `kimi_k3_vl.py` plus the runtime
+The merged support spine adds `kimi_k3.py` and `kimi_k3_vl.py` plus the runtime
 surfaces needed to execute them. Manual diff review identifies these
 Day-0-required groups:
 
@@ -87,7 +87,7 @@ States are frozen at the audit date.
 
 ### Cookbook and release recipes
 
-- Evidence: https://github.com/sgl-project/sglang/pull/32542 | state: merged | head: f795573d68a06b095c2605328c8fd000e05eda4b | limitation: documentation and launch recipes do not prove that the still-open runtime support spine has shipped
+- Evidence: https://github.com/sgl-project/sglang/pull/32542 | state: merged | head: f795573d68a06b095c2605328c8fd000e05eda4b | limitation: documentation and launch recipes do not prove that the runtime support spine at its own source/image cut has shipped
 
 The cookbook adds hardware-specific launch and benchmark recipes. A later
 documentation pass marks unsupported cells as in progress instead of
@@ -106,7 +106,7 @@ source, and runtime commit must resolve to the same public support state.
 ### Loading and protocol completion
 
 - Evidence: https://github.com/sgl-project/sglang/pull/32563 | state: merged | head: a67f6d06ae24ebedf8854114b825e4cf87062e55 | limitation: remote object-store loading is covered for the changed loader paths, including the speculative draft path, not every storage backend
-- Evidence: https://github.com/sgl-project/sglang/pull/32567 | state: open | head: e4fa8cea7487cb14012034896d9275cfd071e119 | limitation: proposed parser handling for an elided thinking close is not merged behavior
+- Evidence: https://github.com/sgl-project/sglang/pull/32567 | state: closed-unmerged 2026-08-04 | head: e4fa8cea7487cb14012034896d9275cfd071e119 | limitation: experiment-or-revert: parser handling for an elided thinking close is not merged behavior
 - Evidence: https://github.com/sgl-project/sglang/pull/32617 | state: merged | head: 4ae866ad25b6bf0be38929d977b23a614d7bd957 | limitation: auto-detection registration still requires end-to-end streaming and non-streaming API checks with the released tokenizer
 
 These changes belong to the load and API gates. They should not be hidden in
@@ -115,7 +115,7 @@ a generic “model works” checkbox.
 ### KDA speculative and shape coverage
 
 - Evidence: https://github.com/sgl-project/sglang/pull/32571 | state: merged | head: 488b2f247a459a75fd95327e9d95249311038e2d | limitation: KDA MTP verification optimization must preserve accepted-prefix state parity across draft lengths and fallback paths
-- Evidence: https://github.com/sgl-project/sglang/pull/32624 | state: open | head: 24a2303b4e58362b74cd01ac043346b9bf8bd123 | limitation: wider TP head-count coverage is proposed and cannot be treated as released TP16 or TP32 support
+- Evidence: https://github.com/sgl-project/sglang/pull/32624 | state: closed-unmerged 2026-08-04 | head: 24a2303b4e58362b74cd01ac043346b9bf8bd123 | limitation: experiment-or-revert: wider TP head-count coverage was closed and cannot be treated as released TP16 or TP32 support
 
 The reusable risk pair is “recurrent state plus speculative acceptance.” Test
 accepted lengths zero, partial, and full, then compare the committed state
@@ -125,12 +125,12 @@ against a target-only reference.
 
 Hardware coverage is a matrix, not a boolean:
 
-- Evidence: https://github.com/sgl-project/sglang/pull/32568 | state: open | head: e9e7b2bd6540ed1d5caab751b5f00a58092b6cee | limitation: proposed AMD nightly accuracy jobs cover only their declared models, shapes, and runner environment
+- Evidence: https://github.com/sgl-project/sglang/pull/32568 | state: merged 2026-08-17 | head: e9e7b2bd6540ed1d5caab751b5f00a58092b6cee | limitation: merged AMD nightly accuracy jobs cover only their declared models, shapes, and runner environment
 - Evidence: https://github.com/sgl-project/sglang/pull/32643 | state: merged | head: e369344a4d3233b3ab9869f90eb9aa0b90caa359 | limitation: publishing an AMD ROCm nightly image proves packaging, not model accuracy or performance
 - Evidence: https://github.com/sgl-project/sglang/pull/32604 | state: open | head: 56207ca96dcfdbd107d45c7e9934cc3e24c04ba6 | limitation: the broad NPU port is open and requires separate review of model-specific changes versus shared runtime churn
-- Evidence: https://github.com/sgl-project/sglang/pull/32630 | state: open | head: 7ce34e3c10420f27342a4491e70eb319a3a6403f | limitation: portable ROCm sampling fallbacks are proposed for specific DSpark and DFLASH paths and need distribution-level parity tests
-- Evidence: https://github.com/sgl-project/sglang/pull/32650 | state: open | head: 2150cc999d3e9fd0500cd442b89f5624c653fa6b | limitation: parameterized SiTU FlashInfer MXFP4 selection remains open and must retain conservative dispatcher fallback
-- Evidence: https://github.com/sgl-project/sglang/pull/32661 | state: open | head: 143ec36a60ff12c9b6d992641114eaed224c618b | limitation: draft VLM compatibility documentation does not establish runtime compatibility on its own
+- Evidence: https://github.com/sgl-project/sglang/pull/32630 | state: closed-unmerged 2026-08-12 | head: 7ce34e3c10420f27342a4491e70eb319a3a6403f | limitation: experiment-or-revert: portable ROCm sampling fallbacks were closed for specific DSpark and DFLASH paths and need distribution-level parity tests
+- Evidence: https://github.com/sgl-project/sglang/pull/32650 | state: closed-unmerged 2026-08-04 | head: 2150cc999d3e9fd0500cd442b89f5624c653fa6b | limitation: parameterized SiTU FlashInfer MXFP4 selection was closed-unmerged (experiment-or-revert) and must retain conservative dispatcher fallback
+- Evidence: https://github.com/sgl-project/sglang/pull/32661 | state: merged 2026-07-29 | head: 143ec36a60ff12c9b6d992641114eaed224c618b | limitation: merged VLM compatibility documentation does not establish runtime compatibility on its own
 
 Keep platform image production, platform accuracy CI, kernel portability, and
 documentation as separate PR nodes. This allows one platform to remain
@@ -187,3 +187,11 @@ For the full manually diff-reviewed history and file coverage, use:
 Re-audit live PR state before reusing this case after 2026-08-23. The
 follow-up items below the spine may still be open or already merged; query
 GitHub at review time instead of copying the 2026-07-28 open/head snapshots.
+
+## Mainline follow-ups through 2026-10-05
+
+Merged: #40794 DFLASH (2026-09-23), #40922 kernel namespace retirement
+(2026-09-24), #41164 fused QKVG loading (2026-09-28), #40811 ROCm MXFP4
+(2026-10-01), #40269 platform guards (2026-10-01). Kernel paths under
+`kernels/ops/kimi_k3/` are historical; current paths use operator domains.
+#32604 remains an open NPU candidate lane; it does not certify support.

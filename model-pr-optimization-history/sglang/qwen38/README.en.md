@@ -1,4 +1,4 @@
-# sglang Qwen3.8 Model PR Optimization History
+# SGLang Qwen3.8 Model PR Optimization History
 
 SGLang has no dedicated `python/sglang/srt/models/qwen3_8*.py` tree at the
 2026-08-23 head. Public `Qwen/Qwen3.8-27B` uses `model_type=qwen3_5` hybrid
@@ -7,24 +7,36 @@ tracks the Qwen3.8 cookbook and deployment surface only. The 2.4T
 `Qwen3.8-2.4T-A95B` cells are a different multi-node MoE recipe; do not
 copy them into a single-GPU 27B serving plan.
 
+2026-10-05 note: Qwen3.8-Flash-Next is implemented by
+`python/sglang/srt/models/qwen4_exp.py` (#37500); its model and kernel PRs are in
+the `qwen4-exp` slug, while its cookbook pages remain here.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` | [#34860](https://github.com/sgl-project/sglang/pull/34860), [#34863](https://github.com/sgl-project/sglang/pull/34863), [#35064](https://github.com/sgl-project/sglang/pull/35064), [#35065](https://github.com/sgl-project/sglang/pull/35065), [#35121](https://github.com/sgl-project/sglang/pull/35121), [#35663](https://github.com/sgl-project/sglang/pull/35663), [#35753](https://github.com/sgl-project/sglang/pull/35753), [#35767](https://github.com/sgl-project/sglang/pull/35767), [#35786](https://github.com/sgl-project/sglang/pull/35786), [#35825](https://github.com/sgl-project/sglang/pull/35825) |
+| `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` | [#34860](https://github.com/sgl-project/sglang/pull/34860), [#34863](https://github.com/sgl-project/sglang/pull/34863), [#35064](https://github.com/sgl-project/sglang/pull/35064), [#35065](https://github.com/sgl-project/sglang/pull/35065), [#35121](https://github.com/sgl-project/sglang/pull/35121), [#35663](https://github.com/sgl-project/sglang/pull/35663), [#35753](https://github.com/sgl-project/sglang/pull/35753), [#35767](https://github.com/sgl-project/sglang/pull/35767), [#35786](https://github.com/sgl-project/sglang/pull/35786), [#35825](https://github.com/sgl-project/sglang/pull/35825), [#36020](https://github.com/sgl-project/sglang/pull/36020), [#36496](https://github.com/sgl-project/sglang/pull/36496), ... (13 total) |
+| `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` | [#36496](https://github.com/sgl-project/sglang/pull/36496), [#36497](https://github.com/sgl-project/sglang/pull/36497), [#36499](https://github.com/sgl-project/sglang/pull/36499), [#37995](https://github.com/sgl-project/sglang/pull/37995), [#41046](https://github.com/sgl-project/sglang/pull/41046) |
 | `docs/cookbook/autoregressive/Qwen/Qwen3.8.mdx` | [#34587](https://github.com/sgl-project/sglang/pull/34587), [#34590](https://github.com/sgl-project/sglang/pull/34590), [#34601](https://github.com/sgl-project/sglang/pull/34601), [#34860](https://github.com/sgl-project/sglang/pull/34860) |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/qwen3_8_max.mdx` | [#34836](https://github.com/sgl-project/sglang/pull/34836) |
-| `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` | [#34860](https://github.com/sgl-project/sglang/pull/34860), [#35064](https://github.com/sgl-project/sglang/pull/35064) |
-| `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx` | [#34863](https://github.com/sgl-project/sglang/pull/34863), [#35065](https://github.com/sgl-project/sglang/pull/35065) |
-| `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` | [#34860](https://github.com/sgl-project/sglang/pull/34860), [#34863](https://github.com/sgl-project/sglang/pull/34863), [#35065](https://github.com/sgl-project/sglang/pull/35065), [#35121](https://github.com/sgl-project/sglang/pull/35121), [#35663](https://github.com/sgl-project/sglang/pull/35663), [#35753](https://github.com/sgl-project/sglang/pull/35753), [#35786](https://github.com/sgl-project/sglang/pull/35786), [#35825](https://github.com/sgl-project/sglang/pull/35825) |
+| `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` | [#34860](https://github.com/sgl-project/sglang/pull/34860), [#35064](https://github.com/sgl-project/sglang/pull/35064), [#36020](https://github.com/sgl-project/sglang/pull/36020), [#38611](https://github.com/sgl-project/sglang/pull/38611) |
+| `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx` | [#34863](https://github.com/sgl-project/sglang/pull/34863), [#35065](https://github.com/sgl-project/sglang/pull/35065), [#36020](https://github.com/sgl-project/sglang/pull/36020) |
+| `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` | [#34860](https://github.com/sgl-project/sglang/pull/34860), [#34863](https://github.com/sgl-project/sglang/pull/34863), [#35065](https://github.com/sgl-project/sglang/pull/35065), [#35121](https://github.com/sgl-project/sglang/pull/35121), [#35663](https://github.com/sgl-project/sglang/pull/35663), [#35753](https://github.com/sgl-project/sglang/pull/35753), [#35786](https://github.com/sgl-project/sglang/pull/35786), [#35825](https://github.com/sgl-project/sglang/pull/35825), [#36020](https://github.com/sgl-project/sglang/pull/36020), [#38611](https://github.com/sgl-project/sglang/pull/38611) |
 | `docs/src/snippets/configs/Qwen/qwen3.8-benchmarks.jsx` | [#34587](https://github.com/sgl-project/sglang/pull/34587) |
+| `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` | [#36496](https://github.com/sgl-project/sglang/pull/36496), [#37995](https://github.com/sgl-project/sglang/pull/37995) |
+| `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` | [#36496](https://github.com/sgl-project/sglang/pull/36496), [#36611](https://github.com/sgl-project/sglang/pull/36611), [#37995](https://github.com/sgl-project/sglang/pull/37995), [#41046](https://github.com/sgl-project/sglang/pull/41046) |
 | `docs/src/snippets/configs/Qwen/qwen3.8.jsx` | [#34587](https://github.com/sgl-project/sglang/pull/34587), [#34590](https://github.com/sgl-project/sglang/pull/34590), [#34601](https://github.com/sgl-project/sglang/pull/34601) |
+| `python/sglang/kernels/kda_kernels/qwen38_qsa_sm121/README.md` | no direct PR-number commit |
+| `python/sglang/kernels/kda_kernels/qwen38_qsa_sm121/__init__.py` | no direct PR-number commit |
+| `python/sglang/kernels/kda_kernels/qwen38_qsa_sm121/kernel.py` | no direct PR-number commit |
+| `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py` | [#35383](https://github.com/sgl-project/sglang/pull/35383) |
+| `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py` | [#36901](https://github.com/sgl-project/sglang/pull/36901) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 14
+- Git-traced PRs: 24
 - Extra PRs preserved from existing docs: 0
-- Total PRs in this document: 14
+- Total PRs in this document: 24
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -46,6 +58,16 @@ copy them into a single-GPU 27B serving plan.
 | 2026-08-20 | [#35767](https://github.com/sgl-project/sglang/pull/35767) | merged | [docs] Point the Qwen3.8-27B DFLASH2 note back at the rolling dev image tag | `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` |
 | 2026-08-21 | [#35786](https://github.com/sgl-project/sglang/pull/35786) | merged | [docs] Retune the Qwen3.8-27B RTX 5090 DFLASH2 cells against 1cf2b8c | `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` |
 | 2026-08-22 | [#35825](https://github.com/sgl-project/sglang/pull/35825) | merged | [docs] Re-measure the Qwen3.8-27B RTX 5090, RTX PRO 6000 and DGX Spark grids on 1cf2b8c | `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` |
+| 2026-08-24 | [#35383](https://github.com/sgl-project/sglang/pull/35383) | merged | [AMD][CI] Add the Qwen3.8 MXFP4 MI35x nightly | `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py` |
+| 2026-08-24 | [#36020](https://github.com/sgl-project/sglang/pull/36020) | merged | [docs] Split the Qwen3.8-27B NVFP4 cells by lm_head precision | `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` |
+| 2026-08-26 | [#36496](https://github.com/sgl-project/sglang/pull/36496) | merged | Add Qwen3.8-Flash-Next cookbook | `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` |
+| 2026-08-26 | [#36499](https://github.com/sgl-project/sglang/pull/36499) | merged | docs: point the Qwen3.8-Flash-Next cookbook at model support PR #36497 | `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` |
+| 2026-08-27 | [#36611](https://github.com/sgl-project/sglang/pull/36611) | merged | docs(cookbook): fix Qwen3.8 Flash Next H200 MTP verify with BF16 SSM state | `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` |
+| 2026-09-07 | [#37995](https://github.com/sgl-project/sglang/pull/37995) | merged | docs(cookbook): Qwen3.8-Flash-Next NVFP4 recipes for DGX Spark (1x, 2x) and RTX PRO 6000 | `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` |
+| 2026-09-08 | [#36497](https://github.com/sgl-project/sglang/pull/36497) | closed | Introduce Qwen 3.8 Flash Next | `python/sglang/srt/models/qwen4_exp.py`, `python/sglang/srt/layers/attention/qwen_sparse_attn_backend.py`, `python/sglang/srt/layers/attention/qsa/qsa_indexer.py` |
+| 2026-09-11 | [#38611](https://github.com/sgl-project/sglang/pull/38611) | merged | [docs] Add the NVIDIA NVFP4 export to the Qwen3.8-27B cookbook | `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` |
+| 2026-09-24 | [#41046](https://github.com/sgl-project/sglang/pull/41046) | merged | [Docs] Enable Qwen3.8 Flash Next NVIDIA NVFP4 on B200/B300/GB300 | `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` |
+| 2026-09-30 | [#36901](https://github.com/sgl-project/sglang/pull/36901) | merged | [AMD] Add Qwen3.8-Flash-Next-FP8 nightly validation | `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -538,6 +560,346 @@ diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx
 - Reviewed files:
   - docs: `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +73/-73; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +46/-77
 - Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #35383 - [AMD][CI] Add the Qwen3.8 MXFP4 MI35x nightly
+
+- Link: https://github.com/sgl-project/sglang/pull/35383
+- Status/date: merged / 2026-08-24
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py`; associated commits `20064623ab46`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +368/-78, 583 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py` added +214/-0 (214 lines); hunks: -0,0 +1,214; symbols: TestQwen38Mxfp4MI35x, setUpClass, test_a_gsm8k_accuracy, test_b_serving_perf, touching `TestQwen38Mxfp4MI35x, setUpClass, test_a_gsm8k_accuracy`.
+- Code diff details:
+  - `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py` added +214/-0 (214 lines); hunks: -0,0 +1,214; symbols: TestQwen38Mxfp4MI35x, setUpClass, test_a_gsm8k_accuracy, test_b_serving_perf
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py
+@@ -0,0 +1,214 @@
++"""MI35x Qwen3.8-2.4T-A95B MXFP4 GSM8K accuracy + serving-perf test (8-GPU)
++Tests amd/Qwen3.8-2.4T-A95B-Quark-MXFP4, AMD's day-0 Quark quantization of
++Qwen/Qwen3.8-2.4T-A95B-FP8, on a single 8-GPU MI35x node.
++Qwen3.8 is a 2.4T-parameter / 95B-active hybrid MoE: 23 repeats of 3 x Gated
++DeltaNet -> MoE then 1 x Gated Attention -> MoE, 512 experts with 10 routed + 1
++shared active. It reuses the Qwen3.5 architecture -- the checkpoint reports
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py` added +214/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/accuracy/mi35x/test_qwen38_mxfp4_eval_mi35x.py`, `test/run_suite.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #36020 - [docs] Split the Qwen3.8-27B NVFP4 cells by lm_head precision
+
+- Link: https://github.com/sgl-project/sglang/pull/36020
+- Status/date: merged / 2026-08-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`; associated commits `5030637c65ba`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +188/-30, 359 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +162/-17 (179 lines); hunks: -44,7 +44,13 @@ export const config = {; -62,7 +68,7 @@ export const config = {; `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx` modified +2/-2 (4 lines); hunks: -30,7 +30,7; -44,7 +44,7 @@ export const benchmarks = [; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +22/-9 (31 lines); hunks: -168,14 +168,25 @@ context from earlier messages.; -251,12 +262,14 @@ checkpoint's calibration scales automatically.; symbols: GPUs, touching `GPUs`; `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` modified +2/-2 (4 lines); hunks: -56,7 +56,7 @@ export const Qwen38MambaRatioCalculator = () => {; -99,7 +99,7 @@ export const Qwen38MambaRatioCalculator = () => {.
+- Code diff details:
+  - `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +162/-17 (179 lines); hunks: -44,7 +44,13 @@ export const config = {; -62,7 +68,7 @@ export const config = {
+  - `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx` modified +2/-2 (4 lines); hunks: -30,7 +30,7; -44,7 +44,7 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +22/-9 (31 lines); hunks: -168,14 +168,25 @@ context from earlier messages.; -251,12 +262,14 @@ checkpoint's calibration scales automatically.; symbols: GPUs
+  - `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` modified +2/-2 (4 lines); hunks: -56,7 +56,7 @@ export const Qwen38MambaRatioCalculator = () => {; -99,7 +99,7 @@ export const Qwen38MambaRatioCalculator = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx
+@@ -44,7 +44,13 @@ export const config = {
+-      { id: "nvfp4", label: "NVFP4" },
++      // Two NVFP4 exports ship separately, differing only in the lm_head:
++      // one keeps it dense bf16, the other packs it to FP4. The bf16 head is
++      // ~1.7GB larger on disk (~3.2GB at runtime), so it is strictly the
++      // harder of the two to fit -- which is why the FP4-head cells reuse the
++      // BF16-head recipes verbatim.
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx
+@@ -30,7 +30,7 @@
+-    match: { hw: "gb300", variant: "default", quant: "nvfp4", strategy: "balanced", nodes: "single" },
++    match: { hw: "gb300", variant: "default", quant: "nvfp4-fp4-head", strategy: "balanced", nodes: "single" },
+@@ -44,7 +44,7 @@ export const benchmarks = [
+-    match: { hw: "gb300", variant: "default", quant: "nvfp4", strategy: "high-throughput", nodes: "single" },
++    match: { hw: "gb300", variant: "default", quant: "nvfp4-fp4-head", strategy: "high-throughput", nodes: "single" },
+diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx
+@@ -168,14 +168,25 @@ context from earlier messages.
+-      <td style={{padding: "9px 12px", fontWeight: 500, backgroundColor: "rgba(255,255,255,0.02)"}}>Qwen3.8-27B-NVFP4</td>
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +162/-17; `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx` modified +2/-2; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +22/-9; `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` modified +2/-2
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b-benchmarks.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #36496 - Add Qwen3.8-Flash-Next cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/36496
+- Status/date: merged / 2026-08-26
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; associated commits `c7b5e76fa925`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 7 files, +1027/-10, 1074 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` added +723/-0 (723 lines); hunks: -0,0 +1,723; `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` added +72/-0 (72 lines); hunks: -0,0 +1,72; `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` added +222/-0 (222 lines); hunks: -0,0 +1,222; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +0/-1 (1 lines); hunks: -1,7 +1,6.
+- Code diff details:
+  - `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` added +723/-0 (723 lines); hunks: -0,0 +1,723
+  - `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` added +72/-0 (72 lines); hunks: -0,0 +1,72
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` added +222/-0 (222 lines); hunks: -0,0 +1,222
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +0/-1 (1 lines); hunks: -1,7 +1,6
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx
+@@ -0,0 +1,723 @@
++// Single `export const config` literal — no spreads/calls/IIFE (Mintlify re-evals at hydration).
++// Cells are denormalized: no `--nnodes`/`--node-rank`/`--dist-init-addr`/`--host`/`--port` literals — engine injects them.
++//
++// Qwen3.8-Flash-Next: 176B total params (51B of that is the N-gram embedding
++// table) with 6B active per token. Hybrid linear/full attention — 3 of every 4
++// layers are Gated DeltaNet, the 4th is global attention running Qwen Sparse
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx
+@@ -0,0 +1,72 @@
++export const benchmarks = [
++  {
++    match: { hw: "h200", variant: "default", quant: "bf16", strategy: "low-latency", nodes: "single" },
++    sglang_version: "qwen4-main @ e17062a1d",
++    accuracy: { gsm8k_pct: 97.73, aime26_pct: 97.92 },
++  },
+diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx
+@@ -0,0 +1,222 @@
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` added +723/-0; `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` added +72/-0; `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` added +222/-0; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +0/-1
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`, `docs/cookbook/autoregressive/intro.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #36499 - docs: point the Qwen3.8-Flash-Next cookbook at model support PR #36497
+
+- Link: https://github.com/sgl-project/sglang/pull/36499
+- Status/date: merged / 2026-08-26
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`; associated commits `8eaffdf382e0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +3/-3, 19 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +3/-3 (6 lines); hunks: -23,15 +23,15 @@ pip install -U uv.
+- Code diff details:
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +3/-3 (6 lines); hunks: -23,15 +23,15 @@ pip install -U uv
+- Key code excerpts:
+
+```diff
+diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx
+@@ -23,15 +23,15 @@ pip install -U uv
+-# https://github.com/sgl-project/sglang/pull/<PR-NUMBER>
++# https://github.com/sgl-project/sglang/pull/36497
+-git fetch origin pull/<PR-NUMBER>/head && git checkout FETCH_HEAD
++git fetch origin pull/36497/head && git checkout FETCH_HEAD
+-`<PR-NUMBER>` is a placeholder — substitute the number of the SGLang PR that adds Qwen3.8-Flash-Next model support. Once that PR is in a release, `uv pip install sglang` is enough
++Model support lands in [#36497](https://github.com/sgl-project/sglang/pull/36497). Once it is in a release, `uv pip install sglang` is enough and this whole step goes away.
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +3/-3
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #36611 - docs(cookbook): fix Qwen3.8 Flash Next H200 MTP verify with BF16 SSM state
+
+- Link: https://github.com/sgl-project/sglang/pull/36611
+- Status/date: merged / 2026-08-27
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; associated commits `536f570e6692`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +2/-0, 16 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +2/-0 (2 lines); hunks: -202,6 +202,7 @@ export const config = {; -443,6 +444,7 @@ export const config = {.
+- Code diff details:
+  - `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +2/-0 (2 lines); hunks: -202,6 +202,7 @@ export const config = {; -443,6 +444,7 @@ export const config = {
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx
+@@ -202,6 +202,7 @@ export const config = {
++        "--linear-attn-verify-backend triton",
+@@ -443,6 +444,7 @@ export const config = {
++        "--linear-attn-verify-backend triton",
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +2/-0
+- Risk and verification: This is mostly docs/examples in `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #37995 - docs(cookbook): Qwen3.8-Flash-Next NVFP4 recipes for DGX Spark (1x, 2x) and RTX PRO 6000
+
+- Link: https://github.com/sgl-project/sglang/pull/37995
+- Status/date: merged / 2026-09-07
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; associated commits `f4b75b5c36ca`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +791/-13, 912 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +562/-9 (571 lines); hunks: -7,29 +7,49; -39,8 +59,11 @@ export const config = {; `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` modified +181/-0 (181 lines); hunks: -65,6 +65,187 @@ export const benchmarks = [; `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +48/-4 (52 lines); hunks: -40,13 +40,19 @@ Then run the **Python** output of the command panel below in...; -68,6 +74,39 @@ import { benchmarks } from "/src/snippets/configs/Qwen/qwen3.....
+- Code diff details:
+  - `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +562/-9 (571 lines); hunks: -7,29 +7,49; -39,8 +59,11 @@ export const config = {
+  - `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` modified +181/-0 (181 lines); hunks: -65,6 +65,187 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +48/-4 (52 lines); hunks: -40,13 +40,19 @@ Then run the **Python** output of the command panel below in...; -68,6 +74,39 @@ import { benchmarks } from "/src/snippets/configs/Qwen/qwen3....
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx
+@@ -7,29 +7,49 @@
+-// Every recipe on this page is single-node: BF16 and FP8 run TP4 (so four GPUs
+-// of an 8-GPU H200/B200/B300 host, or a whole 4-GPU GB300 node), NVFP4 runs on
+-// a single GPU, and the AMD cells run TP8. That fits because 6B active params
+-// keeps compute small and the N-gram table is the only large weight block.
++// Every datacenter recipe on this page is single-node: BF16 and FP8 run TP4 (so
++// four GPUs of an 8-GPU H200/B200/B300 host, or a whole 4-GPU GB300 node), NVFP4
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx
+@@ -65,6 +65,187 @@ export const benchmarks = [
++  // 2x DGX Spark, TP=2, lmsysorg/sglang:qwen38flashnext (SGLang 593134d17a),
++  // 2026-09-04. GSM8K is the full 1,319-question set via the chat API (thinking
++  // off, greedy, 8192 max tokens) on lmsysorg/sglang:dev-qwen38-next-local
++  // (qwen4-main-squashed 4ccff141db). AIME26 and MMMU-Pro not run.
++  {
++    match: { hw: "dgx-spark", variant: "default", quant: "nvfp4", strategy: "low-latency", nodes: "multi-2" },
+diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx
+@@ -40,13 +40,19 @@ Then run the **Python** output of the command panel below in that environment.
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +562/-9; `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx` modified +181/-0; `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +48/-4
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next-benchmarks.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #36497 - Introduce Qwen 3.8 Flash Next
+
+- Link: https://github.com/sgl-project/sglang/pull/36497
+- Status/date: closed / 2026-09-08
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`; associated commits `8eaffdf382e0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 115 files, +20609/-116, 22023 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/qwen4_exp.py` added +2182/-0 (2182 lines); hunks: -0,0 +1,2182; symbols: _ple_table_is_fp8, _get_ple_forward_mode, _get_processed_token_count, _PLEBatch, touching `_ple_table_is_fp8, _get_ple_forward_mode, _get_processed_token_count`; `python/sglang/srt/layers/attention/qwen_sparse_attn_backend.py` added +1883/-0 (1883 lines); hunks: -0,0 +1,1883; symbols: _resolve_trtllm_sparse_decode, _resolve_flash_attn_varlen_func, flash_attn_varlen_func, QwenSparseAttnMetadata, touching `_resolve_trtllm_sparse_decode, _resolve_flash_attn_varlen_func, flash_attn_varlen_func`; `python/sglang/srt/layers/attention/qsa/qsa_indexer.py` added +652/-0 (652 lines); hunks: -0,0 +1,652; symbols: _qsa_prefill_row_chunk_size, QSAIndexer, __init__, _validate_config, touching `_qsa_prefill_row_chunk_size, QSAIndexer, __init__`; `python/sglang/srt/models/qwen4_exp_ple_table.py` added +483/-0 (483 lines); hunks: -0,0 +1,483; symbols: PleFilePrefetcher, __init__, pages_for_rows, _advise, touching `PleFilePrefetcher, __init__, pages_for_rows`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen4_exp.py` added +2182/-0 (2182 lines); hunks: -0,0 +1,2182; symbols: _ple_table_is_fp8, _get_ple_forward_mode, _get_processed_token_count, _PLEBatch
+  - `python/sglang/srt/layers/attention/qwen_sparse_attn_backend.py` added +1883/-0 (1883 lines); hunks: -0,0 +1,1883; symbols: _resolve_trtllm_sparse_decode, _resolve_flash_attn_varlen_func, flash_attn_varlen_func, QwenSparseAttnMetadata
+  - `python/sglang/srt/layers/attention/qsa/qsa_indexer.py` added +652/-0 (652 lines); hunks: -0,0 +1,652; symbols: _qsa_prefill_row_chunk_size, QSAIndexer, __init__, _validate_config
+  - `python/sglang/srt/models/qwen4_exp_ple_table.py` added +483/-0 (483 lines); hunks: -0,0 +1,483; symbols: PleFilePrefetcher, __init__, pages_for_rows, _advise
+  - `python/sglang/srt/layers/attention/qsa/sparse_attn.py` added +456/-0 (456 lines); hunks: -0,0 +1,456; symbols: _get_best_config, _sparse_gqa_prefill, sparse_gqa_fwd_interface_triton, _sparse_gqa_chunk_prefill
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen4_exp.py
+@@ -0,0 +1,2182 @@
++"""Inference-only Qwen4-Exp (text + VL) on the Qwen3.5 backbone."""
++import math
++from contextlib import nullcontext
++from typing import Any, Iterable, Optional, Set, Tuple
++import msgspec
++import sympy
+diff -- python/sglang/srt/layers/attention/qwen_sparse_attn_backend.py
+@@ -0,0 +1,1883 @@
++"""Sparse-attention backend for Qwen4-Exp models with an indexer.
++The backend is installed as the full-attention side of Qwen4-Exp's hybrid backend;
++linear-attention layers continue to use GDN.
++"""
++from __future__ import annotations
++import logging
+diff -- python/sglang/srt/layers/attention/qsa/qsa_indexer.py
+@@ -0,0 +1,652 @@
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/qwen4_exp.py` added +2182/-0; `python/sglang/srt/layers/attention/qwen_sparse_attn_backend.py` added +1883/-0; `python/sglang/srt/layers/attention/qsa/qsa_indexer.py` added +652/-0; `python/sglang/srt/models/qwen4_exp_ple_table.py` added +483/-0; `python/sglang/srt/layers/attention/qsa/sparse_attn.py` added +456/-0; `python/sglang/srt/layers/attention/qsa/mqa.py` added +422/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/run_eval.py`, `python/sglang/test/simple_eval_aime25.py`, `python/sglang/test/simple_eval_aime26.py`, `python/sglang/test/simple_eval_common.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38611 - [docs] Add the NVIDIA NVFP4 export to the Qwen3.8-27B cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/38611
+- Status/date: merged / 2026-09-11
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`; associated commits `df6424967ab8`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +283/-96, 601 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +203/-47 (250 lines); hunks: -28,10 +28,11 @@ export const config = {; -51,6 +52,15 @@ export const config = {; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +73/-44 (117 lines); hunks: -19,9 +19,7 @@ For all methods and hardware platforms, see the [official SGLa...; -31,7 +29,7 @@ Then run the **Python** output of the command panel below in t...; `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` modified +7/-5 (12 lines); hunks: -89,17 +89,19 @@ export const Qwen38MambaRatioCalculator = () => {.
+- Code diff details:
+  - `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +203/-47 (250 lines); hunks: -28,10 +28,11 @@ export const config = {; -51,6 +52,15 @@ export const config = {
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +73/-44 (117 lines); hunks: -19,9 +19,7 @@ For all methods and hardware platforms, see the [official SGLa...; -31,7 +29,7 @@ Then run the **Python** output of the command panel below in t...
+  - `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` modified +7/-5 (12 lines); hunks: -89,17 +89,19 @@ export const Qwen38MambaRatioCalculator = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx
+@@ -28,10 +28,11 @@ export const config = {
+-  // (sign-off recorded in the PR description). NVFP4: a no-op made visible
+-  // (the checkpoint's `kv_cache_quant_algo: FP8` already resolved `auto` to
+-  // fp8_e4m3). BF16/FP8: a real quality/capacity trade — halves
+-  // kv_bytes_per_token but those checkpoints carry no fp8 KV calibration.
++  // (sign-off recorded in the PR description). The two RadixArk NVFP4 exports:
++  // a no-op made visible (their `kv_cache_quant_algo: FP8` already resolved
+diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx
+@@ -19,9 +19,7 @@ For all methods and hardware platforms, see the [official SGLang installation gu
+-git clone https://github.com/sgl-project/sglang.git && cd sglang
+-git checkout 1cf2b8c54d81802abc15dcf23a29b9cc687bc01e
+-uv pip install --prerelease=allow -e "python[all]"
++uv pip install --prerelease=allow sglang
+@@ -31,7 +29,7 @@ Then run the **Python** output of the command panel below in that environment.
+-docker pull lmsysorg/sglang:dev-qwen38-27b-dflash2
+diff -- docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx
+@@ -89,17 +89,19 @@ export const Qwen38MambaRatioCalculator = () => {
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx` modified +203/-47; `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx` modified +73/-44; `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx` modified +7/-5
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-27B.mdx`, `docs/src/snippets/_qwen38_mamba_ratio_calculator.jsx`, `docs/src/snippets/configs/Qwen/qwen3.8-27b.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #41046 - [Docs] Enable Qwen3.8 Flash Next NVIDIA NVFP4 on B200/B300/GB300
+
+- Link: https://github.com/sgl-project/sglang/pull/41046
+- Status/date: merged / 2026-09-24
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; associated commits `a1eb691ab51b`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +120/-52, 213 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +117/-3 (120 lines); hunks: -8,8 +8,9; -44,7 +45,7 @@ export const config = {; `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +3/-49 (52 lines); hunks: -10,59 +10,13 @@ tag: NEW.
+- Code diff details:
+  - `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +117/-3 (120 lines); hunks: -8,8 +8,9; -44,7 +45,7 @@ export const config = {
+  - `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +3/-49 (52 lines); hunks: -10,59 +10,13 @@ tag: NEW
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx
+@@ -8,8 +8,9 @@
+-// four GPUs of an 8-GPU H200/B200/B300 host, or a whole 4-GPU GB300 node), NVFP4
+-// runs on a single GPU, and the AMD cells run TP8. That fits because 6B active
++// four GPUs of an 8-GPU H200/B200/B300 host, or a whole 4-GPU GB300 node).
++// Both RadixArk and NVIDIA NVFP4 recipes use TP1. The AMD cells run TP8.
++// That fits because 6B active
+@@ -44,7 +45,7 @@ export const config = {
+diff -- docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx
+@@ -10,59 +10,13 @@ tag: NEW
+-For all methods and hardware platforms, see the [official SGLang installation guide](../../../docs/get-started/install). The two paths below match the **Python / Docker** toggle i
+-<Tabs>
+-<Tab title="Python (pip / uv)">
+-Qwen3.8-Flash-Next support is not in a tagged release yet, so build the model-support PR rather than installing from PyPI:
++Use an SGLang build that includes Qwen3.8-Flash-Next support (v0.5.20 or later).
+-pip install -U uv
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx` modified +117/-3; `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx` modified +3/-49
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Qwen/Qwen3.8-Flash-Next.mdx`, `docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #36901 - [AMD] Add Qwen3.8-Flash-Next-FP8 nightly validation
+
+- Link: https://github.com/sgl-project/sglang/pull/36901
+- Status/date: merged / 2026-09-30
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py`; associated commits `b87a241a6f97`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +331/-0, 353 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py` added +229/-0 (229 lines); hunks: -0,0 +1,229; symbols: TestQwen38FlashNextFP8AMD, _assert_multimodal_generation, test_gsm8k_accuracy, touching `TestQwen38FlashNextFP8AMD, _assert_multimodal_generation, test_gsm8k_accuracy`.
+- Code diff details:
+  - `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py` added +229/-0 (229 lines); hunks: -0,0 +1,229; symbols: TestQwen38FlashNextFP8AMD, _assert_multimodal_generation, test_gsm8k_accuracy
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py
+@@ -0,0 +1,229 @@
++"""AMD Qwen3.8-Flash-Next-FP8 graph-mode GSM8K accuracy test.
++The released FP8 checkpoint uses TP1 on gfx950 and TP2+EP2 on gfx942, where
++the 192 GiB device capacity cannot hold the target, MTP draft, and graph/KV
++state on one GPU. These nightly tests pin the checkpoint revision and exercise
++the same AITER-attention decode-graph path with EAGLE speculation on both
++architectures. SGLANG_USE_AITER=0 keeps direct AITER paged QSA disabled so the
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py` added +229/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/accuracy/test_qwen38_flash_next_fp8_eval.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

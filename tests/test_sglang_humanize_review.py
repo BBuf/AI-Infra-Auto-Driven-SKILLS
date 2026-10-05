@@ -192,3 +192,13 @@ def test_query_script_can_filter_conversation_and_review_submission() -> None:
         )
 
         assert f"- Type: `{kind}`" in result.stdout
+
+
+def test_user_type_machine_accounts_are_excluded_from_future_collection():
+    spec = importlib.util.spec_from_file_location("review_collector", SCRIPTS / "collect_sglang_review_corpus.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    for login in ("sglang-bot", "sglang-npu-bot", "amd-bot", "metamergebot", "diffray-bot"):
+        assert module.is_agent_user({"login": login, "type": "User"})
+    assert not module.is_agent_user({"login": "human-reviewer", "type": "User"})

@@ -1,12 +1,12 @@
-# vllm Qwen3 Core Model PR Optimization History
+# vLLM Qwen3 Core Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
-| `tests/models/multimodal/pooling/test_colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574) |
+| `tests/models/multimodal/pooling/test_colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574), [#55588](https://github.com/vllm-project/vllm/pull/55588), [#55878](https://github.com/vllm-project/vllm/pull/55878), [#55889](https://github.com/vllm-project/vllm/pull/55889) |
 | `tests/parser/engine/test_qwen3.py` | [#45413](https://github.com/vllm-project/vllm/pull/45413), [#46047](https://github.com/vllm-project/vllm/pull/46047), [#46351](https://github.com/vllm-project/vllm/pull/46351), [#48846](https://github.com/vllm-project/vllm/pull/48846) |
-| `vllm/model_executor/models/colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574) |
+| `vllm/model_executor/models/colqwen3.py` | [#34398](https://github.com/vllm-project/vllm/pull/34398), [#34574](https://github.com/vllm-project/vllm/pull/34574), [#51289](https://github.com/vllm-project/vllm/pull/51289) |
 | `vllm/model_executor/models/qwen3.py` | [#15289](https://github.com/vllm-project/vllm/pull/15289), [#17735](https://github.com/vllm-project/vllm/pull/17735), [#19260](https://github.com/vllm-project/vllm/pull/19260), [#21924](https://github.com/vllm-project/vllm/pull/21924), [#29816](https://github.com/vllm-project/vllm/pull/29816) |
 | `vllm/model_executor/models/qwen3_dflash.py` | [#52560](https://github.com/vllm-project/vllm/pull/52560) |
 | `vllm/model_executor/models/qwen3_moe.py` | [#15289](https://github.com/vllm-project/vllm/pull/15289), [#16203](https://github.com/vllm-project/vllm/pull/16203), [#17735](https://github.com/vllm-project/vllm/pull/17735), [#18118](https://github.com/vllm-project/vllm/pull/18118), [#19598](https://github.com/vllm-project/vllm/pull/19598), [#19860](https://github.com/vllm-project/vllm/pull/19860), [#20101](https://github.com/vllm-project/vllm/pull/20101), [#20815](https://github.com/vllm-project/vllm/pull/20815), [#21924](https://github.com/vllm-project/vllm/pull/21924), [#22017](https://github.com/vllm-project/vllm/pull/22017), [#22785](https://github.com/vllm-project/vllm/pull/22785), [#23169](https://github.com/vllm-project/vllm/pull/23169), ... (24 total) |
@@ -15,9 +15,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 33
+- Git-traced PRs: 38
 - Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 37
+- Total PRs in this document: 42
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -62,6 +62,11 @@
 | 2026-06-23 | [#46351](https://github.com/vllm-project/vllm/pull/46351) | merged | fix: stream Qwen3 tool call string arguments | `tests/parser/engine/test_qwen3.py`, `vllm/parser/qwen3.py` |
 | 2026-06-25 | [#46314](https://github.com/vllm-project/vllm/pull/46314) | merged | [Frontend] Port seed_oss to the streaming parser engine as a Qwen3 subclass | `vllm/parser/qwen3.py` |
 | 2026-07-17 | [#48846](https://github.com/vllm-project/vllm/pull/48846) | merged | [Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML) | `vllm/parser/qwen3.py`, `tests/parser/engine/test_qwen3.py` |
+| 2026-08-22 | [#52560](https://github.com/vllm-project/vllm/pull/52560) | merged | [Model] Add Qwen3-Omni DSpark support | `vllm/model_executor/models/qwen3_dflash.py` |
+| 2026-09-07 | [#55588](https://github.com/vllm-project/vllm/pull/55588) | merged | [CI/Build] Unskip ColQwen3 multimodal pooling tests on Transformers v5 | `tests/models/multimodal/pooling/test_colqwen3.py` |
+| 2026-09-08 | [#55878](https://github.com/vllm-project/vllm/pull/55878) | merged | [CI] Increase ColQwen3 pooling test memory budget on H200 MIG | `tests/models/multimodal/pooling/test_colqwen3.py` |
+| 2026-09-08 | [#55889](https://github.com/vllm-project/vllm/pull/55889) | merged | [CI] Reuse ColQwen3 models across pooling tests | `tests/models/multimodal/pooling/test_colqwen3.py` |
+| 2026-09-29 | [#51289](https://github.com/vllm-project/vllm/pull/51289) | merged | [Model] Extend device-side mm normalization to Qwen3VL/Qwen3.5/Qwen4Next | `vllm/model_executor/models/colqwen3.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1220,6 +1225,133 @@ diff -- tests/parser/engine/test_qwen3.py
   - runtime: `vllm/parser/qwen3.py` modified +11/-2
   - tests: `tests/parser/engine/test_qwen3.py` modified +2/-2
 - Risk and verification: The diff ships test coverage in `tests/parser/engine/test_qwen3.py`, `tests/tool_parsers/test_minicpm5xml_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `tests/tool_parsers/test_qwen3coder_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #52560 - [Model] Add Qwen3-Omni DSpark support
+
+- Link: https://github.com/vllm-project/vllm/pull/52560
+- Status/date: merged / 2026-08-22
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_dflash.py`; associated commits `2f55ef254c70`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 11 files, +731/-22, 952 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_dflash.py` modified +8/-8 (16 lines); hunks: -377,8 +377,6 @@ def forward(; -412,10 +410,10 @@ def __init__(; symbols: forward, DFlashQwen3Model, __init__, touching `forward, DFlashQwen3Model, __init__`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_dflash.py` modified +8/-8 (16 lines); hunks: -377,8 +377,6 @@ def forward(; -412,10 +410,10 @@ def __init__(; symbols: forward, DFlashQwen3Model, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_dflash.py
+@@ -377,8 +377,6 @@ def forward(
+-    decoder_layer_cls = DFlashQwen3DecoderLayer
+@@ -412,10 +410,10 @@ def __init__(
+-        if drafter_config is not None and "use_aux_hidden_state" in drafter_config:
+-            self.use_aux_hidden_state = drafter_config["use_aux_hidden_state"]
+-        else:
+-            self.use_aux_hidden_state = True
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_dflash.py` modified +8/-8
+- Risk and verification: The diff ships test coverage in `tests/model_executor/test_qwen3_omni.py`, `tests/models/registry.py`, `tests/test_config.py`, `tests/transformers_utils/test_speculators_dspark_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55588 - [CI/Build] Unskip ColQwen3 multimodal pooling tests on Transformers v5
+
+- Link: https://github.com/vllm-project/vllm/pull/55588
+- Status/date: merged / 2026-09-07
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_colqwen3.py`; associated commits `51da0ca66c80`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +0/-5, 12 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/pooling/test_colqwen3.py` modified +0/-5 (5 lines); hunks: -22,11 +22,6.
+- Code diff details:
+  - `tests/models/multimodal/pooling/test_colqwen3.py` modified +0/-5 (5 lines); hunks: -22,11 +22,6
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_colqwen3.py
+@@ -22,11 +22,6 @@
+-pytestmark = pytest.mark.skip(
+-    reason="ColQwen3 model's weight tying is incompatible with "
+-    "transformers v5 (missing all_tied_weights_keys)"
+-)
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/pooling/test_colqwen3.py` modified +0/-5
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/pooling/test_colqwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55878 - [CI] Increase ColQwen3 pooling test memory budget on H200 MIG
+
+- Link: https://github.com/vllm-project/vllm/pull/55878
+- Status/date: merged / 2026-09-08
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_colqwen3.py`; associated commits `34b9899c8f13`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +3/-1, 11 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/pooling/test_colqwen3.py` modified +3/-1 (4 lines); hunks: -45,7 +45,9; symbols: _make_base64_image, touching `_make_base64_image`.
+- Code diff details:
+  - `tests/models/multimodal/pooling/test_colqwen3.py` modified +3/-1 (4 lines); hunks: -45,7 +45,9; symbols: _make_base64_image
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_colqwen3.py
+@@ -45,7 +45,9 @@
+-GPU_MEMORY_UTILIZATION = 0.7
++# The Tomoro model needs room for its vision encoder and a 4096-token KV cache
++# on the 16 GiB devices used by the H200 MIG test lane.
++GPU_MEMORY_UTILIZATION = 0.8
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/pooling/test_colqwen3.py` modified +3/-1
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/pooling/test_colqwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55889 - [CI] Reuse ColQwen3 models across pooling tests
+
+- Link: https://github.com/vllm-project/vllm/pull/55889
+- Status/date: merged / 2026-09-08
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/pooling/test_colqwen3.py`; associated commits `cb222346875b`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +81/-162, 327 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/pooling/test_colqwen3.py` modified +81/-162 (243 lines); hunks: -48,6 +48,20; -85,75 +99,51 @@ def _make_text_mm_param(text: str) -> ScoreMultiModalParam:; symbols: colqwen3_model, _make_base64_image, _make_text_mm_param, _run_token_embed_test, touching `colqwen3_model, _make_base64_image, _make_text_mm_param`.
+- Code diff details:
+  - `tests/models/multimodal/pooling/test_colqwen3.py` modified +81/-162 (243 lines); hunks: -48,6 +48,20; -85,75 +99,51 @@ def _make_text_mm_param(text: str) -> ScoreMultiModalParam:; symbols: colqwen3_model, _make_base64_image, _make_text_mm_param, _run_token_embed_test
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_colqwen3.py
+@@ -48,6 +48,20 @@
++@pytest.fixture(scope="module", params=MODELS)
++def colqwen3_model(request, vllm_runner):
++    model = request.param
++    with vllm_runner(
++        model,
++        runner="pooling",
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/pooling/test_colqwen3.py` modified +81/-162
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/pooling/test_colqwen3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #51289 - [Model] Extend device-side mm normalization to Qwen3VL/Qwen3.5/Qwen4Next
+
+- Link: https://github.com/vllm-project/vllm/pull/51289
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/colqwen3.py`; associated commits `491f44adfa42`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 11 files, +87/-25, 321 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/colqwen3.py` modified +2/-0 (2 lines); hunks: -134,6 +134,8 @@ class ColQwen3Model(Qwen3VLForConditionalGeneration, Support...; symbols: ColQwen3Model, touching `ColQwen3Model`.
+- Code diff details:
+  - `vllm/model_executor/models/colqwen3.py` modified +2/-0 (2 lines); hunks: -134,6 +134,8 @@ class ColQwen3Model(Qwen3VLForConditionalGeneration, Support...; symbols: ColQwen3Model
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/colqwen3.py
+@@ -134,6 +134,8 @@ class ColQwen3Model(Qwen3VLForConditionalGeneration, SupportsLateInteraction):
++    # Mark as false to avoid collision with the checkpoint's custom code path
++    supports_mm_device_do_normalize = False
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/colqwen3.py` modified +2/-0
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation_ppl_test/ppl_utils.py`, `tests/models/multimodal/generation_ppl_test/test_qwen.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

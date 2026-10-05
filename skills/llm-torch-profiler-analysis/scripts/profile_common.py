@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 import re
 import shutil
 import sys
@@ -469,17 +470,11 @@ def resolve_framework(
 
 
 def parse_stage(path: Path) -> str:
-    parts = [part.lower() for part in path.parts[-6:]]
-    name = " ".join(parts)
-    segment_path = "/" + "/".join(parts) + "/"
-    if any(marker in name for marker in ("-extend", "-prefill", "_extend", "_prefill")):
-        return "extend"
-    if any(f"/{segment}/" in segment_path for segment in ("extend", "prefill")):
-        return "extend"
-    if any(marker in name for marker in ("-decode", "_decode")):
-        return "decode"
-    if "/decode/" in segment_path:
-        return "decode"
+    # The file or nearest stage directory wins over a label in an ancestor.
+    for part in reversed(path.parts[-6:]):
+        match = re.search(r"(?:^|[-_])(extend|prefill|decode)(?=[._-]|$)", part, re.I)
+        if match:
+            return "decode" if match[1].lower() == "decode" else "extend"
     return "all"
 
 
@@ -496,11 +491,24 @@ def parse_tp_rank(path: Path) -> Optional[int]:
     return None
 
 
+def is_zero_replica(path: Path) -> bool:
+    indices = re.findall(
+        r"(?:^|[_-])(?:dp|pp|ep|dcp|rank)[_-]?(\d+)(?=[_.-]|$)",
+        path.name,
+        re.IGNORECASE,
+    )
+    return all(int(index) == 0 for index in indices)
+
+
 def file_looks_like_trace(path: Path, *, validate_content: bool = False) -> bool:
     name = path.name.lower()
     if name in TRACE_FILE_IGNORE_NAMES:
         return False
     if path.is_dir():
+        return False
+    if any(part in {"graph_capture_profile", "capture_traces"} for part in path.parts):
+        return False
+    if name.endswith((".viztracer.json", "-merged.json")):
         return False
     if not validate_content and any(
         name.endswith(suffix) for suffix in (".trace.json", ".trace.json.gz")
@@ -604,6 +612,11 @@ def discover_trace_targets(
         if ranks:
             rank = 0 if 0 in ranks else ranks[0]
             selected = [trace for trace in selected if parse_tp_rank(trace) == rank]
+        # TP0 can occur on every DP/PP replica. Prefer the all-zero replica
+        # before choosing the newest file within each stage.
+        zero_replica = [trace for trace in selected if is_zero_replica(trace)]
+        if zero_replica:
+            selected = zero_replica
         grouped: Dict[str, List[Path]] = defaultdict(list)
         for trace in selected:
             grouped[parse_stage(trace)].append(trace)
@@ -916,6 +929,7 @@ def run_remote_profiler(
     probe_delay: float,
     profile_prefix: Optional[str] = None,
     stage: Optional[str] = None,
+    capture_root: Optional[Path] = None,
 ) -> Path:
     framework = canonicalize_framework(framework)
     output_path = ensure_remote_profiler_output_path(output_dir, framework)
@@ -974,7 +988,7 @@ def run_remote_profiler(
         # Isolate this capture without moving files out from under the server.
         # A fixed output filename can be overwritten on every capture.
         new_traces = changed_trace_files(output_path, before_traces)
-        capture_dir = output_path / f"capture-{time.time_ns()}"
+        capture_dir = capture_root or output_path / f"capture-{time.time_ns()}"
         if stage:
             capture_dir = capture_dir / stage
         capture_dir.mkdir(parents=True)
@@ -1005,20 +1019,24 @@ def run_sglang_profiler(
     output_path.mkdir(parents=True, exist_ok=True)
 
     server_args = try_get_json(url.rstrip("/") + "/server_info", timeout=60.0)
+    if isinstance(server_args, dict) and server_args.get("frontend") == "rust":
+        raise RuntimeError(
+            "SGLang Rust frontend has no HTTP profiler routes; relaunch with the Python frontend or use offline capture."
+        )
     if server_args is not None:
         with open(output_path / "server_args.json", "w", encoding="utf-8") as handle:
             json.dump(server_args, handle)
 
     payload = {
         "output_dir": str(output_path),
-        "num_steps": str(num_steps),
+        "num_steps": int(num_steps),
         "activities": ["CPU", "GPU"],
         "profile_by_stage": profile_by_stage,
         "merge_profiles": merge_profiles,
-        "profile_prefix": profile_prefix,
+        "profile_id": f"{profile_prefix or 'triage-trace'}-{time.time_ns()}",
     }
     if start_step is not None:
-        payload["start_step"] = str(start_step)
+        payload["start_step"] = int(start_step)
 
     if probe_plan.warmup_requests > 0:
         send_probe_requests(
@@ -1075,6 +1093,7 @@ def run_profiler(
     prefill_output_len: int = DEFAULT_PREFILL_OUTPUT_LEN,
     decode_input_len: int = DEFAULT_DECODE_INPUT_LEN,
     decode_output_len: int = DEFAULT_DECODE_OUTPUT_LEN,
+    sglang_profile_v2: bool = False,
 ) -> Path:
     resolved_framework = resolve_framework(
         framework,
@@ -1086,6 +1105,13 @@ def run_profiler(
         ),
     )
     if resolved_framework == "sglang":
+        if sglang_profile_v2 or os.environ.get("SGLANG_PROFILE_V2", "").lower() in {
+            "1",
+            "true",
+        }:
+            raise ValueError(
+                "This helper targets SGLang profiler v1. For profiler v2 use stage-auto capture with profile_by_stage=true and num_steps, without start_step, merge_profiles or /stop_profile. Relaunch with SGLANG_PROFILE_V2=0 to use this helper."
+            )
         stages = expand_profile_workload(profile_workload)
         if stages != ["legacy"]:
             output_root = (
@@ -1186,6 +1212,9 @@ def run_profiler(
             profile_prefix=profile_prefix,
         )
     output_root = ensure_remote_profiler_output_path(output_dir, resolved_framework)
+    if output_root.suffix in {".json", ".gz"}:
+        raise ValueError("Staged live capture requires a directory --output-dir.")
+    capture_root = output_root / f"capture-{time.time_ns()}"
     for stage in stages:
         prompt, max_new_tokens = workload_probe(
             stage,
@@ -1209,8 +1238,11 @@ def run_profiler(
             probe_delay=probe_delay,
             profile_prefix=profile_prefix,
             stage=stage,
+            capture_root=capture_root,
         )
-    return output_root
+    # Only analyze this invocation's labeled copies, not server originals or
+    # earlier captures left in the shared output directory.
+    return capture_root
 
 
 def select_heaviest_pid(

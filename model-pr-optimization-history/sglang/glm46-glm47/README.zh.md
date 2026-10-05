@@ -1,4 +1,4 @@
-# sglang GLM-4.6/4.7 模型 PR 优化历史
+# SGLang GLM-4.6/4.7 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -8,8 +8,9 @@
 | `docs/cookbook/autoregressive/GLM/GLM-4.6V.mdx` | 无直接 PR 号提交 |
 | `docs/cookbook/autoregressive/GLM/GLM-4.7-Flash.mdx` | 无直接 PR 号提交 |
 | `docs/cookbook/autoregressive/GLM/GLM-4.7.mdx` | 无直接 PR 号提交 |
-| `python/sglang/srt/function_call/glm47_moe_detector.py` | [#15333](https://github.com/sgl-project/sglang/pull/15333), [#15753](https://github.com/sgl-project/sglang/pull/15753), [#28149](https://github.com/sgl-project/sglang/pull/28149) |
-| `python/sglang/srt/function_call/glm4_moe_detector.py` | [#13989](https://github.com/sgl-project/sglang/pull/13989), [#15333](https://github.com/sgl-project/sglang/pull/15333), [#15753](https://github.com/sgl-project/sglang/pull/15753) |
+| `python/sglang/srt/arg_groups/model_overrides/glm4_moe.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/function_call/glm47_moe_detector.py` | [#15333](https://github.com/sgl-project/sglang/pull/15333), [#15753](https://github.com/sgl-project/sglang/pull/15753), [#28149](https://github.com/sgl-project/sglang/pull/28149), [#38890](https://github.com/sgl-project/sglang/pull/38890) |
+| `python/sglang/srt/function_call/glm4_moe_detector.py` | [#13989](https://github.com/sgl-project/sglang/pull/13989), [#15333](https://github.com/sgl-project/sglang/pull/15333), [#15753](https://github.com/sgl-project/sglang/pull/15753), [#38890](https://github.com/sgl-project/sglang/pull/38890) |
 | `python/sglang/srt/models/glm4_moe.py` | [#13873](https://github.com/sgl-project/sglang/pull/13873), [#14585](https://github.com/sgl-project/sglang/pull/14585), [#15333](https://github.com/sgl-project/sglang/pull/15333), [#17166](https://github.com/sgl-project/sglang/pull/17166), [#21403](https://github.com/sgl-project/sglang/pull/21403), [#21660](https://github.com/sgl-project/sglang/pull/21660), [#21851](https://github.com/sgl-project/sglang/pull/21851) |
 | `python/sglang/srt/models/glm4_moe_lite.py` | [#21851](https://github.com/sgl-project/sglang/pull/21851), [#22509](https://github.com/sgl-project/sglang/pull/22509), [#26088](https://github.com/sgl-project/sglang/pull/26088), [#28516](https://github.com/sgl-project/sglang/pull/28516), [#31388](https://github.com/sgl-project/sglang/pull/31388) |
 | `python/sglang/srt/models/glm4_moe_lite_nextn.py` | [#26088](https://github.com/sgl-project/sglang/pull/26088) |
@@ -17,12 +18,13 @@
 | `test/registered/amd/accuracy/mi35x/test_glm47_fp8_eval_mi35x.py` | [#21534](https://github.com/sgl-project/sglang/pull/21534) |
 | `test/registered/attention/test_glm4_moe_lite_deterministic.py` | [#33945](https://github.com/sgl-project/sglang/pull/33945) |
 | `test/registered/moe/test_glm4_moe_models.py` | 无直接 PR 号提交 |
+| `test/registered/unit/function_call/test_glm47_schema_types.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 16
+- git 追溯 PR 数: 17
 - 原文档显式引用补充 PR 数: 39
-- 当前文档总 PR 数: 55
+- 当前文档总 PR 数: 56
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -52,19 +54,18 @@
 | 2026-04-11 | [#21403](https://github.com/sgl-project/sglang/pull/21403) | merged | [AMD] Fuse RMSNorm + FP8 per-token quant for GLM-4.7-FP8 | `python/sglang/srt/models/glm4_moe.py` |
 | 2026-04-13 | [#22720](https://github.com/sgl-project/sglang/pull/22720) | merged | fix[glm4.7 flash]: properly detect `gfx95_quant_format` | `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-04-15 | [#22823](https://github.com/sgl-project/sglang/pull/22823) | merged | [Bugfix] Preserve auto-detected quant_config for GLM NextN draft model | `python/sglang/srt/models/glm4_moe_nextn.py` |
-| 2026-04-17 | [#23067](https://github.com/sgl-project/sglang/pull/23067) | open | Fix: forward continue_final_message kwargs in Glm45Detector | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
 | 2026-04-22 | [#22509](https://github.com/sgl-project/sglang/pull/22509) | merged | [NPU]Fix GLM-4.7-Flash failed on NPU | `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-04-26 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | merged | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `python/sglang/srt/models/llada2.py`, `python/sglang/srt/models/hunyuan_v3.py`, `python/sglang/srt/models/bailing_moe_linear.py` |
-| 2026-04-27 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | merged | chore: update CI test est_time values | `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py` |
 | 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-04-27 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | merged | chore: update CI test est_time values | `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py` |
 | 2026-04-28 | [#22961](https://github.com/sgl-project/sglang/pull/22961) | merged | [NPU] Fix issue and support GLM-4.5V | `python/sglang/srt/models/glm4_moe.py` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
 | 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `.github/workflows/pr-test-multimodal-gen.yml`, `test/registered/bench_fn/test_bench_serving_reasoning_stream.py`, `test/registered/function_call/test_kimik2_detector.py` |
-| 2026-05-18 | [#22822](https://github.com/sgl-project/sglang/pull/22822) | merged | [Refactor] Refactor DeepEP dispatcher | `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py` |
 | 2026-05-18 | [#17869](https://github.com/sgl-project/sglang/pull/17869) | closed | [NPU]Support model GLM-4.7-Flash for npu, accuracy 81% | `test/registered/ascend/llm_models/test_ascend_glm4_7_flash.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` |
+| 2026-05-18 | [#22822](https://github.com/sgl-project/sglang/pull/22822) | merged | [Refactor] Refactor DeepEP dispatcher | `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py` |
 | 2026-05-19 | [#25524](https://github.com/sgl-project/sglang/pull/25524) | merged | [Bug Fix] Align glm4_moe_nextn NPU MTP loading with qwen3 MTP | `python/sglang/srt/models/glm4_moe_nextn.py` |
-| 2026-05-20 | [#25825](https://github.com/sgl-project/sglang/pull/25825) | merged | [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool | `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/qwen2.py` |
 | 2026-05-20 | [#25821](https://github.com/sgl-project/sglang/pull/25821) | merged | [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
+| 2026-05-20 | [#25825](https://github.com/sgl-project/sglang/pull/25825) | merged | [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool | `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/qwen2.py` |
 | 2026-05-25 | [#22315](https://github.com/sgl-project/sglang/pull/22315) | closed | [Bugfix] Fix GLM-4.7-FP8 EAGLE accept_len=1.00 due to draft model loading with incorrect quant_config | `python/sglang/srt/models/glm4_moe_nextn.py` |
 | 2026-05-26 | [#26088](https://github.com/sgl-project/sglang/pull/26088) | merged | GLM-4.7-Flash: standalone MLA impl and MLA NextN/MTP | `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/models/glm4_moe_lite_nextn.py` |
 | 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | merged | [refactor] remove unused op_mlp | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
@@ -75,16 +76,18 @@
 | 2026-06-11 | [#27964](https://github.com/sgl-project/sglang/pull/27964) | merged | [Spec] Retire Spec V1 | `test/registered/ep/test_deepep_large.py`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`, `python/sglang/srt/arg_groups/speculative_hook.py` |
 | 2026-06-12 | [#18383](https://github.com/sgl-project/sglang/pull/18383) | closed | [Bug Fix] Add missing use_mla guard in aiter_backend draft_extend CUD… | `python/sglang/srt/layers/attention/aiter_backend.py` |
 | 2026-06-14 | [#28149](https://github.com/sgl-project/sglang/pull/28149) | merged | Support GLM-4.7 function calling via structural tags | `python/sglang/srt/function_call/glm47_moe_detector.py` |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-18 | [#28516](https://github.com/sgl-project/sglang/pull/28516) | merged | [NPU] Add MTP support for GLM-4.7-Flash | `python/sglang/srt/models/glm4_moe_lite.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-25 | [#29261](https://github.com/sgl-project/sglang/pull/29261) | merged | [Docs] Fix broken links in cookbook | `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V4.mdx`, `docs_new/cookbook/autoregressive/GLM/GLM-4.7.mdx`, `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
 | 2026-07-16 | [#31388](https://github.com/sgl-project/sglang/pull/31388) | merged | [NPU]revert add scoring func for GLM 4.7 Flash | `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-08-03 | [#22801](https://github.com/sgl-project/sglang/pull/22801) | closed | [NPU]add dual-stream and deepep support for GLM-4.7-Flash | `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` |
-| 2026-08-10 | [#19040](https://github.com/sgl-project/sglang/pull/19040) | closed | feat: add Glm4MoeLiteConfig and fix enable_a2a_moe for GLM-4.7-Flash | `python/sglang/srt/configs/glm4_moe_lite.py`, `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-08-10 | [#18930](https://github.com/sgl-project/sglang/pull/18930) | closed | [AMD] Unit tests for mtp in GLM-4.7 | `python/sglang/srt/layers/attention/aiter_backend.py`, `test/registered/amd/test_glm4v_fp8_mtp.py` |
+| 2026-08-10 | [#19040](https://github.com/sgl-project/sglang/pull/19040) | closed | feat: add Glm4MoeLiteConfig and fix enable_a2a_moe for GLM-4.7-Flash | `python/sglang/srt/configs/glm4_moe_lite.py`, `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-08-12 | [#33945](https://github.com/sgl-project/sglang/pull/33945) | merged | feat: support deterministic FA4 for GLM-4.7-Flash | `test/registered/attention/test_glm4_moe_lite_deterministic.py`, `python/sglang/srt/layers/quantization/unquant.py`, `python/sglang/srt/server_args.py` |
 | 2026-08-14 | [#11951](https://github.com/sgl-project/sglang/pull/11951) | closed | WIP: Fix glm-4.6 tool call streaming parse | `sgl-router/src/tool_parser/parsers/glm4_moe_parser.rs`, `python/sglang/srt/function_call/glm4_moe_detector.py`, `sgl-router/tests/tool_parser_glm4_moe.rs` |
 | 2026-08-22 | [#19106](https://github.com/sgl-project/sglang/pull/19106) | closed | Fix GLM4 MoE Lite CompressedTensors serving and transformers version checks | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe_lite.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` |
+| 2026-08-29 | [#23067](https://github.com/sgl-project/sglang/pull/23067) | closed | Fix: forward continue_final_message kwargs in Glm45Detector | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2026-09-15 | [#38890](https://github.com/sgl-project/sglang/pull/38890) | merged | Support non-strict GLM47 tool calls with EBNF constraints | `python/sglang/srt/function_call/glm4_moe_detector.py`, `python/sglang/srt/function_call/glm47_moe_detector.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -827,43 +830,6 @@ diff -- python/sglang/srt/models/glm4_moe_nextn.py
   - runtime: `python/sglang/srt/models/glm4_moe_nextn.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4_moe_nextn.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #23067 - Fix: forward continue_final_message kwargs in Glm45Detector
-
-- 链接: https://github.com/sgl-project/sglang/pull/23067
-- 状态/时间: open / 2026-04-17
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+66/-1，可读 patch 94 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix: forward continue_final_message kwargs in Glm45Detector」；模型线: GLM-4.6/4.7；类别: 缺陷修复；主要 diff: `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`；技术摘要: 覆盖「Fix: forward continue_final_message kwargs in Glm45Detector」；主要实现面是 `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0 (57 lines); hunks: -518,6 +518,39 @@ def test_forced_reasoning_mode(self):; -1248,6 +1281,30 @@ def test_continue_final_message_with_request(self):; symbols: test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous, test_continue_final_message_think_end_in_previous，涉及 `test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous`；`python/sglang/srt/parser/reasoning_parser.py` modified +9/-1 (10 lines); hunks: -314,13 +314,21 @@ class Glm45Detector(BaseReasoningFormatDetector):; symbols: Glm45Detector, __init__，涉及 `Glm45Detector, __init__`。
-- 代码 diff 细节:
-  - `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0 (57 lines); hunks: -518,6 +518,39 @@ def test_forced_reasoning_mode(self):; -1248,6 +1281,30 @@ def test_continue_final_message_with_request(self):; symbols: test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous, test_continue_final_message_think_end_in_previous
-  - `python/sglang/srt/parser/reasoning_parser.py` modified +9/-1 (10 lines); hunks: -314,13 +314,21 @@ class Glm45Detector(BaseReasoningFormatDetector):; symbols: Glm45Detector, __init__
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/unit/parser/test_reasoning_parser.py
-@@ -518,6 +518,39 @@ def test_forced_reasoning_mode(self):
-+    def test_continue_final_message_accepts_kwargs(self):
-+        """Regression: Glm45Detector must accept continue_final_message and
-+        previous_content kwargs (forwarded by ReasoningParser when the request
-+        sets continue_final_message=True with a trailing assistant message)."""
-+        detector = Glm45Detector(
-+            continue_final_message=True,
-diff -- python/sglang/srt/parser/reasoning_parser.py
-@@ -314,13 +314,21 @@ class Glm45Detector(BaseReasoningFormatDetector):
--    def __init__(self, stream_reasoning: bool = True, force_reasoning: bool = False):
-+    def __init__(
-+        self,
-+        stream_reasoning: bool = True,
-+        force_reasoning: bool = False,
-+        continue_final_message: bool = False,
-```
-
-- 已读文件:
-  - tests: `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0
-  - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +9/-1
-- 验证与风险: diff 自带测试面 `test/registered/unit/parser/test_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #22509 - [NPU]Fix GLM-4.7-Flash failed on NPU
 
 - 链接: https://github.com/sgl-project/sglang/pull/22509
@@ -930,47 +896,6 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
   - runtime: `python/sglang/srt/models/llada2.py` modified +10/-2; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1; `python/sglang/srt/models/exaone_moe.py` modified +6/-2; `python/sglang/srt/models/llama4.py` modified +6/-1; `python/sglang/srt/models/sarvam_moe.py` modified +6/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #23785 - chore: update CI test est_time values
-
-- 链接: https://github.com/sgl-project/sglang/pull/23785
-- 状态/时间: merged / 2026-04-27
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 268 个文件，+269/-269，可读 patch 2404 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「chore: update CI test est_time values」；模型线: GLM-4.6/4.7；类别: 文档/测试/CI；主要 diff: `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`；技术摘要: 覆盖「chore: update CI test est_time values」；主要实现面是 `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7；`test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6。
-- 代码 diff 细节:
-  - `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
-  - `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7
-  - `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
-  - `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
-  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/layers/mamba/test_causal_conv1d.py
-@@ -1,6 +1,6 @@
--register_cuda_ci(est_time=13, suite="stage-b-test-1-gpu-small")
-+register_cuda_ci(est_time=11, suite="stage-b-test-1-gpu-small")
-diff -- test/registered/layers/mamba/test_mamba2_mixer.py
-@@ -15,7 +15,7 @@
--register_cuda_ci(est_time=28, suite="stage-b-test-2-gpu-large")
-+register_cuda_ci(est_time=32, suite="stage-b-test-2-gpu-large")
-diff -- test/registered/layers/mamba/test_mamba_ssm.py
-@@ -1,6 +1,6 @@
--register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
-+register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
-diff -- test/registered/layers/mamba/test_mamba_ssm_ssd.py
-@@ -1,6 +1,6 @@
--register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
-+register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
-diff -- test/registered/models/test_compressed_tensors_models.py
-@@ -13,7 +13,7 @@
-```
-
-- 已读文件:
-  - tests: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1; `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1
-- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen3_30b.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #23748 - refactor(moe): centralize post-experts all-reduce skip predicate
 
 - 链接: https://github.com/sgl-project/sglang/pull/23748
@@ -1011,6 +936,47 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/moe/utils.py` modified +33/-0; `python/sglang/srt/models/sarvam_moe.py` modified +9/-16; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13; `python/sglang/srt/models/glm4_moe.py` modified +9/-13; `python/sglang/srt/models/qwen3_moe.py` modified +9/-13; `python/sglang/srt/models/hunyuan_v3.py` modified +13/-7
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23785 - chore: update CI test est_time values
+
+- 链接: https://github.com/sgl-project/sglang/pull/23785
+- 状态/时间: merged / 2026-04-27
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 268 个文件，+269/-269，可读 patch 2404 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「chore: update CI test est_time values」；模型线: GLM-4.6/4.7；类别: 文档/测试/CI；主要 diff: `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`；技术摘要: 覆盖「chore: update CI test est_time values」；主要实现面是 `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7；`test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6。
+- 代码 diff 细节:
+  - `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
+  - `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7
+  - `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
+  - `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
+  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/layers/mamba/test_causal_conv1d.py
+@@ -1,6 +1,6 @@
+-register_cuda_ci(est_time=13, suite="stage-b-test-1-gpu-small")
++register_cuda_ci(est_time=11, suite="stage-b-test-1-gpu-small")
+diff -- test/registered/layers/mamba/test_mamba2_mixer.py
+@@ -15,7 +15,7 @@
+-register_cuda_ci(est_time=28, suite="stage-b-test-2-gpu-large")
++register_cuda_ci(est_time=32, suite="stage-b-test-2-gpu-large")
+diff -- test/registered/layers/mamba/test_mamba_ssm.py
+@@ -1,6 +1,6 @@
+-register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
++register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
+diff -- test/registered/layers/mamba/test_mamba_ssm_ssd.py
+@@ -1,6 +1,6 @@
+-register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
++register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
+diff -- test/registered/models/test_compressed_tensors_models.py
+@@ -13,7 +13,7 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1; `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen3_30b.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #22961 - [NPU] Fix issue and support GLM-4.5V
 
@@ -1122,47 +1088,6 @@ diff -- test/registered/layers/mamba/test_causal_conv1d.py
   - tests: `test/registered/bench_fn/test_bench_serving_reasoning_stream.py` modified +1/-1; `test/registered/function_call/test_kimik2_detector.py` modified +1/-1; `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1; `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/deepseek_v4/test_c128_v2.py`, `python/sglang/jit_kernel/tests/deepseek_v4/test_c4_v2.py`, `python/sglang/jit_kernel/tests/test_activation.py`, `python/sglang/jit_kernel/tests/test_add_constant.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #22822 - [Refactor] Refactor DeepEP dispatcher
-
-- 链接: https://github.com/sgl-project/sglang/pull/22822
-- 状态/时间: merged / 2026-05-18
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 30 个文件，+302/-182，可读 patch 1332 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Refactor] Refactor DeepEP dispatcher」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`；技术摘要: 覆盖「[Refactor] Refactor DeepEP dispatcher」；主要实现面是 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +77/-31 (108 lines); hunks: -1,6 +1,7; -22,8 +23,9; symbols: __init__, dispatch_a, _get_buffer, set_quant_config，涉及 `__init__, dispatch_a, _get_buffer`；`python/sglang/srt/layers/moe/utils.py` modified +76/-0 (76 lines); hunks: -9,14 +9,20; -161,6 +167,76 @@ def is_auto(self) -> bool:; symbols: is_auto, DeepEPOutputDtype, get_deepep_output_dtype，涉及 `is_auto, DeepEPOutputDtype, get_deepep_output_dtype`；`python/sglang/srt/layers/moe/ep_moe/layer.py` modified +6/-21 (27 lines); hunks: -25,12 +25,6; -48,9 +42,6; symbols: __init__, process_weights_after_loading, forward_npu，涉及 `__init__, process_weights_after_loading, forward_npu`；`python/sglang/srt/models/qwen3_5_mtp.py` modified +0/-15 (15 lines); hunks: -15,15 +15,13; -138,17 +136,6 @@ def forward(; symbols: forward，涉及 `forward`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +77/-31 (108 lines); hunks: -1,6 +1,7; -22,8 +23,9; symbols: __init__, dispatch_a, _get_buffer, set_quant_config
-  - `python/sglang/srt/layers/moe/utils.py` modified +76/-0 (76 lines); hunks: -9,14 +9,20; -161,6 +167,76 @@ def is_auto(self) -> bool:; symbols: is_auto, DeepEPOutputDtype, get_deepep_output_dtype
-  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +6/-21 (27 lines); hunks: -25,12 +25,6; -48,9 +42,6; symbols: __init__, process_weights_after_loading, forward_npu
-  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +0/-15 (15 lines); hunks: -15,15 +15,13; -138,17 +136,6 @@ def forward(; symbols: forward
-  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +0/-15 (15 lines); hunks: -15,15 +15,13; -93,17 +91,6 @@ def forward(; symbols: forward
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
-@@ -1,6 +1,7 @@
-+import os
-@@ -22,8 +23,9 @@
-+    DeepEPOutputDtype,
--    get_moe_runner_backend,
-+    get_deepep_output_dtype,
-@@ -344,6 +346,8 @@ def __init__(
-diff -- python/sglang/srt/layers/moe/utils.py
-@@ -9,14 +9,20 @@
-+from sglang.srt.environ import envs
-+from sglang.srt.utils import is_npu
-+_is_npu = is_npu()
-+from sglang.srt.server_args import get_global_server_args
-@@ -161,6 +167,76 @@ def is_auto(self) -> bool:
-+class DeepEPOutputDtype(Enum):
-diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
-@@ -25,12 +25,6 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +77/-31; `python/sglang/srt/layers/moe/utils.py` modified +76/-0; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +6/-21; `python/sglang/srt/models/qwen3_5_mtp.py` modified +0/-15; `python/sglang/srt/models/qwen3_next_mtp.py` modified +0/-15; `python/sglang/srt/layers/quantization/modelslim/schemes/modelslim_w4a4_int4_moe.py` modified +11/-3
-- 验证与风险: diff 自带测试面 `test/manual/layers/moe/test_moe_runners_4gpu.py`, `test/manual/test_w4a8_deepseek_v3.py`, `test/registered/4-gpu-models/test_deepseek_v3_cutedsl_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #17869 - [NPU]Support model GLM-4.7-Flash for npu, accuracy 81%
 
 - 链接: https://github.com/sgl-project/sglang/pull/17869
@@ -1204,6 +1129,47 @@ diff -- python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla
   - runtime: `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py` modified +30/-4; `python/sglang/srt/hardware_backend/npu/modules/deepseek_v2_attention_mla_npu.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/llm_models/test_ascend_glm4_7_flash.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #22822 - [Refactor] Refactor DeepEP dispatcher
+
+- 链接: https://github.com/sgl-project/sglang/pull/22822
+- 状态/时间: merged / 2026-05-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 30 个文件，+302/-182，可读 patch 1332 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Refactor DeepEP dispatcher」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`；技术摘要: 覆盖「[Refactor] Refactor DeepEP dispatcher」；主要实现面是 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +77/-31 (108 lines); hunks: -1,6 +1,7; -22,8 +23,9; symbols: __init__, dispatch_a, _get_buffer, set_quant_config，涉及 `__init__, dispatch_a, _get_buffer`；`python/sglang/srt/layers/moe/utils.py` modified +76/-0 (76 lines); hunks: -9,14 +9,20; -161,6 +167,76 @@ def is_auto(self) -> bool:; symbols: is_auto, DeepEPOutputDtype, get_deepep_output_dtype，涉及 `is_auto, DeepEPOutputDtype, get_deepep_output_dtype`；`python/sglang/srt/layers/moe/ep_moe/layer.py` modified +6/-21 (27 lines); hunks: -25,12 +25,6; -48,9 +42,6; symbols: __init__, process_weights_after_loading, forward_npu，涉及 `__init__, process_weights_after_loading, forward_npu`；`python/sglang/srt/models/qwen3_5_mtp.py` modified +0/-15 (15 lines); hunks: -15,15 +15,13; -138,17 +136,6 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +77/-31 (108 lines); hunks: -1,6 +1,7; -22,8 +23,9; symbols: __init__, dispatch_a, _get_buffer, set_quant_config
+  - `python/sglang/srt/layers/moe/utils.py` modified +76/-0 (76 lines); hunks: -9,14 +9,20; -161,6 +167,76 @@ def is_auto(self) -> bool:; symbols: is_auto, DeepEPOutputDtype, get_deepep_output_dtype
+  - `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +6/-21 (27 lines); hunks: -25,12 +25,6; -48,9 +42,6; symbols: __init__, process_weights_after_loading, forward_npu
+  - `python/sglang/srt/models/qwen3_5_mtp.py` modified +0/-15 (15 lines); hunks: -15,15 +15,13; -138,17 +136,6 @@ def forward(; symbols: forward
+  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +0/-15 (15 lines); hunks: -15,15 +15,13; -93,17 +91,6 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
+@@ -1,6 +1,7 @@
++import os
+@@ -22,8 +23,9 @@
++    DeepEPOutputDtype,
+-    get_moe_runner_backend,
++    get_deepep_output_dtype,
+@@ -344,6 +346,8 @@ def __init__(
+diff -- python/sglang/srt/layers/moe/utils.py
+@@ -9,14 +9,20 @@
++from sglang.srt.environ import envs
++from sglang.srt.utils import is_npu
++_is_npu = is_npu()
++from sglang.srt.server_args import get_global_server_args
+@@ -161,6 +167,76 @@ def is_auto(self) -> bool:
++class DeepEPOutputDtype(Enum):
+diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
+@@ -25,12 +25,6 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +77/-31; `python/sglang/srt/layers/moe/utils.py` modified +76/-0; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +6/-21; `python/sglang/srt/models/qwen3_5_mtp.py` modified +0/-15; `python/sglang/srt/models/qwen3_next_mtp.py` modified +0/-15; `python/sglang/srt/layers/quantization/modelslim/schemes/modelslim_w4a4_int4_moe.py` modified +11/-3
+- 验证与风险: diff 自带测试面 `test/manual/layers/moe/test_moe_runners_4gpu.py`, `test/manual/test_w4a8_deepseek_v3.py`, `test/registered/4-gpu-models/test_deepseek_v3_cutedsl_4gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #25524 - [Bug Fix] Align glm4_moe_nextn NPU MTP loading with qwen3 MTP
 
 - 链接: https://github.com/sgl-project/sglang/pull/25524
@@ -1230,47 +1196,6 @@ diff -- python/sglang/srt/models/glm4_moe_nextn.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/glm4_moe_nextn.py` modified +11/-25
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4_moe_nextn.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #25825 - [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool
-
-- 链接: https://github.com/sgl-project/sglang/pull/25825
-- 状态/时间: merged / 2026-05-20
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+59/-8，可读 patch 326 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool」；模型线: GLM-4.6/4.7；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/qwen2.py`；技术摘要: 覆盖「[Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool」；主要实现面是 `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/qwen2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/llama.py` modified +16/-2 (18 lines); hunks: -27,6 +27,7; -131,6 +132,7 @@ def __init__(; symbols: __init__, forward_prepare_native, forward_prepare_npu，涉及 `__init__, forward_prepare_native, forward_prepare_npu`；`python/sglang/srt/models/glm4_moe.py` modified +12/-1 (13 lines); hunks: -28,6 +28,7; -187,6 +188,7 @@ def __init__(; symbols: __init__, forward_prepare，涉及 `__init__, forward_prepare`；`python/sglang/srt/models/qwen2.py` modified +9/-0 (9 lines); hunks: -24,6 +24,7; -200,12 +201,14 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen2_moe.py` modified +9/-0 (9 lines); hunks: -32,6 +32,7; -600,13 +601,15 @@ def __init__(; symbols: __init__，涉及 `__init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/llama.py` modified +16/-2 (18 lines); hunks: -27,6 +27,7; -131,6 +132,7 @@ def __init__(; symbols: __init__, forward_prepare_native, forward_prepare_npu
-  - `python/sglang/srt/models/glm4_moe.py` modified +12/-1 (13 lines); hunks: -28,6 +28,7; -187,6 +188,7 @@ def __init__(; symbols: __init__, forward_prepare
-  - `python/sglang/srt/models/qwen2.py` modified +9/-0 (9 lines); hunks: -24,6 +24,7; -200,12 +201,14 @@ def __init__(; symbols: __init__
-  - `python/sglang/srt/models/qwen2_moe.py` modified +9/-0 (9 lines); hunks: -32,6 +32,7; -600,13 +601,15 @@ def __init__(; symbols: __init__
-  - `python/sglang/srt/models/qwen3.py` modified +5/-1 (6 lines); hunks: -64,6 +64,7 @@ def __init__(; -76,6 +77,7 @@ def __init__(; symbols: __init__, forward_prepare_native, forward_prepare_npu
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/llama.py
-@@ -27,6 +27,7 @@
-+    get_pp_indices,
-@@ -131,6 +132,7 @@ def __init__(
-+        start_layer: int = 0,
-@@ -141,6 +143,7 @@ def __init__(
-+        self.start_layer = start_layer
-@@ -210,7 +213,7 @@ def forward_prepare_native(self, positions, hidden_states):
-diff -- python/sglang/srt/models/glm4_moe.py
-@@ -28,6 +28,7 @@
-+    get_pp_indices,
-@@ -187,6 +188,7 @@ def __init__(
-+        start_layer: int = 0,
-@@ -201,6 +203,7 @@ def __init__(
-+        self.start_layer = start_layer
-@@ -312,7 +315,7 @@ def forward_prepare(
-diff -- python/sglang/srt/models/qwen2.py
-@@ -24,6 +24,7 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/llama.py` modified +16/-2; `python/sglang/srt/models/glm4_moe.py` modified +12/-1; `python/sglang/srt/models/qwen2.py` modified +9/-0; `python/sglang/srt/models/qwen2_moe.py` modified +9/-0; `python/sglang/srt/models/qwen3.py` modified +5/-1; `python/sglang/srt/models/qwen3_moe.py` modified +5/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/llama_eagle.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #25821 - [Refactor] Rename NSA → DSA: user-facing aliases, file/class/import rename
 
@@ -1312,6 +1237,47 @@ diff -- python/sglang/srt/layers/attention/nsa/index_buf_accessor.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` modified +8/-2587; `python/sglang/srt/layers/attention/dsa/tilelang_kernel.py` added +2589/-0; `python/sglang/srt/layers/attention/nsa_backend.py` modified +21/-2518; `python/sglang/srt/layers/attention/dsa_backend.py` added +2528/-0; `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` modified +8/-1744; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` added +1746/-0
 - 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_fused_metadata_copy.py`, `python/sglang/jit_kernel/tests/test_fused_store_index_cache.py`, `python/sglang/jit_kernel/tests/test_set_mla_kv_buffer.py`, `python/sglang/test/nightly_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #25825 - [Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool
+
+- 链接: https://github.com/sgl-project/sglang/pull/25825
+- 状态/时间: merged / 2026-05-20
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 9 个文件，+59/-8，可读 patch 326 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool」；模型线: GLM-4.6/4.7；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/qwen2.py`；技术摘要: 覆盖「[Refactor] Pass PP start_layer via model constructor instead of forward_batch.token_to_kv_pool」；主要实现面是 `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/qwen2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/llama.py` modified +16/-2 (18 lines); hunks: -27,6 +27,7; -131,6 +132,7 @@ def __init__(; symbols: __init__, forward_prepare_native, forward_prepare_npu，涉及 `__init__, forward_prepare_native, forward_prepare_npu`；`python/sglang/srt/models/glm4_moe.py` modified +12/-1 (13 lines); hunks: -28,6 +28,7; -187,6 +188,7 @@ def __init__(; symbols: __init__, forward_prepare，涉及 `__init__, forward_prepare`；`python/sglang/srt/models/qwen2.py` modified +9/-0 (9 lines); hunks: -24,6 +24,7; -200,12 +201,14 @@ def __init__(; symbols: __init__，涉及 `__init__`；`python/sglang/srt/models/qwen2_moe.py` modified +9/-0 (9 lines); hunks: -32,6 +32,7; -600,13 +601,15 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/llama.py` modified +16/-2 (18 lines); hunks: -27,6 +27,7; -131,6 +132,7 @@ def __init__(; symbols: __init__, forward_prepare_native, forward_prepare_npu
+  - `python/sglang/srt/models/glm4_moe.py` modified +12/-1 (13 lines); hunks: -28,6 +28,7; -187,6 +188,7 @@ def __init__(; symbols: __init__, forward_prepare
+  - `python/sglang/srt/models/qwen2.py` modified +9/-0 (9 lines); hunks: -24,6 +24,7; -200,12 +201,14 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/qwen2_moe.py` modified +9/-0 (9 lines); hunks: -32,6 +32,7; -600,13 +601,15 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/models/qwen3.py` modified +5/-1 (6 lines); hunks: -64,6 +64,7 @@ def __init__(; -76,6 +77,7 @@ def __init__(; symbols: __init__, forward_prepare_native, forward_prepare_npu
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/llama.py
+@@ -27,6 +27,7 @@
++    get_pp_indices,
+@@ -131,6 +132,7 @@ def __init__(
++        start_layer: int = 0,
+@@ -141,6 +143,7 @@ def __init__(
++        self.start_layer = start_layer
+@@ -210,7 +213,7 @@ def forward_prepare_native(self, positions, hidden_states):
+diff -- python/sglang/srt/models/glm4_moe.py
+@@ -28,6 +28,7 @@
++    get_pp_indices,
+@@ -187,6 +188,7 @@ def __init__(
++        start_layer: int = 0,
+@@ -201,6 +203,7 @@ def __init__(
++        self.start_layer = start_layer
+@@ -312,7 +315,7 @@ def forward_prepare(
+diff -- python/sglang/srt/models/qwen2.py
+@@ -24,6 +24,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/llama.py` modified +16/-2; `python/sglang/srt/models/glm4_moe.py` modified +12/-1; `python/sglang/srt/models/qwen2.py` modified +9/-0; `python/sglang/srt/models/qwen2_moe.py` modified +9/-0; `python/sglang/srt/models/qwen3.py` modified +5/-1; `python/sglang/srt/models/qwen3_moe.py` modified +5/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/models/llama_eagle.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #22315 - [Bugfix] Fix GLM-4.7-FP8 EAGLE accept_len=1.00 due to draft model loading with incorrect quant_config
 
@@ -1669,6 +1635,29 @@ diff -- python/sglang/srt/function_call/glm47_moe_detector.py
   - runtime: `python/sglang/srt/function_call/glm47_moe_detector.py` modified +41/-6
 - 验证与风险: diff 自带测试面 `test/registered/unit/function_call/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #28516 - [NPU] Add MTP support for GLM-4.7-Flash
+
+- 链接: https://github.com/sgl-project/sglang/pull/28516
+- 状态/时间: merged / 2026-06-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm4_moe_lite.py`；关联提交 `2a9cce5d2757`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+38/-2，可读 patch 74 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Add MTP support for GLM-4.7-Flash」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/glm4_moe_lite.py`；技术摘要: 覆盖「[NPU] Add MTP support for GLM-4.7-Flash」；主要实现面是 `python/sglang/srt/models/glm4_moe_lite.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0 (2 lines); hunks: -548,6 +548,8 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0 (2 lines); hunks: -548,6 +548,8 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm4_moe_lite.py
+@@ -548,6 +548,8 @@ def __init__(
++        # Required for MTP: Glm4MoeLiteModelNextN bypasses Glm4MoeLiteForCausalLM.__init__
++        config.moe_layer_freq = 1
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
 
 - 链接: https://github.com/sgl-project/sglang/pull/28567
@@ -1709,29 +1698,6 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #28516 - [NPU] Add MTP support for GLM-4.7-Flash
-
-- 链接: https://github.com/sgl-project/sglang/pull/28516
-- 状态/时间: merged / 2026-06-18
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm4_moe_lite.py`；关联提交 `2a9cce5d2757`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+38/-2，可读 patch 74 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] Add MTP support for GLM-4.7-Flash」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/glm4_moe_lite.py`；技术摘要: 覆盖「[NPU] Add MTP support for GLM-4.7-Flash」；主要实现面是 `python/sglang/srt/models/glm4_moe_lite.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0 (2 lines); hunks: -548,6 +548,8 @@ def __init__(; symbols: __init__，涉及 `__init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0 (2 lines); hunks: -548,6 +548,8 @@ def __init__(; symbols: __init__
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/glm4_moe_lite.py
-@@ -548,6 +548,8 @@ def __init__(
-+        # Required for MTP: Glm4MoeLiteModelNextN bypasses Glm4MoeLiteForCausalLM.__init__
-+        config.moe_layer_freq = 1
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/glm4_moe_lite.py` modified +2/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #29261 - [Docs] Fix broken links in cookbook
 
@@ -1820,6 +1786,40 @@ diff -- python/sglang/srt/layers/moe/token_dispatcher/deepep.py
   - runtime: `python/sglang/srt/models/glm4_moe_lite.py` modified +13/-2; `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #18930 - [AMD] Unit tests for mtp in GLM-4.7
+
+- 链接: https://github.com/sgl-project/sglang/pull/18930
+- 状态/时间: closed / 2026-08-10
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+120/-1，可读 patch 129 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Unit tests for mtp in GLM-4.7」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/aiter_backend.py`, `test/registered/amd/test_glm4v_fp8_mtp.py`；技术摘要: 覆盖「[AMD] Unit tests for mtp in GLM-4.7」；主要实现面是 `python/sglang/srt/layers/attention/aiter_backend.py`, `test/registered/amd/test_glm4v_fp8_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1 (3 lines); hunks: -999,7 +999,8 @@ def init_forward_metadata_capture_cuda_graph(; symbols: init_forward_metadata_capture_cuda_graph，涉及 `init_forward_metadata_capture_cuda_graph`；`test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: TestGLM47FP8TPMTP, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestGLM47FP8TPMTP, setUpClass, tearDownClass`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1 (3 lines); hunks: -999,7 +999,8 @@ def init_forward_metadata_capture_cuda_graph(; symbols: init_forward_metadata_capture_cuda_graph
+  - `test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: TestGLM47FP8TPMTP, setUpClass, tearDownClass, test_a_gsm8k
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/aiter_backend.py
+@@ -999,7 +999,8 @@ def init_forward_metadata_capture_cuda_graph(
+-                if _use_mla_ps_kernel:
++                # https://github.com/sgl-project/sglang/pull/18383/changes
++                if self.use_mla and _use_mla_ps_kernel:
+diff -- test/registered/amd/test_glm4v_fp8_mtp.py
+@@ -0,0 +1,118 @@
++import unittest
++from types import SimpleNamespace
++import requests
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ci.ci_register import register_amd_ci
++from sglang.test.few_shot_gsm8k import run_eval as run_eval_few_shot_gsm8k
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1
+  - tests: `test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/test_glm4v_fp8_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #19040 - feat: add Glm4MoeLiteConfig and fix enable_a2a_moe for GLM-4.7-Flash
 
 - 链接: https://github.com/sgl-project/sglang/pull/19040
@@ -1859,40 +1859,6 @@ diff -- python/sglang/srt/utils/hf_transformers_utils.py
 - 已读文件:
   - runtime: `python/sglang/srt/configs/glm4_moe_lite.py` added +47/-0; `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/models/glm4_moe_lite.py` modified +1/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/glm4_moe_lite.py`, `python/sglang/srt/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #18930 - [AMD] Unit tests for mtp in GLM-4.7
-
-- 链接: https://github.com/sgl-project/sglang/pull/18930
-- 状态/时间: closed / 2026-08-10
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+120/-1，可读 patch 129 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Unit tests for mtp in GLM-4.7」；模型线: GLM-4.6/4.7；类别: 性能/后端优化；主要 diff: `python/sglang/srt/layers/attention/aiter_backend.py`, `test/registered/amd/test_glm4v_fp8_mtp.py`；技术摘要: 覆盖「[AMD] Unit tests for mtp in GLM-4.7」；主要实现面是 `python/sglang/srt/layers/attention/aiter_backend.py`, `test/registered/amd/test_glm4v_fp8_mtp.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1 (3 lines); hunks: -999,7 +999,8 @@ def init_forward_metadata_capture_cuda_graph(; symbols: init_forward_metadata_capture_cuda_graph，涉及 `init_forward_metadata_capture_cuda_graph`；`test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: TestGLM47FP8TPMTP, setUpClass, tearDownClass, test_a_gsm8k，涉及 `TestGLM47FP8TPMTP, setUpClass, tearDownClass`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1 (3 lines); hunks: -999,7 +999,8 @@ def init_forward_metadata_capture_cuda_graph(; symbols: init_forward_metadata_capture_cuda_graph
-  - `test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0 (118 lines); hunks: -0,0 +1,118; symbols: TestGLM47FP8TPMTP, setUpClass, tearDownClass, test_a_gsm8k
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/aiter_backend.py
-@@ -999,7 +999,8 @@ def init_forward_metadata_capture_cuda_graph(
--                if _use_mla_ps_kernel:
-+                # https://github.com/sgl-project/sglang/pull/18383/changes
-+                if self.use_mla and _use_mla_ps_kernel:
-diff -- test/registered/amd/test_glm4v_fp8_mtp.py
-@@ -0,0 +1,118 @@
-+import unittest
-+from types import SimpleNamespace
-+import requests
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.ci.ci_register import register_amd_ci
-+from sglang.test.few_shot_gsm8k import run_eval as run_eval_few_shot_gsm8k
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +2/-1
-  - tests: `test/registered/amd/test_glm4v_fp8_mtp.py` added +118/-0
-- 验证与风险: diff 自带测试面 `test/registered/amd/test_glm4v_fp8_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #33945 - feat: support deterministic FA4 for GLM-4.7-Flash
 
@@ -2016,6 +1982,77 @@ diff -- python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +52/-27; `python/sglang/srt/models/glm4_moe_lite.py` modified +52/-8; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +54/-0; `python/sglang/srt/models/glm4_moe.py` modified +16/-0; `python/sglang/srt/configs/model_config.py` modified +14/-1; `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +6/-1
   - tests: `test/registered/core/test_deepseek_weight_loader.py` added +86/-0; `test/registered/core/test_model_config_transformers_version.py` added +84/-0
 - 验证与风险: diff 自带测试面 `test/registered/core/test_deepseek_attention_backend_handler.py`, `test/registered/core/test_deepseek_packed_modules_mapping.py`, `test/registered/core/test_deepseek_weight_loader.py`, `test/registered/core/test_glm4_moe_lite_shared_experts_fusion.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23067 - Fix: forward continue_final_message kwargs in Glm45Detector
+
+- 链接: https://github.com/sgl-project/sglang/pull/23067
+- 状态/时间: closed / 2026-08-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+66/-1，可读 patch 94 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix: forward continue_final_message kwargs in Glm45Detector」；模型线: GLM-4.6/4.7；类别: 缺陷修复；主要 diff: `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`；技术摘要: 覆盖「Fix: forward continue_final_message kwargs in Glm45Detector」；主要实现面是 `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0 (57 lines); hunks: -518,6 +518,39 @@ def test_forced_reasoning_mode(self):; -1248,6 +1281,30 @@ def test_continue_final_message_with_request(self):; symbols: test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous, test_continue_final_message_think_end_in_previous，涉及 `test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous`；`python/sglang/srt/parser/reasoning_parser.py` modified +9/-1 (10 lines); hunks: -314,13 +314,21 @@ class Glm45Detector(BaseReasoningFormatDetector):; symbols: Glm45Detector, __init__，涉及 `Glm45Detector, __init__`。
+- 代码 diff 细节:
+  - `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0 (57 lines); hunks: -518,6 +518,39 @@ def test_forced_reasoning_mode(self):; -1248,6 +1281,30 @@ def test_continue_final_message_with_request(self):; symbols: test_forced_reasoning_mode, test_continue_final_message_accepts_kwargs, test_continue_final_message_think_start_in_previous, test_continue_final_message_think_end_in_previous
+  - `python/sglang/srt/parser/reasoning_parser.py` modified +9/-1 (10 lines); hunks: -314,13 +314,21 @@ class Glm45Detector(BaseReasoningFormatDetector):; symbols: Glm45Detector, __init__
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/parser/test_reasoning_parser.py
+@@ -518,6 +518,39 @@ def test_forced_reasoning_mode(self):
++    def test_continue_final_message_accepts_kwargs(self):
++        """Regression: Glm45Detector must accept continue_final_message and
++        previous_content kwargs (forwarded by ReasoningParser when the request
++        sets continue_final_message=True with a trailing assistant message)."""
++        detector = Glm45Detector(
++            continue_final_message=True,
+diff -- python/sglang/srt/parser/reasoning_parser.py
+@@ -314,13 +314,21 @@ class Glm45Detector(BaseReasoningFormatDetector):
+-    def __init__(self, stream_reasoning: bool = True, force_reasoning: bool = False):
++    def __init__(
++        self,
++        stream_reasoning: bool = True,
++        force_reasoning: bool = False,
++        continue_final_message: bool = False,
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/parser/test_reasoning_parser.py` modified +57/-0
+  - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +9/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/parser/test_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #38890 - Support non-strict GLM47 tool calls with EBNF constraints
+
+- 链接: https://github.com/sgl-project/sglang/pull/38890
+- 状态/时间: merged / 2026-09-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/function_call/glm47_moe_detector.py`, `python/sglang/srt/function_call/glm4_moe_detector.py`；关联提交 `17ba2c2e7c7b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 14 个文件，+834/-22，可读 patch 1073 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/function_call/glm4_moe_detector.py` modified +495/-1 (496 lines); hunks: -1,8 +1,12; -660,3 +664,493 @@ def supports_structural_tag(self) -> bool:; symbols: supports_structural_tag, structure_info, _GlmTrieNode, __init__，涉及 `supports_structural_tag, structure_info, _GlmTrieNode`；`python/sglang/srt/function_call/glm47_moe_detector.py` modified +4/-0 (4 lines); hunks: -179,6 +179,7 @@ class Glm47MoeDetector(BaseFormatDetector):; -809,6 +810,9 @@ def _parse_argument_pairs(; symbols: Glm47MoeDetector, __init__, _parse_argument_pairs, parses_required_natively，涉及 `Glm47MoeDetector, __init__, _parse_argument_pairs`。
+- 代码 diff 细节:
+  - `python/sglang/srt/function_call/glm4_moe_detector.py` modified +495/-1 (496 lines); hunks: -1,8 +1,12; -660,3 +664,493 @@ def supports_structural_tag(self) -> bool:; symbols: supports_structural_tag, structure_info, _GlmTrieNode, __init__
+  - `python/sglang/srt/function_call/glm47_moe_detector.py` modified +4/-0 (4 lines); hunks: -179,6 +179,7 @@ class Glm47MoeDetector(BaseFormatDetector):; -809,6 +810,9 @@ def _parse_argument_pairs(; symbols: Glm47MoeDetector, __init__, _parse_argument_pairs, parses_required_natively
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/function_call/glm4_moe_detector.py
+@@ -1,8 +1,12 @@
++import hashlib
++from collections import deque
++from dataclasses import dataclass
+-from typing import Any, Dict, List, Optional, Tuple
++from functools import lru_cache
++from typing import Any, Dict, List, Literal, Optional, Set, Tuple
+diff -- python/sglang/srt/function_call/glm47_moe_detector.py
+@@ -179,6 +179,7 @@ class Glm47MoeDetector(BaseFormatDetector):
++        self.use_full_assistant_constraint = False
+@@ -809,6 +810,9 @@ def _parse_argument_pairs(
++    def parses_required_natively(self) -> bool:
++        return self.use_full_assistant_constraint
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/function_call/glm4_moe_detector.py` modified +495/-1; `python/sglang/srt/function_call/glm47_moe_detector.py` modified +4/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/constrained/test_grammar_manager.py`, `test/registered/unit/constrained/test_reasoner_grammar_backend.py`, `test/registered/unit/entrypoints/openai/test_protocol.py`, `test/registered/unit/function_call/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

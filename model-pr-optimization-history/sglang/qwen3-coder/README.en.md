@@ -1,4 +1,4 @@
-# sglang Qwen3 Coder Model PR Optimization History
+# SGLang Qwen3 Coder Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -41,14 +41,13 @@
 | 2026-01-31 | [#17965](https://github.com/sgl-project/sglang/pull/17965) | merged | [Fix] Triton TP MoE Dpsk V3/Qwen3 Coder with SwapAB | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` |
 | 2026-02-04 | [#18195](https://github.com/sgl-project/sglang/pull/18195) | merged | Add MoE fused config for Qwen3-Coder-Next-FP8 on H100 TP=2 | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=512,N=256,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8,block_shape=[128, 128].json` |
 | 2026-02-08 | [#18224](https://github.com/sgl-project/sglang/pull/18224) | merged | [ModelOPT] Support Qwen 3 Next Coder NVFP4 | `python/sglang/srt/models/qwen3_next.py` |
-| 2026-02-25 | [#18700](https://github.com/sgl-project/sglang/pull/18700) | merged | [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu. | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` |
 | 2026-02-25 | [#18355](https://github.com/sgl-project/sglang/pull/18355) | merged | [AMD] Support Qwen3-Coder-Next on AMD platform | `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py` |
+| 2026-02-25 | [#18700](https://github.com/sgl-project/sglang/pull/18700) | merged | [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu. | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` |
 | 2026-03-02 | [#18608](https://github.com/sgl-project/sglang/pull/18608) | merged | [AMD] Add Qwen3-Coder-Next accuracy and functionality test scripts for MI35x 8-GPU | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py`, `test/registered/amd/test_qwen3_coder_next_8gpu.py` |
 | 2026-03-03 | [#18882](https://github.com/sgl-project/sglang/pull/18882) | merged | feat: Add FP8 KV cache support for Triton attention backend | `python/sglang/srt/layers/attention/triton_backend.py`, `python/sglang/srt/layers/attention/triton_ops/decode_attention.py`, `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` |
 | 2026-03-04 | [#19736](https://github.com/sgl-project/sglang/pull/19736) | merged | [AMD] Fix Qwen3-Coder-Next: Add missing k_scale/v_scale args to extend_attention_fwd in aiter_backend | `python/sglang/srt/layers/attention/aiter_backend.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-01 | [#21818](https://github.com/sgl-project/sglang/pull/21818) | merged | [CI] Fix lint that was not applied in #21458 | `python/sglang/srt/models/qwen3.py` |
-| 2026-04-01 | [#21829](https://github.com/sgl-project/sglang/pull/21829) | open | [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
 | 2026-04-02 | [#21463](https://github.com/sgl-project/sglang/pull/21463) | merged | Migrate all callers from /get_server_info to /server_info | `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`, `sgl-model-gateway/bindings/python/src/sglang_router/mini_lb.py`, `test/registered/amd/test_moriep_small.py` |
 | 2026-04-05 | [#22140](https://github.com/sgl-project/sglang/pull/22140) | merged | [Fix] Fix nightly tests | `python/sglang/srt/models/deepseek_v2.py`, `test/registered/perf/test_dpsk_v3_fp4_4gpu_perf.py`, `test/registered/8-gpu-models/test_qwen3_235b.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
@@ -70,6 +69,7 @@
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | merged | [CI] Remove deprecated test/srt legacy CI setup | `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/cpu/utils.py`, `test/srt/cpu/test_norm.py` |
 | 2026-07-22 | [#30832](https://github.com/sgl-project/sglang/pull/30832) | merged | Add 'anyOf' schema support for qwen3_coder tool call parser | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
+| 2026-09-02 | [#21829](https://github.com/sgl-project/sglang/pull/21829) | closed | [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -511,37 +511,6 @@ diff -- python/sglang/srt/models/qwen3_next.py
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +35/-6
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #18700 - [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.
-
-- Link: https://github.com/sgl-project/sglang/pull/18700
-- Status/date: merged / 2026-02-25
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +3/-3, 27 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu."; model line: Qwen3 Coder; category: bug fix; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`; technical summary: Covers "[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu."; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7; `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16, touching `npu_fused_moe_without_routing_weights_bf16`.
-- Code diff details:
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7
-  - `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
-@@ -43,7 +43,7 @@
--if not is_cpu() and not is_npu():
-+if not is_cpu():
-diff -- python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py
-@@ -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(
--        weight=[layer.w13_weight.permute(0, 2, 1)],
-+        weight=[layer.w13_weight],
-@@ -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(
--        weight=[layer.w2_weight.permute(0, 2, 1)],
-+        weight=[layer.w2_weight],
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1; `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #18355 - [AMD] Support Qwen3-Coder-Next on AMD platform
 
 - Link: https://github.com/sgl-project/sglang/pull/18355
@@ -575,6 +544,37 @@ diff -- python/sglang/srt/models/qwen3_next.py
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +211/-72; `python/sglang/srt/models/qwen3_next.py` modified +2/-2
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #18700 - [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.
+
+- Link: https://github.com/sgl-project/sglang/pull/18700
+- Status/date: merged / 2026-02-25
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +3/-3, 27 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu."; model line: Qwen3 Coder; category: bug fix; main diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`; technical summary: Covers "[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu."; the main implementation surface is `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7; `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16, touching `npu_fused_moe_without_routing_weights_bf16`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7
+  - `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -43,7 +43,7 @@
+-if not is_cpu() and not is_npu():
++if not is_cpu():
+diff -- python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py
+@@ -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(
+-        weight=[layer.w13_weight.permute(0, 2, 1)],
++        weight=[layer.w13_weight],
+@@ -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(
+-        weight=[layer.w2_weight.permute(0, 2, 1)],
++        weight=[layer.w2_weight],
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1; `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #18608 - [AMD] Add Qwen3-Coder-Next accuracy and functionality test scripts for MI35x 8-GPU
 
@@ -728,33 +728,6 @@ diff -- python/sglang/srt/models/qwen3.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/qwen3.py` modified +3/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #21829 - [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector
-
-- Link: https://github.com/sgl-project/sglang/pull/21829
-- Status/date: open / 2026-04-01
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +143/-0, 171 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector"; model line: Qwen3 Coder; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`; technical summary: Covers "[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector"; the main implementation surface is `python/sglang/srt/function_call/qwen3_coder_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param, touching `__init__, has_tool_call, _convert_param_value`.
-- Code diff details:
-  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
-@@ -54,6 +54,13 @@ def __init__(self):
-+        # Incremental parameter streaming state
-+        # When a string parameter value is very long (e.g. code), we stream it
-+        # incrementally instead of waiting for the complete </parameter> tag.
-+        self._streaming_param_active: bool = False
-+        self._streaming_param_emitted: int = 0  # chars processed in rest_of_slice
-+        self._streaming_param_leading_checked: bool = False
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/function_call/qwen3_coder_detector.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #21463 - Migrate all callers from /get_server_info to /server_info
 
@@ -1571,6 +1544,33 @@ diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
 - Reviewed files:
   - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7
 - Risk and verification: The diff ships test coverage in `test/registered/unit/function_call/test_function_call_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #21829 - [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector
+
+- Link: https://github.com/sgl-project/sglang/pull/21829
+- Status/date: closed / 2026-09-02
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +143/-0, 171 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector"; model line: Qwen3 Coder; category: model support/runtime entry; main diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`; technical summary: Covers "[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector"; the main implementation surface is `python/sglang/srt/function_call/qwen3_coder_detector.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param, touching `__init__, has_tool_call, _convert_param_value`.
+- Code diff details:
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
+@@ -54,6 +54,13 @@ def __init__(self):
++        # Incremental parameter streaming state
++        # When a string parameter value is very long (e.g. code), we stream it
++        # incrementally instead of waiting for the complete </parameter> tag.
++        self._streaming_param_active: bool = False
++        self._streaming_param_emitted: int = 0  # chars processed in rest_of_slice
++        self._streaming_param_leading_checked: bool = False
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/function_call/qwen3_coder_detector.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

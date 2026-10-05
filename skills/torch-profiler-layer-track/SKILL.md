@@ -11,7 +11,7 @@ changes event placement, not execution: original kernel names, timestamps,
 durations and `args.stream` remain intact. CPU events stay unchanged. Label
 the output as a **compact view**, not a runtime stream optimization.
 
-For DSV4.1, first read the [kernel/source and timing lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md).
+First read the [kernel attribution and timing principles](../llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts).
 Fused mHC/AR can remove old anchors; graph-launch host gaps and synthetic lane
 counts do not establish GPU idle time or runtime stream counts.
 
@@ -24,8 +24,10 @@ decoding, separate target verify from draft passes. BS=1 does not imply one
 token per target verify. A repeated block in the overview can be a whole
 iteration, not a transformer layer.
 
-Choose a GPU kernel that occurs **exactly once per layer in the selected
-phase**. Verify its call site and cross-check the count with another landmark
+Choose a GPU kernel with a **verified cadence per layer in the selected
+phase**. For two sublayer anchors use `--anchor-stride 2`; LongCat residual
+boundaries can need stride 4. Use `--extra-anchors-per-pass 1` for a verified
+K3 output aggregation after the final layer. Verify its call site and cross-check the count with another landmark
 or CPU module scopes. Record this evidence and code revision. Names, stream
 numbers and layer counts depend on the model/build; do not count all Top-K
 calls or blindly reuse a previous model's anchor. Inspect all GPU streams in
@@ -55,6 +57,9 @@ python3 scripts/add_layer_track.py \
 
 - Use `--pid GPU_PID` when anchors occur in multiple processes/GPUs.
   Use `--device DEVICE` if a single PID contains anchors from multiple devices.
+- `--anchor-stride K` keeps every K-th anchor after the verified offset.
+  `--extra-anchors-per-pass E` skips E trailing output aggregations before
+  selecting the next pass; stride/extra are recorded in the report.
 - `--passes` labels only that many complete passes. `--first-layer` supports
   a known pipeline partition. A truncated selection is rejected.
 - Optional `--end-anchor-regex` identifies a verified layer-ending kernel

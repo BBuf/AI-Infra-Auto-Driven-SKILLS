@@ -1,4 +1,4 @@
-# sglang GLM VLM/OCR Model PR Optimization History
+# SGLang GLM VLM/OCR Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -6,17 +6,18 @@
 | --- | --- |
 | `docs/cookbook/autoregressive/GLM/GLM-OCR.mdx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/glm-ocr-deployment.jsx` | no direct PR-number commit |
-| `python/sglang/srt/models/glm4v.py` | [#9884](https://github.com/sgl-project/sglang/pull/9884), [#10147](https://github.com/sgl-project/sglang/pull/10147), [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20033](https://github.com/sgl-project/sglang/pull/20033) |
+| `python/sglang/srt/models/glm4v.py` | [#9884](https://github.com/sgl-project/sglang/pull/9884), [#10147](https://github.com/sgl-project/sglang/pull/10147), [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20033](https://github.com/sgl-project/sglang/pull/20033), [#39088](https://github.com/sgl-project/sglang/pull/39088) |
 | `python/sglang/srt/models/glm4v_moe.py` | [#20463](https://github.com/sgl-project/sglang/pull/20463), [#20740](https://github.com/sgl-project/sglang/pull/20740), [#21134](https://github.com/sgl-project/sglang/pull/21134) |
 | `python/sglang/srt/models/glm_ocr.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#20463](https://github.com/sgl-project/sglang/pull/20463), [#20740](https://github.com/sgl-project/sglang/pull/20740), [#21134](https://github.com/sgl-project/sglang/pull/21134) |
-| `python/sglang/srt/models/glm_ocr_nextn.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582) |
-| `python/sglang/srt/multimodal/processors/glm4v.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#18885](https://github.com/sgl-project/sglang/pull/18885) |
+| `python/sglang/srt/models/glm_ocr_nextn.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#39088](https://github.com/sgl-project/sglang/pull/39088) |
+| `python/sglang/srt/multimodal/processors/glm4v.py` | [#17582](https://github.com/sgl-project/sglang/pull/17582), [#18885](https://github.com/sgl-project/sglang/pull/18885), [#37971](https://github.com/sgl-project/sglang/pull/37971) |
+| `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` | [#37971](https://github.com/sgl-project/sglang/pull/37971) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 8
+- Git-traced PRs: 10
 - Extra PRs preserved from existing docs: 30
-- Total PRs in this document: 38
+- Total PRs in this document: 40
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -62,6 +63,8 @@
 | 2026-08-11 | [#19728](https://github.com/sgl-project/sglang/pull/19728) | closed | Fix ROCm GLM-4.5V-FP8 startup with unpadded MoE weights and padded FP8 fallback | `python/sglang/srt/layers/quantization/fp8_kernel.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `test/registered/moe/test_fused_moe.py` |
 | 2026-08-12 | [#9349](https://github.com/sgl-project/sglang/pull/9349) | closed | Add support for GLM 4.5V FP8 | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=128,N=352,device_name=NVIDIA_L40S,dtype=fp8_w8a8.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` |
 | 2026-08-14 | [#14662](https://github.com/sgl-project/sglang/pull/14662) | closed | [Glm46v] support ktransformers | `python/sglang/srt/models/glm4v_moe.py` |
+| 2026-09-05 | [#37971](https://github.com/sgl-project/sglang/pull/37971) | merged | fix(glm4v): disambiguate mixed image video offsets | `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py`, `python/sglang/srt/multimodal/processors/glm4v.py` |
+| 2026-09-19 | [#39088](https://github.com/sgl-project/sglang/pull/39088) | merged | Fix GLM-OCR MTP multimodal embeddings and positions | `python/sglang/srt/models/glm_ocr_nextn.py`, `python/sglang/srt/models/glm4v.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1396,6 +1399,75 @@ diff -- python/sglang/srt/models/glm4v_moe.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/glm4v_moe.py` modified +8/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/glm4v_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #37971 - fix(glm4v): disambiguate mixed image video offsets
+
+- Link: https://github.com/sgl-project/sglang/pull/37971
+- Status/date: merged / 2026-09-05
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/glm4v.py`, `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py`; associated commits `e980c1a2f133`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +153/-7, 194 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` added +101/-0 (101 lines); hunks: -0,0 +1,101; symbols: _processor, test_glm4v_partitions_shared_image_and_video_token_offsets, test_glm4v_keeps_interleaved_media_offsets_in_their_modalities, test_glm4v_uses_default_offsets_when_token_ids_are_distinct, touching `_processor, test_glm4v_partitions_shared_image_and_video_token_offsets, test_glm4v_keeps_interleaved_media_offsets_in_their_modalities`; `python/sglang/srt/multimodal/processors/glm4v.py` modified +33/-2 (35 lines); hunks: -1,12 +1,12; -296,6 +296,37 @@ def __init__(self, hf_config, server_args, _processor, *arg...; symbols: __init__, get_mm_item_offsets, is_video_offset, compute_mrope_positions, touching `__init__, get_mm_item_offsets, is_video_offset`.
+- Code diff details:
+  - `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` added +101/-0 (101 lines); hunks: -0,0 +1,101; symbols: _processor, test_glm4v_partitions_shared_image_and_video_token_offsets, test_glm4v_keeps_interleaved_media_offsets_in_their_modalities, test_glm4v_uses_default_offsets_when_token_ids_are_distinct
+  - `python/sglang/srt/multimodal/processors/glm4v.py` modified +33/-2 (35 lines); hunks: -1,12 +1,12; -296,6 +296,37 @@ def __init__(self, hf_config, server_args, _processor, *arg...; symbols: __init__, get_mm_item_offsets, is_video_offset, compute_mrope_positions
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/multimodal/test_glm4v_mixed_offsets.py
+@@ -0,0 +1,101 @@
++import pytest
++import torch
++from sglang.srt.managers.schedule_batch import Modality
++from sglang.srt.multimodal.processors.base_processor import MultimodalSpecialTokens
++from sglang.srt.multimodal.processors.glm4v import Glm4vImageProcessor
++from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/multimodal/processors/glm4v.py
+@@ -1,12 +1,12 @@
+-from typing import List, Union
++from typing import List, Tuple, Union
+-from sglang.srt.managers.schedule_batch import MultimodalProcessorOutput
++from sglang.srt.managers.schedule_batch import Modality, MultimodalProcessorOutput
+@@ -296,6 +296,37 @@ def __init__(self, hf_config, server_args, _processor, *args, **kwargs):
++    def get_mm_item_offsets(
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py` added +101/-0
+  - runtime: `python/sglang/srt/multimodal/processors/glm4v.py` modified +33/-2
+- Risk and verification: The diff ships test coverage in `test/registered/unit/multimodal/test_glm4v_mixed_offsets.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39088 - Fix GLM-OCR MTP multimodal embeddings and positions
+
+- Link: https://github.com/sgl-project/sglang/pull/39088
+- Status/date: merged / 2026-09-19
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/glm_ocr_nextn.py`; associated commits `929230a6f015`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 17 files, +108/-6, 248 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/glm_ocr_nextn.py` modified +19/-3 (22 lines); hunks: -36,6 +36,7; -86,9 +87,20 @@ def forward(; symbols: forward, __init__, touching `forward, __init__`; `python/sglang/srt/models/glm4v.py` modified +1/-1 (2 lines); hunks: -668,7 +668,7 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/glm_ocr_nextn.py` modified +19/-3 (22 lines); hunks: -36,6 +36,7; -86,9 +87,20 @@ def forward(; symbols: forward, __init__
+  - `python/sglang/srt/models/glm4v.py` modified +1/-1 (2 lines); hunks: -668,7 +668,7 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/glm_ocr_nextn.py
+@@ -36,6 +36,7 @@
++from sglang.srt.utils.hf_transformers_utils import get_rope_config
+@@ -86,9 +87,20 @@ def forward(
+-            hidden_states = self.embed_tokens(input_ids)
+-        else:
+-            hidden_states = input_embeds
++            input_embeds = forward_batch.mm_input_embeds
+diff -- python/sglang/srt/models/glm4v.py
+@@ -668,7 +668,7 @@ def forward(
+-        if self.is_mrope_enabled:
++        if self.is_mrope_enabled and forward_batch.mrope_positions is not None:
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/glm_ocr_nextn.py` modified +19/-3; `python/sglang/srt/models/glm4v.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/gdn_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -1,14 +1,15 @@
-# vllm MiniMax M2/M3 Series 模型 PR 优化历史
+# vLLM MiniMax M2/M3 Series 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `tests/kernels/attention/test_minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47984](https://github.com/vllm-project/vllm/pull/47984) |
-| `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` | [#50032](https://github.com/vllm-project/vllm/pull/50032), [#51203](https://github.com/vllm-project/vllm/pull/51203) |
-| `tests/kernels/core/test_minimax_reduce_rms.py` | [#37045](https://github.com/vllm-project/vllm/pull/37045), [#43410](https://github.com/vllm-project/vllm/pull/43410), [#45935](https://github.com/vllm-project/vllm/pull/45935) |
-| `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
-| `tests/kernels/test_minimax_m3_amd_ops.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#46117](https://github.com/vllm-project/vllm/pull/46117), [#47158](https://github.com/vllm-project/vllm/pull/47158) |
+| `tests/kernels/attention/test_minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47984](https://github.com/vllm-project/vllm/pull/47984), [#52664](https://github.com/vllm-project/vllm/pull/52664), [#54535](https://github.com/vllm-project/vllm/pull/54535), [#54682](https://github.com/vllm-project/vllm/pull/54682), [#55235](https://github.com/vllm-project/vllm/pull/55235), [#56151](https://github.com/vllm-project/vllm/pull/56151) |
+| `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` | [#59081](https://github.com/vllm-project/vllm/pull/59081), [#59481](https://github.com/vllm-project/vllm/pull/59481) |
+| `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` | [#50032](https://github.com/vllm-project/vllm/pull/50032), [#51203](https://github.com/vllm-project/vllm/pull/51203), [#59300](https://github.com/vllm-project/vllm/pull/59300) |
+| `tests/kernels/core/test_minimax_reduce_rms.py` | [#37045](https://github.com/vllm-project/vllm/pull/37045), [#43410](https://github.com/vllm-project/vllm/pull/43410), [#45935](https://github.com/vllm-project/vllm/pull/45935), [#55057](https://github.com/vllm-project/vllm/pull/55057) |
+| `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#59300](https://github.com/vllm-project/vllm/pull/59300) |
+| `tests/kernels/test_minimax_m3_amd_ops.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#46117](https://github.com/vllm-project/vllm/pull/46117), [#47158](https://github.com/vllm-project/vllm/pull/47158), [#53674](https://github.com/vllm-project/vllm/pull/53674), [#56849](https://github.com/vllm-project/vllm/pull/56849) |
 | `tests/kernels/test_minimax_m3_sparse_attn_fp8_scale.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287) |
 | `tests/models/multimodal/processing/test_minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `tests/parser/engine/test_minimax_m2.py` | [#45701](https://github.com/vllm-project/vllm/pull/45701) |
@@ -25,44 +26,46 @@
 | `vllm/model_executor/warmup/minimax_m3_msa_warmup.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/amd/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
-| `vllm/models/minimax_m3/amd/model.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45810](https://github.com/vllm-project/vllm/pull/45810), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#45896](https://github.com/vllm-project/vllm/pull/45896), [#46419](https://github.com/vllm-project/vllm/pull/46419), [#46474](https://github.com/vllm-project/vllm/pull/46474), [#46545](https://github.com/vllm-project/vllm/pull/46545), [#47269](https://github.com/vllm-project/vllm/pull/47269), [#47287](https://github.com/vllm-project/vllm/pull/47287) |
-| `vllm/models/minimax_m3/amd/mtp.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
+| `vllm/models/minimax_m3/amd/indexer_aiter.py` | [#52664](https://github.com/vllm-project/vllm/pull/52664) |
+| `vllm/models/minimax_m3/amd/model.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45810](https://github.com/vllm-project/vllm/pull/45810), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#45896](https://github.com/vllm-project/vllm/pull/45896), [#46419](https://github.com/vllm-project/vllm/pull/46419), [#46474](https://github.com/vllm-project/vllm/pull/46474), [#46545](https://github.com/vllm-project/vllm/pull/46545), [#47269](https://github.com/vllm-project/vllm/pull/47269), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#52664](https://github.com/vllm-project/vllm/pull/52664), [#52849](https://github.com/vllm-project/vllm/pull/52849), [#54535](https://github.com/vllm-project/vllm/pull/54535), ... (16 total) |
+| `vllm/models/minimax_m3/amd/mtp.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#58648](https://github.com/vllm-project/vllm/pull/58648) |
 | `vllm/models/minimax_m3/amd/ops/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/amd/ops/gemma_rmsnorm.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
-| `vllm/models/minimax_m3/amd/ops/index_topk.py` | [#46546](https://github.com/vllm-project/vllm/pull/46546) |
+| `vllm/models/minimax_m3/amd/ops/index_topk.py` | [#46546](https://github.com/vllm-project/vllm/pull/46546), [#54682](https://github.com/vllm-project/vllm/pull/54682), [#55235](https://github.com/vllm-project/vllm/pull/55235) |
 | `vllm/models/minimax_m3/amd/ops/sparse_attn.py` | [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287) |
-| `vllm/models/minimax_m3/amd/ops/sparse_pa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984) |
-| `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
-| `vllm/models/minimax_m3/amd/sparse_attention_msa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
+| `vllm/models/minimax_m3/amd/ops/sparse_pa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984), [#52664](https://github.com/vllm-project/vllm/pull/52664), [#52849](https://github.com/vllm-project/vllm/pull/52849), [#54682](https://github.com/vllm-project/vllm/pull/54682) |
+| `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#53674](https://github.com/vllm-project/vllm/pull/53674), [#58089](https://github.com/vllm-project/vllm/pull/58089) |
+| `vllm/models/minimax_m3/amd/sparse_attention_msa.py` | [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47984](https://github.com/vllm-project/vllm/pull/47984), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#52664](https://github.com/vllm-project/vllm/pull/52664), [#52849](https://github.com/vllm-project/vllm/pull/52849), [#54682](https://github.com/vllm-project/vllm/pull/54682) |
 | `vllm/models/minimax_m3/common/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
-| `vllm/models/minimax_m3/common/indexer.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#49149](https://github.com/vllm-project/vllm/pull/49149) |
+| `vllm/models/minimax_m3/common/encoder_cudagraph.py` | [#58673](https://github.com/vllm-project/vllm/pull/58673) |
+| `vllm/models/minimax_m3/common/indexer.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#49149](https://github.com/vllm-project/vllm/pull/49149), [#54682](https://github.com/vllm-project/vllm/pull/54682), [#59081](https://github.com/vllm-project/vllm/pull/59081) |
 | `vllm/models/minimax_m3/common/mm_preprocess.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#50092](https://github.com/vllm-project/vllm/pull/50092), [#50305](https://github.com/vllm-project/vllm/pull/50305), [#50313](https://github.com/vllm-project/vllm/pull/50313) |
 | `vllm/models/minimax_m3/common/ops/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
-| `vllm/models/minimax_m3/common/ops/index_topk.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
+| `vllm/models/minimax_m3/common/ops/index_topk.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#56151](https://github.com/vllm-project/vllm/pull/56151), [#59081](https://github.com/vllm-project/vllm/pull/59081), [#59481](https://github.com/vllm-project/vllm/pull/59481) |
 | `vllm/models/minimax_m3/common/ops/sparse_attn.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
-| `vllm/models/minimax_m3/common/sparse_attention.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#49149](https://github.com/vllm-project/vllm/pull/49149), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
-| `vllm/models/minimax_m3/common/vision_tower.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
+| `vllm/models/minimax_m3/common/sparse_attention.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45720](https://github.com/vllm-project/vllm/pull/45720), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#46546](https://github.com/vllm-project/vllm/pull/46546), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#49149](https://github.com/vllm-project/vllm/pull/49149), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#52664](https://github.com/vllm-project/vllm/pull/52664), [#52849](https://github.com/vllm-project/vllm/pull/52849), [#56170](https://github.com/vllm-project/vllm/pull/56170), [#59300](https://github.com/vllm-project/vllm/pull/59300) |
+| `vllm/models/minimax_m3/common/vision_tower.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#58512](https://github.com/vllm-project/vllm/pull/58512), [#58526](https://github.com/vllm-project/vllm/pull/58526), [#58673](https://github.com/vllm-project/vllm/pull/58673) |
 | `vllm/models/minimax_m3/nvidia/__init__.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/models/minimax_m3/nvidia/indexer_msa.py` | [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47502](https://github.com/vllm-project/vllm/pull/47502) |
-| `vllm/models/minimax_m3/nvidia/model.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45810](https://github.com/vllm-project/vllm/pull/45810), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47631](https://github.com/vllm-project/vllm/pull/47631), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#51203](https://github.com/vllm-project/vllm/pull/51203) |
-| `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` | [#50032](https://github.com/vllm-project/vllm/pull/50032) |
-| `vllm/models/minimax_m3/nvidia/mtp.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
+| `vllm/models/minimax_m3/nvidia/model.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45810](https://github.com/vllm-project/vllm/pull/45810), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#47631](https://github.com/vllm-project/vllm/pull/47631), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#51203](https://github.com/vllm-project/vllm/pull/51203), [#57197](https://github.com/vllm-project/vllm/pull/57197), [#58648](https://github.com/vllm-project/vllm/pull/58648), [#58673](https://github.com/vllm-project/vllm/pull/58673), [#59300](https://github.com/vllm-project/vllm/pull/59300) |
+| `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` | [#50032](https://github.com/vllm-project/vllm/pull/50032), [#59300](https://github.com/vllm-project/vllm/pull/59300) |
+| `vllm/models/minimax_m3/nvidia/mtp.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#58648](https://github.com/vllm-project/vllm/pull/58648) |
 | `vllm/models/minimax_m3/nvidia/ops/__init__.py` | 无直接 PR 号提交 |
 | `vllm/models/minimax_m3/nvidia/ops/index_decode_score.py` | 无直接 PR 号提交 |
-| `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#50032](https://github.com/vllm-project/vllm/pull/50032) |
+| `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45892](https://github.com/vllm-project/vllm/pull/45892), [#47287](https://github.com/vllm-project/vllm/pull/47287), [#47502](https://github.com/vllm-project/vllm/pull/47502), [#50032](https://github.com/vllm-project/vllm/pull/50032), [#59300](https://github.com/vllm-project/vllm/pull/59300) |
 | `vllm/parser/minimax_m2.py` | [#45701](https://github.com/vllm-project/vllm/pull/45701), [#48846](https://github.com/vllm-project/vllm/pull/48846) |
 | `vllm/reasoning/minimax_m2_reasoning_parser.py` | [#27535](https://github.com/vllm-project/vllm/pull/27535), [#29882](https://github.com/vllm-project/vllm/pull/29882), [#35352](https://github.com/vllm-project/vllm/pull/35352), [#45701](https://github.com/vllm-project/vllm/pull/45701) |
 | `vllm/reasoning/minimax_m3_reasoning_parser.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#45718](https://github.com/vllm-project/vllm/pull/45718) |
 | `vllm/tool_parsers/minimax_m2_tool_parser.py` | [#30555](https://github.com/vllm-project/vllm/pull/30555), [#31083](https://github.com/vllm-project/vllm/pull/31083), [#32278](https://github.com/vllm-project/vllm/pull/32278), [#32342](https://github.com/vllm-project/vllm/pull/32342), [#35895](https://github.com/vllm-project/vllm/pull/35895), [#39599](https://github.com/vllm-project/vllm/pull/39599), [#43006](https://github.com/vllm-project/vllm/pull/43006), [#43025](https://github.com/vllm-project/vllm/pull/43025), [#45701](https://github.com/vllm-project/vllm/pull/45701) |
 | `vllm/tool_parsers/minimax_m3_tool_parser.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
 | `vllm/transformers_utils/configs/minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
-| `vllm/transformers_utils/processors/minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381) |
+| `vllm/transformers_utils/processors/minimax_m3.py` | [#45381](https://github.com/vllm-project/vllm/pull/45381), [#58460](https://github.com/vllm-project/vllm/pull/58460), [#59613](https://github.com/vllm-project/vllm/pull/59613) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 46
+- git 追溯 PR 数: 72
 - 原文档显式引用补充 PR 数: 22
-- 当前文档总 PR 数: 68
+- 当前文档总 PR 数: 94
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -138,6 +141,32 @@
 | 2026-07-14 | [#48523](https://github.com/vllm-project/vllm/pull/48523) | merged | [Bugfix] Skip minimax_m3 tool parser tests when Rust extension is absent | `tests/tool_parsers/test_minimax_m3_tool_parser.py` |
 | 2026-07-17 | [#48846](https://github.com/vllm-project/vllm/pull/48846) | merged | [Bugfix][Tool Parser] Preserve whitespace in parameter values (MiniMax M2, Qwen3, MiniCPM5 XML) | `tests/tool_parsers/test_minimax_m2_tool_parser.py`, `vllm/parser/minimax_m2.py` |
 | 2026-07-25 | [#49149](https://github.com/vllm-project/vllm/pull/49149) | merged | [Bugfix][MiniMax-M3] Fix token-major top-k buffer handling in Triton … | `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/common/indexer.py` |
+| 2026-07-29 | [#50092](https://github.com/vllm-project/vllm/pull/50092) | merged | [Misc][Minimax-M3]add default video_processor | `vllm/models/minimax_m3/common/mm_preprocess.py` |
+| 2026-07-29 | [#50313](https://github.com/vllm-project/vllm/pull/50313) | merged | Revert "[Misc][Minimax-M3]add default video_processor (#50092)" | `vllm/models/minimax_m3/common/mm_preprocess.py` |
+| 2026-07-31 | [#50305](https://github.com/vllm-project/vllm/pull/50305) | merged | [Bugfix] Re-land MiniMax M3 default video processor | `vllm/models/minimax_m3/common/mm_preprocess.py` |
+| 2026-08-02 | [#50032](https://github.com/vllm-project/vllm/pull/50032) | merged | [Attention][MiniMax-M3] Add MSA speculative decode verification | `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py`, `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py`, `vllm/models/minimax_m3/common/sparse_attention.py` |
+| 2026-08-20 | [#51203](https://github.com/vllm-project/vllm/pull/51203) | merged | [Bugfix][MiniMax-M3] Keep FP8 query allocation stable across CUDA graph replay | `vllm/models/minimax_m3/nvidia/model.py`, `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` |
+| 2026-08-28 | [#52849](https://github.com/vllm-project/vllm/pull/52849) | merged | [ROCm][PERF] Enable AITER PA gluon decode for MiniMax-M3 MTP and dense layers | `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/amd/model.py` |
+| 2026-09-03 | [#55057](https://github.com/vllm-project/vllm/pull/55057) | merged | [ROCm][CI] Add MiniMax reduce RMS kernel coverage | `tests/kernels/core/test_minimax_reduce_rms.py` |
+| 2026-09-03 | [#54682](https://github.com/vllm-project/vllm/pull/54682) | merged | [ROCm][Perf] Optimize MiniMax-M3 decode indexer and top-k | `vllm/models/minimax_m3/amd/ops/index_topk.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/common/indexer.py` |
+| 2026-09-09 | [#52664](https://github.com/vllm-project/vllm/pull/52664) | merged | [Performance][ROCm] Integrate aiter indexer scoring and top-k kernels into MiniMax-M3 sparse attention path | `vllm/models/minimax_m3/amd/indexer_aiter.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py` |
+| 2026-09-13 | [#56170](https://github.com/vllm-project/vllm/pull/56170) | merged | [ROCm][Performance] Avoid blocking MiniMax M3 scalar upload | `vllm/models/minimax_m3/common/sparse_attention.py` |
+| 2026-09-14 | [#55235](https://github.com/vllm-project/vllm/pull/55235) | merged | [ROCm][Perf] Tune MiniMax-M3 decode top-k for short contexts | `vllm/models/minimax_m3/amd/ops/index_topk.py`, `tests/kernels/attention/test_minimax_m3.py` |
+| 2026-09-16 | [#53674](https://github.com/vllm-project/vllm/pull/53674) | merged | [Bugfix][ROCm] Fix MiniMax-M3 fused MXFP8 block scale | `vllm/models/minimax_m3/amd/ops/swiglu_oai.py`, `tests/kernels/test_minimax_m3_amd_ops.py` |
+| 2026-09-17 | [#56849](https://github.com/vllm-project/vllm/pull/56849) | merged | [ROCm][Perf] Insert MiniMax-M3 sparse-PA K/V without a contiguous copy | `vllm/models/minimax_m3/amd/model.py`, `tests/kernels/test_minimax_m3_amd_ops.py` |
+| 2026-09-21 | [#54535](https://github.com/vllm-project/vllm/pull/54535) | merged | [AMD][Minimax-M3][perf] Enable packed LBHNC AITER QK-norm fusion for MiniMax-M3 on ROCm | `vllm/models/minimax_m3/amd/model.py`, `tests/kernels/attention/test_minimax_m3.py` |
+| 2026-09-23 | [#58089](https://github.com/vllm-project/vllm/pull/58089) | merged | [ROCm][Bugfix] Keep zero MiniMax MXFP8 activation blocks finite | `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` |
+| 2026-09-24 | [#58512](https://github.com/vllm-project/vllm/pull/58512) | merged | [Minimax-M3][Perf] Use Conv3dLayer for M3 patch embedding | `vllm/models/minimax_m3/common/vision_tower.py` |
+| 2026-09-24 | [#58460](https://github.com/vllm-project/vllm/pull/58460) | merged | [Multimodal] Reuse the supplied tokenizer in the MiniMax-M3 VL processor | `vllm/transformers_utils/processors/minimax_m3.py` |
+| 2026-09-25 | [#58526](https://github.com/vllm-project/vllm/pull/58526) | merged | [Minimax-M3][Perf] Use triton_mrope for vision tower + int64 offset fix for triton_mrope | `vllm/models/minimax_m3/common/vision_tower.py` |
+| 2026-09-28 | [#58673](https://github.com/vllm-project/vllm/pull/58673) | merged | [Minimax-M3] Add Encoder CUDA graph support | `vllm/models/minimax_m3/common/encoder_cudagraph.py`, `vllm/models/minimax_m3/common/vision_tower.py`, `vllm/models/minimax_m3/amd/model.py` |
+| 2026-09-28 | [#59081](https://github.com/vllm-project/vllm/pull/59081) | merged | [Minimax M3] Enable fp8 indexer cache on triton indexer for non-SM100 architectures. | `vllm/models/minimax_m3/common/ops/index_topk.py`, `vllm/models/minimax_m3/common/indexer.py`, `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` |
+| 2026-09-30 | [#58648](https://github.com/vllm-project/vllm/pull/58648) | merged | [Bugfix][MiniMax M3] Share target embeddings with MTP under PP | `vllm/models/minimax_m3/amd/mtp.py`, `vllm/models/minimax_m3/nvidia/mtp.py`, `vllm/models/minimax_m3/amd/model.py` |
+| 2026-09-30 | [#56151](https://github.com/vllm-project/vllm/pull/56151) | merged | [Perf][MiniMax-M3] Triton indexer: decode grid retune + SM12.0 split-K | `vllm/models/minimax_m3/common/ops/index_topk.py`, `tests/kernels/attention/test_minimax_m3.py` |
+| 2026-09-30 | [#57197](https://github.com/vllm-project/vllm/pull/57197) | merged | [Bugfix][PP][Spec Decode] MiniMax-M3 EAGLE3 aux-state relay at PP > 1 and per-stage FlashInfer autotune | `vllm/models/minimax_m3/nvidia/model.py` |
+| 2026-10-01 | [#59300](https://github.com/vllm-project/vllm/pull/59300) | merged | [Attention][MiniMax-M3] NVFP4 KV cache on the MSA sparse attention path | `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py`, `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py`, `vllm/models/minimax_m3/common/sparse_attention.py` |
+| 2026-10-02 | [#59613](https://github.com/vllm-project/vllm/pull/59613) | merged | [Bugfix] Fix minimax-m3 multimodal processor compatability with Transformers v5.18 | `vllm/transformers_utils/processors/minimax_m3.py` |
+| 2026-10-02 | [#59481](https://github.com/vllm-project/vllm/pull/59481) | merged | [Minimax-M3] Keep the native FP8 MMA in the Triton indexer scorers | `vllm/models/minimax_m3/common/ops/index_topk.py`, `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -2518,6 +2547,882 @@ diff -- vllm/models/minimax_m3/common/indexer.py
 - 已读文件:
   - runtime: `vllm/models/minimax_m3/common/sparse_attention.py` modified +8/-1; `vllm/models/minimax_m3/common/indexer.py` modified +5/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/sparse_attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #50092 - [Misc][Minimax-M3]add default video_processor
+
+- 链接: https://github.com/vllm-project/vllm/pull/50092
+- 状态/时间: merged / 2026-07-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/mm_preprocess.py`；关联提交 `2ecd8645d87e`, `df2735ea2e14`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+44/-7，可读 patch 95 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/mm_preprocess.py` modified +37/-7 (44 lines); hunks: -3,8 +3,9; -469,10 +470,39 @@ def get_video_replacement(item_idx: int):; symbols: get_video_replacement, MiniMaxM3VideoBackend, load_bytes, compute_frames_index_to_sample，涉及 `get_video_replacement, MiniMaxM3VideoBackend, load_bytes`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/mm_preprocess.py` modified +37/-7 (44 lines); hunks: -3,8 +3,9; -469,10 +470,39 @@ def get_video_replacement(item_idx: int):; symbols: get_video_replacement, MiniMaxM3VideoBackend, load_bytes, compute_frames_index_to_sample
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/mm_preprocess.py
+@@ -3,8 +3,9 @@
+-from typing import cast
++from typing import Any, Literal, cast
++import numpy.typing as npt
+@@ -469,10 +470,39 @@ def get_video_replacement(item_idx: int):
+-# TODO(Isotr0py): Tie with MinimaxVideoProcessor
+-# after https://github.com/vllm-project/vllm/pull/44126
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/mm_preprocess.py` modified +37/-7
+- 验证与风险: diff 自带测试面 `tests/multimodal/test_video.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #50313 - Revert "[Misc][Minimax-M3]add default video_processor (#50092)"
+
+- 链接: https://github.com/vllm-project/vllm/pull/50313
+- 状态/时间: merged / 2026-07-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/mm_preprocess.py`；关联提交 `2ecd8645d87e`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+7/-44，可读 patch 95 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/mm_preprocess.py` modified +7/-37 (44 lines); hunks: -3,9 +3,8; -470,39 +469,10 @@ def get_video_replacement(item_idx: int):; symbols: get_video_replacement, MiniMaxM3VideoBackend, load_bytes, compute_frames_index_to_sample，涉及 `get_video_replacement, MiniMaxM3VideoBackend, load_bytes`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/mm_preprocess.py` modified +7/-37 (44 lines); hunks: -3,9 +3,8; -470,39 +469,10 @@ def get_video_replacement(item_idx: int):; symbols: get_video_replacement, MiniMaxM3VideoBackend, load_bytes, compute_frames_index_to_sample
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/mm_preprocess.py
+@@ -3,9 +3,8 @@
+-from typing import Any, Literal, cast
++from typing import cast
+-import numpy.typing as npt
+@@ -470,39 +469,10 @@ def get_video_replacement(item_idx: int):
+-@VIDEO_LOADER_REGISTRY.register(
+-    name="minimax_m3_vl",
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/mm_preprocess.py` modified +7/-37
+- 验证与风险: diff 自带测试面 `tests/multimodal/test_video.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #50305 - [Bugfix] Re-land MiniMax M3 default video processor
+
+- 链接: https://github.com/vllm-project/vllm/pull/50305
+- 状态/时间: merged / 2026-07-31
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/mm_preprocess.py`；关联提交 `f727951d3f0d`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+42/-12，可读 patch 105 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/mm_preprocess.py` modified +34/-11 (45 lines); hunks: -3,8 +3,9; -469,10 +470,39 @@ def get_video_replacement(item_idx: int):; symbols: get_video_replacement, MiniMaxM3VideoBackend, load_bytes, compute_frames_index_to_sample，涉及 `get_video_replacement, MiniMaxM3VideoBackend, load_bytes`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/mm_preprocess.py` modified +34/-11 (45 lines); hunks: -3,8 +3,9; -469,10 +470,39 @@ def get_video_replacement(item_idx: int):; symbols: get_video_replacement, MiniMaxM3VideoBackend, load_bytes, compute_frames_index_to_sample
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/mm_preprocess.py
+@@ -3,8 +3,9 @@
+-from typing import cast
++from typing import Any, Literal, cast
++import numpy.typing as npt
+@@ -469,10 +470,39 @@ def get_video_replacement(item_idx: int):
+-# TODO(Isotr0py): Tie with MinimaxVideoProcessor
+-# after https://github.com/vllm-project/vllm/pull/44126
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/mm_preprocess.py` modified +34/-11
+- 验证与风险: diff 自带测试面 `tests/multimodal/test_video.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #50032 - [Attention][MiniMax-M3] Add MSA speculative decode verification
+
+- 链接: https://github.com/vllm-project/vllm/pull/50032
+- 状态/时间: merged / 2026-08-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/nvidia/model.py` 等 7 个文件；关联提交 `0055b8bfa3a2`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 15 个文件，+1275/-59，可读 patch 1678 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` added +316/-0 (316 lines); hunks: -0,0 +1,316; symbols: MSACutlassDecodeMetadata, _update_runtime_metadata_kernel, MSACutlassDecodePlanCache, _build_plan，涉及 `MSACutlassDecodeMetadata, _update_runtime_metadata_kernel, MSACutlassDecodePlanCache`；`vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +210/-19 (229 lines); hunks: -1,35 +1,207; -52,23 +224,42 @@ def forward(; symbols: MiniMaxM3SparseMSABackend, get_builder_cls, MiniMaxM3SparseCutlassBackend, get_name，涉及 `MiniMaxM3SparseMSABackend, get_builder_cls, MiniMaxM3SparseCutlassBackend`；`vllm/models/minimax_m3/common/sparse_attention.py` modified +30/-7 (37 lines); hunks: -330,6 +330,7 @@ def __init__(; -355,6 +356,8 @@ def forward(; symbols: __init__, forward, should_use_msa_decode, MiniMaxM3SparseTritonImpl，涉及 `__init__, forward, should_use_msa_decode`；`vllm/models/minimax_m3/nvidia/model.py` modified +28/-6 (34 lines); hunks: -79,7 +79,7; -505,22 +505,25 @@ def __init__(; symbols: __init__, forward, _run_attention, MiniMaxM3DecoderLayer，涉及 `__init__, forward, _run_attention`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` added +316/-0 (316 lines); hunks: -0,0 +1,316; symbols: MSACutlassDecodeMetadata, _update_runtime_metadata_kernel, MSACutlassDecodePlanCache, _build_plan
+  - `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +210/-19 (229 lines); hunks: -1,35 +1,207; -52,23 +224,42 @@ def forward(; symbols: MiniMaxM3SparseMSABackend, get_builder_cls, MiniMaxM3SparseCutlassBackend, get_name
+  - `vllm/models/minimax_m3/common/sparse_attention.py` modified +30/-7 (37 lines); hunks: -330,6 +330,7 @@ def __init__(; -355,6 +356,8 @@ def forward(; symbols: __init__, forward, should_use_msa_decode, MiniMaxM3SparseTritonImpl
+  - `vllm/models/minimax_m3/nvidia/model.py` modified +28/-6 (34 lines); hunks: -79,7 +79,7; -505,22 +505,25 @@ def __init__(; symbols: __init__, forward, _run_attention, MiniMaxM3DecoderLayer
+  - `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +2/-0 (2 lines); hunks: -23,6 +23,8 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py
+@@ -0,0 +1,316 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""MiniMax CUTLASS sparse decode using per-query-token page indices."""
++from __future__ import annotations
++from dataclasses import dataclass, field
++from typing import Any
+diff -- vllm/models/minimax_m3/nvidia/sparse_attention_msa.py
+@@ -1,35 +1,207 @@
+-"""MSA (SM100/Blackwell) block-sparse attend for MiniMax M3.
++"""MSA (SM100/Blackwell) block-sparse attention for MiniMax M3.
+-Prefill attends with ``fmha_sm100`` (``build_k2q_csr`` + ``sparse_atten_func``);
+-decode falls back to the Triton split-K kernel (no MSA decode yet). ``fmha_sm100``
+-imports are function-local, so this module is import-safe on AMD/non-SM100.
++Prefill attends with ``fmha_sm100`` (``build_k2q_csr`` + ``sparse_atten_func``).
+diff -- vllm/models/minimax_m3/common/sparse_attention.py
+@@ -330,6 +330,7 @@ def __init__(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` added +316/-0; `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +210/-19; `vllm/models/minimax_m3/common/sparse_attention.py` modified +30/-7; `vllm/models/minimax_m3/nvidia/model.py` modified +28/-6; `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +2/-0
+  - tests: `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` added +561/-0; `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py` modified +15/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #51203 - [Bugfix][MiniMax-M3] Keep FP8 query allocation stable across CUDA graph replay
+
+- 链接: https://github.com/vllm-project/vllm/pull/51203
+- 状态/时间: merged / 2026-08-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py`, `vllm/models/minimax_m3/nvidia/model.py`；关联提交 `7c8b68b9ce30`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+91/-11，可读 patch 142 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/nvidia/model.py` modified +10/-10 (20 lines); hunks: -564,6 +564,15 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVC...; -598,16 +607,7 @@ def forward(; symbols: get_kv_cache_spec, _allocate_query_fp8, forward，涉及 `get_kv_cache_spec, _allocate_query_fp8, forward`；`tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` modified +81/-1 (82 lines); hunks: -9,19 +9,22; -316,6 +319,83 @@ def fake_build_plan(**kwargs):; symbols: fake_build_plan, test_query_fp8_stays_valid_when_cutlass_plan_appears_on_replay, run_attention, _make_topk，涉及 `fake_build_plan, test_query_fp8_stays_valid_when_cutlass_plan_appears_on_replay, run_attention`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/nvidia/model.py` modified +10/-10 (20 lines); hunks: -564,6 +564,15 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVC...; -598,16 +607,7 @@ def forward(; symbols: get_kv_cache_spec, _allocate_query_fp8, forward
+  - `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` modified +81/-1 (82 lines); hunks: -9,19 +9,22; -316,6 +319,83 @@ def fake_build_plan(**kwargs):; symbols: fake_build_plan, test_query_fp8_stays_valid_when_cutlass_plan_appears_on_replay, run_attention, _make_topk
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/nvidia/model.py
+@@ -564,6 +564,15 @@ def get_kv_cache_spec(self, vllm_config: VllmConfig) -> KVCacheSpec | None:
++    def _allocate_query_fp8(self, qkv: torch.Tensor) -> torch.Tensor | None:
++        if not getattr(self.impl, "use_cutlass_decode", False):
++            return None
++        return torch.empty(
++            (qkv.shape[0], self.q_size),
++            dtype=torch.float8_e4m3fn,
+diff -- tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py
+@@ -9,19 +9,22 @@
+-from vllm.config import AttentionConfig
++from vllm.config import AttentionConfig, CUDAGraphMode
++from vllm.forward_context import ForwardContext, override_forward_context
++    MiniMaxM3SparseMetadata,
++from vllm.models.minimax_m3.nvidia.model import MiniMaxM3SparseAttention
+@@ -316,6 +319,83 @@ def fake_build_plan(**kwargs):
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/nvidia/model.py` modified +10/-10
+  - tests: `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` modified +81/-1
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52849 - [ROCm][PERF] Enable AITER PA gluon decode for MiniMax-M3 MTP and dense layers
+
+- 链接: https://github.com/vllm-project/vllm/pull/52849
+- 状态/时间: merged / 2026-08-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`, `vllm/models/minimax_m3/common/sparse_attention.py`；关联提交 `ae5b8e4a8d77`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+574/-201，可读 patch 1143 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +155/-118 (273 lines); hunks: -32,43 +32,42 @@ def _is_fp8_kv_cache_tensor(kv_cache: torch.Tensor) -> bool:; -83,42 +82,54 @@ def _build_sparse_block_table_kernel(; symbols: _is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, _write_sparse_block_table_row, minimax_m3_build_sparse_block_table，涉及 `_is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, _write_sparse_block_table_row`；`vllm/models/minimax_m3/common/sparse_attention.py` modified +97/-7 (104 lines); hunks: -66,6 +66,49 @@ def _minimax_m3_aiter_sparse_pa_requested() -> bool:; -117,10 +160,14 @@ def is_sparse(cls) -> bool:; symbols: _minimax_m3_aiter_sparse_pa_requested, minimax_m3_rebase_slots_to_page16, minimax_m3_query_token_positions, minimax_m3_use_aiter_sparse_pa，涉及 `_minimax_m3_aiter_sparse_pa_requested, minimax_m3_rebase_slots_to_page16, minimax_m3_query_token_positions`；`vllm/models/minimax_m3/amd/model.py` modified +39/-12 (51 lines); hunks: -101,6 +101,8; -755,35 +757,45 @@ def _ensure_aiter_sparse_pa_kv_cache(self) -> None:; symbols: _ensure_aiter_sparse_pa_kv_cache, get_aiter_sparse_pa_kv_cache, _insert_aiter_sparse_pa_kv，涉及 `_ensure_aiter_sparse_pa_kv_cache, get_aiter_sparse_pa_kv_cache, _insert_aiter_sparse_pa_kv`；`vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +3/-2 (5 lines); hunks: -75,14 +75,15 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +155/-118 (273 lines); hunks: -32,43 +32,42 @@ def _is_fp8_kv_cache_tensor(kv_cache: torch.Tensor) -> bool:; -83,42 +82,54 @@ def _build_sparse_block_table_kernel(; symbols: _is_fp8_kv_cache_tensor, _build_sparse_block_table_kernel, _write_sparse_block_table_row, minimax_m3_build_sparse_block_table
+  - `vllm/models/minimax_m3/common/sparse_attention.py` modified +97/-7 (104 lines); hunks: -66,6 +66,49 @@ def _minimax_m3_aiter_sparse_pa_requested() -> bool:; -117,10 +160,14 @@ def is_sparse(cls) -> bool:; symbols: _minimax_m3_aiter_sparse_pa_requested, minimax_m3_rebase_slots_to_page16, minimax_m3_query_token_positions, minimax_m3_use_aiter_sparse_pa
+  - `vllm/models/minimax_m3/amd/model.py` modified +39/-12 (51 lines); hunks: -101,6 +101,8; -755,35 +757,45 @@ def _ensure_aiter_sparse_pa_kv_cache(self) -> None:; symbols: _ensure_aiter_sparse_pa_kv_cache, get_aiter_sparse_pa_kv_cache, _insert_aiter_sparse_pa_kv
+  - `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +3/-2 (5 lines); hunks: -75,14 +75,15 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/ops/sparse_pa.py
+@@ -32,43 +32,42 @@ def _is_fp8_kv_cache_tensor(kv_cache: torch.Tensor) -> bool:
+-def _build_sparse_block_table_kernel(
+-    topk_ptr,  # [1, batch, topk] int32, selected logical 128-block ids
+-    block_table_ptr,  # [batch, max_blocks] int32, logical 128-page table
+-    seq_lens_ptr,  # [batch] int32
+-    sparse_bt_ptr,  # [batch, topk * 8] int32, physical 16-page table
+-    sparse_ctx_ptr,  # [batch] int32
+diff -- vllm/models/minimax_m3/common/sparse_attention.py
+@@ -66,6 +66,49 @@ def _minimax_m3_aiter_sparse_pa_requested() -> bool:
++def minimax_m3_rebase_slots_to_page16(
++    slot_mapping: torch.Tensor,
++    block_size: int,
++    out: torch.Tensor | None = None,
++) -> torch.Tensor:
++    """Rebase a token slot mapping onto AITER's page-16 page numbering.
+diff -- vllm/models/minimax_m3/amd/model.py
+@@ -101,6 +101,8 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +155/-118; `vllm/models/minimax_m3/common/sparse_attention.py` modified +97/-7; `vllm/models/minimax_m3/amd/model.py` modified +39/-12; `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +3/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #55057 - [ROCm][CI] Add MiniMax reduce RMS kernel coverage
+
+- 链接: https://github.com/vllm-project/vllm/pull/55057
+- 状态/时间: merged / 2026-09-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/core/test_minimax_reduce_rms.py`；关联提交 `096d8e8ce61f`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+173/-5，可读 patch 222 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/kernels/core/test_minimax_reduce_rms.py` modified +114/-1 (115 lines); hunks: -1,6 +1,8; -9,6 +11,7; symbols: _worker_forward_qk, _worker_forward_qk_rocm_aiter, test_minimax_reduce_rms_qk_rocm_aiter，涉及 `_worker_forward_qk, _worker_forward_qk_rocm_aiter, test_minimax_reduce_rms_qk_rocm_aiter`。
+- 代码 diff 细节:
+  - `tests/kernels/core/test_minimax_reduce_rms.py` modified +114/-1 (115 lines); hunks: -1,6 +1,8; -9,6 +11,7; symbols: _worker_forward_qk, _worker_forward_qk_rocm_aiter, test_minimax_reduce_rms_qk_rocm_aiter
+- 关键代码摘录:
+
+```diff
+diff -- tests/kernels/core/test_minimax_reduce_rms.py
+@@ -1,6 +1,8 @@
+-"""Tests for MiniMax QK RMS-norm: NCCL reference vs Lamport fused kernel."""
++"""Tests for MiniMax QK RMS-norm fused all-reduce kernels and fallbacks."""
++from unittest.mock import patch
+@@ -9,6 +11,7 @@
++from vllm._aiter_ops import is_aiter_found_and_supported, rocm_aiter_ops
+@@ -124,6 +127,116 @@ def _worker_forward_qk(
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/kernels/core/test_minimax_reduce_rms.py` modified +114/-1
+- 验证与风险: diff 自带测试面 `tests/kernels/core/test_minimax_reduce_rms.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #54682 - [ROCm][Perf] Optimize MiniMax-M3 decode indexer and top-k
+
+- 链接: https://github.com/vllm-project/vllm/pull/54682
+- 状态/时间: merged / 2026-09-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/index_topk.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py` 等 6 个文件；关联提交 `cee0f92c0211`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+2010/-327，可读 patch 2644 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/ops/index_topk.py` modified +986/-306 (1292 lines); hunks: -7,21 +7,119; -397,255 +495,670 @@ def _decode_index_score_kernel(; symbols: _decode_score_program_budget, _decode_score_split_launch_policy, _decode_topk_launch_policy, _decode_index_score_kernel，涉及 `_decode_score_program_budget, _decode_score_split_launch_policy, _decode_topk_launch_policy`；`vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +60/-19 (79 lines); hunks: -32,14 +32,13 @@ def _is_fp8_kv_cache_tensor(kv_cache: torch.Tensor) -> bool:; -56,8 +55,7 @@ def _write_sparse_block_table_row(; symbols: _is_fp8_kv_cache_tensor, _write_sparse_block_table_row, _write_sparse_block_table_row_from_values，涉及 `_is_fp8_kv_cache_tensor, _write_sparse_block_table_row, _write_sparse_block_table_row_from_values`；`vllm/models/minimax_m3/common/indexer.py` modified +71/-1 (72 lines); hunks: -369,6 +369,18 @@ def __init__(; -392,6 +404,11 @@ class MiniMaxM3IndexerTritonImpl(MiniMaxM3IndexerImpl):; symbols: __init__, MiniMaxM3IndexerTritonImpl, forward，涉及 `__init__, MiniMaxM3IndexerTritonImpl, forward`；`vllm/models/minimax_m3/amd/model.py` modified +46/-1 (47 lines); hunks: -92,6 +92,13; -701,6 +708,7 @@ def __init__(; symbols: __init__, _ensure_aiter_sparse_pa_kv_cache, get_aiter_sparse_pa_kv_cache, _run_attention，涉及 `__init__, _ensure_aiter_sparse_pa_kv_cache, get_aiter_sparse_pa_kv_cache`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/ops/index_topk.py` modified +986/-306 (1292 lines); hunks: -7,21 +7,119; -397,255 +495,670 @@ def _decode_index_score_kernel(; symbols: _decode_score_program_budget, _decode_score_split_launch_policy, _decode_topk_launch_policy, _decode_index_score_kernel
+  - `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +60/-19 (79 lines); hunks: -32,14 +32,13 @@ def _is_fp8_kv_cache_tensor(kv_cache: torch.Tensor) -> bool:; -56,8 +55,7 @@ def _write_sparse_block_table_row(; symbols: _is_fp8_kv_cache_tensor, _write_sparse_block_table_row, _write_sparse_block_table_row_from_values
+  - `vllm/models/minimax_m3/common/indexer.py` modified +71/-1 (72 lines); hunks: -369,6 +369,18 @@ def __init__(; -392,6 +404,11 @@ class MiniMaxM3IndexerTritonImpl(MiniMaxM3IndexerImpl):; symbols: __init__, MiniMaxM3IndexerTritonImpl, forward
+  - `vllm/models/minimax_m3/amd/model.py` modified +46/-1 (47 lines); hunks: -92,6 +92,13; -701,6 +708,7 @@ def __init__(; symbols: __init__, _ensure_aiter_sparse_pa_kv_cache, get_aiter_sparse_pa_kv_cache, _run_attention
+  - `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +7/-0 (7 lines); hunks: -25,6 +25,7 @@ def forward(; -70,6 +71,12 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/ops/index_topk.py
+@@ -7,21 +7,119 @@
+-Index-K cache layout (vLLM): ``(num_blocks, 128, idx_head_dim)`` (single head).
++Index-K cache layout (vLLM): ``(num_blocks, 128, idx_head_dim)`` (one shared
++key vector per token).
+-disabled (score-only indexer), single shared index head. The selected block ids
+-feed the block-sparse attention kernels in ``sparse_attn``.
++disabled (score-only indexer), and shared index keys. Each local index-query
+diff -- vllm/models/minimax_m3/amd/ops/sparse_pa.py
+@@ -32,14 +32,13 @@ def _is_fp8_kv_cache_tensor(kv_cache: torch.Tensor) -> bool:
+-def _write_sparse_block_table_row(
+-    topk_row,  # [topk] int32, selected logical block ids for this query
++def _write_sparse_block_table_row_from_values(
++    blk,  # [BLOCK_SIZE_T] int32 selected logical block ids for this query
+-    stride_topk_k,
+@@ -56,8 +55,7 @@ def _write_sparse_block_table_row(
+diff -- vllm/models/minimax_m3/common/indexer.py
+@@ -369,6 +369,18 @@ def __init__(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/ops/index_topk.py` modified +986/-306; `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +60/-19; `vllm/models/minimax_m3/common/indexer.py` modified +71/-1; `vllm/models/minimax_m3/amd/model.py` modified +46/-1; `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +7/-0
+  - tests: `tests/kernels/attention/test_minimax_m3.py` modified +840/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52664 - [Performance][ROCm] Integrate aiter indexer scoring and top-k kernels into MiniMax-M3 sparse attention path
+
+- 链接: https://github.com/vllm-project/vllm/pull/52664
+- 状态/时间: merged / 2026-09-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/indexer_aiter.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/ops/sparse_pa.py`, `vllm/models/minimax_m3/amd/sparse_attention_msa.py` 等 6 个文件；关联提交 `83252ea899c6`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+1077/-58，可读 patch 1393 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/indexer_aiter.py` added +646/-0 (646 lines); hunks: -0,0 +1,646; symbols: _pow2_ceil, score_block_width, aiter_indexer_max_decode_query_len, aiter_msa_kernels_unavailable_reason，涉及 `_pow2_ceil, score_block_width, aiter_indexer_max_decode_query_len`；`vllm/models/minimax_m3/amd/model.py` modified +158/-36 (194 lines); hunks: -87,17 +87,24; -111,7 +118,7; symbols: __init__, forward，涉及 `__init__, forward`；`vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +152/-5 (157 lines); hunks: -2,16 +2,118; -28,8 +130,11 @@ def forward(; symbols: MiniMaxM3SparseAiterPABackend, get_builder_cls, MiniMaxM3SparseAiterPAPrefillMetadata, MiniMaxM3SparseAiterPADecodeMetadata，涉及 `MiniMaxM3SparseAiterPABackend, get_builder_cls, MiniMaxM3SparseAiterPAPrefillMetadata`；`vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +45/-8 (53 lines); hunks: -312,7 +312,9 @@ def _insert_index_cache_kernel(; -368,6 +370,32 @@ def minimax_m3_sparse_block_page_stride(; symbols: _insert_index_cache_kernel, minimax_m3_sparse_block_page_stride, minimax_m3_rebase_block_table_to_page16, _gluon_scale_arg，涉及 `_insert_index_cache_kernel, minimax_m3_sparse_block_page_stride, minimax_m3_rebase_block_table_to_page16`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/indexer_aiter.py` added +646/-0 (646 lines); hunks: -0,0 +1,646; symbols: _pow2_ceil, score_block_width, aiter_indexer_max_decode_query_len, aiter_msa_kernels_unavailable_reason
+  - `vllm/models/minimax_m3/amd/model.py` modified +158/-36 (194 lines); hunks: -87,17 +87,24; -111,7 +118,7; symbols: __init__, forward
+  - `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +152/-5 (157 lines); hunks: -2,16 +2,118; -28,8 +130,11 @@ def forward(; symbols: MiniMaxM3SparseAiterPABackend, get_builder_cls, MiniMaxM3SparseAiterPAPrefillMetadata, MiniMaxM3SparseAiterPADecodeMetadata
+  - `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +45/-8 (53 lines); hunks: -312,7 +312,9 @@ def _insert_index_cache_kernel(; -368,6 +370,32 @@ def minimax_m3_sparse_block_page_stride(; symbols: _insert_index_cache_kernel, minimax_m3_sparse_block_page_stride, minimax_m3_rebase_block_table_to_page16, _gluon_scale_arg
+  - `vllm/models/minimax_m3/common/sparse_attention.py` modified +24/-9 (33 lines); hunks: -109,13 +109,22 @@ def minimax_m3_query_token_positions(; -252,9 +261,9 @@ def __init__(; symbols: minimax_m3_query_token_positions, minimax_m3_use_aiter_sparse_pa, __init__, select_main_backend_and_impl_cls
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/indexer_aiter.py
+@@ -0,0 +1,646 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""AITER (ROCm) indexer impl for MiniMax M3.
++Scores index blocks and selects the top-k with AITER's fp8 MFMA kernels on both
++sides of the batch: ``pa_sparse_block_score_decode`` for the uniform-query-length
++decode rows and ``pa_sparse_block_score_prefill`` for the ragged prefill rows,
+diff -- vllm/models/minimax_m3/amd/model.py
+@@ -87,17 +87,24 @@
++from vllm.models.minimax_m3.amd.indexer_aiter import (
++    MiniMaxM3AiterIndexer,
++    select_aiter_indexer_impl_cls,
++)
++    ASM_PAGE_SIZE,
++    MiniMaxM3SparseAiterPADecodeMetadata,
+diff -- vllm/models/minimax_m3/amd/sparse_attention_msa.py
+@@ -2,16 +2,118 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/indexer_aiter.py` added +646/-0; `vllm/models/minimax_m3/amd/model.py` modified +158/-36; `vllm/models/minimax_m3/amd/sparse_attention_msa.py` modified +152/-5; `vllm/models/minimax_m3/amd/ops/sparse_pa.py` modified +45/-8; `vllm/models/minimax_m3/common/sparse_attention.py` modified +24/-9
+  - tests: `tests/kernels/attention/test_minimax_m3.py` modified +52/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #56170 - [ROCm][Performance] Avoid blocking MiniMax M3 scalar upload
+
+- 链接: https://github.com/vllm-project/vllm/pull/56170
+- 状态/时间: merged / 2026-09-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/sparse_attention.py`；关联提交 `f09c52a587f2`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 12 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/sparse_attention.py` modified +4/-1 (5 lines); hunks: -314,7 +314,10 @@ def build(; symbols: build，涉及 `build`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/sparse_attention.py` modified +4/-1 (5 lines); hunks: -314,7 +314,10 @@ def build(; symbols: build
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/sparse_attention.py
+@@ -314,7 +314,10 @@ def build(
+-            prefill_cu_seqlens_k[0] = 0
++            if current_platform.is_rocm():
++                prefill_cu_seqlens_k[:1].zero_()
++            else:
++                prefill_cu_seqlens_k[0] = 0
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/sparse_attention.py` modified +4/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/models/minimax_m3/common/sparse_attention.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #55235 - [ROCm][Perf] Tune MiniMax-M3 decode top-k for short contexts
+
+- 链接: https://github.com/vllm-project/vllm/pull/55235
+- 状态/时间: merged / 2026-09-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/ops/index_topk.py`；关联提交 `dfa1984e58dc`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+90/-48，可读 patch 268 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/ops/index_topk.py` modified +27/-7 (34 lines); hunks: -37,6 +37,7; -103,14 +104,23 @@ def _decode_topk_launch_policy(; symbols: _decode_topk_launch_policy, minimax_m3_index_decode，涉及 `_decode_topk_launch_policy, minimax_m3_index_decode`；`tests/kernels/attention/test_minimax_m3.py` modified +63/-41 (104 lines); hunks: -1025,17 +1025,20 @@ def test_decode_index_topk_correctness(; -1044,9 +1047,9 @@ def test_amd_decode_topk_launch_policy(; symbols: test_decode_index_topk_correctness, test_amd_decode_topk_launch_policy, test_amd_decode_fused_topk_total_order_and_replay，涉及 `test_decode_index_topk_correctness, test_amd_decode_topk_launch_policy, test_amd_decode_fused_topk_total_order_and_replay`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/ops/index_topk.py` modified +27/-7 (34 lines); hunks: -37,6 +37,7; -103,14 +104,23 @@ def _decode_topk_launch_policy(; symbols: _decode_topk_launch_policy, minimax_m3_index_decode
+  - `tests/kernels/attention/test_minimax_m3.py` modified +63/-41 (104 lines); hunks: -1025,17 +1025,20 @@ def test_decode_index_topk_correctness(; -1044,9 +1047,9 @@ def test_amd_decode_topk_launch_policy(; symbols: test_decode_index_topk_correctness, test_amd_decode_topk_launch_policy, test_amd_decode_fused_topk_total_order_and_replay
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/ops/index_topk.py
+@@ -37,6 +37,7 @@
++DECODE_TOPK_SHORT_BLOCKS_PER_CHUNK = 128
+@@ -103,14 +104,23 @@ def _decode_topk_launch_policy(
+-) -> tuple[int, bool, bool]:
+-    """Choose the graph grid and bounded-context selector specialization."""
++) -> tuple[int, int, int, int, bool, bool]:
++    """Choose the selector grid and compile-time launch configuration."""
+diff -- tests/kernels/attention/test_minimax_m3.py
+@@ -1025,17 +1025,20 @@ def test_decode_index_topk_correctness(
+-        (0, 24, 1, 16, True, (2, False, False)),
+-        (1, 1, 1, 16, True, (16, True, True)),
+-        (512, 4, 1, 16, True, (16, True, True)),
+-        (513, 24, 4, 16, True, (16, True, True)),
+-        (2760, 5, 2, 16, True, (16, True, True)),
+-        (8192, 64, 4, 16, True, (16, True, True)),
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/ops/index_topk.py` modified +27/-7
+  - tests: `tests/kernels/attention/test_minimax_m3.py` modified +63/-41
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #53674 - [Bugfix][ROCm] Fix MiniMax-M3 fused MXFP8 block scale
+
+- 链接: https://github.com/vllm-project/vllm/pull/53674
+- 状态/时间: merged / 2026-09-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/models/minimax_m3/amd/ops/swiglu_oai.py`；关联提交 `22bb158c21fc`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+28/-4，可读 patch 74 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` modified +6/-2 (8 lines); hunks: -83,6 +83,8 @@ def _swiglu_oai_quant_kernel(; -109,8 +111,8 @@ def _swiglu_oai_quant_kernel(; symbols: _swiglu_oai_quant_kernel, swiglu_oai_quantize_mxfp8，涉及 `_swiglu_oai_quant_kernel, swiglu_oai_quantize_mxfp8`；`tests/kernels/test_minimax_m3_amd_ops.py` modified +22/-2 (24 lines); hunks: -42,6 +42,7; -167,6 +168,25 @@ def test_swiglu_oai_split(m, inter, limit, dtype):; symbols: test_swiglu_oai_split, test_swiglu_oai_quantize_mxfp8_uses_e4m3_range_for_scale, test_mxfp8_quant_triton_matches_torch，涉及 `test_swiglu_oai_split, test_swiglu_oai_quantize_mxfp8_uses_e4m3_range_for_scale, test_mxfp8_quant_triton_matches_torch`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` modified +6/-2 (8 lines); hunks: -83,6 +83,8 @@ def _swiglu_oai_quant_kernel(; -109,8 +111,8 @@ def _swiglu_oai_quant_kernel(; symbols: _swiglu_oai_quant_kernel, swiglu_oai_quantize_mxfp8
+  - `tests/kernels/test_minimax_m3_amd_ops.py` modified +22/-2 (24 lines); hunks: -42,6 +42,7; -167,6 +168,25 @@ def test_swiglu_oai_split(m, inter, limit, dtype):; symbols: test_swiglu_oai_split, test_swiglu_oai_quantize_mxfp8_uses_e4m3_range_for_scale, test_mxfp8_quant_triton_matches_torch
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/ops/swiglu_oai.py
+@@ -83,6 +83,8 @@ def _swiglu_oai_quant_kernel(
++    FP8_MAX: tl.constexpr,
++    TINY: tl.constexpr,
+@@ -109,8 +111,8 @@ def _swiglu_oai_quant_kernel(
+-    amax = tl.maximum(tl.max(tl.abs(act), axis=1), 1e-30)  # [BLOCK_M]
+-    sb = tl.minimum(tl.maximum(tl.floor(tl.log2(amax)) + 127.0, 0.0), 254.0)
++    amax = tl.maximum(tl.max(tl.abs(act), axis=1), TINY)  # [BLOCK_M]
+diff -- tests/kernels/test_minimax_m3_amd_ops.py
+@@ -42,6 +42,7 @@
++    swiglu_oai_quantize_mxfp8,
+@@ -167,6 +168,25 @@ def test_swiglu_oai_split(m, inter, limit, dtype):
++@torch.inference_mode()
++def test_swiglu_oai_quantize_mxfp8_uses_e4m3_range_for_scale():
++    # Keep a small value in two MX blocks next to their maxima. The scale must
++    # use E4M3's finite range (448), otherwise that value underflows to zero.
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` modified +6/-2
+  - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +22/-2
+- 验证与风险: diff 自带测试面 `tests/kernels/test_minimax_m3_amd_ops.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #56849 - [ROCm][Perf] Insert MiniMax-M3 sparse-PA K/V without a contiguous copy
+
+- 链接: https://github.com/vllm-project/vllm/pull/56849
+- 状态/时间: merged / 2026-09-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/test_minimax_m3_amd_ops.py`, `vllm/models/minimax_m3/amd/model.py`；关联提交 `438434b5b5f8`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+104/-2，可读 patch 138 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/model.py` modified +28/-2 (30 lines); hunks: -579,6 +579,32 @@ def forward(; -902,8 +928,8 @@ def _insert_aiter_sparse_pa_kv(; symbols: forward, _kv_insert_operand, MiniMaxM3SparseAttention, _insert_aiter_sparse_pa_kv，涉及 `forward, _kv_insert_operand, MiniMaxM3SparseAttention`；`tests/kernels/test_minimax_m3_amd_ops.py` modified +76/-0 (76 lines); hunks: -10,6 +10,7; -39,6 +40,7; symbols: resolve, _fused_qkv_kv_slices, _asm_kv_cache, test_kv_insert_operand_matches_contiguous，涉及 `resolve, _fused_qkv_kv_slices, _asm_kv_cache`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/model.py` modified +28/-2 (30 lines); hunks: -579,6 +579,32 @@ def forward(; -902,8 +928,8 @@ def _insert_aiter_sparse_pa_kv(; symbols: forward, _kv_insert_operand, MiniMaxM3SparseAttention, _insert_aiter_sparse_pa_kv
+  - `tests/kernels/test_minimax_m3_amd_ops.py` modified +76/-0 (76 lines); hunks: -10,6 +10,7; -39,6 +40,7; symbols: resolve, _fused_qkv_kv_slices, _asm_kv_cache, test_kv_insert_operand_matches_contiguous
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/model.py
+@@ -579,6 +579,32 @@ def forward(
++# Widest row pitch aiter's reshape_and_cache can carry in its `int` stride args.
++_MAX_KV_INSERT_ROW_STRIDE = 2**31 - 1
++def _kv_insert_operand(t: torch.Tensor) -> torch.Tensor:
++    """K or V operand for ``aiter.reshape_and_cache``, without a needless copy.
++    The AITER sparse-PA insert takes K and V as column slices of the fused
++    ``[q | k | v | index_q | index_k]`` projection, so they are row-strided
+diff -- tests/kernels/test_minimax_m3_amd_ops.py
+@@ -10,6 +10,7 @@
++  * Strided K/V sparse-PA cache insert           -> contiguous-copy insert
+@@ -39,6 +40,7 @@
++from vllm.models.minimax_m3.amd.model import _kv_insert_operand  # noqa: E402
+@@ -588,3 +590,77 @@ def resolve(consumes_mask, *, has_moe_kernel=True):
++# --------------------------------------------------------------------------- #
++# Strided K/V operand for the AITER sparse-PA cache insert
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/model.py` modified +28/-2
+  - tests: `tests/kernels/test_minimax_m3_amd_ops.py` modified +76/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/test_minimax_m3_amd_ops.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #54535 - [AMD][Minimax-M3][perf] Enable packed LBHNC AITER QK-norm fusion for MiniMax-M3 on ROCm
+
+- 链接: https://github.com/vllm-project/vllm/pull/54535
+- 状态/时间: merged / 2026-09-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/amd/model.py`；关联提交 `b8cf2753825d`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+636/-91，可读 patch 826 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/model.py` modified +163/-81 (244 lines); hunks: -890,13 +890,39 @@ def get_aiter_sparse_pa_kv_cache(self) -> tuple[torch.Tens...; -906,22 +932,6 @@ def _insert_aiter_sparse_pa_kv(; symbols: get_aiter_sparse_pa_kv_cache, _get_aiter_sparse_pa_slot_mapping, _insert_aiter_sparse_pa_kv, forward，涉及 `get_aiter_sparse_pa_kv_cache, _get_aiter_sparse_pa_slot_mapping, _insert_aiter_sparse_pa_kv`；`tests/kernels/attention/test_minimax_m3.py` modified +361/-10 (371 lines); hunks: -19,7 +19,10; -28,6 +31,7; symbols: test_main_cache_layout_contract, test_aiter_sparse_pa_layout_contract, test_aiter_sparse_pa_rejects_multiple_kv_heads，涉及 `test_main_cache_layout_contract, test_aiter_sparse_pa_layout_contract, test_aiter_sparse_pa_rejects_multiple_kv_heads`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/model.py` modified +163/-81 (244 lines); hunks: -890,13 +890,39 @@ def get_aiter_sparse_pa_kv_cache(self) -> tuple[torch.Tens...; -906,22 +932,6 @@ def _insert_aiter_sparse_pa_kv(; symbols: get_aiter_sparse_pa_kv_cache, _get_aiter_sparse_pa_slot_mapping, _insert_aiter_sparse_pa_kv, forward
+  - `tests/kernels/attention/test_minimax_m3.py` modified +361/-10 (371 lines); hunks: -19,7 +19,10; -28,6 +31,7; symbols: test_main_cache_layout_contract, test_aiter_sparse_pa_layout_contract, test_aiter_sparse_pa_rejects_multiple_kv_heads
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/model.py
+@@ -890,13 +890,39 @@ def get_aiter_sparse_pa_kv_cache(self) -> tuple[torch.Tensor, torch.Tensor]:
++    def _get_aiter_sparse_pa_slot_mapping(
++        self,
++        slot_mapping: torch.Tensor,
++        key_cache: torch.Tensor,
++        value_cache: torch.Tensor,
++    ) -> torch.Tensor:
+diff -- tests/kernels/attention/test_minimax_m3.py
+@@ -19,7 +19,10 @@
+-from vllm.models.minimax_m3.common.sparse_attention import MiniMaxM3SparseTritonImpl
++from vllm.models.minimax_m3.common.sparse_attention import (
++    MiniMaxM3SparseTritonImpl,
++    minimax_m3_rebase_slots_to_page16,
++)
+@@ -28,6 +31,7 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/model.py` modified +163/-81
+  - tests: `tests/kernels/attention/test_minimax_m3.py` modified +361/-10
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #58089 - [ROCm][Bugfix] Keep zero MiniMax MXFP8 activation blocks finite
+
+- 链接: https://github.com/vllm-project/vllm/pull/58089
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/ops/swiglu_oai.py`；关联提交 `56b3acb55bb2`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+4/-2，可读 patch 13 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` modified +4/-2 (6 lines); hunks: -113,8 +113,10 @@ def _swiglu_oai_quant_kernel(; symbols: _swiglu_oai_quant_kernel，涉及 `_swiglu_oai_quant_kernel`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` modified +4/-2 (6 lines); hunks: -113,8 +113,10 @@ def _swiglu_oai_quant_kernel(; symbols: _swiglu_oai_quant_kernel
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/ops/swiglu_oai.py
+@@ -113,8 +113,10 @@ def _swiglu_oai_quant_kernel(
+-    descale = tl.exp2(sb - 127.0)
+-    aq = (act / descale[:, None]).to(aq_ptr.dtype.element_ty)
++    # Computing the E8M0 byte-0 divisor (2^-127) can flush to zero on CDNA.
++    # Use its finite reciprocal so all-zero blocks do not produce 0/0.
++    rescale = tl.exp2(127.0 - sb)
++    aq = (act * rescale[:, None]).to(aq_ptr.dtype.element_ty)
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/ops/swiglu_oai.py` modified +4/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/models/minimax_m3/amd/ops/swiglu_oai.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #58512 - [Minimax-M3][Perf] Use Conv3dLayer for M3 patch embedding
+
+- 链接: https://github.com/vllm-project/vllm/pull/58512
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/vision_tower.py`；关联提交 `00b7847c8036`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+45/-1，可读 patch 61 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/vision_tower.py` modified +2/-1 (3 lines); hunks: -14,6 +14,7; -55,7 +56,7 @@ def __init__(self, config: PretrainedConfig) -> None:; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/vision_tower.py` modified +2/-1 (3 lines); hunks: -14,6 +14,7; -55,7 +56,7 @@ def __init__(self, config: PretrainedConfig) -> None:; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/vision_tower.py
+@@ -14,6 +14,7 @@
++from vllm.model_executor.layers.conv import Conv3dLayer
+@@ -55,7 +56,7 @@ def __init__(self, config: PretrainedConfig) -> None:
+-        self.patch_embedding = nn.Conv3d(
++        self.patch_embedding = Conv3dLayer(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/vision_tower.py` modified +2/-1
+- 验证与风险: diff 自带测试面 `tests/model_executor/layers/test_conv.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #58460 - [Multimodal] Reuse the supplied tokenizer in the MiniMax-M3 VL processor
+
+- 链接: https://github.com/vllm-project/vllm/pull/58460
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/minimax_m3.py`；关联提交 `f5a78f2ad73d`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+8/-3，可读 patch 18 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/transformers_utils/processors/minimax_m3.py` modified +8/-3 (11 lines); hunks: -522,9 +522,14 @@ def from_pretrained(cls, pretrained_model_name_or_path, **k...; symbols: from_pretrained，涉及 `from_pretrained`。
+- 代码 diff 细节:
+  - `vllm/transformers_utils/processors/minimax_m3.py` modified +8/-3 (11 lines); hunks: -522,9 +522,14 @@ def from_pretrained(cls, pretrained_model_name_or_path, **k...; symbols: from_pretrained
+- 关键代码摘录:
+
+```diff
+diff -- vllm/transformers_utils/processors/minimax_m3.py
+@@ -522,9 +522,14 @@ def from_pretrained(cls, pretrained_model_name_or_path, **kwargs):
+-        tokenizer = AutoTokenizer.from_pretrained(
+-            pretrained_model_name_or_path, **kwargs
+-        )
++        #
++        # Reuse the tokenizer passed by vLLM instead of loading another one,
++        # and keep it out of the kwargs forwarded to the sub-processor loaders.
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/transformers_utils/processors/minimax_m3.py` modified +8/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/transformers_utils/processors/minimax_m3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #58526 - [Minimax-M3][Perf] Use triton_mrope for vision tower + int64 offset fix for triton_mrope
+
+- 链接: https://github.com/vllm-project/vllm/pull/58526
+- 状态/时间: merged / 2026-09-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/common/vision_tower.py`；关联提交 `16070ed7e9b0`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+280/-179，可读 patch 595 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/vision_tower.py` modified +42/-171 (213 lines); hunks: -21,20 +21,16; -125,56 +121,13 @@ def __init__(; symbols: MiniMaxVLPatchEmbed, __init__, _apply_rotary_emb, forward，涉及 `MiniMaxVLPatchEmbed, __init__, _apply_rotary_emb`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/vision_tower.py` modified +42/-171 (213 lines); hunks: -21,20 +21,16; -125,56 +121,13 @@ def __init__(; symbols: MiniMaxVLPatchEmbed, __init__, _apply_rotary_emb, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/vision_tower.py
+@@ -21,20 +21,16 @@
+-from vllm.model_executor.layers.rotary_embedding.common import ApplyRotaryEmb
++from vllm.model_executor.layers.rotary_embedding.mrope import triton_mrope
++from vllm.model_executor.layers.rotary_embedding.mrope_vit_setup import (
++    vit_mrope_setup,
++)
+-from vllm.platforms import current_platform
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/vision_tower.py` modified +42/-171
+- 验证与风险: diff 自带测试面 `tests/kernels/core/test_mrope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #58673 - [Minimax-M3] Add Encoder CUDA graph support
+
+- 链接: https://github.com/vllm-project/vllm/pull/58673
+- 状态/时间: merged / 2026-09-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/common/encoder_cudagraph.py`, `vllm/models/minimax_m3/common/vision_tower.py`, `vllm/models/minimax_m3/nvidia/model.py`；关联提交 `55de40a2fc1a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+397/-17，可读 patch 496 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/encoder_cudagraph.py` added +281/-0 (281 lines); hunks: -0,0 +1,281; symbols: MiniMaxM3EncoderCudaGraphMixin, get_encoder_cudagraph_config, pad_cu_seqlens, pad_rope_planes，涉及 `MiniMaxM3EncoderCudaGraphMixin, get_encoder_cudagraph_config, pad_cu_seqlens`；`vllm/models/minimax_m3/common/vision_tower.py` modified +82/-15 (97 lines); hunks: -392,43 +392,65 @@ def _apply_max_frames_limit(self, grid_thw: list[list[int]...; -442,6 +464,45 @@ def forward(; symbols: _apply_max_frames_limit, forward, prepare_encoder_metadata，涉及 `_apply_max_frames_limit, forward, prepare_encoder_metadata`；`vllm/models/minimax_m3/amd/model.py` modified +8/-1 (9 lines); hunks: -106,6 +106,9; -1685,7 +1688,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, MiniMaxM3SparseForConditionalGeneration，涉及 `load_weights, MiniMaxM3SparseForConditionalGeneration`；`vllm/models/minimax_m3/nvidia/model.py` modified +8/-1 (9 lines); hunks: -70,6 +70,9; -1076,7 +1079,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, MiniMaxM3SparseForConditionalGeneration，涉及 `load_weights, MiniMaxM3SparseForConditionalGeneration`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/encoder_cudagraph.py` added +281/-0 (281 lines); hunks: -0,0 +1,281; symbols: MiniMaxM3EncoderCudaGraphMixin, get_encoder_cudagraph_config, pad_cu_seqlens, pad_rope_planes
+  - `vllm/models/minimax_m3/common/vision_tower.py` modified +82/-15 (97 lines); hunks: -392,43 +392,65 @@ def _apply_max_frames_limit(self, grid_thw: list[list[int]...; -442,6 +464,45 @@ def forward(; symbols: _apply_max_frames_limit, forward, prepare_encoder_metadata
+  - `vllm/models/minimax_m3/amd/model.py` modified +8/-1 (9 lines); hunks: -106,6 +106,9; -1685,7 +1688,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, MiniMaxM3SparseForConditionalGeneration
+  - `vllm/models/minimax_m3/nvidia/model.py` modified +8/-1 (9 lines); hunks: -70,6 +70,9; -1076,7 +1079,11 @@ def load_weights(self, weights: Iterable[tuple[str, torch...; symbols: load_weights, MiniMaxM3SparseForConditionalGeneration
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/encoder_cudagraph.py
+@@ -0,0 +1,281 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Encoder CUDA graph support for the MiniMax M3 vision tower.
++Mixin implementing the SupportsEncoderCudaGraph protocol for any host class
++that holds the vision tower as ``self.vision_tower`` (a
++``MiniMaxVLVisionModel``). The manager routes image items through this mixin;
+diff -- vllm/models/minimax_m3/common/vision_tower.py
+@@ -392,43 +392,65 @@ def _apply_max_frames_limit(self, grid_thw: list[list[int]]) -> list[list[int]]:
+-    # ── Forward ──────────────────────────────────────────────────────────
++    # ── Encoder metadata (shared by eager forward and CUDA graph replay) ──
+-    def forward(
++    def prepare_encoder_metadata(
+-        pixel_values: torch.Tensor,
+-    ) -> torch.Tensor:
+diff -- vllm/models/minimax_m3/amd/model.py
+@@ -106,6 +106,9 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/encoder_cudagraph.py` added +281/-0; `vllm/models/minimax_m3/common/vision_tower.py` modified +82/-15; `vllm/models/minimax_m3/amd/model.py` modified +8/-1; `vllm/models/minimax_m3/nvidia/model.py` modified +8/-1
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #59081 - [Minimax M3] Enable fp8 indexer cache on triton indexer for non-SM100 architectures.
+
+- 链接: https://github.com/vllm-project/vllm/pull/59081
+- 状态/时间: merged / 2026-09-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py`, `vllm/models/minimax_m3/common/indexer.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`；关联提交 `e03875f4d283`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+133/-9，可读 patch 191 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/ops/index_topk.py` modified +14/-4 (18 lines); hunks: -123,6 +123,10 @@ def _index_block_score_kernel(; -146,7 +150,9 @@ def _index_block_score_kernel(; symbols: _index_block_score_kernel, _decode_index_score_kernel，涉及 `_index_block_score_kernel, _decode_index_score_kernel`；`vllm/models/minimax_m3/common/indexer.py` modified +10/-5 (15 lines); hunks: -502,16 +502,21 @@ def select_indexer_impl_cls(; -530,7 +535,7 @@ def select_indexer_impl_cls(; symbols: select_indexer_impl_cls，涉及 `select_indexer_impl_cls`；`tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` added +109/-0 (109 lines); hunks: -0,0 +1,109; symbols: _make_inputs, _check_selection, test_fp8_index_query_and_cache_decode_topk_matches_bf16, select，涉及 `_make_inputs, _check_selection, test_fp8_index_query_and_cache_decode_topk_matches_bf16`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/ops/index_topk.py` modified +14/-4 (18 lines); hunks: -123,6 +123,10 @@ def _index_block_score_kernel(; -146,7 +150,9 @@ def _index_block_score_kernel(; symbols: _index_block_score_kernel, _decode_index_score_kernel
+  - `vllm/models/minimax_m3/common/indexer.py` modified +10/-5 (15 lines); hunks: -502,16 +502,21 @@ def select_indexer_impl_cls(; -530,7 +535,7 @@ def select_indexer_impl_cls(; symbols: select_indexer_impl_cls
+  - `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` added +109/-0 (109 lines); hunks: -0,0 +1,109; symbols: _make_inputs, _check_selection, test_fp8_index_query_and_cache_decode_topk_matches_bf16, select
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/ops/index_topk.py
+@@ -123,6 +123,10 @@ def _index_block_score_kernel(
++    # FP8 has no mixed-dtype dot with bf16/fp32. Leave bf16 and fp32 loads
++    # in their stored dtype so fp32 pipeline tests keep full precision.
++    if q.dtype.is_fp8():
++        q = q.to(tl.bfloat16)
+@@ -146,7 +150,9 @@ def _index_block_score_kernel(
+-        qk = tl.dot(q, k)
+diff -- vllm/models/minimax_m3/common/indexer.py
+@@ -502,16 +502,21 @@ def select_indexer_impl_cls(
+-    Triton indexer (bf16 only).
++    Triton indexer, with fp8 restricted to CUDA platforms that advertise fp8
++    support.
+-    is_sm100 = (
+-        current_platform.is_cuda() and current_platform.is_device_capability_family(100)
+-    )
+diff -- tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py
+@@ -0,0 +1,109 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/ops/index_topk.py` modified +14/-4; `vllm/models/minimax_m3/common/indexer.py` modified +10/-5
+  - tests: `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` added +109/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #58648 - [Bugfix][MiniMax M3] Share target embeddings with MTP under PP
+
+- 链接: https://github.com/vllm-project/vllm/pull/58648
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/amd/mtp.py`, `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/minimax_m3/nvidia/mtp.py`；关联提交 `a8e069f81b48`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+229/-6，可读 patch 335 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/amd/mtp.py` modified +11/-0 (11 lines); hunks: -24,6 +24,7; -164,6 +165,10 @@ class MiniMaxM3MTP(nn.Module):; symbols: MiniMaxM3MTP, __init__, load_weights，涉及 `MiniMaxM3MTP, __init__, load_weights`；`vllm/models/minimax_m3/nvidia/mtp.py` modified +11/-0 (11 lines); hunks: -8,6 +8,7; -146,6 +147,10 @@ class MiniMaxM3MTP(nn.Module):; symbols: MiniMaxM3MTP, __init__, load_weights，涉及 `MiniMaxM3MTP, __init__, load_weights`；`vllm/models/minimax_m3/amd/model.py` modified +4/-1 (5 lines); hunks: -85,6 +85,7; -1370,7 +1371,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__，涉及 `__init__`；`vllm/models/minimax_m3/nvidia/model.py` modified +4/-1 (5 lines); hunks: -68,6 +68,7; -803,7 +804,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/amd/mtp.py` modified +11/-0 (11 lines); hunks: -24,6 +24,7; -164,6 +165,10 @@ class MiniMaxM3MTP(nn.Module):; symbols: MiniMaxM3MTP, __init__, load_weights
+  - `vllm/models/minimax_m3/nvidia/mtp.py` modified +11/-0 (11 lines); hunks: -8,6 +8,7; -146,6 +147,10 @@ class MiniMaxM3MTP(nn.Module):; symbols: MiniMaxM3MTP, __init__, load_weights
+  - `vllm/models/minimax_m3/amd/model.py` modified +4/-1 (5 lines); hunks: -85,6 +85,7; -1370,7 +1371,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__
+  - `vllm/models/minimax_m3/nvidia/model.py` modified +4/-1 (5 lines); hunks: -68,6 +68,7; -803,7 +804,9 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/amd/mtp.py
+@@ -24,6 +24,7 @@
++from vllm.distributed import get_pp_group
+@@ -164,6 +165,10 @@ class MiniMaxM3MTP(nn.Module):
++        if vllm_config.use_v2_model_runner and get_pp_group().world_size > 1:
++            # Preserve embeddings from loaders that bypass load_weights.
++            self.has_own_embed_tokens = vllm_config.load_config.load_format != "dummy"
+@@ -333,4 +338,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+diff -- vllm/models/minimax_m3/nvidia/mtp.py
+@@ -8,6 +8,7 @@
++from vllm.distributed import get_pp_group
+@@ -146,6 +147,10 @@ class MiniMaxM3MTP(nn.Module):
++        if vllm_config.use_v2_model_runner and get_pp_group().world_size > 1:
++            # Preserve embeddings from loaders that bypass load_weights.
++            self.has_own_embed_tokens = vllm_config.load_config.load_format != "dummy"
+@@ -315,4 +320,10 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+diff -- vllm/models/minimax_m3/amd/model.py
+@@ -85,6 +85,7 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/amd/mtp.py` modified +11/-0; `vllm/models/minimax_m3/nvidia/mtp.py` modified +11/-0; `vllm/models/minimax_m3/amd/model.py` modified +4/-1; `vllm/models/minimax_m3/nvidia/model.py` modified +4/-1
+- 验证与风险: diff 自带测试面 `tests/v1/worker/test_spec_decode_embed_sharing_pp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #56151 - [Perf][MiniMax-M3] Triton indexer: decode grid retune + SM12.0 split-K
+
+- 链接: https://github.com/vllm-project/vllm/pull/56151
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`；关联提交 `84f738f1878f`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+38/-7，可读 patch 100 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/ops/index_topk.py` modified +28/-5 (33 lines); hunks: -101,6 +101,7 @@ def _index_block_score_kernel(; -136,8 +137,19 @@ def _index_block_score_kernel(; symbols: _index_block_score_kernel, minimax_m3_index_score, minimax_m3_index_decode_score，涉及 `_index_block_score_kernel, minimax_m3_index_score, minimax_m3_index_decode_score`；`tests/kernels/attention/test_minimax_m3.py` modified +10/-2 (12 lines); hunks: -614,14 +614,22 @@ def _reference_decode_index_score(; symbols: _reference_decode_index_score, test_prefill_index_topk_correctness，涉及 `_reference_decode_index_score, test_prefill_index_topk_correctness`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/ops/index_topk.py` modified +28/-5 (33 lines); hunks: -101,6 +101,7 @@ def _index_block_score_kernel(; -136,8 +137,19 @@ def _index_block_score_kernel(; symbols: _index_block_score_kernel, minimax_m3_index_score, minimax_m3_index_decode_score
+  - `tests/kernels/attention/test_minimax_m3.py` modified +10/-2 (12 lines); hunks: -614,14 +614,22 @@ def _reference_decode_index_score(; symbols: _reference_decode_index_score, test_prefill_index_topk_correctness
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/ops/index_topk.py
+@@ -101,6 +101,7 @@ def _index_block_score_kernel(
++    USE_SPLIT_K: tl.constexpr,
+@@ -136,8 +137,19 @@ def _index_block_score_kernel(
+-    for i in tl.range(0, hi, BLOCK_SIZE_K):
+-        blk = i // BLOCK_SIZE_K
++    num_blocks = tl.cdiv(hi, BLOCK_SIZE_K)
++    if USE_SPLIT_K:
+diff -- tests/kernels/attention/test_minimax_m3.py
+@@ -614,14 +614,22 @@ def _reference_decode_index_score(
+-def test_prefill_index_topk_correctness():
++# 3600: 29 blocks over 12 splits of 3, so the last busy split has 2 blocks.
++@pytest.mark.parametrize("prefix_len", [1024, 3600])
++@pytest.mark.parametrize("force_split_k", [False, True])
++def test_prefill_index_topk_correctness(monkeypatch, prefix_len, force_split_k):
++    if force_split_k:
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/ops/index_topk.py` modified +28/-5
+  - tests: `tests/kernels/attention/test_minimax_m3.py` modified +10/-2
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #57197 - [Bugfix][PP][Spec Decode] MiniMax-M3 EAGLE3 aux-state relay at PP > 1 and per-stage FlashInfer autotune
+
+- 链接: https://github.com/vllm-project/vllm/pull/57197
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/models/minimax_m3/nvidia/model.py`；关联提交 `42f0c17ea755`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+382/-15，可读 patch 502 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/nvidia/model.py` modified +19/-4 (23 lines); hunks: -793,6 +793,7 @@ def ffn_all_reduce_deferred(self) -> bool:; -883,17 +884,30 @@ def forward(; symbols: ffn_all_reduce_deferred, MiniMaxM3Model, __init__, forward，涉及 `ffn_all_reduce_deferred, MiniMaxM3Model, __init__`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/nvidia/model.py` modified +19/-4 (23 lines); hunks: -793,6 +793,7 @@ def ffn_all_reduce_deferred(self) -> bool:; -883,17 +884,30 @@ def forward(; symbols: ffn_all_reduce_deferred, MiniMaxM3Model, __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/nvidia/model.py
+@@ -793,6 +793,7 @@ def ffn_all_reduce_deferred(self) -> bool:
++    supports_aux_hidden_states_over_pp = True
+@@ -883,17 +884,30 @@ def forward(
+-        # EAGLE3 is not yet compatible with pipeline parallel
+-        aux_hidden_states = self._maybe_add_hidden_state([], 0, hidden_states, residual)
+-        for idx, layer in enumerate(self.layers[self.start_layer : self.end_layer]):
++        remote_aux = self.collect_remote_aux_hidden_states(intermediate_tensors)
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/nvidia/model.py` modified +19/-4
+- 验证与风险: diff 自带测试面 `tests/model_executor/test_flashinfer_autotune_warmup.py`, `tests/v1/worker/test_eagle3_aux_hidden_states_pp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #59300 - [Attention][MiniMax-M3] NVFP4 KV cache on the MSA sparse attention path
+
+- 链接: https://github.com/vllm-project/vllm/pull/59300
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`, `vllm/models/minimax_m3/common/sparse_attention.py`, `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` 等 6 个文件；关联提交 `7566d83bd35c`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 12 个文件，+1293/-69，可读 patch 1860 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +108/-11 (119 lines); hunks: -4,15 +4,18; -29,20 +32,33; symbols: _dequantize_query, MiniMaxM3SparseMSABackend, get_builder_cls, MiniMaxM3SparseMSANvfp4Backend，涉及 `_dequantize_query, MiniMaxM3SparseMSABackend, get_builder_cls`；`vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` modified +52/-7 (59 lines); hunks: -12,6 +12,7; -23,9 +24,36; symbols: is_nvfp4_kv_cache, nvfp4_kv_cache_views, nvfp4_kv_cache_slots, MSACutlassDecodeMetadata，涉及 `is_nvfp4_kv_cache, nvfp4_kv_cache_views, nvfp4_kv_cache_slots`；`vllm/models/minimax_m3/common/sparse_attention.py` modified +19/-3 (22 lines); hunks: -56,6 +56,7; -531,10 +532,10 @@ def select_main_backend_and_impl_cls(; symbols: select_main_backend_and_impl_cls，涉及 `select_main_backend_and_impl_cls`；`vllm/models/minimax_m3/nvidia/model.py` modified +7/-1 (8 lines); hunks: -500,6 +500,8 @@ def __init__(; -611,6 +613,8 @@ def forward(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +108/-11 (119 lines); hunks: -4,15 +4,18; -29,20 +32,33; symbols: _dequantize_query, MiniMaxM3SparseMSABackend, get_builder_cls, MiniMaxM3SparseMSANvfp4Backend
+  - `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` modified +52/-7 (59 lines); hunks: -12,6 +12,7; -23,9 +24,36; symbols: is_nvfp4_kv_cache, nvfp4_kv_cache_views, nvfp4_kv_cache_slots, MSACutlassDecodeMetadata
+  - `vllm/models/minimax_m3/common/sparse_attention.py` modified +19/-3 (22 lines); hunks: -56,6 +56,7; -531,10 +532,10 @@ def select_main_backend_and_impl_cls(; symbols: select_main_backend_and_impl_cls
+  - `vllm/models/minimax_m3/nvidia/model.py` modified +7/-1 (8 lines); hunks: -500,6 +500,8 @@ def __init__(; -611,6 +613,8 @@ def forward(; symbols: __init__, forward
+  - `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` modified +441/-1 (442 lines); hunks: -1,13 +1,15; -18,6 +20,7; symbols: test_msa_cutlass_decode_static_dispatch_requires_sm100, test_msa_cutlass_decode_static_dispatch_nvfp4_has_no_fallback, test_nvfp4_selects_msa_nvfp4_backend_and_requires_sm100, test_msa_cutlass_decode_matches_triton_with_interleaved_cache
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/nvidia/sparse_attention_msa.py
+@@ -4,15 +4,18 @@
+-path for regular decode and speculative verification.
++path for regular decode and speculative verification. NVFP4 KV caches read the
++vLLM packed pages directly in both prefill and CUTLASS decode.
+-from dataclasses import dataclass
++from dataclasses import dataclass, replace
++from typing import ClassVar
+diff -- vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py
+@@ -12,6 +12,7 @@
++from vllm.v1.kv_cache_interface import get_kv_quant_mode
+@@ -23,9 +24,36 @@
++# NVFP4 has no Triton fallback, so it takes CUTLASS at every batch size.
++def is_nvfp4_kv_cache(kv_cache_dtype: str) -> bool:
++    return get_kv_quant_mode(kv_cache_dtype).is_nvfp4
++def nvfp4_kv_cache_views(
+diff -- vllm/models/minimax_m3/common/sparse_attention.py
+@@ -56,6 +56,7 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` modified +108/-11; `vllm/models/minimax_m3/nvidia/msa_cutlass_sparse_decode.py` modified +52/-7; `vllm/models/minimax_m3/common/sparse_attention.py` modified +19/-3; `vllm/models/minimax_m3/nvidia/model.py` modified +7/-1
+  - tests: `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py` modified +441/-1; `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py` modified +226/-4
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3_msa_cutlass_sparse_decode.py`, `tests/kernels/test_fused_minimax_m3_qknorm_rope_kv_insert.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #59613 - [Bugfix] Fix minimax-m3 multimodal processor compatability with Transformers v5.18
+
+- 链接: https://github.com/vllm-project/vllm/pull/59613
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/transformers_utils/processors/minimax_m3.py`；关联提交 `b558f160a2c0`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+0/-1，可读 patch 8 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/transformers_utils/processors/minimax_m3.py` modified +0/-1 (1 lines); hunks: -375,7 +375,6 @@ def __init__(self, **kwargs: Unpack[MiniMaxM3VLVideoProcesso...; symbols: __init__, _preprocess，涉及 `__init__, _preprocess`。
+- 代码 diff 细节:
+  - `vllm/transformers_utils/processors/minimax_m3.py` modified +0/-1 (1 lines); hunks: -375,7 +375,6 @@ def __init__(self, **kwargs: Unpack[MiniMaxM3VLVideoProcesso...; symbols: __init__, _preprocess
+- 关键代码摘录:
+
+```diff
+diff -- vllm/transformers_utils/processors/minimax_m3.py
+@@ -375,7 +375,6 @@ def __init__(self, **kwargs: Unpack[MiniMaxM3VLVideoProcessorKwargs]):
+-        do_convert_rgb: bool,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/transformers_utils/processors/minimax_m3.py` modified +0/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/transformers_utils/processors/minimax_m3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #59481 - [Minimax-M3] Keep the native FP8 MMA in the Triton indexer scorers
+
+- 链接: https://github.com/vllm-project/vllm/pull/59481
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py`, `vllm/models/minimax_m3/common/ops/index_topk.py`；关联提交 `e42d35d4f3b4`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+45/-9，可读 patch 86 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/models/minimax_m3/common/ops/index_topk.py` modified +11/-9 (20 lines); hunks: -124,9 +124,11 @@ def _index_block_score_kernel(; -162,7 +164,7 @@ def _index_block_score_kernel(; symbols: _index_block_score_kernel, _decode_index_score_kernel，涉及 `_index_block_score_kernel, _decode_index_score_kernel`；`tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` modified +34/-0 (34 lines); hunks: -107,3 +107,37 @@ def select(cache: torch.Tensor) -> set[int]:; symbols: select, test_bf16_query_against_fp8_cache_decode_topk_matches_bf16，涉及 `select, test_bf16_query_against_fp8_cache_decode_topk_matches_bf16`。
+- 代码 diff 细节:
+  - `vllm/models/minimax_m3/common/ops/index_topk.py` modified +11/-9 (20 lines); hunks: -124,9 +124,11 @@ def _index_block_score_kernel(; -162,7 +164,7 @@ def _index_block_score_kernel(; symbols: _index_block_score_kernel, _decode_index_score_kernel
+  - `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` modified +34/-0 (34 lines); hunks: -107,3 +107,37 @@ def select(cache: torch.Tensor) -> set[int]:; symbols: select, test_bf16_query_against_fp8_cache_decode_topk_matches_bf16
+- 关键代码摘录:
+
+```diff
+diff -- vllm/models/minimax_m3/common/ops/index_topk.py
+@@ -124,9 +124,11 @@ def _index_block_score_kernel(
+-    # FP8 has no mixed-dtype dot with bf16/fp32. Leave bf16 and fp32 loads
+-    # in their stored dtype so fp32 pipeline tests keep full precision.
+-    if q.dtype.is_fp8():
++    # A matched fp8 pair (e.g. e4m3 x e4m3) lowers to a native FP8 MMA, so
++    # upcast only when the operands differ: there is no mixed-dtype fp8 MMA,
++    # including across fp8 flavours (fp8e4nv vs fp8e4b8). bf16 and fp32 loads
+diff -- tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py
+@@ -107,3 +107,37 @@ def select(cache: torch.Tensor) -> set[int]:
++@pytest.mark.skipif(not FP8_CUDA_SUPPORTED, reason="CUDA FP8 support required")
++@torch.inference_mode()
++def test_bf16_query_against_fp8_cache_decode_topk_matches_bf16() -> None:
++    """A mixed pair must upcast rather than emit a mixed-dtype fp8 dot.
++    Production allocates index_q with the index-K cache dtype, so the scorers
++    normally see a matched pair and keep the native FP8 MMA. This pins the
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/models/minimax_m3/common/ops/index_topk.py` modified +11/-9
+  - tests: `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py` modified +34/-0
+- 验证与风险: diff 自带测试面 `tests/kernels/attention/test_minimax_m3_fp8_triton_indexer.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

@@ -22,6 +22,7 @@ METRIC_RE = re.compile(
 )
 LABEL_RE = re.compile(r'([a-zA-Z_:][a-zA-Z0-9_:]*)="((?:[^"\\]|\\.)*)"')
 ENDPOINT_SPECS = (
+    ("text", "ready.txt", "/ready"),
     ("text", "health.txt", "/health"),
     ("text", "health_generate.txt", "/health_generate"),
     ("text", "metrics.txt", "/metrics"),
@@ -128,7 +129,11 @@ def collect_bundle(
     summary_lines = []
     for kind, filename, path in ENDPOINT_SPECS:
         result = request_endpoint(
-            base_url, path, token, parse_json=(kind == "json"), timeout=timeout
+            base_url,
+            path,
+            token,
+            parse_json=(kind == "json"),
+            timeout=max(timeout, 25.0) if path.startswith("/health") else timeout,
         )
         output_path = bundle_dir / filename
         if kind == "text" and result.get("ok"):
@@ -278,12 +283,26 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     metrics_text = read_text(bundle_dir / "metrics.txt") or ""
     metrics = parse_metrics(metrics_text)
 
-    aggregate = loads_info.get("aggregate") or {}
+    def sum_loads(key):
+        values = [row[key] for row in loads if isinstance(row.get(key), (int, float))]
+        return sum(values) if values else None
+
+    def max_loads(key):
+        values = [row[key] for row in loads if isinstance(row.get(key), (int, float))]
+        return max(values) if values else None
+
     loads = loads_info.get("loads") or []
     load0 = loads[0] if loads else {}
     internal_states = server_info.get("internal_states") or []
     runtime_state = internal_states[0] if internal_states else {}
     memory_usage = runtime_state.get("memory_usage") or load0.get("memory") or {}
+    graph_usage = coalesce(memory_usage.get("graph"), memory_usage.get("graph_gb"))
+    graph_by_phase = graph_usage if isinstance(graph_usage, dict) else {}
+    graph_gb = (
+        sum(graph_by_phase.values()) if isinstance(graph_usage, dict) else graph_usage
+    )
+    running_reqs = sum_loads("num_running_reqs")
+    waiting_reqs = sum_loads("num_waiting_reqs")
 
     ttft_avg = safe_div(
         metric_sum(metrics, "sglang:time_to_first_token_seconds_sum"),
@@ -309,6 +328,12 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
         "base_url": metadata.get("base_url"),
         "collected_at": metadata.get("collected_at"),
         "health": {
+            "ready_ok": endpoint_ok(bundle_dir, "ready"),
+            "ready_collected": (bundle_dir / "ready.txt").exists()
+            or (bundle_dir / "ready.txt.error.json").exists(),
+            "health_status": (
+                load_json(bundle_dir / "health.txt.error.json") or {}
+            ).get("status", 200 if endpoint_ok(bundle_dir, "health") else None),
             "health_ok": endpoint_ok(bundle_dir, "health"),
             "health_generate_ok": endpoint_ok(bundle_dir, "health_generate"),
         },
@@ -345,31 +370,35 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
             "kv_cache_gb": coalesce(
                 memory_usage.get("kvcache"), memory_usage.get("kv_cache_gb")
             ),
-            "graph_gb": coalesce(
-                memory_usage.get("graph"), memory_usage.get("graph_gb")
-            ),
+            "graph_gb": graph_gb,
+            "graph_by_phase_gb": graph_by_phase,
             "token_capacity": memory_usage.get("token_capacity"),
         },
         "point_in_time_load": {
-            "running_reqs": coalesce(
-                aggregate.get("total_running_reqs"), load0.get("num_running_reqs")
+            "running_reqs": running_reqs,
+            "waiting_reqs": waiting_reqs,
+            "total_reqs": (
+                running_reqs + waiting_reqs
+                if running_reqs is not None and waiting_reqs is not None
+                else None
             ),
-            "waiting_reqs": coalesce(
-                aggregate.get("total_waiting_reqs"), load0.get("num_waiting_reqs")
-            ),
-            "total_reqs": coalesce(
-                aggregate.get("total_reqs"), load0.get("num_total_reqs")
-            ),
-            "token_usage": coalesce(
-                aggregate.get("avg_token_usage"), load0.get("token_usage")
-            ),
-            "avg_throughput": coalesce(
-                aggregate.get("avg_throughput"), load0.get("gen_throughput")
-            ),
-            "avg_utilization": coalesce(
-                aggregate.get("avg_utilization"), load0.get("utilization")
-            ),
-            "cache_hit_rate": load0.get("cache_hit_rate"),
+            "token_usage": max_loads("token_usage"),
+            "avg_throughput": sum_loads("gen_throughput"),
+            "avg_utilization": max_loads("utilization"),
+            "cache_hit_rate": load0.get("cache_hit_rate") if len(loads) == 1 else None,
+            "per_rank": [
+                {
+                    key: row.get(key)
+                    for key in (
+                        "dp_rank",
+                        "token_usage",
+                        "cache_hit_rate",
+                        "utilization",
+                        "speculative",
+                    )
+                }
+                for row in loads
+            ],
             "queues": load0.get("queues"),
             "disaggregation": load0.get("disaggregation"),
         },
@@ -393,15 +422,38 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     running_reqs = point_in_time_load.get("running_reqs")
     waiting_reqs = point_in_time_load.get("waiting_reqs")
 
-    if health["health_ok"] and not health["health_generate_ok"]:
+    if health["ready_collected"] and health["health_ok"] and not health["ready_ok"]:
         add_signal(
             signals,
-            "/health is green but /health_generate failed. Suspect runtime or scheduler path, not just HTTP liveness.",
+            "/ready failed while /health succeeded: check paused/draining state.",
         )
-    if not health["health_ok"]:
+    if health["health_status"] == -1:
         add_signal(
             signals,
-            "/health failed. Start with startup, crash, or global unhealthy paths.",
+            "/health client transport failure or timeout; no server health verdict was received.",
+        )
+    elif not health["health_ok"]:
+        add_signal(
+            signals,
+            "/health failed. Check startup, shutdown, crash and scheduler health.",
+        )
+    if (bundle_dir / "metrics.txt.error.json").exists() and server_info.get(
+        "enable_metrics"
+    ) is False:
+        add_signal(signals, "metrics disabled (--enable-metrics not set)")
+    accept_lengths = [row.get("avg_spec_accept_length") for row in internal_states]
+    accept_lengths += [
+        (row.get("speculative") or {}).get("accept_length") for row in loads
+    ]
+    accept_lengths += [
+        row["value"] for row in metrics.get("sglang:spec_accept_length", [])
+    ]
+    accept_lengths = [v for v in accept_lengths if isinstance(v, (float, int))]
+    summary["speculative_accept_lengths"] = accept_lengths
+    if server_info.get("speculative_algorithm") and any(v <= 1 for v in accept_lengths):
+        add_signal(
+            signals,
+            "Speculative accept length <= 1; compare with the previous baseline for speculative collapse.",
         )
     if is_positive_number(waiting_reqs):
         add_signal(
@@ -528,7 +580,10 @@ def iter_dump_files(
     if input_file:
         return [Path(input_file)]
     if input_folder:
-        return [Path(p) for p in sorted(glob.glob(f"{input_folder}/*.pkl"))]
+        return [
+            Path(p)
+            for p in sorted(glob.glob(f"{input_folder}/**/*.pkl", recursive=True))
+        ]
     raise SystemExit("Either --input-file or --input-folder must be provided.")
 
 
@@ -597,7 +652,7 @@ def summarize_request(
 def summarize_dump_file(path: Path, max_requests: int, preview_chars: int) -> str:
     payload = load_dump_payload(path)
     requests = payload.get("requests") or []
-    server_args = payload.get("server_args")
+    server_args = payload.get("server_args") or payload.get("resolved_config")
     launch_command = payload.get("launch_command")
 
     model_path = get_field(server_args, "model_path")
@@ -623,6 +678,7 @@ def summarize_dump_file(path: Path, max_requests: int, preview_chars: int) -> st
     lines = [
         f"File: {path}",
         "Dump Type: request_or_crash_dump",
+        f"Config updates: {payload.get('config_updates')}",
         f"Requests: {len(requests)}",
         f"Model: {model_path or 'n/a'}",
         f"Topology: tp={tp_size if tp_size is not None else 'n/a'} "

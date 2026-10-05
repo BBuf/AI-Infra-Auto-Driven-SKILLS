@@ -1,4 +1,4 @@
-# sglang LLaDA 2.1 模型 PR 优化历史
+# SGLang LLaDA 2.1 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -8,7 +8,7 @@
 | `docs/src/snippets/autoregressive/llada-21-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/llada2.py` | [#18485](https://github.com/sgl-project/sglang/pull/18485), [#27127](https://github.com/sgl-project/sglang/pull/27127), [#31772](https://github.com/sgl-project/sglang/pull/31772) |
 | `test/registered/dllm/test_llada2_mini_amd.py` | 无直接 PR 号提交 |
-| `test/registered/npu/basic_function/dllm/test_npu_llada2_mini.py` | 无直接 PR 号提交 |
+| `test/registered/npu/basic_function/dllm/test_npu_llada2_mini_fdfo.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
@@ -29,8 +29,8 @@
 | 2026-01-06 | [#16420](https://github.com/sgl-project/sglang/pull/16420) | merged | ci: migrate DLLM tests to test/registered/dllm/ | `test/registered/dllm/test_llada2_mini.py`, `test/registered/dllm/test_llada2_mini_amd.py`, `test/srt/run_suite.py` |
 | 2026-01-08 | [#16675](https://github.com/sgl-project/sglang/pull/16675) | merged | [AMD] Fix CI - unit-test-backend-1-gpu-amd-mi35x and unit-test-backend-2-gpu-amd, stage-b-test-small-1-gpu-amd | `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_cross_encoder_models.py`, `test/registered/models/test_embedding_models.py` |
 | 2026-01-11 | [#16835](https://github.com/sgl-project/sglang/pull/16835) | merged | Update est_time for stage-b-test-small-1-gpu tests | `test/registered/models/test_encoder_embedding_models.py`, `test/registered/models/test_vlm_models.py`, `test/registered/attention/test_torch_native_attention_backend.py` |
-| 2026-01-15 | [#16949](https://github.com/sgl-project/sglang/pull/16949) | merged | [AMD CI] migrate and re-enable CI tests to new CI registry | `test/registered/models/test_generation_models.py`, `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba_ssm.py` |
 | 2026-01-15 | [#16826](https://github.com/sgl-project/sglang/pull/16826) | merged | [CI] Reorganize stage-b 1-GPU tests for 5090 compatibility | `test/registered/models/test_encoder_embedding_models.py`, `test/registered/models/test_embedding_models.py`, `test/registered/models/test_reward_models.py` |
+| 2026-01-15 | [#16949](https://github.com/sgl-project/sglang/pull/16949) | merged | [AMD CI] migrate and re-enable CI tests to new CI registry | `test/registered/models/test_generation_models.py`, `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba_ssm.py` |
 | 2026-01-24 | [#17570](https://github.com/sgl-project/sglang/pull/17570) | merged | Use attn tp group in embedding for more models | `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_nextn.py`, `python/sglang/srt/models/falcon_h1.py` |
 | 2026-02-09 | [#18423](https://github.com/sgl-project/sglang/pull/18423) | merged | [AMD] Update aiter to v0.1.10.post2 | `python/sglang/srt/layers/attention/aiter_backend.py`, `test/registered/models/test_vlm_models.py`, `scripts/ci/amd/amd_ci_warmup_aiter.py` |
 | 2026-02-10 | [#17484](https://github.com/sgl-project/sglang/pull/17484) | merged | [DLLM] Basic dLLM scheduling strategy and implementation | `python/sglang/srt/model_executor/forward_batch_info.py`, `python/sglang/srt/dllm/mixin/scheduler.py`, `python/sglang/srt/managers/schedule_batch.py` |
@@ -48,8 +48,8 @@
 | 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | merged | Add new Mintlify documentation site (docs_new/) | `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/advanced_features/separate_reasoning.mdx` |
 | 2026-04-21 | [#23337](https://github.com/sgl-project/sglang/pull/23337) | merged | [Docs] Sync docs_new with legacy docs and update migration redirects | `docs_new/docs/supported-models/multimodal_language_models.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx` |
 | 2026-04-26 | [#23732](https://github.com/sgl-project/sglang/pull/23732) | merged | Apply should_use_dp_reduce_scatterv guard to remaining MoE models (follow-up to #23731) | `python/sglang/srt/models/llada2.py`, `python/sglang/srt/models/hunyuan_v3.py`, `python/sglang/srt/models/bailing_moe_linear.py` |
-| 2026-04-27 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | merged | chore: update CI test est_time values | `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py` |
 | 2026-04-27 | [#23748](https://github.com/sgl-project/sglang/pull/23748) | merged | refactor(moe): centralize post-experts all-reduce skip predicate | `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-04-27 | [#23785](https://github.com/sgl-project/sglang/pull/23785) | merged | chore: update CI test est_time values | `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py` |
 | 2026-05-02 | [#23835](https://github.com/sgl-project/sglang/pull/23835) | merged | [NPU] Add GitHub test summary and deduplicate test code. Part 1 | `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_deepseek_v3_2_w8a8.py`, `test/registered/ascend/basic_function/optimization_debug/test_npu_piecewise_graph_prefill.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
 | 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `.github/workflows/pr-test-multimodal-gen.yml`, `test/registered/bench_fn/test_bench_serving_reasoning_stream.py`, `test/registered/function_call/test_kimik2_detector.py` |
@@ -339,6 +339,47 @@ diff -- test/registered/core/test_deterministic.py
   - tests: `test/registered/models/test_encoder_embedding_models.py` modified +1/-1; `test/registered/models/test_vlm_models.py` modified +1/-1; `test/registered/attention/test_torch_native_attention_backend.py` modified +1/-1; `test/registered/backends/test_torch_compile.py` modified +1/-1; `test/registered/core/test_deterministic.py` modified +1/-1; `test/registered/core/test_gpt_oss_1gpu.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/registered/attention/test_torch_native_attention_backend.py`, `test/registered/backends/test_torch_compile.py`, `test/registered/core/test_deterministic.py`, `test/registered/core/test_gpt_oss_1gpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #16826 - [CI] Reorganize stage-b 1-GPU tests for 5090 compatibility
+
+- 链接: https://github.com/sgl-project/sglang/pull/16826
+- 状态/时间: merged / 2026-01-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 136 个文件，+236/-363，可读 patch 1885 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI] Reorganize stage-b 1-GPU tests for 5090 compatibility」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `test/registered/models/test_encoder_embedding_models.py`, `test/registered/models/test_embedding_models.py`, `test/registered/models/test_reward_models.py`；技术摘要: 覆盖「[CI] Reorganize stage-b 1-GPU tests for 5090 compatibility」；主要实现面是 `test/registered/models/test_encoder_embedding_models.py`, `test/registered/models/test_embedding_models.py`, `test/registered/models/test_reward_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/models/test_encoder_embedding_models.py` modified +11/-11 (22 lines); hunks: -1,8 +1,16; -20,16 +28,8；`test/registered/models/test_embedding_models.py` modified +9/-11 (20 lines); hunks: -1,14 +1,3; -31,6 +20,7；`test/registered/models/test_reward_models.py` modified +9/-9 (18 lines); hunks: -1,9 +1,13; -19,13 +23,9；`test/registered/models/test_cross_encoder_models.py` modified +7/-7 (14 lines); hunks: -1,19 +1,19。
+- 代码 diff 细节:
+  - `test/registered/models/test_encoder_embedding_models.py` modified +11/-11 (22 lines); hunks: -1,8 +1,16; -20,16 +28,8
+  - `test/registered/models/test_embedding_models.py` modified +9/-11 (20 lines); hunks: -1,14 +1,3; -31,6 +20,7
+  - `test/registered/models/test_reward_models.py` modified +9/-9 (18 lines); hunks: -1,9 +1,13; -19,13 +23,9
+  - `test/registered/models/test_cross_encoder_models.py` modified +7/-7 (14 lines); hunks: -1,19 +1,19
+  - `test/registered/models/test_nvidia_nemotron_nano_v2_vl.py` modified +7/-6 (13 lines); hunks: -1,16 +1,17
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/models/test_encoder_embedding_models.py
+@@ -1,8 +1,16 @@
++import multiprocessing as mp
++import random
++import time
++import unittest
++import torch
++from transformers import AutoConfig, AutoTokenizer
+diff -- test/registered/models/test_embedding_models.py
+@@ -1,14 +1,3 @@
+-from sglang.test.ci.ci_register import register_amd_ci, register_cuda_ci
+-# Embedding model tests
+-register_cuda_ci(est_time=73, suite="stage-b-test-small-1-gpu")
+-register_cuda_ci(est_time=58, suite="stage-b-test-small-1-gpu-5090")
+-register_amd_ci(
+-    est_time=73,
+diff -- test/registered/models/test_reward_models.py
+@@ -1,9 +1,13 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/models/test_encoder_embedding_models.py` modified +11/-11; `test/registered/models/test_embedding_models.py` modified +9/-11; `test/registered/models/test_reward_models.py` modified +9/-9; `test/registered/models/test_cross_encoder_models.py` modified +7/-7; `test/registered/models/test_nvidia_nemotron_nano_v2_vl.py` modified +7/-6; `test/registered/models/test_vlm_models.py` modified +7/-6
+- 验证与风险: diff 自带测试面 `test/registered/attention/test_create_kvindices.py`, `test/registered/attention/test_mamba_unittest.py`, `test/registered/attention/test_radix_attention.py`, `test/registered/attention/test_radix_cache_unit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #16949 - [AMD CI] migrate and re-enable CI tests to new CI registry
 
 - 链接: https://github.com/sgl-project/sglang/pull/16949
@@ -380,47 +421,6 @@ diff -- test/registered/layers/mamba/test_mamba_ssm.py
   - tests: `test/registered/models/test_generation_models.py` modified +7/-3; `test/registered/layers/mamba/test_causal_conv1d.py` modified +2/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +2/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +2/-1; `test/registered/core/test_hidden_states.py` modified +9/-1; `test/registered/quant/test_torchao.py` modified +7/-2
   - ci: `.github/workflows/pr-test-amd.yml` modified +16/-6
 - 验证与风险: diff 自带测试面 `test/registered/amd/test_deepseek_r1_mxfp4_8gpu.py`, `test/registered/attention/test_mamba_unittest.py`, `test/registered/attention/test_radix_cache_unit.py`, `test/registered/core/test_hidden_states.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #16826 - [CI] Reorganize stage-b 1-GPU tests for 5090 compatibility
-
-- 链接: https://github.com/sgl-project/sglang/pull/16826
-- 状态/时间: merged / 2026-01-15
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 136 个文件，+236/-363，可读 patch 1885 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Reorganize stage-b 1-GPU tests for 5090 compatibility」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `test/registered/models/test_encoder_embedding_models.py`, `test/registered/models/test_embedding_models.py`, `test/registered/models/test_reward_models.py`；技术摘要: 覆盖「[CI] Reorganize stage-b 1-GPU tests for 5090 compatibility」；主要实现面是 `test/registered/models/test_encoder_embedding_models.py`, `test/registered/models/test_embedding_models.py`, `test/registered/models/test_reward_models.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/models/test_encoder_embedding_models.py` modified +11/-11 (22 lines); hunks: -1,8 +1,16; -20,16 +28,8；`test/registered/models/test_embedding_models.py` modified +9/-11 (20 lines); hunks: -1,14 +1,3; -31,6 +20,7；`test/registered/models/test_reward_models.py` modified +9/-9 (18 lines); hunks: -1,9 +1,13; -19,13 +23,9；`test/registered/models/test_cross_encoder_models.py` modified +7/-7 (14 lines); hunks: -1,19 +1,19。
-- 代码 diff 细节:
-  - `test/registered/models/test_encoder_embedding_models.py` modified +11/-11 (22 lines); hunks: -1,8 +1,16; -20,16 +28,8
-  - `test/registered/models/test_embedding_models.py` modified +9/-11 (20 lines); hunks: -1,14 +1,3; -31,6 +20,7
-  - `test/registered/models/test_reward_models.py` modified +9/-9 (18 lines); hunks: -1,9 +1,13; -19,13 +23,9
-  - `test/registered/models/test_cross_encoder_models.py` modified +7/-7 (14 lines); hunks: -1,19 +1,19
-  - `test/registered/models/test_nvidia_nemotron_nano_v2_vl.py` modified +7/-6 (13 lines); hunks: -1,16 +1,17
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/models/test_encoder_embedding_models.py
-@@ -1,8 +1,16 @@
-+import multiprocessing as mp
-+import random
-+import time
-+import unittest
-+import torch
-+from transformers import AutoConfig, AutoTokenizer
-diff -- test/registered/models/test_embedding_models.py
-@@ -1,14 +1,3 @@
--from sglang.test.ci.ci_register import register_amd_ci, register_cuda_ci
--# Embedding model tests
--register_cuda_ci(est_time=73, suite="stage-b-test-small-1-gpu")
--register_cuda_ci(est_time=58, suite="stage-b-test-small-1-gpu-5090")
--register_amd_ci(
--    est_time=73,
-diff -- test/registered/models/test_reward_models.py
-@@ -1,9 +1,13 @@
-```
-
-- 已读文件:
-  - tests: `test/registered/models/test_encoder_embedding_models.py` modified +11/-11; `test/registered/models/test_embedding_models.py` modified +9/-11; `test/registered/models/test_reward_models.py` modified +9/-9; `test/registered/models/test_cross_encoder_models.py` modified +7/-7; `test/registered/models/test_nvidia_nemotron_nano_v2_vl.py` modified +7/-6; `test/registered/models/test_vlm_models.py` modified +7/-6
-- 验证与风险: diff 自带测试面 `test/registered/attention/test_create_kvindices.py`, `test/registered/attention/test_mamba_unittest.py`, `test/registered/attention/test_radix_attention.py`, `test/registered/attention/test_radix_cache_unit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #17570 - Use attn tp group in embedding for more models
 
@@ -1113,47 +1113,6 @@ diff -- python/sglang/srt/models/bailing_moe_linear.py
   - runtime: `python/sglang/srt/models/llada2.py` modified +10/-2; `python/sglang/srt/models/hunyuan_v3.py` modified +7/-4; `python/sglang/srt/models/bailing_moe_linear.py` modified +7/-1; `python/sglang/srt/models/exaone_moe.py` modified +6/-2; `python/sglang/srt/models/llama4.py` modified +6/-1; `python/sglang/srt/models/sarvam_moe.py` modified +6/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/bailing_moe_linear.py`, `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #23785 - chore: update CI test est_time values
-
-- 链接: https://github.com/sgl-project/sglang/pull/23785
-- 状态/时间: merged / 2026-04-27
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 268 个文件，+269/-269，可读 patch 2404 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「chore: update CI test est_time values」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`；技术摘要: 覆盖「chore: update CI test est_time values」；主要实现面是 `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7；`test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6。
-- 代码 diff 细节:
-  - `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
-  - `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7
-  - `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
-  - `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
-  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/layers/mamba/test_causal_conv1d.py
-@@ -1,6 +1,6 @@
--register_cuda_ci(est_time=13, suite="stage-b-test-1-gpu-small")
-+register_cuda_ci(est_time=11, suite="stage-b-test-1-gpu-small")
-diff -- test/registered/layers/mamba/test_mamba2_mixer.py
-@@ -15,7 +15,7 @@
--register_cuda_ci(est_time=28, suite="stage-b-test-2-gpu-large")
-+register_cuda_ci(est_time=32, suite="stage-b-test-2-gpu-large")
-diff -- test/registered/layers/mamba/test_mamba_ssm.py
-@@ -1,6 +1,6 @@
--register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
-+register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
-diff -- test/registered/layers/mamba/test_mamba_ssm_ssd.py
-@@ -1,6 +1,6 @@
--register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
-+register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
-diff -- test/registered/models/test_compressed_tensors_models.py
-@@ -13,7 +13,7 @@
-```
-
-- 已读文件:
-  - tests: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1; `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1
-- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen3_30b.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #23748 - refactor(moe): centralize post-experts all-reduce skip predicate
 
 - 链接: https://github.com/sgl-project/sglang/pull/23748
@@ -1194,6 +1153,47 @@ diff -- python/sglang/srt/models/deepseek_v2.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/moe/utils.py` modified +33/-0; `python/sglang/srt/models/sarvam_moe.py` modified +9/-16; `python/sglang/srt/models/deepseek_v2.py` modified +9/-13; `python/sglang/srt/models/glm4_moe.py` modified +9/-13; `python/sglang/srt/models/qwen3_moe.py` modified +9/-13; `python/sglang/srt/models/hunyuan_v3.py` modified +13/-7
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/__init__.py`, `python/sglang/srt/layers/moe/utils.py`, `python/sglang/srt/models/bailing_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23785 - chore: update CI test est_time values
+
+- 链接: https://github.com/sgl-project/sglang/pull/23785
+- 状态/时间: merged / 2026-04-27
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 268 个文件，+269/-269，可读 patch 2404 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「chore: update CI test est_time values」；模型线: LLaDA 2.1；类别: 文档/测试/CI；主要 diff: `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`；技术摘要: 覆盖「chore: update CI test est_time values」；主要实现面是 `test/registered/layers/mamba/test_causal_conv1d.py`, `test/registered/layers/mamba/test_mamba2_mixer.py`, `test/registered/layers/mamba/test_mamba_ssm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7；`test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6；`test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6。
+- 代码 diff 细节:
+  - `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
+  - `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1 (2 lines); hunks: -15,7 +15,7
+  - `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
+  - `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1 (2 lines); hunks: -1,6 +1,6
+  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/layers/mamba/test_causal_conv1d.py
+@@ -1,6 +1,6 @@
+-register_cuda_ci(est_time=13, suite="stage-b-test-1-gpu-small")
++register_cuda_ci(est_time=11, suite="stage-b-test-1-gpu-small")
+diff -- test/registered/layers/mamba/test_mamba2_mixer.py
+@@ -15,7 +15,7 @@
+-register_cuda_ci(est_time=28, suite="stage-b-test-2-gpu-large")
++register_cuda_ci(est_time=32, suite="stage-b-test-2-gpu-large")
+diff -- test/registered/layers/mamba/test_mamba_ssm.py
+@@ -1,6 +1,6 @@
+-register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
++register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
+diff -- test/registered/layers/mamba/test_mamba_ssm_ssd.py
+@@ -1,6 +1,6 @@
+-register_cuda_ci(est_time=9, suite="stage-b-test-1-gpu-small")
++register_cuda_ci(est_time=10, suite="stage-b-test-1-gpu-small")
+diff -- test/registered/models/test_compressed_tensors_models.py
+@@ -13,7 +13,7 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/layers/mamba/test_causal_conv1d.py` modified +1/-1; `test/registered/layers/mamba/test_mamba2_mixer.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm.py` modified +1/-1; `test/registered/layers/mamba/test_mamba_ssm_ssd.py` modified +1/-1; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_fp4_triton.py`, `test/registered/4-gpu-models/test_qwen3_30b.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #23835 - [NPU] Add GitHub test summary and deduplicate test code. Part 1
 

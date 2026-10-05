@@ -1,17 +1,19 @@
 {
-  "version": "2026-07-27",
+  "version": "2026-10-05",
   "sources": [
+    {"name": "Qwen official", "repo": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next", "audited_commit": "de4b8e4d43b917e7706784d8bb445c9af86a3540"},
+    {"name": "XiaomiMiMo official", "repo": "https://huggingface.co/XiaomiMiMo", "audited_commit": "73875d00b30a89ef8cc353a0b60b0e9f9561952d"},
     {
       "name": "InfraTech",
       "repo": "https://github.com/CalvinXKY/InfraTech",
       "branch": "main",
-      "audited_commit": "16a34a7494f0f7b270501064033e3ce35ef41bdf"
+      "audited_commit": "48e358a4b5119c24cf472adc64d0b4f86f894e99"
     },
     {
       "name": "self-llm",
       "repo": "https://github.com/datawhalechina/self-llm",
       "branch": "master",
-      "audited_commit": "a7cd4ef135b0"
+      "audited_commit": "e0fe14a35123f5cab6d32cb9e716b571bf0994cf"
     },
     {
       "name": "Z-Image",
@@ -51,6 +53,10 @@
     }
   ],
   "diagrams": [
+    {"id": "qwen38-flash-next-architecture", "title": "Qwen3.8 Flash Next architecture", "aliases": ["qwen3.8-flash-next", "qwen/qwen3.8-flash-next", "qwen3.8-flash-next-fp8", "qwen4-exp", "qwen4_exp"], "source": "Qwen official", "path": "Qwen3.8-Flash-Next/architecture.png", "url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.8-Flash-Next/architecture.png"},
+    {"id": "mimo-v26-architecture", "title": "MiMo V2.6 architecture", "aliases": ["mimo-v2.6", "mimo-v2.6-pro", "mimo-v2.6-flash", "xiaomimimo/mimo-v2.6-pro-rl", "xiaomimimo/mimo-v2.6-flash-rl"], "source": "XiaomiMiMo official", "path": "MiMo-V2.6-Pro-RL/assets/architecture.png", "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL/resolve/73875d00b30a89ef8cc353a0b60b0e9f9561952d/assets/architecture.png"},
+    {"id": "mimo-v25-pro-architecture", "title": "MiMo V2.5 Pro architecture", "aliases": ["mimo-v2.5-pro", "xiaomimimo/mimo-v2.5-pro"], "source": "XiaomiMiMo official", "path": "MiMo-V2.5-Pro/assets/architecture.png", "url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro/resolve/21d1ecfecd7bd70f31be25ca49d7edd21f003659/assets/architecture.png"},
+    {"id": "glm52-architecture-changes", "title": "GLM-5.2 architecture changes", "aliases": ["glm-5.2", "glm5.2", "zai-org/glm-5.2"], "source": "self-llm", "path": "models/GLM-5.2/images/01-04.png", "url": "https://raw.githubusercontent.com/datawhalechina/self-llm/e0fe14a35123f5cab6d32cb9e716b571bf0994cf/models/GLM-5.2/images/01-04.png"},
     {
       "id": "deepseek-v3-architecture",
       "title": "DeepSeek V3 architecture",

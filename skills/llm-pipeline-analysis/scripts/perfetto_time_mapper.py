@@ -17,7 +17,17 @@ import gzip
 import json
 import sys
 
-from model_profiles import get_profile, infer_profile, normalize_compress_ratios
+from model_profiles import (
+    checked_anchor_indices,
+    choose_anchor,
+    configure_anchor_profile,
+    get_profile,
+    infer_profile,
+    layer_label,
+    normalize_compress_ratios,
+    normalize_model_config,
+    select_gpu,
+)
 
 
 def load_trace(path):
@@ -56,12 +66,14 @@ def main():
     ap.add_argument(
         "--num-layers", type=int, default=None, help="Override number of layers"
     )
+    ap.add_argument("--blocks-per-layer", type=int, default=None)
+    ap.add_argument("--anchor-offset", type=int, default=0)
+    ap.add_argument("--pid", default=None)
+    ap.add_argument("--device", default=None)
     args = ap.parse_args()
 
     events = load_trace(args.trace)
-    gpu = sorted(
-        [e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0)
-    )
+    gpu = select_gpu(events, args.pid, args.device)
 
     all_ts = [e.get("ts", float("inf")) for e in events if e.get("ts") is not None]
     trace_start = min(all_ts)
@@ -76,7 +88,7 @@ def main():
     config = {}
     if args.config:
         with open(args.config) as f:
-            config = json.load(f)
+            config = normalize_model_config(json.load(f))
 
     if args.profile:
         profile = get_profile(args.profile)
@@ -84,34 +96,17 @@ def main():
         profile = infer_profile(config)
 
     # Determine anchor kernel
-    anchor_kernel = args.anchor_kernel
-    if not anchor_kernel:
-        if profile.anchor_kernel:
-            anchor_kernel = profile.anchor_kernel
-        else:
-            for candidate in [
-                "mhc_post_tilelang",
-                "flash_fwd_mla_combine",
-                "AllReduce",
-            ]:
-                if sum(1 for e in gpu if candidate in e.get("name", "")) >= 4:
-                    anchor_kernel = candidate
-                    break
-            if not anchor_kernel:
-                print(
-                    "ERROR: cannot auto-detect anchor kernel. Use --profile or --anchor-kernel.",
-                    file=sys.stderr,
-                )
-                sys.exit(1)
-
-    anchor_indices = [
-        i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")
-    ]
+    anchor_kernel = args.anchor_kernel or choose_anchor(gpu, profile)
+    profile = configure_anchor_profile(profile, anchor_kernel, args.blocks_per_layer)
     compress_ratios = normalize_compress_ratios(config, args.num_layers)
     num_hash_layers = config.get("num_hash_layers", 0)
-    num_layers = args.num_layers or config.get(
-        "num_hidden_layers", profile.default_num_layers
+    num_layers = args.num_layers or config.get("num_hidden_layers")
+    if not num_layers or num_layers < 1:
+        raise ValueError("Verified layer count required: pass --num-layers or --config")
+    anchor_indices = checked_anchor_indices(
+        gpu, anchor_kernel, num_layers, profile.blocks_per_layer, args.anchor_offset
     )
+
     bpl = profile.blocks_per_layer
     blocks_per_pass = num_layers * bpl
     n_passes = (len(anchor_indices) - 1) // blocks_per_pass
@@ -181,13 +176,7 @@ def main():
             note = ""
             if layer_id in highlight:
                 note = "◀"
-            hash_start = num_layers - num_hash_layers if num_hash_layers else num_layers
-            if layer_id == 0:
-                note += " FIRST"
-            elif layer_id >= hash_start:
-                note += " HASH"
-            elif layer_id == num_layers - 1:
-                note += " FINAL"
+            note += " " + layer_label(layer_id, cr, num_layers, num_hash_layers)
 
             print(
                 f"  {layer_id:>2d}  {cr:>3d}  {start_s:>13.3f}s  {end_s:>11.3f}s  "

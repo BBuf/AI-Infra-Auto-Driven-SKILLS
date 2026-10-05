@@ -1,4 +1,4 @@
-# sglang Qwen3 Coder 模型 PR 优化历史
+# SGLang Qwen3 Coder 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -41,14 +41,13 @@
 | 2026-01-31 | [#17965](https://github.com/sgl-project/sglang/pull/17965) | merged | [Fix] Triton TP MoE Dpsk V3/Qwen3 Coder with SwapAB | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=80,N=640,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=257,N=256,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json` |
 | 2026-02-04 | [#18195](https://github.com/sgl-project/sglang/pull/18195) | merged | Add MoE fused config for Qwen3-Coder-Next-FP8 on H100 TP=2 | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_5_1/E=512,N=256,device_name=NVIDIA_H100_80GB_HBM3,dtype=fp8_w8a8,block_shape=[128, 128].json` |
 | 2026-02-08 | [#18224](https://github.com/sgl-project/sglang/pull/18224) | merged | [ModelOPT] Support Qwen 3 Next Coder NVFP4 | `python/sglang/srt/models/qwen3_next.py` |
-| 2026-02-25 | [#18700](https://github.com/sgl-project/sglang/pull/18700) | merged | [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu. | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` |
 | 2026-02-25 | [#18355](https://github.com/sgl-project/sglang/pull/18355) | merged | [AMD] Support Qwen3-Coder-Next on AMD platform | `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py` |
+| 2026-02-25 | [#18700](https://github.com/sgl-project/sglang/pull/18700) | merged | [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu. | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` |
 | 2026-03-02 | [#18608](https://github.com/sgl-project/sglang/pull/18608) | merged | [AMD] Add Qwen3-Coder-Next accuracy and functionality test scripts for MI35x 8-GPU | `test/registered/amd/accuracy/mi35x/test_qwen3_coder_next_eval_mi35x.py`, `test/registered/amd/test_qwen3_coder_next_8gpu.py` |
 | 2026-03-03 | [#18882](https://github.com/sgl-project/sglang/pull/18882) | merged | feat: Add FP8 KV cache support for Triton attention backend | `python/sglang/srt/layers/attention/triton_backend.py`, `python/sglang/srt/layers/attention/triton_ops/decode_attention.py`, `python/sglang/srt/layers/attention/triton_ops/extend_attention.py` |
 | 2026-03-04 | [#19736](https://github.com/sgl-project/sglang/pull/19736) | merged | [AMD] Fix Qwen3-Coder-Next: Add missing k_scale/v_scale args to extend_attention_fwd in aiter_backend | `python/sglang/srt/layers/attention/aiter_backend.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-01 | [#21818](https://github.com/sgl-project/sglang/pull/21818) | merged | [CI] Fix lint that was not applied in #21458 | `python/sglang/srt/models/qwen3.py` |
-| 2026-04-01 | [#21829](https://github.com/sgl-project/sglang/pull/21829) | open | [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
 | 2026-04-02 | [#21463](https://github.com/sgl-project/sglang/pull/21463) | merged | Migrate all callers from /get_server_info to /server_info | `test/registered/8-gpu-models/test_deepseek_v32_mtp.py`, `sgl-model-gateway/bindings/python/src/sglang_router/mini_lb.py`, `test/registered/amd/test_moriep_small.py` |
 | 2026-04-05 | [#22140](https://github.com/sgl-project/sglang/pull/22140) | merged | [Fix] Fix nightly tests | `python/sglang/srt/models/deepseek_v2.py`, `test/registered/perf/test_dpsk_v3_fp4_4gpu_perf.py`, `test/registered/8-gpu-models/test_qwen3_235b.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
@@ -70,6 +69,7 @@
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | merged | [CI] Remove deprecated test/srt legacy CI setup | `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/cpu/utils.py`, `test/srt/cpu/test_norm.py` |
 | 2026-07-22 | [#30832](https://github.com/sgl-project/sglang/pull/30832) | merged | Add 'anyOf' schema support for qwen3_coder tool call parser | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
+| 2026-09-02 | [#21829](https://github.com/sgl-project/sglang/pull/21829) | closed | [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector | `python/sglang/srt/function_call/qwen3_coder_detector.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -511,37 +511,6 @@ diff -- python/sglang/srt/models/qwen3_next.py
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +35/-6
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #18700 - [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.
-
-- 链接: https://github.com/sgl-project/sglang/pull/18700
-- 状态/时间: merged / 2026-02-25
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-3，可读 patch 27 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`；技术摘要: 覆盖「[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.」；主要实现面是 `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7；`python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16，涉及 `npu_fused_moe_without_routing_weights_bf16`。
-- 代码 diff 细节:
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7
-  - `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
-@@ -43,7 +43,7 @@
--if not is_cpu() and not is_npu():
-+if not is_cpu():
-diff -- python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py
-@@ -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(
--        weight=[layer.w13_weight.permute(0, 2, 1)],
-+        weight=[layer.w13_weight],
-@@ -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(
--        weight=[layer.w2_weight.permute(0, 2, 1)],
-+        weight=[layer.w2_weight],
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1; `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #18355 - [AMD] Support Qwen3-Coder-Next on AMD platform
 
 - 链接: https://github.com/sgl-project/sglang/pull/18355
@@ -575,6 +544,37 @@ diff -- python/sglang/srt/models/qwen3_next.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +211/-72; `python/sglang/srt/models/qwen3_next.py` modified +2/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #18700 - [NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.
+
+- 链接: https://github.com/sgl-project/sglang/pull/18700
+- 状态/时间: merged / 2026-02-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+3/-3，可读 patch 27 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.」；模型线: Qwen3 Coder；类别: 缺陷修复；主要 diff: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`；技术摘要: 覆盖「[NPU] bugfix for model Qwen3-Coder-Next at weight shape transpose for npu.」；主要实现面是 `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7；`python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16，涉及 `npu_fused_moe_without_routing_weights_bf16`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1 (2 lines); hunks: -43,7 +43,7
+  - `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2 (4 lines); hunks: -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(; -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(; symbols: npu_fused_moe_without_routing_weights_bf16
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -43,7 +43,7 @@
+-if not is_cpu() and not is_npu():
++if not is_cpu():
+diff -- python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py
+@@ -118,7 +118,7 @@ def npu_fused_moe_without_routing_weights_bf16(
+-        weight=[layer.w13_weight.permute(0, 2, 1)],
++        weight=[layer.w13_weight],
+@@ -129,7 +129,7 @@ def npu_fused_moe_without_routing_weights_bf16(
+-        weight=[layer.w2_weight.permute(0, 2, 1)],
++        weight=[layer.w2_weight],
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +1/-1; `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py` modified +2/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/quantization/fused_moe_method_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #18608 - [AMD] Add Qwen3-Coder-Next accuracy and functionality test scripts for MI35x 8-GPU
 
@@ -728,33 +728,6 @@ diff -- python/sglang/srt/models/qwen3.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3.py` modified +3/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #21829 - [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector
-
-- 链接: https://github.com/sgl-project/sglang/pull/21829
-- 状态/时间: open / 2026-04-01
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+143/-0，可读 patch 171 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector」；模型线: Qwen3 Coder；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`；技术摘要: 覆盖「[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector」；主要实现面是 `python/sglang/srt/function_call/qwen3_coder_detector.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param，涉及 `__init__, has_tool_call, _convert_param_value`。
-- 代码 diff 细节:
-  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
-@@ -54,6 +54,13 @@ def __init__(self):
-+        # Incremental parameter streaming state
-+        # When a string parameter value is very long (e.g. code), we stream it
-+        # incrementally instead of waiting for the complete </parameter> tag.
-+        self._streaming_param_active: bool = False
-+        self._streaming_param_emitted: int = 0  # chars processed in rest_of_slice
-+        self._streaming_param_leading_checked: bool = False
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/qwen3_coder_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #21463 - Migrate all callers from /get_server_info to /server_info
 
@@ -1571,6 +1544,33 @@ diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
 - 已读文件:
   - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +9/-7
 - 验证与风险: diff 自带测试面 `test/registered/unit/function_call/test_function_call_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #21829 - [Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector
+
+- 链接: https://github.com/sgl-project/sglang/pull/21829
+- 状态/时间: closed / 2026-09-02
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+143/-0，可读 patch 171 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector」；模型线: Qwen3 Coder；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/function_call/qwen3_coder_detector.py`；技术摘要: 覆盖「[Feature] Support incremental streaming for tool_call arguments in Qwen3CoderDetector」；主要实现面是 `python/sglang/srt/function_call/qwen3_coder_detector.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param，涉及 `__init__, has_tool_call, _convert_param_value`。
+- 代码 diff 细节:
+  - `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0 (143 lines); hunks: -54,6 +54,13 @@ def __init__(self):; -169,6 +176,54 @@ def _convert_param_value(; symbols: __init__, has_tool_call, _convert_param_value, _should_stream_param
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/function_call/qwen3_coder_detector.py
+@@ -54,6 +54,13 @@ def __init__(self):
++        # Incremental parameter streaming state
++        # When a string parameter value is very long (e.g. code), we stream it
++        # incrementally instead of waiting for the complete </parameter> tag.
++        self._streaming_param_active: bool = False
++        self._streaming_param_emitted: int = 0  # chars processed in rest_of_slice
++        self._streaming_param_leading_checked: bool = False
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/function_call/qwen3_coder_detector.py` modified +143/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/qwen3_coder_detector.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

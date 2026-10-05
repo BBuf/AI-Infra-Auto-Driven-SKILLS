@@ -1,19 +1,19 @@
-# sglang Step 3.5 模型 PR 优化历史
+# SGLang Step 3.5 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `python/sglang/srt/configs/step3p5.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084) |
-| `python/sglang/srt/models/step3p5.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084), [#22076](https://github.com/sgl-project/sglang/pull/22076), [#22773](https://github.com/sgl-project/sglang/pull/22773) |
+| `python/sglang/srt/models/step3p5.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084), [#22076](https://github.com/sgl-project/sglang/pull/22076), [#22773](https://github.com/sgl-project/sglang/pull/22773), [#41082](https://github.com/sgl-project/sglang/pull/41082), [#41198](https://github.com/sgl-project/sglang/pull/41198), [#41437](https://github.com/sgl-project/sglang/pull/41437), [#41754](https://github.com/sgl-project/sglang/pull/41754), [#42302](https://github.com/sgl-project/sglang/pull/42302) |
 | `python/sglang/srt/models/step3p5_mtp.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084) |
-| `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models/test_step3p5_flash_chain_mtp.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 3
+- git 追溯 PR 数: 8
 - 原文档显式引用补充 PR 数: 12
-- 当前文档总 PR 数: 15
+- 当前文档总 PR 数: 20
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -30,12 +30,17 @@
 | 2026-04-16 | [#22773](https://github.com/sgl-project/sglang/pull/22773) | merged | [Step3p5] Optimize allreduce in MoE layers | `python/sglang/srt/models/step3p5.py` |
 | 2026-04-29 | [#24105](https://github.com/sgl-project/sglang/pull/24105) | merged | relax the threshold in test_step3p5_flash_chain_mtp | `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py` |
 | 2026-05-01 | [#24192](https://github.com/sgl-project/sglang/pull/24192) | merged | [spec decoding] add tests for chain-style multi layer eagle + return_logprob | `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py` |
+| 2026-05-14 | [#24725](https://github.com/sgl-project/sglang/pull/24725) | merged | ci: tag-gated nightly migration — foundation + 40 whole-file moves | `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
 | 2026-05-14 | [#25236](https://github.com/sgl-project/sglang/pull/25236) | merged | ci: H200 conditional split + dsv4 est_time recalibration (h200 partition 6→2) | `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`, `test/registered/8-gpu-models/test_deepseek_v3_mtp.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py` |
-| 2026-05-14 | [#24725](https://github.com/sgl-project/sglang/pull/24725) | merged | ci: tag-gated nightly migration — foundation + 40 whole-file moves | `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py` |
 | 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | merged | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` |
 | 2026-05-29 | [#26565](https://github.com/sgl-project/sglang/pull/26565) | merged | model: Step-3.7-Flash Support | `python/sglang/srt/models/step3p7.py`, `python/sglang/srt/configs/step3p7.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-09-24 | [#41082](https://github.com/sgl-project/sglang/pull/41082) | merged | [Fix] Step-3.5: stop dense layers from summing their output twice under DP attention | `python/sglang/srt/models/step3p5.py` |
+| 2026-09-25 | [#41198](https://github.com/sgl-project/sglang/pull/41198) | merged | [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit | `python/sglang/srt/models/step3p5.py` |
+| 2026-09-27 | [#41437](https://github.com/sgl-project/sglang/pull/41437) | merged | [Refactor] Step-3.5: complete the dense MLP's sum through ffn_exit | `python/sglang/srt/models/step3p5.py` |
+| 2026-09-30 | [#41754](https://github.com/sgl-project/sglang/pull/41754) | merged | [Fix] Step-3.5: build the shared expert without TP under all-to-all MoE backends | `python/sglang/srt/models/step3p5.py` |
+| 2026-10-03 | [#42302](https://github.com/sgl-project/sglang/pull/42302) | merged | [Fix] Step-3.5 DeepEP routed scaling and Sarvam shared expert under dense TP1 | `python/sglang/srt/models/step3p5.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -336,6 +341,47 @@ diff -- test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py
   - tests: `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py` modified +136/-0
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #24725 - ci: tag-gated nightly migration — foundation + 40 whole-file moves
+
+- 链接: https://github.com/sgl-project/sglang/pull/24725
+- 状态/时间: merged / 2026-05-14
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 78 个文件，+2263/-2140，可读 patch 4964 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「ci: tag-gated nightly migration — foundation + 40 whole-file moves」；模型线: Step 3.5；类别: 文档/测试/CI；主要 diff: `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`；技术摘要: 覆盖「ci: tag-gated nightly migration — foundation + 40 whole-file moves」；主要实现面是 `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7；`test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7；`test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7；`test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7。
+- 代码 diff 细节:
+  - `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7
+  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
+  - `test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7
+  - `test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
+  - `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0 (0 lines)
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/models/test_ministral4_models.py
+@@ -6,11 +6,7 @@
+-register_cuda_ci(
+-    est_time=200,
+-    stage="stage-b",
+-    runner_config="2-gpu-large",
+-)
++register_cuda_ci(est_time=200, stage="extra-a", runner_config="2-gpu-large")
+diff -- test/registered/models/test_compressed_tensors_models.py
+@@ -13,7 +13,7 @@
+-register_cuda_ci(est_time=65, stage="stage-b", runner_config="1-gpu-large")
++register_cuda_ci(est_time=65, stage="extra-a", runner_config="1-gpu-large")
+diff -- test/registered/models/test_generation_models.py
+@@ -1,7 +1,7 @@
+-register_cuda_ci(est_time=150, stage="stage-b", runner_config="1-gpu-large")
++register_cuda_ci(est_time=150, stage="extra-a", runner_config="1-gpu-large")
+diff -- test/registered/models/test_vlm_models.py
+@@ -13,7 +13,7 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/models/test_ministral4_models.py` modified +1/-5; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1; `test/registered/models/test_vlm_models.py` modified +1/-1; `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0; `test/registered/sessions/test_streaming_session.py` modified +62/-1072
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/streaming_session_kit.py`, `python/sglang/test/server_fixtures/hybrid_attn_backend_fixture.py`, `python/sglang/test/server_fixtures/ngram_fixture.py`, `python/sglang/test/server_fixtures/pcg_spec_fixture.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #25197 - ci: decouple stage and runner for cuda registry
 
 - 链接: https://github.com/sgl-project/sglang/pull/25197
@@ -417,47 +463,6 @@ diff -- test/registered/8-gpu-models/test_minimax_m25_basic.py
 - 已读文件:
   - tests: `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v3_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_dsa_models_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1; `test/registered/8-gpu-models/test_minimax_m25_basic.py` modified +1/-1; `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`, `test/registered/8-gpu-models/test_deepseek_v3_mtp.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`, `test/registered/8-gpu-models/test_mimo_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #24725 - ci: tag-gated nightly migration — foundation + 40 whole-file moves
-
-- 链接: https://github.com/sgl-project/sglang/pull/24725
-- 状态/时间: merged / 2026-05-14
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 78 个文件，+2263/-2140，可读 patch 4964 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「ci: tag-gated nightly migration — foundation + 40 whole-file moves」；模型线: Step 3.5；类别: 文档/测试/CI；主要 diff: `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`；技术摘要: 覆盖「ci: tag-gated nightly migration — foundation + 40 whole-file moves」；主要实现面是 `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7；`test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7；`test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7；`test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7。
-- 代码 diff 细节:
-  - `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7
-  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
-  - `test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7
-  - `test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
-  - `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0 (0 lines)
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/models/test_ministral4_models.py
-@@ -6,11 +6,7 @@
--register_cuda_ci(
--    est_time=200,
--    stage="stage-b",
--    runner_config="2-gpu-large",
--)
-+register_cuda_ci(est_time=200, stage="extra-a", runner_config="2-gpu-large")
-diff -- test/registered/models/test_compressed_tensors_models.py
-@@ -13,7 +13,7 @@
--register_cuda_ci(est_time=65, stage="stage-b", runner_config="1-gpu-large")
-+register_cuda_ci(est_time=65, stage="extra-a", runner_config="1-gpu-large")
-diff -- test/registered/models/test_generation_models.py
-@@ -1,7 +1,7 @@
--register_cuda_ci(est_time=150, stage="stage-b", runner_config="1-gpu-large")
-+register_cuda_ci(est_time=150, stage="extra-a", runner_config="1-gpu-large")
-diff -- test/registered/models/test_vlm_models.py
-@@ -13,7 +13,7 @@
-```
-
-- 已读文件:
-  - tests: `test/registered/models/test_ministral4_models.py` modified +1/-5; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1; `test/registered/models/test_vlm_models.py` modified +1/-1; `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0; `test/registered/sessions/test_streaming_session.py` modified +62/-1072
-- 验证与风险: diff 自带测试面 `python/sglang/test/kits/streaming_session_kit.py`, `python/sglang/test/server_fixtures/hybrid_attn_backend_fixture.py`, `python/sglang/test/server_fixtures/ngram_fixture.py`, `python/sglang/test/server_fixtures/pcg_spec_fixture.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #26610 - test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit)
 
@@ -581,6 +586,141 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41082 - [Fix] Step-3.5: stop dense layers from summing their output twice under DP attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/41082
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `7c9f74c6e109`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+67/-4，可读 patch 79 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/step3p5.py` modified +6/-4 (10 lines); hunks: -633,10 +633,12 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/step3p5.py` modified +6/-4 (10 lines); hunks: -633,10 +633,12 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -633,10 +633,12 @@ def forward(
+-            hidden_states = self.mlp(hidden_states)
+-            # Dense MLP uses reduce_results=True, so the output is already
+-            # all-reduced.  Do NOT set the fusion flag — otherwise the next
+-            # layer would all-reduce again, multiplying values by world_size.
++            # The dense MLP all-reduces its own output unless postprocess
++            # reduce-scatters it; it never leaves the sum to the next layer.
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +6/-4
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41198 - [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit
+
+- 链接: https://github.com/sgl-project/sglang/pull/41198
+- 状态/时间: merged / 2026-09-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `b7f6d04a9af1`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+50/-219，可读 patch 402 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/step3p5.py` modified +24/-41 (65 lines); hunks: -11,11 +11,7; -609,45 +605,32 @@ def forward(; symbols: forward, Step3p5Model，涉及 `forward, Step3p5Model`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/step3p5.py` modified +24/-41 (65 lines); hunks: -11,11 +11,7; -609,45 +605,32 @@ def forward(; symbols: forward, Step3p5Model
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -11,11 +11,7 @@
+-from sglang.srt.layers.communicator import (
+-    LayerCommunicator,
+-    LayerScatterModes,
+-    UnreducedOutput,
+-)
++from sglang.srt.layers.communicator import LayerCommunicator, LayerScatterModes
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +24/-41
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41437 - [Refactor] Step-3.5: complete the dense MLP's sum through ffn_exit
+
+- 链接: https://github.com/sgl-project/sglang/pull/41437
+- 状态/时间: merged / 2026-09-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `55d2ee554635`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+31/-17，可读 patch 110 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/step3p5.py` modified +5/-11 (16 lines); hunks: -572,6 +572,9 @@ def __init__(; -618,18 +621,9 @@ def forward(; symbols: __init__, forward, Step3p5Model，涉及 `__init__, forward, Step3p5Model`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/step3p5.py` modified +5/-11 (16 lines); hunks: -572,6 +572,9 @@ def __init__(; -618,18 +621,9 @@ def forward(; symbols: __init__, forward, Step3p5Model
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -572,6 +572,9 @@ def __init__(
++            # The dense MLP all-reduces its own output unless postprocess
++            # reduce-scatters it; it never leaves the sum to the next layer.
++            allow_deferred_ffn_reduction=self.use_moe,
+@@ -618,18 +621,9 @@ def forward(
+-        # The dense MLP all-reduces its own output unless postprocess
+-        # reduce-scatters it; it never leaves the sum to the next layer.
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +5/-11
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_last_layer_communicator.py`, `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41754 - [Fix] Step-3.5: build the shared expert without TP under all-to-all MoE backends
+
+- 链接: https://github.com/sgl-project/sglang/pull/41754
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `9ee065e49a12`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+33/-19，可读 patch 135 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/step3p5.py` modified +33/-19 (52 lines); hunks: -4,9 +4,6; -32,6 +29,7; symbols: forward, get_moe_weights, forward_normal，涉及 `forward, get_moe_weights, forward_normal`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/step3p5.py` modified +33/-19 (52 lines); hunks: -4,9 +4,6; -32,6 +29,7; symbols: forward, get_moe_weights, forward_normal
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -4,9 +4,6 @@
+-from sglang.srt.distributed import (
+-    tensor_model_parallel_all_reduce,
+-)
+@@ -32,6 +29,7 @@
++    should_use_flashinfer_cutlass_moe_fp4_allgather,
+@@ -50,7 +48,7 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +33/-19
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/step3p5.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #42302 - [Fix] Step-3.5 DeepEP routed scaling and Sarvam shared expert under dense TP1
+
+- 链接: https://github.com/sgl-project/sglang/pull/42302
+- 状态/时间: merged / 2026-10-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/step3p5.py`；关联提交 `be20e7453cc8`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+18/-8，可读 patch 62 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/step3p5.py` modified +10/-2 (12 lines); hunks: -236,7 +236,13 @@ def forward_deepep(; -252,8 +258,10 @@ def forward_deepep(; symbols: forward_deepep，涉及 `forward_deepep`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/step3p5.py` modified +10/-2 (12 lines); hunks: -236,7 +236,13 @@ def forward_deepep(; -252,8 +258,10 @@ def forward_deepep(; symbols: forward_deepep
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -236,7 +236,13 @@ def forward_deepep(
+-            router_logits, _ = self.gate(hidden_states)
++            if self.need_fp32_gate:
++                router_logits = torch.matmul(
++                    hidden_states.to(torch.float32),
++                    self.gate.weight.t().to(torch.float32),
++                )
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +10/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/step3p5.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

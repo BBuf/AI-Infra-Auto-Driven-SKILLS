@@ -19,7 +19,7 @@ version_manifest:
     package_version: null
     git_commit: null
     server_help: artifacts/help/sglang_launch_server.txt
-    benchmark_help: artifacts/help/sglang_bench_serving.txt
+    benchmark_help: artifacts/help/sglang_benchmark_serving.txt
   vllm:
     container_image: vllm/vllm-openai:latest
     package_version: null
@@ -38,7 +38,7 @@ version_manifest:
     package_version: null
     git_commit: null
     server_help: artifacts/help/tokenspeed_serve.txt
-    benchmark_help: artifacts/help/tokenspeed_bench_serve.txt
+    benchmark_help: artifacts/help/vllm_bench_serve.txt
 
 hardware:
   # Example values; replace with the actual target GPU (A100, H100, H200,
@@ -59,7 +59,7 @@ dataset:
 benchmark:
   endpoint: /v1/chat/completions
   backend: auto
-  # Caller-controlled set. For an SGLang-vs-vLLM-only SOTA loop, keep only
+  # Caller-controlled set. For an SGLang-vs-vLLM-only comparison, keep only
   # [sglang, vllm] enabled and mark TensorRT-LLM/TokenSpeed as user-excluded in
   # fairness diagnostics.
   framework_set: [sglang, vllm, tensorrt_llm, tokenspeed]

@@ -46,6 +46,9 @@ def safe_contains(needle: str, haystack: str) -> bool:
     pos = haystack.find(needle)
     if pos < 0:
         return False
+    suffix = haystack[pos + len(needle) :].replace("-", " ").split()
+    if any(token in {"embedding", "reranker", "omni"} for token in suffix):
+        return False
     before = haystack[pos - 1] if pos > 0 else " "
     after_pos = pos + len(needle)
     after = haystack[after_pos] if after_pos < len(haystack) else " "

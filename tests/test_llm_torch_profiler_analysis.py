@@ -124,6 +124,38 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                     common.detect_framework_from_url("http://server"), expected
                 )
 
+    def test_staged_capture_returns_only_this_runs_labeled_copies(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory(prefix="old-prefill-") as tmp:
+            root = Path(tmp).resolve()
+            (root / "old-rank-0.trace.json").write_text('{"traceEvents": []}')
+            fixed = root / "worker-rank-0.trace.json"
+            rounds = iter(["prefill-new", "decode-new"])
+
+            def post(url, payload=None, **kwargs):
+                if url.endswith("/stop_profile"):
+                    fixed.write_text(json.dumps({"traceEvents": [{"name": next(rounds)}]}))
+
+            with (
+                mock.patch.object(common, "post_json", side_effect=post),
+                mock.patch.object(common, "discover_openai_model", return_value="model"),
+                mock.patch.object(common, "send_probe_requests"),
+                mock.patch.object(common.time, "sleep"),
+            ):
+                captured = common.run_profiler(
+                    "http://server", str(root), 5, False, False, None,
+                    1, "x", 1, 0, framework="trtllm", warmup_steps=0,
+                )
+            self.assertNotEqual(captured, root)
+            selected, _ = common.discover_trace_targets(captured, all_traces=False)
+            self.assertEqual([common.parse_stage(p) for p in selected], ["extend", "decode"])
+            self.assertEqual(
+                [json.loads(p.read_text())["traceEvents"][0]["name"] for p in selected],
+                ["prefill-new", "decode-new"],
+            )
+            self.assertEqual(len(common.discover_trace_files(captured, recursive=True)), 2)
+            self.assertTrue(fixed.exists())
+
     def test_trtllm_rank_selection_prefers_rank_zero(self):
         common = sys.modules["profile_common"]
         with tempfile.TemporaryDirectory() as tmp:
@@ -135,6 +167,72 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
             self.assertEqual(
                 [p.name for p in selected], ["trtllm-trace-run-rank-0.json"]
             )
+
+    def test_tp_zero_selection_keeps_dp_and_pp_zero(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp).resolve()
+            names = ["run-TP-0-DP-0-PP-0-DECODE.trace.json",
+                     "run-TP-0-DP-1-PP-0-DECODE.trace.json",
+                     "run-TP-0-DP-0-PP-1-DECODE.trace.json"]
+            for index, name in enumerate(names):
+                trace = path / name
+                trace.write_text(json.dumps({"traceEvents": []}))
+                os.utime(trace, (index + 1, index + 1))
+            selected, _ = common.discover_trace_targets(path, all_traces=False)
+            self.assertEqual([p.name for p in selected], names[:1])
+            all_selected, _ = common.discover_trace_targets(path, all_traces=True)
+            self.assertEqual(len(all_selected), 3)
+
+    def test_runtime_discovery_excludes_capture_and_viztracer(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name in ["worker.trace.json", "host.viztracer.json",
+                         "capture_traces/graph.trace.json",
+                         "graph_capture_profile/graph.trace.json"]:
+                trace = root / name
+                trace.parent.mkdir(parents=True, exist_ok=True)
+                trace.write_text(json.dumps({"traceEvents": []}))
+            self.assertEqual(
+                [p.name for p in common.discover_trace_files(root, recursive=True)],
+                ["worker.trace.json"],
+            )
+
+    def test_sglang_rust_and_declared_v2_fail_before_control_requests(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+            common, "try_get_json", return_value={"frontend": "rust"}
+        ), mock.patch.object(common.request, "urlopen") as control:
+            with self.assertRaisesRegex(RuntimeError, "Rust frontend"):
+                common.run_sglang_profiler(
+                    "http://server", tmp, 5, False, False, "triage",
+                    common.ProbePlan("x", 1, 1, 1, 0), 0,
+                )
+            control.assert_not_called()
+        with mock.patch.object(common, "resolve_framework", return_value="sglang"), \
+             mock.patch.object(common, "run_sglang_profiler") as capture:
+            with self.assertRaisesRegex(ValueError, "profiler v1"):
+                common.run_profiler(
+                    "http://server", None, 5, False, False, "triage",
+                    1, "x", 1, 0, sglang_profile_v2=True,
+                )
+            capture.assert_not_called()
+
+    def test_sglang_merge_uses_profile_id_without_prefix(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+            common, "try_get_json", return_value={"frontend": "python"}
+        ), mock.patch.object(common.request, "urlopen") as control, \
+             mock.patch.object(common, "wait_for_profiler_artifact", return_value=Path(tmp)):
+            common.run_sglang_profiler(
+                "http://server", tmp, 5, False, True, "triage-prefill",
+                common.ProbePlan("x", 1, 0, 1, 0), 0,
+            )
+            payload = json.loads(control.call_args.args[0].data)
+            self.assertNotIn("profile_prefix", payload)
+            self.assertTrue(payload["profile_id"].startswith("triage-prefill-"))
+            self.assertIsInstance(payload["num_steps"], int)
 
     def test_capture_isolates_overwritten_trace_without_moving_server_file(self):
         common = sys.modules["profile_common"]

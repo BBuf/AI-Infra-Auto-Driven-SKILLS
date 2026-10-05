@@ -2,7 +2,9 @@
 
 This document catalogs the log line patterns used by `capacity_analyzer.py` to extract memory data from LLM serving framework startup logs.
 
-## SGLang Patterns
+## Legacy SGLang Patterns
+
+These examples remain parser fallbacks; use the current formats below for main.
 
 ### 1. Server Arguments
 
@@ -23,7 +25,7 @@ Extracts: rank, avail_gb (free GPU memory before weight loading)
 This is the baseline for all subsequent memory calculations:
 - `framework_overhead = GPU_HBM - avail_before_weight`
 
-### 3. Memory Profiling (newer sglang versions)
+### 3. Legacy Memory Profiling (not emitted by current main)
 
 ```
 [2026-05-15 09:09:53 TP0] Memory profiling: available_gpu_memory=57.01 GB, total_gpu_memory=93.58 GB, mem_fraction_static=0.60, rest_memory=19.58 GB
@@ -160,3 +162,25 @@ other              = nvidia_smi_used - sum(above)
 
 Without `nvidia-smi`, the known fields are summed and the unreported residual
 remains unknown rather than being assigned to a fabricated category.
+
+## Current source formats — 2026-10-05
+
+- Resolved config: `server_args={'model_path': '...', 'tp_size': 8, ...}`.
+- Weight end: `Load weight end. elapsed=X s, type=<Cls>, avail mem=X GB, mem usage=X GB.`
+- DSV4: `DSV4 memory calculation: unified=..., bytes_per_full_token=..., available_bytes=... GB, c128_state_fixed=... GB, c2_state_fixed=... GB, swa_fixed=... GB, swa_ring_fixed=... GB, c4_state_fixed=... GB, full_token=N`. Extract fields by name.
+- KV pools: `[label] KV Cache is allocated. dtype: <dt>, #tokens: N, K size: X GB, V size: Y GB`, or `KV size: X GB`. Sum pools once per rank. `KV Cache VA upper bound` is not an allocation.
+- Recurrent pools: `Mamba Cache is allocated. ... conv_state size: XGB, ssm_state size: YGB`; speculative variants also log intermediate SSM and physical conv-window buffers. Keep recurrent allocations separate from KV resizing.
+- Graph capture: `Capture target|draft decode|verify|prefill CUDA graph end. elapsed=X s, mem usage=X GB, avail mem=X GB.` Sum phase/role captures per rank.
+- Opt-in `SGLANG_ENABLE_POST_CAPTURE_KV_SIZING=1`: final `Post-capture KV sizing: KV cache allocated. ... KV size: X GB, avail mem=X GB` replaces the target KV estimate. A current target logs a VA upper bound before capture; regular allocation lines alongside it can belong to independent draft pools and must be retained. Draft workers do not run post-capture sizing. `Memory pool end` precedes final resizing.
+- Final limits accept `chunked_prefill_size=-1` and `available_cpu_mem` on CPU.
+- Prefix tags are optional, e.g. `[time]` on one GPU or `[time DP0 PP0 ATTN_CP0 MOE_DP0 TP0 EP0]`. Extract TP independently of tag order.
+
+vLLM INFO exposes `Free memory on device (F/T GiB) on startup. Desired GPU memory utilization is (U, R GiB). Actual usage is C GiB for consumed memory (weights + non-torch), P GiB for peak activation, and G GiB for CUDAGraph memory. ... Current kv cache memory in use is K GiB.` Prefer T or measured `nvidia-smi` totals over marketing GB.
+The explicit `kv_cache_memory_bytes` path instead logs reserved KV bytes and skips profiling. The old initial-free line requires DEBUG. `<device> KV cache size` is device-dependent. Its maximum-concurrency figure is capacity at max length, not the scheduler cap: only use logged `non-default args: {'max_num_seqs': N}` as a request limit; otherwise report it unknown.
+
+MLA stores one latent plus RoPE key: `layers * (kv_lora_rank + qk_rope_head_dim) * dtype_bytes` per GPU, with replicated latent. FP4 payload is 0.5 bytes/element, excluding scales, padding and packing overhead. DSV4 compressed pools require logged sizing, which includes physical page padding (#41091).
+
+Evidence: [pool configurator](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/model_executor/pool_configurator.py),
+[memory pools](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/mem_cache/memory_pool.py),
+[graph setup](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/model_executor/model_runner_components/cuda_graph_setup.py),
+[vLLM memory logs](https://github.com/vllm-project/vllm/blob/0c16eee3f1ff777298cc894c3eeb85f3880c6d6a/vllm/v1/worker/gpu_worker.py).

@@ -1,4 +1,4 @@
-# vllm Mistral Small 4 Model PR Optimization History
+# vLLM Mistral Small 4 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -12,34 +12,34 @@
 | `tests/models/fixtures/ministral_3b_chat.json` | no direct PR-number commit |
 | `tests/models/fixtures/mistral_small_3_chat.json` | [#14977](https://github.com/vllm-project/vllm/pull/14977) |
 | `tests/models/language/generation/test_mistral.py` | [#20093](https://github.com/vllm-project/vllm/pull/20093), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29918](https://github.com/vllm-project/vllm/pull/29918), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/models/multimodal/processing/test_mistral3.py` | [#52874](https://github.com/vllm-project/vllm/pull/52874), [#53758](https://github.com/vllm-project/vllm/pull/53758), [#57531](https://github.com/vllm-project/vllm/pull/57531) |
 | `tests/parser/mistral/__init__.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/parser/mistral/test_reasoning.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/parser/mistral/test_tool_calls.py` | [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/renderers/test_mistral.py` | no direct PR-number commit |
-| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `tests/tokenizers_/test_mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#44622](https://github.com/vllm-project/vllm/pull/44622), [#48947](https://github.com/vllm-project/vllm/pull/48947), [#55735](https://github.com/vllm-project/vllm/pull/55735) |
 | `tests/tool_use/mistral/__init__.py` | no direct PR-number commit |
 | `tests/tool_use/mistral/conftest.py` | no direct PR-number commit |
 | `tests/tool_use/mistral/test_mistral_tool_calls.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `tests/tool_use/mistral/utils.py` | [#39217](https://github.com/vllm-project/vllm/pull/39217) |
-| `tests/v1/structured_output/test_mistral_common_tokenizer.py` | [#52720](https://github.com/vllm-project/vllm/pull/52720) |
 | `vllm/model_executor/models/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1220](https://github.com/vllm-project/vllm/pull/1220), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#1303](https://github.com/vllm-project/vllm/pull/1303), [#2868](https://github.com/vllm-project/vllm/pull/2868), [#32780](https://github.com/vllm-project/vllm/pull/32780), [#33095](https://github.com/vllm-project/vllm/pull/33095) |
-| `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928) |
+| `vllm/model_executor/models/mistral3.py` | [#15505](https://github.com/vllm-project/vllm/pull/15505), [#15950](https://github.com/vllm-project/vllm/pull/15950), [#17270](https://github.com/vllm-project/vllm/pull/17270), [#17428](https://github.com/vllm-project/vllm/pull/17428), [#21945](https://github.com/vllm-project/vllm/pull/21945), [#33939](https://github.com/vllm-project/vllm/pull/33939), [#36928](https://github.com/vllm-project/vllm/pull/36928), [#52874](https://github.com/vllm-project/vllm/pull/52874), [#53758](https://github.com/vllm-project/vllm/pull/53758), [#57531](https://github.com/vllm-project/vllm/pull/57531) |
 | `vllm/model_executor/models/mistral_eagle.py` | [#41024](https://github.com/vllm-project/vllm/pull/41024) |
 | `vllm/model_executor/models/mistral_large_3.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
 | `vllm/model_executor/models/mistral_large_3_eagle.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37232](https://github.com/vllm-project/vllm/pull/37232), [#45217](https://github.com/vllm-project/vllm/pull/45217), [#48153](https://github.com/vllm-project/vllm/pull/48153) |
 | `vllm/parser/mistral.py` | [#44596](https://github.com/vllm-project/vllm/pull/44596), [#48947](https://github.com/vllm-project/vllm/pull/48947), [#50515](https://github.com/vllm-project/vllm/pull/50515) |
 | `vllm/reasoning/mistral_reasoning_parser.py` | [#30391](https://github.com/vllm-project/vllm/pull/30391), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 | `vllm/renderers/mistral.py` | no direct PR-number commit |
-| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
+| `vllm/tokenizers/mistral.py` | [#29757](https://github.com/vllm-project/vllm/pull/29757), [#31138](https://github.com/vllm-project/vllm/pull/31138), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#36971](https://github.com/vllm-project/vllm/pull/36971), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41962](https://github.com/vllm-project/vllm/pull/41962), [#48947](https://github.com/vllm-project/vllm/pull/48947), [#55735](https://github.com/vllm-project/vllm/pull/55735), [#56325](https://github.com/vllm-project/vllm/pull/56325) |
 | `vllm/tool_parsers/mistral_tool_parser.py` | [#30724](https://github.com/vllm-project/vllm/pull/30724), [#34651](https://github.com/vllm-project/vllm/pull/34651), [#37209](https://github.com/vllm-project/vllm/pull/37209), [#38150](https://github.com/vllm-project/vllm/pull/38150), [#39217](https://github.com/vllm-project/vllm/pull/39217), [#39294](https://github.com/vllm-project/vllm/pull/39294), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#40531](https://github.com/vllm-project/vllm/pull/40531), [#41658](https://github.com/vllm-project/vllm/pull/41658), [#41730](https://github.com/vllm-project/vllm/pull/41730), [#44596](https://github.com/vllm-project/vllm/pull/44596), [#47550](https://github.com/vllm-project/vllm/pull/47550), ... (14 total) |
 | `vllm/transformers_utils/configs/mistral.py` | [#1196](https://github.com/vllm-project/vllm/pull/1196), [#1254](https://github.com/vllm-project/vllm/pull/1254), [#20570](https://github.com/vllm-project/vllm/pull/20570), [#28659](https://github.com/vllm-project/vllm/pull/28659), [#29172](https://github.com/vllm-project/vllm/pull/29172), [#29239](https://github.com/vllm-project/vllm/pull/29239), [#29757](https://github.com/vllm-project/vllm/pull/29757), [#33521](https://github.com/vllm-project/vllm/pull/33521), [#34028](https://github.com/vllm-project/vllm/pull/34028), [#34104](https://github.com/vllm-project/vllm/pull/34104), [#36163](https://github.com/vllm-project/vllm/pull/36163), [#37104](https://github.com/vllm-project/vllm/pull/37104), ... (13 total) |
 | `vllm/utils/mistral.py` | [#34651](https://github.com/vllm-project/vllm/pull/34651), [#40043](https://github.com/vllm-project/vllm/pull/40043), [#48947](https://github.com/vllm-project/vllm/pull/48947) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 50
-- Extra PRs preserved from existing docs: 13
-- Total PRs in this document: 63
+- Git-traced PRs: 57
+- Extra PRs preserved from existing docs: 14
+- Total PRs in this document: 71
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -110,6 +110,14 @@
 | 2026-06-18 | [#45988](https://github.com/vllm-project/vllm/pull/45988) | merged | [Perf] Remove unused loggers in `reasoning/` | `vllm/reasoning/deepseek_v3_reasoning_parser.py`, `vllm/reasoning/ernie45_reasoning_parser.py`, `vllm/reasoning/granite_reasoning_parser.py` |
 | 2026-07-06 | [#47550](https://github.com/vllm-project/vllm/pull/47550) | merged | [ROCm][CI][Bugfix] Fix flaky parallel tool-call streaming (test assertion + Mistral/Granite parsers) | `tests/tool_parsers/test_mistral_tool_parser.py`, `vllm/tool_parsers/mistral_tool_parser.py` |
 | 2026-07-10 | [#48153](https://github.com/vllm-project/vllm/pull/48153) | merged | [Model] Migrate MistralLarge3ForCausalLM to AutoWeightsLoader | `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py` |
+| 2026-07-30 | [#48947](https://github.com/vllm-project/vllm/pull/48947) | merged | [PARSER][Mistral] unified engine-based parser for reasoning and tool calls | `vllm/tool_parsers/mistral_tool_parser.py`, `tests/parser/mistral/test_reasoning.py`, `tests/reasoning/test_mistral_reasoning_parser.py` |
+| 2026-07-31 | [#50515](https://github.com/vllm-project/vllm/pull/50515) | merged | [ROCm][CI] Restore Mistral tool-parser compatibility after unification | `vllm/tool_parsers/mistral_tool_parser.py`, `vllm/parser/mistral.py` |
+| 2026-08-20 | [#52720](https://github.com/vllm-project/vllm/pull/52720) | merged | [Bugfix] Support MistralCommonBackend tokenizers in structured output | `tests/v1/structured_output/test_mistral_common_tokenizer.py`, `vllm/v1/structured_output/utils.py`, `vllm/v1/structured_output/__init__.py` |
+| 2026-08-23 | [#52874](https://github.com/vllm-project/vllm/pull/52874) | merged | [Bugfix][Model] Mistral3: fix image placeholder grid for processor size overrides | `tests/models/multimodal/processing/test_mistral3.py`, `vllm/model_executor/models/mistral3.py` |
+| 2026-09-08 | [#55735](https://github.com/vllm-project/vllm/pull/55735) | merged | [Frontend] Migrate input-validation errors to VLLMValidationError (harmony/mistral/chat_utils/params) | `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py` |
+| 2026-09-18 | [#56325](https://github.com/vllm-project/vllm/pull/56325) | merged | [Tokenizer] Drop dead Mistral tokenizer shims for transformers#41962 | `vllm/tokenizers/mistral.py` |
+| 2026-09-21 | [#53758](https://github.com/vllm-project/vllm/pull/53758) | merged | [Bugfix][Model] Mistral3: align placeholder grid with public processor | `tests/models/multimodal/processing/test_mistral3.py`, `vllm/model_executor/models/mistral3.py` |
+| 2026-09-29 | [#57531](https://github.com/vllm-project/vllm/pull/57531) | merged | [MM][Mistral3] Image preprocessing optimization | `tests/models/multimodal/processing/test_mistral3.py`, `vllm/model_executor/models/mistral3.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -2184,6 +2192,299 @@ diff -- vllm/model_executor/models/mistral_large_3_eagle.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/mistral_large_3.py` modified +80/-51; `vllm/model_executor/models/mistral_large_3_eagle.py` modified +9/-6
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mistral_large_3.py`, `vllm/model_executor/models/mistral_large_3_eagle.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #48947 - [PARSER][Mistral] unified engine-based parser for reasoning and tool calls
+
+- Link: https://github.com/vllm-project/vllm/pull/48947
+- Status/date: merged / 2026-07-30
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/language/generation/test_mistral.py`, `tests/parser/mistral/__init__.py`, `tests/parser/mistral/test_reasoning.py`, `tests/parser/mistral/test_tool_calls.py`, `tests/tokenizers_/test_mistral.py` and 11 files; associated commits `1a20d23dab6e`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 30 files, +2931/-1492, 5023 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tool_parsers/mistral_tool_parser.py` modified +26/-756 (782 lines); hunks: -3,767 +3,37; symbols: MistralToolParser, StreamingState, MistralToolCall, generate_random_id, touching `MistralToolParser, StreamingState, MistralToolCall`; `tests/parser/mistral/test_reasoning.py` added +599/-0 (599 lines); hunks: -0,0 +1,599; symbols: mistral_tokenizer, mistral_v11_tokenizer, _encode_v13, test_mistral_reasoning_v13, touching `mistral_tokenizer, mistral_v11_tokenizer, _encode_v13`; `tests/reasoning/test_mistral_reasoning_parser.py` removed +0/-348 (348 lines); hunks: -1,348 +0,0; symbols: mistral_tokenizer, test_mistral_reasoning, touching `mistral_tokenizer, test_mistral_reasoning`; `vllm/reasoning/mistral_reasoning_parser.py` modified +2/-158 (160 lines); hunks: -1,162 +1,6; symbols: MistralReasoningParser, __init__, start_token, end_token, touching `MistralReasoningParser, __init__, start_token`.
+- Code diff details:
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +26/-756 (782 lines); hunks: -3,767 +3,37; symbols: MistralToolParser, StreamingState, MistralToolCall, generate_random_id
+  - `tests/parser/mistral/test_reasoning.py` added +599/-0 (599 lines); hunks: -0,0 +1,599; symbols: mistral_tokenizer, mistral_v11_tokenizer, _encode_v13, test_mistral_reasoning_v13
+  - `tests/reasoning/test_mistral_reasoning_parser.py` removed +0/-348 (348 lines); hunks: -1,348 +0,0; symbols: mistral_tokenizer, test_mistral_reasoning
+  - `vllm/reasoning/mistral_reasoning_parser.py` modified +2/-158 (160 lines); hunks: -1,162 +1,6; symbols: MistralReasoningParser, __init__, start_token, end_token
+  - `tests/tokenizers_/test_mistral.py` modified +144/-2 (146 lines); hunks: -8,11 +8,13; -1247,7 +1249,9 @@ def test_convert_tokens_to_string(self, mistral_tokenizer:...; symbols: test_convert_tokens_to_string, test_apply_chat_template_reasoning_assistant, test_convert_ids_to_tokens_pre_args_tekken, test_validate_request_params_valid_effort
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -3,767 +3,37 @@
+-import json
+-from collections.abc import Sequence
+-from enum import Enum, auto
+-from random import choices
+-from string import ascii_letters, digits
+-from typing import Any
+diff -- tests/parser/mistral/test_reasoning.py
+@@ -0,0 +1,599 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import json
++import pytest
++from mistral_common.protocol.instruct.messages import (
++    AssistantMessage,
+diff -- tests/reasoning/test_mistral_reasoning_parser.py
+@@ -1,348 +0,0 @@
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +26/-756; `vllm/reasoning/mistral_reasoning_parser.py` modified +2/-158; `vllm/tokenizers/mistral.py` modified +15/-6; `vllm/reasoning/__init__.py` modified +1/-1
+  - tests: `tests/parser/mistral/test_reasoning.py` added +599/-0; `tests/reasoning/test_mistral_reasoning_parser.py` removed +0/-348; `tests/tokenizers_/test_mistral.py` modified +144/-2; `tests/models/language/generation/test_mistral.py` modified +2/-4
+- Risk and verification: The diff ships test coverage in `requirements/test/cpu.txt`, `requirements/test/cuda.in`, `requirements/test/cuda.txt`, `requirements/test/nightly-torch.txt`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #50515 - [ROCm][CI] Restore Mistral tool-parser compatibility after unification
+
+- Link: https://github.com/vllm-project/vllm/pull/50515
+- Status/date: merged / 2026-07-31
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/parser/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; associated commits `8d8a4e0f2b11`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +21/-4, 52 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tool_parsers/mistral_tool_parser.py` modified +10/-0 (10 lines); hunks: -25,6 +25,16 @@ class MistralToolParser(MistralParserToolAdapter): # type: ig...; symbols: MistralToolParser, bot_token, bot_token_id, adjust_request, touching `MistralToolParser, bot_token, bot_token_id`; `vllm/parser/mistral.py` modified +11/-4 (15 lines); hunks: -526,14 +526,21 @@ def extract_tool_calls_from_content(; -550,8 +557,8 @@ def _legacy_extract_tool_calls(; symbols: extract_tool_calls_from_content, _legacy_extract_tool_calls, touching `extract_tool_calls_from_content, _legacy_extract_tool_calls`.
+- Code diff details:
+  - `vllm/tool_parsers/mistral_tool_parser.py` modified +10/-0 (10 lines); hunks: -25,6 +25,16 @@ class MistralToolParser(MistralParserToolAdapter): # type: ig...; symbols: MistralToolParser, bot_token, bot_token_id, adjust_request
+  - `vllm/parser/mistral.py` modified +11/-4 (15 lines); hunks: -526,14 +526,21 @@ def extract_tool_calls_from_content(; -550,8 +557,8 @@ def _legacy_extract_tool_calls(; symbols: extract_tool_calls_from_content, _legacy_extract_tool_calls
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/mistral_tool_parser.py
+@@ -25,6 +25,16 @@ class MistralToolParser(MistralParserToolAdapter):  # type: ignore[valid-type, m
++    @property
++    def bot_token(self) -> str:
++        """Return the Mistral tool-call marker exposed by the legacy parser."""
++        return self._parser_engine.bot_token
++    @property
++    def bot_token_id(self) -> int | None:
+diff -- vllm/parser/mistral.py
+@@ -526,14 +526,21 @@ def extract_tool_calls_from_content(
+-        request: ChatCompletionRequest,
++        request: ChatCompletionRequest | None,
++        if request is None:
++            tool_choice = None
++            tools = None
++        else:
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tool_parsers/mistral_tool_parser.py` modified +10/-0; `vllm/parser/mistral.py` modified +11/-4
+- Risk and verification: Runtime changes concentrate in `vllm/parser/mistral.py`, `vllm/tool_parsers/mistral_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #52720 - [Bugfix] Support MistralCommonBackend tokenizers in structured output
+
+- Link: https://github.com/vllm-project/vllm/pull/52720
+- Status/date: merged / 2026-08-20
+- Trace source: preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +118/-2, 149 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/v1/structured_output/test_mistral_common_tokenizer.py` added +102/-0 (102 lines); hunks: -0,0 +1,102; symbols: loaded_tokenizer, wrapped_tokenizer, _encode, _backend, touching `loaded_tokenizer, wrapped_tokenizer, _encode`; `vllm/v1/structured_output/utils.py` modified +13/-0 (13 lines); hunks: -14,6 +14,7; -305,6 +306,18 @@ def get_outlines_cache():; symbols: get_outlines_cache, maybe_wrap_mistral_common_tokenizer, _reduced_vocabulary, touching `get_outlines_cache, maybe_wrap_mistral_common_tokenizer, _reduced_vocabulary`; `vllm/v1/structured_output/__init__.py` modified +3/-2 (5 lines); hunks: -17,6 +17,7; -75,8 +76,8 @@ def __init__(self, vllm_config: VllmConfig):; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `tests/v1/structured_output/test_mistral_common_tokenizer.py` added +102/-0 (102 lines); hunks: -0,0 +1,102; symbols: loaded_tokenizer, wrapped_tokenizer, _encode, _backend
+  - `vllm/v1/structured_output/utils.py` modified +13/-0 (13 lines); hunks: -14,6 +14,7; -305,6 +306,18 @@ def get_outlines_cache():; symbols: get_outlines_cache, maybe_wrap_mistral_common_tokenizer, _reduced_vocabulary
+  - `vllm/v1/structured_output/__init__.py` modified +3/-2 (5 lines); hunks: -17,6 +17,7; -75,8 +76,8 @@ def __init__(self, vllm_config: VllmConfig):; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- tests/v1/structured_output/test_mistral_common_tokenizer.py
+@@ -0,0 +1,102 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Structured output with a `MistralCommonBackend` tokenizer."""
++import pytest
++from transformers import AutoTokenizer, MistralCommonBackend
++from vllm.config import StructuredOutputsConfig, VllmConfig
+diff -- vllm/v1/structured_output/utils.py
+@@ -14,6 +14,7 @@
++from transformers import MistralCommonBackend
+@@ -305,6 +306,18 @@ def get_outlines_cache():
++def maybe_wrap_mistral_common_tokenizer(tokenizer: TokenizerLike) -> TokenizerLike:
++    """The grammar backends cannot consume a `MistralCommonBackend` directly."""
++    if not isinstance(tokenizer, MistralCommonBackend):
++        return tokenizer
+diff -- vllm/v1/structured_output/__init__.py
+@@ -17,6 +17,7 @@
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/v1/structured_output/test_mistral_common_tokenizer.py` added +102/-0
+  - runtime: `vllm/v1/structured_output/utils.py` modified +13/-0; `vllm/v1/structured_output/__init__.py` modified +3/-2
+- Risk and verification: The diff ships test coverage in `tests/v1/structured_output/test_mistral_common_tokenizer.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #52874 - [Bugfix][Model] Mistral3: fix image placeholder grid for processor size overrides
+
+- Link: https://github.com/vllm-project/vllm/pull/52874
+- Status/date: merged / 2026-08-23
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_mistral3.py`, `vllm/model_executor/models/mistral3.py`; associated commits `a3561ef8e49d`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +210/-7, 271 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/processing/test_mistral3.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: _processed_pixel_values, _placeholder_count_from_prompt_updates, _expected_placeholder_tokens_per_image, test_processor_size_override, touching `_processed_pixel_values, _placeholder_count_from_prompt_updates, _expected_placeholder_tokens_per_image`; `vllm/model_executor/models/mistral3.py` modified +54/-5 (59 lines); hunks: -1,6 +1,7; -22,7 +23,11; symbols: Mistral3ImagePixelInputs, forward, Mistral3HFEncoderInfo, __init__, touching `Mistral3ImagePixelInputs, forward, Mistral3HFEncoderInfo`.
+- Code diff details:
+  - `tests/models/multimodal/processing/test_mistral3.py` added +143/-0 (143 lines); hunks: -0,0 +1,143; symbols: _processed_pixel_values, _placeholder_count_from_prompt_updates, _expected_placeholder_tokens_per_image, test_processor_size_override
+  - `vllm/model_executor/models/mistral3.py` modified +54/-5 (59 lines); hunks: -1,6 +1,7; -22,7 +23,11; symbols: Mistral3ImagePixelInputs, forward, Mistral3HFEncoderInfo, __init__
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/processing/test_mistral3.py
+@@ -0,0 +1,143 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Tests for Mistral3's multimodal preprocessing kwargs."""
++import pytest
++import torch
++from PIL import Image
+diff -- vllm/model_executor/models/mistral3.py
+@@ -1,6 +1,7 @@
++import math
+@@ -22,7 +23,11 @@
+-from vllm.multimodal.parse import ImageProcessorItems, ImageSize, MultiModalDataItems
++from vllm.multimodal.parse import (
++    ImageProcessorItems,
++    ImageSize,
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/processing/test_mistral3.py` added +143/-0
+  - runtime: `vllm/model_executor/models/mistral3.py` modified +54/-5
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_mistral3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55735 - [Frontend] Migrate input-validation errors to VLLMValidationError (harmony/mistral/chat_utils/params)
+
+- Link: https://github.com/vllm-project/vllm/pull/55735
+- Status/date: merged / 2026-09-08
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tokenizers_/test_mistral.py`, `vllm/tokenizers/mistral.py`; associated commits `5133e1d28594`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 7 files, +63/-8, 160 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/tokenizers_/test_mistral.py` modified +14/-1 (15 lines); hunks: -11,6 +11,7; -2279,8 +2280,20 @@ def test_validate_request_params_rejects_unsupported_effo...; symbols: test_validate_request_params_rejects_unsupported_effort, test_validate_request_params_rejects_chat_template, touching `test_validate_request_params_rejects_unsupported_effort, test_validate_request_params_rejects_chat_template`; `vllm/tokenizers/mistral.py` modified +8/-3 (11 lines); hunks: -34,6 +34,7; -144,15 +145,19 @@ def _validate_apply_chat_template_args(; symbols: _validate_apply_chat_template_args, validate_request_params, touching `_validate_apply_chat_template_args, validate_request_params`.
+- Code diff details:
+  - `tests/tokenizers_/test_mistral.py` modified +14/-1 (15 lines); hunks: -11,6 +11,7; -2279,8 +2280,20 @@ def test_validate_request_params_rejects_unsupported_effo...; symbols: test_validate_request_params_rejects_unsupported_effort, test_validate_request_params_rejects_chat_template
+  - `vllm/tokenizers/mistral.py` modified +8/-3 (11 lines); hunks: -34,6 +34,7; -144,15 +145,19 @@ def _validate_apply_chat_template_args(; symbols: _validate_apply_chat_template_args, validate_request_params
+- Key code excerpts:
+
+```diff
+diff -- tests/tokenizers_/test_mistral.py
+@@ -11,6 +11,7 @@
++from vllm.exceptions import VLLMValidationError
+@@ -2279,8 +2280,20 @@ def test_validate_request_params_rejects_unsupported_effort() -> None:
+-    with pytest.raises(ValueError, match="reasoning_effort"):
++    with pytest.raises(VLLMValidationError, match="reasoning_effort") as exc_info:
++    assert exc_info.value.parameter == "reasoning_effort"
++def test_validate_request_params_rejects_chat_template() -> None:
+diff -- vllm/tokenizers/mistral.py
+@@ -34,6 +34,7 @@
++from vllm.exceptions import VLLMValidationError
+@@ -144,15 +145,19 @@ def _validate_apply_chat_template_args(
+-        raise ValueError("chat_template is not supported for Mistral tokenizers.")
++        raise VLLMValidationError(
++            "chat_template is not supported for Mistral tokenizers.",
++            parameter="chat_template",
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/tokenizers_/test_mistral.py` modified +14/-1
+  - runtime: `vllm/tokenizers/mistral.py` modified +8/-3
+- Risk and verification: The diff ships test coverage in `tests/entrypoints/openai/test_render_parity.py`, `tests/entrypoints/unit_tests/test_chat_utils.py`, `tests/tokenizers_/test_mistral.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #56325 - [Tokenizer] Drop dead Mistral tokenizer shims for transformers#41962
+
+- Link: https://github.com/vllm-project/vllm/pull/56325
+- Status/date: merged / 2026-09-18
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tokenizers/mistral.py`; associated commits `e562003adbb9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +5/-17, 49 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tokenizers/mistral.py` modified +5/-17 (22 lines); hunks: -354,22 +354,13 @@ def __call__(; -389,8 +380,10 @@ def encode(; symbols: __call__, vocab, encode, apply_chat_template, touching `__call__, vocab, encode`.
+- Code diff details:
+  - `vllm/tokenizers/mistral.py` modified +5/-17 (22 lines); hunks: -354,22 +354,13 @@ def __call__(; -389,8 +380,10 @@ def encode(; symbols: __call__, vocab, encode, apply_chat_template
+- Key code excerpts:
+
+```diff
+diff -- vllm/tokenizers/mistral.py
+@@ -354,22 +354,13 @@ def __call__(
+-        encoded = self.transformers_tokenizer(
++        return self.transformers_tokenizer(
+-        # TODO(juliendenize): once https://github.com/huggingface/transformers/pull/41962
+-        # is in, revert to only call self.transformers_tokenizer(...).
+-        # Hack to fix wrongly added eos token, when fix will be supported the condition
+-        # below will be False even before the revert is done.
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tokenizers/mistral.py` modified +5/-17
+- Risk and verification: Runtime changes concentrate in `vllm/tokenizers/mistral.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #53758 - [Bugfix][Model] Mistral3: align placeholder grid with public processor
+
+- Link: https://github.com/vllm-project/vllm/pull/53758
+- Status/date: merged / 2026-09-21
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_mistral3.py`, `vllm/model_executor/models/mistral3.py`; associated commits `9598487bc182`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +54/-37, 165 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/processing/test_mistral3.py` modified +49/-27 (76 lines); hunks: -5,7 +5,7; -22,25 +22,41; symbols: _processed_pixel_values, _process_images_with_hf, _placeholder_count_from_prompt_updates, _placeholder_tokens_from_prompt_updates, touching `_processed_pixel_values, _process_images_with_hf, _placeholder_count_from_prompt_updates`; `vllm/model_executor/models/mistral3.py` modified +5/-10 (15 lines); hunks: -192,18 +192,13 @@ def get_patch_grid_size(; symbols: get_patch_grid_size, touching `get_patch_grid_size`.
+- Code diff details:
+  - `tests/models/multimodal/processing/test_mistral3.py` modified +49/-27 (76 lines); hunks: -5,7 +5,7; -22,25 +22,41; symbols: _processed_pixel_values, _process_images_with_hf, _placeholder_count_from_prompt_updates, _placeholder_tokens_from_prompt_updates
+  - `vllm/model_executor/models/mistral3.py` modified +5/-10 (15 lines); hunks: -192,18 +192,13 @@ def get_patch_grid_size(; symbols: get_patch_grid_size
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/processing/test_mistral3.py
+@@ -5,7 +5,7 @@
+-from transformers import BatchFeature
++from transformers import AutoProcessor, BatchFeature
+@@ -22,25 +22,41 @@
+-def _processed_pixel_values(
++def _process_images_with_hf(
+-) -> list[torch.Tensor]:
+diff -- vllm/model_executor/models/mistral3.py
+@@ -192,18 +192,13 @@ def get_patch_grid_size(
+-        patch_size = self.vision_config.patch_size
+-        spatial_merge_size = self.hf_config.spatial_merge_size
+-        # The HF processor rounds each dimension up to the vision patch size
+-        # before the projector drops incomplete spatial-merge groups. This is
+-        # not equivalent to rounding directly to the merged patch size.
+-        num_width_patches = (image_width - 1) // patch_size + 1
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/processing/test_mistral3.py` modified +49/-27
+  - runtime: `vllm/model_executor/models/mistral3.py` modified +5/-10
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_mistral3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #57531 - [MM][Mistral3] Image preprocessing optimization
+
+- Link: https://github.com/vllm-project/vllm/pull/57531
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_mistral3.py`, `vllm/model_executor/models/mistral3.py`; associated commits `d86cf9124098`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 6 files, +228/-25, 413 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/processing/test_mistral3.py` modified +128/-2 (130 lines); hunks: -4,14 +4,29; -21,6 +36,65; symbols: test_pixtral_patch_embed_preserves_image_order_and_strides, _process_images_with_hf, test_processor_size_override, test_mm_device_do_normalize, touching `test_pixtral_patch_embed_preserves_image_order_and_strides, _process_images_with_hf, test_processor_size_override`; `vllm/model_executor/models/mistral3.py` modified +19/-3 (22 lines); hunks: -7,13 +7,16; -56,6 +59,10; symbols: Mistral3ImagePixelInputs, get_vision_encoder_info, get_hf_processor, get_supported_mm_limits, touching `Mistral3ImagePixelInputs, get_vision_encoder_info, get_hf_processor`.
+- Code diff details:
+  - `tests/models/multimodal/processing/test_mistral3.py` modified +128/-2 (130 lines); hunks: -4,14 +4,29; -21,6 +36,65; symbols: test_pixtral_patch_embed_preserves_image_order_and_strides, _process_images_with_hf, test_processor_size_override, test_mm_device_do_normalize
+  - `vllm/model_executor/models/mistral3.py` modified +19/-3 (22 lines); hunks: -7,13 +7,16; -56,6 +59,10; symbols: Mistral3ImagePixelInputs, get_vision_encoder_info, get_hf_processor, get_supported_mm_limits
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/processing/test_mistral3.py
+@@ -4,14 +4,29 @@
++import torch.nn.functional as F
++from transformers.models.pixtral import PixtralProcessor
+-from vllm.model_executor.models.lightonocr import LightOnOCRProcessingInfo
++from vllm.model_executor.layers.fusion.mm_input_norm import (
++    FusedMMInputNorm,
++    IdentityInputNorm,
+diff -- vllm/model_executor/models/mistral3.py
+@@ -7,13 +7,16 @@
++import transformers
++from packaging.version import Version
++from vllm.model_executor.layers.fusion.mm_input_norm import build_mm_input_norm
+@@ -56,6 +59,10 @@
++TRANSFORMERS_SUPPORTS_PIXTRAL_IMAGE_ONLY = Version(transformers.__version__) >= Version(
++    "5.15.0"
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/processing/test_mistral3.py` modified +128/-2
+  - runtime: `vllm/model_executor/models/mistral3.py` modified +19/-3
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_mistral3.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

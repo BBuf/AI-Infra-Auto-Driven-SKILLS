@@ -24,6 +24,10 @@ DEFAULT_OUT_NAME = "sglang-review-corpus.jsonl.gz"
 DEFAULT_METADATA_NAME = "sglang-review-corpus.metadata.json"
 
 AGENT_LOGIN_PATTERNS = [
+    r"-bot$",
+    r"^metamergebot$",
+    r"^sglang-bot$",
+    r"^diffray",
     r"\[bot\]$",
     r"^dependabot",
     r"^renovate",
@@ -1220,6 +1224,7 @@ def summarize(
         "collected_through": collected_through.isoformat(),
         "source_years": [start_year, end_year],
         "collection_policy": {
+            "agent_login_patterns": AGENT_LOGIN_PATTERNS,
             "pull_requests": "PR created_at within inclusive year range; bot and coding-agent PR authors excluded.",
             "event_window": "Inline comments, PR conversation comments, and review submissions use an inclusive event window capped at collected_through.",
             "inline_review_comments": "GitHub pull review comments grouped by in_reply_to_id thread.",

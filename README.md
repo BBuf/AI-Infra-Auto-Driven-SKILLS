@@ -2,321 +2,101 @@
 
 # AI-Infra-Auto-Driven-SKILLS
 
-**Agent-ready playbooks for LLM serving benchmarks, SGLang model Day-0
-support, capacity planning, torch-profiler triage, pipeline analysis, compute
-simulation, SGLang/vLLM optimization, human code review, production incidents,
-and model PR intelligence.**
+**Agent-ready skills for LLM serving benchmarks, profiler triage, capacity
+planning, model Day-0 support, code review, incident triage, and model PR
+history across SGLang, vLLM, TensorRT-LLM, and TokenSpeed.**
 
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/forks)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Core skills](https://img.shields.io/badge/core_skills-12-2f80ed?style=flat-square)](#core-skills)
-[![PR histories](https://img.shields.io/badge/pr_histories-72-2ea44f?style=flat-square)](#model-pr-history-catalog)
+[![Skills](https://img.shields.io/badge/skills-10-2f80ed?style=flat-square)](#skills)
+[![PR histories](https://img.shields.io/badge/pr_histories-118-2ea44f?style=flat-square)](#model-pr-history)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
 </div>
 
-This repository is built for AI infrastructure engineers who want agents to do
-real work, not recite generic prompts.
+Plain `SKILL.md` directories that give a coding agent the operational memory
+for real AI-infra work: fair cross-framework benchmarks, kernel-level profiler
+reads, operator FLOPs, model support plans, and the upstream PRs that already
+solved a similar problem. Kernel campaigns live in the sibling
+**[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)**; per-model diffusion runs
+live in [`sglang-diffusion-optimization-flows/`](sglang-diffusion-optimization-flows/).
 
-It gives an agent the operational memory needed to benchmark SGLang, vLLM,
-TensorRT-LLM, and TokenSpeed fairly; turn a new SGLang model architecture into
-an auditable Day-0 support and release plan; explain serving capacity from
-startup logs; split prefill and decode profiler evidence; inspect traces at
-layer and kernel level; estimate operator FLOPs and MFU; review SGLang patches
-against real maintainer discussion patterns; run Humanize-governed SGLang and
-vLLM SOTA loops; triage SGLang production incidents from a replay; and keep
-model-family optimization history close to the code that actually changed.
-
-For standalone kernel campaigns and kernel evidence tools, see the sibling
-project **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)**.
-
-For model-by-model image, video, audio, and 3D optimization runs, see the
-Markdown-only **[SGLang Diffusion optimization flow
-library](sglang-diffusion-optimization-flows/)**. Every model and component
-flow is self-contained and intentionally repeats its environment, download,
-benchmark, profiling, optimization, and acceptance instructions.
-
-If this saves you one stale model-support assumption, one misleading profiler
-trace, or one late-night benchmark loop, a star helps more AI-infra engineers
-find it.
-
-Current source contracts and scope are recorded in
-[upstream-source-contracts.md](docs/upstream-source-contracts.md). The September
-refresh adds DSV4.1 PDL/fusion/metadata lessons, paired performance/accuracy
-validation, current profiler interfaces and removes obsolete host scripts.
-Historical model/PR evidence keeps its original audit date.
-
-## Core Skills
+## Skills
 
 | Skill | Use it when |
 | --- | --- |
-| [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) | You need a fair, bounded serving benchmark search for SGLang, vLLM, TensorRT-LLM, TokenSpeed, or another OpenAI-compatible stack. |
-| [`llm-serving-capacity-planner`](skills/llm-serving-capacity-planner/) | You need to explain SGLang or vLLM startup memory, KV cache budget, request capacity, or OOM pressure from logs. |
-| [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | You need a three-table profiler report that keeps `extend/prefill` and `decode` evidence separate. |
-| [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | You need forward-pass, layer, and kernel-level timing from a torch profiler trace, including anchor boundaries and Perfetto ranges. |
-| [`torch-profiler-layer-track`](skills/torch-profiler-layer-track/) | You want verified layer-number guides beside GPU kernels in Perfetto, with at most ten synthetic activity lanes, original timing and stream provenance. |
-| [`model-compute-simulation`](skills/model-compute-simulation/) | You need operator shapes, FLOPs, MFU estimates, kernel-to-op mapping, or parallelism what-if analysis for an LLM serving shape. |
-| [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | You need to turn a new SGLang model architecture into a public Day-0 PR DAG, parallel/kernel adaptation plan, seven-gate validation matrix, release lock, and sanitized evidence bundle. |
-| [`sglang-humanize-review`](skills/sglang-humanize-review/) | You need SGLang code-review findings grounded in full human PR review episodes from project start through the latest corpus refresh (collected through 2026-07-27), including inline code context, top-level discussion, review summaries, and multi-round replies. Every review opens with a PR comprehension pass — a change summary plus a Mermaid execution flowchart with the diff's modified steps marked — so the reviewer sees how the PR runs before the findings. |
-| [`sglang-sota-humanize-loop`](skills/sglang-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns SGLang gap decisions against a selected comparison framework set, profiler triage, required layer-pipeline deep dives, SGLang patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
-| [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | You want one model-level Humanize RLCR loop that owns gap decisions, profiler triage, required layer-pipeline deep dives, vLLM patches, optional `ncu-report-skill` evidence, and real-model revalidation after the fixed fair benchmark. |
-| [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | You need to turn queue growth, timeouts, wrong outputs, crashes, or distributed stalls into a replay and next debug step. |
-| [`model-architecture-diagram`](skills/model-architecture-diagram/) | You need original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion model families. |
+| [`llm-serving-auto-benchmark`](skills/llm-serving-auto-benchmark/) | Find the best deployment command for one model across SGLang, vLLM, TensorRT-LLM, TokenSpeed under the same workload, GPUs, and SLA. |
+| [`llm-serving-capacity-planner`](skills/llm-serving-capacity-planner/) | Explain startup memory, KV cache budget, request capacity, or OOM pressure from SGLang/vLLM logs. |
+| [`llm-torch-profiler-analysis`](skills/llm-torch-profiler-analysis/) | Capture or read a torch profiler trace and get kernel, overlap-opportunity, and fusion-opportunity tables checked against a catalog of known SGLang/vLLM/TensorRT-LLM/TokenSpeed/FlashInfer optimizations. |
+| [`llm-pipeline-analysis`](skills/llm-pipeline-analysis/) | Break a trace into forward passes, layers, and kernels with anchor boundaries and Perfetto ranges. |
+| [`torch-profiler-layer-track`](skills/torch-profiler-layer-track/) | Add verified layer-number guides and compact GPU lanes to a trace for Perfetto navigation. |
+| [`model-compute-simulation`](skills/model-compute-simulation/) | Estimate operator shapes, FLOPs, and MFU for a serving shape, or map kernels back to operators. |
+| [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | Turn a new model architecture into an SGLang Day-0 PR DAG, validation matrix, and release lock. |
+| [`sglang-humanize-review`](skills/sglang-humanize-review/) | Review an SGLang PR the way maintainers do, grounded in the full human review corpus. |
+| [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | Turn queue growth, timeouts, wrong outputs, crashes, or stalls into a replay and the next debug step. |
+| [`model-architecture-diagram`](skills/model-architecture-diagram/) | Return original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion families. |
 
-## SGLang SOTA Performance Loop
+## Model PR History
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/BBuf/AI-Infra-Auto-Driven-SKILLS/main/docs/assets/sglang-sota-performance-loop.svg" alt="SGLang SOTA Performance Loop" width="620">
-</p>
-
-`sglang-sota-humanize-loop` always patches SGLang, while the competitor set is
-caller-controlled. By default the comparison framework set can include vLLM,
-TensorRT-LLM, and TokenSpeed; a prompt can also narrow it, for example:
-
-```text
-Use sglang-sota-humanize-loop for <model>.
-comparison_frameworks: [vllm]
-Do not consider TensorRT-LLM or TokenSpeed; record them as user-excluded.
-```
-
-## Model PR History Catalog
-
-The model optimization layer is now one knowledge base:
-[`model-pr-optimization-history`](model-pr-optimization-history/). It contains
-72 PR-driven history dossiers and a small query helper. These are not
-per-model runbook skills; they preserve diff-backed model evolution records for
-SGLang, vLLM, TensorRT-LLM, and TokenSpeed so SOTA loops can read prior source
-and PR evidence before patching.
-
-| Framework | PR histories |
-| --- | ---: |
-| [SGLang](model-pr-optimization-history/sglang/) | 35 |
-| [vLLM](model-pr-optimization-history/vllm/) | 33 |
-| [TensorRT-LLM](model-pr-optimization-history/tensorrt_llm/) | 2 |
-| [TokenSpeed](model-pr-optimization-history/tokenspeed/) | 2 |
-
-Covered families include:
-
-```text
-DeepSeek V3/R1/V3.1/V3.2/V4, Qwen3, Qwen3-Coder, Qwen3-Next,
-Qwen3.5/Qwen3.6/Qwen3.8, Qwen VLM/Omni/ASR, GLM 4.5/4.6/4.7/5,
-Kimi K2/K2.5/K3, MiniMax, Llama 4, Mistral Small 4, Mixtral, Nemotron,
-Gemma, Ernie 4.5, Intern-S1, InternVL, Hunyuan, MOSS-VL,
-GPT-OSS, Step 3.5, Mimo, and model-specific MoE/quantization paths.
-```
-
-Each model-family history is designed to answer practical questions:
-
-- Which PRs changed this model path?
-- Was the PR merged, closed, or still open?
-- Which files and symbols moved?
-- What optimization or correctness risk should be checked before touching it?
-- Which upstream idea should be compared before writing a new kernel or fusion?
-
-Query examples:
+[`model-pr-optimization-history/`](model-pr-optimization-history/) is one
+queryable knowledge base (installed as `model-pr-history-knowledge`) with
+118 bilingual dossiers: SGLang 45, vLLM
+44, TensorRT-LLM 15, TokenSpeed 14.
+Each lists a model family's implementation files, every PR that changed them,
+and per-PR evidence cards. New generated entries are explicitly marked as
+source inventories pending manual diff review. Read it before
+patching a model path or calling an optimization new.
 
 ```bash
 cd model-pr-optimization-history
 python3 scripts/query.py --list
-python3 scripts/query.py --framework sglang --model qwen3-core --paths-only
 python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
-python3 scripts/query.py --framework tokenspeed --model qwen35 qk rmsnorm
 ```
 
-Open PR freshness is tracked separately from merged history cards:
-
-```bash
-python3 tools/check_open_pr_watch.py --format markdown \
-  --output model-pr-optimization-history/open-pr-watch.md
-```
-
-This report uses the GitHub pulls API with an anonymous REST fallback when
-`gh api` is rate-limited. If every repo fetch fails, the tool exits non-zero
-instead of writing a misleading empty report.
-
-## Evidence Standards
-
-The repo is opinionated about evidence because performance work gets noisy fast.
-
-- Benchmark rows should include model, framework, GPU count, workload, request
-  rate or concurrency, SLA status, launch command, benchmark command, and raw
-  artifacts.
-- Profiler reports should keep prefill and decode separate, then emit the same
-  three tables: kernel table, overlap-opportunity table, and fuse-opportunity
-  table.
-- SOTA claims should be scoped to the exact model, hardware, framework commits,
-  precision, workload, and SLA used in the run.
-- SGLang human review should use the full PR episode corpus: inline review
-  threads for line-local findings, PR conversations for design/test/repro
-  negotiation, and review submissions for blocking maintainer summaries.
-- Humanize SOTA loops should keep only the fixed fair benchmark outside the
-  patch loop; gap decisions, profiler triage, required layer-pipeline deep
-  dives, kernel evidence, target-framework code changes, and revalidation all
-  stay inside one model-level RLCR loop.
-- Kernel-local fixes inside that loop should use `ncu-report-skill` when Nsight
-  Compute counter evidence is needed, store NCU digests, and still pass the
-  same real-model benchmark/profile gate.
-- Incident triage should start from replayable evidence instead of changing code
-  from symptoms alone.
-- Model optimization histories should point back to PRs, files, diffs, and risk
-  surfaces rather than vague summary text; they live as one PR-driven knowledge
-  base, not per-model skills.
-- Root-level [`update_prompt.md`](update_prompt.md) captures the full refresh
-  and validation workflow for updating this repo again without relying on
-  memory from a previous run.
-- The 2026-08-23 refresh updated live source heads, public release notes,
-  cookbook translations, and PR-history indexes. It did **not** recapture B200
-  serving/profiler smoke (assigned host SSH closed) and did **not** recrawl
-  the SGLang human-review corpus past 2026-07-27.
+Dossiers are regenerated from upstream git history with
+`tools/rebuild_model_pr_history_from_git.py`; see
+[`update_prompt.md`](update_prompt.md) for the full refresh procedure and
+[`docs/upstream-source-contracts.md`](docs/upstream-source-contracts.md) for
+the inspected source revisions.
 
 ## Install
 
-This repository is not Codex-only. The skills are plain `SKILL.md` directories
-and can be installed into Claude Code, Codex, Kimi, or another compatible agent
-runtime.
-
-### Claude Code (one-shot plugin install)
-
-The repository ships a `.claude-plugin/` manifest so the whole skill set can be
-installed as a single Claude Code plugin via the built-in marketplace flow:
+Claude Code plugin:
 
 ```text
 /plugin marketplace add BBuf/AI-Infra-Auto-Driven-SKILLS
 /plugin install ai-infra-auto-driven-skills@ai-infra-auto-driven-skills
-/reload-plugins
 ```
 
-After reload, the 12 skills appear namespaced as
-`ai-infra-auto-driven-skills:<skill-name>` (for example
-`ai-infra-auto-driven-skills:sglang-sota-humanize-loop`). Update later with
-`/plugin marketplace update ai-infra-auto-driven-skills`.
-
-### Claude Code (per-skill symlink, legacy)
-
-Prefer this when you only want a subset of the skills, or when developing
-against a local checkout. Symlink is recommended for local development because
-updates to this checkout are picked up immediately:
+Any skill runtime (Claude Code, Codex, Kimi, ...): link or copy the skill
+directories into its skill directory.
 
 ```bash
 git clone https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS.git
 cd AI-Infra-Auto-Driven-SKILLS
-
-mkdir -p ~/.claude/skills
-ln -s "$PWD/skills/llm-serving-auto-benchmark" ~/.claude/skills/llm-serving-auto-benchmark
-ln -s "$PWD/skills/llm-serving-capacity-planner" ~/.claude/skills/llm-serving-capacity-planner
-ln -s "$PWD/skills/llm-torch-profiler-analysis" ~/.claude/skills/llm-torch-profiler-analysis
-ln -s "$PWD/skills/llm-pipeline-analysis" ~/.claude/skills/llm-pipeline-analysis
-ln -s "$PWD/skills/torch-profiler-layer-track" ~/.claude/skills/torch-profiler-layer-track
-ln -s "$PWD/skills/model-compute-simulation" ~/.claude/skills/model-compute-simulation
-ln -s "$PWD/skills/model-optimization/sglang-model-day0-support" ~/.claude/skills/sglang-model-day0-support
-ln -s "$PWD/skills/sglang-humanize-review" ~/.claude/skills/sglang-humanize-review
-ln -s "$PWD/skills/sglang-sota-humanize-loop" ~/.claude/skills/sglang-sota-humanize-loop
-ln -s "$PWD/skills/vllm-sota-humanize-loop" ~/.claude/skills/vllm-sota-humanize-loop
-ln -s "$PWD/skills/sglang-prod-incident-triage" ~/.claude/skills/sglang-prod-incident-triage
-ln -s "$PWD/skills/model-architecture-diagram" ~/.claude/skills/model-architecture-diagram
-ln -s "$PWD/model-pr-optimization-history" ~/.claude/skills/model-pr-history-knowledge
+SKILL_DIR=~/.claude/skills   # or ${CODEX_HOME:-~/.codex}/skills
+mkdir -p "$SKILL_DIR"
+for d in skills/*/ skills/model-optimization/*/; do
+  [ -f "$d/SKILL.md" ] && ln -sfn "$PWD/${d%/}" "$SKILL_DIR/$(basename "$d")"
+done
+ln -sfn "$PWD/model-pr-optimization-history" "$SKILL_DIR/model-pr-history-knowledge"
 ```
 
-Restart Claude Code after installing. The skills can then be invoked by name,
-for example `[$llm-serving-auto-benchmark]`,
-`[$llm-serving-capacity-planner]`, `[$llm-torch-profiler-analysis]`,
-`[$llm-pipeline-analysis]`, `[$torch-profiler-layer-track]`, `[$model-compute-simulation]`,
-`[$sglang-model-day0-support]`,
-`[$sglang-humanize-review]`,
-`[$sglang-sota-humanize-loop]`, or `[$vllm-sota-humanize-loop]`.
+## Evidence Rules
 
-If you prefer copies instead of symlinks, replace `ln -s` with `cp -R`. Copy
-`model-pr-optimization-history` only when you want the agent to query the
-PR-driven model knowledge base locally. It replaces the old per-model runbook
-skill layout with one shared knowledge root.
-
-### Generic Agent Skill Directory
-
-For Codex, Kimi, or another compatible runtime, copy or symlink the same
-directories into that runtime's skill directory:
-
-```bash
-cp -R skills/llm-serving-auto-benchmark <agent-skill-dir>/llm-serving-auto-benchmark
-cp -R skills/llm-serving-capacity-planner <agent-skill-dir>/llm-serving-capacity-planner
-cp -R skills/llm-torch-profiler-analysis <agent-skill-dir>/llm-torch-profiler-analysis
-cp -R skills/llm-pipeline-analysis <agent-skill-dir>/llm-pipeline-analysis
-cp -R skills/torch-profiler-layer-track <agent-skill-dir>/torch-profiler-layer-track
-cp -R skills/model-compute-simulation <agent-skill-dir>/model-compute-simulation
-cp -R skills/model-optimization/sglang-model-day0-support <agent-skill-dir>/sglang-model-day0-support
-cp -R skills/sglang-humanize-review <agent-skill-dir>/sglang-humanize-review
-cp -R skills/sglang-sota-humanize-loop <agent-skill-dir>/sglang-sota-humanize-loop
-cp -R skills/vllm-sota-humanize-loop <agent-skill-dir>/vllm-sota-humanize-loop
-cp -R skills/sglang-prod-incident-triage <agent-skill-dir>/sglang-prod-incident-triage
-cp -R skills/model-architecture-diagram <agent-skill-dir>/model-architecture-diagram
-cp -R model-pr-optimization-history <agent-skill-dir>/model-pr-history-knowledge
-```
-
-## How I Drive The Agents
-
-These skills are exercised with coding agents in full-autonomy mode. For
-reproducibility, here is exactly how I launch them.
-
-**Claude Code** — use the current Opus alias with Auto permission mode:
-
-```bash
-claude --model opus --permission-mode auto
-```
-
-`opus` tracks Claude Code's current Opus model instead of pinning a model number.
-Auto mode can approve routine work while retaining the permission system.
-`bypassPermissions` (or `--dangerously-skip-permissions`) should be reserved for
-an isolated sandbox, ideally without internet access.
-
-**Codex** — full-access, no approval prompts:
-
-```bash
-codex --sandbox danger-full-access --ask-for-approval never
-```
-
-The Codex command is intentionally unsandboxed and should likewise be used only
-inside an isolated environment with a scoped checkout and its own benchmark and
-correctness gates.
-
-## Repository Map
-
-```text
-skills/
-├── llm-serving-auto-benchmark/      # serving benchmark search and comparison
-├── llm-serving-capacity-planner/     # startup memory and request capacity analysis
-├── llm-torch-profiler-analysis/     # profiler capture and trace triage
-├── llm-pipeline-analysis/           # forward/layer/kernel trace analysis
-├── torch-profiler-layer-track/      # numbered GPU layer guide tracks
-├── model-compute-simulation/        # operator FLOPs, tensor shapes, and MFU
-├── sglang-humanize-review/          # human SGLang PR review corpus and workflow
-├── sglang-sota-humanize-loop/       # Humanize-governed SGLang SOTA loop
-├── vllm-sota-humanize-loop/         # Humanize-governed vLLM SOTA loop
-├── sglang-prod-incident-triage/     # replay-first serving incident workflow
-├── model-architecture-diagram/      # public architecture diagram resolver
-└── model-optimization/
-    └── sglang-model-day0-support/   # model Day-0 PR and release gates
-
-model-pr-optimization-history/
-├── SKILL.md                         # knowledge-base usage instructions
-├── scripts/query.py                 # local model/keyword query helper
-├── sglang/                          # 31 PR-driven SGLang model histories
-├── vllm/                            # 31 PR-driven vLLM model histories
-├── tensorrt_llm/                    # TensorRT-LLM competitor histories
-└── tokenspeed/                      # TokenSpeed competitor histories
-
-prompts/
-├── sglang-sota-b200-prompts.md       # B200 SGLang SOTA task prompts
-├── sglang-sota-b200-codex-goal-prompts.md
-├── sglang-sota-h200-prompts.md       # H200 SGLang SOTA task prompts
-└── sglang-sota-h200-codex-goal-prompts.md
-```
+- Benchmark rows record model, framework commit, GPUs, workload, rate or
+  concurrency, SLA status, both commands, and raw artifacts.
+- Profiler reports keep prefill and decode separate and never reuse an older
+  trace for a new capture.
+- Performance claims are scoped to the exact model, hardware, precision,
+  workload, and framework revisions; accuracy is checked on the real path.
+- Historical PR evidence keeps its audit date; a source refresh is not a GPU
+  rerun.
 
 ## Related Projects
 
-- **[Humanize](https://github.com/PolyArch/humanize)** provides the RLCR
-  workflow that powers the Humanize-governed SGLang and vLLM SOTA loops.
-- **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)** is the sibling home
-  for standalone kernel loops, kernel knowledge, and NCU report workflows.
+- **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)** hosts standalone kernel
+  loops, kernel knowledge, and NCU workflows.
 
 ## Star History
 

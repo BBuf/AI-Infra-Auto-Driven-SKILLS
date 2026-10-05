@@ -10,14 +10,19 @@ set of per-model skills. Each model family keeps bilingual docs with inspected
 PR diffs, implementation file coverage, timelines, changed files, code excerpts,
 and validation/risk notes.
 
-Use it before patching model-specific serving paths, choosing an SGLang SOTA
-optimization target, or explaining why a framework already has a faster path.
+Use it before patching model-specific serving paths, choosing an optimization
+target, or explaining why a framework already has a faster path.
 
 Use the maintained [source contracts](../docs/upstream-source-contracts.md)
 when applying historical evidence to a current branch. The review/history
 corpora retain their own capture dates; they do not certify today's dispatch
 or numerical defaults. For kernel replacements, verify that the real model
 executes the candidate before treating end-to-end tests as coverage.
+
+Generated entries labeled **not a manual audit** are PR discovery inventories.
+Read their full diffs and current callers before making optimization conclusions;
+API file counts and snippets do not establish complete diff coverage. Existing
+manual audit notes retain their original dates.
 
 ## Query
 
@@ -47,9 +52,9 @@ Useful options:
 2. Read the matching SGLang history first for SGLang patch work. Read competitor
    history too when vLLM, TensorRT-LLM, or TokenSpeed is the leading competitor
    or its trace suggests a missing SGLang fast path. If the doc opens with a
-   dated `PR Backfill Audit` section, read it first: it lists the most recent
-   PR-numbered merges that are not yet folded into the older timeline /
-   diff-audit cards.
+   dated note (source-head refresh, backfill audit, or reviewed kernel
+   addendum), read it first: it carries hand-reviewed context that the
+   generated timeline and cards below do not.
 3. Extract only actionable evidence:
    - model implementation files and symbols
    - PRs that changed the hot source path
@@ -67,41 +72,51 @@ Useful options:
 
 Current frameworks:
 
-- `sglang`
-- `vllm`
-- `tensorrt_llm`
-- `tokenspeed`
+- `sglang` (45 families)
+- `vllm` (44 families)
+- `tensorrt_llm` (15 families)
+- `tokenspeed` (14 families)
 
 Current model-family slugs include:
 
 ```text
 deepseek-ocr, deepseek-ocr-2, deepseek-v3-r1, deepseek-v31, deepseek-v32,
-deepseek-v4, ernie45, gemma4, glm-vlm-ocr, glm45, glm46-glm47, glm5-glm51,
-gpt-oss, hunyuan3-preview, intern-s1, internvl35, jina-reranker-m0, kimi, ling25, llada21,
-llama31, llama33-70b, llama4, mimo-v2-flash, minimax, mistral-small-4,
-mixtral-quark-int4fp8-moe, moss-vl, nemotron-super, qwen-vlm-omni-asr,
-qwen3-coder, qwen3-core, qwen3-next, qwen35, qwen36, qwen38, ring25, step35
+deepseek-v4, deepseek-v41, dots3, ernie45, exaone4, gemma4, glm-vlm-ocr,
+glm45, glm46-glm47, glm5-glm51, gpt-oss, hunyuan3-preview, hunyuan4, inkling,
+intern-s1, internvl35, jina-reranker-m0, kimi, ling25, ling3, llada21,
+llama31, llama33-70b, llama4, longcat-flash, mimo-v2-flash, minimax,
+mistral-small-4, mixtral-quark-int4fp8-moe, moss-vl, nemotron-super,
+qwen-vlm-omni-asr, qwen3-coder, qwen3-core, qwen3-next, qwen35, qwen36,
+qwen38, qwen4-exp, ring25, step35, step37
 ```
 
-Availability is framework-specific. In particular, the current SGLang index
-includes `hunyuan3-preview`, `moss-vl`, `qwen36`, and `qwen38`; the current
-vLLM index includes `hunyuan3-preview` and `qwen36`, but not `moss-vl` or a
-dedicated `qwen38` surface. vLLM `v0.27` lists `Qwen/Qwen3.8-27B` in the
-model registry, but it rides the existing `qwen3_5` implementation
-(`model_type=qwen3_5` in the public HF config) rather than a separate
-file tree. Query `qwen35` on vLLM when comparing that checkpoint.
+Availability is framework-specific; `python3 scripts/query.py --list` is the
+authority. Notes on overlapping slugs:
 
-## SOTA Loop Contract
+- `deepseek-v4` keeps every V4 PR; `deepseek-v41` is the V4.1 subset of the
+  same files (subject must name V4.1). Read both for DSV4.1 work.
+- `glm5-glm51` covers GLM-5, 5.1, 5.2 and 5.3-Flash (`glm5_next`,
+  `glm53_flash`, `GlmMoeDsa`).
+- `qwen4-exp` is the `qwen4_exp` model file used by Qwen3.8-Flash-Next;
+  `qwen38` tracks the Qwen3.8 cookbook surface. Public `Qwen/Qwen3.8-27B` is
+  `model_type=qwen3_5`, so its loader and kernel history is under `qwen35`
+  (vLLM has no dedicated `qwen38` slug).
+- `hunyuan4` is Hy4 (`hunyuan_v4` / `hy_v4`); `ling3` is BailingMoeV3;
+  `nemotron-super` also covers Nemotron-H; `minimax` covers M2 and M3; `kimi`
+  covers K2, K2.5, K3, Linear and VL.
+- TensorRT-LLM and TokenSpeed dossiers are generated the same way as SGLang and
+  vLLM. Their dated hand-written refresh notes stay at the top of the page.
 
-For `sglang-sota-humanize-loop`, this knowledge base is an early context
-source:
+## Optimization Workflow Contract
+
+When a profiling or optimization task uses this knowledge base:
 
 - Read it after model identification and before patch planning.
-- Include the history paths and key PR evidence in `analysis/root-cause.md` or
-  `history/model-pr-history-notes.md`.
+- Record the history paths and key PR evidence in the run notes (for example
+  `history/model-pr-history-notes.md`).
 - If the profiler points at a known model path, check whether the history has
   prior changes on that file before writing a new patch.
 - If a competitor is faster, search that competitor's model history for the
   same model family and stage before assuming the gap is kernel-local. Refresh
-  live source/PRs for the exact target commit before patch planning when the
-  comparison depends on latest upstream behavior.
+  live source/PRs for the exact target commit when the comparison depends on
+  the latest upstream behavior.

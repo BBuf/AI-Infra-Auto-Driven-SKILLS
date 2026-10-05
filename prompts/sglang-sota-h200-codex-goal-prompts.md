@@ -1,12 +1,12 @@
 # H200 Codex Goal prompts
 
-这份文档把 `sglang-sota-h200-prompts.md` 改写成 Codex Goal prompt。
+这份文档是 H200 上 SGLang 模型级性能优化的 Codex Goal prompt 集合。
 每次只使用其中一个模型块，把完整 fenced text 粘贴到支持 `/goal` 的
 Codex 线程里。Goal 写法参考
 [在 Codex 中使用 Goals：长时间工作的持久目标](https://github.com/BBuf/how-to-optim-algorithm-in-cuda/blob/master/large-language-model/codex/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E5%9C%A8%20Codex%20%E4%B8%AD%E4%BD%BF%E7%94%A8%20Goals%EF%BC%9A%E9%95%BF%E6%97%B6%E9%97%B4%E5%B7%A5%E4%BD%9C%E7%9A%84%E6%8C%81%E4%B9%85%E7%9B%AE%E6%A0%87.md)
 里的结果、验证面、约束、边界、迭代策略和阻塞停止条件。
 
-Goal mode 本身就是持久循环，本文档是独立的 Codex Goal prompt 集合。流程约束仍尽量贴近原始 H200 SOTA prompt：先完成固定公平
+Goal mode 本身就是持久循环，本文档是独立的 Codex Goal prompt 集合，不依赖单独的 SGLang SOTA loop skill。流程约束：先完成固定公平
 benchmark，再做 profile-driven gap analysis，源码改动前必须使用 `llm-pipeline-analysis` skill 做 pipeline
 analysis，真实模型重测，最后用证据支撑 PR。
 

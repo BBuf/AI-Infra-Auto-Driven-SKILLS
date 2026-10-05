@@ -80,7 +80,7 @@ Before launching a server, save the help output:
 
 ```bash
 python -m sglang.launch_server --help > artifacts/help/sglang_launch_server.txt
-python -m sglang.bench_serving --help > artifacts/help/sglang_bench_serving.txt
+python -m sglang.benchmark.serving --help > artifacts/help/sglang_benchmark_serving.txt
 vllm serve --help=all > artifacts/help/vllm_serve_all.txt
 vllm bench serve --help=all > artifacts/help/vllm_bench_serve_all.txt
 vllm bench sweep serve --help=all > artifacts/help/vllm_bench_sweep_serve_all.txt
@@ -88,7 +88,7 @@ trtllm-serve serve --help > artifacts/help/trtllm_serve.txt
 python -m tensorrt_llm.serve.scripts.benchmark_serving --help \
   > artifacts/help/trtllm_benchmark_serving.txt
 tokenspeed serve --help > artifacts/help/tokenspeed_serve.txt
-tokenspeed bench serve --help > artifacts/help/tokenspeed_bench_serve.txt
+vllm bench serve --help > artifacts/help/vllm_bench_serve.txt
 ```
 
 ## SGLang
@@ -137,16 +137,13 @@ python -m sglang.launch_server \
 '
 ```
 
-Then run either SGLang auto benchmark:
+Run a tiny OpenAI-compatible smoke benchmark:
+
+
+
 
 ```bash
-python -m sglang.auto_benchmark run --config /path/to/sglang.yaml
-```
-
-or a tiny OpenAI-compatible smoke benchmark:
-
-```bash
-python -m sglang.bench_serving \
+python -m sglang.benchmark.serving \
   --backend sglang-oai \
   --host 127.0.0.1 \
   --port "$PORT" \
@@ -266,7 +263,7 @@ docker run --rm \
   -e PORT \
   --entrypoint bash \
   "$TOKENSPEED_IMAGE" -lc '
-tokenspeed bench serve \
+vllm bench serve --backend openai-chat \
   --base-url "http://127.0.0.1:$PORT" \
   --model "$MODEL" \
   --dataset-name random \
@@ -281,29 +278,24 @@ tokenspeed bench serve \
 ```
 
 For a profiler handoff run after the plain benchmark is complete, add a writable
-profile mount and pass TokenSpeed's profile payload through `--extra-body`:
+profile mount and arm TokenSpeed through the control port (default serving port + 1):
 
 ```bash
-tokenspeed bench serve \
-  --base-url "http://127.0.0.1:$PORT" \
-  --model "$MODEL" \
-  --dataset-name random \
-  --random-input-len 1024 \
-  --random-output-len 256 \
-  --num-prompts 80 \
-  --profile \
-  --profile-num-steps 5 \
-  --extra-body '{"output_dir":"/artifacts/tokenspeed_profile","activities":["CPU","GPU"],"with_stack":true,"profile_id":"ts-bench"}'
+curl -X POST "http://127.0.0.1:${CONTROL_PORT}/start_profile" \
+  -H 'Content-Type: application/json' \
+  -d '{"output_dir":"/artifacts/tokenspeed_profile","num_steps":5,"activities":["CPU","GPU"],"with_stack":true,"profile_id":"ts-bench"}'
+# Drive the same workload with the common client, then POST /stop_profile if needed.
 ```
 
 Some TokenSpeed images expose the binary as `ts`. If so, use `ts serve` and
-`ts bench serve`, then record that exact spelling in the normalized
+the common client, then record that exact spelling in the normalized
 `server_command` and `benchmark_command`.
 
 ## TensorRT-LLM
 
-This skill only supports the TensorRT-LLM PyTorch server backend. Keep
-`--backend pytorch` in every `trtllm-serve serve` command. Do not switch the
+This skill supports the TensorRT-LLM PyTorch server. Current main is
+PyTorch-only and deprecates `--backend`; use `--backend pytorch` only on older
+images that still expose multiple backends. Do not switch the
 server to `--backend trt`, an engine path, or any other backend; mark that
 candidate unsupported instead.
 
@@ -337,7 +329,6 @@ docker run -d --name llmbench-trtllm \
 trtllm-serve serve "$MODEL" \
   --host 0.0.0.0 \
   --port "$PORT" \
-  --backend pytorch \
   --tp_size "$TP" \
   --pp_size "$PP" \
   --max_batch_size 64 \
@@ -387,7 +378,7 @@ separate from the server backend pinned above.
 Use unique container names per run and clean up by name:
 
 ```bash
-docker rm -f llmbench-sglang llmbench-vllm llmbench-trtllm
+docker rm -f llmbench-sglang llmbench-vllm llmbench-trtllm llmbench-tokenspeed
 ```
 
 If a port remains bound after container cleanup, inspect it before killing
@@ -400,3 +391,55 @@ ps -eo pid,ppid,user,etime,cmd | grep '<model-or-port>'
 
 Only kill raw PIDs when the command line proves they belong to the current
 validation run.
+
+## Interface audit — 2026-10-05
+
+SGLang's canonical client is `python -m sglang.benchmark.serving`; `bench_serving`
+is a deprecated shim and the auto-benchmark module was removed (#31941). Capture
+`sglang serve --help` and the client help from the target image. Current images
+require CUDA 13 and a compatible host driver (#38404); the final CUDA 12 tag was
+`v0.5.19-cu129`. MiniMax-M3 requires `lmsysorg/sglang:dev-minimax-m3`;
+Qwen3.8-Flash-Next H200/B200 requires `lmsysorg/sglang:qwen38flashnext`.
+
+Current SGLang uses phase-specific graph flags (#38375):
+`--cuda-graph-backend-decode` / `--cuda-graph-backend-prefill` accept
+`full`, `breakable`, `tc_piecewise`, `disabled`; capture sizes use
+`--cuda-graph-bs-decode` / `--cuda-graph-bs-prefill` and
+`--cuda-graph-max-bs-decode` / `--cuda-graph-max-bs-prefill`. Smoke eager mode is
+`--cuda-graph-backend-decode disabled --cuda-graph-backend-prefill disabled`.
+The old size aliases were removed and `--disable-cuda-graph` is deprecated.
+`--attn-dp-size` replaces the old attention-DP pair on main (#41818);
+`--dp-size` remains replica DP. v0.5.21 predates this spelling: inspect image help.
+Also inspect `--attn-cp-size`, `--dcp-size`, `--moe-dp-size` and the `--ep` alias.
+
+TensorRT-LLM at `bb367fc8` is PyTorch-only after #19028. `--backend pytorch`
+is a deprecated compatibility option; omit it on current main and select it
+only on older images whose help lists other backends. Both
+`--free_gpu_memory_fraction` (primary) and `--kv_cache_free_gpu_memory_fraction`
+(alias) work. The 1.0.0 image note is historical. `--cluster_size` is deprecated
+and unsupported. `--set PATH=YAML_VALUE` can override config paths after `--config`.
+
+TokenSpeed #1236 removed its benchmark subcommand. Use the common client
+`vllm bench serve --backend openai-chat` for aligned workloads. `ts` remains
+an alias for `tokenspeed`. The prefix-cache off switch is
+`--disable-prefix-caching`; engine flags `--api-key`, `--enable-cache-report`,
+`--skip-server-warmup`, `--warmups` were removed. `--tool-call-parser` and
+`--chat-template` are gateway flags. Inspect `--pipeline-parallel-size`,
+`--prefill-context-parallel-size`, `--decode-context-parallel-size`,
+`--lm-head-tp-size` and `--dense-gemm-backend` when tuning parallelism.
+
+Do not force vLLM `--block-size 16`: it excludes preferred MLA/DSA backends.
+Let the backend select its block size, and record its startup dispatch line.
+Use the same client version across compared rows: vLLM #55508 changed chat
+TTFT/E2E chunk accounting, and SGLang #39889 reports server prompt-token usage
+including template tokens. Record optional client queue latency separately.
+The default SGLang scheduler is FCFS; historical cookbook YAMLs no longer
+force LPM on random prompts. `False` for defaults-on booleans needs an explicit
+off flag and must not silently duplicate the baseline. The YAML validator
+requires Python 3.10 or newer.
+
+Source evidence: [SGLang graph flags](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/arg_groups/fields/exec_.py),
+[SGLang parallel flags](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/arg_groups/fields/parallel.py),
+[vLLM backend sizing](https://github.com/vllm-project/vllm/blob/0c16eee3f1ff777298cc894c3eeb85f3880c6d6a/vllm/platforms/cuda.py),
+[TensorRT-LLM serve](https://github.com/NVIDIA/TensorRT-LLM/blob/bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60/tensorrt_llm/commands/serve.py),
+[TokenSpeed CLI](https://github.com/lightseekorg/tokenspeed/blob/6fa10840d5c3c23065f60428ad264fba60fa04ae/python/tokenspeed/cli/__main__.py).

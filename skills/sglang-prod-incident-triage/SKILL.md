@@ -24,11 +24,11 @@ Use one loop:
 
 Do not start with profiling.
 
-As of SGLang `v0.5.17` / `v0.5.18`, two extra live-server signals matter:
+As of SGLang `v0.5.21` (2026-09-29), two extra live-server signals matter:
 
 - `--enable-session-radix-cache` plus `/close_session`: agent or RL rollouts
   that forget to close sessions can look like unexplained KV growth
-- the opt-in Rust ingress does not yet enforce `api_key` on all routes; if
+- the opt-in Rust ingress (`SGLANG_RUST_SERVER=1`) has no API-key boundary; if
   the incident is auth-related, confirm which server binary is actually
   serving before blaming application tokens
 
@@ -71,6 +71,11 @@ Return:
 
 ### 1. Collect a baseline bundle
 
+Confirm the ingress first: Python `/server_info.frontend` is `python`. Rust
+ingress lacks `/v1/loads`, `/metrics`, `/configure_logging`, `/hicache/*`,
+`/set_trace_level`, `/start_profile` and `/ready`; 404 there is an ingress
+limitation. Rust health stays 503 until startup warmup succeeds.
+
 If a live server is reachable, collect a read-only bundle before anything more
 intrusive:
 
@@ -94,6 +99,7 @@ python3 scripts/incident_artifact_tool.py collect-bundle \
 
 The bundle script collects:
 
+- `/ready`
 - `/health`
 - `/health_generate`
 - `/model_info`
@@ -275,7 +281,7 @@ harness before doing deeper manual debugging:
 Prefer replay-backed bisect when the regression depends on request shape or
 long-running serving state.
 
-### 6. Switch tools when the boundary is clear
+### 5. Switch tools when the boundary is clear
 
 Switch tools once the fault class is clear:
 
@@ -311,3 +317,20 @@ Load only what the current step needs:
 If a live bundle was collected, include its path.
 
 If replay, trace, or profiling was chosen, say why bundle plus dump were not enough.
+
+## Current upstream debug controls — 2026-10-05
+
+SGLang-repo companion skills now live under `.agents/skills/` (#40515):
+`debug-cuda-crash`, `debug-distributed-hang`, `generate-profile`, and
+`sglang-bisect-ci-regression`. Verify the repository copy before invoking it.
+
+`--crash-dump-folder X` configures CUDA coredumps when their environment keys
+are unset, with `CUDA_COREDUMP_FILE=X/%h/core.cuda.%t.%p` and
+`CUDA_COREDUMP_PIPE=/tmp/corepipe.cuda.%h.%p`. Before a crash, py-spy and
+user-triggered CUDA dumps are enabled by default, with a 60 s coredump wait.
+`SGLANG_CUDA_COREDUMP=1` uses its separate `cuda_coredump_%h.%p.%t` naming;
+by import-order code reading its already-set path wins. This precedence was
+not GPU-tested. A configured pipe can also capture a wedged kernel.
+
+Source: [crash dump hook](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/arg_groups/serving_hook.py),
+[Rust ingress](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/rust/sglang-server/src/api_server/native_api.rs).

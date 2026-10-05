@@ -41,7 +41,7 @@ Options:
 Notes:
   - Run this on the H100 host. It uses `docker exec sglang_bbuf`.
   - The server is launched first, then the profiler capture runs with
-    stage-separated prefill/decode workloads and `--profile-by-stage`.
+    separately driven prefill/decode workloads; stage splitting applies in legacy mode.
   - A small benchmark summary is written after profiling.
 EOF
 }
@@ -187,7 +187,7 @@ fi
 
 docker exec sglang_bbuf bash -lc "mkdir -p '$RUN_DIR' '$PROFILE_ROOT'"
 docker exec sglang_bbuf bash -lc "pkill -f '$LAUNCH_PATTERN' >/dev/null 2>&1 || true"
-docker exec sglang_bbuf bash -lc "mkdir -p '$RUN_DIR' '$PROFILE_ROOT' && cd '$SGLANG_REPO_DIR' && rm -f '$PID_PATH' && (CUDA_VISIBLE_DEVICES=$GPUS PYTHONPATH=python nohup $SERVER_ARGS > '$LOG_PATH' 2>&1 < /dev/null & echo \$! > '$PID_PATH')"
+docker exec sglang_bbuf bash -lc "mkdir -p '$RUN_DIR' '$PROFILE_ROOT' && cd '$SGLANG_REPO_DIR' && rm -f '$PID_PATH' && (SGLANG_PROFILE_V2=0 CUDA_VISIBLE_DEVICES=$GPUS PYTHONPATH=python nohup $SERVER_ARGS > '$LOG_PATH' 2>&1 < /dev/null & echo \$! > '$PID_PATH')"
 
 cleanup() {
   docker exec sglang_bbuf bash -lc "pkill -f '$LAUNCH_PATTERN' >/dev/null 2>&1 || true" >/dev/null 2>&1 || true

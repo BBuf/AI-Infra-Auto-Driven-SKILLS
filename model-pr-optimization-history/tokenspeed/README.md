@@ -1,11 +1,27 @@
 # TokenSpeed Model PR Optimization History
 
+Refresh: `2026-10-05`. Source head: `lightseekorg/tokenspeed@6fa10840d5c3c23065f60428ad264fba60fa04ae`.
+
 Current model families:
 
+- `deepseek-v3-r1`
+- `deepseek-v4`
+- `deepseek-v41`
+- `glm5-glm51`
+- `gpt-oss`
+- `inkling`
 - `kimi`
+- `longcat-flash`
+- `minimax`
+- `nemotron-super`
+- `qwen-vlm-omni-asr`
+- `qwen3-core`
 - `qwen35`
+- `qwen4-exp`
 
-## Current Watch / Landed Items
+Open and recently landed work is tracked by `tools/check_open_pr_watch.py`; regenerate that report before a long model-history refresh so open PRs are not confused with missing support.
+
+## Curated Watch / Landed Items (2026-08-23 audit)
 
 Refresh: `2026-08-23`. Source head:
 `lightseekorg/tokenspeed@2706143a8669d50a8f56466b9d340b86922b8f2d`.

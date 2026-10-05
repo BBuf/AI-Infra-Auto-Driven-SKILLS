@@ -1,4 +1,4 @@
-# sglang Llama 3.1 Model PR Optimization History
+# SGLang Llama 3.1 Model PR Optimization History
 
 ## Implementation File Coverage
 

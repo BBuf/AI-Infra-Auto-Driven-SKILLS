@@ -1,4 +1,4 @@
-# sglang Qwen VLM/Omni/ASR 模型 PR 优化历史
+# SGLang Qwen VLM/Omni/ASR 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -10,6 +10,7 @@
 | `docs/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx` | 无直接 PR 号提交 |
 | `examples/chat_template/qwen3_vl_reranker.jinja` | 无直接 PR 号提交 |
 | `examples/runtime/qwen3_vl_reranker.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/arg_groups/model_overrides/qwen3_vl.py` | [#36411](https://github.com/sgl-project/sglang/pull/36411) |
 | `python/sglang/srt/configs/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073), [#22181](https://github.com/sgl-project/sglang/pull/22181), [#24187](https://github.com/sgl-project/sglang/pull/24187) |
 | `python/sglang/srt/configs/qwen3_omni.py` | [#10911](https://github.com/sgl-project/sglang/pull/10911) |
 | `python/sglang/srt/configs/qwen3_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911) |
@@ -21,13 +22,13 @@
 | `python/sglang/srt/models/dots3_common/dots_omni_towers.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
 | `python/sglang/srt/models/dots3_common/dots_omni_vision.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
 | `python/sglang/srt/models/glmasr.py` | [#15570](https://github.com/sgl-project/sglang/pull/15570), [#15772](https://github.com/sgl-project/sglang/pull/15772), [#32611](https://github.com/sgl-project/sglang/pull/32611) |
-| `python/sglang/srt/models/qwen2_5_vl.py` | [#5003](https://github.com/sgl-project/sglang/pull/5003), [#5349](https://github.com/sgl-project/sglang/pull/5349), [#6136](https://github.com/sgl-project/sglang/pull/6136), [#8801](https://github.com/sgl-project/sglang/pull/8801), [#13055](https://github.com/sgl-project/sglang/pull/13055), [#13075](https://github.com/sgl-project/sglang/pull/13075), [#13126](https://github.com/sgl-project/sglang/pull/13126), [#13904](https://github.com/sgl-project/sglang/pull/13904), [#14292](https://github.com/sgl-project/sglang/pull/14292), [#15138](https://github.com/sgl-project/sglang/pull/15138), [#15320](https://github.com/sgl-project/sglang/pull/15320) |
+| `python/sglang/srt/models/qwen2_5_vl.py` | [#5003](https://github.com/sgl-project/sglang/pull/5003), [#5349](https://github.com/sgl-project/sglang/pull/5349), [#6136](https://github.com/sgl-project/sglang/pull/6136), [#8801](https://github.com/sgl-project/sglang/pull/8801), [#13055](https://github.com/sgl-project/sglang/pull/13055), [#13075](https://github.com/sgl-project/sglang/pull/13075), [#13126](https://github.com/sgl-project/sglang/pull/13126), [#13904](https://github.com/sgl-project/sglang/pull/13904), [#14292](https://github.com/sgl-project/sglang/pull/14292), [#15138](https://github.com/sgl-project/sglang/pull/15138), [#15320](https://github.com/sgl-project/sglang/pull/15320), [#37043](https://github.com/sgl-project/sglang/pull/37043) |
 | `python/sglang/srt/models/qwen2_audio.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/models/qwen2_vl.py` | [#2055](https://github.com/sgl-project/sglang/pull/2055), [#5003](https://github.com/sgl-project/sglang/pull/5003), [#5349](https://github.com/sgl-project/sglang/pull/5349), [#5783](https://github.com/sgl-project/sglang/pull/5783), [#6136](https://github.com/sgl-project/sglang/pull/6136), [#13055](https://github.com/sgl-project/sglang/pull/13055), [#13736](https://github.com/sgl-project/sglang/pull/13736) |
 | `python/sglang/srt/models/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073) |
 | `python/sglang/srt/models/qwen3_omni_moe.py` | [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11791](https://github.com/sgl-project/sglang/pull/11791), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#18185](https://github.com/sgl-project/sglang/pull/18185) |
-| `python/sglang/srt/models/qwen3_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11458](https://github.com/sgl-project/sglang/pull/11458), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#13724](https://github.com/sgl-project/sglang/pull/13724), [#13736](https://github.com/sgl-project/sglang/pull/13736), [#14292](https://github.com/sgl-project/sglang/pull/14292), [#15205](https://github.com/sgl-project/sglang/pull/15205), [#15320](https://github.com/sgl-project/sglang/pull/15320), [#16366](https://github.com/sgl-project/sglang/pull/16366), ... (19 total) |
-| `python/sglang/srt/models/qwen3_vl_moe.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#13983](https://github.com/sgl-project/sglang/pull/13983), [#21469](https://github.com/sgl-project/sglang/pull/21469) |
+| `python/sglang/srt/models/qwen3_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11458](https://github.com/sgl-project/sglang/pull/11458), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#12333](https://github.com/sgl-project/sglang/pull/12333), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#13724](https://github.com/sgl-project/sglang/pull/13724), [#13736](https://github.com/sgl-project/sglang/pull/13736), [#14292](https://github.com/sgl-project/sglang/pull/14292), [#15205](https://github.com/sgl-project/sglang/pull/15205), [#15320](https://github.com/sgl-project/sglang/pull/15320), [#16366](https://github.com/sgl-project/sglang/pull/16366), ... (22 total) |
+| `python/sglang/srt/models/qwen3_vl_moe.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11481](https://github.com/sgl-project/sglang/pull/11481), [#13983](https://github.com/sgl-project/sglang/pull/13983), [#21469](https://github.com/sgl-project/sglang/pull/21469), [#34690](https://github.com/sgl-project/sglang/pull/34690) |
 | `python/sglang/srt/multimodal/processors/dots_note_omni.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
 | `python/sglang/srt/multimodal/processors/dots_note_omni_video_core/__init__.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
 | `python/sglang/srt/multimodal/processors/dots_note_omni_video_core/flatten_runner.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
@@ -36,7 +37,7 @@
 | `python/sglang/srt/multimodal/processors/dots_note_omni_video_core/video_qa_flattener.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
 | `python/sglang/srt/multimodal/processors/glmasr.py` | [#15570](https://github.com/sgl-project/sglang/pull/15570), [#15772](https://github.com/sgl-project/sglang/pull/15772), [#32611](https://github.com/sgl-project/sglang/pull/32611) |
 | `python/sglang/srt/multimodal/processors/qwen3_asr.py` | [#22073](https://github.com/sgl-project/sglang/pull/22073), [#22089](https://github.com/sgl-project/sglang/pull/22089), [#22181](https://github.com/sgl-project/sglang/pull/22181) |
-| `python/sglang/srt/multimodal/processors/qwen_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11377](https://github.com/sgl-project/sglang/pull/11377), [#12240](https://github.com/sgl-project/sglang/pull/12240), [#12458](https://github.com/sgl-project/sglang/pull/12458), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#26094](https://github.com/sgl-project/sglang/pull/26094), [#26116](https://github.com/sgl-project/sglang/pull/26116), [#26167](https://github.com/sgl-project/sglang/pull/26167) |
+| `python/sglang/srt/multimodal/processors/qwen_vl.py` | [#10323](https://github.com/sgl-project/sglang/pull/10323), [#10911](https://github.com/sgl-project/sglang/pull/10911), [#11377](https://github.com/sgl-project/sglang/pull/11377), [#12240](https://github.com/sgl-project/sglang/pull/12240), [#12458](https://github.com/sgl-project/sglang/pull/12458), [#12662](https://github.com/sgl-project/sglang/pull/12662), [#26094](https://github.com/sgl-project/sglang/pull/26094), [#26116](https://github.com/sgl-project/sglang/pull/26116), [#26167](https://github.com/sgl-project/sglang/pull/26167), [#36411](https://github.com/sgl-project/sglang/pull/36411), [#39278](https://github.com/sgl-project/sglang/pull/39278) |
 | `python/sglang/test/external_models/custom_qwen2_vl.py` | 无直接 PR 号提交 |
 | `test/manual/models/test_qwen3_asr.py` | [#22181](https://github.com/sgl-project/sglang/pull/22181), [#22848](https://github.com/sgl-project/sglang/pull/22848) |
 | `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` | [#21469](https://github.com/sgl-project/sglang/pull/21469) |
@@ -51,14 +52,14 @@
 | `test/registered/npu/vlm_models/test_npu_qwen3_vl_30b_a3b_instruct.py` | 无直接 PR 号提交 |
 | `test/registered/npu/vlm_models/test_npu_qwen3_vl_4b_instruct.py` | 无直接 PR 号提交 |
 | `test/registered/npu/vlm_models/test_npu_qwen3_vl_8b_instruct.py` | 无直接 PR 号提交 |
-| `test/registered/unit/models/test_qwen3_vl_feature_materialization.py` | [#31596](https://github.com/sgl-project/sglang/pull/31596) |
+| `test/registered/unit/models/test_qwen3_vl_feature_materialization.py` | [#31596](https://github.com/sgl-project/sglang/pull/31596), [#36411](https://github.com/sgl-project/sglang/pull/36411) |
 | `test/registered/unit/multimodal/test_dots_note_omni.py` | [#33829](https://github.com/sgl-project/sglang/pull/33829) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 48
+- git 追溯 PR 数: 52
 - 原文档显式引用补充 PR 数: 56
-- 当前文档总 PR 数: 104
+- 当前文档总 PR 数: 108
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -89,19 +90,17 @@
 | 2025-11-20 | [#13055](https://github.com/sgl-project/sglang/pull/13055) | merged | [VLM] Support Piecewise CUDA Graph for Qwen2.5-VL | `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen2_vl.py` |
 | 2025-11-22 | [#13736](https://github.com/sgl-project/sglang/pull/13736) | merged | [VLM] Replace torch.repeat_interleave with faster np.repeat for Qwen-VL series | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_vl.py` |
 | 2025-11-26 | [#13983](https://github.com/sgl-project/sglang/pull/13983) | merged | Support KTransformers for Qwen3-VL moe | `python/sglang/srt/models/qwen3_vl_moe.py` |
-| 2025-11-28 | [#13904](https://github.com/sgl-project/sglang/pull/13904) | merged | [Bugfix] qwen2.5-vl spec decode accept_len low | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-11-28 | [#13724](https://github.com/sgl-project/sglang/pull/13724) | merged | support qwen3_vl vision model dp | `python/sglang/srt/models/qwen3_vl.py` |
+| 2025-11-28 | [#13904](https://github.com/sgl-project/sglang/pull/13904) | merged | [Bugfix] qwen2.5-vl spec decode accept_len low | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-12-04 | [#14292](https://github.com/sgl-project/sglang/pull/14292) | merged | [VLM] Introduce Cache for positional embedding ids for Qwen-VL family | `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
 | 2025-12-06 | [#11791](https://github.com/sgl-project/sglang/pull/11791) | merged | fix rmsnorm -> layernorm in qwen3 omni | `python/sglang/srt/models/qwen3_omni_moe.py` |
 | 2025-12-15 | [#14907](https://github.com/sgl-project/sglang/pull/14907) | merged | [VLM] Support chunked vit attention | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/managers/mm_utils.py` |
-| 2025-12-17 | [#15138](https://github.com/sgl-project/sglang/pull/15138) | merged | [bug fix][pp] fix weight load for qwen2.5-vl | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-12-17 | [#12333](https://github.com/sgl-project/sglang/pull/12333) | merged | [PP] Add pp support for Qwen3-VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_omni_moe.py` |
+| 2025-12-17 | [#15138](https://github.com/sgl-project/sglang/pull/15138) | merged | [bug fix][pp] fix weight load for qwen2.5-vl | `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-12-18 | [#15205](https://github.com/sgl-project/sglang/pull/15205) | merged | [VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V | `python/sglang/srt/models/qwen3_vl.py` |
 | 2025-12-20 | [#15320](https://github.com/sgl-project/sglang/pull/15320) | merged | [VLM] Support ViT Piecewise CUDA Graph for Qwen3-VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen2_5_vl.py` |
 | 2025-12-23 | [#15570](https://github.com/sgl-project/sglang/pull/15570) | merged | [GLM-ASR] GLM-ASR Support | `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py` |
 | 2025-12-25 | [#15772](https://github.com/sgl-project/sglang/pull/15772) | merged | Change GLM-ASR class name | `python/sglang/srt/models/glmasr.py`, `python/sglang/srt/multimodal/processors/glmasr.py` |
-| 2026-01-06 | [#16571](https://github.com/sgl-project/sglang/pull/16571) | open | [Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py` |
-| 2026-01-09 | [#16785](https://github.com/sgl-project/sglang/pull/16785) | open | [Bugfix] fix recompile in qwen3 vl | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
 | 2026-01-22 | [#16366](https://github.com/sgl-project/sglang/pull/16366) | merged | Optimize Qwen3-VL video memory usage | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-01-30 | [#17624](https://github.com/sgl-project/sglang/pull/17624) | merged | [BUGFIX] Fix dp size > 1 for qwen3 vl model | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/layers/linear.py` |
 | 2026-02-02 | [#18024](https://github.com/sgl-project/sglang/pull/18024) | merged | fix: correct weight loading prefix mapping for Qwen3-VL | `python/sglang/srt/models/qwen3_vl.py` |
@@ -110,24 +109,21 @@
 | 2026-02-13 | [#18771](https://github.com/sgl-project/sglang/pull/18771) | open | Add Qwen3-Omni to Qwen MoE architecture handling in fused_moe_triton | `benchmark/kernels/fused_moe_triton/common_utils.py` |
 | 2026-02-24 | [#19003](https://github.com/sgl-project/sglang/pull/19003) | merged | [VLM] Introduce FlashInfer CUDNN Prefill as ViT Backend | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/attention/vision.py`, `test/manual/nightly/test_vlms_vit_flashinfer_cudnn.py` |
 | 2026-02-27 | [#19333](https://github.com/sgl-project/sglang/pull/19333) | merged | fix qwen3_vl visual module loading | `python/sglang/srt/models/qwen3_vl.py` |
-| 2026-03-02 | [#19693](https://github.com/sgl-project/sglang/pull/19693) | open | [NPU] Fix Qwen3-VL-8B Accuracy for NPU | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py` |
 | 2026-03-02 | [#19291](https://github.com/sgl-project/sglang/pull/19291) | merged | [Qwen3.5] Fix missing `quant_config` in `Qwen3VL` | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-03-14 | [#18185](https://github.com/sgl-project/sglang/pull/18185) | merged | [Omni] Optimize AudioEncoder for Qwen3_Omni_Thinker | `python/sglang/srt/models/qwen3_omni_moe.py` |
 | 2026-03-18 | [#20788](https://github.com/sgl-project/sglang/pull/20788) | merged | [DP encoder] Fix `pos_emb `layer TP issue when DP encoder enabled for Qwen3 VL | `python/sglang/srt/models/qwen3_vl.py` |
-| 2026-03-18 | [#20857](https://github.com/sgl-project/sglang/pull/20857) | open | add EVS support for Qwen3-VL | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-03-19 | [#20759](https://github.com/sgl-project/sglang/pull/20759) | merged | [Bugfix] fix qwen3vl hang when --mm-enable-dp-encoder is enable | `python/sglang/srt/models/qwen3_vl.py` |
-| 2026-04-01 | [#21469](https://github.com/sgl-project/sglang/pull/21469) | merged | [3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct | `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
+| 2026-04-01 | [#21469](https://github.com/sgl-project/sglang/pull/21469) | merged | [3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct | `python/sglang/srt/models/qwen3_vl_moe.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` |
 | 2026-04-03 | [#19135](https://github.com/sgl-project/sglang/pull/19135) | merged | qwen3 vl skip layer id for pp | `python/sglang/srt/models/qwen3_vl_moe.py` |
 | 2026-04-03 | [#22052](https://github.com/sgl-project/sglang/pull/22052) | open | [Fix] Enable precise embedding interpolation by default for Qwen3-VL | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/server_args.py`, `docs/advanced_features/server_arguments.md` |
 | 2026-04-04 | [#22038](https://github.com/sgl-project/sglang/pull/22038) | merged | [VLM] Chunk-aware ViT encoding with per-image cache and lazy device transfer | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/mem_cache/multimodal_cache.py`, `python/sglang/srt/models/deepseek_vl2.py` |
 | 2026-04-06 | [#21849](https://github.com/sgl-project/sglang/pull/21849) | merged | [VLM]: allow Qwen3.5 models for encoder disaggregation | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/distributed/test_epd_disaggregation.py`, `python/sglang/srt/disaggregation/encode_server.py` |
 | 2026-04-07 | [#22073](https://github.com/sgl-project/sglang/pull/22073) | merged | [Feature] Adding Qwen3-asr Model Support | `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
-| 2026-04-08 | [#22266](https://github.com/sgl-project/sglang/pull/22266) | merged | [NPU] fix qwen3.5 video processor | `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` |
 | 2026-04-08 | [#22181](https://github.com/sgl-project/sglang/pull/22181) | merged | [refactor] [asr] Add transcription adapter for extensible ASR models support | `python/sglang/srt/configs/qwen3_asr.py`, `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` |
-| 2026-04-09 | [#22230](https://github.com/sgl-project/sglang/pull/22230) | merged | [Feature] Support eagle3 for qwen3-vl | `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-04-08 | [#22266](https://github.com/sgl-project/sglang/pull/22266) | merged | [NPU] fix qwen3.5 video processor | `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` |
 | 2026-04-09 | [#22089](https://github.com/sgl-project/sglang/pull/22089) | merged | [Feature] Add chunk-based streaming ASR for Qwen3-ASR | `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
-| 2026-04-15 | [#22839](https://github.com/sgl-project/sglang/pull/22839) | open | fix(config): Add from_dict() for Qwen3VL config classes | `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py` |
+| 2026-04-09 | [#22230](https://github.com/sgl-project/sglang/pull/22230) | merged | [Feature] Support eagle3 for qwen3-vl | `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-04-18 | [#22431](https://github.com/sgl-project/sglang/pull/22431) | merged | Fix Qwen3.5 video processing when passing video_data in "processor_output" format | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-04-21 | [#23304](https://github.com/sgl-project/sglang/pull/23304) | closed | [Bugfix] Fix Qwen3-VL rope config compatibility | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-28 | [#23907](https://github.com/sgl-project/sglang/pull/23907) | merged | [Docs] add Nemotron 3 Nano Omni cookbook | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx`, `docs_new/src/snippets/autoregressive/nemotron3-nano-omni-deployment.jsx`, `docs_new/cookbook/autoregressive/intro.mdx` |
@@ -136,21 +132,21 @@
 | 2026-05-05 | [#23998](https://github.com/sgl-project/sglang/pull/23998) | merged | update Nemotron3 Nano Omni cookbook benchmarks | `docs_new/cookbook/autoregressive/NVIDIA/Nemotron3-Nano-Omni.mdx` |
 | 2026-05-10 | [#24875](https://github.com/sgl-project/sglang/pull/24875) | merged | Support Intern-S2-Preview | `python/sglang/srt/configs/interns2preview.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/interns2preview.py` |
 | 2026-05-12 | [#24187](https://github.com/sgl-project/sglang/pull/24187) | merged | [Fix] Qwen3-ASR config: set thinker_config before super().__init__ | `python/sglang/srt/configs/qwen3_asr.py` |
+| 2026-05-14 | [#25130](https://github.com/sgl-project/sglang/pull/25130) | merged | [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters | `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
 | 2026-05-14 | [#25203](https://github.com/sgl-project/sglang/pull/25203) | merged | ci: B200 conditional split + LPT_SLOP removal (stage-c partition 8→3) | `scripts/ci/utils/compute_partitions.py`, `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py`, `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` |
-| 2026-05-14 | [#25130](https://github.com/sgl-project/sglang/pull/25130) | merged | [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters | `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` |
 | 2026-05-16 | [#25420](https://github.com/sgl-project/sglang/pull/25420) | merged | [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI | `.github/workflows/pr-test-multimodal-gen.yml`, `test/registered/bench_fn/test_bench_serving_reasoning_stream.py`, `test/registered/function_call/test_kimik2_detector.py` |
 | 2026-05-21 | [#25759](https://github.com/sgl-project/sglang/pull/25759) | merged | [BugFix][EPD]Fix Qwen3VLMoe encoder-only AttributeError | `python/sglang/srt/models/qwen3_vl_moe.py` |
-| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
 | 2026-05-22 | [#23220](https://github.com/sgl-project/sglang/pull/23220) | merged | Bugfix: Qwen3-VL-MoE adapt encoder_only | `python/sglang/srt/models/qwen3_vl_moe.py` |
+| 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
 | 2026-05-23 | [#24144](https://github.com/sgl-project/sglang/pull/24144) | merged | [BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-23 | [#26116](https://github.com/sgl-project/sglang/pull/26116) | merged | [VLM] Reuse Qwen pretokenized ids | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
+| 2026-05-24 | [#23469](https://github.com/sgl-project/sglang/pull/23469) | closed | [NPU] adapt the Qwen3-ASR model for deployment on NPU | `python/sglang/srt/utils/common.py` |
 | 2026-05-24 | [#26100](https://github.com/sgl-project/sglang/pull/26100) | merged | [VLM] adopt simplified get_rope_index for image-only requests | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-24 | [#26101](https://github.com/sgl-project/sglang/pull/26101) | merged | [VLM] accept precomputed multimodal metadata | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-24 | [#26167](https://github.com/sgl-project/sglang/pull/26167) | merged | [VLM] feat: replace small H2D calls with a single one for qwen-vl | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py` |
-| 2026-05-24 | [#23469](https://github.com/sgl-project/sglang/pull/23469) | closed | [NPU] adapt the Qwen3-ASR model for deployment on NPU | `python/sglang/srt/utils/common.py` |
-| 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | merged | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-25 | [#19242](https://github.com/sgl-project/sglang/pull/19242) | closed | [feat] feat: add Qwen3-ASR support like whisper | `python/sglang/srt/multimodal/processors/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/configs/__init__.py` |
+| 2026-05-25 | [#26094](https://github.com/sgl-project/sglang/pull/26094) | merged | [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 | 2026-05-27 | [#12662](https://github.com/sgl-project/sglang/pull/12662) | merged | [CPU] Add support for Qwen3-vl and Qwen3-omni | `python/sglang/srt/models/qwen3_omni_moe.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
 | 2026-05-27 | [#22848](https://github.com/sgl-project/sglang/pull/22848) | merged | [Feature] WebSocket streaming audio input for ASR | `test/manual/models/test_qwen3_asr.py`, `python/sglang/srt/entrypoints/openai/realtime/session.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
@@ -170,6 +166,15 @@
 | 2026-08-21 | [#16996](https://github.com/sgl-project/sglang/pull/16996) | closed | feat: Support 'use_audio_in_video' option for qwen3omnimoe model | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/entrypoints/openai/protocol.py` |
 | 2026-08-22 | [#17202](https://github.com/sgl-project/sglang/pull/17202) | closed | [Feat] Accelerate qwen3vl by remove cpu op | `python/sglang/srt/layers/attention/vision.py`, `python/sglang/srt/managers/mm_utils.py` |
 | 2026-08-22 | [#33829](https://github.com/sgl-project/sglang/pull/33829) | merged | [Model] Complete dots.note.omni support with native encoders, video preprocessing, and MTP decoding | `python/sglang/srt/models/dots3_common/dots_omni_audio.py`, `python/sglang/srt/models/dots3_common/dots_omni_vision.py`, `python/sglang/srt/multimodal/processors/dots_note_omni.py` |
+| 2026-08-23 | [#16571](https://github.com/sgl-project/sglang/pull/16571) | closed | [Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py` |
+| 2026-08-24 | [#20857](https://github.com/sgl-project/sglang/pull/20857) | closed | add EVS support for Qwen3-VL | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-08-28 | [#34690](https://github.com/sgl-project/sglang/pull/34690) | merged | [BugFix][VLM] keep Qwen3-VL MoE inference deepstack order | `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-08-29 | [#19693](https://github.com/sgl-project/sglang/pull/19693) | closed | [NPU] Fix Qwen3-VL-8B Accuracy for NPU | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py` |
+| 2026-08-30 | [#37043](https://github.com/sgl-project/sglang/pull/37043) | merged | [vlm] fix: preserve per-request vit graph metadata for qwen-vl | `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-08-31 | [#16785](https://github.com/sgl-project/sglang/pull/16785) | closed | [Bugfix] fix recompile in qwen3 vl | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
+| 2026-09-12 | [#36411](https://github.com/sgl-project/sglang/pull/36411) | merged | [Perf] Optimize Qwen3-VL unique-image serving on H100 | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/models/qwen3_vl.py`, `test/registered/unit/models/test_qwen3_vl_feature_materialization.py` |
+| 2026-09-15 | [#22839](https://github.com/sgl-project/sglang/pull/22839) | closed | fix(config): Add from_dict() for Qwen3VL config classes | `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py` |
+| 2026-09-15 | [#39278](https://github.com/sgl-project/sglang/pull/39278) | merged | [Fix][Qwen-VL] Normalize sentinel on artifact fast path | `python/sglang/srt/multimodal/processors/qwen_vl.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -920,28 +925,6 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
   - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +9/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #13904 - [Bugfix] qwen2.5-vl spec decode accept_len low
-
-- 链接: https://github.com/sgl-project/sglang/pull/13904
-- 状态/时间: merged / 2025-11-28
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen2_5_vl.py`；关联提交 `f6e37d3edb94`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] qwen2.5-vl spec decode accept_len low」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen2_5_vl.py`；技术摘要: 覆盖「[Bugfix] qwen2.5-vl spec decode accept_len low」；主要实现面是 `python/sglang/srt/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -654,6 +654,7 @@ def forward(; symbols: forward，涉及 `forward`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -654,6 +654,7 @@ def forward(; symbols: forward
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen2_5_vl.py
-@@ -654,6 +654,7 @@ def forward(
-+                    aux_hidden_states,
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #13724 - support qwen3_vl vision model dp
 
 - 链接: https://github.com/sgl-project/sglang/pull/13724
@@ -968,6 +951,28 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +49/-2
 - 验证与风险: diff 自带测试面 `test/nightly/test_encoder_dp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #13904 - [Bugfix] qwen2.5-vl spec decode accept_len low
+
+- 链接: https://github.com/sgl-project/sglang/pull/13904
+- 状态/时间: merged / 2025-11-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen2_5_vl.py`；关联提交 `f6e37d3edb94`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] qwen2.5-vl spec decode accept_len low」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen2_5_vl.py`；技术摘要: 覆盖「[Bugfix] qwen2.5-vl spec decode accept_len low」；主要实现面是 `python/sglang/srt/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -654,6 +654,7 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0 (1 lines); hunks: -654,6 +654,7 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen2_5_vl.py
+@@ -654,6 +654,7 @@ def forward(
++                    aux_hidden_states,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen2_5_vl.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #14292 - [VLM] Introduce Cache for positional embedding ids for Qwen-VL family
 
@@ -1066,34 +1071,6 @@ diff -- python/sglang/srt/managers/mm_utils.py
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +97/-8; `python/sglang/srt/managers/mm_utils.py` modified +266/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/managers/mm_utils.py`, `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #15138 - [bug fix][pp] fix weight load for qwen2.5-vl
-
-- 链接: https://github.com/sgl-project/sglang/pull/15138
-- 状态/时间: merged / 2025-12-17
-- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/sgl-project/sglang/pulls/15138/files?per_page=100 --paginate Get "https://api.github.com/repos/sgl-project/sglang/pulls/15138/files?per_page=100": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen2_5_vl.py`；关联提交 `0071fe9c407a`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-4，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[bug fix][pp] fix weight load for qwen2.5-vl」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen2_5_vl.py`；技术摘要: 覆盖「[bug fix][pp] fix weight load for qwen2.5-vl」；主要实现面是 `python/sglang/srt/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4 (14 lines); hunks: -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -789,10 +797,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights，涉及 `load_weights`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4 (14 lines); hunks: -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -789,10 +797,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen2_5_vl.py
-@@ -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+            if self.pp_group.is_last_rank and "model.embed_tokens.weight" in name:
-+                if "lm_head.weight" in params_dict:
-+                    lm_head_param = params_dict["lm_head.weight"]
-+                    weight_loader = getattr(
-+                        lm_head_param, "weight_loader", default_weight_loader
-+                    )
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #12333 - [PP] Add pp support for Qwen3-VL
 
 - 链接: https://github.com/sgl-project/sglang/pull/12333
@@ -1128,6 +1105,34 @@ diff -- python/sglang/srt/models/qwen3_omni_moe.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +53/-19; `python/sglang/srt/models/qwen3_omni_moe.py` modified +4/-1
 - 验证与风险: diff 自带测试面 `python/sglang/test/test_utils.py`, `test/srt/test_pp_single_node.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #15138 - [bug fix][pp] fix weight load for qwen2.5-vl
+
+- 链接: https://github.com/sgl-project/sglang/pull/15138
+- 状态/时间: merged / 2025-12-17
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/sgl-project/sglang/pulls/15138/files?per_page=100 --paginate Get "https://api.github.com/repos/sgl-project/sglang/pulls/15138/files?per_page=100": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen2_5_vl.py`；关联提交 `0071fe9c407a`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+10/-4，可读 patch 28 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[bug fix][pp] fix weight load for qwen2.5-vl」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen2_5_vl.py`；技术摘要: 覆盖「[bug fix][pp] fix weight load for qwen2.5-vl」；主要实现面是 `python/sglang/srt/models/qwen2_5_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4 (14 lines); hunks: -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -789,10 +797,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights，涉及 `load_weights`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4 (14 lines); hunks: -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; -789,10 +797,8 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen2_5_vl.py
+@@ -743,6 +743,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++            if self.pp_group.is_last_rank and "model.embed_tokens.weight" in name:
++                if "lm_head.weight" in params_dict:
++                    lm_head_param = params_dict["lm_head.weight"]
++                    weight_loader = getattr(
++                        lm_head_param, "weight_loader", default_weight_loader
++                    )
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen2_5_vl.py` modified +10/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_5_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #15205 - [VLM] Support cos sin cache for Qwen3-VL & GLM-4.1V
 
@@ -1263,84 +1268,6 @@ diff -- python/sglang/srt/multimodal/processors/glmasr.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/glmasr.py` modified +9/-9; `python/sglang/srt/multimodal/processors/glmasr.py` modified +3/-3
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/models/glmasr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #16571 - [Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT
-
-- 链接: https://github.com/sgl-project/sglang/pull/16571
-- 状态/时间: open / 2026-01-06
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+87/-15，可读 patch 204 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py`；技术摘要: 覆盖「[Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +60/-15 (75 lines); hunks: -42,6 +42,7; -72,7 +73,7; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLMoeVisionPatchMerger，涉及 `Qwen3_VisionMLP, __init__, forward`；`python/sglang/srt/layers/layernorm.py` modified +27/-0 (27 lines); hunks: -67,6 +67,7; -367,6 +368,9 @@ def __init__(; symbols: __init__, forward_cuda, forward_cpu, forward_aiter，涉及 `__init__, forward_cuda, forward_cpu`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_vl.py` modified +60/-15 (75 lines); hunks: -42,6 +42,7; -72,7 +73,7; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLMoeVisionPatchMerger
-  - `python/sglang/srt/layers/layernorm.py` modified +27/-0 (27 lines); hunks: -67,6 +67,7; -367,6 +368,9 @@ def __init__(; symbols: __init__, forward_cuda, forward_cpu, forward_aiter
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -42,6 +42,7 @@
-+from sglang.srt.layers.layernorm import LayerNorm
-@@ -72,7 +73,7 @@
--from sglang.srt.utils import add_prefix, get_int_env_var, is_npu, round_up
-+from sglang.srt.utils import add_prefix, get_int_env_var, is_hip, is_npu, round_up
-@@ -86,6 +87,8 @@
-+_is_hip = is_hip()
-diff -- python/sglang/srt/layers/layernorm.py
-@@ -67,6 +67,7 @@
-+    from aiter import layer_norm, layernorm2d_fwd_with_add
-@@ -367,6 +368,9 @@ def __init__(
-+        if _use_aiter:
-+            self._forward_method = self.forward_aiter
-@@ -419,6 +423,29 @@ def forward_cpu(
-+    def forward_aiter(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +60/-15; `python/sglang/srt/layers/layernorm.py` modified +27/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #16785 - [Bugfix] fix recompile in qwen3 vl
-
-- 链接: https://github.com/sgl-project/sglang/pull/16785
-- 状态/时间: open / 2026-01-09
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+113/-36，可读 patch 307 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix] fix recompile in qwen3 vl」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`；技术摘要: 覆盖「[Bugfix] fix recompile in qwen3 vl」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -913,16 +913,37 @@ def __init__(; -963,7 +984,7 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward，涉及 `__init__, get_deepstack_embeds, forward`；`python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8 (37 lines); hunks: -57,19 +57,40 @@ def __init__(; -109,7 +130,7 @@ def forward(; symbols: __init__, get_input_embeddings, get_deepstack_embeds, forward，涉及 `__init__, get_input_embeddings, get_deepstack_embeds`；`python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1 (26 lines); hunks: -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):; -392,6 +404,9 @@ def warmup_torch_compile(self, num_tokens: int):; symbols: __init__, warmup_torch_compile, _cache_loc_dtype, capture_one_batch_size，涉及 `__init__, warmup_torch_compile, _cache_loc_dtype`；`python/sglang/srt/managers/mm_utils.py` modified +13/-6 (19 lines); hunks: -919,6 +919,7 @@ def embed_mm_inputs(; -1019,12 +1020,16 @@ def embed_mm_inputs(; symbols: embed_mm_inputs, general_mm_embed_routine，涉及 `embed_mm_inputs, general_mm_embed_routine`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -913,16 +913,37 @@ def __init__(; -963,7 +984,7 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward
-  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8 (37 lines); hunks: -57,19 +57,40 @@ def __init__(; -109,7 +130,7 @@ def forward(; symbols: __init__, get_input_embeddings, get_deepstack_embeds, forward
-  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1 (26 lines); hunks: -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):; -392,6 +404,9 @@ def warmup_torch_compile(self, num_tokens: int):; symbols: __init__, warmup_torch_compile, _cache_loc_dtype, capture_one_batch_size
-  - `python/sglang/srt/managers/mm_utils.py` modified +13/-6 (19 lines); hunks: -919,6 +919,7 @@ def embed_mm_inputs(; -1019,12 +1020,16 @@ def embed_mm_inputs(; symbols: embed_mm_inputs, general_mm_embed_routine
-  - `test/manual/nightly/test_vlms_piecewise_cuda_graph.py` modified +5/-3 (8 lines); hunks: -18,7 +18,9; -59,7 +61,7 @@ def run_mmmu_eval(; symbols: run_mmmu_eval, _run_vlm_mmmu_test
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -913,16 +913,37 @@ def __init__(
-+        self.deepstack_embeds_buffer = None
--        self, layer_idx: int, input_deepstack_embeds: Optional[torch.Tensor]
-+        self,
-+        layer_idx: int,
-+        input_deepstack_embeds: Optional[torch.Tensor],
-+        seq_len: int,
-diff -- python/sglang/srt/models/qwen3_vl_moe.py
-@@ -57,19 +57,40 @@ def __init__(
-+        self.deepstack_embeds_buffer = None
--        self, layer_idx: int, input_deepstack_embeds: Optional[torch.Tensor]
-+        self,
-+        layer_idx: int,
-+        input_deepstack_embeds: Optional[torch.Tensor],
-+        seq_len: int,
-diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
-@@ -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +41/-18; `python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1; `python/sglang/srt/managers/mm_utils.py` modified +13/-6
-  - tests: `test/manual/nightly/test_vlms_piecewise_cuda_graph.py` modified +5/-3
-- 验证与风险: diff 自带测试面 `test/manual/nightly/test_vlms_piecewise_cuda_graph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #16366 - Optimize Qwen3-VL video memory usage
 
@@ -1577,47 +1504,6 @@ diff -- python/sglang/srt/models/qwen3_vl.py
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #19693 - [NPU] Fix Qwen3-VL-8B Accuracy for NPU
-
-- 链接: https://github.com/sgl-project/sglang/pull/19693
-- 状态/时间: open / 2026-03-02
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+199/-108，可读 patch 518 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] Fix Qwen3-VL-8B Accuracy for NPU」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py`；技术摘要: 覆盖「[NPU] Fix Qwen3-VL-8B Accuracy for NPU」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +79/-20 (99 lines); hunks: -19,6 +19,7; -397,30 +398,89 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, forward, Qwen3VLForConditionalGeneration，涉及 `rot_pos_emb, fast_pos_embed_interpolate, forward`；`python/sglang/srt/models/llama.py` modified +37/-4 (41 lines); hunks: -52,10 +52,14; -185,15 +189,44 @@ def __init__(; symbols: LlamaMLP, __init__, forward_prepare_native, forward_prepare_npu，涉及 `LlamaMLP, __init__, forward_prepare_native`；`python/sglang/srt/layers/rotary_embedding.py` modified +4/-3 (7 lines); hunks: -115,9 +115,10 @@ def __init__(; -294,8 +295,8 @@ def forward_npu(; symbols: __init__, forward_npu，涉及 `__init__, forward_npu`；`python/sglang/srt/models/qwen3.py` modified +4/-3 (7 lines); hunks: -161,12 +161,12 @@ def forward_prepare_npu(self, positions, hidden_states, fo...; -372,6 +372,7 @@ def __init__(; symbols: forward_prepare_npu, __init__，涉及 `forward_prepare_npu, __init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_vl.py` modified +79/-20 (99 lines); hunks: -19,6 +19,7; -397,30 +398,89 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, forward, Qwen3VLForConditionalGeneration
-  - `python/sglang/srt/models/llama.py` modified +37/-4 (41 lines); hunks: -52,10 +52,14; -185,15 +189,44 @@ def __init__(; symbols: LlamaMLP, __init__, forward_prepare_native, forward_prepare_npu
-  - `python/sglang/srt/layers/rotary_embedding.py` modified +4/-3 (7 lines); hunks: -115,9 +115,10 @@ def __init__(; -294,8 +295,8 @@ def forward_npu(; symbols: __init__, forward_npu
-  - `python/sglang/srt/models/qwen3.py` modified +4/-3 (7 lines); hunks: -161,12 +161,12 @@ def forward_prepare_npu(self, positions, hidden_states, fo...; -372,6 +372,7 @@ def __init__(; symbols: forward_prepare_npu, __init__
-  - `python/sglang/srt/models/qwen3_moe.py` modified +3/-3 (6 lines); hunks: -523,12 +523,12 @@ def forward_prepare_npu(; symbols: forward_prepare_npu
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -19,6 +19,7 @@
-+import numpy as np
-@@ -397,30 +398,89 @@ def rot_pos_emb(
--        patch_pos_embeds_permute = []
--        m_size = self.spatial_merge_size
-+        num_grid_per_side = int(self.num_position_embeddings**0.5)
--        embeds = torch.arange(self.num_grid, device=self.pos_embed.weight.device)
-diff -- python/sglang/srt/models/llama.py
-@@ -52,10 +52,14 @@
--from sglang.srt.utils import add_prefix, make_layers
-+from sglang.srt.utils import add_prefix, is_npu, make_layers
-+_is_npu = is_npu()
-+if _is_npu:
-+    from sgl_kernel_npu.norm.split_qkv_rmsnorm_rope import split_qkv_rmsnorm_rope
-@@ -185,15 +189,44 @@ def __init__(
-diff -- python/sglang/srt/layers/rotary_embedding.py
-@@ -115,9 +115,10 @@ def __init__(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +79/-20; `python/sglang/srt/models/llama.py` modified +37/-4; `python/sglang/srt/layers/rotary_embedding.py` modified +4/-3; `python/sglang/srt/models/qwen3.py` modified +4/-3; `python/sglang/srt/models/qwen3_moe.py` modified +3/-3; `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +3/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/graph_runner/eagle_draft_npu_graph_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #19291 - [Qwen3.5] Fix missing `quant_config` in `Qwen3VL`
 
 - 链接: https://github.com/sgl-project/sglang/pull/19291
@@ -1689,47 +1575,6 @@ diff -- python/sglang/srt/models/qwen3_vl.py
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #20857 - add EVS support for Qwen3-VL
-
-- 链接: https://github.com/sgl-project/sglang/pull/20857
-- 状态/时间: open / 2026-03-18
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+151/-4，可读 patch 269 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「add EVS support for Qwen3-VL」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`；技术摘要: 覆盖「add EVS support for Qwen3-VL」；主要实现面是 `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async，涉及 `__init__, _maybe_apply_qwen3_evs, get_mm_data`；`python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2 (22 lines); hunks: -121,6 +121,7 @@ def get_rope_index(; -134,13 +135,22 @@ def get_rope_index(; symbols: get_rope_index，涉及 `get_rope_index`；`python/sglang/srt/models/qwen3_vl.py` modified +10/-2 (12 lines); hunks: -69,6 +69,7; -1047,7 +1048,7 @@ def forward(; symbols: forward, Qwen3VLForConditionalGeneration, __init__，涉及 `forward, Qwen3VLForConditionalGeneration, __init__`；`python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0 (10 lines); hunks: -65,6 +65,16 @@ def __init__(; symbols: __init__，涉及 `__init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async
-  - `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2 (22 lines); hunks: -121,6 +121,7 @@ def get_rope_index(; -134,13 +135,22 @@ def get_rope_index(; symbols: get_rope_index
-  - `python/sglang/srt/models/qwen3_vl.py` modified +10/-2 (12 lines); hunks: -69,6 +69,7; -1047,7 +1048,7 @@ def forward(; symbols: forward, Qwen3VLForConditionalGeneration, __init__
-  - `python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0 (10 lines); hunks: -65,6 +65,16 @@ def __init__(; symbols: __init__
-  - `python/sglang/srt/configs/qwen3_vl.py` modified +2/-0 (2 lines); hunks: -244,6 +244,7 @@ def __init__(; -261,6 +262,7 @@ def __init__(; symbols: __init__
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
-@@ -10,6 +10,7 @@
-+from sglang.srt.configs.qwen3_vl import Qwen3VLConfig
-@@ -22,6 +23,9 @@
-+from sglang.srt.multimodal.evs import EVSProcessor
-+from sglang.srt.multimodal.evs.evs_core import tokens_per_frame
-+from sglang.srt.multimodal.evs.evs_module import VideoEVSDataItem
-@@ -250,6 +254,10 @@ def __init__(self, hf_config, server_args, _processor, *args, **kwargs):
-diff -- python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py
-@@ -121,6 +121,7 @@ def get_rope_index(
-+                    mm_token_id = image_token_id
-@@ -134,13 +135,22 @@ def get_rope_index(
-+                    mm_token_id = video_token_id
-+                mm_token_count = 0
-+                mm_cursor = ed
-+                while (
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -69,6 +69,7 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0; `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2; `python/sglang/srt/models/qwen3_vl.py` modified +10/-2; `python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0; `python/sglang/srt/configs/qwen3_vl.py` modified +2/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #20759 - [Bugfix] fix qwen3vl hang when --mm-enable-dp-encoder is enable
 
 - 链接: https://github.com/sgl-project/sglang/pull/20759
@@ -1754,6 +1599,33 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +2/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #21458 - [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write
+
+- 链接: https://github.com/sgl-project/sglang/pull/21458
+- 状态/时间: merged / 2026-04-01
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+101/-3，可读 patch 152 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope，涉及 `__init__, forward_prepare_native, forward_prepare_npu`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3.py
+@@ -19,6 +19,7 @@
++from sglang.srt.layers.rotary_embedding.mrope import MRotaryEmbedding
+@@ -30,13 +31,25 @@
+-from sglang.srt.utils import add_prefix, is_cuda, is_npu
++from sglang.srt.utils import add_prefix, get_bool_env_var, is_cuda, is_hip, is_npu
++_is_hip = is_hip()
++_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +101/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #21469 - [3/n] lora moe - Support Qwen3-VL-30B-A3B-Instruct
 
@@ -1788,33 +1660,6 @@ diff -- test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py
   - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-2
   - tests: `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py` added +151/-0
 - 验证与风险: diff 自带测试面 `test/manual/lora/test_lora_qwen3_vl.py`, `test/registered/lora/test_lora_qwen3_vl_30b_a3b_instruct_logprob_diff.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #21458 - [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write
-
-- 链接: https://github.com/sgl-project/sglang/pull/21458
-- 状态/时间: merged / 2026-04-01
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+101/-3，可读 patch 152 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope，涉及 `__init__, forward_prepare_native, forward_prepare_npu`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3.py
-@@ -19,6 +19,7 @@
-+from sglang.srt.layers.rotary_embedding.mrope import MRotaryEmbedding
-@@ -30,13 +31,25 @@
--from sglang.srt.utils import add_prefix, is_cuda, is_npu
-+from sglang.srt.utils import add_prefix, get_bool_env_var, is_cuda, is_hip, is_npu
-+_is_hip = is_hip()
-+_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3.py` modified +101/-3
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #19135 - qwen3 vl skip layer id for pp
 
@@ -2004,33 +1849,6 @@ diff -- python/sglang/srt/multimodal/processors/qwen3_asr.py
   - runtime: `python/sglang/srt/models/qwen3_asr.py` added +199/-0; `python/sglang/srt/configs/qwen3_asr.py` added +172/-0; `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +95/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/configs/qwen3_asr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #22266 - [NPU] fix qwen3.5 video processor
-
-- 链接: https://github.com/sgl-project/sglang/pull/22266
-- 状态/时间: merged / 2026-04-08
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+177/-21，可读 patch 235 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] fix qwen3.5 video processor」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`；技术摘要: 覆盖「[NPU] fix qwen3.5 video processor」；主要实现面是 `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21 (198 lines); hunks: -7,13 +7,62; -90,31 +139,16 @@ def _preprocess(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, npu_wrapper_video_preprocess，涉及 `transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess`。
-- 代码 diff 细节:
-  - `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21 (198 lines); hunks: -7,13 +7,62; -90,31 +139,16 @@ def _preprocess(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, npu_wrapper_video_preprocess
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
-@@ -7,13 +7,62 @@
--from transformers.image_utils import SizeDict
-+from transformers.image_utils import (
-+    ChannelDimension,
-+    PILImageResampling,
-+    SizeDict,
-+    get_image_size,
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #22181 - [refactor] [asr] Add transcription adapter for extensible ASR models support
 
 - 链接: https://github.com/sgl-project/sglang/pull/22181
@@ -2072,33 +1890,32 @@ diff -- python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py
   - tests: `test/manual/models/test_qwen3_asr.py` added +118/-0
 - 验证与风险: diff 自带测试面 `test/manual/models/test_qwen3_asr.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #22230 - [Feature] Support eagle3 for qwen3-vl
+### PR #22266 - [NPU] fix qwen3.5 video processor
 
-- 链接: https://github.com/sgl-project/sglang/pull/22230
-- 状态/时间: merged / 2026-04-09
-- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/sgl-project/sglang/pulls/22230/files?per_page=100 --paginate Get "https://api.github.com/repos/sgl-project/sglang/pulls/22230/files?per_page=100": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_vl.py`；关联提交 `a69be2e866fb`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+24/-0，可读 patch 51 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Feature] Support eagle3 for qwen3-vl」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_vl.py`；技术摘要: 覆盖「[Feature] Support eagle3 for qwen3-vl」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +24/-0 (24 lines); hunks: -1130,6 +1130,9 @@ def __init__(; -1246,13 +1249,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights，涉及 `__init__, separate_deepstack_embeds, forward`。
+- 链接: https://github.com/sgl-project/sglang/pull/22266
+- 状态/时间: merged / 2026-04-08
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+177/-21，可读 patch 235 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] fix qwen3.5 video processor」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`；技术摘要: 覆盖「[NPU] fix qwen3.5 video processor」；主要实现面是 `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21 (198 lines); hunks: -7,13 +7,62; -90,31 +139,16 @@ def _preprocess(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, npu_wrapper_video_preprocess，涉及 `transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess`。
 - 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_vl.py` modified +24/-0 (24 lines); hunks: -1130,6 +1130,9 @@ def __init__(; -1246,13 +1249,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
+  - `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21 (198 lines); hunks: -7,13 +7,62; -90,31 +139,16 @@ def _preprocess(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess, npu_wrapper_video_preprocess
 - 关键代码摘录:
 
 ```diff
-diff -- python/sglang/srt/models/qwen3_vl.py
-@@ -1130,6 +1130,9 @@ def __init__(
-+        # For EAGLE3 support
-+        self.capture_aux_hidden_states = False
-@@ -1246,13 +1249,18 @@ def forward(
-+        aux_hidden_states = None
-+        if self.capture_aux_hidden_states:
-+            hidden_states, aux_hidden_states = hidden_states
+diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
+@@ -7,13 +7,62 @@
+-from transformers.image_utils import SizeDict
++from transformers.image_utils import (
++    ChannelDimension,
++    PILImageResampling,
++    SizeDict,
++    get_image_size,
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +24/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+  - runtime: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +177/-21
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #22089 - [Feature] Add chunk-based streaming ASR for Qwen3-ASR
 
@@ -2135,47 +1952,33 @@ diff -- python/sglang/srt/multimodal/processors/qwen3_asr.py
   - runtime: `python/sglang/srt/entrypoints/openai/transcription_adapters/qwen3_asr.py` modified +20/-0; `python/sglang/srt/multimodal/processors/qwen3_asr.py` modified +2/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/entrypoints/openai/serving_transcription.py`, `python/sglang/srt/entrypoints/openai/streaming_asr.py`, `python/sglang/srt/entrypoints/openai/transcription_adapters/base.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #22839 - fix(config): Add from_dict() for Qwen3VL config classes
+### PR #22230 - [Feature] Support eagle3 for qwen3-vl
 
-- 链接: https://github.com/sgl-project/sglang/pull/22839
-- 状态/时间: open / 2026-04-15
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+306/-0，可读 patch 389 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix(config): Add from_dict() for Qwen3VL config classes」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py`；技术摘要: 覆盖「fix(config): Add from_dict() for Qwen3VL config classes」；主要实现面是 `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object, test_qwen3vl_moe_config_dict_conversion，涉及 `TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object`；`python/sglang/srt/configs/qwen3_5.py` modified +71/-0 (71 lines); hunks: -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):; -112,6 +123,55 @@ class Qwen3_5MoeVisionConfig(Qwen3_5VisionConfig):; symbols: Qwen3_5Config, from_dict, __init__, Qwen3_5MoeVisionConfig，涉及 `Qwen3_5Config, from_dict, __init__`；`python/sglang/srt/configs/qwen3_vl.py` modified +30/-0 (30 lines); hunks: -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):; -251,11 +262,15 @@ def __init__(; symbols: Qwen3VLConfig, from_dict, __init__, Qwen3VLMoeConfig，涉及 `Qwen3VLConfig, from_dict, __init__`；`python/sglang/srt/configs/__init__.py` modified +3/-0 (3 lines); hunks: -25,6 +25,7; -65,4 +66,6。
+- 链接: https://github.com/sgl-project/sglang/pull/22230
+- 状态/时间: merged / 2026-04-09
+- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/sgl-project/sglang/pulls/22230/files?per_page=100 --paginate Get "https://api.github.com/repos/sgl-project/sglang/pulls/22230/files?per_page=100": EOF`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_vl.py`；关联提交 `a69be2e866fb`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+24/-0，可读 patch 51 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Feature] Support eagle3 for qwen3-vl」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_vl.py`；技术摘要: 覆盖「[Feature] Support eagle3 for qwen3-vl」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +24/-0 (24 lines); hunks: -1130,6 +1130,9 @@ def __init__(; -1246,13 +1249,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights，涉及 `__init__, separate_deepstack_embeds, forward`。
 - 代码 diff 细节:
-  - `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object, test_qwen3vl_moe_config_dict_conversion
-  - `python/sglang/srt/configs/qwen3_5.py` modified +71/-0 (71 lines); hunks: -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):; -112,6 +123,55 @@ class Qwen3_5MoeVisionConfig(Qwen3_5VisionConfig):; symbols: Qwen3_5Config, from_dict, __init__, Qwen3_5MoeVisionConfig
-  - `python/sglang/srt/configs/qwen3_vl.py` modified +30/-0 (30 lines); hunks: -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):; -251,11 +262,15 @@ def __init__(; symbols: Qwen3VLConfig, from_dict, __init__, Qwen3VLMoeConfig
-  - `python/sglang/srt/configs/__init__.py` modified +3/-0 (3 lines); hunks: -25,6 +25,7; -65,4 +66,6
-  - `python/sglang/srt/utils/hf_transformers_utils.py` modified +4/-0 (4 lines); hunks: -87,6 +87,8; -121,6 +123,8
+  - `python/sglang/srt/models/qwen3_vl.py` modified +24/-0 (24 lines); hunks: -1130,6 +1130,9 @@ def __init__(; -1246,13 +1249,18 @@ def forward(; symbols: __init__, separate_deepstack_embeds, forward, load_weights
 - 关键代码摘录:
 
 ```diff
-diff -- test/registered/unit/configs/test_qwen3_vl_config.py
-@@ -0,0 +1,198 @@
-+"""Unit tests for qwen3_vl and qwen3_5 config from_dict() handling.
-+This tests the fix for transformers 5.5.0 compatibility where nested
-+vision_config and text_config dicts need to be converted to config objects.
-+"""
-+import json
-+import unittest
-diff -- python/sglang/srt/configs/qwen3_5.py
-@@ -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):
-+    @classmethod
-+    def from_dict(cls, config_dict, **kwargs):
-+        config = super().from_dict(config_dict, **kwargs)
-+        if isinstance(getattr(config, "vision_config", None), dict):
-+            config.vision_config = cls.sub_configs["vision_config"](
-+                **config.vision_config
-diff -- python/sglang/srt/configs/qwen3_vl.py
-@@ -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -1130,6 +1130,9 @@ def __init__(
++        # For EAGLE3 support
++        self.capture_aux_hidden_states = False
+@@ -1246,13 +1249,18 @@ def forward(
++        aux_hidden_states = None
++        if self.capture_aux_hidden_states:
++            hidden_states, aux_hidden_states = hidden_states
 ```
 
 - 已读文件:
-  - tests: `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0
-  - runtime: `python/sglang/srt/configs/qwen3_5.py` modified +71/-0; `python/sglang/srt/configs/qwen3_vl.py` modified +30/-0; `python/sglang/srt/configs/__init__.py` modified +3/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +4/-0
-- 验证与风险: diff 自带测试面 `test/registered/unit/configs/test_qwen3_vl_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +24/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #22431 - Fix Qwen3.5 video processing when passing video_data in "processor_output" format
 
@@ -2426,6 +2229,38 @@ diff -- python/sglang/srt/configs/qwen3_asr.py
   - runtime: `python/sglang/srt/configs/qwen3_asr.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/qwen3_asr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #25130 - [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters
+
+- 链接: https://github.com/sgl-project/sglang/pull/25130
+- 状态/时间: merged / 2026-05-14
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-17，可读 patch 96 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`；技术摘要: 覆盖「[NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters」；主要实现面是 `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16 (27 lines); hunks: -1,12 +1,7; -63,16 +58,16 @@ def transform_patches_to_flatten(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess，涉及 `transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess`；`python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(; symbols: fused_recurrent_gated_delta_rule_update，涉及 `fused_recurrent_gated_delta_rule_update`。
+- 代码 diff 细节:
+  - `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16 (27 lines); hunks: -1,12 +1,7; -63,16 +58,16 @@ def transform_patches_to_flatten(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess
+  - `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(; symbols: fused_recurrent_gated_delta_rule_update
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
+@@ -1,12 +1,7 @@
+-from typing import Optional
+-from transformers.image_processing_utils_fast import (
+-    group_images_by_shape,
+-    reorder_images,
+-)
++from transformers.image_transforms import group_images_by_shape, reorder_images
+diff -- python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py
+@@ -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(
+-            num_accept_tokens=num_accept_tokens,
++            num_accepted_tokens=num_accept_tokens,
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16; `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #25197 - ci: decouple stage and runner for cuda registry
 
 - 链接: https://github.com/sgl-project/sglang/pull/25197
@@ -2509,38 +2344,6 @@ diff -- test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.p
   - tests: `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` modified +3/-3; `test/registered/lora/test_lora_nemotron_3_super_120b_a12b_logprob_diff.py` modified +3/-3; `test/registered/lora/test_lora_qwen3_30b_a3b_instruct_2507_logprob_diff.py` modified +3/-3; `test/registered/4-gpu-models/test_gpt_oss_4gpu.py` modified +1/-1; `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py` modified +1/-1; `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `test/registered/4-gpu-models/test_gpt_oss_4gpu.py`, `test/registered/4-gpu-models/test_nvidia_nemotron_3_super_nvfp4.py`, `test/registered/4-gpu-models/test_qwen35_fp4_mtp_v2.py`, `test/registered/4-gpu-models/test_qwen35_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #25130 - [NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters
-
-- 链接: https://github.com/sgl-project/sglang/pull/25130
-- 状态/时间: merged / 2026-05-14
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+12/-17，可读 patch 96 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`；技术摘要: 覆盖「[NPU]Bugfix:Set default values for npu_wrapper_preprocess parameters」；主要实现面是 `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16 (27 lines); hunks: -1,12 +1,7; -63,16 +58,16 @@ def transform_patches_to_flatten(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess，涉及 `transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess`；`python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(; symbols: fused_recurrent_gated_delta_rule_update，涉及 `fused_recurrent_gated_delta_rule_update`。
-- 代码 diff 细节:
-  - `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16 (27 lines); hunks: -1,12 +1,7; -63,16 +58,16 @@ def transform_patches_to_flatten(; symbols: transform_patches_to_flatten, npu_wrapper_preprocess, _preprocess
-  - `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(; symbols: fused_recurrent_gated_delta_rule_update
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py
-@@ -1,12 +1,7 @@
--from typing import Optional
--from transformers.image_processing_utils_fast import (
--    group_images_by_shape,
--    reorder_images,
--)
-+from transformers.image_transforms import group_images_by_shape, reorder_images
-diff -- python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py
-@@ -414,7 +414,7 @@ def fused_recurrent_gated_delta_rule_update(
--            num_accept_tokens=num_accept_tokens,
-+            num_accepted_tokens=num_accept_tokens,
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py` modified +11/-16; `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py` modified +1/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/attention/ascend_gdn_backend.py`, `python/sglang/srt/hardware_backend/npu/modules/qwen_vl_processor.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #25420 - [CI] Rename basic CI `stage-a/b/c` -> `base-a/b/c` for symmetry with extra CI
 
 - 链接: https://github.com/sgl-project/sglang/pull/25420
@@ -2605,6 +2408,28 @@ diff -- python/sglang/srt/models/qwen3_vl_moe.py
   - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #23220 - Bugfix: Qwen3-VL-MoE adapt encoder_only
+
+- 链接: https://github.com/sgl-project/sglang/pull/23220
+- 状态/时间: merged / 2026-05-22
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Bugfix: Qwen3-VL-MoE adapt encoder_only」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_vl_moe.py`；技术摘要: 覆盖「Bugfix: Qwen3-VL-MoE adapt encoder_only」；主要实现面是 `python/sglang/srt/models/qwen3_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights，涉及 `load_weights`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl_moe.py
+@@ -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++                and hasattr(self, "model")
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #24751 - fix(mm): make multimodal data loading non-blocking to prevent health check stalls
 
 - 链接: https://github.com/sgl-project/sglang/pull/24751
@@ -2645,28 +2470,6 @@ diff -- python/sglang/srt/multimodal/processors/minicpm.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-7; `python/sglang/srt/multimodal/processors/internvl.py` modified +3/-3; `python/sglang/srt/multimodal/processors/minicpm.py` modified +2/-2; `python/sglang/srt/multimodal/processors/clip.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +1/-1; `python/sglang/srt/multimodal/processors/deepseek_vl_v2.py` modified +1/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/clip.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #23220 - Bugfix: Qwen3-VL-MoE adapt encoder_only
-
-- 链接: https://github.com/sgl-project/sglang/pull/23220
-- 状态/时间: merged / 2026-05-22
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Bugfix: Qwen3-VL-MoE adapt encoder_only」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_vl_moe.py`；技术摘要: 覆盖「Bugfix: Qwen3-VL-MoE adapt encoder_only」；主要实现面是 `python/sglang/srt/models/qwen3_vl_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights，涉及 `load_weights`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0 (1 lines); hunks: -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Te...; symbols: load_weights
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_vl_moe.py
-@@ -235,6 +235,7 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+                and hasattr(self, "model")
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_vl_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #24144 - [BugFix][EPD] adapt for qwen3.5-mtp & del duplicated logs
 
@@ -2720,6 +2523,33 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +86/-24
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/managers/schedule_batch.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23469 - [NPU] adapt the Qwen3-ASR model for deployment on NPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/23469
+- 状态/时间: closed / 2026-05-24
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+18/-0，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] adapt the Qwen3-ASR model for deployment on NPU」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `python/sglang/srt/utils/common.py`；技术摘要: 覆盖「[NPU] adapt the Qwen3-ASR model for deployment on NPU」；主要实现面是 `python/sglang/srt/utils/common.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio，涉及 `load_audio`。
+- 代码 diff 细节:
+  - `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/utils/common.py
+@@ -740,6 +740,24 @@ def load_audio(
++    if is_npu():
++        import soundfile as sf
++        if isinstance(source, bytes):
++            audio, original_sr = sf.read(BytesIO(source))
++        else:
++            audio, original_sr = sf.read(source)
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/utils/common.py` modified +18/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/utils/common.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #26100 - [VLM] adopt simplified get_rope_index for image-only requests
 
@@ -2816,60 +2646,6 @@ diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
   - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +2/-2; `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +0/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/managers/mm_utils.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #23469 - [NPU] adapt the Qwen3-ASR model for deployment on NPU
-
-- 链接: https://github.com/sgl-project/sglang/pull/23469
-- 状态/时间: closed / 2026-05-24
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+18/-0，可读 patch 25 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU] adapt the Qwen3-ASR model for deployment on NPU」；模型线: Qwen VLM/Omni/ASR；类别: 模型实现调整；主要 diff: `python/sglang/srt/utils/common.py`；技术摘要: 覆盖「[NPU] adapt the Qwen3-ASR model for deployment on NPU」；主要实现面是 `python/sglang/srt/utils/common.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio，涉及 `load_audio`。
-- 代码 diff 细节:
-  - `python/sglang/srt/utils/common.py` modified +18/-0 (18 lines); hunks: -740,6 +740,24 @@ def load_audio(; symbols: load_audio
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/utils/common.py
-@@ -740,6 +740,24 @@ def load_audio(
-+    if is_npu():
-+        import soundfile as sf
-+        if isinstance(source, bytes):
-+            audio, original_sr = sf.read(BytesIO(source))
-+        else:
-+            audio, original_sr = sf.read(source)
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/utils/common.py` modified +18/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/utils/common.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #26094 - [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl
-
-- 链接: https://github.com/sgl-project/sglang/pull/26094
-- 状态/时间: merged / 2026-05-25
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/qwen_vl.py`；关联提交 `72c1582d4ef4`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+47/-19，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] fix: fix only the grids from last split mm item is collected for qwen-vl」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`；技术摘要: 覆盖「[VLM] fix: fix only the grids from last split mm item is collected for qwen-vl」；主要实现面是 `python/sglang/srt/multimodal/processors/qwen_vl.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19 (66 lines); hunks: -374,13 +374,12 @@ def build_input_ids_with_timestamps(; -529,6 +528,32 @@ def _compute_image_only_mrope_positions_from_offsets(; symbols: build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets, _concat_mm_item_grid，涉及 `build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets`。
-- 代码 diff 细节:
-  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19 (66 lines); hunks: -374,13 +374,12 @@ def build_input_ids_with_timestamps(; -529,6 +528,32 @@ def _compute_image_only_mrope_positions_from_offsets(; symbols: build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets, _concat_mm_item_grid
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
-@@ -374,13 +374,12 @@ def build_input_ids_with_timestamps(
--        image_grid_thw = None
--        video_grid_thw = None
--        for item in mm_items:
--            if "image_grid_thw" in item.model_specific_data:
--                image_grid_thw = item.model_specific_data["image_grid_thw"]
--            if "video_grid_thw" in item.model_specific_data:
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/qwen_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #19242 - [feat] feat: add Qwen3-ASR support like whisper
 
 - 链接: https://github.com/sgl-project/sglang/pull/19242
@@ -2910,6 +2686,33 @@ diff -- python/sglang/srt/configs/__init__.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/qwen3_asr.py` added +252/-0; `python/sglang/srt/configs/qwen3_asr.py` added +217/-0; `python/sglang/srt/configs/__init__.py` modified +2/-0; `python/sglang/srt/configs/model_config.py` modified +2/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +2/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/__init__.py`, `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/configs/qwen3_asr.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #26094 - [VLM] fix: fix only the grids from last split mm item is collected for qwen-vl
+
+- 链接: https://github.com/sgl-project/sglang/pull/26094
+- 状态/时间: merged / 2026-05-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/qwen_vl.py`；关联提交 `72c1582d4ef4`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+47/-19，可读 patch 102 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[VLM] fix: fix only the grids from last split mm item is collected for qwen-vl」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`；技术摘要: 覆盖「[VLM] fix: fix only the grids from last split mm item is collected for qwen-vl」；主要实现面是 `python/sglang/srt/multimodal/processors/qwen_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19 (66 lines); hunks: -374,13 +374,12 @@ def build_input_ids_with_timestamps(; -529,6 +528,32 @@ def _compute_image_only_mrope_positions_from_offsets(; symbols: build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets, _concat_mm_item_grid，涉及 `build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19 (66 lines); hunks: -374,13 +374,12 @@ def build_input_ids_with_timestamps(; -529,6 +528,32 @@ def _compute_image_only_mrope_positions_from_offsets(; symbols: build_input_ids_with_timestamps, compute_mrope_positions, _compute_image_only_mrope_positions_from_offsets, _concat_mm_item_grid
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -374,13 +374,12 @@ def build_input_ids_with_timestamps(
+-        image_grid_thw = None
+-        video_grid_thw = None
+-        for item in mm_items:
+-            if "image_grid_thw" in item.model_specific_data:
+-                image_grid_thw = item.model_specific_data["image_grid_thw"]
+-            if "video_grid_thw" in item.model_specific_data:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +47/-19
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/qwen_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #12662 - [CPU] Add support for Qwen3-vl and Qwen3-omni
 
@@ -3573,6 +3376,345 @@ diff -- python/sglang/srt/multimodal/processors/dots_note_omni.py
   - runtime: `python/sglang/srt/models/dots3_common/dots_omni_audio.py` added +1027/-0; `python/sglang/srt/models/dots3_common/dots_omni_vision.py` added +769/-0; `python/sglang/srt/multimodal/processors/dots_note_omni.py` added +565/-0; `python/sglang/srt/multimodal/processors/dots_note_omni_video_core/preprocess.py` added +338/-0; `python/sglang/srt/models/dots3_common/dots_omni_towers.py` added +240/-0; `python/sglang/srt/multimodal/processors/dots_note_omni_video_core/flatten_runner.py` added +180/-0
   - tests: `test/registered/unit/multimodal/test_dots_note_omni.py` added +285/-0
 - 验证与风险: diff 自带测试面 `test/registered/attention/unittests/swa/test_swa_out_cache_loc.py`, `test/registered/unit/function_call/test_dots_detector.py`, `test/registered/unit/layers/attention/test_dots_hybrid_backend.py`, `test/registered/unit/model_executor/test_mlp_sync_pad_unpad.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #16571 - [Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT
+
+- 链接: https://github.com/sgl-project/sglang/pull/16571
+- 状态/时间: closed / 2026-08-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+87/-15，可读 patch 204 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT」；模型线: Qwen VLM/Omni/ASR；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py`；技术摘要: 覆盖「[Feature] [ROCM] Support Add & LayerNorm fused for Qwen3-VL VIT」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/layers/layernorm.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +60/-15 (75 lines); hunks: -42,6 +42,7; -72,7 +73,7; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLMoeVisionPatchMerger，涉及 `Qwen3_VisionMLP, __init__, forward`；`python/sglang/srt/layers/layernorm.py` modified +27/-0 (27 lines); hunks: -67,6 +67,7; -367,6 +368,9 @@ def __init__(; symbols: __init__, forward_cuda, forward_cpu, forward_aiter，涉及 `__init__, forward_cuda, forward_cpu`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +60/-15 (75 lines); hunks: -42,6 +42,7; -72,7 +73,7; symbols: Qwen3_VisionMLP, __init__, forward, Qwen3VLMoeVisionPatchMerger
+  - `python/sglang/srt/layers/layernorm.py` modified +27/-0 (27 lines); hunks: -67,6 +67,7; -367,6 +368,9 @@ def __init__(; symbols: __init__, forward_cuda, forward_cpu, forward_aiter
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -42,6 +42,7 @@
++from sglang.srt.layers.layernorm import LayerNorm
+@@ -72,7 +73,7 @@
+-from sglang.srt.utils import add_prefix, get_int_env_var, is_npu, round_up
++from sglang.srt.utils import add_prefix, get_int_env_var, is_hip, is_npu, round_up
+@@ -86,6 +87,8 @@
++_is_hip = is_hip()
+diff -- python/sglang/srt/layers/layernorm.py
+@@ -67,6 +67,7 @@
++    from aiter import layer_norm, layernorm2d_fwd_with_add
+@@ -367,6 +368,9 @@ def __init__(
++        if _use_aiter:
++            self._forward_method = self.forward_aiter
+@@ -419,6 +423,29 @@ def forward_cpu(
++    def forward_aiter(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +60/-15; `python/sglang/srt/layers/layernorm.py` modified +27/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/layernorm.py`, `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20857 - add EVS support for Qwen3-VL
+
+- 链接: https://github.com/sgl-project/sglang/pull/20857
+- 状态/时间: closed / 2026-08-24
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+151/-4，可读 patch 269 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「add EVS support for Qwen3-VL」；模型线: Qwen VLM/Omni/ASR；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`；技术摘要: 覆盖「add EVS support for Qwen3-VL」；主要实现面是 `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async，涉及 `__init__, _maybe_apply_qwen3_evs, get_mm_data`；`python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2 (22 lines); hunks: -121,6 +121,7 @@ def get_rope_index(; -134,13 +135,22 @@ def get_rope_index(; symbols: get_rope_index，涉及 `get_rope_index`；`python/sglang/srt/models/qwen3_vl.py` modified +10/-2 (12 lines); hunks: -69,6 +69,7; -1047,7 +1048,7 @@ def forward(; symbols: forward, Qwen3VLForConditionalGeneration, __init__，涉及 `forward, Qwen3VLForConditionalGeneration, __init__`；`python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0 (10 lines); hunks: -65,6 +65,16 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0 (109 lines); hunks: -10,6 +10,7; -22,6 +23,9; symbols: __init__, _maybe_apply_qwen3_evs, get_mm_data, process_mm_data_async
+  - `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2 (22 lines); hunks: -121,6 +121,7 @@ def get_rope_index(; -134,13 +135,22 @@ def get_rope_index(; symbols: get_rope_index
+  - `python/sglang/srt/models/qwen3_vl.py` modified +10/-2 (12 lines); hunks: -69,6 +69,7; -1047,7 +1048,7 @@ def forward(; symbols: forward, Qwen3VLForConditionalGeneration, __init__
+  - `python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0 (10 lines); hunks: -65,6 +65,16 @@ def __init__(; symbols: __init__
+  - `python/sglang/srt/configs/qwen3_vl.py` modified +2/-0 (2 lines); hunks: -244,6 +244,7 @@ def __init__(; -261,6 +262,7 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -10,6 +10,7 @@
++from sglang.srt.configs.qwen3_vl import Qwen3VLConfig
+@@ -22,6 +23,9 @@
++from sglang.srt.multimodal.evs import EVSProcessor
++from sglang.srt.multimodal.evs.evs_core import tokens_per_frame
++from sglang.srt.multimodal.evs.evs_module import VideoEVSDataItem
+@@ -250,6 +254,10 @@ def __init__(self, hf_config, server_args, _processor, *args, **kwargs):
+diff -- python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py
+@@ -121,6 +121,7 @@ def get_rope_index(
++                    mm_token_id = image_token_id
+@@ -134,13 +135,22 @@ def get_rope_index(
++                    mm_token_id = video_token_id
++                mm_token_count = 0
++                mm_cursor = ed
++                while (
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -69,6 +69,7 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +109/-0; `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py` modified +20/-2; `python/sglang/srt/models/qwen3_vl.py` modified +10/-2; `python/sglang/srt/multimodal/evs/evs_processor.py` modified +10/-0; `python/sglang/srt/configs/qwen3_vl.py` modified +2/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/qwen3_vl.py`, `python/sglang/srt/layers/rotary_embedding/mrope_rope_index.py`, `python/sglang/srt/models/qwen3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #34690 - [BugFix][VLM] keep Qwen3-VL MoE inference deepstack order
+
+- 链接: https://github.com/sgl-project/sglang/pull/34690
+- 状态/时间: merged / 2026-08-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`；关联提交 `1e6d041f78cd`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+156/-36，可读 patch 253 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/qwen3_vl_moe.py` modified +42/-18 (60 lines); hunks: -31,6 +31,7; -58,6 +59,11 @@ def __init__(; symbols: __init__, get_input_embeddings, forward，涉及 `__init__, get_input_embeddings, forward`；`python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -1152,6 +1152,11 @@ def __init__(; -1196,25 +1201,43 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward，涉及 `__init__, get_deepstack_embeds, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +42/-18 (60 lines); hunks: -31,6 +31,7; -58,6 +59,11 @@ def __init__(; symbols: __init__, get_input_embeddings, forward
+  - `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -1152,6 +1152,11 @@ def __init__(; -1196,25 +1201,43 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl_moe.py
+@@ -31,6 +31,7 @@
++from sglang.srt.runtime_context import get_exec
+@@ -58,6 +59,11 @@ def __init__(
++        # Use HF deepstack order only if rl_on_policy_target is set;
++        # otherwise, retain original order for inference accuracy.
++        self.use_hf_deepstack_order = (
++            get_exec().deterministic.rl_on_policy_target is not None
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -1152,6 +1152,11 @@ def __init__(
++        # Use HF deepstack order only if rl_on_policy_target is set;
++        # otherwise, retain original order for inference accuracy.
++        self.use_hf_deepstack_order = (
++            get_exec().deterministic.rl_on_policy_target is not None
++        )
+@@ -1196,25 +1201,43 @@ def forward(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/qwen3_vl_moe.py` modified +42/-18; `python/sglang/srt/models/qwen3_vl.py` modified +41/-18
+- 验证与风险: diff 自带测试面 `test/registered/vlm/test_vision_openai_server_a.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #19693 - [NPU] Fix Qwen3-VL-8B Accuracy for NPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/19693
+- 状态/时间: closed / 2026-08-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 14 个文件，+199/-108，可读 patch 518 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU] Fix Qwen3-VL-8B Accuracy for NPU」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py`；技术摘要: 覆盖「[NPU] Fix Qwen3-VL-8B Accuracy for NPU」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/llama.py`, `python/sglang/srt/layers/rotary_embedding.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +79/-20 (99 lines); hunks: -19,6 +19,7; -397,30 +398,89 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, forward, Qwen3VLForConditionalGeneration，涉及 `rot_pos_emb, fast_pos_embed_interpolate, forward`；`python/sglang/srt/models/llama.py` modified +37/-4 (41 lines); hunks: -52,10 +52,14; -185,15 +189,44 @@ def __init__(; symbols: LlamaMLP, __init__, forward_prepare_native, forward_prepare_npu，涉及 `LlamaMLP, __init__, forward_prepare_native`；`python/sglang/srt/layers/rotary_embedding.py` modified +4/-3 (7 lines); hunks: -115,9 +115,10 @@ def __init__(; -294,8 +295,8 @@ def forward_npu(; symbols: __init__, forward_npu，涉及 `__init__, forward_npu`；`python/sglang/srt/models/qwen3.py` modified +4/-3 (7 lines); hunks: -161,12 +161,12 @@ def forward_prepare_npu(self, positions, hidden_states, fo...; -372,6 +372,7 @@ def __init__(; symbols: forward_prepare_npu, __init__，涉及 `forward_prepare_npu, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +79/-20 (99 lines); hunks: -19,6 +19,7; -397,30 +398,89 @@ def rot_pos_emb(; symbols: rot_pos_emb, fast_pos_embed_interpolate, forward, Qwen3VLForConditionalGeneration
+  - `python/sglang/srt/models/llama.py` modified +37/-4 (41 lines); hunks: -52,10 +52,14; -185,15 +189,44 @@ def __init__(; symbols: LlamaMLP, __init__, forward_prepare_native, forward_prepare_npu
+  - `python/sglang/srt/layers/rotary_embedding.py` modified +4/-3 (7 lines); hunks: -115,9 +115,10 @@ def __init__(; -294,8 +295,8 @@ def forward_npu(; symbols: __init__, forward_npu
+  - `python/sglang/srt/models/qwen3.py` modified +4/-3 (7 lines); hunks: -161,12 +161,12 @@ def forward_prepare_npu(self, positions, hidden_states, fo...; -372,6 +372,7 @@ def __init__(; symbols: forward_prepare_npu, __init__
+  - `python/sglang/srt/models/qwen3_moe.py` modified +3/-3 (6 lines); hunks: -523,12 +523,12 @@ def forward_prepare_npu(; symbols: forward_prepare_npu
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -19,6 +19,7 @@
++import numpy as np
+@@ -397,30 +398,89 @@ def rot_pos_emb(
+-        patch_pos_embeds_permute = []
+-        m_size = self.spatial_merge_size
++        num_grid_per_side = int(self.num_position_embeddings**0.5)
+-        embeds = torch.arange(self.num_grid, device=self.pos_embed.weight.device)
+diff -- python/sglang/srt/models/llama.py
+@@ -52,10 +52,14 @@
+-from sglang.srt.utils import add_prefix, make_layers
++from sglang.srt.utils import add_prefix, is_npu, make_layers
++_is_npu = is_npu()
++if _is_npu:
++    from sgl_kernel_npu.norm.split_qkv_rmsnorm_rope import split_qkv_rmsnorm_rope
+@@ -185,15 +189,44 @@ def __init__(
+diff -- python/sglang/srt/layers/rotary_embedding.py
+@@ -115,9 +115,10 @@ def __init__(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +79/-20; `python/sglang/srt/models/llama.py` modified +37/-4; `python/sglang/srt/layers/rotary_embedding.py` modified +4/-3; `python/sglang/srt/models/qwen3.py` modified +4/-3; `python/sglang/srt/models/qwen3_moe.py` modified +3/-3; `python/sglang/srt/layers/vocab_parallel_embedding.py` modified +3/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/graph_runner/eagle_draft_npu_graph_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #37043 - [vlm] fix: preserve per-request vit graph metadata for qwen-vl
+
+- 链接: https://github.com/sgl-project/sglang/pull/37043
+- 状态/时间: merged / 2026-08-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen2_5_vl.py`, `python/sglang/srt/models/qwen3_vl.py`；关联提交 `e6a64920572a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+230/-45，可读 patch 423 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/qwen2_5_vl.py` modified +11/-0 (11 lines); hunks: -616,6 +616,11 @@ def forward_with_cuda_graph(; -658,13 +663,19 @@ def forward_with_cuda_graph(; symbols: forward_with_cuda_graph，涉及 `forward_with_cuda_graph`；`python/sglang/srt/models/qwen3_vl.py` modified +2/-0 (2 lines); hunks: -1053,6 +1053,7 @@ def forward_with_cuda_graph(; -1067,6 +1068,7 @@ def forward_with_cuda_graph(; symbols: forward_with_cuda_graph, load_weights，涉及 `forward_with_cuda_graph, load_weights`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen2_5_vl.py` modified +11/-0 (11 lines); hunks: -616,6 +616,11 @@ def forward_with_cuda_graph(; -658,13 +663,19 @@ def forward_with_cuda_graph(; symbols: forward_with_cuda_graph
+  - `python/sglang/srt/models/qwen3_vl.py` modified +2/-0 (2 lines); hunks: -1053,6 +1053,7 @@ def forward_with_cuda_graph(; -1067,6 +1068,7 @@ def forward_with_cuda_graph(; symbols: forward_with_cuda_graph, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen2_5_vl.py
+@@ -616,6 +616,11 @@ def forward_with_cuda_graph(
++        cu_window_layout = tuple(
++            value
++            for index, value in enumerate(cu_window_seqlens)
++            if index == 0 or value != cu_window_seqlens[index - 1]
++        )
+@@ -658,13 +663,19 @@ def forward_with_cuda_graph(
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -1053,6 +1053,7 @@ def forward_with_cuda_graph(
++        attention_layout_key = (tuple(cu_seqlens.tolist()), None)
+@@ -1067,6 +1068,7 @@ def forward_with_cuda_graph(
++            attention_layout_key=attention_layout_key,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/qwen2_5_vl.py` modified +11/-0; `python/sglang/srt/models/qwen3_vl.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/multimodal/test_vit_cuda_graph_metadata_cuda.py`, `test/registered/unit/multimodal/test_vit_cuda_graph_runner.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #16785 - [Bugfix] fix recompile in qwen3 vl
+
+- 链接: https://github.com/sgl-project/sglang/pull/16785
+- 状态/时间: closed / 2026-08-31
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+113/-36，可读 patch 307 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix] fix recompile in qwen3 vl」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`；技术摘要: 覆盖「[Bugfix] fix recompile in qwen3 vl」；主要实现面是 `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl_moe.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -913,16 +913,37 @@ def __init__(; -963,7 +984,7 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward，涉及 `__init__, get_deepstack_embeds, forward`；`python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8 (37 lines); hunks: -57,19 +57,40 @@ def __init__(; -109,7 +130,7 @@ def forward(; symbols: __init__, get_input_embeddings, get_deepstack_embeds, forward，涉及 `__init__, get_input_embeddings, get_deepstack_embeds`；`python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1 (26 lines); hunks: -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):; -392,6 +404,9 @@ def warmup_torch_compile(self, num_tokens: int):; symbols: __init__, warmup_torch_compile, _cache_loc_dtype, capture_one_batch_size，涉及 `__init__, warmup_torch_compile, _cache_loc_dtype`；`python/sglang/srt/managers/mm_utils.py` modified +13/-6 (19 lines); hunks: -919,6 +919,7 @@ def embed_mm_inputs(; -1019,12 +1020,16 @@ def embed_mm_inputs(; symbols: embed_mm_inputs, general_mm_embed_routine，涉及 `embed_mm_inputs, general_mm_embed_routine`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_vl.py` modified +41/-18 (59 lines); hunks: -913,16 +913,37 @@ def __init__(; -963,7 +984,7 @@ def forward(; symbols: __init__, get_deepstack_embeds, forward
+  - `python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8 (37 lines); hunks: -57,19 +57,40 @@ def __init__(; -109,7 +130,7 @@ def forward(; symbols: __init__, get_input_embeddings, get_deepstack_embeds, forward
+  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1 (26 lines); hunks: -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):; -392,6 +404,9 @@ def warmup_torch_compile(self, num_tokens: int):; symbols: __init__, warmup_torch_compile, _cache_loc_dtype, capture_one_batch_size
+  - `python/sglang/srt/managers/mm_utils.py` modified +13/-6 (19 lines); hunks: -919,6 +919,7 @@ def embed_mm_inputs(; -1019,12 +1020,16 @@ def embed_mm_inputs(; symbols: embed_mm_inputs, general_mm_embed_routine
+  - `test/manual/nightly/test_vlms_piecewise_cuda_graph.py` modified +5/-3 (8 lines); hunks: -18,7 +18,9; -59,7 +61,7 @@ def run_mmmu_eval(; symbols: run_mmmu_eval, _run_vlm_mmmu_test
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -913,16 +913,37 @@ def __init__(
++        self.deepstack_embeds_buffer = None
+-        self, layer_idx: int, input_deepstack_embeds: Optional[torch.Tensor]
++        self,
++        layer_idx: int,
++        input_deepstack_embeds: Optional[torch.Tensor],
++        seq_len: int,
+diff -- python/sglang/srt/models/qwen3_vl_moe.py
+@@ -57,19 +57,40 @@ def __init__(
++        self.deepstack_embeds_buffer = None
+-        self, layer_idx: int, input_deepstack_embeds: Optional[torch.Tensor]
++        self,
++        layer_idx: int,
++        input_deepstack_embeds: Optional[torch.Tensor],
++        seq_len: int,
+diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
+@@ -245,6 +245,18 @@ def __init__(self, model_runner: ModelRunner):
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_vl.py` modified +41/-18; `python/sglang/srt/models/qwen3_vl_moe.py` modified +29/-8; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +25/-1; `python/sglang/srt/managers/mm_utils.py` modified +13/-6
+  - tests: `test/manual/nightly/test_vlms_piecewise_cuda_graph.py` modified +5/-3
+- 验证与风险: diff 自带测试面 `test/manual/nightly/test_vlms_piecewise_cuda_graph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36411 - [Perf] Optimize Qwen3-VL unique-image serving on H100
+
+- 链接: https://github.com/sgl-project/sglang/pull/36411
+- 状态/时间: merged / 2026-09-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/arg_groups/model_overrides/qwen3_vl.py`, `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/processors/qwen_vl.py`, `test/registered/unit/models/test_qwen3_vl_feature_materialization.py`；关联提交 `0a574034680b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 30 个文件，+1370/-76，可读 patch 1996 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +276/-7 (283 lines); hunks: -2,13 +2,17; -33,6 +37,11; symbols: QwenVLImagePreprocessArtifact, has_feature, cache_value, cache_size_items，涉及 `QwenVLImagePreprocessArtifact, has_feature, cache_value`；`python/sglang/srt/models/qwen3_vl.py` modified +124/-8 (132 lines); hunks: -72,6 +72,12; -1435,13 +1441,23 @@ def _get_visual_feature(; symbols: _get_visual_feature, _materialize_visual_items, _offload_packed_visual_inputs, get_input_embeddings，涉及 `_get_visual_feature, _materialize_visual_items, _offload_packed_visual_inputs`；`test/registered/unit/models/test_qwen3_vl_feature_materialization.py` modified +101/-8 (109 lines); hunks: -1,16 +1,24; -69,7 +77,7 @@ def test_processor_defers_gpu_transport_for_encoder_dp(self):; symbols: test_processor_defers_gpu_transport_for_encoder_dp, test_processor_does_not_defer_cpu_transport, test_processor_defers_cuda_ipc_for_single_tp_qwen3_vl, test_retract_reprefill_waits_for_preserved_visual_input，涉及 `test_processor_defers_gpu_transport_for_encoder_dp, test_processor_does_not_defer_cpu_transport, test_processor_defers_cuda_ipc_for_single_tp_qwen3_vl`；`python/sglang/srt/arg_groups/model_overrides/qwen3_vl.py` modified +111/-2 (113 lines); hunks: -1,20 +1,69; -30,3 +79,63 @@ def _qwen3vl_overrides(server_args: Any, hf_config: Any) -> d...; symbols: large_hopper_qwen3_vl_model_type, expand_multimodal_decode_graph_to_running_limit, _qwen3vl_overrides, _qwen3vl_hopper_serving_overrides，涉及 `large_hopper_qwen3_vl_model_type, expand_multimodal_decode_graph_to_running_limit, _qwen3vl_overrides`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +276/-7 (283 lines); hunks: -2,13 +2,17; -33,6 +37,11; symbols: QwenVLImagePreprocessArtifact, has_feature, cache_value, cache_size_items
+  - `python/sglang/srt/models/qwen3_vl.py` modified +124/-8 (132 lines); hunks: -72,6 +72,12; -1435,13 +1441,23 @@ def _get_visual_feature(; symbols: _get_visual_feature, _materialize_visual_items, _offload_packed_visual_inputs, get_input_embeddings
+  - `test/registered/unit/models/test_qwen3_vl_feature_materialization.py` modified +101/-8 (109 lines); hunks: -1,16 +1,24; -69,7 +77,7 @@ def test_processor_defers_gpu_transport_for_encoder_dp(self):; symbols: test_processor_defers_gpu_transport_for_encoder_dp, test_processor_does_not_defer_cpu_transport, test_processor_defers_cuda_ipc_for_single_tp_qwen3_vl, test_retract_reprefill_waits_for_preserved_visual_input
+  - `python/sglang/srt/arg_groups/model_overrides/qwen3_vl.py` modified +111/-2 (113 lines); hunks: -1,20 +1,69; -30,3 +79,63 @@ def _qwen3vl_overrides(server_args: Any, hf_config: Any) -> d...; symbols: large_hopper_qwen3_vl_model_type, expand_multimodal_decode_graph_to_running_limit, _qwen3vl_overrides, _qwen3vl_hopper_serving_overrides
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -2,13 +2,17 @@
+-from typing import List, Optional, Union
++from copy import deepcopy
++from dataclasses import dataclass, replace
++from functools import lru_cache
++from typing import Any, List, Optional, Union
++from transformers import BaseImageProcessor
+diff -- python/sglang/srt/models/qwen3_vl.py
+@@ -72,6 +72,12 @@
++from sglang.srt.multimodal.transport.cuda_ipc import (
++    BORROW_CUDA_IPC_FEATURE_KEY,
++    CUDA_IPC_FEATURE_COPY_EVENT_KEY,
++    RETAINED_CUDA_IPC_FEATURE_PROXY_KEY,
++    CudaIpcTensorTransportProxy,
++)
+diff -- test/registered/unit/models/test_qwen3_vl_feature_materialization.py
+@@ -1,16 +1,24 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +276/-7; `python/sglang/srt/models/qwen3_vl.py` modified +124/-8; `python/sglang/srt/arg_groups/model_overrides/qwen3_vl.py` modified +111/-2
+  - tests: `test/registered/unit/models/test_qwen3_vl_feature_materialization.py` modified +101/-8
+- 验证与风险: diff 自带测试面 `test/registered/chunked_prefill/test_mm_chunked_embedding_unit.py`, `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/mem_cache/test_radix_cache_unit.py`, `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #22839 - fix(config): Add from_dict() for Qwen3VL config classes
+
+- 链接: https://github.com/sgl-project/sglang/pull/22839
+- 状态/时间: closed / 2026-09-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+306/-0，可读 patch 389 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(config): Add from_dict() for Qwen3VL config classes」；模型线: Qwen VLM/Omni/ASR；类别: 缺陷修复；主要 diff: `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py`；技术摘要: 覆盖「fix(config): Add from_dict() for Qwen3VL config classes」；主要实现面是 `test/registered/unit/configs/test_qwen3_vl_config.py`, `python/sglang/srt/configs/qwen3_5.py`, `python/sglang/srt/configs/qwen3_vl.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object, test_qwen3vl_moe_config_dict_conversion，涉及 `TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object`；`python/sglang/srt/configs/qwen3_5.py` modified +71/-0 (71 lines); hunks: -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):; -112,6 +123,55 @@ class Qwen3_5MoeVisionConfig(Qwen3_5VisionConfig):; symbols: Qwen3_5Config, from_dict, __init__, Qwen3_5MoeVisionConfig，涉及 `Qwen3_5Config, from_dict, __init__`；`python/sglang/srt/configs/qwen3_vl.py` modified +30/-0 (30 lines); hunks: -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):; -251,11 +262,15 @@ def __init__(; symbols: Qwen3VLConfig, from_dict, __init__, Qwen3VLMoeConfig，涉及 `Qwen3VLConfig, from_dict, __init__`；`python/sglang/srt/configs/__init__.py` modified +3/-0 (3 lines); hunks: -25,6 +25,7; -65,4 +66,6。
+- 代码 diff 细节:
+  - `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0 (198 lines); hunks: -0,0 +1,198; symbols: TestQwen3VLConfigFromDict, test_qwen3vl_config_dict_conversion, test_qwen3vl_config_with_object, test_qwen3vl_moe_config_dict_conversion
+  - `python/sglang/srt/configs/qwen3_5.py` modified +71/-0 (71 lines); hunks: -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):; -112,6 +123,55 @@ class Qwen3_5MoeVisionConfig(Qwen3_5VisionConfig):; symbols: Qwen3_5Config, from_dict, __init__, Qwen3_5MoeVisionConfig
+  - `python/sglang/srt/configs/qwen3_vl.py` modified +30/-0 (30 lines); hunks: -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):; -251,11 +262,15 @@ def __init__(; symbols: Qwen3VLConfig, from_dict, __init__, Qwen3VLMoeConfig
+  - `python/sglang/srt/configs/__init__.py` modified +3/-0 (3 lines); hunks: -25,6 +25,7; -65,4 +66,6
+  - `python/sglang/srt/utils/hf_transformers_utils.py` modified +4/-0 (4 lines); hunks: -87,6 +87,8; -121,6 +123,8
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/configs/test_qwen3_vl_config.py
+@@ -0,0 +1,198 @@
++"""Unit tests for qwen3_vl and qwen3_5 config from_dict() handling.
++This tests the fix for transformers 5.5.0 compatibility where nested
++vision_config and text_config dicts need to be converted to config objects.
++"""
++import json
++import unittest
+diff -- python/sglang/srt/configs/qwen3_5.py
+@@ -78,6 +78,17 @@ class Qwen3_5Config(PretrainedConfig):
++    @classmethod
++    def from_dict(cls, config_dict, **kwargs):
++        config = super().from_dict(config_dict, **kwargs)
++        if isinstance(getattr(config, "vision_config", None), dict):
++            config.vision_config = cls.sub_configs["vision_config"](
++                **config.vision_config
+diff -- python/sglang/srt/configs/qwen3_vl.py
+@@ -236,6 +236,17 @@ class Qwen3VLConfig(PretrainedConfig):
+```
+
+- 已读文件:
+  - tests: `test/registered/unit/configs/test_qwen3_vl_config.py` added +198/-0
+  - runtime: `python/sglang/srt/configs/qwen3_5.py` modified +71/-0; `python/sglang/srt/configs/qwen3_vl.py` modified +30/-0; `python/sglang/srt/configs/__init__.py` modified +3/-0; `python/sglang/srt/utils/hf_transformers_utils.py` modified +4/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/configs/test_qwen3_vl_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #39278 - [Fix][Qwen-VL] Normalize sentinel on artifact fast path
+
+- 链接: https://github.com/sgl-project/sglang/pull/39278
+- 状态/时间: merged / 2026-09-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/qwen_vl.py`；关联提交 `b510881157b8`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+61/-19，可读 patch 119 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +61/-19 (80 lines); hunks: -393,12 +393,13 @@ def __init__(self, hf_config, server_args, _processor, *ar...; -864,8 +865,12 @@ def compose_image_artifacts(; symbols: __init__, compose_image_artifacts, _normalize_prompt_for_fast_path，涉及 `__init__, compose_image_artifacts, _normalize_prompt_for_fast_path`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +61/-19 (80 lines); hunks: -393,12 +393,13 @@ def __init__(self, hf_config, server_args, _processor, *ar...; -864,8 +865,12 @@ def compose_image_artifacts(; symbols: __init__, compose_image_artifacts, _normalize_prompt_for_fast_path
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/qwen_vl.py
+@@ -393,12 +393,13 @@ def __init__(self, hf_config, server_args, _processor, *args, **kwargs):
++        # Also match the legacy sglang <image> sentinel used by /generate,
++        # so the artifact fast path can normalize it before build_input_ids.
+-            # The regex that matches expanded image tokens.
+-                r"<\|vision_start\|>(?:<\|image_pad\|>)+<\|vision_end\|>"
++                r"<\|vision_start\|>(?:<\|image_pad\|>)+<\|vision_end\|>|<image>"
+@@ -864,8 +865,12 @@ def compose_image_artifacts(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +61/-19
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/qwen_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

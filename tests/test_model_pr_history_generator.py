@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -43,6 +44,24 @@ class TestModelHistoryConfiguration(unittest.TestCase):
         )
         self.assertNotIn("moss-vl", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
         self.assertNotIn("qwen38", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
+
+    def test_generated_inventory_does_not_claim_manual_diff_review(self):
+        bundle = self.mod.PRBundle(
+            framework="tokenspeed", repo="lightseekorg/tokenspeed", number=1,
+            info={"number": 1, "title": "Fuse query preparation", "state": "closed",
+                  "merged_at": "2026-09-21T00:00:00Z"},
+            files=[{"filename": "kernel.py", "additions": 1, "deletions": 0,
+                    "changes": 1, "status": "modified", "patch": "@@ -1 +1 @@\n+x = y"}],
+            trace=self.mod.TraceInfo(), source_tags=set(),
+        )
+        en = self.mod.card_en(bundle, "DeepSeek V4.1")
+        zh = self.mod.card_zh(bundle, "DeepSeek V4.1")
+        self.assertIn("not a manual audit", en)
+        self.assertIn("Manual review pending", en)
+        self.assertNotIn("- Diff scope read:", en)
+        self.assertNotIn("- Reviewed files:", en)
+        self.assertIn("不是人工审计", zh)
+        self.assertNotIn("- 已读文件:", zh)
 
     def test_every_framework_model_has_title_filter_and_subject_hints(self):
         for framework, models in self.mod.FRAMEWORK_MODEL_ORDER.items():
@@ -185,7 +204,8 @@ class TestModelHistoryConfiguration(unittest.TestCase):
                 return "base-sha\n"
             return history
 
-        with mock.patch.object(self.mod, "run", side_effect=fake_run) as run:
+        with mock.patch.object(self.mod, "run", side_effect=fake_run) as run, \
+             mock.patch.object(Path, "exists", return_value=False):
             numbers = self.mod.extract_existing_prs("sglang", "kimi")
 
         self.assertEqual(numbers, {100, 101})
@@ -301,7 +321,8 @@ class TestModelHistoryConfiguration(unittest.TestCase):
                 return "base-sha\n"
             return history
 
-        with mock.patch.object(self.mod, "run", side_effect=fake_run):
+        with mock.patch.object(self.mod, "run", side_effect=fake_run), \
+             mock.patch.object(Path, "exists", return_value=False):
             cards = self.mod.extract_existing_cards("vllm", "kimi", "en")
             rows = self.mod.extract_existing_timeline_rows("vllm", "kimi", "en")
 
@@ -368,6 +389,125 @@ class TestModelHistoryConfiguration(unittest.TestCase):
             [file["filename"] for file in self.mod.top_files(bundle)],
             ["vllm/model_executor/models/model.py"],
         )
+
+    def test_new_framework_filters_split_neighboring_generations(self):
+        trt_files = [
+            "tensorrt_llm/_torch/models/modeling_deepseekv3.py",
+            "tensorrt_llm/_torch/models/modeling_deepseekv4.py",
+            "cpp/tensorrt_llm/kernels/kimiK3AttnRes/attnResFwd.cu",
+            "tensorrt_llm/_torch/models/modeling_qwen4_exp.py",
+        ]
+        self.assertEqual(
+            self.mod.selected_files("tensorrt_llm", "deepseek-v4", trt_files),
+            ["tensorrt_llm/_torch/models/modeling_deepseekv4.py"],
+        )
+        self.assertEqual(
+            self.mod.selected_files("tensorrt_llm", "kimi", trt_files),
+            ["cpp/tensorrt_llm/kernels/kimiK3AttnRes/attnResFwd.cu"],
+        )
+        sglang_files = [
+            "python/sglang/srt/models/hunyuan_v4.py",
+            "python/sglang/multimodal_gen/runtime/models/dits/hunyuan3d.py",
+            "python/sglang/srt/models/qwen4_exp.py",
+            "python/sglang/srt/models/bailing_moe_v3.py",
+        ]
+        self.assertEqual(
+            self.mod.selected_files("sglang", "hunyuan4", sglang_files),
+            ["python/sglang/srt/models/hunyuan_v4.py"],
+        )
+        self.assertEqual(
+            self.mod.selected_files("sglang", "ling3", sglang_files),
+            ["python/sglang/srt/models/bailing_moe_v3.py"],
+        )
+
+    def test_deepseek_v41_keeps_only_v41_subjects(self):
+        traces = {
+            1: self.mod.TraceInfo(subjects={"dsv4.1: vision tower (#1)"}),
+            2: self.mod.TraceInfo(subjects={"[DSV4] fix mega moe (#2)"}),
+            3: self.mod.TraceInfo(subjects={"DeepSeek-V4.1 cookbook (#3)"}),
+        }
+        self.assertEqual(
+            set(self.mod.filter_traces_by_subject("sglang", "deepseek-v41", traces)),
+            {1, 3},
+        )
+
+    def test_preamble_keeps_manual_notes_but_drops_embedded_cards(self):
+        doc = """# TensorRT-LLM Kimi Model PR Optimization History
+
+## 2026-08-23 Source Head Refresh
+
+Result: PR #16805 is promoted.
+
+### PR #16805 - Fix draft-token accounting
+
+- Link: https://github.com/NVIDIA/TensorRT-LLM/pull/16805
+- Status/date: merged / 2026-07-27
+
+## 2026-06-27 PR Backfill Audit
+
+Filter used in this pass.
+
+## Implementation File Coverage
+
+| File | Git-traced PRs |
+"""
+        with mock.patch.object(self.mod, "run", return_value=doc), \
+             mock.patch.object(Path, "exists", return_value=False):
+            preamble = self.mod.extract_preamble("tensorrt_llm", "kimi", "en")
+        self.assertIn("Result: PR #16805 is promoted.", preamble)
+        self.assertIn("## 2026-06-27 PR Backfill Audit", preamble)
+        self.assertNotIn("### PR #16805", preamble)
+        self.assertNotIn("Implementation File Coverage", preamble)
+
+    def test_uncommitted_manual_notes_and_cards_survive_regeneration(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            history = root / "model-pr-optimization-history"
+            path = history / "tokenspeed" / "deepseek-v41" / "README.en.md"
+            path.parent.mkdir(parents=True)
+            path.write_text("# Model history\n\n## Manual note\n\nReviewed now.\n\n"
+                            "## Implementation File Coverage\n\n"
+                            "### PR #1 - New review\n\n- Key implementation: manual current.\n")
+            committed = ("# Model history\n\n## Implementation File Coverage\n\n"
+                         "### PR #1 - Old review\n\n- Key implementation: old.\n\n"
+                         "### PR #2 - Historical review\n\n- Key implementation: recovered.\n")
+            def fake_run(cmd, *args, **kwargs):
+                return "" if cmd[1] == "merge-base" else committed
+            with mock.patch.object(self.mod, "ROOT", root), \
+                 mock.patch.object(self.mod, "HISTORY_ROOT", history), \
+                 mock.patch.object(self.mod, "run", side_effect=fake_run):
+                preamble = self.mod.extract_preamble("tokenspeed", "deepseek-v41", "en")
+                cards = self.mod.extract_existing_cards("tokenspeed", "deepseek-v41", "en")
+            self.assertIn("Reviewed now.", preamble)
+            self.assertIn("manual current.", cards[1])
+            self.assertNotIn("Old review", cards[1])
+            self.assertIn("recovered.", cards[2])
+
+    def test_merged_cards_with_rows_are_reused_without_refetch(self):
+        merged = "### PR #1 - A\n\n- Status/date: merged / 2026-01-01\n"
+        merged_zh = "### PR #1 - A\n\n- 状态/时间: merged / 2026-01-01\n"
+        open_card = "### PR #2 - B\n\n- Status/date: open / 2026-01-02\n"
+        row = "| 2026-01-01 | [#1](https://github.com/x/y/pull/1) | merged | A | `a.py` |"
+        reuse = self.mod.reusable_existing_numbers(
+            {1, 2, 3},
+            {1: merged, 2: open_card},
+            {1: merged_zh, 2: open_card},
+            {1: row, 2: row},
+            {1: row},
+        )
+        self.assertEqual(reuse, {1})
+
+        bundles = self.mod.reused_bundles(
+            "sglang", {1}, {}, {1: {"git-trace"}}, {1: merged}, {1: merged_zh}
+        )
+        rendered = self.mod.render_history_en(
+            "sglang", "kimi", [], {}, bundles, 0, {1: merged}, {1: row},
+            "Manual addendum.",
+        )
+        self.assertIn("- Status/date: merged / 2026-01-01", rendered)
+        self.assertIn(row, rendered)
+        self.assertIn("Manual addendum.\n\n## Implementation File Coverage", rendered)
+        self.assertTrue(rendered.startswith("# SGLang Kimi"))
 
 
 if __name__ == "__main__":

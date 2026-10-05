@@ -59,7 +59,6 @@ frameworks:
       moe_runner_backend: triton
       model_path: Qwen/Qwen3-Coder-480B-A35B-Instruct
       mem_fraction_static: 0.82
-      schedule_policy: lpm
     search_space:
       prefill_attention_backend:
       - flashinfer
@@ -99,8 +98,6 @@ frameworks:
       - 4096
       enable_prefix_caching:
       - true
-      block_size:
-      - 16
   tensorrt_llm:
     enabled: true
     server_command: trtllm-serve serve

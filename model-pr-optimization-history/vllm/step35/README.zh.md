@@ -1,18 +1,20 @@
-# vllm Step 3.5 模型 PR 优化历史
+# vLLM Step 3.5 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `tests/models/multimodal/processing/test_step3_vl_image_embeds.py` | 无直接 PR 号提交 |
-| `tests/reasoning/test_step3p5_reasoning_parser.py` | [#34211](https://github.com/vllm-project/vllm/pull/34211) |
-| `tests/tool_parsers/test_step3p5_tool_parser.py` | [#33690](https://github.com/vllm-project/vllm/pull/33690) |
+| `tests/parser/engine/test_step3p5.py` | [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `tests/reasoning/test_step3p5_reasoning_parser.py` | [#34211](https://github.com/vllm-project/vllm/pull/34211), [#53174](https://github.com/vllm-project/vllm/pull/53174), [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `tests/tool_parsers/test_step3p5_tool_parser.py` | [#33690](https://github.com/vllm-project/vllm/pull/33690), [#51810](https://github.com/vllm-project/vllm/pull/51810), [#59321](https://github.com/vllm-project/vllm/pull/59321) |
 | `vllm/model_executor/models/step3_text.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/step3_vl.py` | 无直接 PR 号提交 |
 | `vllm/model_executor/models/step3p5.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33755](https://github.com/vllm-project/vllm/pull/33755), [#34478](https://github.com/vllm-project/vllm/pull/34478), [#41892](https://github.com/vllm-project/vllm/pull/41892) |
 | `vllm/model_executor/models/step3p5_mtp.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#48883](https://github.com/vllm-project/vllm/pull/48883) |
-| `vllm/reasoning/step3p5_reasoning_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#34211](https://github.com/vllm-project/vllm/pull/34211) |
-| `vllm/tool_parsers/step3p5_tool_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33690](https://github.com/vllm-project/vllm/pull/33690) |
+| `vllm/parser/step3p5.py` | [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `vllm/reasoning/step3p5_engine_reasoning_parser.py` | [#59321](https://github.com/vllm-project/vllm/pull/59321) |
+| `vllm/tool_parsers/step3p5_tool_parser.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523), [#33690](https://github.com/vllm-project/vllm/pull/33690), [#51810](https://github.com/vllm-project/vllm/pull/51810), [#59321](https://github.com/vllm-project/vllm/pull/59321) |
 | `vllm/transformers_utils/configs/step3_vl.py` | 无直接 PR 号提交 |
 | `vllm/transformers_utils/configs/step3p5.py` | [#33523](https://github.com/vllm-project/vllm/pull/33523) |
 | `vllm/transformers_utils/processors/step3_vl.py` | 无直接 PR 号提交 |
@@ -20,9 +22,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 6
+- git 追溯 PR 数: 10
 - 原文档显式引用补充 PR 数: 4
-- 当前文档总 PR 数: 10
+- 当前文档总 PR 数: 14
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -40,6 +42,10 @@
 | 2026-06-03 | [#44346](https://github.com/vllm-project/vllm/pull/44346) | merged | [Refactor] Suppress SyntaxWarning from ast.literal_eval in tool parsers | `vllm/tool_parsers/utils.py`, `vllm/tool_parsers/hy_v3_tool_parser.py`, `vllm/tool_parsers/minicpm5xml_tool_parser.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
+| 2026-07-29 | [#48883](https://github.com/vllm-project/vllm/pull/48883) | merged | fix(step3p5-mtp): honor exclude_modules for the MTP head via prefix | `vllm/model_executor/models/step3p5_mtp.py` |
+| 2026-09-09 | [#53174](https://github.com/vllm-project/vllm/pull/53174) | merged | [Bugfix] Fix Step-3.5 reasoning parser for structured outputs | `tests/reasoning/test_step3p5_reasoning_parser.py`, `vllm/reasoning/step3p5_reasoning_parser.py` |
+| 2026-09-29 | [#51810](https://github.com/vllm-project/vllm/pull/51810) | merged | [Bugfix] Route Step3p5 forced tool choices through XML parser | `vllm/tool_parsers/step3p5_tool_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py` |
+| 2026-10-01 | [#59321](https://github.com/vllm-project/vllm/pull/59321) | merged | [Frontend] Port Step-3.5 parsers to the streaming parser engine | `vllm/tool_parsers/step3p5_tool_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`, `tests/reasoning/test_step3p5_reasoning_parser.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -411,6 +417,149 @@ diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
   - docs: `docs/design/cuda_graphs_multimodal.md` modified +63/-16; `examples/generate/multimodal/vision_language_offline.py` modified +3/-2
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +41/-15
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`, `tests/v1/cudagraph/test_encoder_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #48883 - fix(step3p5-mtp): honor exclude_modules for the MTP head via prefix
+
+- 链接: https://github.com/vllm-project/vllm/pull/48883
+- 状态/时间: merged / 2026-07-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/step3p5_mtp.py`；关联提交 `f98061ce6cb0`；保留自原 history/skill 显式引用
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+11/-2，可读 patch 31 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/step3p5_mtp.py` modified +11/-2 (13 lines); hunks: -32,11 +32,18 @@ def __init__(; -55,7 +62,9 @@ def __init__(; symbols: __init__, forward，涉及 `__init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/step3p5_mtp.py` modified +11/-2 (13 lines); hunks: -32,11 +32,18 @@ def __init__(; -55,7 +62,9 @@ def __init__(; symbols: __init__, forward
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/step3p5_mtp.py
+@@ -32,11 +32,18 @@ def __init__(
++        prefix: str = "",
++        # Give the head its prefix so the quant config's exclude_modules matcher
++        # can skip it; without one it defaults to "" and never matches, so a
++        # checkpoint-excluded (BF16) MTP head gets quantized -> load crash.
+-            config.vocab_size, config.hidden_size, quant_config=quant_config
++            config.vocab_size,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/step3p5_mtp.py` modified +11/-2
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/step3p5_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #53174 - [Bugfix] Fix Step-3.5 reasoning parser for structured outputs
+
+- 链接: https://github.com/vllm-project/vllm/pull/53174
+- 状态/时间: merged / 2026-09-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/reasoning/test_step3p5_reasoning_parser.py`；关联提交 `26fec6d183c3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+26/-91，可读 patch 201 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/reasoning/test_step3p5_reasoning_parser.py` modified +20/-23 (43 lines); hunks: -25,12 +25,11 @@ def step3p5_tokenizer():; -72,7 +71,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning，涉及 `step3p5_tokenizer, test_reasoning`；`vllm/reasoning/step3p5_reasoning_parser.py` modified +6/-68 (74 lines); hunks: -1,7 +1,7; -18,9 +18,11 @@ class Step3p5ReasoningParser(BaseThinkingReasoningParser):; symbols: Step3p5ReasoningParser, __init__, is_reasoning_end, is_reasoning_end_streaming，涉及 `Step3p5ReasoningParser, __init__, is_reasoning_end`。
+- 代码 diff 细节:
+  - `tests/reasoning/test_step3p5_reasoning_parser.py` modified +20/-23 (43 lines); hunks: -25,12 +25,11 @@ def step3p5_tokenizer():; -72,7 +71,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning
+  - `vllm/reasoning/step3p5_reasoning_parser.py` modified +6/-68 (74 lines); hunks: -1,7 +1,7; -18,9 +18,11 @@ class Step3p5ReasoningParser(BaseThinkingReasoningParser):; symbols: Step3p5ReasoningParser, __init__, is_reasoning_end, is_reasoning_end_streaming
+- 关键代码摘录:
+
+```diff
+diff -- tests/reasoning/test_step3p5_reasoning_parser.py
+@@ -25,12 +25,11 @@ def step3p5_tokenizer():
+-# need to get into parser again to remove newline after </think>
+-    "is_reasoning_end": False,
++    "is_reasoning_end": True,
+@@ -72,7 +71,7 @@ def step3p5_tokenizer():
+-    "is_reasoning_end": False,
++    "is_reasoning_end": True,
+diff -- vllm/reasoning/step3p5_reasoning_parser.py
+@@ -1,7 +1,7 @@
+-from collections.abc import Iterable, Sequence
++from collections.abc import Sequence
+@@ -18,9 +18,11 @@ class Step3p5ReasoningParser(BaseThinkingReasoningParser):
+-    newline immediately before and/or after the </think> token. This parser trims:
+-      - the newline right before </think>
+-      - the newline right after </think>
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/reasoning/test_step3p5_reasoning_parser.py` modified +20/-23
+  - runtime: `vllm/reasoning/step3p5_reasoning_parser.py` modified +6/-68
+- 验证与风险: diff 自带测试面 `tests/reasoning/test_step3p5_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #51810 - [Bugfix] Route Step3p5 forced tool choices through XML parser
+
+- 链接: https://github.com/vllm-project/vllm/pull/51810
+- 状态/时间: merged / 2026-09-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py`；关联提交 `5e887a078b76`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+83/-82，可读 patch 240 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/tool_parsers/step3p5_tool_parser.py` modified +15/-61 (76 lines); hunks: -22,7 +22,11; -421,43 +425,14 @@ def _fix_missing_equals_in_function_tag(self, chunk: str)...; symbols: _fix_missing_equals_in_function_tag, _validate_function_name, _validate_parameter_name, _should_skip_element，涉及 `_fix_missing_equals_in_function_tag, _validate_function_name, _validate_parameter_name`；`tests/tool_parsers/test_step3p5_tool_parser.py` modified +25/-21 (46 lines); hunks: -5,6 +5,7; -386,26 +387,29 @@ def test_extract_tool_calls_fallback_no_tags(step3p5_tool_...; symbols: test_extract_tool_calls_fallback_no_tags, test_extract_tool_calls_type_conversion，涉及 `test_extract_tool_calls_fallback_no_tags, test_extract_tool_calls_type_conversion`。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/step3p5_tool_parser.py` modified +15/-61 (76 lines); hunks: -22,7 +22,11; -421,43 +425,14 @@ def _fix_missing_equals_in_function_tag(self, chunk: str)...; symbols: _fix_missing_equals_in_function_tag, _validate_function_name, _validate_parameter_name, _should_skip_element
+  - `tests/tool_parsers/test_step3p5_tool_parser.py` modified +25/-21 (46 lines); hunks: -5,6 +5,7; -386,26 +387,29 @@ def test_extract_tool_calls_fallback_no_tags(step3p5_tool_...; symbols: test_extract_tool_calls_fallback_no_tags, test_extract_tool_calls_type_conversion
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/step3p5_tool_parser.py
+@@ -22,7 +22,11 @@
+-from vllm.tool_parsers.utils import safe_literal_eval
++from vllm.tool_parsers.utils import (
++    find_tool_name,
++    find_tool_properties,
++    safe_literal_eval,
++)
+diff -- tests/tool_parsers/test_step3p5_tool_parser.py
+@@ -5,6 +5,7 @@
++from openai.types.responses import FunctionTool
+@@ -386,26 +387,29 @@ def test_extract_tool_calls_fallback_no_tags(step3p5_tool_parser, sample_tools):
+-def test_extract_tool_calls_type_conversion(step3p5_tokenizer):
+-    """Test parameter type conversion based on tool schema."""
+-    tools = [
+-        ChatCompletionToolsParam(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/tool_parsers/step3p5_tool_parser.py` modified +15/-61
+  - tests: `tests/tool_parsers/test_step3p5_tool_parser.py` modified +25/-21
+- 验证与风险: diff 自带测试面 `tests/tool_parsers/test_step3p5_tool_parser.py`, `tests/tool_parsers/test_structural_tag_registry.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #59321 - [Frontend] Port Step-3.5 parsers to the streaming parser engine
+
+- 链接: https://github.com/vllm-project/vllm/pull/59321
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/parser/engine/test_step3p5.py`, `tests/reasoning/test_step3p5_reasoning_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`, `vllm/parser/step3p5.py`, `vllm/reasoning/step3p5_engine_reasoning_parser.py` 等 6 个文件；关联提交 `a5105dba0561`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 12 个文件，+236/-1647，可读 patch 2026 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/tool_parsers/step3p5_tool_parser.py` modified +2/-1458 (1460 lines); hunks: -1,1464 +1,8; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks，涉及 `StreamingXMLToolCallParser, __init__, reset_streaming_state`；`tests/tool_parsers/test_step3p5_tool_parser.py` modified +12/-57 (69 lines); hunks: -847,7 +847,7 @@ def test_extract_tool_calls_streaming_incremental(; -867,43 +867,6 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental, test_extract_tool_calls_complex_type_with_single_quote, test_extract_tool_calls_streaming_mixed_content_and_multiple_tool_calls, test_extract_tool_calls_non_streaming_mixed_content_and_multiple_tool_calls，涉及 `test_extract_tool_calls_streaming_incremental, test_extract_tool_calls_complex_type_with_single_quote, test_extract_tool_calls_streaming_mixed_content_and_multiple_tool_calls`；`tests/reasoning/test_step3p5_reasoning_parser.py` modified +9/-9 (18 lines); hunks: -4,8 +4,8; -112,7 +112,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning，涉及 `step3p5_tokenizer, test_reasoning`；`vllm/reasoning/step3p5_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6。
+- 代码 diff 细节:
+  - `vllm/tool_parsers/step3p5_tool_parser.py` modified +2/-1458 (1460 lines); hunks: -1,1464 +1,8; symbols: StreamingXMLToolCallParser, __init__, reset_streaming_state, parse_single_streaming_chunks
+  - `tests/tool_parsers/test_step3p5_tool_parser.py` modified +12/-57 (69 lines); hunks: -847,7 +847,7 @@ def test_extract_tool_calls_streaming_incremental(; -867,43 +867,6 @@ def test_extract_tool_calls_streaming_incremental(; symbols: test_extract_tool_calls_streaming_incremental, test_extract_tool_calls_complex_type_with_single_quote, test_extract_tool_calls_streaming_mixed_content_and_multiple_tool_calls, test_extract_tool_calls_non_streaming_mixed_content_and_multiple_tool_calls
+  - `tests/reasoning/test_step3p5_reasoning_parser.py` modified +9/-9 (18 lines); hunks: -4,8 +4,8; -112,7 +112,7 @@ def step3p5_tokenizer():; symbols: step3p5_tokenizer, test_reasoning
+  - `vllm/reasoning/step3p5_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6
+  - `tests/parser/engine/test_step3p5.py` added +122/-0 (122 lines); hunks: -0,0 +1,122; symbols: mock_tokenizer, parser, test_parser_names_resolve_to_engine_adapters, test_enable_thinking_false_is_ignored
+- 关键代码摘录:
+
+```diff
+diff -- vllm/tool_parsers/step3p5_tool_parser.py
+@@ -1,1464 +1,8 @@
+-import json
+-from collections.abc import Sequence
+-from typing import Any
+-from xml.parsers.expat import ParserCreate
+-import regex as re
++from vllm.parser.engine.registered_adapters import Step3p5ParserToolAdapter
+diff -- tests/tool_parsers/test_step3p5_tool_parser.py
+@@ -847,7 +847,7 @@ def test_extract_tool_calls_streaming_incremental(
+-            assert chunk.tool_calls[0].function.arguments == ""
++            assert not chunk.tool_calls[0].function.arguments
+@@ -867,43 +867,6 @@ def test_extract_tool_calls_streaming_incremental(
+-def test_extract_tool_calls_complex_type_with_single_quote(step3p5_tokenizer):
+-    """Test parameter type conversion based on tool schema."""
+-    tools = [
+diff -- tests/reasoning/test_step3p5_reasoning_parser.py
+@@ -4,8 +4,8 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/tool_parsers/step3p5_tool_parser.py` modified +2/-1458; `vllm/reasoning/step3p5_engine_reasoning_parser.py` added +6/-0; `vllm/parser/step3p5.py` added +49/-0
+  - tests: `tests/tool_parsers/test_step3p5_tool_parser.py` modified +12/-57; `tests/reasoning/test_step3p5_reasoning_parser.py` modified +9/-9; `tests/parser/engine/test_step3p5.py` added +122/-0
+- 验证与风险: diff 自带测试面 `tests/parser/engine/test_step3p5.py`, `tests/parser/engine/trace_builder.py`, `tests/reasoning/test_step3p5_reasoning_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

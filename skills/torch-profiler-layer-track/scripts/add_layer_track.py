@@ -49,6 +49,8 @@ def annotate(
     device=None,
     first_layer=0,
     end_anchor_regex=None,
+    anchor_stride=1,
+    extra_anchors_per_pass=0,
 ):
     if num_layers < 1 or passes < 1 or anchor_offset < 0 or first_layer < 0:
         raise ValueError(
@@ -58,6 +60,8 @@ def annotate(
         raise ValueError(
             "Supply a phase and evidence establishing the first layer/anchor"
         )
+    if anchor_stride < 1 or extra_anchors_per_pass < 0:
+        raise ValueError("Anchor stride must be positive; extra count nonnegative")
     events = event_list(document)
     if any(e.get("cat") == CATEGORY for e in events):
         raise ValueError(
@@ -100,11 +104,18 @@ def annotate(
         raise ValueError("Selected GPU contains invalid kernel timestamps/durations")
     anchors.sort(key=lambda e: e["ts"])
     count = num_layers * passes
-    selected = anchors[anchor_offset : anchor_offset + count]
-    if len(selected) != count:
+    raw_per_pass = num_layers * anchor_stride + extra_anchors_per_pass
+    needed = raw_per_pass * passes
+    if len(anchors) - anchor_offset < needed:
         raise ValueError(
-            f"Need {count} anchors from offset {anchor_offset}; found {len(selected)}"
+            f"Need {needed} anchors from offset {anchor_offset}; found {len(anchors) - anchor_offset}"
         )
+    selected_indices = [
+        anchor_offset + p * raw_per_pass + layer * anchor_stride
+        for p in range(passes)
+        for layer in range(num_layers)
+    ]
+    selected = [anchors[i] for i in selected_indices]
     if any(a["ts"] >= b["ts"] for a, b in zip(selected, selected[1:])):
         raise ValueError("Anchors must have distinct increasing timestamps")
     terminal_pattern = re.compile(end_anchor_regex) if end_anchor_regex else None
@@ -137,9 +148,11 @@ def annotate(
     for index, anchor in enumerate(selected):
         pass_id, layer_index = divmod(index, num_layers)
         layer_id = first_layer + layer_index
-        global_index = anchor_offset + index
+        global_index = selected_indices[index]
         next_anchor = (
-            anchors[global_index + 1] if global_index + 1 < len(anchors) else None
+            anchors[global_index + anchor_stride]
+            if global_index + anchor_stride < len(anchors)
+            else None
         )
         upper = next_anchor["ts"] if next_anchor else math.inf
         terminal = None
@@ -209,6 +222,8 @@ def annotate(
         "anchor_regex": anchor_regex,
         "end_anchor_regex": end_anchor_regex,
         "anchor_offset": anchor_offset,
+        "anchor_stride": anchor_stride,
+        "extra_anchors_per_pass": extra_anchors_per_pass,
         "matching_anchor_count": len(anchors),
         "num_layers": num_layers,
         "first_layer": first_layer,
@@ -240,6 +255,8 @@ def main():
         required=True,
         help="Index of a verified first layer in sorted anchors",
     )
+    parser.add_argument("--anchor-stride", type=int, default=1)
+    parser.add_argument("--extra-anchors-per-pass", type=int, default=0)
     parser.add_argument("--passes", type=int, default=1)
     parser.add_argument("--first-layer", type=int, default=0)
     parser.add_argument("--phase", required=True)
@@ -277,6 +294,8 @@ def main():
             device=args.device,
             first_layer=args.first_layer,
             end_anchor_regex=args.end_anchor_regex,
+            anchor_stride=args.anchor_stride,
+            extra_anchors_per_pass=args.extra_anchors_per_pass,
         )
         with args.trace.open("rb") as source:
             digest = hashlib.sha256()

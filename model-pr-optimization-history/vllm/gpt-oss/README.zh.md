@@ -1,4 +1,4 @@
-# vllm GPT-OSS 模型 PR 优化历史
+# vLLM GPT-OSS 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -26,19 +26,21 @@
 | `tests/evals/gpt_oss/configs/models-spark.txt` | 无直接 PR 号提交 |
 | `tests/evals/gpt_oss/configs/models-xpu.txt` | [#48703](https://github.com/vllm-project/vllm/pull/48703) |
 | `tests/evals/gpt_oss/conftest.py` | [#24920](https://github.com/vllm-project/vllm/pull/24920) |
+| `tests/evals/gpt_oss/run_gpqa_eval.py` | 无直接 PR 号提交 |
 | `tests/evals/gpt_oss/test_gpqa_correctness.py` | [#24920](https://github.com/vllm-project/vllm/pull/24920), [#26030](https://github.com/vllm-project/vllm/pull/26030) |
 | `tests/evals/gsm8k/configs/humming/gpt-oss-20b-humming-act-fp8.yaml` | 无直接 PR 号提交 |
 | `tests/evals/gsm8k/configs/humming/gpt-oss-20b-humming.yaml` | 无直接 PR 号提交 |
-| `tests/kernels/moe/test_gpt_oss_triton_kernels.py` | [#22421](https://github.com/vllm-project/vllm/pull/22421), [#29008](https://github.com/vllm-project/vllm/pull/29008), [#37683](https://github.com/vllm-project/vllm/pull/37683), [#39007](https://github.com/vllm-project/vllm/pull/39007) |
+| `tests/kernels/moe/test_gpt_oss_triton_kernels.py` | [#22421](https://github.com/vllm-project/vllm/pull/22421), [#29008](https://github.com/vllm-project/vllm/pull/29008), [#37683](https://github.com/vllm-project/vllm/pull/37683), [#39007](https://github.com/vllm-project/vllm/pull/39007), [#45457](https://github.com/vllm-project/vllm/pull/45457), [#55934](https://github.com/vllm-project/vllm/pull/55934) |
+| `tests/model_executor/model_loader/test_gpt_oss_weight_loading.py` | [#52209](https://github.com/vllm-project/vllm/pull/52209) |
 | `tests/models/quantization/test_gpt_oss.py` | [#29008](https://github.com/vllm-project/vllm/pull/29008), [#35806](https://github.com/vllm-project/vllm/pull/35806), [#35887](https://github.com/vllm-project/vllm/pull/35887), [#36174](https://github.com/vllm-project/vllm/pull/36174), [#43571](https://github.com/vllm-project/vllm/pull/43571) |
-| `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` | [#39007](https://github.com/vllm-project/vllm/pull/39007), [#43135](https://github.com/vllm-project/vllm/pull/43135) |
-| `vllm/model_executor/models/gpt_oss.py` | [#22327](https://github.com/vllm-project/vllm/pull/22327), [#22401](https://github.com/vllm-project/vllm/pull/22401), [#22508](https://github.com/vllm-project/vllm/pull/22508), [#22538](https://github.com/vllm-project/vllm/pull/22538), [#22678](https://github.com/vllm-project/vllm/pull/22678), [#22948](https://github.com/vllm-project/vllm/pull/22948), [#22951](https://github.com/vllm-project/vllm/pull/22951), [#23613](https://github.com/vllm-project/vllm/pull/23613), [#23680](https://github.com/vllm-project/vllm/pull/23680), [#23815](https://github.com/vllm-project/vllm/pull/23815), [#24032](https://github.com/vllm-project/vllm/pull/24032), [#25246](https://github.com/vllm-project/vllm/pull/25246), ... (28 total) |
+| `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` | [#39007](https://github.com/vllm-project/vllm/pull/39007), [#43135](https://github.com/vllm-project/vllm/pull/43135), [#45457](https://github.com/vllm-project/vllm/pull/45457), [#55934](https://github.com/vllm-project/vllm/pull/55934) |
+| `vllm/model_executor/models/gpt_oss.py` | [#22327](https://github.com/vllm-project/vllm/pull/22327), [#22401](https://github.com/vllm-project/vllm/pull/22401), [#22446](https://github.com/vllm-project/vllm/pull/22446), [#22508](https://github.com/vllm-project/vllm/pull/22508), [#22538](https://github.com/vllm-project/vllm/pull/22538), [#22678](https://github.com/vllm-project/vllm/pull/22678), [#22948](https://github.com/vllm-project/vllm/pull/22948), [#22951](https://github.com/vllm-project/vllm/pull/22951), [#23613](https://github.com/vllm-project/vllm/pull/23613), [#23680](https://github.com/vllm-project/vllm/pull/23680), [#23807](https://github.com/vllm-project/vllm/pull/23807), [#23815](https://github.com/vllm-project/vllm/pull/23815), ... (32 total) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 41
-- 原文档显式引用补充 PR 数: 23
-- 当前文档总 PR 数: 64
+- git 追溯 PR 数: 47
+- 原文档显式引用补充 PR 数: 22
+- 当前文档总 PR 数: 69
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -54,11 +56,13 @@
 | 2025-08-15 | [#22538](https://github.com/vllm-project/vllm/pull/22538) | merged | [Kernel] Add cuda kernel for gpt_oss activation | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-15 | [#22948](https://github.com/vllm-project/vllm/pull/22948) | merged | Revert "[Kernel] Add cuda kernel for gpt_oss activation" | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-17 | [#22951](https://github.com/vllm-project/vllm/pull/22951) | merged | [Kernel] Add cuda kernel for gpt_oss activation | `vllm/model_executor/models/gpt_oss.py` |
+| 2025-08-20 | [#22446](https://github.com/vllm-project/vllm/pull/22446) | merged | [Model] use autoWeightsLoader for gptoss | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-27 | [#23613](https://github.com/vllm-project/vllm/pull/23613) | merged | [Bugfix][gpt-oss] passing the cache config in gpt-oss | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-28 | [#23680](https://github.com/vllm-project/vllm/pull/23680) | merged | [Model] Add PP support and VLM backbone compatability for GPT-OSS | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-28 | [#23815](https://github.com/vllm-project/vllm/pull/23815) | merged | [Model] [gpt-oss] fix gpt-oss pp support | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-08-28 | [#23819](https://github.com/vllm-project/vllm/pull/23819) | merged | [Model][gpt-oss] Support DP+EP for GPT-OSS with FlashInfer trtllm-gen MoE | `vllm/model_executor/layers/fused_moe/config.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/quantization/mxfp4.py` |
 | 2025-09-17 | [#24920](https://github.com/vllm-project/vllm/pull/24920) | merged | [CI] GPT-OSS GPQA eval test for Blackwell | `tests/evals/gpt_oss/test_gpqa_correctness.py`, `tests/evals/gpt_oss/conftest.py`, `tests/evals/gpt_oss/__init__.py` |
+| 2025-09-18 | [#23807](https://github.com/vllm-project/vllm/pull/23807) | merged | [fix]: remove data type hardcoding from gptoss model implementation | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-09-22 | [#25246](https://github.com/vllm-project/vllm/pull/25246) | merged | Enable Eagle3 speculative decoding for GPT-OSS model | `vllm/model_executor/models/gpt_oss.py` |
 | 2025-10-01 | [#26030](https://github.com/vllm-project/vllm/pull/26030) | merged | [CI] Tweaks to GPT-OSS Eval (Blackwell) for stability | `tests/evals/gpt_oss/test_gpqa_correctness.py` |
 | 2025-10-18 | [#25515](https://github.com/vllm-project/vllm/pull/25515) | merged | [GPT-OSS] Structure_Tag support for gpt-oss tool-call in cot | `tests/entrypoints/openai/test_gptoss_structural_tags_integration.py`, `tests/v1/structured_output/test_reasoning_structured_output.py`, `vllm/reasoning/gptoss_reasoning_parser.py` |
@@ -82,8 +86,8 @@
 | 2026-03-18 | [#30647](https://github.com/vllm-project/vllm/pull/30647) | merged | [Perf] Eliminate padding and slicing op for GPT-OSS with Flashinfer MXFP4 MXFP8 MoE | `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/layers/fused_moe/fused_moe_method_base.py`, `vllm/model_executor/layers/fused_moe/runner/default_moe_runner.py` |
 | 2026-03-18 | [#37205](https://github.com/vllm-project/vllm/pull/37205) | merged | [Kernel] Add gpt-oss Router GEMM kernel | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-03-20 | [#37683](https://github.com/vllm-project/vllm/pull/37683) | merged | [Perf] Eliminate redundant SparseMatrix creation in gpt_oss_triton_kernels | `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` |
-| 2026-04-02 | [#38778](https://github.com/vllm-project/vllm/pull/38778) | merged | Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)" | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-04-02 | [#38292](https://github.com/vllm-project/vllm/pull/38292) | merged | [CI][ROCm] Add gpt-oss w4a8 in CI | `tests/evals/gpt_oss/configs/models-gfx950.txt` |
+| 2026-04-02 | [#38778](https://github.com/vllm-project/vllm/pull/38778) | merged | Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)" | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-04-13 | [#39604](https://github.com/vllm-project/vllm/pull/39604) | merged | [Quantization] [Refactor] Create special "GptOssMxfp4MoeMethod" | `vllm/model_executor/layers/quantization/mxfp4.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/models/config.py` |
 | 2026-04-14 | [#39007](https://github.com/vllm-project/vllm/pull/39007) | merged | [MoE] Move GPT OSS Triton kernel experts into fused_moe/experts/ | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py` |
 | 2026-04-20 | [#35949](https://github.com/vllm-project/vllm/pull/35949) | merged | [MoE Refactor] Move the shared/fused expert output sum into MoERunnerBase | `vllm/model_executor/layers/fused_moe/runner/moe_runner_base.py`, `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/models/exaone_moe.py` |
@@ -100,16 +104,19 @@
 | 2026-05-30 | [#43571](https://github.com/vllm-project/vllm/pull/43571) | merged | [BugFix][Platform] Fix import vllm.platforms.rocm error on non-CUDA test_gpt_oss.py | `tests/models/quantization/test_gpt_oss.py` |
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
-| 2026-06-11 | [#45067](https://github.com/vllm-project/vllm/pull/45067) | merged | [Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-06-11 | [#44992](https://github.com/vllm-project/vllm/pull/44992) | merged | Deprecations for v0.23 and v0.24 | `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`, `vllm/model_executor/layers/fused_moe/oracle/nvfp4.py`, `vllm/model_executor/kernels/linear/__init__.py` |
+| 2026-06-11 | [#45067](https://github.com/vllm-project/vllm/pull/45067) | merged | [Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-06-15 | [#45381](https://github.com/vllm-project/vllm/pull/45381) | merged | [Model] Add MiniMax M3 support | `vllm/models/minimax_m3/amd/model.py`, `vllm/models/minimax_m3/nvidia/model.py`, `vllm/models/minimax_m3/common/ops/index_topk.py` |
 | 2026-06-17 | [#45896](https://github.com/vllm-project/vllm/pull/45896) | merged | [feature] MiniMax-M3-MXFP4 support added | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `vllm/models/minimax_m3/amd/model.py`, `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py` |
-| 2026-06-23 | [#46441](https://github.com/vllm-project/vllm/pull/46441) | merged | fix gpt_oss pp>1 with ep | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-06-23 | [#45818](https://github.com/vllm-project/vllm/pull/45818) | merged | [Bugfix]: Fix unquantized gpt-oss weight loading broken by FusedMoE r… | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-06-23 | [#46142](https://github.com/vllm-project/vllm/pull/46142) | merged | [AMD][OCP MX][CI] Fix tests to not dispatch on `UNFUSED_TRITON` backend on MI300, improve w_mxfp4_a_fp8 emulation support | `vllm/model_executor/layers/fused_moe/utils.py`, `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`, `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` |
+| 2026-06-23 | [#46441](https://github.com/vllm-project/vllm/pull/46441) | merged | fix gpt_oss pp>1 with ep | `vllm/model_executor/models/gpt_oss.py` |
 | 2026-06-24 | [#46406](https://github.com/vllm-project/vllm/pull/46406) | merged | [Bugfix] Support non-power-of-2 top_k in legacy triton_kernels routing | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` |
 | 2026-06-24 | [#46408](https://github.com/vllm-project/vllm/pull/46408) | merged | [Bugfix] Support -1 (invalid/non-local) slots in topk_ids for Triton MoE | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` |
 | 2026-07-29 | [#48703](https://github.com/vllm-project/vllm/pull/48703) | merged | [XPU] [UT] [CI] add xpu config to run gpt-oss accuracy in ut and ci | `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt` |
+| 2026-08-23 | [#52209](https://github.com/vllm-project/vllm/pull/52209) | merged | Add routed expert loading for gpt-oss | `vllm/model_executor/models/gpt_oss.py`, `tests/model_executor/model_loader/test_gpt_oss_weight_loading.py` |
+| 2026-08-29 | [#45457](https://github.com/vllm-project/vllm/pull/45457) | merged | [Perf] Reuse topk SparseMatrix routing metadata in GPT-OSS MoE forward | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py` |
+| 2026-09-17 | [#55934](https://github.com/vllm-project/vllm/pull/55934) | merged | [ROCm] triton+triton_kernels 3.8 mxfp4 MoE support (gpt-oss + DeepSeek-V4) | `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `tests/kernels/moe/test_gpt_oss_triton_kernels.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -332,6 +339,33 @@ diff -- vllm/model_executor/models/gpt_oss.py
   - runtime: `vllm/model_executor/models/gpt_oss.py` modified +1/-1
 - 验证与风险: diff 自带测试面 `tests/kernels/core/test_activation.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #22446 - [Model] use autoWeightsLoader for gptoss
+
+- 链接: https://github.com/vllm-project/vllm/pull/22446
+- 状态/时间: merged / 2025-08-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gpt_oss.py`；关联提交 `103f1ec8d348`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+224/-208，可读 patch 623 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/gpt_oss.py` modified +224/-208 (432 lines); hunks: -27,7 +27,8; -203,6 +204,7 @@ def __init__(; symbols: OAIAttention, __init__, forward, GptOssForCausalLM，涉及 `OAIAttention, __init__, forward`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gpt_oss.py` modified +224/-208 (432 lines); hunks: -27,7 +27,8; -203,6 +204,7 @@ def __init__(; symbols: OAIAttention, __init__, forward, GptOssForCausalLM
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -27,7 +27,8 @@
+-from .utils import extract_layer_index, maybe_prefix
++from .utils import (AutoWeightsLoader, WeightsMapper, extract_layer_index,
++                    maybe_prefix)
+@@ -203,6 +204,7 @@ def __init__(
++        self.parallel_config = vllm_config.parallel_config
+@@ -225,64 +227,26 @@ def forward(self, input_ids: torch.Tensor,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +224/-208
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #23613 - [Bugfix][gpt-oss] passing the cache config in gpt-oss
 
 - 链接: https://github.com/vllm-project/vllm/pull/23613
@@ -489,6 +523,32 @@ diff -- tests/evals/gpt_oss/__init__.py
 - 已读文件:
   - tests: `tests/evals/gpt_oss/test_gpqa_correctness.py` added +102/-0; `tests/evals/gpt_oss/conftest.py` added +18/-0; `tests/evals/gpt_oss/__init__.py` added +2/-0
 - 验证与风险: diff 自带测试面 `tests/evals/gpt_oss/__init__.py`, `tests/evals/gpt_oss/conftest.py`, `tests/evals/gpt_oss/test_gpqa_correctness.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23807 - [fix]: remove data type hardcoding from gptoss model implementation
+
+- 链接: https://github.com/vllm-project/vllm/pull/23807
+- 状态/时间: merged / 2025-09-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gpt_oss.py`；关联提交 `064cac7bb725`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+1/-3，可读 patch 18 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/gpt_oss.py` modified +1/-3 (4 lines); hunks: -76,7 +76,6 @@ def __init__(; -145,8 +144,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gpt_oss.py` modified +1/-3 (4 lines); hunks: -76,7 +76,6 @@ def __init__(; -145,8 +144,7 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -76,7 +76,6 @@ def __init__(
+-                        dtype=torch.bfloat16,
+@@ -145,8 +144,7 @@ def __init__(
+-                                      config.num_local_experts,
+-                                      dtype=torch.bfloat16)
++                                      config.num_local_experts)
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +1/-3
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #25246 - Enable Eagle3 speculative decoding for GPT-OSS model
 
@@ -1153,6 +1213,30 @@ diff -- vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py
   - runtime: `vllm/model_executor/layers/fused_moe/gpt_oss_triton_kernels_moe.py` modified +29/-4
 - 验证与风险: diff 自带测试面 `tests/kernels/moe/test_gpt_oss_triton_kernels.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #38292 - [CI][ROCm] Add gpt-oss w4a8 in CI
+
+- 链接: https://github.com/vllm-project/vllm/pull/38292
+- 状态/时间: merged / 2026-04-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gpt_oss/configs/models-gfx950.txt`；关联提交 `82a006beebf0`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+10/-1，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI][ROCm] Add gpt-oss w4a8 in CI」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `tests/evals/gpt_oss/configs/models-gfx950.txt`；技术摘要: 覆盖「[CI][ROCm] Add gpt-oss w4a8 in CI」；主要实现面是 `tests/evals/gpt_oss/configs/models-gfx950.txt`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1 (3 lines); hunks: -1,3 +1,4。
+- 代码 diff 细节:
+  - `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1 (3 lines); hunks: -1,3 +1,4
+- 关键代码摘录:
+
+```diff
+diff -- tests/evals/gpt_oss/configs/models-gfx950.txt
+@@ -1,3 +1,4 @@
+-gpt-oss-20b-rocm-baseline.yaml
++gpt-oss-20b-rocm-baseline.yaml
++gpt-oss-20b-rocm-mxfp4-fp8.yaml
+```
+
+- 已读文件:
+  - tests: `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1
+- 验证与风险: diff 自带测试面 `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-mxfp4-fp8.yaml`, `tests/evals/gpt_oss/configs/models-gfx950.txt`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #38778 - Revert "[Kernel] Add gpt-oss Router GEMM kernel (#37205)"
 
 - 链接: https://github.com/vllm-project/vllm/pull/38778
@@ -1179,30 +1263,6 @@ diff -- vllm/model_executor/models/gpt_oss.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/gpt_oss.py` modified +6/-3
 - 验证与风险: diff 自带测试面 `tests/kernels/moe/test_router_gemm.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #38292 - [CI][ROCm] Add gpt-oss w4a8 in CI
-
-- 链接: https://github.com/vllm-project/vllm/pull/38292
-- 状态/时间: merged / 2026-04-02
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/evals/gpt_oss/configs/models-gfx950.txt`；关联提交 `82a006beebf0`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+10/-1，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI][ROCm] Add gpt-oss w4a8 in CI」；模型线: GPT-OSS；类别: 文档/测试/CI；主要 diff: `tests/evals/gpt_oss/configs/models-gfx950.txt`；技术摘要: 覆盖「[CI][ROCm] Add gpt-oss w4a8 in CI」；主要实现面是 `tests/evals/gpt_oss/configs/models-gfx950.txt`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1 (3 lines); hunks: -1,3 +1,4。
-- 代码 diff 细节:
-  - `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1 (3 lines); hunks: -1,3 +1,4
-- 关键代码摘录:
-
-```diff
-diff -- tests/evals/gpt_oss/configs/models-gfx950.txt
-@@ -1,3 +1,4 @@
--gpt-oss-20b-rocm-baseline.yaml
-+gpt-oss-20b-rocm-baseline.yaml
-+gpt-oss-20b-rocm-mxfp4-fp8.yaml
-```
-
-- 已读文件:
-  - tests: `tests/evals/gpt_oss/configs/models-gfx950.txt` modified +2/-1
-- 验证与风险: diff 自带测试面 `tests/evals/gpt_oss/configs/gpt-oss-20b-rocm-mxfp4-fp8.yaml`, `tests/evals/gpt_oss/configs/models-gfx950.txt`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #39604 - [Quantization] [Refactor] Create special "GptOssMxfp4MoeMethod"
 
@@ -1805,33 +1865,6 @@ diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
   - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82; `vllm/lora/layers/fused_moe.py` modified +76/-43; `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1; `vllm/model_executor/layers/fused_moe/runner/moe_runner_interface.py` modified +102/-2
 - 验证与风险: diff 自带测试面 `tests/distributed/test_eplb_fused_moe_layer.py`, `tests/distributed/test_eplb_fused_moe_layer_dep_nvfp4.py`, `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/parallel_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #45067 - [Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor
-
-- 链接: https://github.com/vllm-project/vllm/pull/45067
-- 状态/时间: merged / 2026-06-11
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gpt_oss.py`；关联提交 `7920ccb97c2d`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gpt_oss.py`；技术摘要: 覆盖「[Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor」；主要实现面是 `vllm/model_executor/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/gpt_oss.py` modified +7/-0 (7 lines); hunks: -635,6 +635,13 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype，涉及 `_get_moe_weight_dtype`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/gpt_oss.py` modified +7/-0 (7 lines); hunks: -635,6 +635,13 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/gpt_oss.py
-@@ -635,6 +635,13 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:
-+                # The MoE refactor (#41184) moved expert params under
-+                # `mlp.experts.routed_experts.*`; remap the legacy checkpoint
-+                # name so keys like w2_bias resolve against params_dict.
-+                fused_name = fused_name.replace(
-+                    ".mlp.experts.", ".mlp.experts.routed_experts."
-+                )
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +7/-0
-- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #44992 - Deprecations for v0.23 and v0.24
 
 - 链接: https://github.com/vllm-project/vllm/pull/44992
@@ -1872,6 +1905,33 @@ diff -- vllm/model_executor/kernels/linear/__init__.py
 - 已读文件:
   - runtime: `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py` modified +0/-69; `vllm/model_executor/layers/fused_moe/oracle/nvfp4.py` modified +0/-59; `vllm/model_executor/kernels/linear/__init__.py` modified +8/-47; `vllm/model_executor/layers/fused_moe/oracle/fp8.py` modified +0/-50; `vllm/model_executor/layers/fused_moe/oracle/unquantized.py` modified +0/-45; `vllm/entrypoints/pooling/offline.py` modified +0/-44
 - 验证与风险: diff 自带测试面 `tests/compile/correctness_e2e/test_async_tp.py`, `tests/conftest.py`, `tests/distributed/test_eplb_fused_moe_layer_dep_nvfp4.py`, `tests/entrypoints/pooling/reward/test_token_reward_offline.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45067 - [Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor
+
+- 链接: https://github.com/vllm-project/vllm/pull/45067
+- 状态/时间: merged / 2026-06-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gpt_oss.py`；关联提交 `7920ccb97c2d`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+7/-0，可读 patch 14 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gpt_oss.py`；技术摘要: 覆盖「[Bugfix]: Fix Quark gpt-oss weight loading broken by FusedMoe refactor」；主要实现面是 `vllm/model_executor/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/gpt_oss.py` modified +7/-0 (7 lines); hunks: -635,6 +635,13 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype，涉及 `_get_moe_weight_dtype`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gpt_oss.py` modified +7/-0 (7 lines); hunks: -635,6 +635,13 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:; symbols: _get_moe_weight_dtype
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -635,6 +635,13 @@ def _get_moe_weight_dtype(layer_id: int = 0) -> str | None:
++                # The MoE refactor (#41184) moved expert params under
++                # `mlp.experts.routed_experts.*`; remap the legacy checkpoint
++                # name so keys like w2_bias resolve against params_dict.
++                fused_name = fused_name.replace(
++                    ".mlp.experts.", ".mlp.experts.routed_experts."
++                )
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +7/-0
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #45381 - [Model] Add MiniMax M3 support
 
@@ -1954,29 +2014,6 @@ diff -- vllm/model_executor/layers/fused_moe/oracle/mxfp4.py
   - runtime: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +14/-0; `vllm/models/minimax_m3/amd/model.py` modified +12/-2; `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py` modified +12/-1; `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +6/-0
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`, `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`, `vllm/model_executor/layers/quantization/quark/quark_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #46441 - fix gpt_oss pp>1 with ep
-
-- 链接: https://github.com/vllm-project/vllm/pull/46441
-- 状态/时间: merged / 2026-06-23
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gpt_oss.py`；关联提交 `901a3b091cf1`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix gpt_oss pp>1 with ep」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gpt_oss.py`；技术摘要: 覆盖「fix gpt_oss pp>1 with ep」；主要实现面是 `vllm/model_executor/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -1078,7 +1078,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights，涉及 `load_weights`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -1078,7 +1078,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/gpt_oss.py
-@@ -1078,7 +1078,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
--        ep_rank = get_ep_group().rank
-+        ep_rank = get_ep_group().rank_in_group
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +1/-1
-- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #45818 - [Bugfix]: Fix unquantized gpt-oss weight loading broken by FusedMoE r…
 
 - 链接: https://github.com/vllm-project/vllm/pull/45818
@@ -2045,6 +2082,29 @@ diff -- vllm/model_executor/layers/fused_moe/experts/triton_moe.py
   - runtime: `vllm/model_executor/layers/fused_moe/utils.py` modified +16/-12; `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py` modified +25/-2; `vllm/model_executor/layers/fused_moe/experts/triton_moe.py` modified +12/-1; `vllm/model_executor/layers/fused_moe/experts/ocp_mx_emulation_moe.py` modified +2/-2; `vllm/model_executor/layers/quantization/quark/quark_moe.py` modified +2/-0
   - tests: `tests/models/quantization/test_gpt_oss.py` modified +5/-0; `tests/quantization/test_quark.py` modified +12/-0
 - 验证与风险: diff 自带测试面 `tests/models/quantization/test_gpt_oss.py`, `tests/quantization/test_quark.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #46441 - fix gpt_oss pp>1 with ep
+
+- 链接: https://github.com/vllm-project/vllm/pull/46441
+- 状态/时间: merged / 2026-06-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/gpt_oss.py`；关联提交 `901a3b091cf1`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix gpt_oss pp>1 with ep」；模型线: GPT-OSS；类别: 缺陷修复；主要 diff: `vllm/model_executor/models/gpt_oss.py`；技术摘要: 覆盖「fix gpt_oss pp>1 with ep」；主要实现面是 `vllm/model_executor/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -1078,7 +1078,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights，涉及 `load_weights`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -1078,7 +1078,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch....; symbols: load_weights
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -1078,7 +1078,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-        ep_rank = get_ep_group().rank
++        ep_rank = get_ep_group().rank_in_group
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/gpt_oss.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #46406 - [Bugfix] Support non-power-of-2 top_k in legacy triton_kernels routing
 
@@ -2138,6 +2198,114 @@ diff -- tests/evals/gpt_oss/configs/models-xpu.txt
 - 已读文件:
   - tests: `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml` added +6/-0; `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml` added +5/-0; `tests/evals/gpt_oss/configs/models-xpu.txt` added +3/-0
 - 验证与风险: diff 自带测试面 `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-baseline.yaml`, `tests/evals/gpt_oss/configs/gpt-oss-20b-xpu-triton-attn.yaml`, `tests/evals/gpt_oss/configs/models-xpu.txt`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #52209 - Add routed expert loading for gpt-oss
+
+- 链接: https://github.com/vllm-project/vllm/pull/52209
+- 状态/时间: merged / 2026-08-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/model_executor/model_loader/test_gpt_oss_weight_loading.py`, `vllm/model_executor/models/gpt_oss.py`；关联提交 `b26039b09fc9`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+370/-3，可读 patch 446 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/gpt_oss.py` modified +197/-0 (197 lines); hunks: -25,6 +25,7; -68,6 +69,15; symbols: OAIAttention, forward, GptOssRoutedExperts, _narrow_for_rank，涉及 `OAIAttention, forward, GptOssRoutedExperts`；`tests/model_executor/model_loader/test_gpt_oss_weight_loading.py` added +152/-0 (152 lines); hunks: -0,0 +1,152; symbols: _TestExperts, __init__, _map_global_expert_id_to_local_expert_id, _load，涉及 `_TestExperts, __init__, _map_global_expert_id_to_local_expert_id`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/gpt_oss.py` modified +197/-0 (197 lines); hunks: -25,6 +25,7; -68,6 +69,15; symbols: OAIAttention, forward, GptOssRoutedExperts, _narrow_for_rank
+  - `tests/model_executor/model_loader/test_gpt_oss_weight_loading.py` added +152/-0 (152 lines); hunks: -0,0 +1,152; symbols: _TestExperts, __init__, _map_global_expert_id_to_local_expert_id, _load
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/gpt_oss.py
+@@ -25,6 +25,7 @@
++from vllm.model_executor.layers.fused_moe.routed_experts import RoutedExperts
+@@ -68,6 +69,15 @@
++_GPT_OSS_STREAMED_EXPERT_SUFFIX_TO_SHARD = {
++    "w13_weight": "gpt_oss_w13",
++    "w2_weight": "gpt_oss_w2",
++    "w13_bias": "gpt_oss_w13",
+diff -- tests/model_executor/model_loader/test_gpt_oss_weight_loading.py
+@@ -0,0 +1,152 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from types import SimpleNamespace
++import pytest
++import torch
++from vllm.model_executor.models.gpt_oss import (
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/gpt_oss.py` modified +197/-0
+  - tests: `tests/model_executor/model_loader/test_gpt_oss_weight_loading.py` added +152/-0
+- 验证与风险: diff 自带测试面 `tests/model_executor/model_loader/test_gpt_oss_weight_loading.py`, `tests/model_executor/model_loader/test_reload.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #45457 - [Perf] Reuse topk SparseMatrix routing metadata in GPT-OSS MoE forward
+
+- 链接: https://github.com/vllm-project/vllm/pull/45457
+- 状态/时间: merged / 2026-08-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`；关联提交 `129087ddab2b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+102/-15，可读 patch 158 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +45/-14 (59 lines); hunks: -578,13 +578,14 @@ def triton_kernel_moe_forward(; -597,11 +598,23 @@ def triton_kernel_moe_forward(; symbols: triton_kernel_moe_forward, make_routing_data, routing_data_from_sparse_topk，涉及 `triton_kernel_moe_forward, make_routing_data, routing_data_from_sparse_topk`；`tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +57/-1 (58 lines); hunks: -1,6 +1,6; -371,3 +371,59 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_routing_data_from_sparse_topk_parity, assert_equivalent，涉及 `test_unit_shuffle, test_routing_data_from_sparse_topk_parity, assert_equivalent`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +45/-14 (59 lines); hunks: -578,13 +578,14 @@ def triton_kernel_moe_forward(; -597,11 +598,23 @@ def triton_kernel_moe_forward(; symbols: triton_kernel_moe_forward, make_routing_data, routing_data_from_sparse_topk
+  - `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +57/-1 (58 lines); hunks: -1,6 +1,6; -371,3 +371,59 @@ def test_unit_shuffle():; symbols: test_unit_shuffle, test_routing_data_from_sparse_topk_parity, assert_equivalent
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py
+@@ -578,13 +578,14 @@ def triton_kernel_moe_forward(
++        is_sparse_topk = not isinstance(topk_result, tuple)
+-        if isinstance(topk_result, tuple):
+-            topk_weights, topk_ids_raw, _ = topk_result
+-        else:
++        if is_sparse_topk:
++        else:
+diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
+@@ -1,6 +1,6 @@
+-from dataclasses import dataclass, fields
++from dataclasses import dataclass, fields, is_dataclass
+@@ -371,3 +371,59 @@ def test_unit_shuffle():
++@pytest.mark.parametrize("n_tokens", [1, 33, 512])
++@pytest.mark.parametrize("n_experts,topk", [(32, 4), (128, 4)])
++def test_routing_data_from_sparse_topk_parity(n_tokens, n_experts, topk):
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +45/-14
+  - tests: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +57/-1
+- 验证与风险: diff 自带测试面 `tests/kernels/moe/test_gpt_oss_triton_kernels.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #55934 - [ROCm] triton+triton_kernels 3.8 mxfp4 MoE support (gpt-oss + DeepSeek-V4)
+
+- 链接: https://github.com/vllm-project/vllm/pull/55934
+- 状态/时间: merged / 2026-09-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/kernels/moe/test_gpt_oss_triton_kernels.py`, `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py`；关联提交 `3e267bae70d8`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 9 个文件，+270/-147，可读 patch 718 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +176/-38 (214 lines); hunks: -26,7 +26,7; -441,48 +441,59 @@ def _sort_tokens_pow2(expt_scal, expt_indx, n_expts_tot, b...; symbols: _sort_tokens_pow2, RoutingData, __init__, pack_bitmatrix，涉及 `_sort_tokens_pow2, RoutingData, __init__`；`tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +1/-2 (3 lines); hunks: -384,9 +384,8 @@ def test_routing_data_from_sparse_topk_parity(n_tokens, n_ex...; symbols: test_routing_data_from_sparse_topk_parity，涉及 `test_routing_data_from_sparse_topk_parity`。
+- 代码 diff 细节:
+  - `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +176/-38 (214 lines); hunks: -26,7 +26,7; -441,48 +441,59 @@ def _sort_tokens_pow2(expt_scal, expt_indx, n_expts_tot, b...; symbols: _sort_tokens_pow2, RoutingData, __init__, pack_bitmatrix
+  - `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +1/-2 (3 lines); hunks: -384,9 +384,8 @@ def test_routing_data_from_sparse_topk_parity(n_tokens, n_ex...; symbols: test_routing_data_from_sparse_topk_parity
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py
+@@ -26,7 +26,7 @@
+-from vllm.utils.import_utils import has_triton_kernels
++from vllm.utils.import_utils import get_triton_kernels_version, has_triton_kernels
+@@ -441,48 +441,59 @@ def _sort_tokens_pow2(expt_scal, expt_indx, n_expts_tot, bitmatrix):
+-# Two API generations of triton_kernels are supported:
+-#   - v3.5.1 (the version bundled with vLLM): exposes `routing()` and
+-#     `routing_from_bitmatrix()` in triton_kernels.routing; the `Bitmatrix`
+diff -- tests/kernels/moe/test_gpt_oss_triton_kernels.py
+@@ -384,9 +384,8 @@ def test_routing_data_from_sparse_topk_parity(n_tokens, n_experts, topk):
+-    use_legacy_triton_kernels = gptoss_moe.use_legacy_triton_kernels
+-    if use_legacy_triton_kernels:
++    if gptoss_moe.triton_kernels_version == "3.5.1":
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py` modified +176/-38
+  - tests: `tests/kernels/moe/test_gpt_oss_triton_kernels.py` modified +1/-2
+- 验证与风险: diff 自带测试面 `tests/kernels/moe/test_gpt_oss_triton_kernels.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

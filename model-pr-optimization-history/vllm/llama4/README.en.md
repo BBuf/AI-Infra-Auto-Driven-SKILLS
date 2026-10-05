@@ -1,4 +1,4 @@
-# vllm Llama 4 Model PR Optimization History
+# vLLM Llama 4 Model PR Optimization History
 
 ## Implementation File Coverage
 
