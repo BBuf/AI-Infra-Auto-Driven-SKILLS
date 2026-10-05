@@ -1,4 +1,4 @@
-# sglang Qwen3 Next Model PR Optimization History
+# SGLang Qwen3 Next Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -12,18 +12,17 @@
 | `test/manual/4-gpu-models/test_qwen3_next_models.py` | no direct PR-number commit |
 | `test/manual/4-gpu-models/test_qwen3_next_models_mtp_archived.py` | no direct PR-number commit |
 | `test/registered/attention/test_qwen3_next_deterministic.py` | no direct PR-number commit |
-| `test/registered/models_e2e/test_qwen3_next_models.py` | [#27419](https://github.com/sgl-project/sglang/pull/27419) |
-| `test/registered/models_e2e/test_qwen3_next_models_extra.py` | no direct PR-number commit |
-| `test/registered/models_e2e/test_qwen3_next_models_mtp.py` | no direct PR-number commit |
+| `test/registered/e2e/models/test_qwen3_next_models.py` | no direct PR-number commit |
+| `test/registered/e2e/models/test_qwen3_next_models_extra.py` | no direct PR-number commit |
+| `test/registered/e2e/models/test_qwen3_next_models_mtp.py` | no direct PR-number commit |
 | `test/registered/npu/accuracy/qwen3_next_80b_a3b_instruct/test_npu_qwen3_next_80b_w8a8_2p_in6k_out1k5_bs16_aime25.py` | no direct PR-number commit |
 | `test/registered/npu/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` | no direct PR-number commit |
 | `test/registered/npu/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` | no direct PR-number commit |
-| `test/registered/npu/performance/qwen3_next_80b_a3b_instruct/test_npu_qwen3_next_80b_w8a8_2p_in6k_out1k5_bs16.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 26
-- Extra PRs preserved from existing docs: 49
+- Git-traced PRs: 25
+- Extra PRs preserved from existing docs: 50
 - Total PRs in this document: 75
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
@@ -37,8 +36,8 @@
 | 2025-09-12 | [#10379](https://github.com/sgl-project/sglang/pull/10379) | merged | Support Qwen3-Next on Ascend NPU | `python/sglang/srt/models/qwen3_next.py` |
 | 2025-09-13 | [#10392](https://github.com/sgl-project/sglang/pull/10392) | merged | [Fix] Support qwen3-next MTP+DP | `python/sglang/srt/models/qwen3_next_mtp.py` |
 | 2025-09-16 | [#10466](https://github.com/sgl-project/sglang/pull/10466) | merged | feat: update support for qwen3next model | `python/sglang/srt/layers/attention/fla/fused_recurrent.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` |
-| 2025-09-18 | [#10624](https://github.com/sgl-project/sglang/pull/10624) | merged | update deepep version for qwen3-next deepep moe | `docker/Dockerfile`, `scripts/ci/ci_install_deepep.sh` |
 | 2025-09-18 | [#10622](https://github.com/sgl-project/sglang/pull/10622) | merged | support qwen3-next-fp8 deepep | `python/sglang/srt/models/qwen3_next.py` |
+| 2025-09-18 | [#10624](https://github.com/sgl-project/sglang/pull/10624) | merged | update deepep version for qwen3-next deepep moe | `docker/Dockerfile`, `scripts/ci/ci_install_deepep.sh` |
 | 2025-10-15 | [#11585](https://github.com/sgl-project/sglang/pull/11585) | merged | Clean up some Qwen3-Next and deterministic code | `python/sglang/srt/configs/qwen3_next.py` |
 | 2025-10-16 | [#10912](https://github.com/sgl-project/sglang/pull/10912) | merged | [PD] Add PD support for hybrid model (Qwen3-Next, DeepSeek V3.2 Exp) | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/disaggregation/mooncake/conn.py` |
 | 2025-10-21 | [#11487](https://github.com/sgl-project/sglang/pull/11487) | merged | init support for KTransformers Heterogeneous Computing | `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/models/deepseek_v2.py` |
@@ -70,7 +69,6 @@
 | 2026-02-27 | [#19434](https://github.com/sgl-project/sglang/pull/19434) | merged | [Qwen3-Next] Support gdn fused_rms_norm_gated | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-02-28 | [#17627](https://github.com/sgl-project/sglang/pull/17627) | merged | [feat] Support nvfp4 quantized model of Qwen3-Next | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-09 | [#19767](https://github.com/sgl-project/sglang/pull/19767) | merged | Fix qwen3.5 mtp eplb related issues | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_next_mtp.py` |
-| 2026-03-12 | [#20397](https://github.com/sgl-project/sglang/pull/20397) | open | [NPU] Qwen3 next Ascend Support MTP | `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
 | 2026-03-20 | [#19321](https://github.com/sgl-project/sglang/pull/19321) | merged | [Qwen3-Next] Fuse Qwen3-Next GDN's qkvz_proj and ba_proj | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-23 | [#21019](https://github.com/sgl-project/sglang/pull/21019) | merged | [Qwen3.5] Fuse split/reshape/cat ops in GDN projection with Triton kernel | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/jit_kernel/triton/gdn_fused_proj.py` |
 | 2026-03-26 | [#21313](https://github.com/sgl-project/sglang/pull/21313) | merged | bugfix for weight loading for qwen3-next | `python/sglang/srt/models/qwen3_next.py` |
@@ -79,16 +77,14 @@
 | 2026-04-07 | [#22073](https://github.com/sgl-project/sglang/pull/22073) | merged | [Feature] Adding Qwen3-asr Model Support | `python/sglang/srt/models/qwen3_asr.py`, `python/sglang/srt/configs/qwen3_asr.py`, `python/sglang/srt/multimodal/processors/qwen3_asr.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-10 | [#22458](https://github.com/sgl-project/sglang/pull/22458) | merged | Fix NCCL AllGather hanging issue for Qwen3 Next MTP | `python/sglang/srt/speculative/eagle_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py` |
-| 2026-04-17 | [#23075](https://github.com/sgl-project/sglang/pull/23075) | open | [Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view. | `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py` |
 | 2026-04-18 | [#22664](https://github.com/sgl-project/sglang/pull/22664) | merged | Qwen3next flashinfer allreduce auto enable | `python/sglang/srt/server_args.py` |
-| 2026-04-22 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | open | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
 | 2026-04-27 | [#21698](https://github.com/sgl-project/sglang/pull/21698) | merged | [npu]fix: qwen3-next w8a8 precision bugs | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-04-29 | [#23619](https://github.com/sgl-project/sglang/pull/23619) | merged | Enable Qwen3-Next MoE all-reduce fusion | `python/sglang/srt/models/qwen3_next.py` |
 | 2026-05-15 | [#22876](https://github.com/sgl-project/sglang/pull/22876) | closed | Fix: Raise ValueError when --enable-mixed-chunk and --mamba-scheduler-strategy extra_buffer cause ac | `test/registered/unit/server_args/test_server_args.py`, `python/sglang/srt/server_args.py` |
 | 2026-05-18 | [#25401](https://github.com/sgl-project/sglang/pull/25401) | merged | Add output_gate_type to Qwen3NextConfig and update models to utilize it | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/configs/qwen3_next.py` |
 | 2026-05-19 | [#23331](https://github.com/sgl-project/sglang/pull/23331) | merged | [BugFix] Resolve adaptive speculative decoding conflicts for Qwen3.5 (hybrid GDN) | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py` |
-| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | merged | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py` |
 | 2026-05-20 | [#23925](https://github.com/sgl-project/sglang/pull/23925) | merged | [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next | `python/sglang/srt/models/qwen3_next.py` |
+| 2026-05-20 | [#25831](https://github.com/sgl-project/sglang/pull/25831) | merged | [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests | `test/manual/models/test_nvidia_nemotron_3_nano_archived.py`, `python/sglang/test/kits/server_sanity_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py` |
 | 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | merged | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` |
 | 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | merged | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` |
 | 2026-05-30 | [#26389](https://github.com/sgl-project/sglang/pull/26389) | merged | 【NPU】【bugfix】fix server error when mtp unquant | `python/sglang/srt/models/deepseek_nextn.py`, `python/sglang/srt/models/qwen3_5_mtp.py`, `python/sglang/srt/models/qwen3_next_mtp.py` |
@@ -96,10 +92,10 @@
 | 2026-06-04 | [#26775](https://github.com/sgl-project/sglang/pull/26775) | merged | fix test cases failed on 5/30 in nightly pipeline | `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_overlap_scheduler.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` |
 | 2026-06-06 | [#27419](https://github.com/sgl-project/sglang/pull/27419) | merged | fix test_qwen3_next_models flaky | `test/registered/models_e2e/test_qwen3_next_models.py` |
 | 2026-06-08 | [#24689](https://github.com/sgl-project/sglang/pull/24689) | merged | [NPU] Add GitHub test summary and deduplicate test code. Part 2 | `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_480b.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_480b.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` |
-| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
 | 2026-06-10 | [#10657](https://github.com/sgl-project/sglang/pull/10657) | closed | feat: add eagle3 support for qwen3-next model | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/model_runner.py` |
-| 2026-06-11 | [#27630](https://github.com/sgl-project/sglang/pull/27630) | merged | [AMD] Fuse sigmoid + mul attention output gate into single Triton kernel | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/jit_kernel/tests/test_sigmoid_gate_mul.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
 | 2026-06-11 | [#26204](https://github.com/sgl-project/sglang/pull/26204) | merged | Optimize Qwen3 Next FP8 MoE on H200 | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py` |
+| 2026-06-11 | [#27630](https://github.com/sgl-project/sglang/pull/27630) | merged | [AMD] Fuse sigmoid + mul attention output gate into single Triton kernel | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/jit_kernel/tests/test_sigmoid_gate_mul.py` |
 | 2026-06-12 | [#23862](https://github.com/sgl-project/sglang/pull/23862) | merged | Fix --mem-fraction-static not accounting for EAGLE draft model KV cache | `python/sglang/srt/model_executor/model_runner.py`, `test/registered/unit/configs/test_model_config_shapes.py`, `python/sglang/srt/configs/model_config.py` |
 | 2026-06-13 | [#19812](https://github.com/sgl-project/sglang/pull/19812) | closed | Fix Qwen3.5/Qwen3Next MTP EPLB compatibility | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
@@ -107,6 +103,9 @@
 | 2026-08-16 | [#13964](https://github.com/sgl-project/sglang/pull/13964) | closed | [Performance]Qwen3 Next kernel performance optimize | `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` |
 | 2026-08-16 | [#16488](https://github.com/sgl-project/sglang/pull/16488) | closed | Two-Batch Overlap (TBO) support to Qwen3-Next Models | `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
 | 2026-08-18 | [#14502](https://github.com/sgl-project/sglang/pull/14502) | closed | [Qwen3-Next]Optimize piecewise CUDA graph for Qwen3-Next | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` |
+| 2026-08-23 | [#20397](https://github.com/sgl-project/sglang/pull/20397) | closed | [NPU] Qwen3 next Ascend Support MTP | `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` |
+| 2026-08-29 | [#23075](https://github.com/sgl-project/sglang/pull/23075) | closed | [Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view. | `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py` |
+| 2026-08-31 | [#23474](https://github.com/sgl-project/sglang/pull/23474) | closed | [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models | `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -278,6 +277,33 @@ diff -- python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py
   - runtime: `python/sglang/srt/layers/attention/fla/fused_recurrent.py` modified +4/-4; `python/sglang/srt/models/qwen3_next.py` modified +5/-1; `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py` modified +2/-2
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/fla/fused_recurrent.py`, `python/sglang/srt/layers/attention/fla/fused_sigmoid_gating_recurrent.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #10622 - support qwen3-next-fp8 deepep
+
+- Link: https://github.com/sgl-project/sglang/pull/10622
+- Status/date: merged / 2025-09-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_next.py`; associated commits `1344ebc8333d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +93/-9, 204 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "support qwen3-next-fp8 deepep"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_next.py`; technical summary: Covers "support qwen3-next-fp8 deepep"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +29/-8 (37 lines); hunks: -13,6 +13,7; -46,7 +47,14; symbols: forward, __init__, routed_experts_weights_of_layer, touching `forward, __init__, routed_experts_weights_of_layer`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_next.py` modified +29/-8 (37 lines); hunks: -13,6 +13,7; -46,7 +47,14; symbols: forward, __init__, routed_experts_weights_of_layer
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -13,6 +13,7 @@
++from sglang.srt.eplb.expert_distribution import get_global_expert_distribution_recorder
+@@ -46,7 +47,14 @@
+-from sglang.srt.utils import add_prefix, is_cuda, is_npu, make_layers, set_weight_attrs
++from sglang.srt.utils import (
++    LazyValue,
++    add_prefix,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +29/-8
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #10624 - update deepep version for qwen3-next deepep moe
 
 - Link: https://github.com/sgl-project/sglang/pull/10624
@@ -305,33 +331,6 @@ diff -- scripts/ci/ci_install_deepep.sh
 - Reviewed files:
   - other: `docker/Dockerfile` modified +1/-1; `scripts/ci/ci_install_deepep.sh` modified +1/-1
 - Risk and verification: No explicit test file appears in the diff; future edits should add or run model loading, short generation, and parser/multimodal regression checks.
-
-### PR #10622 - support qwen3-next-fp8 deepep
-
-- Link: https://github.com/sgl-project/sglang/pull/10622
-- Status/date: merged / 2025-09-18
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_next.py`; associated commits `1344ebc8333d`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +93/-9, 204 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "support qwen3-next-fp8 deepep"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_next.py`; technical summary: Covers "support qwen3-next-fp8 deepep"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +29/-8 (37 lines); hunks: -13,6 +13,7; -46,7 +47,14; symbols: forward, __init__, routed_experts_weights_of_layer, touching `forward, __init__, routed_experts_weights_of_layer`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_next.py` modified +29/-8 (37 lines); hunks: -13,6 +13,7; -46,7 +47,14; symbols: forward, __init__, routed_experts_weights_of_layer
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_next.py
-@@ -13,6 +13,7 @@
-+from sglang.srt.eplb.expert_distribution import get_global_expert_distribution_recorder
-@@ -46,7 +47,14 @@
--from sglang.srt.utils import add_prefix, is_cuda, is_npu, make_layers, set_weight_attrs
-+from sglang.srt.utils import (
-+    LazyValue,
-+    add_prefix,
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +29/-8
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #11585 - Clean up some Qwen3-Next and deterministic code
 
@@ -1370,47 +1369,6 @@ diff -- python/sglang/srt/models/qwen3_next_mtp.py
   - runtime: `python/sglang/srt/models/qwen3_5.py` modified +34/-1; `python/sglang/srt/models/qwen3_5_mtp.py` modified +19/-6; `python/sglang/srt/models/qwen3_next_mtp.py` modified +12/-7; `python/sglang/srt/models/qwen2_moe.py` modified +8/-2; `python/sglang/srt/models/qwen3_next.py` modified +6/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_5_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #20397 - [NPU] Qwen3 next Ascend Support MTP
-
-- Link: https://github.com/sgl-project/sglang/pull/20397
-- Status/date: open / 2026-03-12
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 11 files, +985/-94, 1352 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] Qwen3 next Ascend Support MTP"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; technical summary: Covers "[NPU] Qwen3 next Ascend Support MTP"; the main implementation surface is `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py` modified +537/-0 (537 lines); hunks: -188,3 +188,540 @@ def fused_mamba_state_scatter_with_mask(; symbols: fused_mamba_state_scatter_with_mask, fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat_npu, move_cache_dynamic_last_kernel_h_block, touching `fused_mamba_state_scatter_with_mask, fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat_npu`; `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +282/-61 (343 lines); hunks: -1,7 +1,7; -37,9 +37,20; symbols: vllm_causal_conv1d_update, GDNKernelDispatcher, forward_decode, forward_extend, touching `vllm_causal_conv1d_update, GDNKernelDispatcher, forward_decode`; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +94/-3 (97 lines); hunks: -22,13 +22,16; -142,6 +145,9 @@ def __init__(self, model_runner: ModelRunner):; symbols: __init__, _forward_metadata, prepare_gdn_inputs, init_forward_metadata, touching `__init__, _forward_metadata, prepare_gdn_inputs`; `python/sglang/srt/models/qwen3_next_mtp.py` modified +9/-3 (12 lines); hunks: -16,7 +16,7; -46,6 +46,8 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
-- Code diff details:
-  - `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py` modified +537/-0 (537 lines); hunks: -188,3 +188,540 @@ def fused_mamba_state_scatter_with_mask(; symbols: fused_mamba_state_scatter_with_mask, fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat_npu, move_cache_dynamic_last_kernel_h_block
-  - `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +282/-61 (343 lines); hunks: -1,7 +1,7; -37,9 +37,20; symbols: vllm_causal_conv1d_update, GDNKernelDispatcher, forward_decode, forward_extend
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +94/-3 (97 lines); hunks: -22,13 +22,16; -142,6 +145,9 @@ def __init__(self, model_runner: ModelRunner):; symbols: __init__, _forward_metadata, prepare_gdn_inputs, init_forward_metadata
-  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +9/-3 (12 lines); hunks: -16,7 +16,7; -46,6 +46,8 @@ def __init__(; symbols: __init__, forward
-  - `python/sglang/srt/layers/layernorm.py` modified +4/-3 (7 lines); hunks: -84,6 +84,7; -508,11 +509,11 @@ def forward_npu(; symbols: RMSNorm, forward_npu, forward_xpu
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py
-@@ -188,3 +188,540 @@ def fused_mamba_state_scatter_with_mask(
-+# todo: move to sgl_kernel_npu
-+from sgl_kernel_npu.utils.triton_utils import get_device_properties
-+MAX_ROWS_PER_ITER = 64
-+@triton.jit(do_not_specialize=["total_rows", "rows_per_vec"])
-+def fused_qkvzba_split_reshape_cat_kernel(
-+    mixed_qkv,
-diff -- python/sglang/srt/layers/attention/linear/gdn_backend.py
-@@ -1,7 +1,7 @@
--from typing import Tuple, Union
-+from typing import Tuple, Union, Optional
-+import torch.nn.functional as F
-@@ -37,9 +37,20 @@
-+    from sgl_kernel_npu.fla.fused_gdn_gating import fused_gdn_gating_npu
-+    from sglang.srt.layers.attention.fla.l2norm import l2norm_fwd
-diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
-@@ -22,13 +22,16 @@
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py` modified +537/-0; `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +282/-61; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +94/-3; `python/sglang/srt/models/qwen3_next_mtp.py` modified +9/-3; `python/sglang/srt/layers/layernorm.py` modified +4/-3; `python/sglang/srt/models/qwen3_next.py` modified +5/-1
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/memory_pool_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #19321 - [Qwen3-Next] Fuse Qwen3-Next GDN's qkvz_proj and ba_proj
 
 - Link: https://github.com/sgl-project/sglang/pull/19321
@@ -1673,45 +1631,6 @@ diff -- python/sglang/srt/speculative/eagle_info_v2.py
   - runtime: `python/sglang/srt/speculative/eagle_info.py` modified +19/-0; `python/sglang/srt/speculative/eagle_info_v2.py` modified +19/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/speculative/eagle_info.py`, `python/sglang/srt/speculative/eagle_info_v2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #23075 - [Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view.
-
-- Link: https://github.com/sgl-project/sglang/pull/23075
-- Status/date: open / 2026-04-17
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +51/-13, 128 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view."; model line: Qwen3 Next; category: bug fix; main diff: `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py`; technical summary: Covers "[Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view."; the main implementation surface is `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py` modified +19/-6 (25 lines); hunks: -195,14 +195,21 @@ def prepare_mixed(; -213,6 +220,12 @@ def prepare_mixed(; symbols: prepare_mixed, touching `prepare_mixed`; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +21/-2 (23 lines); hunks: -1,4 +1,5; -205,16 +206,34 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; symbols: _forward_metadata, touching `_forward_metadata`; `python/sglang/srt/managers/schedule_batch.py` modified +11/-5 (16 lines); hunks: -1946,7 +1946,7 @@ def mix_with_running(self, running_batch: "ScheduleBatch"):; -2341,7 +2341,13 @@ def filter_batch(; symbols: mix_with_running, filter_batch, merge_batch, touching `mix_with_running, filter_batch, merge_batch`.
-- Code diff details:
-  - `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py` modified +19/-6 (25 lines); hunks: -195,14 +195,21 @@ def prepare_mixed(; -213,6 +220,12 @@ def prepare_mixed(; symbols: prepare_mixed
-  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +21/-2 (23 lines); hunks: -1,4 +1,5; -205,16 +206,34 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; symbols: _forward_metadata
-  - `python/sglang/srt/managers/schedule_batch.py` modified +11/-5 (16 lines); hunks: -1946,7 +1946,7 @@ def mix_with_running(self, running_batch: "ScheduleBatch"):; -2341,7 +2341,13 @@ def filter_batch(; symbols: mix_with_running, filter_batch, merge_batch
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/attention/mamba/mamba2_metadata.py
-@@ -195,14 +195,21 @@ def prepare_mixed(
--        num_prefills = len(forward_batch.extend_seq_lens)
--        num_prefill_tokens = forward_batch.extend_num_tokens
--        num_decodes = len(forward_batch.seq_lens) - num_prefills
-+        # In MIXED mode (enable_mixed_chunk),We derive num_prefills by subtracting the number
-+        # of decode requests (= total seq_lens count - extend_seq_lens count) from
-+        # the total extend count.  In non-MIXED mode the two counts are equal.
-diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
-@@ -1,4 +1,5 @@
-+import types
-@@ -205,16 +206,34 @@ def _forward_metadata(self, forward_batch: ForwardBatch):
-+                    # In MIXED mode (enable_mixed_chunk), slice query_start_loc and
-+                    # mamba_cache_indices to the prefill-only prefix so that the
-+                    # tracking helpers see a consistent, prefill-only view.
-+                    if forward_batch.forward_mode.is_mixed():
-diff -- python/sglang/srt/managers/schedule_batch.py
-@@ -1946,7 +1946,7 @@ def mix_with_running(self, running_batch: "ScheduleBatch"):
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py` modified +19/-6; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +21/-2; `python/sglang/srt/managers/schedule_batch.py` modified +11/-5
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/managers/schedule_batch.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #22664 - Qwen3next flashinfer allreduce auto enable
 
 - Link: https://github.com/sgl-project/sglang/pull/22664
@@ -1737,43 +1656,6 @@ diff -- python/sglang/srt/server_args.py
 - Reviewed files:
   - runtime: `python/sglang/srt/server_args.py` modified +3/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/server_args.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #23474 - [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models
-
-- Link: https://github.com/sgl-project/sglang/pull/23474
-- Status/date: open / 2026-04-22
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +284/-8, 330 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models"; model line: Qwen3 Next; category: bug fix; main diff: `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`; technical summary: Covers "[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models"; the main implementation surface is `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent, touching `_TiedChild, __init__, forward`; `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward, touching `maybe_offload_to_cpu, forward`.
-- Code diff details:
-  - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent
-  - `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward
-- Key code excerpts:
-
-```diff
-diff -- test/registered/unit/utils/test_offloader_tied_params.py
-@@ -0,0 +1,199 @@
-+"""Tests for OffloaderV1 with tied parameters and view aliases (see issue #23150).
-+Two failure modes caused the Qwen3-Next / Qwen3.5 CPU-offload regression:
-+1. **Tied parameters**: a single nn.Parameter is registered under both a parent
-+   and a child module (Qwen3GatedDeltaNet + RadixLinearAttention share
-+   ``A_log`` / ``dt_bias``). state_dict() then lists the same tensor under
-+   multiple keys, and functional_call(..., tie_weights=True) rejects it when
-diff -- python/sglang/srt/utils/offloader.py
-@@ -1,7 +1,7 @@
--from typing import Callable, Generator, List, Optional
-+from typing import Callable, Dict, Generator, List, Optional
-@@ -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) -> torch.nn.Module:
-+        # Record tensor views that alias each parameter's *original* storage
-+        # BEFORE we rebind .data to pinned CPU memory. Some hybrid linear-attn
-+        # models (e.g. Qwen3-Next) cache such views, which would otherwise point
-```
-
-- Reviewed files:
-  - tests: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0
-  - runtime: `python/sglang/srt/utils/offloader.py` modified +85/-8
-- Risk and verification: The diff ships test coverage in `test/registered/unit/utils/test_offloader_tied_params.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #21698 - [npu]fix: qwen3-next w8a8 precision bugs
 
@@ -1947,6 +1829,33 @@ diff -- python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py
   - tests: `test/registered/unit/spec/test_adaptive_spec_params.py` modified +59/-32
 - Risk and verification: The diff ships test coverage in `test/registered/unit/spec/test_adaptive_spec_params.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #23925 - [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next
+
+- Link: https://github.com/sgl-project/sglang/pull/23925
+- Status/date: merged / 2026-05-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_next.py`; associated commits `55ba03db6a46`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +194/-19, 284 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_next.py`; technical summary: Covers "[NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +49/-8 (57 lines); hunks: -69,6 +69,9; -751,14 +754,8 @@ def _apply_qk_norm(; symbols: _apply_qk_norm, self_attention, forward_prepare_native, forward_prepare_npu, touching `_apply_qk_norm, self_attention, forward_prepare_native`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_next.py` modified +49/-8 (57 lines); hunks: -69,6 +69,9; -751,14 +754,8 @@ def _apply_qk_norm(; symbols: _apply_qk_norm, self_attention, forward_prepare_native, forward_prepare_npu
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -69,6 +69,9 @@
++    from sgl_kernel_npu.norm.split_qkv_rmsnorm_rope import (
++        split_qkvgate_gemma_rmsnorm_rope,
++    )
+@@ -751,14 +754,8 @@ def _apply_qk_norm(
+-    def self_attention(
+-        self,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +49/-8
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #25831 - [Test] Stage-a sanity kits; consolidate core/ + models_e2e/ tests
 
 - Link: https://github.com/sgl-project/sglang/pull/25831
@@ -1987,33 +1896,6 @@ diff -- python/sglang/test/kits/basic_scheduler_stress_kit.py
 - Reviewed files:
   - tests: `test/manual/models/test_nvidia_nemotron_3_nano_archived.py` modified +1/-1; `python/sglang/test/kits/server_sanity_kit.py` removed +0/-228; `python/sglang/test/kits/basic_scheduler_stress_kit.py` added +135/-0; `python/sglang/test/kits/basic_decode_correctness_kit.py` added +114/-0; `test/registered/language/test_srt_backend.py` removed +0/-94; `test/registered/core/test_engine_child_pids.py` modified +40/-51
 - Risk and verification: The diff ships test coverage in `python/sglang/test/kits/basic_api_contract_kit.py`, `python/sglang/test/kits/basic_decode_correctness_kit.py`, `python/sglang/test/kits/basic_scheduler_stress_kit.py`, `python/sglang/test/kits/server_sanity_kit.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #23925 - [NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next
-
-- Link: https://github.com/sgl-project/sglang/pull/23925
-- Status/date: merged / 2026-05-20
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_next.py`; associated commits `55ba03db6a46`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +194/-19, 284 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_next.py`; technical summary: Covers "[NPU]use triton split_qkvgate_gemma_rmsnorm_rope for Qwen3.5 and Qwen3_next"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +49/-8 (57 lines); hunks: -69,6 +69,9; -751,14 +754,8 @@ def _apply_qk_norm(; symbols: _apply_qk_norm, self_attention, forward_prepare_native, forward_prepare_npu, touching `_apply_qk_norm, self_attention, forward_prepare_native`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_next.py` modified +49/-8 (57 lines); hunks: -69,6 +69,9; -751,14 +754,8 @@ def _apply_qk_norm(; symbols: _apply_qk_norm, self_attention, forward_prepare_native, forward_prepare_npu
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_next.py
-@@ -69,6 +69,9 @@
-+    from sgl_kernel_npu.norm.split_qkv_rmsnorm_rope import (
-+        split_qkvgate_gemma_rmsnorm_rope,
-+    )
-@@ -751,14 +754,8 @@ def _apply_qk_norm(
--    def self_attention(
--        self,
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +49/-8
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/rotary_embedding/mrope.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #26610 - test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit)
 
@@ -2287,6 +2169,42 @@ diff -- test/registered/ascend/basic_function/parallel_strategy/expert_paralleli
   - tests: `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_480b.py` modified +60/-104; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_480b.py` modified +60/-100; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` modified +60/-100; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py` modified +56/-96; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_deepseek_v3_2_w8a8.py` modified +46/-87; `test/registered/ascend/basic_function/quant/test_npu_w4a4_quantization.py` modified +35/-66
 - Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/gsm8k_ascend_mixin.py`, `python/sglang/test/ascend/test_ascend_utils.py`, `python/sglang/test/ascend/test_mmlu.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_480b.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #10657 - feat: add eagle3 support for qwen3-next model
+
+- Link: https://github.com/sgl-project/sglang/pull/10657
+- Status/date: closed / 2026-06-10
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +45/-3, 113 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "feat: add eagle3 support for qwen3-next model"; model line: Qwen3 Next; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/model_runner.py`; technical summary: Covers "feat: add eagle3 support for qwen3-next model"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/model_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +38/-3 (41 lines); hunks: -1,6 +1,6; -837,6 +837,9 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, forward, HybridLayerType, touching `get_layer, forward, HybridLayerType`; `python/sglang/srt/model_executor/model_runner.py` modified +7/-0 (7 lines); hunks: -347,6 +347,7 @@ def initialize(self, min_per_gpu_memory: float):; -1743,6 +1744,12 @@ def _get_attention_backend(self):; symbols: initialize, _get_attention_backend, touching `initialize, _get_attention_backend`.
+- Code diff details:
+  - `python/sglang/srt/models/qwen3_next.py` modified +38/-3 (41 lines); hunks: -1,6 +1,6; -837,6 +837,9 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, forward, HybridLayerType
+  - `python/sglang/srt/model_executor/model_runner.py` modified +7/-0 (7 lines); hunks: -347,6 +347,7 @@ def initialize(self, min_per_gpu_memory: float):; -1743,6 +1744,12 @@ def _get_attention_backend(self):; symbols: initialize, _get_attention_backend
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -1,6 +1,6 @@
+-from typing import Any, Dict, Iterable, Optional, Set, Tuple
++from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
+@@ -837,6 +837,9 @@ def get_layer(idx: int, prefix: str):
++        # For EAGLE3 support
++        self.layers_to_capture = []
+@@ -855,9 +858,16 @@ def forward(
+diff -- python/sglang/srt/model_executor/model_runner.py
+@@ -347,6 +347,7 @@ def initialize(self, min_per_gpu_memory: float):
++            self.server_args.full_attention_backend = self.server_args.attention_backend
+@@ -1743,6 +1744,12 @@ def _get_attention_backend(self):
++        elif self.is_draft_worker and hasattr(
++            self.server_args, "full_attention_backend"
++        ):
++            attn_backend = self._get_attention_backend_from_str(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +38/-3; `python/sglang/srt/model_executor/model_runner.py` modified +7/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #23906 - [Refactor] Cuda Graph Runner/Backend Refactor
 
 - Link: https://github.com/sgl-project/sglang/pull/23906
@@ -2328,41 +2246,41 @@ diff -- python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py
   - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541; `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0; `python/sglang/srt/model_executor/runner_backend/tc_piecewise_cuda_graph_backend.py` added +225/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/test/doc_patch.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #10657 - feat: add eagle3 support for qwen3-next model
+### PR #26204 - Optimize Qwen3 Next FP8 MoE on H200
 
-- Link: https://github.com/sgl-project/sglang/pull/10657
-- Status/date: closed / 2026-06-10
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +45/-3, 113 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat: add eagle3 support for qwen3-next model"; model line: Qwen3 Next; category: model support/runtime entry; main diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/model_runner.py`; technical summary: Covers "feat: add eagle3 support for qwen3-next model"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/model_executor/model_runner.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +38/-3 (41 lines); hunks: -1,6 +1,6; -837,6 +837,9 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, forward, HybridLayerType, touching `get_layer, forward, HybridLayerType`; `python/sglang/srt/model_executor/model_runner.py` modified +7/-0 (7 lines); hunks: -347,6 +347,7 @@ def initialize(self, min_per_gpu_memory: float):; -1743,6 +1744,12 @@ def _get_attention_backend(self):; symbols: initialize, _get_attention_backend, touching `initialize, _get_attention_backend`.
+- Link: https://github.com/sgl-project/sglang/pull/26204
+- Status/date: merged / 2026-06-11
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py`; associated commits `06e0df5899aa`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +427/-28, 589 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Optimize Qwen3 Next FP8 MoE on H200"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py`; technical summary: Covers "Optimize Qwen3 Next FP8 MoE on H200"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +39/-9 (48 lines); hunks: -6,10 +6,12; -35,6 +37,11; symbols: __init__, routed_experts_weights_of_layer, touching `__init__, routed_experts_weights_of_layer`; `python/sglang/srt/models/qwen3_next_mtp.py` modified +13/-1 (14 lines); hunks: -59,7 +59,6 @@ def __init__(; -86,6 +85,19 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
 - Code diff details:
-  - `python/sglang/srt/models/qwen3_next.py` modified +38/-3 (41 lines); hunks: -1,6 +1,6; -837,6 +837,9 @@ def get_layer(idx: int, prefix: str):; symbols: get_layer, forward, HybridLayerType
-  - `python/sglang/srt/model_executor/model_runner.py` modified +7/-0 (7 lines); hunks: -347,6 +347,7 @@ def initialize(self, min_per_gpu_memory: float):; -1743,6 +1744,12 @@ def _get_attention_backend(self):; symbols: initialize, _get_attention_backend
+  - `python/sglang/srt/models/qwen3_next.py` modified +39/-9 (48 lines); hunks: -6,10 +6,12; -35,6 +37,11; symbols: __init__, routed_experts_weights_of_layer
+  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +13/-1 (14 lines); hunks: -59,7 +59,6 @@ def __init__(; -86,6 +85,19 @@ def __init__(; symbols: __init__, forward
 - Key code excerpts:
 
 ```diff
 diff -- python/sglang/srt/models/qwen3_next.py
-@@ -1,6 +1,6 @@
--from typing import Any, Dict, Iterable, Optional, Set, Tuple
-+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
-@@ -837,6 +837,9 @@ def get_layer(idx: int, prefix: str):
-+        # For EAGLE3 support
-+        self.layers_to_capture = []
-@@ -855,9 +858,16 @@ def forward(
-diff -- python/sglang/srt/model_executor/model_runner.py
-@@ -347,6 +347,7 @@ def initialize(self, min_per_gpu_memory: float):
-+            self.server_args.full_attention_backend = self.server_args.attention_backend
-@@ -1743,6 +1744,12 @@ def _get_attention_backend(self):
-+        elif self.is_draft_worker and hasattr(
-+            self.server_args, "full_attention_backend"
-+        ):
-+            attn_backend = self._get_attention_backend_from_str(
+@@ -6,10 +6,12 @@
++from sglang.jit_kernel.triton.gdn_fused_proj import fused_qkvzba_split_reshape_cat
++from sglang.srt.layers.attention.fla.fused_norm_gate import FusedRMSNormGated
+@@ -35,6 +37,11 @@
++from sglang.srt.model_executor.cuda_graph_config import (
++    Backend,
++    Phase,
+diff -- python/sglang/srt/models/qwen3_next_mtp.py
+@@ -59,7 +59,6 @@ def __init__(
+-        # self.determine_num_fused_shared_experts("Qwen3NextForCausalLMMTP")
+@@ -86,6 +85,19 @@ def __init__(
++        # Mirror Qwen3NextForCausalLM.__init__'s shared-expert fusion setup so
++        # the inherited load_weights() can find the attribute on the MTP path.
++        # We compute it from the actual MTP MoE layer (1 layer with is_nextn=True),
++        # not hardcode it — when the layer's MoE pre-fuses the shared expert,
 ```
 
 - Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +38/-3; `python/sglang/srt/model_executor/model_runner.py` modified +7/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/qwen3_next.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +39/-9; `python/sglang/srt/models/qwen3_next_mtp.py` modified +13/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=513,N=512,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=513,N=512,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/models/qwen2_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #27630 - [AMD] Fuse sigmoid + mul attention output gate into single Triton kernel
 
@@ -2404,42 +2322,6 @@ diff -- python/sglang/jit_kernel/tests/test_sigmoid_gate_mul.py
   - runtime: `python/sglang/srt/models/qwen3_next.py` modified +11/-2; `python/sglang/srt/models/qwen3_5.py` modified +9/-2; `python/sglang/jit_kernel/triton/sigmoid_gate_mul.py` added +29/-0
   - tests: `python/sglang/jit_kernel/tests/test_sigmoid_gate_mul.py` added +81/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/jit_kernel/tests/test_sigmoid_gate_mul.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #26204 - Optimize Qwen3 Next FP8 MoE on H200
-
-- Link: https://github.com/sgl-project/sglang/pull/26204
-- Status/date: merged / 2026-06-11
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py`; associated commits `06e0df5899aa`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 5 files, +427/-28, 589 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Optimize Qwen3 Next FP8 MoE on H200"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py`; technical summary: Covers "Optimize Qwen3 Next FP8 MoE on H200"; the main implementation surface is `python/sglang/srt/models/qwen3_next.py`, `python/sglang/srt/models/qwen3_next_mtp.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/qwen3_next.py` modified +39/-9 (48 lines); hunks: -6,10 +6,12; -35,6 +37,11; symbols: __init__, routed_experts_weights_of_layer, touching `__init__, routed_experts_weights_of_layer`; `python/sglang/srt/models/qwen3_next_mtp.py` modified +13/-1 (14 lines); hunks: -59,7 +59,6 @@ def __init__(; -86,6 +85,19 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
-- Code diff details:
-  - `python/sglang/srt/models/qwen3_next.py` modified +39/-9 (48 lines); hunks: -6,10 +6,12; -35,6 +37,11; symbols: __init__, routed_experts_weights_of_layer
-  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +13/-1 (14 lines); hunks: -59,7 +59,6 @@ def __init__(; -86,6 +85,19 @@ def __init__(; symbols: __init__, forward
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_next.py
-@@ -6,10 +6,12 @@
-+from sglang.jit_kernel.triton.gdn_fused_proj import fused_qkvzba_split_reshape_cat
-+from sglang.srt.layers.attention.fla.fused_norm_gate import FusedRMSNormGated
-@@ -35,6 +37,11 @@
-+from sglang.srt.model_executor.cuda_graph_config import (
-+    Backend,
-+    Phase,
-diff -- python/sglang/srt/models/qwen3_next_mtp.py
-@@ -59,7 +59,6 @@ def __init__(
--        # self.determine_num_fused_shared_experts("Qwen3NextForCausalLMMTP")
-@@ -86,6 +85,19 @@ def __init__(
-+        # Mirror Qwen3NextForCausalLM.__init__'s shared-expert fusion setup so
-+        # the inherited load_weights() can find the attribute on the MTP path.
-+        # We compute it from the actual MTP MoE layer (1 layer with is_nextn=True),
-+        # not hardcode it — when the layer's MoE pre-fuses the shared expert,
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/qwen3_next.py` modified +39/-9; `python/sglang/srt/models/qwen3_next_mtp.py` modified +13/-1
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=513,N=512,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128].json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=513,N=512,device_name=NVIDIA_H200,dtype=fp8_w8a8,block_shape=[128, 128]_down.json`, `python/sglang/srt/models/qwen2_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #23862 - Fix --mem-fraction-static not accounting for EAGLE draft model KV cache
 
@@ -2692,6 +2574,123 @@ diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +219/-75; `python/sglang/srt/models/qwen3_next.py` modified +0/-41; `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` modified +12/-4; `python/sglang/srt/mem_cache/memory_pool.py` modified +16/-2; `python/sglang/srt/compilation/compilation_config.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/compilation/compilation_config.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/mem_cache/memory_pool.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #20397 - [NPU] Qwen3 next Ascend Support MTP
+
+- Link: https://github.com/sgl-project/sglang/pull/20397
+- Status/date: closed / 2026-08-23
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 11 files, +985/-94, 1352 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] Qwen3 next Ascend Support MTP"; model line: Qwen3 Next; category: performance/backend optimization; main diff: `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; technical summary: Covers "[NPU] Qwen3 next Ascend Support MTP"; the main implementation surface is `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py`, `python/sglang/srt/layers/attention/linear/gdn_backend.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py` modified +537/-0 (537 lines); hunks: -188,3 +188,540 @@ def fused_mamba_state_scatter_with_mask(; symbols: fused_mamba_state_scatter_with_mask, fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat_npu, move_cache_dynamic_last_kernel_h_block, touching `fused_mamba_state_scatter_with_mask, fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat_npu`; `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +282/-61 (343 lines); hunks: -1,7 +1,7; -37,9 +37,20; symbols: vllm_causal_conv1d_update, GDNKernelDispatcher, forward_decode, forward_extend, touching `vllm_causal_conv1d_update, GDNKernelDispatcher, forward_decode`; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +94/-3 (97 lines); hunks: -22,13 +22,16; -142,6 +145,9 @@ def __init__(self, model_runner: ModelRunner):; symbols: __init__, _forward_metadata, prepare_gdn_inputs, init_forward_metadata, touching `__init__, _forward_metadata, prepare_gdn_inputs`; `python/sglang/srt/models/qwen3_next_mtp.py` modified +9/-3 (12 lines); hunks: -16,7 +16,7; -46,6 +46,8 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py` modified +537/-0 (537 lines); hunks: -188,3 +188,540 @@ def fused_mamba_state_scatter_with_mask(; symbols: fused_mamba_state_scatter_with_mask, fused_qkvzba_split_reshape_cat_kernel, fused_qkvzba_split_reshape_cat_npu, move_cache_dynamic_last_kernel_h_block
+  - `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +282/-61 (343 lines); hunks: -1,7 +1,7; -37,9 +37,20; symbols: vllm_causal_conv1d_update, GDNKernelDispatcher, forward_decode, forward_extend
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +94/-3 (97 lines); hunks: -22,13 +22,16; -142,6 +145,9 @@ def __init__(self, model_runner: ModelRunner):; symbols: __init__, _forward_metadata, prepare_gdn_inputs, init_forward_metadata
+  - `python/sglang/srt/models/qwen3_next_mtp.py` modified +9/-3 (12 lines); hunks: -16,7 +16,7; -46,6 +46,8 @@ def __init__(; symbols: __init__, forward
+  - `python/sglang/srt/layers/layernorm.py` modified +4/-3 (7 lines); hunks: -84,6 +84,7; -508,11 +509,11 @@ def forward_npu(; symbols: RMSNorm, forward_npu, forward_xpu
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py
+@@ -188,3 +188,540 @@ def fused_mamba_state_scatter_with_mask(
++# todo: move to sgl_kernel_npu
++from sgl_kernel_npu.utils.triton_utils import get_device_properties
++MAX_ROWS_PER_ITER = 64
++@triton.jit(do_not_specialize=["total_rows", "rows_per_vec"])
++def fused_qkvzba_split_reshape_cat_kernel(
++    mixed_qkv,
+diff -- python/sglang/srt/layers/attention/linear/gdn_backend.py
+@@ -1,7 +1,7 @@
+-from typing import Tuple, Union
++from typing import Tuple, Union, Optional
++import torch.nn.functional as F
+@@ -37,9 +37,20 @@
++    from sgl_kernel_npu.fla.fused_gdn_gating import fused_gdn_gating_npu
++    from sglang.srt.layers.attention.fla.l2norm import l2norm_fwd
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -22,13 +22,16 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/mamba/mamba_state_scatter_triton.py` modified +537/-0; `python/sglang/srt/layers/attention/linear/gdn_backend.py` modified +282/-61; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +94/-3; `python/sglang/srt/models/qwen3_next_mtp.py` modified +9/-3; `python/sglang/srt/layers/layernorm.py` modified +4/-3; `python/sglang/srt/models/qwen3_next.py` modified +5/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/hardware_backend/npu/attention/ascend_backend.py`, `python/sglang/srt/hardware_backend/npu/memory_pool_npu.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23075 - [Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view.
+
+- Link: https://github.com/sgl-project/sglang/pull/23075
+- Status/date: closed / 2026-08-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +51/-13, 128 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view."; model line: Qwen3 Next; category: bug fix; main diff: `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py`; technical summary: Covers "[Fix] Mixed chunk query_start_loc and mamba_cache_indices to the prefill-only prefix so that the tracking helpers see a consistent, prefill-only view."; the main implementation surface is `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/managers/schedule_batch.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py` modified +19/-6 (25 lines); hunks: -195,14 +195,21 @@ def prepare_mixed(; -213,6 +220,12 @@ def prepare_mixed(; symbols: prepare_mixed, touching `prepare_mixed`; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +21/-2 (23 lines); hunks: -1,4 +1,5; -205,16 +206,34 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; symbols: _forward_metadata, touching `_forward_metadata`; `python/sglang/srt/managers/schedule_batch.py` modified +11/-5 (16 lines); hunks: -1946,7 +1946,7 @@ def mix_with_running(self, running_batch: "ScheduleBatch"):; -2341,7 +2341,13 @@ def filter_batch(; symbols: mix_with_running, filter_batch, merge_batch, touching `mix_with_running, filter_batch, merge_batch`.
+- Code diff details:
+  - `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py` modified +19/-6 (25 lines); hunks: -195,14 +195,21 @@ def prepare_mixed(; -213,6 +220,12 @@ def prepare_mixed(; symbols: prepare_mixed
+  - `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +21/-2 (23 lines); hunks: -1,4 +1,5; -205,16 +206,34 @@ def _forward_metadata(self, forward_batch: ForwardBatch):; symbols: _forward_metadata
+  - `python/sglang/srt/managers/schedule_batch.py` modified +11/-5 (16 lines); hunks: -1946,7 +1946,7 @@ def mix_with_running(self, running_batch: "ScheduleBatch"):; -2341,7 +2341,13 @@ def filter_batch(; symbols: mix_with_running, filter_batch, merge_batch
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/attention/mamba/mamba2_metadata.py
+@@ -195,14 +195,21 @@ def prepare_mixed(
+-        num_prefills = len(forward_batch.extend_seq_lens)
+-        num_prefill_tokens = forward_batch.extend_num_tokens
+-        num_decodes = len(forward_batch.seq_lens) - num_prefills
++        # In MIXED mode (enable_mixed_chunk),We derive num_prefills by subtracting the number
++        # of decode requests (= total seq_lens count - extend_seq_lens count) from
++        # the total extend count.  In non-MIXED mode the two counts are equal.
+diff -- python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -1,4 +1,5 @@
++import types
+@@ -205,16 +206,34 @@ def _forward_metadata(self, forward_batch: ForwardBatch):
++                    # In MIXED mode (enable_mixed_chunk), slice query_start_loc and
++                    # mamba_cache_indices to the prefill-only prefix so that the
++                    # tracking helpers see a consistent, prefill-only view.
++                    if forward_batch.forward_mode.is_mixed():
+diff -- python/sglang/srt/managers/schedule_batch.py
+@@ -1946,7 +1946,7 @@ def mix_with_running(self, running_batch: "ScheduleBatch"):
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py` modified +19/-6; `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py` modified +21/-2; `python/sglang/srt/managers/schedule_batch.py` modified +11/-5
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/attention/mamba/mamba2_metadata.py`, `python/sglang/srt/managers/schedule_batch.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #23474 - [Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models
+
+- Link: https://github.com/sgl-project/sglang/pull/23474
+- Status/date: closed / 2026-08-31
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +284/-8, 330 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models"; model line: Qwen3 Next; category: bug fix; main diff: `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`; technical summary: Covers "[Bugfix] Try to fix --cpu-offload-gb on hybrid linear-attn models"; the main implementation surface is `test/registered/unit/utils/test_offloader_tied_params.py`, `python/sglang/srt/utils/offloader.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent, touching `_TiedChild, __init__, forward`; `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward, touching `maybe_offload_to_cpu, forward`.
+- Code diff details:
+  - `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0 (199 lines); hunks: -0,0 +1,199; symbols: _TiedChild, __init__, forward, _TiedParent
+  - `python/sglang/srt/utils/offloader.py` modified +85/-8 (93 lines); hunks: -1,7 +1,7; -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) ->...; symbols: maybe_offload_to_cpu, forward
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/utils/test_offloader_tied_params.py
+@@ -0,0 +1,199 @@
++"""Tests for OffloaderV1 with tied parameters and view aliases (see issue #23150).
++Two failure modes caused the Qwen3-Next / Qwen3.5 CPU-offload regression:
++1. **Tied parameters**: a single nn.Parameter is registered under both a parent
++   and a child module (Qwen3GatedDeltaNet + RadixLinearAttention share
++   ``A_log`` / ``dt_bias``). state_dict() then lists the same tensor under
++   multiple keys, and functional_call(..., tie_weights=True) rejects it when
+diff -- python/sglang/srt/utils/offloader.py
+@@ -1,7 +1,7 @@
+-from typing import Callable, Generator, List, Optional
++from typing import Callable, Dict, Generator, List, Optional
+@@ -106,16 +106,52 @@ def maybe_offload_to_cpu(self, module: torch.nn.Module) -> torch.nn.Module:
++        # Record tensor views that alias each parameter's *original* storage
++        # BEFORE we rebind .data to pinned CPU memory. Some hybrid linear-attn
++        # models (e.g. Qwen3-Next) cache such views, which would otherwise point
+```
+
+- Reviewed files:
+  - tests: `test/registered/unit/utils/test_offloader_tied_params.py` added +199/-0
+  - runtime: `python/sglang/srt/utils/offloader.py` modified +85/-8
+- Risk and verification: The diff ships test coverage in `test/registered/unit/utils/test_offloader_tied_params.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

@@ -1,4 +1,4 @@
-# sglang Kimi K2/K2.5/K3/Linear/VL Model PR Optimization History
+# SGLang Kimi K2/K2.5/K3/Linear/VL Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -6,73 +6,69 @@
 | --- | --- |
 | `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx` | no direct PR-number commit |
 | `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` | no direct PR-number commit |
-| `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx` | [#36246](https://github.com/sgl-project/sglang/pull/36246) |
 | `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.mdx` | no direct PR-number commit |
-| `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` | [#33997](https://github.com/sgl-project/sglang/pull/33997), [#34886](https://github.com/sgl-project/sglang/pull/34886), [#35168](https://github.com/sgl-project/sglang/pull/35168) |
+| `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` | [#33825](https://github.com/sgl-project/sglang/pull/33825), [#33997](https://github.com/sgl-project/sglang/pull/33997), [#34099](https://github.com/sgl-project/sglang/pull/34099), [#34580](https://github.com/sgl-project/sglang/pull/34580), [#34886](https://github.com/sgl-project/sglang/pull/34886), [#35168](https://github.com/sgl-project/sglang/pull/35168), [#35263](https://github.com/sgl-project/sglang/pull/35263), [#35508](https://github.com/sgl-project/sglang/pull/35508), [#37781](https://github.com/sgl-project/sglang/pull/37781), [#37878](https://github.com/sgl-project/sglang/pull/37878), [#39029](https://github.com/sgl-project/sglang/pull/39029), [#39066](https://github.com/sgl-project/sglang/pull/39066), ... (17 total) |
 | `docs/cookbook/autoregressive/Moonshotai/Kimi-Linear.mdx` | no direct PR-number commit |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/kimi_k2_6.mdx` | no direct PR-number commit |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/kimi_k2_6.mdx` | no direct PR-number commit |
-| `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` | no direct PR-number commit |
+| `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` | [#35508](https://github.com/sgl-project/sglang/pull/35508), [#40575](https://github.com/sgl-project/sglang/pull/40575) |
 | `docs/src/snippets/autoregressive/kimi-k2-deployment.jsx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/kimi-k25-deployment.jsx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/kimi-k26-deployment.jsx` | no direct PR-number commit |
-| `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` | no direct PR-number commit |
+| `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` | [#36246](https://github.com/sgl-project/sglang/pull/36246) |
 | `docs/src/snippets/autoregressive/kimi-linear-deployment.jsx` | no direct PR-number commit |
-| `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` | no direct PR-number commit |
-| `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` | [#33612](https://github.com/sgl-project/sglang/pull/33612), [#33997](https://github.com/sgl-project/sglang/pull/33997), [#34444](https://github.com/sgl-project/sglang/pull/34444), [#35168](https://github.com/sgl-project/sglang/pull/35168) |
+| `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` | [#37878](https://github.com/sgl-project/sglang/pull/37878), [#39029](https://github.com/sgl-project/sglang/pull/39029) |
+| `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` | [#33612](https://github.com/sgl-project/sglang/pull/33612), [#33825](https://github.com/sgl-project/sglang/pull/33825), [#33997](https://github.com/sgl-project/sglang/pull/33997), [#34099](https://github.com/sgl-project/sglang/pull/34099), [#34444](https://github.com/sgl-project/sglang/pull/34444), [#34580](https://github.com/sgl-project/sglang/pull/34580), [#35168](https://github.com/sgl-project/sglang/pull/35168), [#35263](https://github.com/sgl-project/sglang/pull/35263), [#35508](https://github.com/sgl-project/sglang/pull/35508), [#37781](https://github.com/sgl-project/sglang/pull/37781), [#37878](https://github.com/sgl-project/sglang/pull/37878), [#39029](https://github.com/sgl-project/sglang/pull/39029), ... (18 total) |
+| `examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py` | [#35314](https://github.com/sgl-project/sglang/pull/35314) |
 | `python/sglang/kernels/jit/csrc/kimi_k3/attn_res/fused_tma.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890), [#33997](https://github.com/sgl-project/sglang/pull/33997) |
+| `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890), [#33997](https://github.com/sgl-project/sglang/pull/33997), [#38612](https://github.com/sgl-project/sglang/pull/38612) |
 | `python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ag.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ar.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/jit/csrc/kimi_k3/comm/ptx_sys.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
 | `python/sglang/kernels/jit/csrc/kimi_k3/comm/sp_collective.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
 | `python/sglang/kernels/jit/csrc/kimi_k3/mla_output_gate.cuh` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
 | `python/sglang/kernels/jit/csrc/kimi_k3/situ_and_mul.cuh` | [#32541](https://github.com/sgl-project/sglang/pull/32541), [#32890](https://github.com/sgl-project/sglang/pull/32890), [#33764](https://github.com/sgl-project/sglang/pull/33764) |
-| `python/sglang/kernels/jit/csrc/trtllm_lora_temp/kimi_k2_moe_fused_gate.cuh` | no direct PR-number commit |
-| `python/sglang/kernels/ops/kimi_k3/__init__.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890), [#33465](https://github.com/sgl-project/sglang/pull/33465) |
-| `python/sglang/kernels/ops/kimi_k3/activation.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890), [#33764](https://github.com/sgl-project/sglang/pull/33764) |
-| `python/sglang/kernels/ops/kimi_k3/all_reduce.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/attn_res.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/attn_res_hip.py` | [#33599](https://github.com/sgl-project/sglang/pull/33599) |
-| `python/sglang/kernels/ops/kimi_k3/configs/sp_collective/world=4,H=7168,device_name=NVIDIA_GB300.json` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/configs/sp_collective/world=8,H=7168,device_name=NVIDIA_GB300.json` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/gemm_ag.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/gemm_ar.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/kda_decode_mtp.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/mla_output_gate.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890), [#33465](https://github.com/sgl-project/sglang/pull/33465) |
-| `python/sglang/kernels/ops/kimi_k3/moe.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/kimi_k3/sp_collective.py` | [#32890](https://github.com/sgl-project/sglang/pull/32890) |
-| `python/sglang/kernels/ops/moe/trtllm_lora_temp/kimi_k2_moe_fused_gate.py` | no direct PR-number commit |
-| `python/sglang/srt/arg_groups/kimi_k3_hook.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/kernels/jit/csrc/lora/trtllm_lora_temp/kimi_k2_moe_fused_gate.cuh` | no direct PR-number commit |
+| `python/sglang/kernels/ops/attention/kda_flydsl/kernels/kimi_k3_kda_decode.py` | [#40922](https://github.com/sgl-project/sglang/pull/40922) |
+| `python/sglang/kernels/ops/attention/kda_flydsl/kernels/kimi_k3_kda_decode_fb.py` | [#40922](https://github.com/sgl-project/sglang/pull/40922) |
+| `python/sglang/kernels/ops/attention/kda_flydsl/kimi_k3_kda_decode.py` | [#40922](https://github.com/sgl-project/sglang/pull/40922) |
+| `python/sglang/kernels/ops/gemm/kimi_k3.py` | [#40922](https://github.com/sgl-project/sglang/pull/40922) |
+| `python/sglang/kernels/ops/lora/moe/trtllm_lora_temp/kimi_k2_moe_fused_gate.py` | no direct PR-number commit |
+| `python/sglang/srt/arg_groups/kimi_k3_hook.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541), [#34842](https://github.com/sgl-project/sglang/pull/34842) |
+| `python/sglang/srt/arg_groups/model_overrides/kimi_k3.py` | no direct PR-number commit |
 | `python/sglang/srt/configs/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789) |
 | `python/sglang/srt/configs/kimi_k3.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
-| `python/sglang/srt/configs/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#32541](https://github.com/sgl-project/sglang/pull/32541) |
+| `python/sglang/srt/configs/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#32541](https://github.com/sgl-project/sglang/pull/32541), [#40700](https://github.com/sgl-project/sglang/pull/40700) |
 | `python/sglang/srt/configs/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
 | `python/sglang/srt/configs/kimi_vl_moonvit.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383) |
 | `python/sglang/srt/function_call/kimik2_detector.py` | [#7940](https://github.com/sgl-project/sglang/pull/7940), [#8043](https://github.com/sgl-project/sglang/pull/8043), [#8968](https://github.com/sgl-project/sglang/pull/8968), [#10972](https://github.com/sgl-project/sglang/pull/10972), [#19120](https://github.com/sgl-project/sglang/pull/19120), [#19552](https://github.com/sgl-project/sglang/pull/19552), [#23950](https://github.com/sgl-project/sglang/pull/23950), [#25071](https://github.com/sgl-project/sglang/pull/25071), [#33025](https://github.com/sgl-project/sglang/pull/33025) |
 | `python/sglang/srt/function_call/kimik3_detector.py` | [#33025](https://github.com/sgl-project/sglang/pull/33025), [#34881](https://github.com/sgl-project/sglang/pull/34881) |
 | `python/sglang/srt/function_call/kimik3_format.py` | [#33025](https://github.com/sgl-project/sglang/pull/33025) |
 | `python/sglang/srt/function_call/kimik3_structural_tag.py` | [#33025](https://github.com/sgl-project/sglang/pull/33025), [#34778](https://github.com/sgl-project/sglang/pull/34778) |
+| `python/sglang/srt/model_loader/expert_pack/kimi_ggml.py` | no direct PR-number commit |
+| `python/sglang/srt/model_loader/expert_pack/prepare_kimi_manifest.py` | no direct PR-number commit |
+| `python/sglang/srt/model_loader/expert_pack/prepare_kimi_pack.py` | no direct PR-number commit |
+| `python/sglang/srt/model_loader/kimi_k3_gguf.py` | [#35314](https://github.com/sgl-project/sglang/pull/35314) |
 | `python/sglang/srt/models/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#18370](https://github.com/sgl-project/sglang/pull/18370), [#18434](https://github.com/sgl-project/sglang/pull/18434), [#18440](https://github.com/sgl-project/sglang/pull/18440), [#18689](https://github.com/sgl-project/sglang/pull/18689), [#19331](https://github.com/sgl-project/sglang/pull/19331), [#19689](https://github.com/sgl-project/sglang/pull/19689), [#19959](https://github.com/sgl-project/sglang/pull/19959), [#20747](https://github.com/sgl-project/sglang/pull/20747), [#21004](https://github.com/sgl-project/sglang/pull/21004), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22858](https://github.com/sgl-project/sglang/pull/22858), ... (20 total) |
 | `python/sglang/srt/models/kimi_k25_eagle3.py` | [#24826](https://github.com/sgl-project/sglang/pull/24826), [#25033](https://github.com/sgl-project/sglang/pull/25033), [#26506](https://github.com/sgl-project/sglang/pull/26506), [#27647](https://github.com/sgl-project/sglang/pull/27647), [#29223](https://github.com/sgl-project/sglang/pull/29223) |
-| `python/sglang/srt/models/kimi_k3.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541), [#33465](https://github.com/sgl-project/sglang/pull/33465), [#33623](https://github.com/sgl-project/sglang/pull/33623), [#33764](https://github.com/sgl-project/sglang/pull/33764), [#33921](https://github.com/sgl-project/sglang/pull/33921), [#34404](https://github.com/sgl-project/sglang/pull/34404), [#34642](https://github.com/sgl-project/sglang/pull/34642), [#34766](https://github.com/sgl-project/sglang/pull/34766), [#34883](https://github.com/sgl-project/sglang/pull/34883), [#35077](https://github.com/sgl-project/sglang/pull/35077) |
+| `python/sglang/srt/models/kimi_k3.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541), [#33465](https://github.com/sgl-project/sglang/pull/33465), [#33623](https://github.com/sgl-project/sglang/pull/33623), [#33764](https://github.com/sgl-project/sglang/pull/33764), [#33921](https://github.com/sgl-project/sglang/pull/33921), [#34198](https://github.com/sgl-project/sglang/pull/34198), [#34404](https://github.com/sgl-project/sglang/pull/34404), [#34642](https://github.com/sgl-project/sglang/pull/34642), [#34766](https://github.com/sgl-project/sglang/pull/34766), [#34883](https://github.com/sgl-project/sglang/pull/34883), [#35077](https://github.com/sgl-project/sglang/pull/35077), [#35176](https://github.com/sgl-project/sglang/pull/35176), ... (31 total) |
+| `python/sglang/srt/models/kimi_k3_rocm_quant.py` | [#40811](https://github.com/sgl-project/sglang/pull/40811) |
 | `python/sglang/srt/models/kimi_k3_vl.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
-| `python/sglang/srt/models/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#12660](https://github.com/sgl-project/sglang/pull/12660), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#17160](https://github.com/sgl-project/sglang/pull/17160), [#17506](https://github.com/sgl-project/sglang/pull/17506), [#17731](https://github.com/sgl-project/sglang/pull/17731), [#18849](https://github.com/sgl-project/sglang/pull/18849), [#20396](https://github.com/sgl-project/sglang/pull/20396), [#32262](https://github.com/sgl-project/sglang/pull/32262), [#32541](https://github.com/sgl-project/sglang/pull/32541), [#32612](https://github.com/sgl-project/sglang/pull/32612), [#34546](https://github.com/sgl-project/sglang/pull/34546) |
+| `python/sglang/srt/models/kimi_linear.py` | [#12469](https://github.com/sgl-project/sglang/pull/12469), [#12660](https://github.com/sgl-project/sglang/pull/12660), [#14337](https://github.com/sgl-project/sglang/pull/14337), [#17160](https://github.com/sgl-project/sglang/pull/17160), [#17506](https://github.com/sgl-project/sglang/pull/17506), [#17731](https://github.com/sgl-project/sglang/pull/17731), [#18849](https://github.com/sgl-project/sglang/pull/18849), [#20396](https://github.com/sgl-project/sglang/pull/20396), [#32262](https://github.com/sgl-project/sglang/pull/32262), [#32541](https://github.com/sgl-project/sglang/pull/32541), [#32612](https://github.com/sgl-project/sglang/pull/32612), [#34546](https://github.com/sgl-project/sglang/pull/34546), ... (13 total) |
 | `python/sglang/srt/models/kimi_vl.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#30869](https://github.com/sgl-project/sglang/pull/30869), [#32118](https://github.com/sgl-project/sglang/pull/32118) |
 | `python/sglang/srt/models/kimi_vl_moonvit.py` | [#5383](https://github.com/sgl-project/sglang/pull/5383), [#30869](https://github.com/sgl-project/sglang/pull/30869), [#32118](https://github.com/sgl-project/sglang/pull/32118), [#32541](https://github.com/sgl-project/sglang/pull/32541), [#33349](https://github.com/sgl-project/sglang/pull/33349) |
 | `python/sglang/srt/multimodal/kimi_k3_image_processing.py` | [#33921](https://github.com/sgl-project/sglang/pull/33921), [#34404](https://github.com/sgl-project/sglang/pull/34404), [#34766](https://github.com/sgl-project/sglang/pull/34766) |
 | `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541) |
 | `python/sglang/srt/multimodal/media_artifacts/kimi_k3.py` | [#34404](https://github.com/sgl-project/sglang/pull/34404) |
 | `python/sglang/srt/multimodal/processors/kimi_common.py` | [#22490](https://github.com/sgl-project/sglang/pull/22490), [#33349](https://github.com/sgl-project/sglang/pull/33349) |
-| `python/sglang/srt/multimodal/processors/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22368](https://github.com/sgl-project/sglang/pull/22368), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#22858](https://github.com/sgl-project/sglang/pull/22858), [#23501](https://github.com/sgl-project/sglang/pull/23501), [#28647](https://github.com/sgl-project/sglang/pull/28647), [#31227](https://github.com/sgl-project/sglang/pull/31227), [#32541](https://github.com/sgl-project/sglang/pull/32541), [#33349](https://github.com/sgl-project/sglang/pull/33349) |
+| `python/sglang/srt/multimodal/processors/kimi_k25.py` | [#17789](https://github.com/sgl-project/sglang/pull/17789), [#22269](https://github.com/sgl-project/sglang/pull/22269), [#22368](https://github.com/sgl-project/sglang/pull/22368), [#22490](https://github.com/sgl-project/sglang/pull/22490), [#22858](https://github.com/sgl-project/sglang/pull/22858), [#23501](https://github.com/sgl-project/sglang/pull/23501), [#28647](https://github.com/sgl-project/sglang/pull/28647), [#31227](https://github.com/sgl-project/sglang/pull/31227), [#32541](https://github.com/sgl-project/sglang/pull/32541), [#33349](https://github.com/sgl-project/sglang/pull/33349), [#39148](https://github.com/sgl-project/sglang/pull/39148) |
 | `python/sglang/srt/multimodal/processors/kimi_k3.py` | [#32541](https://github.com/sgl-project/sglang/pull/32541), [#33921](https://github.com/sgl-project/sglang/pull/33921), [#34163](https://github.com/sgl-project/sglang/pull/34163), [#34404](https://github.com/sgl-project/sglang/pull/34404), [#34766](https://github.com/sgl-project/sglang/pull/34766) |
 | `python/sglang/srt/multimodal/processors/kimi_vl.py` | [#22490](https://github.com/sgl-project/sglang/pull/22490), [#33349](https://github.com/sgl-project/sglang/pull/33349) |
 | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d-mtp.yaml` | [#29855](https://github.com/sgl-project/sglang/pull/29855) |
 | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/1p1d.yaml` | [#29855](https://github.com/sgl-project/sglang/pull/29855) |
 | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/2p1d-ep16-mtp-mxfp4.yaml` | [#33333](https://github.com/sgl-project/sglang/pull/33333) |
 | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/2p1d-ep16-mxfp4.yaml` | [#33333](https://github.com/sgl-project/sglang/pull/33333) |
+| `test/manual/hicache/test_npu_kimi_k3_hicache.py` | [#39415](https://github.com/sgl-project/sglang/pull/39415) |
 | `test/manual/models/test_kimi_k2_models.py` | no direct PR-number commit |
-| `test/registered/8-gpu-models/test_kimi_k25.py` | [#19802](https://github.com/sgl-project/sglang/pull/19802), [#21391](https://github.com/sgl-project/sglang/pull/21391), [#21898](https://github.com/sgl-project/sglang/pull/21898) |
 | `test/registered/amd/accuracy/mi30x/test_kimi_k25_eval_amd.py` | [#18269](https://github.com/sgl-project/sglang/pull/18269) |
 | `test/registered/amd/accuracy/mi30x/test_kimi_k26_eval_amd.py` | [#23848](https://github.com/sgl-project/sglang/pull/23848) |
 | `test/registered/amd/accuracy/mi30x/test_kimi_k2_eval_amd.py` | [#17895](https://github.com/sgl-project/sglang/pull/17895) |
@@ -84,13 +80,17 @@
 | `test/registered/amd/accuracy/mi35x/test_kimi_k2_eval_mi35x.py` | [#17895](https://github.com/sgl-project/sglang/pull/17895) |
 | `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` | [#32568](https://github.com/sgl-project/sglang/pull/32568) |
 | `test/registered/amd/perf/mi30x/test_kimi_k26_perf_amd.py` | [#23848](https://github.com/sgl-project/sglang/pull/23848) |
+| `test/registered/amd/perf/mi35x/test_kimi_k26_perf_mi35x.py` | [#23848](https://github.com/sgl-project/sglang/pull/23848) |
+| `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` | [#34985](https://github.com/sgl-project/sglang/pull/34985) |
+| `test/registered/amd/test_kimi_k25_mxfp4.py` | [#21213](https://github.com/sgl-project/sglang/pull/21213), [#22188](https://github.com/sgl-project/sglang/pull/22188), [#25740](https://github.com/sgl-project/sglang/pull/25740) |
+| `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` | [#27833](https://github.com/sgl-project/sglang/pull/27833) |
 | ... | 36 more files omitted from table; all were used for git tracing. |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 98
-- Extra PRs preserved from existing docs: 70
-- Total PRs in this document: 168
+- Git-traced PRs: 132
+- Extra PRs preserved from existing docs: 81
+- Total PRs in this document: 213
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -119,21 +119,21 @@
 | 2025-11-15 | [#13287](https://github.com/sgl-project/sglang/pull/13287) | merged | [opt kimi k2 1 / n] Add kimi k2 moe fused gate | `sgl-kernel/csrc/moe/kimi_k2_moe_fused_gate.cu`, `sgl-kernel/tests/test_kimi_k2_moe_fused_gate.py`, `sgl-kernel/benchmark/bench_kimi_k2_moe_fused_gate.py` |
 | 2025-11-16 | [#13332](https://github.com/sgl-project/sglang/pull/13332) | merged | [opt kimi k2 2/n] apply kimi k2 thinking moe_fused_gate | `python/sglang/srt/layers/moe/topk.py` |
 | 2025-11-18 | [#13374](https://github.com/sgl-project/sglang/pull/13374) | merged | [opt kimi k2 3/n] opt kimi_k2 moe_fused_gate kernel | `sgl-kernel/csrc/moe/kimi_k2_moe_fused_gate.cu` |
-| 2025-11-21 | [#13596](https://github.com/sgl-project/sglang/pull/13596) | merged | [kimi k2 thinking] Avoid useless torch.zeros_ | `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/awq.py` |
-| 2025-11-21 | [#13587](https://github.com/sgl-project/sglang/pull/13587) | merged | [opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size | `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` |
 | 2025-11-21 | [#13466](https://github.com/sgl-project/sglang/pull/13466) | merged | [Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking) | `python/sglang/srt/layers/moe/topk.py` |
+| 2025-11-21 | [#13587](https://github.com/sgl-project/sglang/pull/13587) | merged | [opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size | `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` |
+| 2025-11-21 | [#13596](https://github.com/sgl-project/sglang/pull/13596) | merged | [kimi k2 thinking] Avoid useless torch.zeros_ | `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/quantization/awq.py` |
 | 2025-11-22 | [#9405](https://github.com/sgl-project/sglang/pull/9405) | merged | Use dual stream for DS MoE whenever cuda graph is used (instead of with token threshold) | `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-11-22 | [#12759](https://github.com/sgl-project/sglang/pull/12759) | merged | [Ascend] support Kimi-K2-Thinking | `python/sglang/srt/layers/quantization/w8a8_int8.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2025-12-07 | [#14337](https://github.com/sgl-project/sglang/pull/14337) | merged | remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.) | `python/sglang/srt/models/kimi_linear.py` |
 | 2025-12-07 | [#13725](https://github.com/sgl-project/sglang/pull/13725) | merged | Add Expert Parallelism (EP) support for kimi-k2-thinking | `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` |
+| 2025-12-07 | [#14337](https://github.com/sgl-project/sglang/pull/14337) | merged | remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.) | `python/sglang/srt/models/kimi_linear.py` |
 | 2025-12-16 | [#15100](https://github.com/sgl-project/sglang/pull/15100) | merged | Support piecewise cuda graph for fused marlin moe | `python/sglang/srt/layers/quantization/gptq.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/srt/layers/moe/moe_runner/marlin.py` |
 | 2025-12-18 | [#15306](https://github.com/sgl-project/sglang/pull/15306) | merged | Fix warp illegal instruction in kimi k2 thinking PCG | `sgl-kernel/csrc/moe/kimi_k2_moe_fused_gate.cu` |
 | 2026-01-19 | [#15347](https://github.com/sgl-project/sglang/pull/15347) | merged | Use dsv3 optimized routing `fused_topk_deepseek` instead of `moe_fused_gate` | `python/sglang/srt/layers/moe/topk.py`, `test/registered/kernels/test_fused_topk_deepseek.py`, `test/srt/test_deepseek_v3_mtp.py` |
 | 2026-01-19 | [#17325](https://github.com/sgl-project/sglang/pull/17325) | merged | Fix kernel selection in biased_grouped_topk_gpu | `python/sglang/srt/layers/moe/topk.py` |
 | 2026-01-20 | [#17160](https://github.com/sgl-project/sglang/pull/17160) | merged | [Kimi-Linear] Refactor kimi-linear gate calculation to avoid duplicated code | `python/sglang/srt/models/kimi_linear.py` |
 | 2026-01-24 | [#17506](https://github.com/sgl-project/sglang/pull/17506) | merged | [Kimi-Linear] Refactor Kimi-Linear to support RadixLinearAttention | `python/sglang/srt/models/kimi_linear.py` |
-| 2026-01-26 | [#17731](https://github.com/sgl-project/sglang/pull/17731) | merged | [Kimi-Linear] Remove duplicated code in kimi-linear | `python/sglang/srt/models/kimi_linear.py` |
 | 2026-01-26 | [#17656](https://github.com/sgl-project/sglang/pull/17656) | merged | [AMD CI] Add moonshotai/Kimi-K2-Instruct-0905 testcases | `test/registered/amd/test_kimi_k2_instruct.py` |
+| 2026-01-26 | [#17731](https://github.com/sgl-project/sglang/pull/17731) | merged | [Kimi-Linear] Remove duplicated code in kimi-linear | `python/sglang/srt/models/kimi_linear.py` |
 | 2026-01-27 | [#17789](https://github.com/sgl-project/sglang/pull/17789) | merged | Support Kimi-K2.5 model | `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/configs/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-01-28 | [#17523](https://github.com/sgl-project/sglang/pull/17523) | merged | [AMD] Add Kimi-K2, DeepSeek-V3.2 tests to nightly CI | `test/registered/amd/accuracy/test_deepseek_v32_eval_amd.py`, `.github/workflows/nightly-test-amd.yml`, `test/registered/amd/perf/test_deepseek_v32_mtp_perf_amd.py` |
 | 2026-01-30 | [#17624](https://github.com/sgl-project/sglang/pull/17624) | merged | [BUGFIX] Fix dp size > 1 for qwen3 vl model | `python/sglang/srt/models/qwen3_vl.py`, `python/sglang/srt/multimodal/mm_utils.py`, `python/sglang/srt/layers/linear.py` |
@@ -148,11 +148,11 @@
 | 2026-02-21 | [#19120](https://github.com/sgl-project/sglang/pull/19120) | merged | fix KimiK2Detector regex patterns with re.DOTALL | `python/sglang/srt/function_call/kimik2_detector.py` |
 | 2026-02-25 | [#18434](https://github.com/sgl-project/sglang/pull/18434) | merged | [Fix] Kimi K2.5 support pp | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-02-26 | [#19181](https://github.com/sgl-project/sglang/pull/19181) | merged | [Kernel Slimming] Migrate marlin moe kernel to JIT | `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/jit_kernel/csrc/gemm/marlin_moe/marlin_template.h`, `python/sglang/jit_kernel/csrc/gemm/marlin_moe/moe_wna16_marlin.cuh` |
-| 2026-02-26 | [#19331](https://github.com/sgl-project/sglang/pull/19331) | merged | [NPU] support Kimi-K2.5 on NPU | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-02-26 | [#19228](https://github.com/sgl-project/sglang/pull/19228) | merged | [AMD] optimize Kimi K2.5 fused_moe_triton performance by tuning | `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=384,N=128,device_name=,dtype=int4_w4a16.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=384,N=128,device_name=,dtype=int4_w4a16_down.json`, `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py` |
+| 2026-02-26 | [#19331](https://github.com/sgl-project/sglang/pull/19331) | merged | [NPU] support Kimi-K2.5 on NPU | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-03-03 | [#19689](https://github.com/sgl-project/sglang/pull/19689) | merged | feat: support Kimi K2.5 for Eagle3 | `python/sglang/srt/models/kimi_k25.py` |
-| 2026-03-07 | [#19959](https://github.com/sgl-project/sglang/pull/19959) | merged | Fix Kimi K2.5 PP layer range exposure for PD disaggregation | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-03-07 | [#19802](https://github.com/sgl-project/sglang/pull/19802) | merged | [Nightly] Add Kimi K2.5 nightly test (base + Eagle3 MTP), replace Kimi K2 | `test/registered/8-gpu-models/test_kimi_k25.py` |
+| 2026-03-07 | [#19959](https://github.com/sgl-project/sglang/pull/19959) | merged | Fix Kimi K2.5 PP layer range exposure for PD disaggregation | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-03-17 | [#20747](https://github.com/sgl-project/sglang/pull/20747) | merged | fix piecewise cuda graph support for Kimi-K2.5 model | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-03-19 | [#19552](https://github.com/sgl-project/sglang/pull/19552) | merged | [feat] Enhance Kimi-K2/K2.5 function call and reasoning detection | `test/registered/function_call/test_kimik2_detector.py`, `python/sglang/srt/function_call/kimik2_detector.py` |
 | 2026-03-20 | [#20396](https://github.com/sgl-project/sglang/pull/20396) | merged | perf(kimi_linear): replace einops rearrange with native torch ops in Kimi-Linear KDA path | `python/sglang/srt/models/kimi_linear.py` |
@@ -164,12 +164,10 @@
 | 2026-04-10 | [#22269](https://github.com/sgl-project/sglang/pull/22269) | merged | [EPD][VLM] Support Kimi K25 EPD | `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-04-10 | [#22381](https://github.com/sgl-project/sglang/pull/22381) | merged | [Lora] Lora kimi support | `test/registered/lora/test_lora_kimi_k25_logprob_diff.py`, `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` |
 | 2026-04-11 | [#22368](https://github.com/sgl-project/sglang/pull/22368) | merged | [VLM] GPU Image Preprocessing for Kimi-K2.5 | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
-| 2026-04-14 | [#22806](https://github.com/sgl-project/sglang/pull/22806) | open | feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading | `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2026-04-15 | [#22858](https://github.com/sgl-project/sglang/pull/22858) | merged | [VLM] Enable per-image ViT cache and avoid TP CUDA context creation for Kimi-K2.5 | `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py` |
-| 2026-04-16 | [#22490](https://github.com/sgl-project/sglang/pull/22490) | merged | [EPD][VLM] Support Kimi VL EPD | `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_vl.py` |
 | 2026-04-16 | [#13789](https://github.com/sgl-project/sglang/pull/13789) | closed | [DeepEP Support] Support kimi-k2-thinking deepep | `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` |
+| 2026-04-16 | [#22490](https://github.com/sgl-project/sglang/pull/22490) | merged | [EPD][VLM] Support Kimi VL EPD | `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_vl.py` |
 | 2026-04-21 | [#23186](https://github.com/sgl-project/sglang/pull/23186) | merged | [AMD] Fused qk rmsnorm bf16 for amd/Kimi-K2.5-MXFP4 | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` |
-| 2026-04-21 | [#23381](https://github.com/sgl-project/sglang/pull/23381) | open | [AMD] Add MI355X Kimi-K2.6 tuning artifacts | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py` |
 | 2026-04-21 | [#23394](https://github.com/sgl-project/sglang/pull/23394) | merged | [docs] sync kimi-k2.6 from sgl-cookbook | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` |
 | 2026-04-27 | [#23408](https://github.com/sgl-project/sglang/pull/23408) | merged | [AMD] Fix Kimi-K2.6 Quark MXFP4 loading prefix and packed module mapping | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-04-27 | [#23501](https://github.com/sgl-project/sglang/pull/23501) | merged | [VLM] Fix Kimi-K2.5 CPU path: rename grid_thws -> image_grid_thw | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
@@ -179,8 +177,8 @@
 | 2026-05-07 | [#23950](https://github.com/sgl-project/sglang/pull/23950) | merged | fix(function_call): handle Kimi-K2.5 bare numeric tool call IDs | `test/registered/function_call/test_kimik2_detector.py`, `python/sglang/srt/function_call/kimik2_detector.py` |
 | 2026-05-10 | [#24826](https://github.com/sgl-project/sglang/pull/24826) | merged | [spec decoding] support kimi-k2.5-eagle3-mla | `python/sglang/srt/models/kimi_k25_eagle3.py` |
 | 2026-05-12 | [#25033](https://github.com/sgl-project/sglang/pull/25033) | merged | Fix kimi k2.5 mla eagle + dp attention | `python/sglang/srt/models/kimi_k25_eagle3.py` |
-| 2026-05-15 | [#25265](https://github.com/sgl-project/sglang/pull/25265) | merged | [perf] fix kimi tokenizer to improve ttft | `python/sglang/srt/managers/tokenizer_manager.py` |
 | 2026-05-15 | [#23563](https://github.com/sgl-project/sglang/pull/23563) | closed | [Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend | `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx` |
+| 2026-05-15 | [#25265](https://github.com/sgl-project/sglang/pull/25265) | merged | [perf] fix kimi tokenizer to improve ttft | `python/sglang/srt/managers/tokenizer_manager.py` |
 | 2026-05-18 | [#25390](https://github.com/sgl-project/sglang/pull/25390) | merged | [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model. | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/quantization/quark/quark.py` |
 | 2026-05-19 | [#25269](https://github.com/sgl-project/sglang/pull/25269) | merged | [NPU][Docs] Add Kimi-K2.5-W4A8 instance doc on NPU | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_kimi_k2.5_examples.mdx` |
 | 2026-05-19 | [#25740](https://github.com/sgl-project/sglang/pull/25740) | merged | [AMD] Bump amd/Kimi-K2.5-MXFP4 revision to align with shared-experts fusion | `test/registered/amd/test_kimi_k25_mxfp4.py` |
@@ -191,9 +189,9 @@
 | 2026-05-28 | [#24649](https://github.com/sgl-project/sglang/pull/24649) | merged | [Xeon] CPU CI enhancement for Intel Xeon platforms | `test/registered/unit/models/test_llava.py`, `test/registered/models/test_transformers_backend_eval.py`, `test/registered/function_call/test_kimik2_detector.py` |
 | 2026-05-28 | [#26382](https://github.com/sgl-project/sglang/pull/26382) | merged | Enable Kimi-K2.5 piecewise CUDA graph | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-05-28 | [#26506](https://github.com/sgl-project/sglang/pull/26506) | merged | [spec decoding] support kimi-k2.6-eagle3.1-mla draft | `python/sglang/srt/models/kimi_k25_eagle3.py` |
-| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | merged | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` |
-| 2026-05-29 | [#26257](https://github.com/sgl-project/sglang/pull/26257) | merged | [XPU] Fix Device Assignment | `python/sglang/srt/models/minicpmv.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py` |
 | 2026-05-29 | [#25676](https://github.com/sgl-project/sglang/pull/25676) | merged | Upgrade xgrammar to 0.2.1 | `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `python/sglang/srt/function_call/deepseekv32_detector.py`, `test/registered/unit/function_call/test_function_call_parser.py` |
+| 2026-05-29 | [#26257](https://github.com/sgl-project/sglang/pull/26257) | merged | [XPU] Fix Device Assignment | `python/sglang/srt/models/minicpmv.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py` |
+| 2026-05-29 | [#26353](https://github.com/sgl-project/sglang/pull/26353) | merged | NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing | `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` |
 | 2026-05-29 | [#26744](https://github.com/sgl-project/sglang/pull/26744) | merged | [RL] Forward Kimi K2.5 weight hooks to language model | `python/sglang/srt/models/kimi_k25.py` |
 | 2026-06-01 | [#26555](https://github.com/sgl-project/sglang/pull/26555) | merged | [RL+VLM] Avoid retokenization drift for pre-tokenized (token-id) VLM requests | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/kimi_common.py`, `test/registered/vlm/test_token_id_retokenize_e2e.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
@@ -206,14 +204,14 @@
 | 2026-06-10 | [#27714](https://github.com/sgl-project/sglang/pull/27714) | merged | [Docs] Add Kimi-K2.6 NVFP4 and update Kimi-K2.5 cookbook guidance | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` |
 | 2026-06-12 | [#28064](https://github.com/sgl-project/sglang/pull/28064) | merged | [Docs] Add Kimi K2.7 Code cookbook | `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`, `docs_new/cookbook/intro copy.mdx` |
 | 2026-06-16 | [#28467](https://github.com/sgl-project/sglang/pull/28467) | merged | [ci] add kimi nvfp4 nightly tests | `test/registered/quant/test_kimi_k25_nvfp4_eagle.py` |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-18 | [#28201](https://github.com/sgl-project/sglang/pull/28201) | merged | [Docs] Add fp8 kv cache for tokenspeed mla docs | `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` |
-| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | merged | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_qwen35_fp8.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-22 | [#28647](https://github.com/sgl-project/sglang/pull/28647) | merged | Fix Kimi-VL GPU image preprocessing crash on non-RGB images | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
 | 2026-06-23 | [#22496](https://github.com/sgl-project/sglang/pull/22496) | closed | [Feature] kimi k25 w4a16 support deepep low latency | `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py`, `python/sglang/srt/layers/moe/token_dispatcher/deepep.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py` |
-| 2026-06-24 | [#27833](https://github.com/sgl-project/sglang/pull/27833) | merged | [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5 | `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` |
 | 2026-06-24 | [#25071](https://github.com/sgl-project/sglang/pull/25071) | merged | kimik2_detector fix the normal text detection before tool call. | `test/registered/function_call/test_kimik2_detector.py`, `python/sglang/srt/function_call/kimik2_detector.py` |
+| 2026-06-24 | [#27833](https://github.com/sgl-project/sglang/pull/27833) | merged | [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5 | `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` |
 | 2026-06-24 | [#28623](https://github.com/sgl-project/sglang/pull/28623) | merged | [CI] reduce CPU CI scope with base-c suite | `test/registered/function_call/test_kimik2_detector.py`, `test/registered/models/test_transformers_backend_eval.py`, `test/registered/unit/entrypoints/openai/test_serving_embedding.py` |
 | 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | merged | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_kimi_k25_nvfp4.py`, `.github/workflows/nightly-test-nvidia.yml` |
 | 2026-06-28 | [#29223](https://github.com/sgl-project/sglang/pull/29223) | merged | (perf): Shard Kimi-K2.5 Eagle3 draft fc + symm-mem AG | `python/sglang/srt/models/kimi_k25_eagle3.py` |
@@ -228,44 +226,91 @@
 | 2026-07-24 | [#32262](https://github.com/sgl-project/sglang/pull/32262) | merged | [Bugfix] Fix Kimi-Linear state transfer across heterogeneous TP | `python/sglang/srt/models/kimi_linear.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py` |
 | 2026-07-27 | [#32542](https://github.com/sgl-project/sglang/pull/32542) | merged | docs(cookbook): add the Kimi-K3 serving cookbook | `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs_new/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs_new/src/snippets/configs/deepseek-ai/deepseek-v4.jsx` |
 | 2026-07-27 | [#32547](https://github.com/sgl-project/sglang/pull/32547) | merged | docs: point Kimi-K3 references to public branch | `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
-| 2026-07-29 | [#32612](https://github.com/sgl-project/sglang/pull/32612) | merged | Support DCP for Kimi Linear model | `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py` |
 | 2026-07-29 | [#32118](https://github.com/sgl-project/sglang/pull/32118) | merged | Fix nightly CI: NVFP4 cuda-graph crash, NVILA batching, CuTe paged-KV zero-size, Kimi-VL OOM | `python/sglang/srt/models/kimi_vl_moonvit.py`, `test/registered/unit/models/test_kimi_vl.py`, `python/sglang/srt/models/kimi_vl.py` |
-| 2026-07-31 | [#32972](https://github.com/sgl-project/sglang/pull/32972) | merged | [unified-memory] Let Kimi-Linear use the paged MLA attention backends | `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py` |
+| 2026-07-29 | [#32612](https://github.com/sgl-project/sglang/pull/32612) | merged | Support DCP for Kimi Linear model | `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py` |
 | 2026-07-31 | [#32837](https://github.com/sgl-project/sglang/pull/32837) | merged | feat: support Kimi Linear PD disaggregation with DCP | `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py`, `python/sglang/srt/disaggregation/mooncake/conn.py`, `python/sglang/srt/disaggregation/nixl/conn.py` |
+| 2026-07-31 | [#32972](https://github.com/sgl-project/sglang/pull/32972) | merged | [unified-memory] Let Kimi-Linear use the paged MLA attention backends | `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py` |
 | 2026-08-01 | [#32828](https://github.com/sgl-project/sglang/pull/32828) | merged | [Kimi] Support DCP + DSpark (ported from kimi-k3 branch) | `test/registered/dcp/test_kimi_linear_dcp_dspark4.py`, `python/sglang/srt/layers/attention/tokenspeed_mla_backend.py`, `python/sglang/srt/model_executor/pool_configurator.py` |
 | 2026-08-01 | [#32890](https://github.com/sgl-project/sglang/pull/32890) | merged | feat(kernels): port standalone Kimi K3 kernels | `python/sglang/kernels/ops/kimi_k3/configs/sp_collective/world=4,H=7168,device_name=NVIDIA_GB300.json`, `python/sglang/kernels/ops/kimi_k3/configs/sp_collective/world=8,H=7168,device_name=NVIDIA_GB300.json`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/gemm_ar.cuh` |
 | 2026-08-01 | [#33025](https://github.com/sgl-project/sglang/pull/33025) | merged | [Kimi K3] Add reasoning, tool-call, and OpenAI serving support | `test/registered/unit/function_call/test_kimik3_structural_tag.py`, `python/sglang/srt/function_call/kimik3_structural_tag.py`, `python/sglang/srt/function_call/kimik3_detector.py` |
+| 2026-08-04 | [#32541](https://github.com/sgl-project/sglang/pull/32541) | merged | [Kimi] Support kimi-k3 | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `test/registered/unit/models/test_kimi_k3_vision.py` |
 | 2026-08-04 | [#33333](https://github.com/sgl-project/sglang/pull/33333) | merged | [AMD][DI][CI] 6/N Add Kimi-K2.6 MXFP4 wide-EP16 2P1D nightly recipes | `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/2p1d-ep16-mtp-mxfp4.yaml`, `scripts/ci/slurm/recipes/mi355x-fp8/kimik26/1k1k/2p1d-ep16-mxfp4.yaml` |
 | 2026-08-04 | [#33349](https://github.com/sgl-project/sglang/pull/33349) | merged | [Perf] Speed up the Kimi-K2.5 vision path and match PIL bicubic in the GPU resize | `python/sglang/srt/multimodal/processors/kimi_k25.py`, `test/registered/unit/models/test_kimi_k25.py`, `python/sglang/srt/models/kimi_k25.py` |
-| 2026-08-04 | [#32541](https://github.com/sgl-project/sglang/pull/32541) | merged | [Kimi] Support kimi-k3 | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `test/registered/unit/models/test_kimi_k3_vision.py` |
 | 2026-08-04 | [#33609](https://github.com/sgl-project/sglang/pull/33609) | merged | [Tiny] Little enhancement of Kimi-K3 test | `test/registered/models_e2e/test_kimi_k3_b300.py` |
 | 2026-08-04 | [#33612](https://github.com/sgl-project/sglang/pull/33612) | merged | Remove custom all-reduce disable from Kimi-K3 B300 recipe | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` |
 | 2026-08-05 | [#33599](https://github.com/sgl-project/sglang/pull/33599) | merged | [AMD] Fuse Kimi-K3 attn-residual aggregation | `python/sglang/kernels/ops/kimi_k3/attn_res_hip.py` |
+| 2026-08-06 | [#33825](https://github.com/sgl-project/sglang/pull/33825) | merged | [AMD] Update amd k3 cookbook for fp8 kv cache | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-08 | [#33764](https://github.com/sgl-project/sglang/pull/33764) | merged | Fix the router GEMM inaccuracy when using _front_w in Kimi-K3 | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/kernels/jit/csrc/kimi_k3/situ_and_mul.cuh`, `python/sglang/kernels/ops/kimi_k3/activation.py` |
 | 2026-08-08 | [#34089](https://github.com/sgl-project/sglang/pull/34089) | merged | [CI] Add Kimi-K3 low-latency performance check | `test/registered/models_e2e/test_kimi_k3_b300.py` |
-| 2026-08-09 | [#34145](https://github.com/sgl-project/sglang/pull/34145) | merged | [CI] Gate Kimi-K3 acceptance length on the GSM8K average | `test/registered/models_e2e/test_kimi_k3_b300.py` |
+| 2026-08-08 | [#34099](https://github.com/sgl-project/sglang/pull/34099) | merged | docs: clarify K3 VLM feature transport | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-09 | [#33921](https://github.com/sgl-project/sglang/pull/33921) | merged | [Kimi K3] Preprocess CPU-transport images on the vision owner | `python/sglang/srt/multimodal/processors/kimi_k3.py`, `test/registered/unit/models/test_kimi_k25.py`, `test/registered/unit/models/test_kimi_k3_vision.py` |
+| 2026-08-09 | [#34145](https://github.com/sgl-project/sglang/pull/34145) | merged | [CI] Gate Kimi-K3 acceptance length on the GSM8K average | `test/registered/models_e2e/test_kimi_k3_b300.py` |
 | 2026-08-10 | [#19703](https://github.com/sgl-project/sglang/pull/19703) | closed | [JIT Kernel] Migrate kimi_k2_moe_fused_gate to JIT | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/jit_kernel/csrc/moe/kimi_k2_moe_fused_gate.cuh`, `python/sglang/jit_kernel/benchmark/bench_kimi_k2_moe_fused_gate.py` |
 | 2026-08-10 | [#34163](https://github.com/sgl-project/sglang/pull/34163) | merged | fix(vlm): preserve Kimi-K3 GPU JPEG accuracy | `python/sglang/srt/multimodal/processors/kimi_k3.py`, `test/registered/unit/disaggregation/test_kimi_k3_encoder_mode.py` |
 | 2026-08-11 | [#22208](https://github.com/sgl-project/sglang/pull/22208) | closed | [AMD] Optimize fused MoE kernel config for small-M decode on gfx950 | `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe_triton_config.py` |
 | 2026-08-11 | [#31105](https://github.com/sgl-project/sglang/pull/31105) | merged | [ROCm/gfx95] Fix fp8 per-channel attention for Kimi-K2.7-code-mxfp4 o… | `test/registered/amd/accuracy/mi35x/test_kimi_k27_code_mxfp4_eval_mi35x.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/deepseek_common/utils.py` |
 | 2026-08-11 | [#34444](https://github.com/sgl-project/sglang/pull/34444) | merged | docs(cookbook): Kimi-K3 — drop --enable-symm-mem from the GB cells | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` |
-| 2026-08-12 | [#33997](https://github.com/sgl-project/sglang/pull/33997) | merged | Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` |
 | 2026-08-12 | [#33465](https://github.com/sgl-project/sglang/pull/33465) | merged | [Kimi-K3][NPU] Support Kimi-K3 on NPU | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/kernels/ops/kimi_k3/__init__.py`, `python/sglang/kernels/ops/kimi_k3/mla_output_gate.py` |
 | 2026-08-12 | [#33623](https://github.com/sgl-project/sglang/pull/33623) | merged | [Kimi K3] Fuse MLA gate projection into QKV-A GEMM | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-08-12 | [#33997](https://github.com/sgl-project/sglang/pull/33997) | merged | Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` |
 | 2026-08-13 | [#34642](https://github.com/sgl-project/sglang/pull/34642) | merged | Revert "[Kimi K3] Fuse MLA gate projection into QKV-A GEMM" | `python/sglang/srt/models/kimi_k3.py` |
 | 2026-08-13 | [#34766](https://github.com/sgl-project/sglang/pull/34766) | merged | [Fix] Carry the backend on Kimi-K3 deferred preprocessing configs | `python/sglang/srt/multimodal/kimi_k3_image_processing.py`, `python/sglang/srt/multimodal/processors/kimi_k3.py`, `test/registered/unit/models/test_kimi_k25.py` |
 | 2026-08-13 | [#34779](https://github.com/sgl-project/sglang/pull/34779) | merged | [CI] Disable the prefill CUDA graph on the P worker of test_kimi_linear_pd_dcp4 | `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py` |
-| 2026-08-14 | [#34886](https://github.com/sgl-project/sglang/pull/34886) | merged | [Docs] Update Kimi-K3 installation options | `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-14 | [#34778](https://github.com/sgl-project/sglang/pull/34778) | merged | [Fix] Work around xgrammar 0.2.1 negative integer minimum in Kimi-K3 structural tags | `test/registered/unit/function_call/test_kimik3_structural_tag.py`, `python/sglang/srt/function_call/kimik3_structural_tag.py` |
+| 2026-08-14 | [#34886](https://github.com/sgl-project/sglang/pull/34886) | merged | [Docs] Update Kimi-K3 installation options | `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-15 | [#34883](https://github.com/sgl-project/sglang/pull/34883) | merged | [Kimi-K3] Use explicit SiTU activation for MegaMoE | `python/sglang/srt/models/kimi_k3.py`, `test/registered/models_e2e/test_kimi_k3_b300.py` |
 | 2026-08-16 | [#34404](https://github.com/sgl-project/sglang/pull/34404) | merged | [VLM] Cache Kimi-K3 per-image processor artifacts | `test/registered/unit/models/test_kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k3.py`, `python/sglang/srt/multimodal/media_artifacts/kimi_k3.py` |
-| 2026-08-17 | [#35168](https://github.com/sgl-project/sglang/pull/35168) | merged | docs: add NVFP4 quantization option to Kimi-K3 deploy panel | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-17 | [#32568](https://github.com/sgl-project/sglang/pull/32568) | merged | [AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI | `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` |
-| 2026-08-18 | [#34985](https://github.com/sgl-project/sglang/pull/34985) | merged | [AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly | `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` |
+| 2026-08-17 | [#35168](https://github.com/sgl-project/sglang/pull/35168) | merged | docs: add NVFP4 quantization option to Kimi-K3 deploy panel | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-18 | [#34881](https://github.com/sgl-project/sglang/pull/34881) | merged | Stop losing Kimi-K3 tool calls to reasoning, constraint conflicts, and truncation | `test/registered/function_call/test_kimik3_detector.py`, `test/registered/unit/parser/test_kimik3_reasoning_parser.py`, `python/sglang/srt/function_call/kimik3_detector.py` |
+| 2026-08-18 | [#34985](https://github.com/sgl-project/sglang/pull/34985) | merged | [AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly | `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` |
+| 2026-08-18 | [#34580](https://github.com/sgl-project/sglang/pull/34580) | merged | [AMD] Optimize KIMI-K3 with Triton MLA decode kernel by tuning the stage-1 geometry for gfx950 | `test/registered/unit/layers/attention/test_mla_decode_forced_splits.py`, `test/registered/unit/layers/attention/test_mla_decode_geometry.py`, `python/sglang/kernels/ops/attention/decode_attention.py` |
+| 2026-08-18 | [#35263](https://github.com/sgl-project/sglang/pull/35263) | merged | [AMD] Update amd k3 cookbook for PR#34580 | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
 | 2026-08-19 | [#35077](https://github.com/sgl-project/sglang/pull/35077) | merged | [Fix] Support Kimi-K3 ModelOpt mixed NVFP4/FP8 checkpoint | `python/sglang/srt/models/kimi_k3.py`, `test/registered/unit/models/test_kimi_k3_bfa_overlap.py` |
 | 2026-08-20 | [#34546](https://github.com/sgl-project/sglang/pull/34546) | merged | [XPU] Fix/kimi linear xpu | `python/sglang/srt/models/kimi_linear.py` |
+| 2026-08-23 | [#35305](https://github.com/sgl-project/sglang/pull/35305) | merged | [Kimi-K3] Fix "wrong grids" crash in DP-sharded vision preprocessing | `test/registered/unit/models/test_kimi_k3_vision.py`, `python/sglang/srt/models/kimi_k3.py` |
+| 2026-08-23 | [#35508](https://github.com/sgl-project/sglang/pull/35508) | merged | [NPU] [DOC] Add Ascend NPU (A3) recipe to the Kimi-K3 cookbook | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` |
+| 2026-08-25 | [#35630](https://github.com/sgl-project/sglang/pull/35630) | merged | [AMD] Enable Mori-EP on kimi-k3 | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-08-25 | [#36246](https://github.com/sgl-project/sglang/pull/36246) | merged | [AMD] Add Kimi-K2.7-Code-MXFP4 to cookbook | `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx`, `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` |
+| 2026-08-26 | [#35314](https://github.com/sgl-project/sglang/pull/35314) | merged | Support deepseek v4 and kimi k3 on ssd | `python/sglang/srt/models/kimi_k3.py`, `examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py`, `python/sglang/srt/model_loader/kimi_k3_gguf.py` |
+| 2026-08-27 | [#34842](https://github.com/sgl-project/sglang/pull/34842) | merged | Revert "[Fix] Disable --enable-symm-mem under CUDA graphs on Kimi hybrid models" | `python/sglang/srt/arg_groups/kimi_k3_hook.py` |
+| 2026-08-28 | [#36211](https://github.com/sgl-project/sglang/pull/36211) | merged | [k3] declare packed_modules_mapping on `KimiK3ForConditionalGeneration` | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-08-28 | [#36603](https://github.com/sgl-project/sglang/pull/36603) | merged | fix(kimi-k3): preserve dense ModelSlim MLA weights | `python/sglang/srt/models/kimi_k3.py`, `test/registered/expert_pack/test_kimi_k3_gguf.py` |
+| 2026-08-28 | [#36862](https://github.com/sgl-project/sglang/pull/36862) | merged | [Fix] Route the Mooncake MoE A2A backend through Kimi K3's EP-A2A / SP-MoE fast path | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-08-29 | [#22806](https://github.com/sgl-project/sglang/pull/22806) | closed | feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading | `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
+| 2026-09-01 | [#37431](https://github.com/sgl-project/sglang/pull/37431) | merged | test(npu): add DSV4-Flash / GLM-5.2 / Kimi-K3 gpqa accuracy cases | `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` |
+| 2026-09-02 | [#34198](https://github.com/sgl-project/sglang/pull/34198) | merged | [AMD] Perf Kimi-K3 fuse ROCm KDA decode boundary | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-03 | [#34187](https://github.com/sgl-project/sglang/pull/34187) | merged | [Kimi K3] Rework skipped-think fix as opt-in force_nonempty_content with streaming coverage | `test/registered/unit/parser/test_kimik3_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2026-09-03 | [#37781](https://github.com/sgl-project/sglang/pull/37781) | merged | [AMD] Update kimi-k3 amd cookbook 0903 | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-04 | [#35176](https://github.com/sgl-project/sglang/pull/35176) | merged | [AMD] [Kimi-K3] Fuse the KDA input projection into a single GEMM on ROCm | `python/sglang/srt/models/kimi_k3.py`, `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` |
+| 2026-09-05 | [#37878](https://github.com/sgl-project/sglang/pull/37878) | merged | [Cookbook] Kimi-K3: add measured B300 1x8 Unified 8k/1k speed numbers | `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-07 | [#37743](https://github.com/sgl-project/sglang/pull/37743) | merged | [Kimi-K3] Recover the reply when the model skips the think channel | `test/registered/unit/parser/test_kimik3_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
+| 2026-09-08 | [#38125](https://github.com/sgl-project/sglang/pull/38125) | merged | [NPU] Enable L1 prefix cache for Kimi-K3 W4A8 accuracy test (gpqa) | `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` |
+| 2026-09-09 | [#38612](https://github.com/sgl-project/sglang/pull/38612) | merged | [Kimi-K3] Accept fp32 routing weights in the fused MoE finalize | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` |
+| 2026-09-11 | [#39029](https://github.com/sgl-project/sglang/pull/39029) | merged | [Cookbook][AMD] Kimi-K3 MI350X/MI355X: pin a ROCm image with the DSPARK graph-capture fix, add measured cell numbers | `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-12 | [#39190](https://github.com/sgl-project/sglang/pull/39190) | merged | [Cookbook] Kimi-K3: keep DCP under HiCache L1+L2 with DSPARK | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-14 | [#23381](https://github.com/sgl-project/sglang/pull/23381) | closed | [AMD] Add MI355X Kimi-K2.6 tuning artifacts | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py` |
+| 2026-09-15 | [#39148](https://github.com/sgl-project/sglang/pull/39148) | merged | [MM] Add flag to force Kimi image preprocessing onto CPU | `python/sglang/srt/multimodal/processors/kimi_k25.py` |
+| 2026-09-18 | [#39415](https://github.com/sgl-project/sglang/pull/39415) | merged | [NPU] Adapt hicache for K3 hybrid models | `test/manual/hicache/test_npu_kimi_k3_hicache.py`, `python/sglang/srt/mem_cache/pool_host/mamba.py`, `python/sglang/srt/distributed/parallel_state.py` |
+| 2026-09-18 | [#39589](https://github.com/sgl-project/sglang/pull/39589) | merged | [NPU] support kimi k3 on A5 and improve performance | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-20 | [#40045](https://github.com/sgl-project/sglang/pull/40045) | merged | [kimi k3][pd disagg] support pp prefill + dcp decode with dspark | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_linear.py` |
+| 2026-09-20 | [#38805](https://github.com/sgl-project/sglang/pull/38805) | merged | [Kimi-K3] O(1) expert weight lookup in load_weights | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-21 | [#40575](https://github.com/sgl-project/sglang/pull/40575) | merged | [NPU] [DOC] Add kimi k3 cookbook for 950PR/DT Series | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-22 | [#40640](https://github.com/sgl-project/sglang/pull/40640) | merged | [Kimi K3] Fix CUDA graph stream explosion | `test/registered/unit/models/test_kimi_k3_bfa_overlap.py`, `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-22 | [#39066](https://github.com/sgl-project/sglang/pull/39066) | merged | [AMD][Kimi-K3] Fix deferred KDA gate projection and update DCP cookbook | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/srt/models/kimi_k3.py`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-22 | [#39525](https://github.com/sgl-project/sglang/pull/39525) | merged | [AMD] Fix deferred Kimi-K3 forget gate in fused in-projection | `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` |
+| 2026-09-23 | [#40700](https://github.com/sgl-project/sglang/pull/40700) | merged | [RL] Fix Kimi K3 expert-count lookup for routed-expert capture | `python/sglang/srt/configs/kimi_linear.py` |
+| 2026-09-23 | [#40794](https://github.com/sgl-project/sglang/pull/40794) | merged | [Spec] Support DFLASH for Kimi K3 | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/srt/models/kimi_k3.py`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-09-24 | [#40922](https://github.com/sgl-project/sglang/pull/40922) | merged | [Refactor] Retire the model-specific Kimi K3 kernel namespace | `python/sglang/srt/models/kimi_k3.py`, `python/sglang/kernels/ops/gemm/kimi_k3.py`, `test/registered/kernels/benchmark/attention/bench_kimi_k3_kda_decode.py` |
+| 2026-09-26 | [#41321](https://github.com/sgl-project/sglang/pull/41321) | merged | [CI] Merge the Kimi-Linear PD DCP4 nightly tests and drop exact-token parity | `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py`, `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py` |
+| 2026-09-28 | [#41378](https://github.com/sgl-project/sglang/pull/41378) | merged | [CI] Real-model Kimi-Linear PD parity at page, DCP virtual-page, chunk and cached-prefix boundaries | `test/registered/disaggregation/test_disaggregation_kimi_linear.py` |
+| 2026-09-28 | [#41164](https://github.com/sgl-project/sglang/pull/41164) | merged | [Kimi-K3] Merge fused_qkvg_proj into the loader-seeded packed_modules_mapping | `test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py`, `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-29 | [#35330](https://github.com/sgl-project/sglang/pull/35330) | merged | [Kimi] Enable GB300 TP4 and GB200/GB300 TP16 SP collectives | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-29 | [#40159](https://github.com/sgl-project/sglang/pull/40159) | merged | [Spec] Reuse K3 auxiliary outputs across decode CUDA graph sizes | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-09-30 | [#41717](https://github.com/sgl-project/sglang/pull/41717) | merged | [NPU] [DOC]: add Kimi-K3 NPU PD disaggregation recipes | `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` |
+| 2026-10-01 | [#40811](https://github.com/sgl-project/sglang/pull/40811) | merged | [AMD][Quark] Serve the Kimi-K3 MXFP4 checkpoint on ROCm | `test/registered/unit/models/test_kimi_k3_rocm_quant.py`, `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_rocm_quant.py` |
+| 2026-10-01 | [#40269](https://github.com/sgl-project/sglang/pull/40269) | merged | [Kimi-K3] Guard optimized paths by platform | `python/sglang/srt/models/kimi_k3.py` |
+| 2026-10-01 | [#36406](https://github.com/sgl-project/sglang/pull/36406) | merged | Fix Kimi-K3 MLA output gate dispatch on non-CUDA devices | `test/registered/unit/models/test_kimi_k3_mla_output_gate.py`, `python/sglang/kernels/ops/attention/mla_output_gate.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -924,6 +969,60 @@ diff -- sgl-kernel/csrc/moe/kimi_k2_moe_fused_gate.cu
   - other: `sgl-kernel/csrc/moe/kimi_k2_moe_fused_gate.cu` modified +130/-173
 - Risk and verification: No explicit test file appears in the diff; future edits should add or run model loading, short generation, and parser/multimodal regression checks.
 
+### PR #13466 - [Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking)
+
+- Link: https://github.com/sgl-project/sglang/pull/13466
+- Status/date: merged / 2025-11-21
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +23/-0, 30 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking)"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/topk.py`; technical summary: Covers "[Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking)"; the main implementation surface is `python/sglang/srt/layers/moe/topk.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/topk.py` modified +23/-0 (23 lines); hunks: -74,6 +74,29; symbols: _kimi_k2_moe_fused_gate, touching `_kimi_k2_moe_fused_gate`.
+- Code diff details:
+  - `python/sglang/srt/layers/moe/topk.py` modified +23/-0 (23 lines); hunks: -74,6 +74,29; symbols: _kimi_k2_moe_fused_gate
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/moe/topk.py
+@@ -74,6 +74,29 @@
++    @torch.library.register_fake("sgl_kernel::kimi_k2_moe_fused_gate")
++    def _kimi_k2_moe_fused_gate(
++        input_tensor,
++        bias,
++        topk,
++        renormalize,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/moe/topk.py` modified +23/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/topk.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #13587 - [opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size
+
+- Link: https://github.com/sgl-project/sglang/pull/13587
+- Status/date: merged / 2025-11-21
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-6, 20 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`; technical summary: Covers "[opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size"; the main implementation surface is `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +1/-6 (7 lines); hunks: -69,11 +69,6 @@ def moe_align_block_size(; -82,6 +77,6 @@ def moe_align_block_size(; symbols: moe_align_block_size, touching `moe_align_block_size`.
+- Code diff details:
+  - `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +1/-6 (7 lines); hunks: -69,11 +69,6 @@ def moe_align_block_size(; -82,6 +77,6 @@ def moe_align_block_size(; symbols: moe_align_block_size
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py
+@@ -69,11 +69,6 @@ def moe_align_block_size(
+-    # Threshold based on benchmark results
+-    fuse_sorted_ids_padding = sorted_ids.shape[0] <= 4096
+-    if not fuse_sorted_ids_padding:
+-        sorted_ids.fill_(topk_ids.numel())
+@@ -82,6 +77,6 @@ def moe_align_block_size(
+-        fuse_sorted_ids_padding,
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +1/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #13596 - [kimi k2 thinking] Avoid useless torch.zeros_
 
 - Link: https://github.com/sgl-project/sglang/pull/13596
@@ -966,60 +1065,6 @@ diff -- python/sglang/srt/layers/quantization/awq.py
   - other: `sgl-kernel/python/sgl_kernel/fused_moe.py` modified +0/-232; `sgl-kernel/python/sgl_kernel/__init__.py` modified +1/-1
   - tests: `python/sglang/test/test_marlin_moe.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `python/sglang/test/test_marlin_moe.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #13587 - [opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size
-
-- Link: https://github.com/sgl-project/sglang/pull/13587
-- Status/date: merged / 2025-11-21
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +1/-6, 20 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`; technical summary: Covers "[opt kimi k2 4 / n] Delete useless pad kernel in sgl_moe_align_block_size"; the main implementation surface is `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +1/-6 (7 lines); hunks: -69,11 +69,6 @@ def moe_align_block_size(; -82,6 +77,6 @@ def moe_align_block_size(; symbols: moe_align_block_size, touching `moe_align_block_size`.
-- Code diff details:
-  - `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +1/-6 (7 lines); hunks: -69,11 +69,6 @@ def moe_align_block_size(; -82,6 +77,6 @@ def moe_align_block_size(; symbols: moe_align_block_size
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py
-@@ -69,11 +69,6 @@ def moe_align_block_size(
--    # Threshold based on benchmark results
--    fuse_sorted_ids_padding = sorted_ids.shape[0] <= 4096
--    if not fuse_sorted_ids_padding:
--        sorted_ids.fill_(topk_ids.numel())
-@@ -82,6 +77,6 @@ def moe_align_block_size(
--        fuse_sorted_ids_padding,
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py` modified +1/-6
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #13466 - [Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking)
-
-- Link: https://github.com/sgl-project/sglang/pull/13466
-- Status/date: merged / 2025-11-21
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +23/-0, 30 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking)"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/topk.py`; technical summary: Covers "[Piecewise CUDA Graph] Support Kimi-K2 (non-Thinking)"; the main implementation surface is `python/sglang/srt/layers/moe/topk.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/moe/topk.py` modified +23/-0 (23 lines); hunks: -74,6 +74,29; symbols: _kimi_k2_moe_fused_gate, touching `_kimi_k2_moe_fused_gate`.
-- Code diff details:
-  - `python/sglang/srt/layers/moe/topk.py` modified +23/-0 (23 lines); hunks: -74,6 +74,29; symbols: _kimi_k2_moe_fused_gate
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/moe/topk.py
-@@ -74,6 +74,29 @@
-+    @torch.library.register_fake("sgl_kernel::kimi_k2_moe_fused_gate")
-+    def _kimi_k2_moe_fused_gate(
-+        input_tensor,
-+        bias,
-+        topk,
-+        renormalize,
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/moe/topk.py` modified +23/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/topk.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #9405 - Use dual stream for DS MoE whenever cuda graph is used (instead of with token threshold)
 
@@ -1086,29 +1131,6 @@ diff -- python/sglang/srt/models/deepseek_v2.py
   - runtime: `python/sglang/srt/layers/quantization/w8a8_int8.py` modified +480/-39; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +62/-130; `python/sglang/srt/models/deepseek_v2.py` modified +6/-0; `python/sglang/srt/model_executor/model_runner.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/quantization/w8a8_int8.py`, `python/sglang/srt/model_executor/model_runner.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #14337 - remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)
-
-- Link: https://github.com/sgl-project/sglang/pull/14337
-- Status/date: merged / 2025-12-07
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_linear.py`; associated commits `6d5d76ad97dd`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 4 files, +0/-8, 50 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model implementation change; main diff: `python/sglang/srt/models/kimi_linear.py`; technical summary: Covers "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; the main implementation surface is `python/sglang/srt/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/kimi_linear.py` modified +0/-2 (2 lines); hunks: -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward, touching `forward`.
-- Code diff details:
-  - `python/sglang/srt/models/kimi_linear.py` modified +0/-2 (2 lines); hunks: -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/kimi_linear.py
-@@ -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
--        DUAL_STREAM_TOKEN_THRESHOLD = 1024
--            and hidden_states.shape[0] <= DUAL_STREAM_TOKEN_THRESHOLD
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +0/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #13725 - Add Expert Parallelism (EP) support for kimi-k2-thinking
 
 - Link: https://github.com/sgl-project/sglang/pull/13725
@@ -1135,6 +1157,29 @@ diff -- python/sglang/srt/layers/quantization/compressed_tensors/compressed_tens
 - Reviewed files:
   - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` modified +12/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #14337 - remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)
+
+- Link: https://github.com/sgl-project/sglang/pull/14337
+- Status/date: merged / 2025-12-07
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_linear.py`; associated commits `6d5d76ad97dd`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +0/-8, 50 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model implementation change; main diff: `python/sglang/srt/models/kimi_linear.py`; technical summary: Covers "remove unecessary dual stream token threshold from the rest of models (qwen moe, kimi linear, etc.)"; the main implementation surface is `python/sglang/srt/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/kimi_linear.py` modified +0/-2 (2 lines); hunks: -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_linear.py` modified +0/-2 (2 lines); hunks: -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Te...; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_linear.py
+@@ -125,13 +125,11 @@ def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
+-        DUAL_STREAM_TOKEN_THRESHOLD = 1024
+-            and hidden_states.shape[0] <= DUAL_STREAM_TOKEN_THRESHOLD
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +0/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/kimi_linear.py`, `python/sglang/srt/models/llada2.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #15100 - Support piecewise cuda graph for fused marlin moe
 
@@ -1321,28 +1366,6 @@ diff -- python/sglang/srt/models/kimi_linear.py
   - runtime: `python/sglang/srt/models/kimi_linear.py` modified +42/-37
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/layers/radix_linear_attention.py`, `python/sglang/srt/models/kimi_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #17731 - [Kimi-Linear] Remove duplicated code in kimi-linear
-
-- Link: https://github.com/sgl-project/sglang/pull/17731
-- Status/date: merged / 2026-01-26
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_linear.py`; associated commits `1e8db1829096`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +0/-1, 8 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kimi-Linear] Remove duplicated code in kimi-linear"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model implementation change; main diff: `python/sglang/srt/models/kimi_linear.py`; technical summary: Covers "[Kimi-Linear] Remove duplicated code in kimi-linear"; the main implementation surface is `python/sglang/srt/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/kimi_linear.py` modified +0/-1 (1 lines); hunks: -340,7 +340,6 @@ def forward(; symbols: forward, touching `forward`.
-- Code diff details:
-  - `python/sglang/srt/models/kimi_linear.py` modified +0/-1 (1 lines); hunks: -340,7 +340,6 @@ def forward(; symbols: forward
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/kimi_linear.py
-@@ -340,7 +340,6 @@ def forward(
--        beta = self.b_proj(hidden_states)[0].float()
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +0/-1
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #17656 - [AMD CI] Add moonshotai/Kimi-K2-Instruct-0905 testcases
 
 - Link: https://github.com/sgl-project/sglang/pull/17656
@@ -1369,6 +1392,28 @@ diff -- test/registered/amd/test_kimi_k2_instruct.py
 - Reviewed files:
   - tests: `test/registered/amd/test_kimi_k2_instruct.py` added +95/-0
 - Risk and verification: The diff ships test coverage in `test/registered/amd/test_kimi_k2_instruct.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #17731 - [Kimi-Linear] Remove duplicated code in kimi-linear
+
+- Link: https://github.com/sgl-project/sglang/pull/17731
+- Status/date: merged / 2026-01-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_linear.py`; associated commits `1e8db1829096`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +0/-1, 8 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Kimi-Linear] Remove duplicated code in kimi-linear"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model implementation change; main diff: `python/sglang/srt/models/kimi_linear.py`; technical summary: Covers "[Kimi-Linear] Remove duplicated code in kimi-linear"; the main implementation surface is `python/sglang/srt/models/kimi_linear.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/kimi_linear.py` modified +0/-1 (1 lines); hunks: -340,7 +340,6 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_linear.py` modified +0/-1 (1 lines); hunks: -340,7 +340,6 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_linear.py
+@@ -340,7 +340,6 @@ def forward(
+-        beta = self.b_proj(hidden_states)[0].float()
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +0/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #17789 - Support Kimi-K2.5 model
 
@@ -1827,33 +1872,6 @@ diff -- python/sglang/jit_kernel/csrc/gemm/marlin_moe/moe_wna16_marlin.cuh
   - tests: `python/sglang/jit_kernel/tests/test_moe_wna16_marlin.py` added +329/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/jit_kernel/tests/test_moe_wna16_marlin.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #19331 - [NPU] support Kimi-K2.5 on NPU
-
-- Link: https://github.com/sgl-project/sglang/pull/19331
-- Status/date: merged / 2026-02-26
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k25.py`; associated commits `86eb80007e78`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +23/-3, 80 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] support Kimi-K2.5 on NPU"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model support/runtime entry; main diff: `python/sglang/srt/models/kimi_k25.py`; technical summary: Covers "[NPU] support Kimi-K2.5 on NPU"; the main implementation surface is `python/sglang/srt/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/kimi_k25.py` modified +14/-2 (16 lines); hunks: -9,6 +9,7; -37,13 +38,15; symbols: apply_rope, get_1d_sincos_pos_embed_from_grid, get_rope_shape, load_weights, touching `apply_rope, get_1d_sincos_pos_embed_from_grid, get_rope_shape`.
-- Code diff details:
-  - `python/sglang/srt/models/kimi_k25.py` modified +14/-2 (16 lines); hunks: -9,6 +9,7; -37,13 +38,15; symbols: apply_rope, get_1d_sincos_pos_embed_from_grid, get_rope_shape, load_weights
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/kimi_k25.py
-@@ -9,6 +9,7 @@
-+from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
-@@ -37,13 +38,15 @@
--from sglang.srt.utils import add_prefix
-+from sglang.srt.utils import add_prefix, is_npu
-+_is_npu = is_npu()
-@@ -197,7 +200,7 @@ def get_1d_sincos_pos_embed_from_grid(embed_dim, pos):
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/kimi_k25.py` modified +14/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/models/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #19228 - [AMD] optimize Kimi K2.5 fused_moe_triton performance by tuning
 
 - Link: https://github.com/sgl-project/sglang/pull/19228
@@ -1896,6 +1914,33 @@ diff -- benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py
   - other: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py` modified +72/-12; `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +63/-6; `benchmark/kernels/fused_moe_triton/common_utils.py` modified +23/-5
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=384,N=128,device_name=,dtype=int4_w4a16.json`, `python/sglang/srt/layers/moe/fused_moe_triton/configs/triton_3_4_0/E=384,N=128,device_name=,dtype=int4_w4a16_down.json`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #19331 - [NPU] support Kimi-K2.5 on NPU
+
+- Link: https://github.com/sgl-project/sglang/pull/19331
+- Status/date: merged / 2026-02-26
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k25.py`; associated commits `86eb80007e78`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +23/-3, 80 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] support Kimi-K2.5 on NPU"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model support/runtime entry; main diff: `python/sglang/srt/models/kimi_k25.py`; technical summary: Covers "[NPU] support Kimi-K2.5 on NPU"; the main implementation surface is `python/sglang/srt/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/kimi_k25.py` modified +14/-2 (16 lines); hunks: -9,6 +9,7; -37,13 +38,15; symbols: apply_rope, get_1d_sincos_pos_embed_from_grid, get_rope_shape, load_weights, touching `apply_rope, get_1d_sincos_pos_embed_from_grid, get_rope_shape`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k25.py` modified +14/-2 (16 lines); hunks: -9,6 +9,7; -37,13 +38,15; symbols: apply_rope, get_1d_sincos_pos_embed_from_grid, get_rope_shape, load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25.py
+@@ -9,6 +9,7 @@
++from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
+@@ -37,13 +38,15 @@
+-from sglang.srt.utils import add_prefix
++from sglang.srt.utils import add_prefix, is_npu
++_is_npu = is_npu()
+@@ -197,7 +200,7 @@ def get_1d_sincos_pos_embed_from_grid(embed_dim, pos):
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_k25.py` modified +14/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py`, `python/sglang/srt/models/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #19689 - feat: support Kimi K2.5 for Eagle3
 
 - Link: https://github.com/sgl-project/sglang/pull/19689
@@ -1921,33 +1966,6 @@ diff -- python/sglang/srt/models/kimi_k25.py
 
 - Reviewed files:
   - runtime: `python/sglang/srt/models/kimi_k25.py` modified +29/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #19959 - Fix Kimi K2.5 PP layer range exposure for PD disaggregation
-
-- Link: https://github.com/sgl-project/sglang/pull/19959
-- Status/date: merged / 2026-03-07
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k25.py`; associated commits `069d4c577b39`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 15 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Fix Kimi K2.5 PP layer range exposure for PD disaggregation"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `python/sglang/srt/models/kimi_k25.py`; technical summary: Covers "Fix Kimi K2.5 PP layer range exposure for PD disaggregation"; the main implementation surface is `python/sglang/srt/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/kimi_k25.py` modified +8/-0 (8 lines); hunks: -719,6 +719,14 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, start_layer, end_layer, forward, touching `pad_input_ids, start_layer, end_layer`.
-- Code diff details:
-  - `python/sglang/srt/models/kimi_k25.py` modified +8/-0 (8 lines); hunks: -719,6 +719,14 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, start_layer, end_layer, forward
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/kimi_k25.py
-@@ -719,6 +719,14 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: MultimodalInputs):
-+    @property
-+    def start_layer(self) -> int:
-+        return self.language_model.start_layer
-+    @property
-+    def end_layer(self) -> int:
-+        return self.language_model.end_layer
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/kimi_k25.py` modified +8/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #19802 - [Nightly] Add Kimi K2.5 nightly test (base + Eagle3 MTP), replace Kimi K2
@@ -1976,6 +1994,33 @@ diff -- test/registered/8-gpu-models/test_kimi_k25.py
 - Reviewed files:
   - tests: `test/registered/8-gpu-models/test_kimi_k25.py` added +72/-0
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_kimi_k2.py`, `test/registered/8-gpu-models/test_kimi_k25.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #19959 - Fix Kimi K2.5 PP layer range exposure for PD disaggregation
+
+- Link: https://github.com/sgl-project/sglang/pull/19959
+- Status/date: merged / 2026-03-07
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k25.py`; associated commits `069d4c577b39`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +8/-0, 15 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Fix Kimi K2.5 PP layer range exposure for PD disaggregation"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `python/sglang/srt/models/kimi_k25.py`; technical summary: Covers "Fix Kimi K2.5 PP layer range exposure for PD disaggregation"; the main implementation surface is `python/sglang/srt/models/kimi_k25.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/kimi_k25.py` modified +8/-0 (8 lines); hunks: -719,6 +719,14 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, start_layer, end_layer, forward, touching `pad_input_ids, start_layer, end_layer`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k25.py` modified +8/-0 (8 lines); hunks: -719,6 +719,14 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: Mu...; symbols: pad_input_ids, start_layer, end_layer, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k25.py
+@@ -719,6 +719,14 @@ def pad_input_ids(self, input_ids: List[int], mm_inputs: MultimodalInputs):
++    @property
++    def start_layer(self) -> int:
++        return self.language_model.start_layer
++    @property
++    def end_layer(self) -> int:
++        return self.language_model.end_layer
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_k25.py` modified +8/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #20747 - fix piecewise cuda graph support for Kimi-K2.5 model
 
@@ -2321,48 +2366,6 @@ diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
   - runtime: `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +329/-41
 - Risk and verification: Runtime changes concentrate in `python/sglang/benchmark/datasets/image.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #22806 - feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading
-
-- Link: https://github.com/sgl-project/sglang/pull/22806
-- Status/date: open / 2026-04-14
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 5 files, +548/-9, 619 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`; technical summary: Covers "feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading"; the main implementation surface is `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/quantization/w4afp8.py` modified +155/-2 (157 lines); hunks: -33,7 +33,11; -75,7 +79,7 @@ def get_config_filenames(cls) -> List[str]:; symbols: W4AFp8Config, for, __init__, get_config_filenames, touching `W4AFp8Config, for, __init__`; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +15/-4 (19 lines); hunks: -123,13 +123,24 @@ def do_load_weights(; symbols: do_load_weights, touching `do_load_weights`; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +13/-2 (15 lines); hunks: -1124,17 +1124,28 @@ def make_expert_params_mapping_fused_mxfp4(; symbols: make_expert_params_mapping_fused_mxfp4, make_expert_input_scale_params_mapping, set_overlap_args, touching `make_expert_params_mapping_fused_mxfp4, make_expert_input_scale_params_mapping, set_overlap_args`; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-1 (3 lines); hunks: -40,7 +40,7 @@ def override_quantization_method(self, *args, **kwargs):; -71,6 +71,7 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method, touching `override_quantization_method`.
-- Code diff details:
-  - `python/sglang/srt/layers/quantization/w4afp8.py` modified +155/-2 (157 lines); hunks: -33,7 +33,11; -75,7 +79,7 @@ def get_config_filenames(cls) -> List[str]:; symbols: W4AFp8Config, for, __init__, get_config_filenames
-  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +15/-4 (19 lines); hunks: -123,13 +123,24 @@ def do_load_weights(; symbols: do_load_weights
-  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +13/-2 (15 lines); hunks: -1124,17 +1124,28 @@ def make_expert_params_mapping_fused_mxfp4(; symbols: make_expert_params_mapping_fused_mxfp4, make_expert_input_scale_params_mapping, set_overlap_args
-  - `python/sglang/srt/layers/quantization/__init__.py` modified +2/-1 (3 lines); hunks: -40,7 +40,7 @@ def override_quantization_method(self, *args, **kwargs):; -71,6 +71,7 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method
-  - `test/registered/quant/test_kimi_w4afp8_config.py` added +363/-0 (363 lines); hunks: -0,0 +1,363; symbols: _make_kimi_quant_config, TestKimiW4AFp8ConfigFromConfig, method, test_basic_parsing
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/quantization/w4afp8.py
-@@ -33,7 +33,11 @@
--    """Config class for MIXED_PRECISION W4AFp8."""
-+    """Config class for MIXED_PRECISION W4AFp8.
-+    This is the base W4AFP8 config for DeepSeek-style checkpoints.
-+    For Kimi K2.5 checkpoints, see KimiW4AFp8Config below.
-+    """
-@@ -75,7 +79,7 @@ def get_config_filenames(cls) -> List[str]:
-diff -- python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
-@@ -123,13 +123,24 @@ def do_load_weights(
--        # Params for special naming rules in mixed-precision models, for example:
--        # model.layers.xx.mlp.experts.xx.w1.input_scale. For details,
--        # see https://huggingface.co/Barrrrry/DeepSeek-R1-W4AFP8/blob/main.
--        if self.quant_config and self.quant_config.get_name() == "w4afp8":
-+        # Params for input_scale in W4AFP8 quantized models.
-+        # Supports both w1/w2/w3 naming (DeepSeek official checkpoints)
-diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
-@@ -1124,17 +1124,28 @@ def make_expert_params_mapping_fused_mxfp4(
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/quantization/w4afp8.py` modified +155/-2; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +15/-4; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +13/-2; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-1
-  - tests: `test/registered/quant/test_kimi_w4afp8_config.py` added +363/-0
-- Risk and verification: The diff ships test coverage in `test/registered/quant/test_kimi_w4afp8_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #22858 - [VLM] Enable per-image ViT cache and avoid TP CUDA context creation for Kimi-K2.5
 
 - Link: https://github.com/sgl-project/sglang/pull/22858
@@ -2397,46 +2400,6 @@ diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/kimi_k25.py` modified +6/-63; `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +5/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #22490 - [EPD][VLM] Support Kimi VL EPD
-
-- Link: https://github.com/sgl-project/sglang/pull/22490
-- Status/date: merged / 2026-04-16
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_vl.py`, `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_vl.py`; associated commits `e7ad7c587a35`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 6 files, +268/-102, 520 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[EPD][VLM] Support Kimi VL EPD"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_vl.py`; technical summary: Covers "[EPD][VLM] Support Kimi VL EPD"; the main implementation surface is `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/multimodal/processors/kimi_common.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: KimiGridMMDataMixin, to, _num_image_tokens_from_grid, _build_kimi_mm_data_from_grids, touching `KimiGridMMDataMixin, to, _num_image_tokens_from_grid`; `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +7/-63 (70 lines); hunks: -9,8 +9,6; -20,6 +18,7; symbols: _get_gpu_norm_tensors, KimiK2_5VLImageProcessor, process_mm_data_async, _num_image_tokens_from_grid, touching `_get_gpu_norm_tensors, KimiK2_5VLImageProcessor, process_mm_data_async`; `python/sglang/srt/models/kimi_vl.py` modified +23/-8 (31 lines); hunks: -128,13 +128,16 @@ def __init__(; -215,6 +218,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, get_image_feature, load_weights, touching `__init__, get_image_feature, load_weights`; `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +11/-1 (12 lines); hunks: -9,10 +9,11; -48,3 +49,12 @@ async def process_mm_data_async(; symbols: KimiVLImageProcessor, process_mm_data_async, get_mm_data, touching `KimiVLImageProcessor, process_mm_data_async, get_mm_data`.
-- Code diff details:
-  - `python/sglang/srt/multimodal/processors/kimi_common.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: KimiGridMMDataMixin, to, _num_image_tokens_from_grid, _build_kimi_mm_data_from_grids
-  - `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +7/-63 (70 lines); hunks: -9,8 +9,6; -20,6 +18,7; symbols: _get_gpu_norm_tensors, KimiK2_5VLImageProcessor, process_mm_data_async, _num_image_tokens_from_grid
-  - `python/sglang/srt/models/kimi_vl.py` modified +23/-8 (31 lines); hunks: -128,13 +128,16 @@ def __init__(; -215,6 +218,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, get_image_feature, load_weights
-  - `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +11/-1 (12 lines); hunks: -9,10 +9,11; -48,3 +49,12 @@ async def process_mm_data_async(; symbols: KimiVLImageProcessor, process_mm_data_async, get_mm_data
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/multimodal/processors/kimi_common.py
-@@ -0,0 +1,113 @@
-+"""Kimi-specific grid-based multimodal data helpers.
-+Shared by KimiVLImageProcessor and KimiK2_5VLImageProcessor.
-+"""
-+from typing import Union
-+import numpy as np
-+import torch
-diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
-@@ -9,8 +9,6 @@
--    Modality,
--    MultimodalDataItem,
-@@ -20,6 +18,7 @@
-+from sglang.srt.multimodal.processors.kimi_common import KimiGridMMDataMixin
-@@ -329,7 +328,7 @@ def _get_gpu_norm_tensors(self, device="cuda"):
--class KimiK2_5VLImageProcessor(SGLangBaseProcessor):
-diff -- python/sglang/srt/models/kimi_vl.py
-@@ -128,13 +128,16 @@ def __init__(
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/multimodal/processors/kimi_common.py` added +113/-0; `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +7/-63; `python/sglang/srt/models/kimi_vl.py` modified +23/-8; `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +11/-1
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/disaggregation/encode_receiver.py`, `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/models/kimi_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #13789 - [DeepEP Support] Support kimi-k2-thinking deepep
 
@@ -2480,6 +2443,46 @@ diff -- python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py
   - other: `sgl-kernel/csrc/moe/moe_align_kernel.cu` modified +140/-0; `sgl-kernel/python/sgl_kernel/moe.py` modified +29/-0; `sgl-kernel/include/sgl_kernel_ops.h` modified +8/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/moe/ep_moe/layer.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_marlin_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/moe_align_block_size.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #22490 - [EPD][VLM] Support Kimi VL EPD
+
+- Link: https://github.com/sgl-project/sglang/pull/22490
+- Status/date: merged / 2026-04-16
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_vl.py`, `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/multimodal/processors/kimi_vl.py`; associated commits `e7ad7c587a35`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +268/-102, 520 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[EPD][VLM] Support Kimi VL EPD"; model line: Kimi K2/K2.5/K3/Linear/VL; category: model support/runtime entry; main diff: `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_vl.py`; technical summary: Covers "[EPD][VLM] Support Kimi VL EPD"; the main implementation surface is `python/sglang/srt/multimodal/processors/kimi_common.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`, `python/sglang/srt/models/kimi_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/kimi_common.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: KimiGridMMDataMixin, to, _num_image_tokens_from_grid, _build_kimi_mm_data_from_grids, touching `KimiGridMMDataMixin, to, _num_image_tokens_from_grid`; `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +7/-63 (70 lines); hunks: -9,8 +9,6; -20,6 +18,7; symbols: _get_gpu_norm_tensors, KimiK2_5VLImageProcessor, process_mm_data_async, _num_image_tokens_from_grid, touching `_get_gpu_norm_tensors, KimiK2_5VLImageProcessor, process_mm_data_async`; `python/sglang/srt/models/kimi_vl.py` modified +23/-8 (31 lines); hunks: -128,13 +128,16 @@ def __init__(; -215,6 +218,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, get_image_feature, load_weights, touching `__init__, get_image_feature, load_weights`; `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +11/-1 (12 lines); hunks: -9,10 +9,11; -48,3 +49,12 @@ async def process_mm_data_async(; symbols: KimiVLImageProcessor, process_mm_data_async, get_mm_data, touching `KimiVLImageProcessor, process_mm_data_async, get_mm_data`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/kimi_common.py` added +113/-0 (113 lines); hunks: -0,0 +1,113; symbols: KimiGridMMDataMixin, to, _num_image_tokens_from_grid, _build_kimi_mm_data_from_grids
+  - `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +7/-63 (70 lines); hunks: -9,8 +9,6; -20,6 +18,7; symbols: _get_gpu_norm_tensors, KimiK2_5VLImageProcessor, process_mm_data_async, _num_image_tokens_from_grid
+  - `python/sglang/srt/models/kimi_vl.py` modified +23/-8 (31 lines); hunks: -128,13 +128,16 @@ def __init__(; -215,6 +218,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, get_image_feature, load_weights
+  - `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +11/-1 (12 lines); hunks: -9,10 +9,11; -48,3 +49,12 @@ async def process_mm_data_async(; symbols: KimiVLImageProcessor, process_mm_data_async, get_mm_data
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/kimi_common.py
+@@ -0,0 +1,113 @@
++"""Kimi-specific grid-based multimodal data helpers.
++Shared by KimiVLImageProcessor and KimiK2_5VLImageProcessor.
++"""
++from typing import Union
++import numpy as np
++import torch
+diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
+@@ -9,8 +9,6 @@
+-    Modality,
+-    MultimodalDataItem,
+@@ -20,6 +18,7 @@
++from sglang.srt.multimodal.processors.kimi_common import KimiGridMMDataMixin
+@@ -329,7 +328,7 @@ def _get_gpu_norm_tensors(self, device="cuda"):
+-class KimiK2_5VLImageProcessor(SGLangBaseProcessor):
+diff -- python/sglang/srt/models/kimi_vl.py
+@@ -128,13 +128,16 @@ def __init__(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/kimi_common.py` added +113/-0; `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +7/-63; `python/sglang/srt/models/kimi_vl.py` modified +23/-8; `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +11/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/disaggregation/encode_receiver.py`, `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/models/kimi_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #23186 - [AMD] Fused qk rmsnorm bf16 for amd/Kimi-K2.5-MXFP4
 
 - Link: https://github.com/sgl-project/sglang/pull/23186
@@ -2506,49 +2509,6 @@ diff -- python/sglang/srt/models/deepseek_common/attention_forward_methods/forwa
 - Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py` modified +12/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #23381 - [AMD] Add MI355X Kimi-K2.6 tuning artifacts
-
-- Link: https://github.com/sgl-project/sglang/pull/23381
-- Status/date: open / 2026-04-21
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 5 files, +133/-5, 187 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Add MI355X Kimi-K2.6 tuning artifacts"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py`; technical summary: Covers "[AMD] Add MI355X Kimi-K2.6 tuning artifacts"; the main implementation surface is `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json` added +119/-0 (119 lines); hunks: -0,0 +1,119; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +2/-1 (3 lines); hunks: -151,7 +151,8 @@ def do_load_weights(; symbols: do_load_weights, touching `do_load_weights`; `python/sglang/srt/environ.py` modified +5/-1 (6 lines); hunks: -206,6 +206,10 @@ class Envs:; -992,7 +996,7 @@ def assert_throws(message_matcher: str):; symbols: Envs, assert_throws, touching `Envs, assert_throws`; `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-3 (5 lines); hunks: -242,14 +242,13 @@ def run():; -419,7 +418,7 @@ def _distribute(method: str, inputs: List[Any]) -> List[Any]:; symbols: run, BenchmarkWorker, __init__, benchmark, touching `run, BenchmarkWorker, __init__`.
-- Code diff details:
-  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json` added +119/-0 (119 lines); hunks: -0,0 +1,119
-  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +2/-1 (3 lines); hunks: -151,7 +151,8 @@ def do_load_weights(; symbols: do_load_weights
-  - `python/sglang/srt/environ.py` modified +5/-1 (6 lines); hunks: -206,6 +206,10 @@ class Envs:; -992,7 +996,7 @@ def assert_throws(message_matcher: str):; symbols: Envs, assert_throws
-  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-3 (5 lines); hunks: -242,14 +242,13 @@ def run():; -419,7 +418,7 @@ def _distribute(method: str, inputs: List[Any]) -> List[Any]:; symbols: run, BenchmarkWorker, __init__, benchmark
-  - `docs_new/docs/references/environment_variables.mdx` modified +5/-0 (5 lines); hunks: -83,6 +83,11 @@ SGLang supports various environment variables that can be use...
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json
-@@ -0,0 +1,119 @@
-+{
-+    "1": {
-+        "BLOCK_SIZE_M": 64,
-+        "BLOCK_SIZE_N": 16,
-+        "BLOCK_SIZE_K": 32,
-+        "GROUP_SIZE_M": 8,
-diff -- python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
-@@ -151,7 +151,8 @@ def do_load_weights(
--        with concurrent.futures.ThreadPoolExecutor() as executor:
-+        max_workers = envs.SGLANG_DEEPSEEK_LOAD_MAX_WORKERS.get()
-+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-diff -- python/sglang/srt/environ.py
-@@ -206,6 +206,10 @@ class Envs:
-+    # None => fall back to ThreadPoolExecutor's default worker count.
-+    # Lower this (e.g. to 4) for very large MoE checkpoints where the default
-+    # creates too much aggregate host I/O pressure across ranks.
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json` added +119/-0; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +2/-1; `python/sglang/srt/environ.py` modified +5/-1
-  - other: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-3
-  - docs: `docs_new/docs/references/environment_variables.mdx` modified +5/-0
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/environ.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #23394 - [docs] sync kimi-k2.6 from sgl-cookbook
 
@@ -2819,33 +2779,6 @@ diff -- python/sglang/srt/models/kimi_k25_eagle3.py
   - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +15/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25_eagle3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #25265 - [perf] fix kimi tokenizer to improve ttft
-
-- Link: https://github.com/sgl-project/sglang/pull/25265
-- Status/date: merged / 2026-05-15
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +10/-3, 20 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[perf] fix kimi tokenizer to improve ttft"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `python/sglang/srt/managers/tokenizer_manager.py`; technical summary: Covers "[perf] fix kimi tokenizer to improve ttft"; the main implementation surface is `python/sglang/srt/managers/tokenizer_manager.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16 @@ async def _tokenize_texts(; symbols: _tokenize_texts, touching `_tokenize_texts`.
-- Code diff details:
-  - `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16 @@ async def _tokenize_texts(; symbols: _tokenize_texts
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/managers/tokenizer_manager.py
-@@ -689,9 +689,16 @@ async def _tokenize_texts(
--            encoded = self.tokenizer(tokenizer_input, **tokenizer_kwargs)
--            input_ids = encoded["input_ids"]
--            token_type_ids = encoded.get("token_type_ids") if is_cross_encoder else None
-+            if not is_cross_encoder and (not getattr(self.tokenizer, "is_fast", False)):
-+                input_ids = [self.tokenizer.encode(t) for t in tokenizer_input]
-+                token_type_ids = None
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/managers/tokenizer_manager.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #23563 - [Cookbook] Add Kimi K2.6 speculative decoding + fix draft attention backend
 
 - Link: https://github.com/sgl-project/sglang/pull/23563
@@ -2885,6 +2818,33 @@ diff -- docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx
 - Reviewed files:
   - docs: `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +33/-2; `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx` modified +23/-0; `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx` modified +3/-0; `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +1/-1
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.5.mdx`, `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K2.6.mdx`, `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #25265 - [perf] fix kimi tokenizer to improve ttft
+
+- Link: https://github.com/sgl-project/sglang/pull/25265
+- Status/date: merged / 2026-05-15
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +10/-3, 20 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[perf] fix kimi tokenizer to improve ttft"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `python/sglang/srt/managers/tokenizer_manager.py`; technical summary: Covers "[perf] fix kimi tokenizer to improve ttft"; the main implementation surface is `python/sglang/srt/managers/tokenizer_manager.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16 @@ async def _tokenize_texts(; symbols: _tokenize_texts, touching `_tokenize_texts`.
+- Code diff details:
+  - `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3 (13 lines); hunks: -689,9 +689,16 @@ async def _tokenize_texts(; symbols: _tokenize_texts
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/managers/tokenizer_manager.py
+@@ -689,9 +689,16 @@ async def _tokenize_texts(
+-            encoded = self.tokenizer(tokenizer_input, **tokenizer_kwargs)
+-            input_ids = encoded["input_ids"]
+-            token_type_ids = encoded.get("token_type_ids") if is_cross_encoder else None
++            if not is_cross_encoder and (not getattr(self.tokenizer, "is_fast", False)):
++                input_ids = [self.tokenizer.encode(t) for t in tokenizer_input]
++                token_type_ids = None
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/managers/tokenizer_manager.py` modified +10/-3
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/managers/tokenizer_manager.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #25390 - [AMD] Enable shared-experts fusion with new KIMI-K2.5-MXFP4 model.
 
@@ -3207,88 +3167,6 @@ diff -- python/sglang/srt/models/kimi_k25_eagle3.py
   - runtime: `python/sglang/srt/models/kimi_k25_eagle3.py` modified +38/-5
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k25_eagle3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #26353 - NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing
-
-- Link: https://github.com/sgl-project/sglang/pull/26353
-- Status/date: merged / 2026-05-29
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 17 files, +151/-118, 487 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py`; technical summary: Covers "NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing"; the main implementation surface is `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25 (47 lines); hunks: -18,7 +18,6; -429,8 +428,10 @@ def test_function_call_strict(self):; symbols: test_function_call_strict, test_function_call_required, test_function_call_specific, touching `test_function_call_strict, test_function_call_required, test_function_call_specific`; `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestNoChunkedPrefill, setUpClass, tearDownClass, test_mmlu, touching `TestNoChunkedPrefill, setUpClass, tearDownClass`; `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39 (39 lines); hunks: -1,39 +0,0; symbols: TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache, touching `TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache`; `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18 (32 lines); hunks: -1,32 +1,28; symbols: TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark, touching `TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark`.
-- Code diff details:
-  - `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25 (47 lines); hunks: -18,7 +18,6; -429,8 +428,10 @@ def test_function_call_strict(self):; symbols: test_function_call_strict, test_function_call_required, test_function_call_specific
-  - `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestNoChunkedPrefill, setUpClass, tearDownClass, test_mmlu
-  - `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39 (39 lines); hunks: -1,39 +0,0; symbols: TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache
-  - `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18 (32 lines); hunks: -1,32 +1,28; symbols: TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark
-  - `test/registered/ascend/vlm_models/test_npu_llama_3_2_11b_vision_instruct.py` modified +11/-9 (20 lines); hunks: -1,20 +1,22; symbols: TestLlama3211BVisionInstruct
-- Key code excerpts:
-
-```diff
-diff -- test/registered/ascend/interface/test_npu_openai_function_calling.py
-@@ -18,7 +18,6 @@
--    disabled="https://github.com/Ascend/sglang/issues/39",
-@@ -429,8 +428,10 @@ def test_function_call_strict(self):
--        Test: Whether tool_choice: "required" works as expected
--        - When tool_choice == "required", the model should return one or more tool_calls.
-+        Test: Whether tool_choice: "required" works as expected.
-+        - When tool_choice == "required", the model MUST return one or more tool_calls.
-diff -- test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py
-@@ -0,0 +1,74 @@
-+import unittest
-+from types import SimpleNamespace
-+from sglang.srt.utils import kill_process_tree
-+from sglang.test.ascend.test_ascend_utils import LLAMA_3_1_8B_INSTRUCT_WEIGHTS_PATH
-+from sglang.test.ci.ci_register import register_npu_ci
-+from sglang.test.run_eval import run_eval
-diff -- test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py
-@@ -1,39 +0,0 @@
-```
-
-- Reviewed files:
-  - tests: `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25; `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0; `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39; `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18; `test/registered/ascend/vlm_models/test_npu_llama_3_2_11b_vision_instruct.py` modified +11/-9; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` modified +13/-3
-- Risk and verification: The diff ships test coverage in `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mla.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_ttft_mha.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #26257 - [XPU] Fix Device Assignment
-
-- Link: https://github.com/sgl-project/sglang/pull/26257
-- Status/date: merged / 2026-05-29
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 6 files, +13/-12, 123 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[XPU] Fix Device Assignment"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `python/sglang/srt/models/minicpmv.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py`; technical summary: Covers "[XPU] Fix Device Assignment"; the main implementation surface is `python/sglang/srt/models/minicpmv.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/minicpmv.py` modified +5/-5 (10 lines); hunks: -68,7 +68,7; -936,7 +936,7 @@ def init_resampler(; symbols: init_resampler, get_vision_embedding, touching `init_resampler, get_vision_embedding`; `python/sglang/srt/models/kimi_vl_moonvit.py` modified +3/-3 (6 lines); hunks: -64,7 +64,7; -300,15 +300,15 @@ class Rope2DPosEmb(nn.Module):; symbols: Rope2DPosEmb, __init__, extra_repr, touching `Rope2DPosEmb, __init__, extra_repr`; `python/sglang/srt/models/minicpmo.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -1514,7 +1514,7 @@ def init_resampler(; symbols: init_resampler, pad_input_ids, touching `init_resampler, pad_input_ids`; `python/sglang/srt/models/transformers.py` modified +2/-1 (3 lines); hunks: -68,6 +68,7; -669,7 +670,7 @@ def _init_parameters(self, module: nn.Module):; symbols: _init_parameters, touching `_init_parameters`.
-- Code diff details:
-  - `python/sglang/srt/models/minicpmv.py` modified +5/-5 (10 lines); hunks: -68,7 +68,7; -936,7 +936,7 @@ def init_resampler(; symbols: init_resampler, get_vision_embedding
-  - `python/sglang/srt/models/kimi_vl_moonvit.py` modified +3/-3 (6 lines); hunks: -64,7 +64,7; -300,15 +300,15 @@ class Rope2DPosEmb(nn.Module):; symbols: Rope2DPosEmb, __init__, extra_repr
-  - `python/sglang/srt/models/minicpmo.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -1514,7 +1514,7 @@ def init_resampler(; symbols: init_resampler, pad_input_ids
-  - `python/sglang/srt/models/transformers.py` modified +2/-1 (3 lines); hunks: -68,6 +68,7; -669,7 +670,7 @@ def _init_parameters(self, module: nn.Module):; symbols: _init_parameters
-  - `python/sglang/srt/layers/rotary_embedding/base.py` modified +1/-0 (1 lines); hunks: -419,6 +419,7 @@ def forward_xpu(; symbols: forward_xpu
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/minicpmv.py
-@@ -68,7 +68,7 @@
--from sglang.srt.utils import add_prefix, flatten_nested_list
-+from sglang.srt.utils import add_prefix, flatten_nested_list, get_device
-@@ -936,7 +936,7 @@ def init_resampler(
--        return resampler.to(device="cuda", dtype=torch.get_default_dtype())
-+        return resampler.to(device=get_device(), dtype=torch.get_default_dtype())
-@@ -1102,7 +1102,7 @@ def init_resampler(
-diff -- python/sglang/srt/models/kimi_vl_moonvit.py
-@@ -64,7 +64,7 @@
--from sglang.srt.utils import add_prefix
-+from sglang.srt.utils import add_prefix, get_device
-@@ -300,15 +300,15 @@ class Rope2DPosEmb(nn.Module):
--        self, dim: int, max_height: int, max_width: int, theta_base=10000, device="cuda"
-+        self, dim: int, max_height: int, max_width: int, theta_base=10000, device=None
--        self.device = device
-diff -- python/sglang/srt/models/minicpmo.py
-@@ -54,7 +54,7 @@
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/minicpmv.py` modified +5/-5; `python/sglang/srt/models/kimi_vl_moonvit.py` modified +3/-3; `python/sglang/srt/models/minicpmo.py` modified +2/-2; `python/sglang/srt/models/transformers.py` modified +2/-1; `python/sglang/srt/layers/rotary_embedding/base.py` modified +1/-0; `python/sglang/srt/multimodal/processors/transformers_auto.py` modified +0/-1
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/rotary_embedding/base.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #25676 - Upgrade xgrammar to 0.2.1
 
 - Link: https://github.com/sgl-project/sglang/pull/25676
@@ -3332,6 +3210,88 @@ diff -- test/registered/unit/function_call/test_function_call_parser.py
   - ci: `.github/workflows/nightly-test-npu.yml` modified +5/-5; `.github/workflows/full-test-npu.yml` modified +4/-4
   - other: `3rdparty/amd/wheel/sglang/pyproject.toml` modified +1/-1
 - Risk and verification: The diff ships test coverage in `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/function_call/test_function_call_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #26257 - [XPU] Fix Device Assignment
+
+- Link: https://github.com/sgl-project/sglang/pull/26257
+- Status/date: merged / 2026-05-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 6 files, +13/-12, 123 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[XPU] Fix Device Assignment"; model line: Kimi K2/K2.5/K3/Linear/VL; category: bug fix; main diff: `python/sglang/srt/models/minicpmv.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py`; technical summary: Covers "[XPU] Fix Device Assignment"; the main implementation surface is `python/sglang/srt/models/minicpmv.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/minicpmv.py` modified +5/-5 (10 lines); hunks: -68,7 +68,7; -936,7 +936,7 @@ def init_resampler(; symbols: init_resampler, get_vision_embedding, touching `init_resampler, get_vision_embedding`; `python/sglang/srt/models/kimi_vl_moonvit.py` modified +3/-3 (6 lines); hunks: -64,7 +64,7; -300,15 +300,15 @@ class Rope2DPosEmb(nn.Module):; symbols: Rope2DPosEmb, __init__, extra_repr, touching `Rope2DPosEmb, __init__, extra_repr`; `python/sglang/srt/models/minicpmo.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -1514,7 +1514,7 @@ def init_resampler(; symbols: init_resampler, pad_input_ids, touching `init_resampler, pad_input_ids`; `python/sglang/srt/models/transformers.py` modified +2/-1 (3 lines); hunks: -68,6 +68,7; -669,7 +670,7 @@ def _init_parameters(self, module: nn.Module):; symbols: _init_parameters, touching `_init_parameters`.
+- Code diff details:
+  - `python/sglang/srt/models/minicpmv.py` modified +5/-5 (10 lines); hunks: -68,7 +68,7; -936,7 +936,7 @@ def init_resampler(; symbols: init_resampler, get_vision_embedding
+  - `python/sglang/srt/models/kimi_vl_moonvit.py` modified +3/-3 (6 lines); hunks: -64,7 +64,7; -300,15 +300,15 @@ class Rope2DPosEmb(nn.Module):; symbols: Rope2DPosEmb, __init__, extra_repr
+  - `python/sglang/srt/models/minicpmo.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -1514,7 +1514,7 @@ def init_resampler(; symbols: init_resampler, pad_input_ids
+  - `python/sglang/srt/models/transformers.py` modified +2/-1 (3 lines); hunks: -68,6 +68,7; -669,7 +670,7 @@ def _init_parameters(self, module: nn.Module):; symbols: _init_parameters
+  - `python/sglang/srt/layers/rotary_embedding/base.py` modified +1/-0 (1 lines); hunks: -419,6 +419,7 @@ def forward_xpu(; symbols: forward_xpu
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/minicpmv.py
+@@ -68,7 +68,7 @@
+-from sglang.srt.utils import add_prefix, flatten_nested_list
++from sglang.srt.utils import add_prefix, flatten_nested_list, get_device
+@@ -936,7 +936,7 @@ def init_resampler(
+-        return resampler.to(device="cuda", dtype=torch.get_default_dtype())
++        return resampler.to(device=get_device(), dtype=torch.get_default_dtype())
+@@ -1102,7 +1102,7 @@ def init_resampler(
+diff -- python/sglang/srt/models/kimi_vl_moonvit.py
+@@ -64,7 +64,7 @@
+-from sglang.srt.utils import add_prefix
++from sglang.srt.utils import add_prefix, get_device
+@@ -300,15 +300,15 @@ class Rope2DPosEmb(nn.Module):
+-        self, dim: int, max_height: int, max_width: int, theta_base=10000, device="cuda"
++        self, dim: int, max_height: int, max_width: int, theta_base=10000, device=None
+-        self.device = device
+diff -- python/sglang/srt/models/minicpmo.py
+@@ -54,7 +54,7 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/minicpmv.py` modified +5/-5; `python/sglang/srt/models/kimi_vl_moonvit.py` modified +3/-3; `python/sglang/srt/models/minicpmo.py` modified +2/-2; `python/sglang/srt/models/transformers.py` modified +2/-1; `python/sglang/srt/layers/rotary_embedding/base.py` modified +1/-0; `python/sglang/srt/multimodal/processors/transformers_auto.py` modified +0/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/rotary_embedding/base.py`, `python/sglang/srt/models/kimi_vl_moonvit.py`, `python/sglang/srt/models/minicpmo.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #26353 - NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing
+
+- Link: https://github.com/sgl-project/sglang/pull/26353
+- Status/date: merged / 2026-05-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 17 files, +151/-118, 487 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py`; technical summary: Covers "NPU Nightly Pipeline Skip Test Case Adaptation and Recovery Testing"; the main implementation surface is `test/registered/ascend/interface/test_npu_openai_function_calling.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25 (47 lines); hunks: -18,7 +18,6; -429,8 +428,10 @@ def test_function_call_strict(self):; symbols: test_function_call_strict, test_function_call_required, test_function_call_specific, touching `test_function_call_strict, test_function_call_required, test_function_call_specific`; `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestNoChunkedPrefill, setUpClass, tearDownClass, test_mmlu, touching `TestNoChunkedPrefill, setUpClass, tearDownClass`; `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39 (39 lines); hunks: -1,39 +0,0; symbols: TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache, touching `TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache`; `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18 (32 lines); hunks: -1,32 +1,28; symbols: TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark, touching `TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark`.
+- Code diff details:
+  - `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25 (47 lines); hunks: -18,7 +18,6; -429,8 +428,10 @@ def test_function_call_strict(self):; symbols: test_function_call_strict, test_function_call_required, test_function_call_specific
+  - `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0 (74 lines); hunks: -0,0 +1,74; symbols: TestNoChunkedPrefill, setUpClass, tearDownClass, test_mmlu
+  - `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39 (39 lines); hunks: -1,39 +0,0; symbols: TestNoChunkedPrefill, test_no_chunked_prefill, test_no_chunked_prefill_without_radix_cache
+  - `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18 (32 lines); hunks: -1,32 +1,28; symbols: TestKimiVLA3BInstruct, test_vlm_mmmu_benchmark
+  - `test/registered/ascend/vlm_models/test_npu_llama_3_2_11b_vision_instruct.py` modified +11/-9 (20 lines); hunks: -1,20 +1,22; symbols: TestLlama3211BVisionInstruct
+- Key code excerpts:
+
+```diff
+diff -- test/registered/ascend/interface/test_npu_openai_function_calling.py
+@@ -18,7 +18,6 @@
+-    disabled="https://github.com/Ascend/sglang/issues/39",
+@@ -429,8 +428,10 @@ def test_function_call_strict(self):
+-        Test: Whether tool_choice: "required" works as expected
+-        - When tool_choice == "required", the model should return one or more tool_calls.
++        Test: Whether tool_choice: "required" works as expected.
++        - When tool_choice == "required", the model MUST return one or more tool_calls.
+diff -- test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py
+@@ -0,0 +1,74 @@
++import unittest
++from types import SimpleNamespace
++from sglang.srt.utils import kill_process_tree
++from sglang.test.ascend.test_ascend_utils import LLAMA_3_1_8B_INSTRUCT_WEIGHTS_PATH
++from sglang.test.ci.ci_register import register_npu_ci
++from sglang.test.run_eval import run_eval
+diff -- test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py
+@@ -1,39 +0,0 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/ascend/interface/test_npu_openai_function_calling.py` modified +22/-25; `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py` added +74/-0; `test/registered/ascend/basic_function/parameter/test_npu_no_chunked_prefill.py` removed +0/-39; `test/registered/ascend/vlm_models/test_npu_kimi_vl_a3b_instruct.py` modified +14/-18; `test/registered/ascend/vlm_models/test_npu_llama_3_2_11b_vision_instruct.py` modified +11/-9; `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_low_latency_qwen3_next.py` modified +13/-3
+- Risk and verification: The diff ships test coverage in `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_mla.py`, `test/registered/ascend/basic_function/HiCache/test_npu_hierarchical_cache_ttft_mha.py`, `test/registered/ascend/basic_function/memory_and_scheduling/test_npu_no_chunked_prefill.py`, `test/registered/ascend/basic_function/parallel_strategy/expert_parallelism/test_npu_deepep_auto_qwen3_next.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #26744 - [RL] Forward Kimi K2.5 weight hooks to language model
 
@@ -3781,6 +3741,45 @@ diff -- test/registered/quant/test_kimi_k25_nvfp4_eagle.py
   - tests: `test/registered/quant/test_kimi_k25_nvfp4_eagle.py` added +68/-0
 - Risk and verification: The diff ships test coverage in `test/registered/quant/test_kimi_k25_nvfp4_eagle.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #28201 - [Docs] Add fp8 kv cache for tokenspeed mla docs
+
+- Link: https://github.com/sgl-project/sglang/pull/28201
+- Status/date: merged / 2026-06-18
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 3 files, +13/-7, 51 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Add fp8 kv cache for tokenspeed mla docs"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`; technical summary: Covers "[Docs] Add fp8 kv cache for tokenspeed mla docs"; the main implementation surface is `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +5/-3 (8 lines); hunks: -196,13 +196,15 @@ export const KimiK25Deployment = () => {; `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +4/-2 (6 lines); hunks: -194,11 +194,13 @@ export const KimiK26Deployment = () => {; `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +4/-2 (6 lines); hunks: -144,11 +144,13 @@ export const KimiK27CodeDeployment = () => {.
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +5/-3 (8 lines); hunks: -196,13 +196,15 @@ export const KimiK25Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +4/-2 (6 lines); hunks: -194,11 +194,13 @@ export const KimiK26Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +4/-2 (6 lines); hunks: -144,11 +144,13 @@ export const KimiK27CodeDeployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx
+@@ -196,13 +196,15 @@ export const KimiK25Deployment = () => {
++    const usesTokenspeedMla = hardware === 'b300' || hardware === 'gb300';
+-    if (hardware === 'b300' || hardware === 'gb300') {
++    if (usesTokenspeedMla) {
+-    // AMD: FP8 KV cache for memory efficiency
+-    if (isAMD) {
++    // FP8 KV cache for AMD memory efficiency and tokenspeed MLA compatibility
+diff -- docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx
+@@ -194,11 +194,13 @@ export const KimiK26Deployment = () => {
+-    if (hardware === 'b300' || hardware === 'gb300') {
++    const usesTokenspeedMla = hardware === 'b300' || hardware === 'gb300';
++    if (usesTokenspeedMla) {
+-    if (isAMD) {
++    if (isAMD || usesTokenspeedMla) {
+diff -- docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx
+@@ -144,11 +144,13 @@ export const KimiK27CodeDeployment = () => {
+-    if (hardware === 'b300' || hardware === 'gb300') {
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +5/-3; `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +4/-2; `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +4/-2
+- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
 ### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
 
 - Link: https://github.com/sgl-project/sglang/pull/28567
@@ -3821,86 +3820,6 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - Risk and verification: The diff ships test coverage in `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #28201 - [Docs] Add fp8 kv cache for tokenspeed mla docs
-
-- Link: https://github.com/sgl-project/sglang/pull/28201
-- Status/date: merged / 2026-06-18
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 3 files, +13/-7, 51 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Add fp8 kv cache for tokenspeed mla docs"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`; technical summary: Covers "[Docs] Add fp8 kv cache for tokenspeed mla docs"; the main implementation surface is `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +5/-3 (8 lines); hunks: -196,13 +196,15 @@ export const KimiK25Deployment = () => {; `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +4/-2 (6 lines); hunks: -194,11 +194,13 @@ export const KimiK26Deployment = () => {; `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +4/-2 (6 lines); hunks: -144,11 +144,13 @@ export const KimiK27CodeDeployment = () => {.
-- Code diff details:
-  - `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +5/-3 (8 lines); hunks: -196,13 +196,15 @@ export const KimiK25Deployment = () => {
-  - `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +4/-2 (6 lines); hunks: -194,11 +194,13 @@ export const KimiK26Deployment = () => {
-  - `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +4/-2 (6 lines); hunks: -144,11 +144,13 @@ export const KimiK27CodeDeployment = () => {
-- Key code excerpts:
-
-```diff
-diff -- docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx
-@@ -196,13 +196,15 @@ export const KimiK25Deployment = () => {
-+    const usesTokenspeedMla = hardware === 'b300' || hardware === 'gb300';
--    if (hardware === 'b300' || hardware === 'gb300') {
-+    if (usesTokenspeedMla) {
--    // AMD: FP8 KV cache for memory efficiency
--    if (isAMD) {
-+    // FP8 KV cache for AMD memory efficiency and tokenspeed MLA compatibility
-diff -- docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx
-@@ -194,11 +194,13 @@ export const KimiK26Deployment = () => {
--    if (hardware === 'b300' || hardware === 'gb300') {
-+    const usesTokenspeedMla = hardware === 'b300' || hardware === 'gb300';
-+    if (usesTokenspeedMla) {
--    if (isAMD) {
-+    if (isAMD || usesTokenspeedMla) {
-diff -- docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx
-@@ -144,11 +144,13 @@ export const KimiK27CodeDeployment = () => {
--    if (hardware === 'b300' || hardware === 'gb300') {
-```
-
-- Reviewed files:
-  - docs: `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx` modified +5/-3; `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx` modified +4/-2; `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +4/-2
-- Risk and verification: This is mostly docs/examples in `docs_new/src/snippets/autoregressive/kimi-k25-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k26-deployment.jsx`, `docs_new/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
-
-### PR #28697 - [docs] Add B300 cookbook deployment options
-
-- Link: https://github.com/sgl-project/sglang/pull/28697
-- Status/date: merged / 2026-06-19
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 27 files, +503/-69, 1291 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[docs] Add B300 cookbook deployment options"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`; technical summary: Covers "[docs] Add B300 cookbook deployment options"; the main implementation surface is `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {.
-- Code diff details:
-  - `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167
-  - `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {
-  - `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {
-  - `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {
-  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15 (38 lines); hunks: -8,19 +8,19 @@ export const Qwen35Deployment = () => {; -149,7 +149,7 @@ export const Qwen35Deployment = () => {
-- Key code excerpts:
-
-```diff
-diff -- docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx
-@@ -0,0 +1,167 @@
-+export const InternS1Deployment = () => {
-+  const options = {
-+    hardware: {
-+      name: 'hardware',
-+      title: 'Hardware Platform',
-+      items: [
-diff -- docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx
-@@ -9,6 +9,11 @@ const lookupData = {
-+      {
-+        "id": "b300",
-+        "label": "B300",
-+        "default": false
-+      },
-@@ -182,6 +187,66 @@ const lookupData = {
-diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
-@@ -4,6 +4,7 @@ export const GLM5Deployment = () => {
-```
-
-- Reviewed files:
-  - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
-- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #28536 - ci: run GB300 nightly suite in the standard Nvidia nightly workflow
 
@@ -3943,6 +3862,47 @@ diff -- test/registered/gb300/test_qwen35_fp8.py
   - tests: `test/registered/gb300/test_deepseek_v32_nvfp4.py` removed +0/-81; `test/registered/gb300/test_deepseek_v32.py` removed +0/-78; `test/registered/gb300/test_qwen35_fp8.py` modified +14/-14; `test/registered/gb300/test_glm5_nvfp4.py` modified +12/-12; `test/registered/gb300/test_qwen35_nvfp4.py` modified +5/-3; `test/registered/gb300/test_glm5_fp8.py` modified +4/-2
   - ci: `.github/workflows/nightly-test-nvidia.yml` modified +27/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/test/performance_test_runner.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_glm5_fp8.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #28697 - [docs] Add B300 cookbook deployment options
+
+- Link: https://github.com/sgl-project/sglang/pull/28697
+- Status/date: merged / 2026-06-19
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 27 files, +503/-69, 1291 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[docs] Add B300 cookbook deployment options"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`; technical summary: Covers "[docs] Add B300 cookbook deployment options"; the main implementation surface is `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {.
+- Code diff details:
+  - `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167
+  - `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {
+  - `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15 (38 lines); hunks: -8,19 +8,19 @@ export const Qwen35Deployment = () => {; -149,7 +149,7 @@ export const Qwen35Deployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx
+@@ -0,0 +1,167 @@
++export const InternS1Deployment = () => {
++  const options = {
++    hardware: {
++      name: 'hardware',
++      title: 'Hardware Platform',
++      items: [
+diff -- docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx
+@@ -9,6 +9,11 @@ const lookupData = {
++      {
++        "id": "b300",
++        "label": "B300",
++        "default": false
++      },
+@@ -182,6 +187,66 @@ const lookupData = {
+diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
+@@ -4,6 +4,7 @@ export const GLM5Deployment = () => {
+```
+
+- Reviewed files:
+  - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
+- Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #28647 - Fix Kimi-VL GPU image preprocessing crash on non-RGB images
 
@@ -4012,43 +3972,6 @@ diff -- python/sglang/srt/layers/moe/ep_moe/layer.py
   - runtime: `python/sglang/srt/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa16_moe.py` modified +768/-16; `python/sglang/srt/layers/moe/token_dispatcher/deepep.py` modified +56/-3; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +44/-0; `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors.py` modified +14/-0; `python/sglang/jit_kernel/csrc/gemm/marlin_moe/marlin_direct_template.h` added +1948/-0; `python/sglang/jit_kernel/csrc/gemm/marlin_moe/moe_wna16_marlin.cuh` modified +1264/-6
 - Risk and verification: Runtime changes concentrate in `python/sglang/jit_kernel/csrc/elementwise/mask_silu_and_mul.cuh`, `python/sglang/jit_kernel/csrc/gemm/marlin_moe/kernel_direct.h`, `python/sglang/jit_kernel/csrc/gemm/marlin_moe/marlin_direct_template.h`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #27833 - [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5
-
-- Link: https://github.com/sgl-project/sglang/pull/27833
-- Status/date: merged / 2026-06-24
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`; associated commits `20b2817bdfcc`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +187/-0, 202 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`; technical summary: Covers "[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5"; the main implementation surface is `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass, touching `CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x`; `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0 (8 lines); hunks: -1,6 +1,9; -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):; symbols: handle_attention_tokenspeed_mla, handle_attention_aiter, touching `handle_attention_tokenspeed_mla, handle_attention_aiter`.
-- Code diff details:
-  - `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass
-  - `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0 (8 lines); hunks: -1,6 +1,9; -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):; symbols: handle_attention_tokenspeed_mla, handle_attention_aiter
-- Key code excerpts:
-
-```diff
-diff -- test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py
-@@ -0,0 +1,179 @@
-+"""Kimi-K2.5-MXFP4 aiter breakable CUDA-graph (BCG) capture accuracy test
-+(MI35x, PR-CI)
-+Exercises the AMD breakable (BCG) CUDA-graph prefill capture path on a
-+deepseek-family (Kimi-K2.5) aiter model so the code added in this PR actually
-+runs in PR CI:
-+  * runner_backend/breakable_cuda_graph_backend.py
-diff -- python/sglang/srt/models/deepseek_common/attention_backend_handler.py
-@@ -1,6 +1,9 @@
-+from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph import (
-+    is_in_breakable_cuda_graph,
-+)
-@@ -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):
-+    # During PCG/BCG capture on ROCm, aiter fp8 MLA prefill has no capture
-+    # kernels; route through the MHA path (radix_attention swaps attn_mqa for
-```
-
-- Reviewed files:
-  - tests: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0
-  - runtime: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0
-- Risk and verification: The diff ships test coverage in `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #25071 - kimik2_detector fix the normal text detection before tool call.
 
 - Link: https://github.com/sgl-project/sglang/pull/25071
@@ -4085,6 +4008,43 @@ diff -- python/sglang/srt/function_call/kimik2_detector.py
   - tests: `test/registered/function_call/test_kimik2_detector.py` modified +587/-0
   - runtime: `python/sglang/srt/function_call/kimik2_detector.py` modified +187/-101
 - Risk and verification: The diff ships test coverage in `test/registered/function_call/test_kimik2_detector.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #27833 - [AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5
+
+- Link: https://github.com/sgl-project/sglang/pull/27833
+- Status/date: merged / 2026-06-24
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`; associated commits `20b2817bdfcc`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +187/-0, 202 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`; technical summary: Covers "[AMD] Enable BCG on ROCm + route aiter prefill via MHA during PCG/BCG capture for Kimi-2.5"; the main implementation surface is `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`, `python/sglang/srt/models/deepseek_common/attention_backend_handler.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass, touching `CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x`; `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0 (8 lines); hunks: -1,6 +1,9; -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):; symbols: handle_attention_tokenspeed_mla, handle_attention_aiter, touching `handle_attention_tokenspeed_mla, handle_attention_aiter`.
+- Code diff details:
+  - `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0 (179 lines); hunks: -0,0 +1,179; symbols: CaptureConfig, get_capture_configs, TestKimiK25MXFP4BcgMI35x, setUpClass
+  - `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0 (8 lines); hunks: -1,6 +1,9; -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):; symbols: handle_attention_tokenspeed_mla, handle_attention_aiter
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py
+@@ -0,0 +1,179 @@
++"""Kimi-K2.5-MXFP4 aiter breakable CUDA-graph (BCG) capture accuracy test
++(MI35x, PR-CI)
++Exercises the AMD breakable (BCG) CUDA-graph prefill capture path on a
++deepseek-family (Kimi-K2.5) aiter model so the code added in this PR actually
++runs in PR CI:
++  * runner_backend/breakable_cuda_graph_backend.py
+diff -- python/sglang/srt/models/deepseek_common/attention_backend_handler.py
+@@ -1,6 +1,9 @@
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph import (
++    is_in_breakable_cuda_graph,
++)
+@@ -150,6 +153,11 @@ def handle_attention_tokenspeed_mla(attn, forward_batch):
++    # During PCG/BCG capture on ROCm, aiter fp8 MLA prefill has no capture
++    # kernels; route through the MHA path (radix_attention swaps attn_mqa for
+```
+
+- Reviewed files:
+  - tests: `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py` added +179/-0
+  - runtime: `python/sglang/srt/models/deepseek_common/attention_backend_handler.py` modified +8/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_kimi_k25_mxfp4_bcg_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #28623 - [CI] reduce CPU CI scope with base-c suite
 
@@ -4598,43 +4558,6 @@ diff -- docs_new/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
   - docs: `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +1/-1; `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +5/-3
 - Risk and verification: This is mostly docs/examples in `docs_new/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs_new/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
-### PR #32612 - Support DCP for Kimi Linear model
-
-- Link: https://github.com/sgl-project/sglang/pull/32612
-- Status/date: merged / 2026-07-29
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`; associated commits `ef6c07008b5e`
-- Diff scope read: GitHub Pull Request files API returned 17 files, +1331/-86, 1802 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support DCP for Kimi Linear model"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`; technical summary: Covers "Support DCP for Kimi Linear model"; the main implementation surface is `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/kimi_linear.py` modified +82/-11 (93 lines); hunks: -16,6 +16,7; -52,6 +53,20; symbols: _get_kda_local_num_heads, _materialize_residual_stream, KimiMoE, __init__, touching `_get_kda_local_num_heads, _materialize_residual_stream, KimiMoE`; `test/registered/dcp/test_kimi_linear_dcp4.py` added +129/-0 (129 lines); hunks: -0,0 +1,129; symbols: _has_four_blackwell_gpus, TestKimiLinearDCP4, setUpClass, tearDownClass, touching `_has_four_blackwell_gpus, TestKimiLinearDCP4, setUpClass`.
-- Code diff details:
-  - `python/sglang/srt/models/kimi_linear.py` modified +82/-11 (93 lines); hunks: -16,6 +16,7; -52,6 +53,20; symbols: _get_kda_local_num_heads, _materialize_residual_stream, KimiMoE, __init__
-  - `test/registered/dcp/test_kimi_linear_dcp4.py` added +129/-0 (129 lines); hunks: -0,0 +1,129; symbols: _has_four_blackwell_gpus, TestKimiLinearDCP4, setUpClass, tearDownClass
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/kimi_linear.py
-@@ -16,6 +16,7 @@
-+from sglang.srt.layers.dcp.planner import prepare_decode_context_parallel_metadata
-@@ -52,6 +53,20 @@
-+def _get_kda_local_num_heads(num_heads: int, tp_size: int) -> int:
-+    if num_heads % tp_size != 0:
-+        raise ValueError(
-+            f"KDA num_heads ({num_heads}) must be divisible by global tp_size ({tp_size})"
-diff -- test/registered/dcp/test_kimi_linear_dcp4.py
-@@ -0,0 +1,129 @@
-+"""Four-Blackwell acceptance coverage for Kimi Linear TokenSpeed MLA DCP.
-+The captured-shape and eager-shape requests deliberately straddle
-+``--cuda-graph-max-bs-decode=64``.  This guards both the regular CUDA graph
-+decode path and the full-capacity eager DCP LSE scratch-buffer path.
-+"""
-+import unittest
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +82/-11
-  - tests: `test/registered/dcp/test_kimi_linear_dcp4.py` added +129/-0
-- Risk and verification: The diff ships test coverage in `test/registered/dcp/test_dcp_layout_unit.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`, `test/registered/unit/test_model_overrides.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #32118 - Fix nightly CI: NVFP4 cuda-graph crash, NVILA batching, CuTe paged-KV zero-size, Kimi-VL OOM
 
 - Link: https://github.com/sgl-project/sglang/pull/32118
@@ -4675,47 +4598,42 @@ diff -- python/sglang/srt/models/kimi_vl.py
   - tests: `test/registered/unit/models/test_kimi_vl.py` modified +5/-18
 - Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_vl.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #32972 - [unified-memory] Let Kimi-Linear use the paged MLA attention backends
+### PR #32612 - Support DCP for Kimi Linear model
 
-- Link: https://github.com/sgl-project/sglang/pull/32972
-- Status/date: merged / 2026-07-31
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_kimi_linear_unified_memory.py`; associated commits `33c27d8e7f4f`
-- Diff scope read: GitHub Pull Request files API returned 9 files, +759/-11, 901 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[unified-memory] Let Kimi-Linear use the paged MLA attention backends"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`; technical summary: Covers "[unified-memory] Let Kimi-Linear use the paged MLA attention backends"; the main implementation surface is `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models_e2e/test_kimi_linear_unified_memory.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestKimiLinearUnifiedMemory, touching `TestKimiLinearUnifiedMemory`; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +76/-0 (76 lines); hunks: -66,6 +66,51; -675,6 +720,10 @@ def __init__(self, model_runner: ModelRunner, attn_backend:...; symbols: UnifiedMLAHooks, unified_mla_hooks, DecodeMetadata, __init__, touching `UnifiedMLAHooks, unified_mla_hooks, DecodeMetadata`; `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +64/-3 (67 lines); hunks: -34,6 +34,7; -245,6 +246,23 @@ def __init__(; symbols: __init__, _calc_padded_blocks, _create_block_kv_indices, init_cuda_graph_state, touching `__init__, _calc_padded_blocks, _create_block_kv_indices`; `python/sglang/srt/server_args.py` modified +24/-4 (28 lines); hunks: -7705,13 +7705,33 @@ def _handle_page_major_kv_layout(self):; symbols: _handle_page_major_kv_layout, touching `_handle_page_major_kv_layout`.
+- Link: https://github.com/sgl-project/sglang/pull/32612
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`; associated commits `ef6c07008b5e`
+- Diff scope read: GitHub Pull Request files API returned 17 files, +1331/-86, 1802 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support DCP for Kimi Linear model"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`; technical summary: Covers "Support DCP for Kimi Linear model"; the main implementation surface is `python/sglang/srt/models/kimi_linear.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/kimi_linear.py` modified +82/-11 (93 lines); hunks: -16,6 +16,7; -52,6 +53,20; symbols: _get_kda_local_num_heads, _materialize_residual_stream, KimiMoE, __init__, touching `_get_kda_local_num_heads, _materialize_residual_stream, KimiMoE`; `test/registered/dcp/test_kimi_linear_dcp4.py` added +129/-0 (129 lines); hunks: -0,0 +1,129; symbols: _has_four_blackwell_gpus, TestKimiLinearDCP4, setUpClass, tearDownClass, touching `_has_four_blackwell_gpus, TestKimiLinearDCP4, setUpClass`.
 - Code diff details:
-  - `test/registered/models_e2e/test_kimi_linear_unified_memory.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestKimiLinearUnifiedMemory
-  - `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +76/-0 (76 lines); hunks: -66,6 +66,51; -675,6 +720,10 @@ def __init__(self, model_runner: ModelRunner, attn_backend:...; symbols: UnifiedMLAHooks, unified_mla_hooks, DecodeMetadata, __init__
-  - `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +64/-3 (67 lines); hunks: -34,6 +34,7; -245,6 +246,23 @@ def __init__(; symbols: __init__, _calc_padded_blocks, _create_block_kv_indices, init_cuda_graph_state
-  - `python/sglang/srt/server_args.py` modified +24/-4 (28 lines); hunks: -7705,13 +7705,33 @@ def _handle_page_major_kv_layout(self):; symbols: _handle_page_major_kv_layout
-  - `python/sglang/kernels/ops/kvcache/kv_indices.py` modified +15/-1 (16 lines); hunks: -105,6 +105,15 @@ def create_flashmla_kv_indices_triton(; -145,8 +154,13 @@ def create_flashmla_kv_indices_triton(; symbols: create_flashmla_kv_indices_triton
+  - `python/sglang/srt/models/kimi_linear.py` modified +82/-11 (93 lines); hunks: -16,6 +16,7; -52,6 +53,20; symbols: _get_kda_local_num_heads, _materialize_residual_stream, KimiMoE, __init__
+  - `test/registered/dcp/test_kimi_linear_dcp4.py` added +129/-0 (129 lines); hunks: -0,0 +1,129; symbols: _has_four_blackwell_gpus, TestKimiLinearDCP4, setUpClass, tearDownClass
 - Key code excerpts:
 
 ```diff
-diff -- test/registered/models_e2e/test_kimi_linear_unified_memory.py
-@@ -0,0 +1,77 @@
-+"""Kimi-Linear (MLA full attention + KDA linear attention) served from the
-+unified memory pool.
-+`--enable-unified-memory` replaces the statically-partitioned hybrid pools with
-+one byte buffer split dynamically between the full-attention KV sub-pool and the
-+per-request KDA state sub-pool. For an MLA model the full side is exposed as
-+DENSE per-layer views (`build_dense_mla_views`) and every loc the kernels see is
-diff -- python/sglang/srt/layers/attention/flashinfer_mla_backend.py
-@@ -66,6 +66,51 @@
-+@dataclass(frozen=True)
-+class UnifiedMLAHooks:
-+    """Allocator hooks the paged MLA backends need under the unified memory pool.
-+    All-``None``/1/``False`` for the statically-partitioned pool, where
-+    ``req_to_token`` already holds physical ids.
-+    """
-diff -- python/sglang/srt/layers/attention/trtllm_mla_backend.py
-@@ -34,6 +34,7 @@
+diff -- python/sglang/srt/models/kimi_linear.py
+@@ -16,6 +16,7 @@
++from sglang.srt.layers.dcp.planner import prepare_decode_context_parallel_metadata
+@@ -52,6 +53,20 @@
++def _get_kda_local_num_heads(num_heads: int, tp_size: int) -> int:
++    if num_heads % tp_size != 0:
++        raise ValueError(
++            f"KDA num_heads ({num_heads}) must be divisible by global tp_size ({tp_size})"
+diff -- test/registered/dcp/test_kimi_linear_dcp4.py
+@@ -0,0 +1,129 @@
++"""Four-Blackwell acceptance coverage for Kimi Linear TokenSpeed MLA DCP.
++The captured-shape and eager-shape requests deliberately straddle
++``--cuda-graph-max-bs-decode=64``.  This guards both the regular CUDA graph
++decode path and the full-capacity eager DCP LSE scratch-buffer path.
++"""
++import unittest
 ```
 
 - Reviewed files:
-  - tests: `test/registered/models_e2e/test_kimi_linear_unified_memory.py` added +77/-0
-  - runtime: `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +76/-0; `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +64/-3; `python/sglang/srt/server_args.py` modified +24/-4; `python/sglang/kernels/ops/kvcache/kv_indices.py` modified +15/-1; `python/sglang/srt/mem_cache/memory_pool.py` modified +8/-3; `python/sglang/srt/mem_cache/multi_ended_allocator.py` modified +9/-0
-- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `test/registered/unit/mem_cache/test_unified_mla_dense_block_table.py`, `test/registered/unit/server_args/test_page_major_backend_allowlist.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+  - runtime: `python/sglang/srt/models/kimi_linear.py` modified +82/-11
+  - tests: `test/registered/dcp/test_kimi_linear_dcp4.py` added +129/-0
+- Risk and verification: The diff ships test coverage in `test/registered/dcp/test_dcp_layout_unit.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`, `test/registered/unit/test_model_overrides.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #32837 - feat: support Kimi Linear PD disaggregation with DCP
 
@@ -4758,6 +4676,48 @@ diff -- python/sglang/srt/disaggregation/nixl/conn.py
   - tests: `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py` added +488/-0
   - runtime: `python/sglang/srt/disaggregation/mooncake/conn.py` modified +179/-16; `python/sglang/srt/disaggregation/nixl/conn.py` modified +158/-24; `python/sglang/srt/disaggregation/common/utils.py` modified +69/-0; `python/sglang/srt/disaggregation/common/conn.py` modified +57/-5; `python/sglang/srt/arg_groups/pd_disaggregation_hook.py` modified +25/-0; `python/sglang/srt/disaggregation/utils.py` modified +25/-0
 - Risk and verification: The diff ships test coverage in `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py`, `test/registered/unit/disaggregation/test_nixl_backend_basic.py`, `test/registered/unit/server_args/test_server_args.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #32972 - [unified-memory] Let Kimi-Linear use the paged MLA attention backends
+
+- Link: https://github.com/sgl-project/sglang/pull/32972
+- Status/date: merged / 2026-07-31
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_kimi_linear_unified_memory.py`; associated commits `33c27d8e7f4f`
+- Diff scope read: GitHub Pull Request files API returned 9 files, +759/-11, 901 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[unified-memory] Let Kimi-Linear use the paged MLA attention backends"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`; technical summary: Covers "[unified-memory] Let Kimi-Linear use the paged MLA attention backends"; the main implementation surface is `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `python/sglang/srt/layers/attention/flashinfer_mla_backend.py`, `python/sglang/srt/layers/attention/trtllm_mla_backend.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_kimi_linear_unified_memory.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestKimiLinearUnifiedMemory, touching `TestKimiLinearUnifiedMemory`; `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +76/-0 (76 lines); hunks: -66,6 +66,51; -675,6 +720,10 @@ def __init__(self, model_runner: ModelRunner, attn_backend:...; symbols: UnifiedMLAHooks, unified_mla_hooks, DecodeMetadata, __init__, touching `UnifiedMLAHooks, unified_mla_hooks, DecodeMetadata`; `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +64/-3 (67 lines); hunks: -34,6 +34,7; -245,6 +246,23 @@ def __init__(; symbols: __init__, _calc_padded_blocks, _create_block_kv_indices, init_cuda_graph_state, touching `__init__, _calc_padded_blocks, _create_block_kv_indices`; `python/sglang/srt/server_args.py` modified +24/-4 (28 lines); hunks: -7705,13 +7705,33 @@ def _handle_page_major_kv_layout(self):; symbols: _handle_page_major_kv_layout, touching `_handle_page_major_kv_layout`.
+- Code diff details:
+  - `test/registered/models_e2e/test_kimi_linear_unified_memory.py` added +77/-0 (77 lines); hunks: -0,0 +1,77; symbols: TestKimiLinearUnifiedMemory
+  - `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +76/-0 (76 lines); hunks: -66,6 +66,51; -675,6 +720,10 @@ def __init__(self, model_runner: ModelRunner, attn_backend:...; symbols: UnifiedMLAHooks, unified_mla_hooks, DecodeMetadata, __init__
+  - `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +64/-3 (67 lines); hunks: -34,6 +34,7; -245,6 +246,23 @@ def __init__(; symbols: __init__, _calc_padded_blocks, _create_block_kv_indices, init_cuda_graph_state
+  - `python/sglang/srt/server_args.py` modified +24/-4 (28 lines); hunks: -7705,13 +7705,33 @@ def _handle_page_major_kv_layout(self):; symbols: _handle_page_major_kv_layout
+  - `python/sglang/kernels/ops/kvcache/kv_indices.py` modified +15/-1 (16 lines); hunks: -105,6 +105,15 @@ def create_flashmla_kv_indices_triton(; -145,8 +154,13 @@ def create_flashmla_kv_indices_triton(; symbols: create_flashmla_kv_indices_triton
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_kimi_linear_unified_memory.py
+@@ -0,0 +1,77 @@
++"""Kimi-Linear (MLA full attention + KDA linear attention) served from the
++unified memory pool.
++`--enable-unified-memory` replaces the statically-partitioned hybrid pools with
++one byte buffer split dynamically between the full-attention KV sub-pool and the
++per-request KDA state sub-pool. For an MLA model the full side is exposed as
++DENSE per-layer views (`build_dense_mla_views`) and every loc the kernels see is
+diff -- python/sglang/srt/layers/attention/flashinfer_mla_backend.py
+@@ -66,6 +66,51 @@
++@dataclass(frozen=True)
++class UnifiedMLAHooks:
++    """Allocator hooks the paged MLA backends need under the unified memory pool.
++    All-``None``/1/``False`` for the statically-partitioned pool, where
++    ``req_to_token`` already holds physical ids.
++    """
+diff -- python/sglang/srt/layers/attention/trtllm_mla_backend.py
+@@ -34,6 +34,7 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_kimi_linear_unified_memory.py` added +77/-0
+  - runtime: `python/sglang/srt/layers/attention/flashinfer_mla_backend.py` modified +76/-0; `python/sglang/srt/layers/attention/trtllm_mla_backend.py` modified +64/-3; `python/sglang/srt/server_args.py` modified +24/-4; `python/sglang/kernels/ops/kvcache/kv_indices.py` modified +15/-1; `python/sglang/srt/mem_cache/memory_pool.py` modified +8/-3; `python/sglang/srt/mem_cache/multi_ended_allocator.py` modified +9/-0
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_kimi_linear_unified_memory.py`, `test/registered/unit/mem_cache/test_unified_mla_dense_block_table.py`, `test/registered/unit/server_args/test_page_major_backend_allowlist.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #32828 - [Kimi] Support DCP + DSpark (ported from kimi-k3 branch)
 
@@ -4884,6 +4844,48 @@ diff -- python/sglang/srt/function_call/kimik3_detector.py
   - runtime: `python/sglang/srt/function_call/kimik3_structural_tag.py` added +598/-0; `python/sglang/srt/function_call/kimik3_detector.py` added +234/-0; `python/sglang/srt/function_call/kimik3_format.py` added +55/-0; `python/sglang/srt/function_call/kimik2_detector.py` modified +5/-1
 - Risk and verification: The diff ships test coverage in `test/registered/function_call/test_kimik3_detector.py`, `test/registered/unit/constrained/test_base_grammar_backend.py`, `test/registered/unit/constrained/test_grammar_manager.py`, `test/registered/unit/constrained/test_reasoner_grammar_backend.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #32541 - [Kimi] Support kimi-k3
+
+- Link: https://github.com/sgl-project/sglang/pull/32541
+- Status/date: merged / 2026-08-04
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/kimi_k3/situ_and_mul.cuh`, `python/sglang/srt/arg_groups/kimi_k3_hook.py`, `python/sglang/srt/configs/kimi_k3.py`, `python/sglang/srt/configs/kimi_linear.py`, `python/sglang/srt/models/kimi_k3.py` and 21 files; associated commits `abddb1c7e9d6`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 139 files, +15414/-911, 16758 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Kimi] Support kimi-k3"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `test/registered/unit/models/test_kimi_k3_vision.py`; technical summary: Covers "[Kimi] Support kimi-k3"; the main implementation surface is `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `test/registered/unit/models/test_kimi_k3_vision.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/kimi_k3.py` added +3203/-0 (3203 lines); `python/sglang/srt/models/kimi_k3_vl.py` added +937/-0 (937 lines); hunks: -0,0 +1,937; symbols: _resolve_grid_thw_list, _get_mm_attention_backend, _is_fa4_available, _resolve_mm_attention_backend, touching `_resolve_grid_thw_list, _get_mm_attention_backend, _is_fa4_available`; `test/registered/unit/models/test_kimi_k3_vision.py` added +524/-0 (524 lines); hunks: -0,0 +1,524; symbols: test_kimi_k3_resolves_shape_aware_attention_backend, test_kimi_k3_skips_attention_precompile_on_cpu, test_kimi_k3_sdpa_reuses_prepared_segment_bounds, SeqlensThatMustNotSync, touching `test_kimi_k3_resolves_shape_aware_attention_backend, test_kimi_k3_skips_attention_precompile_on_cpu, test_kimi_k3_sdpa_reuses_prepared_segment_bounds`; `python/sglang/srt/multimodal/processors/kimi_k3.py` added +438/-0 (438 lines); hunks: -0,0 +1,438; symbols: _encode_k3_special_tokens, _expand_k3_image_prompt_token_ids, _expand_k3_image_prompt_text, _k3_to_cuda_chw, touching `_encode_k3_special_tokens, _expand_k3_image_prompt_token_ids, _expand_k3_image_prompt_text`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` added +3203/-0 (3203 lines)
+  - `python/sglang/srt/models/kimi_k3_vl.py` added +937/-0 (937 lines); hunks: -0,0 +1,937; symbols: _resolve_grid_thw_list, _get_mm_attention_backend, _is_fa4_available, _resolve_mm_attention_backend
+  - `test/registered/unit/models/test_kimi_k3_vision.py` added +524/-0 (524 lines); hunks: -0,0 +1,524; symbols: test_kimi_k3_resolves_shape_aware_attention_backend, test_kimi_k3_skips_attention_precompile_on_cpu, test_kimi_k3_sdpa_reuses_prepared_segment_bounds, SeqlensThatMustNotSync
+  - `python/sglang/srt/multimodal/processors/kimi_k3.py` added +438/-0 (438 lines); hunks: -0,0 +1,438; symbols: _encode_k3_special_tokens, _expand_k3_image_prompt_token_ids, _expand_k3_image_prompt_text, _k3_to_cuda_chw
+  - `test/registered/unit/models/test_kimi_k25.py` modified +226/-1 (227 lines); hunks: -1,7 +1,8; -24,8 +25,15; symbols: test_kimi_lazy_ipc_feature_acknowledges_all_tp_consumers, _Tokenizer, encode, _HFProcessor
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3_vl.py
+@@ -0,0 +1,937 @@
++"""Kimi K3 vision tower (MoonViT3d) and projector.
++Faithful port of the checkpoint reference implementation
++(modeling_kimi_k3.py). Dedicated to K3 — do not share with Kimi K2.5:
++K3 uses qkv_hidden_size != hidden_size (head_dim = qkv_hidden_size //
++num_heads), RMSNorm encoder norms, bias-free linears, and the
++PatchMergerMLPV2 projector (no pre-norm, post RMSNorm), all of which
+diff -- test/registered/unit/models/test_kimi_k3_vision.py
+@@ -0,0 +1,524 @@
++from contextlib import nullcontext
++from types import SimpleNamespace
++import pytest
++import torch
++import torch.nn.functional as F
++from sglang.srt.layers.attention.vision import (
+diff -- python/sglang/srt/multimodal/processors/kimi_k3.py
+@@ -0,0 +1,438 @@
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/kimi_k3.py` added +3203/-0; `python/sglang/srt/models/kimi_k3_vl.py` added +937/-0; `python/sglang/srt/multimodal/processors/kimi_k3.py` added +438/-0; `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py` added +211/-0; `python/sglang/srt/configs/kimi_k3.py` added +124/-0
+  - tests: `test/registered/unit/models/test_kimi_k3_vision.py` added +524/-0; `test/registered/unit/models/test_kimi_k25.py` modified +226/-1; `test/registered/unit/multimodal/test_kimi_k3_gpu_preprocess.py` added +114/-0
+- Risk and verification: The diff ships test coverage in `test/registered/cuda_graph/breakable/test_breakable_cuda_graph.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`, `test/registered/dcp/test_kimi_linear_dcp_dspark4.py`, `test/registered/kernels/ops/gemm/test_cutedsl_bf16_gemm.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #33333 - [AMD][DI][CI] 6/N Add Kimi-K2.6 MXFP4 wide-EP16 2P1D nightly recipes
 
 - Link: https://github.com/sgl-project/sglang/pull/33333
@@ -4962,48 +4964,6 @@ diff -- python/sglang/srt/models/kimi_k25.py
   - tests: `test/registered/unit/models/test_kimi_k25.py` modified +242/-7; `test/registered/kernels/ops/test_kimi_k3_prerequisite_ops.py` modified +29/-0
 - Risk and verification: The diff ships test coverage in `test/manual/vlm/verify_k25_equivalence.py`, `test/registered/kernels/ops/test_kimi_k3_prerequisite_ops.py`, `test/registered/unit/models/test_kimi_k25.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #32541 - [Kimi] Support kimi-k3
-
-- Link: https://github.com/sgl-project/sglang/pull/32541
-- Status/date: merged / 2026-08-04
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/kimi_k3/situ_and_mul.cuh`, `python/sglang/srt/arg_groups/kimi_k3_hook.py`, `python/sglang/srt/configs/kimi_k3.py`, `python/sglang/srt/configs/kimi_linear.py`, `python/sglang/srt/models/kimi_k3.py` and 21 files; associated commits `abddb1c7e9d6`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 139 files, +15414/-911, 16758 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Kimi] Support kimi-k3"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `test/registered/unit/models/test_kimi_k3_vision.py`; technical summary: Covers "[Kimi] Support kimi-k3"; the main implementation surface is `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_vl.py`, `test/registered/unit/models/test_kimi_k3_vision.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/kimi_k3.py` added +3203/-0 (3203 lines); `python/sglang/srt/models/kimi_k3_vl.py` added +937/-0 (937 lines); hunks: -0,0 +1,937; symbols: _resolve_grid_thw_list, _get_mm_attention_backend, _is_fa4_available, _resolve_mm_attention_backend, touching `_resolve_grid_thw_list, _get_mm_attention_backend, _is_fa4_available`; `test/registered/unit/models/test_kimi_k3_vision.py` added +524/-0 (524 lines); hunks: -0,0 +1,524; symbols: test_kimi_k3_resolves_shape_aware_attention_backend, test_kimi_k3_skips_attention_precompile_on_cpu, test_kimi_k3_sdpa_reuses_prepared_segment_bounds, SeqlensThatMustNotSync, touching `test_kimi_k3_resolves_shape_aware_attention_backend, test_kimi_k3_skips_attention_precompile_on_cpu, test_kimi_k3_sdpa_reuses_prepared_segment_bounds`; `python/sglang/srt/multimodal/processors/kimi_k3.py` added +438/-0 (438 lines); hunks: -0,0 +1,438; symbols: _encode_k3_special_tokens, _expand_k3_image_prompt_token_ids, _expand_k3_image_prompt_text, _k3_to_cuda_chw, touching `_encode_k3_special_tokens, _expand_k3_image_prompt_token_ids, _expand_k3_image_prompt_text`.
-- Code diff details:
-  - `python/sglang/srt/models/kimi_k3.py` added +3203/-0 (3203 lines)
-  - `python/sglang/srt/models/kimi_k3_vl.py` added +937/-0 (937 lines); hunks: -0,0 +1,937; symbols: _resolve_grid_thw_list, _get_mm_attention_backend, _is_fa4_available, _resolve_mm_attention_backend
-  - `test/registered/unit/models/test_kimi_k3_vision.py` added +524/-0 (524 lines); hunks: -0,0 +1,524; symbols: test_kimi_k3_resolves_shape_aware_attention_backend, test_kimi_k3_skips_attention_precompile_on_cpu, test_kimi_k3_sdpa_reuses_prepared_segment_bounds, SeqlensThatMustNotSync
-  - `python/sglang/srt/multimodal/processors/kimi_k3.py` added +438/-0 (438 lines); hunks: -0,0 +1,438; symbols: _encode_k3_special_tokens, _expand_k3_image_prompt_token_ids, _expand_k3_image_prompt_text, _k3_to_cuda_chw
-  - `test/registered/unit/models/test_kimi_k25.py` modified +226/-1 (227 lines); hunks: -1,7 +1,8; -24,8 +25,15; symbols: test_kimi_lazy_ipc_feature_acknowledges_all_tp_consumers, _Tokenizer, encode, _HFProcessor
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/kimi_k3_vl.py
-@@ -0,0 +1,937 @@
-+"""Kimi K3 vision tower (MoonViT3d) and projector.
-+Faithful port of the checkpoint reference implementation
-+(modeling_kimi_k3.py). Dedicated to K3 — do not share with Kimi K2.5:
-+K3 uses qkv_hidden_size != hidden_size (head_dim = qkv_hidden_size //
-+num_heads), RMSNorm encoder norms, bias-free linears, and the
-+PatchMergerMLPV2 projector (no pre-norm, post RMSNorm), all of which
-diff -- test/registered/unit/models/test_kimi_k3_vision.py
-@@ -0,0 +1,524 @@
-+from contextlib import nullcontext
-+from types import SimpleNamespace
-+import pytest
-+import torch
-+import torch.nn.functional as F
-+from sglang.srt.layers.attention.vision import (
-diff -- python/sglang/srt/multimodal/processors/kimi_k3.py
-@@ -0,0 +1,438 @@
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/kimi_k3.py` added +3203/-0; `python/sglang/srt/models/kimi_k3_vl.py` added +937/-0; `python/sglang/srt/multimodal/processors/kimi_k3.py` added +438/-0; `python/sglang/srt/multimodal/kimi_k3_vit_cuda_graph_runner.py` added +211/-0; `python/sglang/srt/configs/kimi_k3.py` added +124/-0
-  - tests: `test/registered/unit/models/test_kimi_k3_vision.py` added +524/-0; `test/registered/unit/models/test_kimi_k25.py` modified +226/-1; `test/registered/unit/multimodal/test_kimi_k3_gpu_preprocess.py` added +114/-0
-- Risk and verification: The diff ships test coverage in `test/registered/cuda_graph/breakable/test_breakable_cuda_graph.py`, `test/registered/dcp/test_kimi_linear_dcp4.py`, `test/registered/dcp/test_kimi_linear_dcp_dspark4.py`, `test/registered/kernels/ops/gemm/test_cutedsl_bf16_gemm.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #33609 - [Tiny] Little enhancement of Kimi-K3 test
 
 - Link: https://github.com/sgl-project/sglang/pull/33609
@@ -5080,6 +5040,41 @@ diff -- python/sglang/kernels/ops/kimi_k3/attn_res_hip.py
   - runtime: `python/sglang/kernels/ops/kimi_k3/attn_res_hip.py` added +212/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/kernels/ops/kimi_k3/attn_res_hip.py`, `python/sglang/srt/layers/attn_residual.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #33825 - [AMD] Update amd k3 cookbook for fp8 kv cache
+
+- Link: https://github.com/sgl-project/sglang/pull/33825
+- Status/date: merged / 2026-08-06
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `dea07b348b21`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +6/-2, 50 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +4/-0 (4 lines); hunks: -962,6 +962,7 @@ export const config = {; -988,6 +989,7 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-2 (4 lines); hunks: -19,7 +19,7 @@ For all methods and hardware platforms, see the [official SGLa...; -154,7 +154,7 @@ Remaining kernel sources JIT once from the public `flashinfe....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +4/-0 (4 lines); hunks: -962,6 +962,7 @@ export const config = {; -988,6 +989,7 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-2 (4 lines); hunks: -19,7 +19,7 @@ For all methods and hardware platforms, see the [official SGLa...; -154,7 +154,7 @@ Remaining kernel sources JIT once from the public `flashinfe...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -962,6 +962,7 @@ export const config = {
++        "--kv-cache-dtype fp8_e4m3",
+@@ -988,6 +989,7 @@ export const config = {
++        "--kv-cache-dtype fp8_e4m3",
+@@ -1739,6 +1741,7 @@ export const config = {
++        "--kv-cache-dtype fp8_e4m3",
+@@ -1766,6 +1769,7 @@ export const config = {
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -19,7 +19,7 @@ For all methods and hardware platforms, see the [official SGLang installation gu
+-docker pull lmsysorg/sglang-rocm:rocm720-mi35x-k3-20260727 # ROCM
++docker pull lmsysorg/sglang-rocm:v0.5.16-rocm720-mi35x-20260805 # ROCM daily image
+@@ -154,7 +154,7 @@ Remaining kernel sources JIT once from the public `flashinfer` wheel (a few minu
+-| MI350X/MI355X 1×8 | TP8 ROCm/AITER | AITER A8W4 FlyDSL MoE, Triton attention, graph bs up to 256; DSPARK supported |
++| MI350X/MI355X 1×8 | TP8 ROCm/AITER | AITER A8W4 FlyDSL MoE, Triton attention, graph bs up to 256, fp8 kvcache; DSPARK supported |
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +4/-0; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-2
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
 ### PR #33764 - Fix the router GEMM inaccuracy when using _front_w in Kimi-K3
 
 - Link: https://github.com/sgl-project/sglang/pull/33764
@@ -5146,32 +5141,41 @@ diff -- test/registered/models_e2e/test_kimi_k3_b300.py
   - tests: `test/registered/models_e2e/test_kimi_k3_b300.py` modified +6/-2
 - Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_kimi_k3_b300.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #34145 - [CI] Gate Kimi-K3 acceptance length on the GSM8K average
+### PR #34099 - docs: clarify K3 VLM feature transport
 
-- Link: https://github.com/sgl-project/sglang/pull/34145
-- Status/date: merged / 2026-08-09
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_kimi_k3_b300.py`; associated commits `1ebd6fab6c6c`
-- Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[CI] Gate Kimi-K3 acceptance length on the GSM8K average"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_kimi_k3_b300.py`; technical summary: Covers "[CI] Gate Kimi-K3 acceptance length on the GSM8K average"; the main implementation surface is `test/registered/models_e2e/test_kimi_k3_b300.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models_e2e/test_kimi_k3_b300.py` modified +9/-2 (11 lines); hunks: -40,8 +40,15 @@ class TestKimiK3B300LowLatency(GSM8KMixin, SpecDecodingMixin,...; symbols: TestKimiK3B300LowLatency, setUpClass, touching `TestKimiK3B300LowLatency, setUpClass`.
+- Link: https://github.com/sgl-project/sglang/pull/34099
+- Status/date: merged / 2026-08-08
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `cf2d4fd67962`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +51/-33, 125 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +36/-0 (36 lines); hunks: -160,6 +160,42 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +15/-33 (48 lines); hunks: -288,37 +288,22 @@ Clients then send requests to the router (`:8000`) instead...; -327,7 +312,7 @@ sglang serve \.
 - Code diff details:
-  - `test/registered/models_e2e/test_kimi_k3_b300.py` modified +9/-2 (11 lines); hunks: -40,8 +40,15 @@ class TestKimiK3B300LowLatency(GSM8KMixin, SpecDecodingMixin,...; symbols: TestKimiK3B300LowLatency, setUpClass
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +36/-0 (36 lines); hunks: -160,6 +160,42 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +15/-33 (48 lines); hunks: -288,37 +288,22 @@ Clients then send requests to the router (`:8000`) instead...; -327,7 +312,7 @@ sglang serve \
 - Key code excerpts:
 
 ```diff
-diff -- test/registered/models_e2e/test_kimi_k3_b300.py
-@@ -40,8 +40,15 @@ class TestKimiK3B300LowLatency(GSM8KMixin, SpecDecodingMixin, CustomTestCase):
--    accept_length_thres = 6.6
--    bs_1_speed_thres = 440
-+    # Gated on GSM8K rather than on test_bs_1_speed below: a 200-question
-+    # average holds steady when a numerics change moves where the single
-+    # greedy prompt hits EOS.
-+    gsm8k_accept_length_thres = 4.5
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -160,6 +160,42 @@ export const config = {
++    {
++      id: "mmTransport",
++      title: "VLM Transport",
++      default: "auto",
++      showWhen: (s) => s.pdMode !== "decode",
++      options: [
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -288,37 +288,22 @@ Clients then send requests to the router (`:8000`) instead of an individual role
+-#### Recommended high-speed VLM
++#### VLM feature transport
+-The command panel now opens on the **B300 · Unified · Balanced**
+-recipe below. It makes the VLM-specific performance choices explicit:
++Use **VLM Transport** in the command picker. `Auto` is a topology-aware starting
++point, not a claim that one configuration is fastest for every workload.
 ```
 
-- Reviewed files:
-  - tests: `test/registered/models_e2e/test_kimi_k3_b300.py` modified +9/-2
-- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_kimi_k3_b300.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +36/-0; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +15/-33
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #33921 - [Kimi K3] Preprocess CPU-transport images on the vision owner
 
@@ -5214,6 +5218,33 @@ diff -- test/registered/unit/models/test_kimi_k3_vision.py
   - runtime: `python/sglang/srt/multimodal/processors/kimi_k3.py` modified +130/-55; `python/sglang/srt/multimodal/kimi_k3_image_processing.py` added +81/-0; `python/sglang/srt/models/kimi_k3.py` modified +46/-21
   - tests: `test/registered/unit/models/test_kimi_k25.py` modified +134/-0; `test/registered/unit/models/test_kimi_k3_vision.py` modified +78/-6
 - Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_k25.py`, `test/registered/unit/models/test_kimi_k3_vision.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34145 - [CI] Gate Kimi-K3 acceptance length on the GSM8K average
+
+- Link: https://github.com/sgl-project/sglang/pull/34145
+- Status/date: merged / 2026-08-09
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/models_e2e/test_kimi_k3_b300.py`; associated commits `1ebd6fab6c6c`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +9/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[CI] Gate Kimi-K3 acceptance length on the GSM8K average"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `test/registered/models_e2e/test_kimi_k3_b300.py`; technical summary: Covers "[CI] Gate Kimi-K3 acceptance length on the GSM8K average"; the main implementation surface is `test/registered/models_e2e/test_kimi_k3_b300.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models_e2e/test_kimi_k3_b300.py` modified +9/-2 (11 lines); hunks: -40,8 +40,15 @@ class TestKimiK3B300LowLatency(GSM8KMixin, SpecDecodingMixin,...; symbols: TestKimiK3B300LowLatency, setUpClass, touching `TestKimiK3B300LowLatency, setUpClass`.
+- Code diff details:
+  - `test/registered/models_e2e/test_kimi_k3_b300.py` modified +9/-2 (11 lines); hunks: -40,8 +40,15 @@ class TestKimiK3B300LowLatency(GSM8KMixin, SpecDecodingMixin,...; symbols: TestKimiK3B300LowLatency, setUpClass
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models_e2e/test_kimi_k3_b300.py
+@@ -40,8 +40,15 @@ class TestKimiK3B300LowLatency(GSM8KMixin, SpecDecodingMixin, CustomTestCase):
+-    accept_length_thres = 6.6
+-    bs_1_speed_thres = 440
++    # Gated on GSM8K rather than on test_bs_1_speed below: a 200-question
++    # average holds steady when a numerics change moves where the single
++    # greedy prompt hits EOS.
++    gsm8k_accept_length_thres = 4.5
+```
+
+- Reviewed files:
+  - tests: `test/registered/models_e2e/test_kimi_k3_b300.py` modified +9/-2
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_kimi_k3_b300.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #19703 - [JIT Kernel] Migrate kimi_k2_moe_fused_gate to JIT
 
@@ -5389,46 +5420,6 @@ diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
   - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +0/-4
 - Risk and verification: This is mostly docs/examples in `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
-### PR #33997 - Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds
-
-- Link: https://github.com/sgl-project/sglang/pull/33997
-- Status/date: merged / 2026-08-12
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`; associated commits `00e57d74f07b`
-- Diff scope read: GitHub Pull Request files API returned 19 files, +84/-6496, 1315 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`; technical summary: Covers "Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds"; the main implementation surface is `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-7 (10 lines); hunks: -458,10 +458,8 @@ export const config = {; -931,10 +929,8 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-11 (13 lines); hunks: -127,16 +127,7 @@ Capacity levers, all in the Playground. Each trades precisi...; -395,7 +386,7 @@ Both presets are one click away in the Playground above: pic...; `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +1/-1 (2 lines); hunks: -152,7 +152,7 @@ __global__ __launch_bounds__(1024, 1) void all_reduce_push_r....
-- Code diff details:
-  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-7 (10 lines); hunks: -458,10 +458,8 @@ export const config = {; -931,10 +929,8 @@ export const config = {
-  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-11 (13 lines); hunks: -127,16 +127,7 @@ Capacity levers, all in the Playground. Each trades precisi...; -395,7 +386,7 @@ Both presets are one click away in the Playground above: pic...
-  - `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +1/-1 (2 lines); hunks: -152,7 +152,7 @@ __global__ __launch_bounds__(1024, 1) void all_reduce_push_r...
-- Key code excerpts:
-
-```diff
-diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
-@@ -458,10 +458,8 @@ export const config = {
--          // Blackwell-only: runs the prebuilt trtllm-gen SiTU cubins; needs the
--          // downloadable SiTU cubin pool unpacked and pointed to by the env var.
-+          // Blackwell-only: runs FlashInfer's official trtllm-gen SiTU kernels.
--            env: ["SGLANG_TRTLLM_GEN_MOE_CUBIN_POOL=/path/to/trtllm_gen_moe_cubin_pool"],
-@@ -931,10 +929,8 @@ export const config = {
--        // Both pinned to the brought-up shape rather than left to the auto
-diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
-@@ -127,16 +127,7 @@ Capacity levers, all in the Playground. Each trades precision or cache behavior
--**MoE runner.** Leave `--moe-runner-backend` unset on Blackwell and it resolves to FlashInfer MXFP4 (W4A8, prebuilt trtllm-gen SiTU kernels) when the cubin pool is installed, Marl
--'''bash
--wget https://github.com/sgl-project/whl/releases/download/trtllm_gen_moe_cubin_20260617/trtllm_gen_moe_cubin_pool_20260617_v0613rc1.zip
--sudo mkdir -p /opt/trtllm_gen_moe_cubin_pool
--sudo unzip -q trtllm_gen_moe_cubin_pool_20260617_v0613rc1.zip -d /opt/trtllm_gen_moe_cubin_pool
--export SGLANG_TRTLLM_GEN_MOE_CUBIN_POOL=/opt/trtllm_gen_moe_cubin_pool/trtllm_gen_moe_cubin_pool_20260617_v0613rc1
-diff -- python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh
-@@ -152,7 +152,7 @@ __global__ __launch_bounds__(1024, 1) void all_reduce_push_res_kernel(const __gr
-```
-
-- Reviewed files:
-  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-7; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-11
-  - runtime: `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +1/-1
-- Risk and verification: The diff ships test coverage in `test/registered/sampling/test_penalty.py`, `test/registered/unit/mem_cache/test_unified_mamba_views.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #33465 - [Kimi-K3][NPU] Support Kimi-K3 on NPU
 
 - Link: https://github.com/sgl-project/sglang/pull/33465
@@ -5494,6 +5485,46 @@ diff -- python/sglang/srt/models/kimi_k3.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/kimi_k3.py` modified +62/-4
 - Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_k3_mla_gate_fusion.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #33997 - Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds
+
+- Link: https://github.com/sgl-project/sglang/pull/33997
+- Status/date: merged / 2026-08-12
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`; associated commits `00e57d74f07b`
+- Diff scope read: GitHub Pull Request files API returned 19 files, +84/-6496, 1315 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`; technical summary: Covers "Bump FlashInfer to 0.6.17 and remove Kimi K3 workarounds"; the main implementation surface is `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-7 (10 lines); hunks: -458,10 +458,8 @@ export const config = {; -931,10 +929,8 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-11 (13 lines); hunks: -127,16 +127,7 @@ Capacity levers, all in the Playground. Each trades precisi...; -395,7 +386,7 @@ Both presets are one click away in the Playground above: pic...; `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +1/-1 (2 lines); hunks: -152,7 +152,7 @@ __global__ __launch_bounds__(1024, 1) void all_reduce_push_r....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-7 (10 lines); hunks: -458,10 +458,8 @@ export const config = {; -931,10 +929,8 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-11 (13 lines); hunks: -127,16 +127,7 @@ Capacity levers, all in the Playground. Each trades precisi...; -395,7 +386,7 @@ Both presets are one click away in the Playground above: pic...
+  - `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +1/-1 (2 lines); hunks: -152,7 +152,7 @@ __global__ __launch_bounds__(1024, 1) void all_reduce_push_r...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -458,10 +458,8 @@ export const config = {
+-          // Blackwell-only: runs the prebuilt trtllm-gen SiTU cubins; needs the
+-          // downloadable SiTU cubin pool unpacked and pointed to by the env var.
++          // Blackwell-only: runs FlashInfer's official trtllm-gen SiTU kernels.
+-            env: ["SGLANG_TRTLLM_GEN_MOE_CUBIN_POOL=/path/to/trtllm_gen_moe_cubin_pool"],
+@@ -931,10 +929,8 @@ export const config = {
+-        // Both pinned to the brought-up shape rather than left to the auto
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -127,16 +127,7 @@ Capacity levers, all in the Playground. Each trades precision or cache behavior
+-**MoE runner.** Leave `--moe-runner-backend` unset on Blackwell and it resolves to FlashInfer MXFP4 (W4A8, prebuilt trtllm-gen SiTU kernels) when the cubin pool is installed, Marl
+-'''bash
+-wget https://github.com/sgl-project/whl/releases/download/trtllm_gen_moe_cubin_20260617/trtllm_gen_moe_cubin_pool_20260617_v0613rc1.zip
+-sudo mkdir -p /opt/trtllm_gen_moe_cubin_pool
+-sudo unzip -q trtllm_gen_moe_cubin_pool_20260617_v0613rc1.zip -d /opt/trtllm_gen_moe_cubin_pool
+-export SGLANG_TRTLLM_GEN_MOE_CUBIN_POOL=/opt/trtllm_gen_moe_cubin_pool/trtllm_gen_moe_cubin_pool_20260617_v0613rc1
+diff -- python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh
+@@ -152,7 +152,7 @@ __global__ __launch_bounds__(1024, 1) void all_reduce_push_res_kernel(const __gr
+```
+
+- Reviewed files:
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-7; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-11
+  - runtime: `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/sampling/test_penalty.py`, `test/registered/unit/mem_cache/test_unified_mamba_views.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #34642 - Revert "[Kimi K3] Fuse MLA gate projection into QKV-A GEMM"
 
@@ -5587,33 +5618,6 @@ diff -- test/registered/disaggregation/test_kimi_linear_pd_dcp4.py
   - tests: `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py` modified +2/-0
 - Risk and verification: The diff ships test coverage in `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #34886 - [Docs] Update Kimi-K3 installation options
-
-- Link: https://github.com/sgl-project/sglang/pull/34886
-- Status/date: merged / 2026-08-14
-- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`; associated commits `8b4faa33365b`
-- Diff scope read: GitHub Pull Request files API returned 1 files, +14/-8, 43 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Docs] Update Kimi-K3 installation options"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`; technical summary: Covers "[Docs] Update Kimi-K3 installation options"; the main implementation surface is `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +14/-8 (22 lines); hunks: -10,28 +10,34 @@ tag: NEW.
-- Code diff details:
-  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +14/-8 (22 lines); hunks: -10,28 +10,34 @@ tag: NEW
-- Key code excerpts:
-
-```diff
-diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
-@@ -10,28 +10,34 @@ tag: NEW
--For all methods and hardware platforms, see the [official SGLang installation guide](../../../docs/get-started/install).
-+For all methods and hardware platforms, see the [official SGLang installation guide](../../../docs/get-started/install). The two paths below match the **Python / Docker** toggle i
--<Tab title="Docker">
-+<Tab title="Python (pip / uv)">
--docker pull lmsysorg/sglang:kimi-k3 # CUDA13
--docker pull lmsysorg/sglang:kimi-k3-cu12 # CUDA12
-```
-
-- Reviewed files:
-  - docs: `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +14/-8
-- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
-
 ### PR #34778 - [Fix] Work around xgrammar 0.2.1 negative integer minimum in Kimi-K3 structural tags
 
 - Link: https://github.com/sgl-project/sglang/pull/34778
@@ -5650,6 +5654,33 @@ diff -- python/sglang/srt/function_call/kimik3_structural_tag.py
   - tests: `test/registered/unit/function_call/test_kimik3_structural_tag.py` modified +33/-0
   - runtime: `python/sglang/srt/function_call/kimik3_structural_tag.py` modified +27/-0
 - Risk and verification: The diff ships test coverage in `test/registered/unit/function_call/test_kimik3_structural_tag.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34886 - [Docs] Update Kimi-K3 installation options
+
+- Link: https://github.com/sgl-project/sglang/pull/34886
+- Status/date: merged / 2026-08-14
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`; associated commits `8b4faa33365b`
+- Diff scope read: GitHub Pull Request files API returned 1 files, +14/-8, 43 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Docs] Update Kimi-K3 installation options"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`; technical summary: Covers "[Docs] Update Kimi-K3 installation options"; the main implementation surface is `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +14/-8 (22 lines); hunks: -10,28 +10,34 @@ tag: NEW.
+- Code diff details:
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +14/-8 (22 lines); hunks: -10,28 +10,34 @@ tag: NEW
+- Key code excerpts:
+
+```diff
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -10,28 +10,34 @@ tag: NEW
+-For all methods and hardware platforms, see the [official SGLang installation guide](../../../docs/get-started/install).
++For all methods and hardware platforms, see the [official SGLang installation guide](../../../docs/get-started/install). The two paths below match the **Python / Docker** toggle i
+-<Tab title="Docker">
++<Tab title="Python (pip / uv)">
+-docker pull lmsysorg/sglang:kimi-k3 # CUDA13
+-docker pull lmsysorg/sglang:kimi-k3-cu12 # CUDA12
+```
+
+- Reviewed files:
+  - docs: `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +14/-8
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #34883 - [Kimi-K3] Use explicit SiTU activation for MegaMoE
 
@@ -5730,6 +5761,33 @@ diff -- python/sglang/srt/multimodal/media_artifacts/kimi_k3.py
   - runtime: `python/sglang/srt/multimodal/processors/kimi_k3.py` modified +304/-51; `python/sglang/srt/multimodal/media_artifacts/kimi_k3.py` added +140/-0; `python/sglang/srt/models/kimi_k3.py` modified +76/-41; `python/sglang/srt/multimodal/kimi_k3_image_processing.py` modified +21/-8
 - Risk and verification: The diff ships test coverage in `test/registered/unit/disaggregation/test_kimi_k3_encoder_mode.py`, `test/registered/unit/managers/test_mm_process_config.py`, `test/registered/unit/models/test_kimi_k25.py`, `test/registered/unit/multimodal/rust/qwen/_fixtures.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #32568 - [AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI
+
+- Link: https://github.com/sgl-project/sglang/pull/32568
+- Status/date: merged / 2026-08-17
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`; associated commits `816ea65058d2`
+- Diff scope read: GitHub Pull Request files API returned 3 files, +185/-10, 244 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`; technical summary: Covers "[AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: TestKimiK3EvalMI35x, setUpClass, test_kimi_k3_gsm8k_accuracy, touching `TestKimiK3EvalMI35x, setUpClass, test_kimi_k3_gsm8k_accuracy`.
+- Code diff details:
+  - `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: TestKimiK3EvalMI35x, setUpClass, test_kimi_k3_gsm8k_accuracy
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py
+@@ -0,0 +1,163 @@
++"""MI35x Kimi-K3 GSM8K Completion Evaluation Test (8-GPU)
++Tests moonshotai/Kimi-K3 with GSM8K few-shot benchmark on MI35x.
++Server arguments follow the Day-0 recipe in the AMD tracking issue
++(sgl-project/sglang#32548) for the non-speculative config: TP8 with the
++Triton attention backend, the AITER FlyDSL A8W4 SiTU MoE path, and the radix
++cache disabled.
+```
+
+- Reviewed files:
+  - tests: `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` added +163/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`, `test/run_suite.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #35168 - docs: add NVFP4 quantization option to Kimi-K3 deploy panel
 
 - Link: https://github.com/sgl-project/sglang/pull/35168
@@ -5761,60 +5819,6 @@ diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
 - Reviewed files:
   - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +40/-0; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1
 - Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
-
-### PR #32568 - [AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI
-
-- Link: https://github.com/sgl-project/sglang/pull/32568
-- Status/date: merged / 2026-08-17
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`; associated commits `816ea65058d2`
-- Diff scope read: GitHub Pull Request files API returned 3 files, +185/-10, 244 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI"; model line: Kimi K2/K2.5/K3/Linear/VL; category: docs/tests/CI; main diff: `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`; technical summary: Covers "[AMD] Add Kimi-K3 8-GPU MI35x nightly accuracy CI"; the main implementation surface is `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: TestKimiK3EvalMI35x, setUpClass, test_kimi_k3_gsm8k_accuracy, touching `TestKimiK3EvalMI35x, setUpClass, test_kimi_k3_gsm8k_accuracy`.
-- Code diff details:
-  - `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` added +163/-0 (163 lines); hunks: -0,0 +1,163; symbols: TestKimiK3EvalMI35x, setUpClass, test_kimi_k3_gsm8k_accuracy
-- Key code excerpts:
-
-```diff
-diff -- test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py
-@@ -0,0 +1,163 @@
-+"""MI35x Kimi-K3 GSM8K Completion Evaluation Test (8-GPU)
-+Tests moonshotai/Kimi-K3 with GSM8K few-shot benchmark on MI35x.
-+Server arguments follow the Day-0 recipe in the AMD tracking issue
-+(sgl-project/sglang#32548) for the non-speculative config: TP8 with the
-+Triton attention backend, the AITER FlyDSL A8W4 SiTU MoE path, and the radix
-+cache disabled.
-```
-
-- Reviewed files:
-  - tests: `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py` added +163/-0
-- Risk and verification: The diff ships test coverage in `test/registered/amd/accuracy/mi35x/test_kimi_k3_eval_mi35x.py`, `test/run_suite.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #34985 - [AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly
-
-- Link: https://github.com/sgl-project/sglang/pull/34985
-- Status/date: merged / 2026-08-18
-- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`; associated commits `8ea5229d421d`
-- Diff scope read: GitHub Pull Request files API returned 2 files, +155/-0, 163 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`; technical summary: Covers "[AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly"; the main implementation surface is `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: TestNightlyKimiK3PerformanceMI35x, setUpClass, test_bench_kimi_k3, touching `TestNightlyKimiK3PerformanceMI35x, setUpClass, test_bench_kimi_k3`.
-- Code diff details:
-  - `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: TestNightlyKimiK3PerformanceMI35x, setUpClass, test_bench_kimi_k3
-- Key code excerpts:
-
-```diff
-diff -- test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py
-@@ -0,0 +1,138 @@
-+"""MI35x nightly performance benchmark for Kimi-K3 (8-GPU).
-+Benchmarks moonshotai/Kimi-K3 at TP8 on MI35x using the same non-speculative
-+Day-0 recipe as the accuracy test (sgl-project/sglang#32548), so the two are
-+directly comparable and a perf regression cannot be confused with a config
-+difference.
-+This runs as the step after the eval inside nightly-8-gpu-mi35x-kimi-k3-rocm720
-```
-
-- Reviewed files:
-  - tests: `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` added +138/-0
-- Risk and verification: The diff ships test coverage in `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #34881 - Stop losing Kimi-K3 tool calls to reasoning, constraint conflicts, and truncation
 
@@ -5855,6 +5859,110 @@ diff -- python/sglang/srt/function_call/kimik3_detector.py
   - tests: `test/registered/function_call/test_kimik3_detector.py` modified +32/-0; `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +32/-0
   - runtime: `python/sglang/srt/function_call/kimik3_detector.py` modified +15/-0
 - Risk and verification: The diff ships test coverage in `test/registered/function_call/test_kimik3_detector.py`, `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/entrypoints/openai/test_serving_responses.py`, `test/registered/unit/parser/test_kimik3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34985 - [AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly
+
+- Link: https://github.com/sgl-project/sglang/pull/34985
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`; associated commits `8ea5229d421d`
+- Diff scope read: GitHub Pull Request files API returned 2 files, +155/-0, 163 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`; technical summary: Covers "[AMD] Add the Kimi-K3 MI35x perf benchmarks in nightly"; the main implementation surface is `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: TestNightlyKimiK3PerformanceMI35x, setUpClass, test_bench_kimi_k3, touching `TestNightlyKimiK3PerformanceMI35x, setUpClass, test_bench_kimi_k3`.
+- Code diff details:
+  - `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` added +138/-0 (138 lines); hunks: -0,0 +1,138; symbols: TestNightlyKimiK3PerformanceMI35x, setUpClass, test_bench_kimi_k3
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py
+@@ -0,0 +1,138 @@
++"""MI35x nightly performance benchmark for Kimi-K3 (8-GPU).
++Benchmarks moonshotai/Kimi-K3 at TP8 on MI35x using the same non-speculative
++Day-0 recipe as the accuracy test (sgl-project/sglang#32548), so the two are
++directly comparable and a perf regression cannot be confused with a config
++difference.
++This runs as the step after the eval inside nightly-8-gpu-mi35x-kimi-k3-rocm720
+```
+
+- Reviewed files:
+  - tests: `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py` added +138/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/perf/mi35x/test_kimi_k3_perf_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34580 - [AMD] Optimize KIMI-K3 with Triton MLA decode kernel by tuning the stage-1 geometry for gfx950
+
+- Link: https://github.com/sgl-project/sglang/pull/34580
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `27596abdc0b5`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +692/-11, 839 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/layers/attention/test_mla_decode_forced_splits.py` added +259/-0 (259 lines); hunks: -0,0 +1,259; symbols: _inputs, _forced, _run, TestMlaDecodeForcedSplits, touching `_inputs, _forced, _run`; `test/registered/unit/layers/attention/test_mla_decode_geometry.py` added +224/-0 (224 lines); hunks: -0,0 +1,224; symbols: TestMlaDecodeGeometry, test_rule_reproduces_measured_optimum, test_stage1_split_count_stays_runtime, test_batch_free_geometry_is_pinned, touching `TestMlaDecodeGeometry, test_rule_reproduces_measured_optimum, test_stage1_split_count_stays_runtime`; `python/sglang/kernels/ops/attention/decode_attention.py` modified +206/-11 (217 lines); hunks: -21,12 +21,14; -35,6 +37,160; symbols: _MlaBucket, _keep_scheduler_splits, _grouped_head_tiles, _mla_bucket, touching `_MlaBucket, _keep_scheduler_splits, _grouped_head_tiles`; `python/sglang/srt/environ.py` modified +3/-0 (3 lines); hunks: -926,6 +926,9 @@ class Envs:; symbols: Envs, touching `Envs`.
+- Code diff details:
+  - `test/registered/unit/layers/attention/test_mla_decode_forced_splits.py` added +259/-0 (259 lines); hunks: -0,0 +1,259; symbols: _inputs, _forced, _run, TestMlaDecodeForcedSplits
+  - `test/registered/unit/layers/attention/test_mla_decode_geometry.py` added +224/-0 (224 lines); hunks: -0,0 +1,224; symbols: TestMlaDecodeGeometry, test_rule_reproduces_measured_optimum, test_stage1_split_count_stays_runtime, test_batch_free_geometry_is_pinned
+  - `python/sglang/kernels/ops/attention/decode_attention.py` modified +206/-11 (217 lines); hunks: -21,12 +21,14; -35,6 +37,160; symbols: _MlaBucket, _keep_scheduler_splits, _grouped_head_tiles, _mla_bucket
+  - `python/sglang/srt/environ.py` modified +3/-0 (3 lines); hunks: -926,6 +926,9 @@ class Envs:; symbols: Envs
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/layers/attention/test_mla_decode_forced_splits.py
+@@ -0,0 +1,259 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- test/registered/unit/layers/attention/test_mla_decode_geometry.py
+@@ -0,0 +1,224 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/kernels/ops/attention/decode_attention.py
+@@ -21,12 +21,14 @@
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/layers/attention/test_mla_decode_forced_splits.py` added +259/-0; `test/registered/unit/layers/attention/test_mla_decode_geometry.py` added +224/-0
+  - runtime: `python/sglang/kernels/ops/attention/decode_attention.py` modified +206/-11; `python/sglang/srt/environ.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `test/registered/unit/layers/attention/test_mla_decode_forced_splits.py`, `test/registered/unit/layers/attention/test_mla_decode_geometry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35263 - [AMD] Update amd k3 cookbook for PR#34580
+
+- Link: https://github.com/sgl-project/sglang/pull/35263
+- Status/date: merged / 2026-08-18
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `27596abdc0b5`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +8/-5, 41 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +5/-3 (8 lines); hunks: -234,7 +234,9 @@ export const config = {; -411,8 +413,8 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +3/-2 (5 lines); hunks: -29,7 +29,8 @@ Then run the **Python** output of the command panel below in t...; -151,7 +152,7 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +5/-3 (8 lines); hunks: -234,7 +234,9 @@ export const config = {; -411,8 +413,8 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +3/-2 (5 lines); hunks: -29,7 +29,8 @@ Then run the **Python** output of the command panel below in t...; -151,7 +152,7 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -234,7 +234,9 @@ export const config = {
+-        { id: "none", label: "Non-Spec" },
++        { id: "none", label: "Non-Spec",
++          env: (s) => (["mi350x", "mi355x"].includes(s.hw) ? ["SGLANG_MLA_DECODE_TUNE=1"] : []),
++        },
+@@ -411,8 +413,8 @@ export const config = {
+-    mi350x: "lmsysorg/sglang-rocm:rocm720-mi35x-k3-20260727",
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -29,7 +29,8 @@ Then run the **Python** output of the command panel below in that environment.
+-docker pull lmsysorg/sglang:latest
++docker pull lmsysorg/sglang:latest                                  # NVIDIA (CUDA)
++docker pull lmsysorg/sglang-rocm:v0.5.17-rocm720-mi35x-20260817     # AMD MI350X / MI355X (ROCm)
+@@ -151,7 +152,7 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate states per request
+-| MI350X/MI355X 1×8 | TP8 ROCm/AITER | AITER A8W4 FlyDSL MoE, Triton attention, graph bs up to 256, fp8 kvcache; DSPARK supported |
++| MI350X/MI355X 1×8 | TP8 ROCm/AITER | AITER A8W4 FlyDSL MoE, Triton attention (`SGLANG_MLA_DECODE_TUNE=1` for gfx950 MLA decode geometry), graph bs up to 256, fp8 kvcache; DSPARK
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +5/-3; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +3/-2
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ### PR #35077 - [Fix] Support Kimi-K3 ModelOpt mixed NVFP4/FP8 checkpoint
 
@@ -5918,6 +6026,1460 @@ diff -- python/sglang/srt/models/kimi_linear.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/kimi_linear.py` modified +2/-2
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attention/linear/kernels/kda_triton.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/kimi_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #35305 - [Kimi-K3] Fix "wrong grids" crash in DP-sharded vision preprocessing
+
+- Link: https://github.com/sgl-project/sglang/pull/35305
+- Status/date: merged / 2026-08-23
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`, `test/registered/unit/models/test_kimi_k3_vision.py`; associated commits `7f30d6604540`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +19/-7, 95 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_kimi_k3_vision.py` modified +12/-4 (16 lines); hunks: -503,6 +503,7 @@ def test_kimi_k3_encoder_dp_defers_feature_materialization(m...; -531,13 +532,15 @@ def test_kimi_k3_preprocesses_only_dp_owner_images(monkeyp...; symbols: test_kimi_k3_encoder_dp_defers_feature_materialization, test_kimi_k3_preprocesses_only_dp_owner_images, fake_preprocess, touching `test_kimi_k3_encoder_dp_defers_feature_materialization, test_kimi_k3_preprocesses_only_dp_owner_images, fake_preprocess`; `python/sglang/srt/models/kimi_k3.py` modified +5/-2 (7 lines); hunks: -3339,6 +3339,8 @@ def materialize_item_features(image_indices: List[int]) ->...; -3361,7 +3363,7 @@ def materialize_item_features(image_indices: List[int]) ->...; symbols: materialize_item_features, touching `materialize_item_features`.
+- Code diff details:
+  - `test/registered/unit/models/test_kimi_k3_vision.py` modified +12/-4 (16 lines); hunks: -503,6 +503,7 @@ def test_kimi_k3_encoder_dp_defers_feature_materialization(m...; -531,13 +532,15 @@ def test_kimi_k3_preprocesses_only_dp_owner_images(monkeyp...; symbols: test_kimi_k3_encoder_dp_defers_feature_materialization, test_kimi_k3_preprocesses_only_dp_owner_images, fake_preprocess
+  - `python/sglang/srt/models/kimi_k3.py` modified +5/-2 (7 lines); hunks: -3339,6 +3339,8 @@ def materialize_item_features(image_indices: List[int]) ->...; -3361,7 +3363,7 @@ def materialize_item_features(image_indices: List[int]) ->...; symbols: materialize_item_features
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_kimi_k3_vision.py
+@@ -503,6 +503,7 @@ def test_kimi_k3_encoder_dp_defers_feature_materialization(monkeypatch):
++    """A vision-DP owner uses each assigned image's grid when preprocessing."""
+@@ -531,13 +532,15 @@ def test_kimi_k3_preprocesses_only_dp_owner_images(monkeypatch):
++    grids = [[1, 1, 1], [1, 1, 2]]
++    patch_counts = [grid[0] * grid[1] * grid[2] for grid in grids]
+-                "image_grid_thw": torch.tensor([[1, 1, 1]]),
++                "image_grid_thw": torch.tensor([grids[index]]),
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -3339,6 +3339,8 @@ def materialize_item_features(image_indices: List[int]) -> torch.Tensor:
++                    # Map backend-group positions through the rank-local shard to global grid rows.
++                    global_indices = [image_indices[index] for index in indices]
+@@ -3361,7 +3363,7 @@ def materialize_item_features(image_indices: List[int]) -> torch.Tensor:
+-                        expected_grids = grid_thws_host[indices]
++                        expected_grids = grid_thws_host[global_indices]
+@@ -3380,7 +3382,8 @@ def materialize_item_features(image_indices: List[int]) -> torch.Tensor:
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_kimi_k3_vision.py` modified +12/-4
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +5/-2
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_k3_vision.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35508 - [NPU] [DOC] Add Ascend NPU (A3) recipe to the Kimi-K3 cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/35508
+- Status/date: merged / 2026-08-23
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `9b1b06b8e6cc`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 5 files, +331/-71, 853 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +228/-42 (270 lines); hunks: -15,7 +15,7 @@ export const config = {; -138,8 +138,18 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +21/-5 (26 lines); hunks: -1,6 +1,6; -37,11 +37,26 @@ For how to launch the image, see [Install → Method 3: Using...; `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` modified +14/-1 (15 lines); hunks: -135,6 +135,10 @@ export const KimiK3MambaRatioCalculator = () => {; -153,6 +157,7 @@ export const KimiK3MambaRatioCalculator = () => {.
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +228/-42 (270 lines); hunks: -15,7 +15,7 @@ export const config = {; -138,8 +138,18 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +21/-5 (26 lines); hunks: -1,6 +1,6; -37,11 +37,26 @@ For how to launch the image, see [Install → Method 3: Using...
+  - `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` modified +14/-1 (15 lines); hunks: -135,6 +135,10 @@ export const KimiK3MambaRatioCalculator = () => {; -153,6 +157,7 @@ export const KimiK3MambaRatioCalculator = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -15,7 +15,7 @@ export const config = {
+-  supportedHardware: ["b300", "gb300", "b200", "gb200", "h200", "h100", "mi350x", "mi355x"],
++  supportedHardware: ["b300", "gb300", "b200", "gb200", "h200", "h100", "mi350x", "mi355x", "a3"],
+@@ -138,8 +138,18 @@ export const config = {
+-        { id: "prefill", label: "Prefill"  },
+-        { id: "decode",  label: "Decode"   },
++        {
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -1,6 +1,6 @@
+-description: "Deploy Moonshot AI's Kimi-K3 with SGLang — a 2.8T-parameter hybrid Mixture-of-Experts vision-language model (Kimi Delta Attention + MLA, 16/896 active experts) with
++description: "Deploy Moonshot AI's Kimi-K3 with SGLang — a 2.8T-parameter hybrid Mixture-of-Experts vision-language model (Kimi Delta Attention + MLA, 16/896 active experts) with
+@@ -37,11 +37,26 @@ For how to launch the image, see [Install → Method 3: Using Docker](../../../d
++<Tab title="NPU">
++'''bash Command
++docker pull quay.io/ascend/sglang:main-cann9.0.0-a3
+diff -- docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx
+@@ -135,6 +135,10 @@ export const KimiK3MambaRatioCalculator = () => {
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +228/-42; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +21/-5; `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` modified +14/-1
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/_deployment.jsx`, `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #35630 - [AMD] Enable Mori-EP on kimi-k3
+
+- Link: https://github.com/sgl-project/sglang/pull/35630
+- Status/date: merged / 2026-08-25
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `2e3934f4cba6`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +85/-64, 203 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +8/-6 (14 lines); hunks: -525,16 +525,17 @@ def __init__(; -2081,7 +2082,7 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +8/-6 (14 lines); hunks: -525,16 +525,17 @@ def __init__(; -2081,7 +2082,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -525,16 +525,17 @@ def __init__(
+-        # EP a2a backends (megamoe / DeepEP) move each row to its experts
+-        # directly, so the MoE region can consume whatever rows this rank
+-        # holds — an SP-MoE token shard (attn_tp > 1) or the DP-local batch
+-        # (DP attention) — with every global token dispatched exactly once.
+-        # No DP gather and no TP reduce is needed anywhere in the region.
++        # EP a2a backends (megamoe / DeepEP / MoRI) move each row to its
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +8/-6
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/quantization/mxfp4.py`, `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #36246 - [AMD] Add Kimi-K2.7-Code-MXFP4 to cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/36246
+- Status/date: merged / 2026-08-25
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx`, `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`; associated commits `a618d4c06417`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +204/-1, 266 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx` modified +157/-0 (157 lines); hunks: -67,6 +67,7 @@ metatags:; -97,6 +98,7 @@ import { KimiK27CodeDeployment } from '/src/snippets/autoregre...; `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +47/-1 (48 lines); hunks: -14,9 +14,21 @@ export const KimiK27CodeDeployment = () => {; -25,6 +37,7 @@ export const KimiK27CodeDeployment = () => {.
+- Code diff details:
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx` modified +157/-0 (157 lines); hunks: -67,6 +67,7 @@ metatags:; -97,6 +98,7 @@ import { KimiK27CodeDeployment } from '/src/snippets/autoregre...
+  - `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +47/-1 (48 lines); hunks: -14,9 +14,21 @@ export const KimiK27CodeDeployment = () => {; -25,6 +37,7 @@ export const KimiK27CodeDeployment = () => {
+- Key code excerpts:
+
+```diff
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx
+@@ -67,6 +67,7 @@ metatags:
++- **MXFP4**: [amd/Kimi-K2.7-Code-MXFP4](https://huggingface.co/amd/Kimi-K2.7-Code-MXFP4) — validated on AMD MI350X/MI355X.
+@@ -97,6 +98,7 @@ import { KimiK27CodeDeployment } from '/src/snippets/autoregressive/kimi-k27-cod
++- **MXFP4 Checkpoint**: The [MXFP4 checkpoint](https://huggingface.co/amd/Kimi-K2.7-Code-MXFP4) is validated on MI350X/MI355X (TP=4) with the `rocm/sgl-dev:v0.5.17-rocm720-mi35x-2
+@@ -502,8 +504,37 @@ sglang serve \
++Deploy the MXFP4 checkpoint on AMD MI350X/MI355X (reasoning and tool-call parsers are auto-detected from the checkpoint):
++'''shell Command
+diff -- docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx
+@@ -14,9 +14,21 @@ export const KimiK27CodeDeployment = () => {
++    quantization: {
++      name: 'quantization',
++      title: 'Quantization',
++      getDynamicItems: (values) => {
++        const isMXFP4 = ['mi350x', 'mi355x'].includes(values.hardware);
++        return [
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx` modified +157/-0; `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx` modified +47/-1
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K2.7-Code.mdx`, `docs/src/snippets/autoregressive/kimi-k27-code-deployment.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #35314 - Support deepseek v4 and kimi k3 on ssd
+
+- Link: https://github.com/sgl-project/sglang/pull/35314
+- Status/date: merged / 2026-08-26
+- Trace source: `git log --name-only -- <model-files>` found it through `examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py`, `python/sglang/srt/model_loader/kimi_k3_gguf.py`, `python/sglang/srt/models/kimi_k3.py`, `test/registered/expert_pack/test_kimi_k3_gguf.py`; associated commits `2d8484740d5e`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 46 files, +8347/-133, 9114 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +96/-3 (99 lines); hunks: -100,6 +100,9; -663,7 +666,9 @@ def __init__(; symbols: __init__, _merge_front_weights, _merge_bfa_weights, touching `__init__, _merge_front_weights, _merge_bfa_weights`; `examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py` added +573/-0 (573 lines); hunks: -0,0 +1,573; symbols: cache_root, artifact_dir_for_source, find_sglang_repo, write_json_atomic, touching `cache_root, artifact_dir_for_source, find_sglang_repo`; `python/sglang/srt/model_loader/kimi_k3_gguf.py` added +203/-0 (203 lines); hunks: -0,0 +1,203; symbols: routed_expert_tensor, kimi_k3_checkpoint_targets, _runtime_name, _residual_target_value, touching `routed_expert_tensor, kimi_k3_checkpoint_targets, _runtime_name`; `test/registered/expert_pack/test_kimi_k3_gguf.py` added +115/-0 (115 lines); hunks: -0,0 +1,115; symbols: TestKimiK3GGUFMapping, test_maps_dense_kda_mla_moe_and_residual_tensors, test_only_routed_aggregate_tensors_are_skipped, test_unknown_tensor_fails_closed, touching `TestKimiK3GGUFMapping, test_maps_dense_kda_mla_moe_and_residual_tensors, test_only_routed_aggregate_tensors_are_skipped`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +96/-3 (99 lines); hunks: -100,6 +100,9; -663,7 +666,9 @@ def __init__(; symbols: __init__, _merge_front_weights, _merge_bfa_weights
+  - `examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py` added +573/-0 (573 lines); hunks: -0,0 +1,573; symbols: cache_root, artifact_dir_for_source, find_sglang_repo, write_json_atomic
+  - `python/sglang/srt/model_loader/kimi_k3_gguf.py` added +203/-0 (203 lines); hunks: -0,0 +1,203; symbols: routed_expert_tensor, kimi_k3_checkpoint_targets, _runtime_name, _residual_target_value
+  - `test/registered/expert_pack/test_kimi_k3_gguf.py` added +115/-0 (115 lines); hunks: -0,0 +1,115; symbols: TestKimiK3GGUFMapping, test_maps_dense_kda_mla_moe_and_residual_tensors, test_only_routed_aggregate_tensors_are_skipped, test_unknown_tensor_fails_closed
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -100,6 +100,9 @@
++from sglang.srt.models.deepseek_common.attention_forward_methods.forward_methods import (
++    AttnForwardMethod,
++)
+@@ -663,7 +666,9 @@ def __init__(
+-            and isinstance(self.routed_expert_up_proj.weight, torch.Tensor)
++            and isinstance(
+diff -- examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py
+@@ -0,0 +1,573 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: Apache-2.0
++"""Run a one-shot Kimi K3 expert-pack benchmark on one RTX 5090."""
++from __future__ import annotations
++import argparse
++import fcntl
+diff -- python/sglang/srt/model_loader/kimi_k3_gguf.py
+@@ -0,0 +1,203 @@
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +96/-3; `python/sglang/srt/model_loader/kimi_k3_gguf.py` added +203/-0
+  - docs: `examples/runtime/kimi_k3/benchmark_kimi_k3_5090.py` added +573/-0
+  - tests: `test/registered/expert_pack/test_kimi_k3_gguf.py` added +115/-0
+- Risk and verification: The diff ships test coverage in `test/registered/expert_pack/test_expert_pack_mxfp4.py`, `test/registered/expert_pack/test_expert_pack_runtime.py`, `test/registered/expert_pack/test_kimi_k3_gguf.py`, `test/registered/unit/layers/test_minicpm_sparse_metadata.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34842 - Revert "[Fix] Disable --enable-symm-mem under CUDA graphs on Kimi hybrid models"
+
+- Link: https://github.com/sgl-project/sglang/pull/34842
+- Status/date: merged / 2026-08-27
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/arg_groups/kimi_k3_hook.py`; associated commits `013284834958`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +0/-52, 68 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/arg_groups/kimi_k3_hook.py` modified +0/-48 (48 lines); hunks: -55,54 +55,6 @@ def apply_kimi_k3_spec_backend_defaults(server_args: ServerAr...; symbols: apply_kimi_k3_spec_backend_defaults, disable_kimi_k3_symm_mem, apply_kimi_k3_linear_attn_defaults, touching `apply_kimi_k3_spec_backend_defaults, disable_kimi_k3_symm_mem, apply_kimi_k3_linear_attn_defaults`.
+- Code diff details:
+  - `python/sglang/srt/arg_groups/kimi_k3_hook.py` modified +0/-48 (48 lines); hunks: -55,54 +55,6 @@ def apply_kimi_k3_spec_backend_defaults(server_args: ServerAr...; symbols: apply_kimi_k3_spec_backend_defaults, disable_kimi_k3_symm_mem, apply_kimi_k3_linear_attn_defaults
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/arg_groups/kimi_k3_hook.py
+@@ -55,54 +55,6 @@ def apply_kimi_k3_spec_backend_defaults(server_args: ServerArgs) -> None:
+-def disable_kimi_k3_symm_mem(server_args: ServerArgs) -> None:
+-    """Turn `--enable-symm-mem` back off unless every phase runs eager.
+-    Symm-mem allocations are per-forward, so an address captured into a graph is
+-    neither reserved for its lifetime nor at the same offset on every rank. Under
+-    capture that corrupts spec decode: accept collapses to 1.000, or the server
+-    silently emits garbage with accept pinned at the ceiling. Prefill counts too --
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/arg_groups/kimi_k3_hook.py` modified +0/-48
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/arg_groups/kimi_k3_hook.py`, `python/sglang/srt/server_args.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #36211 - [k3] declare packed_modules_mapping on `KimiK3ForConditionalGeneration`
+
+- Link: https://github.com/sgl-project/sglang/pull/36211
+- Status/date: merged / 2026-08-28
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `b7686e17d6ce`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +18/-0, 25 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +18/-0 (18 lines); hunks: -3228,6 +3228,24 @@ class KimiK3ForConditionalGeneration(nn.Module):; symbols: KimiK3ForConditionalGeneration, touching `KimiK3ForConditionalGeneration`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +18/-0 (18 lines); hunks: -3228,6 +3228,24 @@ class KimiK3ForConditionalGeneration(nn.Module):; symbols: KimiK3ForConditionalGeneration
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -3228,6 +3228,24 @@ class KimiK3ForConditionalGeneration(nn.Module):
++    # Fused runtime module -> checkpoint shard names, so quant configs can
++    # match fused prefixes against per-shard exclude_modules
++    packed_modules_mapping = {
++        "gate_up_proj": ["gate_proj", "up_proj"],
++        "qkv_proj": ["q_proj", "k_proj", "v_proj"],
++        "qkv_conv1d": ["q_conv1d", "k_conv1d", "v_conv1d"],
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +18/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #36603 - fix(kimi-k3): preserve dense ModelSlim MLA weights
+
+- Link: https://github.com/sgl-project/sglang/pull/36603
+- Status/date: merged / 2026-08-28
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`, `test/registered/expert_pack/test_kimi_k3_gguf.py`; associated commits `69a49fede863`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +22/-3, 65 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +10/-3 (13 lines); hunks: -149,6 +149,13 @@ def _uses_modelopt_fp8_pb_wo(; -1898,9 +1905,9 @@ def __init__(; symbols: _uses_modelopt_fp8_pb_wo, _uses_split_gguf_kv_b, _maybe_map_fp8_pb_scale_name, __init__, touching `_uses_modelopt_fp8_pb_wo, _uses_split_gguf_kv_b, _maybe_map_fp8_pb_scale_name`; `test/registered/expert_pack/test_kimi_k3_gguf.py` modified +11/-0 (11 lines); hunks: -10,18 +10,29; symbols: TestKimiK3GGUFMapping, test_split_kv_capability_is_expert_pack_specific, test_maps_dense_kda_mla_moe_and_residual_tensors, touching `TestKimiK3GGUFMapping, test_split_kv_capability_is_expert_pack_specific, test_maps_dense_kda_mla_moe_and_residual_tensors`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +10/-3 (13 lines); hunks: -149,6 +149,13 @@ def _uses_modelopt_fp8_pb_wo(; -1898,9 +1905,9 @@ def __init__(; symbols: _uses_modelopt_fp8_pb_wo, _uses_split_gguf_kv_b, _maybe_map_fp8_pb_scale_name, __init__
+  - `test/registered/expert_pack/test_kimi_k3_gguf.py` modified +11/-0 (11 lines); hunks: -10,18 +10,29; symbols: TestKimiK3GGUFMapping, test_split_kv_capability_is_expert_pack_specific, test_maps_dense_kda_mla_moe_and_residual_tensors
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -149,6 +149,13 @@ def _uses_modelopt_fp8_pb_wo(
++def _uses_split_gguf_kv_b(
++    quant_config: Optional[QuantizationConfig],
++) -> bool:
++    """Whether a K3 checkpoint stores MLA K/V as separate GGUF tensors."""
++    return bool(getattr(quant_config, "supports_kimi_k3_split_gguf_kv_b", False))
+@@ -1898,9 +1905,9 @@ def __init__(
+diff -- test/registered/expert_pack/test_kimi_k3_gguf.py
+@@ -10,18 +10,29 @@
++from sglang.srt.layers.quantization.modelslim.modelslim import ModelSlimConfig
++from sglang.srt.models.kimi_k3 import _uses_split_gguf_kv_b
++    def test_split_kv_capability_is_expert_pack_specific(self) -> None:
++        self.assertTrue(ModelSlimConfig.supports_kimi_k3_quantized_latent_projections)
++        self.assertFalse(_uses_split_gguf_kv_b(ModelSlimConfig))
++        self.assertTrue(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +10/-3
+  - tests: `test/registered/expert_pack/test_kimi_k3_gguf.py` modified +11/-0
+- Risk and verification: The diff ships test coverage in `test/registered/expert_pack/test_kimi_k3_gguf.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #36862 - [Fix] Route the Mooncake MoE A2A backend through Kimi K3's EP-A2A / SP-MoE fast path
+
+- Link: https://github.com/sgl-project/sglang/pull/36862
+- Status/date: merged / 2026-08-28
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `b644771e07e3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +11/-7, 43 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +11/-7 (18 lines); hunks: -531,15 +531,17 @@ def __init__(; -2162,8 +2164,9 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +11/-7 (18 lines); hunks: -531,15 +531,17 @@ def __init__(; -2162,8 +2164,9 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -531,15 +531,17 @@ def __init__(
+-        # EP a2a backends (megamoe / DeepEP / MoRI) move each row to its
+-        # experts directly, so the MoE region can consume whatever rows this
+-        # rank holds — an SP-MoE token shard (attn_tp > 1) or the DP-local
+-        # batch (DP attention) — with every global token dispatched exactly
+-        # once. No DP gather and no TP reduce is needed anywhere in the region.
++        # EP a2a backends (megamoe / DeepEP / Mooncake / Ascend-FuseEP / MoRI)
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +11/-7
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #22806 - feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading
+
+- Link: https://github.com/sgl-project/sglang/pull/22806
+- Status/date: closed / 2026-08-29
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +548/-9, 619 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`; technical summary: Covers "feat(w4afp8): add KimiW4AFp8Config for Kimi K2.5 W4AFP8 model loading"; the main implementation surface is `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/quantization/w4afp8.py` modified +155/-2 (157 lines); hunks: -33,7 +33,11; -75,7 +79,7 @@ def get_config_filenames(cls) -> List[str]:; symbols: W4AFp8Config, for, __init__, get_config_filenames, touching `W4AFp8Config, for, __init__`; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +15/-4 (19 lines); hunks: -123,13 +123,24 @@ def do_load_weights(; symbols: do_load_weights, touching `do_load_weights`; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +13/-2 (15 lines); hunks: -1124,17 +1124,28 @@ def make_expert_params_mapping_fused_mxfp4(; symbols: make_expert_params_mapping_fused_mxfp4, make_expert_input_scale_params_mapping, set_overlap_args, touching `make_expert_params_mapping_fused_mxfp4, make_expert_input_scale_params_mapping, set_overlap_args`; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-1 (3 lines); hunks: -40,7 +40,7 @@ def override_quantization_method(self, *args, **kwargs):; -71,6 +71,7 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method, touching `override_quantization_method`.
+- Code diff details:
+  - `python/sglang/srt/layers/quantization/w4afp8.py` modified +155/-2 (157 lines); hunks: -33,7 +33,11; -75,7 +79,7 @@ def get_config_filenames(cls) -> List[str]:; symbols: W4AFp8Config, for, __init__, get_config_filenames
+  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +15/-4 (19 lines); hunks: -123,13 +123,24 @@ def do_load_weights(; symbols: do_load_weights
+  - `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +13/-2 (15 lines); hunks: -1124,17 +1124,28 @@ def make_expert_params_mapping_fused_mxfp4(; symbols: make_expert_params_mapping_fused_mxfp4, make_expert_input_scale_params_mapping, set_overlap_args
+  - `python/sglang/srt/layers/quantization/__init__.py` modified +2/-1 (3 lines); hunks: -40,7 +40,7 @@ def override_quantization_method(self, *args, **kwargs):; -71,6 +71,7 @@ def override_quantization_method(self, *args, **kwargs):; symbols: override_quantization_method
+  - `test/registered/quant/test_kimi_w4afp8_config.py` added +363/-0 (363 lines); hunks: -0,0 +1,363; symbols: _make_kimi_quant_config, TestKimiW4AFp8ConfigFromConfig, method, test_basic_parsing
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/quantization/w4afp8.py
+@@ -33,7 +33,11 @@
+-    """Config class for MIXED_PRECISION W4AFp8."""
++    """Config class for MIXED_PRECISION W4AFp8.
++    This is the base W4AFP8 config for DeepSeek-style checkpoints.
++    For Kimi K2.5 checkpoints, see KimiW4AFp8Config below.
++    """
+@@ -75,7 +79,7 @@ def get_config_filenames(cls) -> List[str]:
+diff -- python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
+@@ -123,13 +123,24 @@ def do_load_weights(
+-        # Params for special naming rules in mixed-precision models, for example:
+-        # model.layers.xx.mlp.experts.xx.w1.input_scale. For details,
+-        # see https://huggingface.co/Barrrrry/DeepSeek-R1-W4AFP8/blob/main.
+-        if self.quant_config and self.quant_config.get_name() == "w4afp8":
++        # Params for input_scale in W4AFP8 quantized models.
++        # Supports both w1/w2/w3 naming (DeepSeek official checkpoints)
+diff -- python/sglang/srt/layers/moe/fused_moe_triton/layer.py
+@@ -1124,17 +1124,28 @@ def make_expert_params_mapping_fused_mxfp4(
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/quantization/w4afp8.py` modified +155/-2; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +15/-4; `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` modified +13/-2; `python/sglang/srt/layers/quantization/__init__.py` modified +2/-1
+  - tests: `test/registered/quant/test_kimi_w4afp8_config.py` added +363/-0
+- Risk and verification: The diff ships test coverage in `test/registered/quant/test_kimi_w4afp8_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #37431 - test(npu): add DSV4-Flash / GLM-5.2 / Kimi-K3 gpqa accuracy cases
+
+- Link: https://github.com/sgl-project/sglang/pull/37431
+- Status/date: merged / 2026-09-01
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py`; associated commits `3ae54c6ca265`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 8 files, +314/-25, 456 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` added +136/-0 (136 lines); hunks: -0,0 +1,136; symbols: TestNPUKimiK3_W4A8_32P_GPQA, test_npu_kimi_k3_w4a8_32p_gpqa, touching `TestNPUKimiK3_W4A8_32P_GPQA, test_npu_kimi_k3_w4a8_32p_gpqa`.
+- Code diff details:
+  - `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` added +136/-0 (136 lines); hunks: -0,0 +1,136; symbols: TestNPUKimiK3_W4A8_32P_GPQA, test_npu_kimi_k3_w4a8_32p_gpqa
+- Key code excerpts:
+
+```diff
+diff -- test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py
+@@ -0,0 +1,136 @@
++import unittest
++from sglang.test.ascend.e2e.test_npu_accuracy_utils import (
++    BENCHMARK_TOOL_DEFAULT,
++    TestNpuAccuracyMultiNodePdMixTestCaseBase,
++)
++from sglang.test.ascend.e2e.test_npu_multi_node_utils import NIC_NAME
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` added +136/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/e2e/test_npu_performance_utils.py`, `test/registered/npu/accuracy/deepseek_v4_flash/test_npu_deepseek_v4_flash_w8a8_8p_gpqa.py`, `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w4a8_16p_gpqa.py`, `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34198 - [AMD] Perf Kimi-K3 fuse ROCm KDA decode boundary
+
+- Link: https://github.com/sgl-project/sglang/pull/34198
+- Status/date: merged / 2026-09-02
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `dc276264cbf9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 12 files, +2806/-9, 2920 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +71/-7 (78 lines); hunks: -7,6 +7,7; -1675,6 +1676,7 @@ def _a_log_weight_loader(; symbols: _a_log_weight_loader, forward_qkvbfg, _prepare_fused_decode, forward_qkvbfg_fused, touching `_a_log_weight_loader, forward_qkvbfg, _prepare_fused_decode`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +71/-7 (78 lines); hunks: -7,6 +7,7; -1675,6 +1676,7 @@ def _a_log_weight_loader(; symbols: _a_log_weight_loader, forward_qkvbfg, _prepare_fused_decode, forward_qkvbfg_fused
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -7,6 +7,7 @@
++import os
+@@ -1675,6 +1676,7 @@ def _a_log_weight_loader(
++        self._kda_hip_fused_decode_ready = False
+@@ -1724,7 +1726,51 @@ def _prepare_fused_decode(self) -> None:
+-            # The fused KDA decode kernel is NVIDIA-only
++            from sglang.kernels.ops.attention import kda_fused_decode_aiter_hip
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +71/-7
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/kimi_k3/flydsl_ops/__init__.py`, `test/registered/kernels/ops/kimi_k3/flydsl_ops/bench_kimi_k3_kda_decode.py`, `test/registered/kernels/ops/kimi_k3/flydsl_ops/test_kimi_k3_kda_decode.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #34187 - [Kimi K3] Rework skipped-think fix as opt-in force_nonempty_content with streaming coverage
+
+- Link: https://github.com/sgl-project/sglang/pull/34187
+- Status/date: merged / 2026-09-03
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/parser/test_kimik3_reasoning_parser.py`; associated commits `27b7a2dc3baf`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +144/-0, 189 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +109/-0 (109 lines); hunks: -190,5 +190,114 @@ def test_reasoning_parser_registration() -> None:; symbols: test_reasoning_parser_registration, _stream_with_finish, test_fnc_non_stream_skipped_think_vs_truncated_reasoning, test_fnc_streaming_skipped_think_answer, touching `test_reasoning_parser_registration, _stream_with_finish, test_fnc_non_stream_skipped_think_vs_truncated_reasoning`; `python/sglang/srt/parser/reasoning_parser.py` modified +35/-0 (35 lines); hunks: -492,6 +492,7 @@ def __init__(; -517,8 +518,12 @@ def __init__(; symbols: __init__, _clean_content, detect_and_parse, touching `__init__, _clean_content, detect_and_parse`.
+- Code diff details:
+  - `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +109/-0 (109 lines); hunks: -190,5 +190,114 @@ def test_reasoning_parser_registration() -> None:; symbols: test_reasoning_parser_registration, _stream_with_finish, test_fnc_non_stream_skipped_think_vs_truncated_reasoning, test_fnc_streaming_skipped_think_answer
+  - `python/sglang/srt/parser/reasoning_parser.py` modified +35/-0 (35 lines); hunks: -492,6 +492,7 @@ def __init__(; -517,8 +518,12 @@ def __init__(; symbols: __init__, _clean_content, detect_and_parse
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/parser/test_kimik3_reasoning_parser.py
+@@ -190,5 +190,114 @@ def test_reasoning_parser_registration() -> None:
++def _stream_with_finish(detector: KimiK3Detector, chunks: list[str]) -> tuple[str, str]:
++    reasoning, content = _stream(detector, chunks)
++    result = detector.finish()
++    return reasoning + result.reasoning_text, content + result.normal_text
++@pytest.mark.parametrize(
++    ("text", "reasoning", "content"),
+diff -- python/sglang/srt/parser/reasoning_parser.py
+@@ -492,6 +492,7 @@ def __init__(
++        force_nonempty_content: bool = False,
+@@ -517,8 +518,12 @@ def __init__(
++        # Unlike the base class, K3 cannot use `normal_text == ""` alone:
++        # skipped-think and truncated marker-free reasoning end up identical.
++        self._force_nonempty_content = force_nonempty_content
++        self._stream_text = ""
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +109/-0
+  - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +35/-0
+- Risk and verification: The diff ships test coverage in `test/registered/unit/parser/test_kimik3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #37781 - [AMD] Update kimi-k3 amd cookbook 0903
+
+- Link: https://github.com/sgl-project/sglang/pull/37781
+- Status/date: merged / 2026-09-03
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `dd091f43cdcf`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +45/-4, 84 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +30/-2 (32 lines); hunks: -468,8 +468,10 @@ export const config = {; -843,6 +845,32 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +15/-2 (17 lines); hunks: -30,7 +30,7 @@ Then run the **Python** output of the command panel below in t...; -167,7 +167,7 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +30/-2 (32 lines); hunks: -468,8 +468,10 @@ export const config = {; -843,6 +845,32 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +15/-2 (17 lines); hunks: -30,7 +30,7 @@ Then run the **Python** output of the command panel below in t...; -167,7 +167,7 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -468,8 +468,10 @@ export const config = {
+-    mi350x: "lmsysorg/sglang-rocm:v0.5.17-rocm720-mi35x-20260817",
+-    mi355x: "lmsysorg/sglang-rocm:v0.5.17-rocm720-mi35x-20260817",
++    // 20260903 or newer: the AITER SiTU A4W4/A8W4 layout fix (sgl-project/sglang#33838,
++    // merged Sep 3) and the fused gfx950 KDA decode boundary (#34198) first ship here.
++    mi350x: "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi35x-20260903",
++    mi355x: "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi35x-20260903",
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -30,7 +30,7 @@ Then run the **Python** output of the command panel below in that environment.
+-docker pull lmsysorg/sglang-rocm:v0.5.17-rocm720-mi35x-20260817     # AMD MI350X / MI355X (ROCm)
++docker pull lmsysorg/sglang-rocm:v0.5.18-rocm720-mi35x-20260903     # AMD MI350X / MI355X (ROCm)
+@@ -167,7 +167,7 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate states per request
+-| MI350X/MI355X 1×8 | TP8 ROCm/AITER | AITER A8W4 FlyDSL MoE, Triton attention (`SGLANG_MLA_DECODE_TUNE=1` for gfx950 MLA decode geometry), graph bs up to 256, fp8 kvcache; DSPARK
++| MI350X/MI355X 1×8 | TP8 ROCm/AITER | AITER A8W4 FlyDSL MoE, Triton attention (`SGLANG_MLA_DECODE_TUNE=1` for gfx950 MLA decode geometry), graph bs up to 256, fp8 kvcache; DSPARK
+@@ -181,6 +181,19 @@ Speculation: DSPARK holds block size + 1 (= 8) intermediate states per request
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +30/-2; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +15/-2
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #35176 - [AMD] [Kimi-K3] Fuse the KDA input projection into a single GEMM on ROCm
+
+- Link: https://github.com/sgl-project/sglang/pull/35176
+- Status/date: merged / 2026-09-04
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`, `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py`; associated commits `cb32dbc9e0c6`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +228/-0, 285 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +91/-0 (91 lines); hunks: -9,6 +9,7; -1430,6 +1431,8 @@ def __init__(; symbols: __init__, _merge_bfa_weights, _merge_kda_inproj_weights_hip, touching `__init__, _merge_bfa_weights, _merge_kda_inproj_weights_hip`; `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` added +122/-0 (122 lines); hunks: -0,0 +1,122; symbols: _Fake, __init__, TestKimiK3KDAInProjFusion, setUpClass, touching `_Fake, __init__, TestKimiK3KDAInProjFusion`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +91/-0 (91 lines); hunks: -9,6 +9,7; -1430,6 +1431,8 @@ def __init__(; symbols: __init__, _merge_bfa_weights, _merge_kda_inproj_weights_hip
+  - `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` added +122/-0 (122 lines); hunks: -0,0 +1,122; symbols: _Fake, __init__, TestKimiK3KDAInProjFusion, setUpClass
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -9,6 +9,7 @@
++from types import SimpleNamespace
+@@ -1430,6 +1431,8 @@ def __init__(
++            # (ROCm reverses this below the token threshold -- see
++            # _merge_kda_inproj_weights_hip.)
+@@ -1479,6 +1482,17 @@ def __init__(
++            if _is_hip:
+diff -- test/registered/amd/test_kimi_k3_kda_inproj_fusion.py
+@@ -0,0 +1,122 @@
++"""Layout check for the ROCm fused Kimi-K3 KDA input projection.
++Below SGLANG_ROCM_K3_FUSE_KDA_INPROJ_MAX_TOKENS the whole in-proj is one GEMM
++over ``[q,k,v,g | f_a | b | pad]`` instead of a wide GEMM plus a tiny [f_a|b]
++GEMV. Both layouts are views over the same buffer, so the two paths have to
++agree; this pins the slice offsets, the tail view the split path still reads,
++and the fact that the strided f_a slice is a legal input to the f_b GEMM and
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +91/-0
+  - tests: `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` added +122/-0
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #37878 - [Cookbook] Kimi-K3: add measured B300 1x8 Unified 8k/1k speed numbers
+
+- Link: https://github.com/sgl-project/sglang/pull/37878
+- Status/date: merged / 2026-09-05
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `3b64169f9d6f`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +91/-10, 155 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` modified +72/-0 (72 lines); hunks: -19,4 +19,76 @@ export const benchmarks = [; `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-5 (8 lines); hunks: -454,7 +454,7 @@ export const config = {; -1013,8 +1013,7 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +16/-5 (21 lines); hunks: -81,6 +81,16 @@ import { KimiK3MambaRatioCalculator } from "/src/snippets/_ki...; -124,9 +134,10 @@ are scheduled to release by July 27, 2026**. The recipes on....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` modified +72/-0 (72 lines); hunks: -19,4 +19,76 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-5 (8 lines); hunks: -454,7 +454,7 @@ export const config = {; -1013,8 +1013,7 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +16/-5 (21 lines); hunks: -81,6 +81,16 @@ import { KimiK3MambaRatioCalculator } from "/src/snippets/_ki...; -124,9 +134,10 @@ are scheduled to release by July 27, 2026**. The recipes on...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx
+@@ -19,4 +19,76 @@ export const benchmarks = [
++  {
++    match: { hw: "b300", pdMode: "unified", strategy: "low-latency", quant: "mxfp4", spec: "none" },
++    sglang_version: "v0.5.18 @ 71de97b2",
++    speed: [
++      { workload: { dataset: "random", isl: 8192, osl: 1024, max_concurrency: 1 },
++        ttft_ms: 378, tpot_ms: 8.51, tokens_per_sec_per_gpu: 127 },
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -454,7 +454,7 @@ export const config = {
+-  --flush-cache`,
++  --warmup-requests 64 --flush-cache`,
+@@ -1013,8 +1013,7 @@ export const config = {
+-      verified: false,
+-      verificationStatus: "in-progress",
++      verified: true,
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -81,6 +81,16 @@ import { KimiK3MambaRatioCalculator } from "/src/snippets/_kimi_k3_mamba_ratio_c
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` modified +72/-0; `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +3/-5; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +16/-5
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #37743 - [Kimi-K3] Recover the reply when the model skips the think channel
+
+- Link: https://github.com/sgl-project/sglang/pull/37743
+- Status/date: merged / 2026-09-07
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/parser/test_kimik3_reasoning_parser.py`; associated commits `b5c9b68f03c0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +188/-17, 327 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +101/-6 (107 lines); hunks: -186,6 +186,103 @@ def test_streaming_tools_channel_before_think_close(chunk_...; -200,7 +297,7 @@ def _stream_with_finish(detector: KimiK3Detector, chunks: li...; symbols: test_streaming_tools_channel_before_think_close, test_non_stream_skipped_think_channel_is_content, test_non_stream_skipped_think_channel_does_not_affect_real_reasoning, test_non_stream_skipped_think_before_tools_keeps_reply_as_content, touching `test_streaming_tools_channel_before_think_close, test_non_stream_skipped_think_channel_is_content, test_non_stream_skipped_think_channel_does_not_affect_real_reasoning`; `python/sglang/srt/parser/reasoning_parser.py` modified +87/-11 (98 lines); hunks: -541,6 +541,15 @@ class KimiK3Detector(BaseReasoningFormatDetector):; -581,6 +590,8 @@ def __init__(; symbols: KimiK3Detector, __init__, _clean_content, _next_channel_idx, touching `KimiK3Detector, __init__, _clean_content`.
+- Code diff details:
+  - `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +101/-6 (107 lines); hunks: -186,6 +186,103 @@ def test_streaming_tools_channel_before_think_close(chunk_...; -200,7 +297,7 @@ def _stream_with_finish(detector: KimiK3Detector, chunks: li...; symbols: test_streaming_tools_channel_before_think_close, test_non_stream_skipped_think_channel_is_content, test_non_stream_skipped_think_channel_does_not_affect_real_reasoning, test_non_stream_skipped_think_before_tools_keeps_reply_as_content
+  - `python/sglang/srt/parser/reasoning_parser.py` modified +87/-11 (98 lines); hunks: -541,6 +541,15 @@ class KimiK3Detector(BaseReasoningFormatDetector):; -581,6 +590,8 @@ def __init__(; symbols: KimiK3Detector, __init__, _clean_content, _next_channel_idx
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/parser/test_kimik3_reasoning_parser.py
+@@ -186,6 +186,103 @@ def test_streaming_tools_channel_before_think_close(chunk_size: int) -> None:
++_SKIPPED_THINK_REPLY = "The TTL is 20 minutes."
++@pytest.mark.parametrize(
++    "text",
++    [
++        f"{_SKIPPED_THINK_REPLY}{RESPONSE_CLOSE}{MESSAGE_CLOSE}",
++        f"{THINK_OPEN}{_SKIPPED_THINK_REPLY}{RESPONSE_CLOSE}{MESSAGE_CLOSE}",
+diff -- python/sglang/srt/parser/reasoning_parser.py
+@@ -541,6 +541,15 @@ class KimiK3Detector(BaseReasoningFormatDetector):
++    The model does not always honour the pre-filled think channel: on very long
++    prompts (~1M tokens) it sometimes emits a zero-length think section and
++    writes the reply directly, closing with
++    ``<|close|>response<|sep|><|close|>message<|sep|>`` and never producing
++    ``<|close|>think<|sep|>`` or ``<|open|>response<|sep|>``. A bare
++    ``<|close|>response<|sep|>`` therefore proves the preceding text was the
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/parser/test_kimik3_reasoning_parser.py` modified +101/-6
+  - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +87/-11
+- Risk and verification: The diff ships test coverage in `test/registered/unit/parser/test_kimik3_reasoning_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38125 - [NPU] Enable L1 prefix cache for Kimi-K3 W4A8 accuracy test (gpqa)
+
+- Link: https://github.com/sgl-project/sglang/pull/38125
+- Status/date: merged / 2026-09-08
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py`; associated commits `7d2d6624b1ee`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +0/-1, 8 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` modified +0/-1 (1 lines); hunks: -96,7 +96,6.
+- Code diff details:
+  - `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` modified +0/-1 (1 lines); hunks: -96,7 +96,6
+- Key code excerpts:
+
+```diff
+diff -- test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py
+@@ -96,7 +96,6 @@
+-    "--disable-radix-cache",
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py` modified +0/-1
+- Risk and verification: The diff ships test coverage in `test/registered/npu/accuracy/kimi_k3/test_npu_kimi_k3_w4a8_32p_gpqa.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38612 - [Kimi-K3] Accept fp32 routing weights in the fused MoE finalize
+
+- Link: https://github.com/sgl-project/sglang/pull/38612
+- Status/date: merged / 2026-09-09
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh`, `python/sglang/srt/models/kimi_k3.py`; associated commits `72d5c5bb73ca`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 7 files, +55/-29, 224 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +4/-3 (7 lines); hunks: -552,9 +552,10 @@ def __init__(; symbols: __init__, touching `__init__`; `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +26/-14 (40 lines); hunks: -78,7 +78,7 @@ struct FusionParams {; -161,13 +161,16 @@ constexpr uint32_t kFinTopK = 16;.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +4/-3 (7 lines); hunks: -552,9 +552,10 @@ def __init__(; symbols: __init__
+  - `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +26/-14 (40 lines); hunks: -78,7 +78,7 @@ struct FusionParams {; -161,13 +161,16 @@ constexpr uint32_t kFinTopK = 16;
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -552,9 +552,10 @@ def __init__(
+-        # never materializes. Only the situ packed-routing trtllm-gen path
+-        # serves the deferral; sizes beyond the push window fall back to the
+-        # in-op finalize at runtime (finalize_push_fits).
++        # never materializes. Only the situ trtllm-gen path serves the
++        # deferral, on either routing form (packed ids on a fused route+quant
++        # hit, unpacked fp32 weights otherwise); sizes beyond the push window
+diff -- python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh
+@@ -78,7 +78,7 @@ struct FusionParams {
+-  const uint8_t* fin_weights;  // [T, kFinTopK] bf16
++  const uint8_t* fin_weights;  // [T, kFinTopK] bf16 or fp32
+@@ -161,13 +161,16 @@ constexpr uint32_t kFinTopK = 16;
+-// broadcast-load the same routing rows.
++// broadcast-load the same routing rows. `W` is the routing-weight dtype
++// (bf16 or fp32; see finalize_push_norm).
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +4/-3; `python/sglang/kernels/jit/csrc/kimi_k3/comm/ar_fusion.cuh` modified +26/-14
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/kimi_k3/test_ar_fusion.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39029 - [Cookbook][AMD] Kimi-K3 MI350X/MI355X: pin a ROCm image with the DSPARK graph-capture fix, add measured cell numbers
+
+- Link: https://github.com/sgl-project/sglang/pull/39029
+- Status/date: merged / 2026-09-11
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `5f3606c7b2ae`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +30/-3, 52 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` modified +27/-0 (27 lines); hunks: -91,4 +91,31 @@ export const benchmarks = [; `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +2/-2 (4 lines); hunks: -470,8 +470,8 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1 (2 lines); hunks: -30,7 +30,7 @@ Then run the **Python** output of the command panel below in t....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` modified +27/-0 (27 lines); hunks: -91,4 +91,31 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +2/-2 (4 lines); hunks: -470,8 +470,8 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1 (2 lines); hunks: -30,7 +30,7 @@ Then run the **Python** output of the command panel below in t...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx
+@@ -91,4 +91,31 @@ export const benchmarks = [
++  {
++    // DSPARK acceptance pinned to 5 of 8 draft tokens (SGLANG_SIMULATE_ACC_LEN=5
++    // SGLANG_SIMULATE_ACC_METHOD=match-expected SGLANG_RAGGED_VERIFY_MODE=static), so the
++    // rows are independent of the benchmark's random prompts; measured accept length 5.00.
++    match: { hw: "mi350x", pdMode: "unified", strategy: "balanced", quant: "mxfp4", spec: "dspark" },
++    sglang_version: "v0.5.19 @ 12771786",
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -470,8 +470,8 @@ export const config = {
+-    mi350x: "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi35x-20260903",
+-    mi355x: "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi35x-20260903",
++    mi350x: "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910",
++    mi355x: "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910",
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -30,7 +30,7 @@ Then run the **Python** output of the command panel below in that environment.
+-docker pull lmsysorg/sglang-rocm:v0.5.18-rocm720-mi35x-20260903     # AMD MI350X / MI355X (ROCm)
++docker pull lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910     # AMD MI350X / MI355X (ROCm)
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx` modified +27/-0; `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +2/-2; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3-benchmarks.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #39190 - [Cookbook] Kimi-K3: keep DCP under HiCache L1+L2 with DSPARK
+
+- Link: https://github.com/sgl-project/sglang/pull/39190
+- Status/date: merged / 2026-09-12
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `0d08668821d0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +11/-25, 76 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +9/-24 (33 lines); hunks: -81,7 +81,7 @@ export const config = {; -115,10 +115,8 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-1 (3 lines); hunks: -283,7 +283,8 @@ Pending update....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +9/-24 (33 lines); hunks: -81,7 +81,7 @@ export const config = {; -115,10 +115,8 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-1 (3 lines); hunks: -283,7 +283,8 @@ Pending update...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -81,7 +81,7 @@ export const config = {
+-                hicache: ["l2"], spec: ["none"] },
++                hicache: ["l2"], spec: ["none", "dspark"] },
+@@ -115,10 +115,8 @@ export const config = {
+-    // HiCache under DCP rejects speculative decoding, so when a host tier is on
+-    // the DCP half is dropped instead of scaled (the HiCache options' own
+-    // stripPrefixes reach cell flags only, never these overlay flags).
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -283,7 +283,8 @@ Pending update...
+-- On the DCP recipes (Blackwell Balanced / High-Throughput, in both the `Unified` and `Decode` roles), the host tiers are not fully DCP-aware yet: **L3 always, and L1+L2 with Spec
++- On the DCP recipes (Blackwell Balanced / High-Throughput, `Unified` and `Decode` roles), **L1+L2 keeps DCP**, with Spec Decode off or on DSPARK. On B200 the DSPARK pipeline coll
++- **L3 drops the DCP flags** on those recipes (storage keys are not dcp_rank-aware yet; the command hints call it out, and per-request KV capacity shrinks). Only DCP goes: the MLA
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +9/-24; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-1
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #23381 - [AMD] Add MI355X Kimi-K2.6 tuning artifacts
+
+- Link: https://github.com/sgl-project/sglang/pull/23381
+- Status/date: closed / 2026-09-14
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 5 files, +133/-5, 187 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[AMD] Add MI355X Kimi-K2.6 tuning artifacts"; model line: Kimi K2/K2.5/K3/Linear/VL; category: performance/backend optimization; main diff: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py`; technical summary: Covers "[AMD] Add MI355X Kimi-K2.6 tuning artifacts"; the main implementation surface is `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/environ.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json` added +119/-0 (119 lines); hunks: -0,0 +1,119; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +2/-1 (3 lines); hunks: -151,7 +151,8 @@ def do_load_weights(; symbols: do_load_weights, touching `do_load_weights`; `python/sglang/srt/environ.py` modified +5/-1 (6 lines); hunks: -206,6 +206,10 @@ class Envs:; -992,7 +996,7 @@ def assert_throws(message_matcher: str):; symbols: Envs, assert_throws, touching `Envs, assert_throws`; `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-3 (5 lines); hunks: -242,14 +242,13 @@ def run():; -419,7 +418,7 @@ def _distribute(method: str, inputs: List[Any]) -> List[Any]:; symbols: run, BenchmarkWorker, __init__, benchmark, touching `run, BenchmarkWorker, __init__`.
+- Code diff details:
+  - `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json` added +119/-0 (119 lines); hunks: -0,0 +1,119
+  - `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +2/-1 (3 lines); hunks: -151,7 +151,8 @@ def do_load_weights(; symbols: do_load_weights
+  - `python/sglang/srt/environ.py` modified +5/-1 (6 lines); hunks: -206,6 +206,10 @@ class Envs:; -992,7 +996,7 @@ def assert_throws(message_matcher: str):; symbols: Envs, assert_throws
+  - `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-3 (5 lines); hunks: -242,14 +242,13 @@ def run():; -419,7 +418,7 @@ def _distribute(method: str, inputs: List[Any]) -> List[Any]:; symbols: run, BenchmarkWorker, __init__, benchmark
+  - `docs_new/docs/references/environment_variables.mdx` modified +5/-0 (5 lines); hunks: -83,6 +83,11 @@ SGLang supports various environment variables that can be use...
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json
+@@ -0,0 +1,119 @@
++{
++    "1": {
++        "BLOCK_SIZE_M": 64,
++        "BLOCK_SIZE_N": 16,
++        "BLOCK_SIZE_K": 32,
++        "GROUP_SIZE_M": 8,
+diff -- python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py
+@@ -151,7 +151,8 @@ def do_load_weights(
+-        with concurrent.futures.ThreadPoolExecutor() as executor:
++        max_workers = envs.SGLANG_DEEPSEEK_LOAD_MAX_WORKERS.get()
++        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+diff -- python/sglang/srt/environ.py
+@@ -206,6 +206,10 @@ class Envs:
++    # None => fall back to ThreadPoolExecutor's default worker count.
++    # Lower this (e.g. to 4) for very large MoE checkpoints where the default
++    # creates too much aggregate host I/O pressure across ranks.
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json` added +119/-0; `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py` modified +2/-1; `python/sglang/srt/environ.py` modified +5/-1
+  - other: `benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton.py` modified +2/-3
+  - docs: `docs_new/docs/references/environment_variables.mdx` modified +5/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/environ.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=384,N=256,device_name=AMD_Instinct_MI355X,dtype=int4_w4a16.json`, `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #39148 - [MM] Add flag to force Kimi image preprocessing onto CPU
+
+- Link: https://github.com/sgl-project/sglang/pull/39148
+- Status/date: merged / 2026-09-15
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/multimodal/processors/kimi_k25.py`; associated commits `c9fbe5f6552f`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +7/-2, 44 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +5/-2 (7 lines); hunks: -9,6 +9,7; -25,6 +26,8; symbols: __call__, _get_gpu_norm_tensors, KimiK2_5VLImageProcessor, touching `__call__, _get_gpu_norm_tensors, KimiK2_5VLImageProcessor`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +5/-2 (7 lines); hunks: -9,6 +9,7; -25,6 +26,8; symbols: __call__, _get_gpu_norm_tensors, KimiK2_5VLImageProcessor
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/kimi_k25.py
+@@ -9,6 +9,7 @@
++from sglang.srt.environ import envs
+@@ -25,6 +26,8 @@
++_FORCE_CPU_IMAGE_PREPROCESSING = envs.SGLANG_FORCE_CPU_IMAGE_PREPROCESSING.get()
+@@ -389,7 +392,7 @@ def __call__(self, text=None, images=None, **kwargs):
+-        if images and torch.cuda.is_available():
++        if images and not _FORCE_CPU_IMAGE_PREPROCESSING and torch.cuda.is_available():
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +5/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/environ.py`, `python/sglang/srt/multimodal/processors/kimi_k25.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #39415 - [NPU] Adapt hicache for K3 hybrid models
+
+- Link: https://github.com/sgl-project/sglang/pull/39415
+- Status/date: merged / 2026-09-18
+- Trace source: `git log --name-only -- <model-files>` found it through `test/manual/hicache/test_npu_kimi_k3_hicache.py`; associated commits `f86f60081d0a`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 11 files, +198/-24, 342 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/manual/hicache/test_npu_kimi_k3_hicache.py` added +53/-0 (53 lines); hunks: -0,0 +1,53; symbols: TestKimiK3MixedWithHiCacheL2, touching `TestKimiK3MixedWithHiCacheL2`; `python/sglang/srt/mem_cache/pool_host/mamba.py` modified +70/-21 (91 lines); hunks: -26,6 +26,7; -39,6 +40,12; symbols: _copy_tensor, _copy_tensor_all_layers_lf_pf, load_to_device_per_layer, touching `_copy_tensor, _copy_tensor_all_layers_lf_pf, load_to_device_per_layer`; `python/sglang/srt/distributed/parallel_state.py` modified +26/-2 (28 lines); hunks: -2906,16 +2906,40 @@ def create_custom_parallel_group(; symbols: create_custom_parallel_group, touching `create_custom_parallel_group`; `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` modified +16/-1 (17 lines); hunks: -885,12 +885,21 @@ def build_hybrid_mamba_stack(; -1137,6 +1146,12 @@ def _build_mha_mla_host_pool(; symbols: build_hybrid_mamba_stack, _build_mha_mla_host_pool, touching `build_hybrid_mamba_stack, _build_mha_mla_host_pool`.
+- Code diff details:
+  - `test/manual/hicache/test_npu_kimi_k3_hicache.py` added +53/-0 (53 lines); hunks: -0,0 +1,53; symbols: TestKimiK3MixedWithHiCacheL2
+  - `python/sglang/srt/mem_cache/pool_host/mamba.py` modified +70/-21 (91 lines); hunks: -26,6 +26,7; -39,6 +40,12; symbols: _copy_tensor, _copy_tensor_all_layers_lf_pf, load_to_device_per_layer
+  - `python/sglang/srt/distributed/parallel_state.py` modified +26/-2 (28 lines); hunks: -2906,16 +2906,40 @@ def create_custom_parallel_group(; symbols: create_custom_parallel_group
+  - `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` modified +16/-1 (17 lines); hunks: -885,12 +885,21 @@ def build_hybrid_mamba_stack(; -1137,6 +1146,12 @@ def _build_mha_mla_host_pool(; symbols: build_hybrid_mamba_stack, _build_mha_mla_host_pool
+  - `python/sglang/srt/disaggregation/decode.py` modified +13/-0 (13 lines); hunks: -1242,6 +1242,19 @@ def pop_preallocated(; symbols: pop_preallocated
+- Key code excerpts:
+
+```diff
+diff -- test/manual/hicache/test_npu_kimi_k3_hicache.py
+@@ -0,0 +1,53 @@
++import unittest
++from sglang.test.ascend.gsm8k_ascend_mixin import GSM8KAscendMixin
++from sglang.test.ascend.test_ascend_utils import KIMI_K3_W4A8_INT_MOE_WEIGHTS_PATH
++from sglang.test.test_utils import CustomTestCase
++class TestKimiK3MixedWithHiCacheL2(GSM8KAscendMixin, CustomTestCase):
++    """Testcase: Verify the inference accuracy of Kimi-K3 (MLA + KDA hybrid) on GSM8K
+diff -- python/sglang/srt/mem_cache/pool_host/mamba.py
+@@ -26,6 +26,7 @@
++transfer_mamba_state = None
+@@ -39,6 +40,12 @@
++    from sgl_kernel_npu.kvcacheio import TransferDirection
++    try:
++        from sgl_kernel_npu.kvcacheio import transfer_mamba_state
++    except ImportError:
+diff -- python/sglang/srt/distributed/parallel_state.py
+@@ -2906,16 +2906,40 @@ def create_custom_parallel_group(
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/manual/hicache/test_npu_kimi_k3_hicache.py` added +53/-0
+  - runtime: `python/sglang/srt/mem_cache/pool_host/mamba.py` modified +70/-21; `python/sglang/srt/distributed/parallel_state.py` modified +26/-2; `python/sglang/srt/mem_cache/hybrid_cache/hybrid_pool_assembler.py` modified +16/-1; `python/sglang/srt/disaggregation/decode.py` modified +13/-0; `python/sglang/srt/mem_cache/pool_host/mha.py` modified +4/-0
+- Risk and verification: The diff ships test coverage in `python/sglang/test/ascend/test_ascend_utils.py`, `test/manual/hicache/test_npu_kimi_k3_hicache.py`, `test/registered/unit/disaggregation/test_decode_queue_cleanup.py`, `test/registered/unit/managers/test_priority_scheduling_disaggregation.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39589 - [NPU] support kimi k3 on A5 and improve performance
+
+- Link: https://github.com/sgl-project/sglang/pull/39589
+- Status/date: merged / 2026-09-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `8ac39c66d837`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 27 files, +923/-250, 1804 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +236/-75 (311 lines); hunks: -22,6 +22,7; -40,8 +41,6; symbols: __init__, _reduce_latent, _gather_shared_expert_inputs, touching `__init__, _reduce_latent, _gather_shared_expert_inputs`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +236/-75 (311 lines); hunks: -22,6 +22,7; -40,8 +41,6; symbols: __init__, _reduce_latent, _gather_shared_expert_inputs
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -22,6 +22,7 @@
++    get_shared_experts_tp_group,
+@@ -40,8 +41,6 @@
+-    attn_tp_all_gather_into_tensor,
+-    attn_tp_reduce_scatter_tensor,
+@@ -76,6 +75,7 @@
++from sglang.srt.layers.quantization.modelslim.modelslim import ModelSlimConfig
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +236/-75
+- Risk and verification: The diff ships test coverage in `test/registered/unit/mem_cache/test_unified_radix_cache_unittest.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40045 - [kimi k3][pd disagg] support pp prefill + dcp decode with dspark
+
+- Link: https://github.com/sgl-project/sglang/pull/40045
+- Status/date: merged / 2026-09-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_linear.py`; associated commits `f4c256354cc8`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 21 files, +724/-45, 1253 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +30/-9 (39 lines); hunks: -3047,6 +3047,18 @@ def forward(; -3065,6 +3077,7 @@ def forward(; symbols: forward, __init__, get_input_embeddings, touching `forward, __init__, get_input_embeddings`; `python/sglang/srt/models/kimi_linear.py` modified +18/-10 (28 lines); hunks: -717,6 +717,12 @@ def forward(; -737,12 +743,12 @@ def forward(; symbols: forward, __init__, get_input_embeddings, get_pp_proxy_dspark_hidden_size, touching `forward, __init__, get_input_embeddings`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +30/-9 (39 lines); hunks: -3047,6 +3047,18 @@ def forward(; -3065,6 +3077,7 @@ def forward(; symbols: forward, __init__, get_input_embeddings
+  - `python/sglang/srt/models/kimi_linear.py` modified +18/-10 (28 lines); hunks: -717,6 +717,12 @@ def forward(; -737,12 +743,12 @@ def forward(; symbols: forward, __init__, get_input_embeddings, get_pp_proxy_dspark_hidden_size
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -3047,6 +3047,18 @@ def forward(
++        if (
++            self.dspark_layers_to_capture is not None
++            and not self.pp_group.is_first_rank
++        ):
++            if "dspark_hidden_states" in pp_proxy_tensors.tensors:
++                aux_hidden_states.append(pp_proxy_tensors["dspark_hidden_states"])
+diff -- python/sglang/srt/models/kimi_linear.py
+@@ -717,6 +717,12 @@ def forward(
++        if (
++            self.dspark_layers_to_capture is not None
++            and not self.pp_group.is_first_rank
++            and "dspark_hidden_states" in pp_proxy_tensors.tensors
++        ):
++            aux_hidden_states.append(pp_proxy_tensors["dspark_hidden_states"])
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +30/-9; `python/sglang/srt/models/kimi_linear.py` modified +18/-10
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/attention/test_kda_gate_beta_cumsum.py`, `test/registered/unit/disaggregation/test_disaggregation_wire.py`, `test/registered/unit/disaggregation/test_mooncake_transfer_batching.py`, `test/registered/unit/managers/test_auxiliary_output.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38805 - [Kimi-K3] O(1) expert weight lookup in load_weights
+
+- Link: https://github.com/sgl-project/sglang/pull/38805
+- Status/date: merged / 2026-09-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `c2c3629f2dc0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +130/-204, 588 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +130/-204 (334 lines); hunks: -8,6 +8,7; -136,6 +137,10; symbols: _k3_bf16_gemm, _merge_weights_as_views, _dp_local_buffer_group, __init__, touching `_k3_bf16_gemm, _merge_weights_as_views, _dp_local_buffer_group`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +130/-204 (334 lines); hunks: -8,6 +8,7; -136,6 +137,10; symbols: _k3_bf16_gemm, _merge_weights_as_views, _dp_local_buffer_group, __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -8,6 +8,7 @@
++import re
+@@ -136,6 +137,10 @@
++# `experts.<expert_id>.<w1|w2|w3>.` fragment of a checkpoint tensor name, the
++# key FusedMoE.make_expert_params_mapping entries match on.
++_EXPERT_WEIGHT_NAME = re.compile(r"experts\.\d+\.w[123]\.")
+@@ -216,10 +221,10 @@ def _k3_bf16_gemm(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +130/-204
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #40575 - [NPU] [DOC] Add kimi k3 cookbook for 950PR/DT Series
+
+- Link: https://github.com/sgl-project/sglang/pull/40575
+- Status/date: merged / 2026-09-21
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `b410010087e3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 5 files, +311/-84, 803 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +209/-48 (257 lines); hunks: -14,8 +14,10 @@ export const config = {; -47,6 +49,15 @@ export const config = {; `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` modified +27/-13 (40 lines); hunks: -135,10 +135,18 @@ export const KimiK3MambaRatioCalculator = () => {; -155,18 +163,22 @@ export const KimiK3MambaRatioCalculator = () => {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +9/-6 (15 lines); hunks: -40,14 +40,16 @@ For how to launch the image, see [Install → Method 3: Using...; -56,7 +58,7 @@ For host and platform setup, see the.
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +209/-48 (257 lines); hunks: -14,8 +14,10 @@ export const config = {; -47,6 +49,15 @@ export const config = {
+  - `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` modified +27/-13 (40 lines); hunks: -135,10 +135,18 @@ export const KimiK3MambaRatioCalculator = () => {; -155,18 +163,22 @@ export const KimiK3MambaRatioCalculator = () => {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +9/-6 (15 lines); hunks: -40,14 +40,16 @@ For how to launch the image, see [Install → Method 3: Using...; -56,7 +58,7 @@ For host and platform setup, see the
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -14,8 +14,10 @@ export const config = {
+-  // (4×8 TP32/EP32), and MI350X/MI355X (1×8 TP8) have serving recipes.
+-  supportedHardware: ["b300", "gb300", "b200", "gb200", "h200", "h100", "mi350x", "mi355x", "a3"],
++  // (4×8 TP32/EP32), MI350X/MI355X (1×8 TP8), Ascend A3 Series (4×8, TP64
++  // over 2-die cards), and Ascend 950PR/DT Series (4×8, TP32, one rank per
++  // card) have serving recipes.
++  supportedHardware: ["b300", "gb300", "b200", "gb200", "h200", "h100", "mi350x", "mi355x", "a3", "a5"],
+diff -- docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx
+@@ -135,10 +135,18 @@ export const KimiK3MambaRatioCalculator = () => {
+-  // A --max-mamba-cache-size cell sizes the pool explicitly — no ratio to
+-  // compute or broadcast.
+-  const explicitSizing = (cfg.baseFlags.length ? cfg.baseFlags : cfg.flags)
+-    .some((f) => f.startsWith("--max-mamba-cache-size"));
++  // Recipes that size the dual pool without the ratio neither render one nor
++  // broadcast one:
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -40,14 +40,16 @@ For how to launch the image, see [Install → Method 3: Using Docker](../../../d
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +209/-48; `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx` modified +27/-13; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +9/-6
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/_deployment.jsx`, `docs/src/snippets/_kimi_k3_mamba_ratio_calculator.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #40640 - [Kimi K3] Fix CUDA graph stream explosion
+
+- Link: https://github.com/sgl-project/sglang/pull/40640
+- Status/date: merged / 2026-09-22
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`, `test/registered/unit/models/test_kimi_k3_bfa_overlap.py`; associated commits `c4d3770a6850`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +98/-61, 245 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_kimi_k3_bfa_overlap.py` modified +73/-28 (101 lines); hunks: -1,6 +1,4; -10,6 +8,7; symbols: setUpClass, test_capture_replay_matches_serial, test_eager_stream_branch_not_taken, test_mla_gate_capture_matches_serial, touching `setUpClass, test_capture_replay_matches_serial, test_eager_stream_branch_not_taken`; `python/sglang/srt/models/kimi_k3.py` modified +25/-33 (58 lines); hunks: -2037,12 +2037,12 @@ def forward_qkvbfg_fused(; -2051,7 +2051,6 @@ def forward_qkvbfg_fused(; symbols: forward_qkvbfg_fused, _symm_o_proj_forward, _gated_o_proj_forward, touching `forward_qkvbfg_fused, _symm_o_proj_forward, _gated_o_proj_forward`.
+- Code diff details:
+  - `test/registered/unit/models/test_kimi_k3_bfa_overlap.py` modified +73/-28 (101 lines); hunks: -1,6 +1,4; -10,6 +8,7; symbols: setUpClass, test_capture_replay_matches_serial, test_eager_stream_branch_not_taken, test_mla_gate_capture_matches_serial
+  - `python/sglang/srt/models/kimi_k3.py` modified +25/-33 (58 lines); hunks: -2037,12 +2037,12 @@ def forward_qkvbfg_fused(; -2051,7 +2051,6 @@ def forward_qkvbfg_fused(; symbols: forward_qkvbfg_fused, _symm_o_proj_forward, _gated_o_proj_forward
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_kimi_k3_bfa_overlap.py
+@@ -1,6 +1,4 @@
+-"""KDA bfa side-stream overlap: forward_qkvbfg_fused must produce outputs
+-bit-identical to the serial path, both eager and under CUDA graph
+-capture/replay (the overlap only engages in capture mode)."""
++"""K3 attention overlap parity under CUDA graph capture and changed-input replay."""
+@@ -10,6 +8,7 @@
++    KimiK3MLAAttention,
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -2037,12 +2037,12 @@ def forward_qkvbfg_fused(
+-                    # Issue the tiny [f_a|b] + f_b GEMVs on the side stream,
+-                    # then the wide [q,k,v,g] GEMM on the main stream (both
+-                    # read only hidden_states); join before the consumers.
++                    # Fork before both branches; capture the main projection
++                    # first to avoid CUDA graph replay stream expansion.
++                    fused_states, _ = self.fused_qkvg_proj(hidden_states)
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_kimi_k3_bfa_overlap.py` modified +73/-28
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +25/-33
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_k3_bfa_overlap.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39066 - [AMD][Kimi-K3] Fix deferred KDA gate projection and update DCP cookbook
+
+- Link: https://github.com/sgl-project/sglang/pull/39066
+- Status/date: merged / 2026-09-22
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/srt/models/kimi_k3.py`; associated commits `8ac19cc19f8a`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +33/-10, 109 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +11/-5 (16 lines); hunks: -478,8 +478,8 @@ export const config = {; -1217,7 +1217,7 @@ export const config = {; `python/sglang/srt/models/kimi_k3.py` modified +2/-1 (3 lines); hunks: -2029,7 +2029,8 @@ def forward_qkvbfg_fused(; symbols: forward_qkvbfg_fused, touching `forward_qkvbfg_fused`; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +20/-4 (24 lines); hunks: -30,7 +30,7 @@ Then run the **Python** output of the command panel below in t...; -65,7 +65,7 @@ Pick your hardware, then the deployment shape and operating po....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +11/-5 (16 lines); hunks: -478,8 +478,8 @@ export const config = {; -1217,7 +1217,7 @@ export const config = {
+  - `python/sglang/srt/models/kimi_k3.py` modified +2/-1 (3 lines); hunks: -2029,7 +2029,8 @@ def forward_qkvbfg_fused(; symbols: forward_qkvbfg_fused
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +20/-4 (24 lines); hunks: -30,7 +30,7 @@ Then run the **Python** output of the command panel below in t...; -65,7 +65,7 @@ Pick your hardware, then the deployment shape and operating po...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -478,8 +478,8 @@ export const config = {
+-    mi350x: "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910",
+-    mi355x: "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910",
++    mi350x: "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916",
++    mi355x: "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916",
+@@ -1217,7 +1217,7 @@ export const config = {
+-      // MI350X and MI355X use the same single-node TP8 ROCm/AITER profile.
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -2029,7 +2029,8 @@ def forward_qkvbfg_fused(
+-                    forget_gate = gemm(f_a, self._bfa_f_b_w)
++                    # Fused KDA decode consumes f_a and applies f_b itself.
++                    forget_gate = f_a if defer_f_b else gemm(f_a, self._bfa_f_b_w)
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -30,7 +30,7 @@ Then run the **Python** output of the command panel below in that environment.
+-docker pull lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910     # AMD MI350X / MI355X (ROCm)
++docker pull lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916     # AMD MI350X / MI355X (ROCm)
+@@ -65,7 +65,7 @@ Pick your hardware, then the deployment shape and operating point. Node count fo
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +11/-5; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +20/-4
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +2/-1
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #39525 - [AMD] Fix deferred Kimi-K3 forget gate in fused in-projection
+
+- Link: https://github.com/sgl-project/sglang/pull/39525
+- Status/date: merged / 2026-09-22
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py`; associated commits `d00adfd19cb6`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +39/-1, 58 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` modified +39/-1 (40 lines); hunks: -12,11 +12,15; -117,6 +121,40 @@ def test_split_and_fused_paths_agree(self):; symbols: test_split_and_fused_paths_agree, test_deferred_f_b_returns_raw_f_a, touching `test_split_and_fused_paths_agree, test_deferred_f_b_returns_raw_f_a`.
+- Code diff details:
+  - `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` modified +39/-1 (40 lines); hunks: -12,11 +12,15; -117,6 +121,40 @@ def test_split_and_fused_paths_agree(self):; symbols: test_split_and_fused_paths_agree, test_deferred_f_b_returns_raw_f_a
+- Key code excerpts:
+
+```diff
+diff -- test/registered/amd/test_kimi_k3_kda_inproj_fusion.py
+@@ -12,11 +12,15 @@
++from types import SimpleNamespace
+-from sglang.srt.models.kimi_k3 import _merge_weights_as_views
++from sglang.srt.models.kimi_k3 import (
++    KimiK3DeltaAttention,
++    _merge_weights_as_views,
++)
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` modified +39/-1
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40700 - [RL] Fix Kimi K3 expert-count lookup for routed-expert capture
+
+- Link: https://github.com/sgl-project/sglang/pull/40700
+- Status/date: merged / 2026-09-23
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/kimi_linear.py`; associated commits `f2eebd5533a9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +2/-0, 9 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/configs/kimi_linear.py` modified +2/-0 (2 lines); hunks: -9,6 +9,8; symbols: KimiLinearConfig, __init__, touching `KimiLinearConfig, __init__`.
+- Code diff details:
+  - `python/sglang/srt/configs/kimi_linear.py` modified +2/-0 (2 lines); hunks: -9,6 +9,8; symbols: KimiLinearConfig, __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/configs/kimi_linear.py
+@@ -9,6 +9,8 @@
++    # Shared MoE utilities use the abbreviated name; checkpoints keep the original.
++    attribute_map = {"num_experts_per_tok": "num_experts_per_token"}
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/configs/kimi_linear.py` modified +2/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/kimi_linear.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #40794 - [Spec] Support DFLASH for Kimi K3
+
+- Link: https://github.com/sgl-project/sglang/pull/40794
+- Status/date: merged / 2026-09-23
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/srt/models/kimi_k3.py`; associated commits `208f6f7501f7`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +34/-11, 81 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +21/-10 (31 lines); hunks: -334,16 +334,27 @@ export const config = {; -785,7 +796,7 @@ export const config = {; `python/sglang/srt/models/kimi_k3.py` modified +12/-0 (12 lines); hunks: -3151,6 +3151,11 @@ def set_dspark_layers_to_capture(self, layer_ids: list[in...; -3607,6 +3612,13 @@ def get_pp_proxy_dspark_hidden_size(self) -> int:; symbols: set_dspark_layers_to_capture, set_dflash_layers_to_capture, forward, get_pp_proxy_dspark_hidden_size, touching `set_dspark_layers_to_capture, set_dflash_layers_to_capture, forward`; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1 (2 lines); hunks: -70,7 +70,7 @@ Pick your hardware, then the deployment shape and operating po....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +21/-10 (31 lines); hunks: -334,16 +334,27 @@ export const config = {; -785,7 +796,7 @@ export const config = {
+  - `python/sglang/srt/models/kimi_k3.py` modified +12/-0 (12 lines); hunks: -3151,6 +3151,11 @@ def set_dspark_layers_to_capture(self, layer_ids: list[in...; -3607,6 +3612,13 @@ def get_pp_proxy_dspark_hidden_size(self) -> int:; symbols: set_dspark_layers_to_capture, set_dflash_layers_to_capture, forward, get_pp_proxy_dspark_hidden_size
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1 (2 lines); hunks: -70,7 +70,7 @@ Pick your hardware, then the deployment shape and operating po...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -334,16 +334,27 @@ export const config = {
+-          // Listed so the axis is complete, but not selectable: no K3 DFLASH draft
+-          // checkpoint has been published, so there is nothing to point
+-          // --speculative-draft-model-path at. DFLASH is also CUDA-only, rejects DP
+-          // attention, and requires pp_size == 1.
+-          disabled: true,
+-          disableReason:
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -3151,6 +3151,11 @@ def set_dspark_layers_to_capture(self, layer_ids: list[int]) -> None:
++    def set_dflash_layers_to_capture(self, layer_ids: list[int]) -> None:
++        # DFLASH target_layer_ids name layer outputs, which is what the DSPARK
++        # taps already capture here, so reuse them without the usual +1 shift.
++        self.set_dspark_layers_to_capture(layer_ids)
+@@ -3607,6 +3612,13 @@ def get_pp_proxy_dspark_hidden_size(self) -> int:
++    def set_dflash_layers_to_capture(self, layer_ids: list[int]) -> None:
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -70,7 +70,7 @@ Pick your hardware, then the deployment shape and operating point. Node count fo
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +21/-10; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +1/-1
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +12/-0
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #40922 - [Refactor] Retire the model-specific Kimi K3 kernel namespace
+
+- Link: https://github.com/sgl-project/sglang/pull/40922
+- Status/date: merged / 2026-09-24
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/kernels/ops/attention/kda_flydsl/kernels/kimi_k3_kda_decode.py`, `python/sglang/kernels/ops/attention/kda_flydsl/kernels/kimi_k3_kda_decode_fb.py`, `python/sglang/kernels/ops/attention/kda_flydsl/kimi_k3_kda_decode.py`, `python/sglang/kernels/ops/gemm/kimi_k3.py`, `python/sglang/srt/models/kimi_k3.py` and 8 files; associated commits `ea5baf4022e4`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 52 files, +857/-594, 1815 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +2/-2 (4 lines); hunks: -2014,7 +2014,7 @@ def forward_qkvbfg_fused(; -2297,7 +2297,7 @@ def _gated_o_proj_forward(x, *args, **kwargs):; symbols: forward_qkvbfg_fused, _gated_o_proj_forward, touching `forward_qkvbfg_fused, _gated_o_proj_forward`; `python/sglang/kernels/ops/gemm/kimi_k3.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: kimi_k3_tiny_gemm, touching `kimi_k3_tiny_gemm`; `test/registered/kernels/benchmark/attention/bench_kimi_k3_kda_decode.py` renamed +6/-1 (7 lines); hunks: -22,7 +22,12 @@ def main() -> None:; symbols: main, touching `main`; `test/registered/kernels/ops/attention/kda_flydsl/test_kimi_k3_kda_decode.py` renamed +3/-3 (6 lines); hunks: -15,7 +15,7; -349,7 +349,7 @@ def _run_with_f_b(; symbols: _run_with_f_b, test_public_api_and_support_predicate, test_f_b_public_api, touching `_run_with_f_b, test_public_api_and_support_predicate, test_f_b_public_api`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +2/-2 (4 lines); hunks: -2014,7 +2014,7 @@ def forward_qkvbfg_fused(; -2297,7 +2297,7 @@ def _gated_o_proj_forward(x, *args, **kwargs):; symbols: forward_qkvbfg_fused, _gated_o_proj_forward
+  - `python/sglang/kernels/ops/gemm/kimi_k3.py` added +34/-0 (34 lines); hunks: -0,0 +1,34; symbols: kimi_k3_tiny_gemm
+  - `test/registered/kernels/benchmark/attention/bench_kimi_k3_kda_decode.py` renamed +6/-1 (7 lines); hunks: -22,7 +22,12 @@ def main() -> None:; symbols: main
+  - `test/registered/kernels/ops/attention/kda_flydsl/test_kimi_k3_kda_decode.py` renamed +3/-3 (6 lines); hunks: -15,7 +15,7; -349,7 +349,7 @@ def _run_with_f_b(; symbols: _run_with_f_b, test_public_api_and_support_predicate, test_f_b_public_api
+  - `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` modified +1/-1 (2 lines); hunks: -16,7 +16,7
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -2014,7 +2014,7 @@ def forward_qkvbfg_fused(
+-                from sglang.kernels.ops.kimi_k3 import kimi_k3_tiny_gemm as gemm
++                from sglang.kernels.ops.gemm import kimi_k3_tiny_gemm as gemm
+@@ -2297,7 +2297,7 @@ def _gated_o_proj_forward(x, *args, **kwargs):
+-                    from sglang.kernels.ops.kimi_k3 import mla_output_gate
++                    from sglang.kernels.ops.attention import mla_output_gate
+diff -- python/sglang/kernels/ops/gemm/kimi_k3.py
+@@ -0,0 +1,34 @@
++from __future__ import annotations
++from typing import TYPE_CHECKING
++from sglang.srt.utils import is_npu
++if TYPE_CHECKING:
++    import torch
++_is_npu = is_npu()
+diff -- test/registered/kernels/benchmark/attention/bench_kimi_k3_kda_decode.py
+@@ -22,7 +22,12 @@ def main() -> None:
+-    test = runpy.run_path(str(Path(__file__).with_name("test_kimi_k3_kda_decode.py")))
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +2/-2; `python/sglang/kernels/ops/gemm/kimi_k3.py` added +34/-0; `python/sglang/kernels/ops/attention/kda_flydsl/kernels/kimi_k3_kda_decode.py` renamed +0/-0; `python/sglang/kernels/ops/attention/kda_flydsl/kernels/kimi_k3_kda_decode_fb.py` renamed +0/-0; `python/sglang/kernels/ops/attention/kda_flydsl/kimi_k3_kda_decode.py` renamed +0/-0
+  - tests: `test/registered/kernels/benchmark/attention/bench_kimi_k3_kda_decode.py` renamed +6/-1; `test/registered/kernels/ops/attention/kda_flydsl/test_kimi_k3_kda_decode.py` renamed +3/-3; `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/registered/amd/test_kimi_k3_kda_inproj_fusion.py`, `test/registered/kernels/benchmark/attention/bench_kimi_k3_kda_decode.py`, `test/registered/kernels/ops/activation/test_situ_and_mul.py`, `test/registered/kernels/ops/attention/kda_flydsl/__init__.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41321 - [CI] Merge the Kimi-Linear PD DCP4 nightly tests and drop exact-token parity
+
+- Link: https://github.com/sgl-project/sglang/pull/41321
+- Status/date: merged / 2026-09-26
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py`; associated commits `7bdd8fe6ec2a`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +365/-700, 1068 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py` removed +0/-525 (525 lines); hunks: -1,525 +0,0; symbols: _has_eight_blackwell_gpus, TestKimiLinearPDDCP4, setUpClass, tearDownClass, touching `_has_eight_blackwell_gpus, TestKimiLinearPDDCP4, setUpClass`; `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py` added +365/-0 (365 lines); hunks: -0,0 +1,365; symbols: _has_eight_blackwell_gpus, _write_dummy_qwen3_dspark_draft, _generate, _flush_cache, touching `_has_eight_blackwell_gpus, _write_dummy_qwen3_dspark_draft, _generate`.
+- Code diff details:
+  - `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py` removed +0/-525 (525 lines); hunks: -1,525 +0,0; symbols: _has_eight_blackwell_gpus, TestKimiLinearPDDCP4, setUpClass, tearDownClass
+  - `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py` added +365/-0 (365 lines); hunks: -0,0 +1,365; symbols: _has_eight_blackwell_gpus, _write_dummy_qwen3_dspark_draft, _generate, _flush_cache
+- Key code excerpts:
+
+```diff
+diff -- test/registered/disaggregation/test_kimi_linear_pd_dcp4.py
+@@ -1,525 +0,0 @@
+-import math
+-import os
+-import time
+-import unittest
+-import requests
+-import torch
+diff -- test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py
+@@ -0,0 +1,365 @@
++import json
++import math
++import os
++import shutil
++import tempfile
++import unittest
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py` removed +0/-525; `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py` added +365/-0
+- Risk and verification: The diff ships test coverage in `test/registered/disaggregation/test_kimi_linear_pd_dcp4.py`, `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4.py`, `test/registered/e2e/disaggregation/test_kimi_linear_pd_dcp4_dspark.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41378 - [CI] Real-model Kimi-Linear PD parity at page, DCP virtual-page, chunk and cached-prefix boundaries
+
+- Link: https://github.com/sgl-project/sglang/pull/41378
+- Status/date: merged / 2026-09-28
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/disaggregation/test_disaggregation_kimi_linear.py`; associated commits `55cc90b533cd`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +133/-31, 235 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/disaggregation/test_disaggregation_kimi_linear.py` modified +66/-12 (78 lines); hunks: -1,16 +1,27; -26,28 +37,71; symbols: TestKimiLinearHeterogeneousTPDisaggregation, _boundary_prompts, TestKimiLinearTPDisaggregation, setUpClass, touching `TestKimiLinearHeterogeneousTPDisaggregation, _boundary_prompts, TestKimiLinearTPDisaggregation`.
+- Code diff details:
+  - `test/registered/disaggregation/test_disaggregation_kimi_linear.py` modified +66/-12 (78 lines); hunks: -1,16 +1,27; -26,28 +37,71; symbols: TestKimiLinearHeterogeneousTPDisaggregation, _boundary_prompts, TestKimiLinearTPDisaggregation, setUpClass
+- Key code excerpts:
+
+```diff
+diff -- test/registered/disaggregation/test_disaggregation_kimi_linear.py
+@@ -1,16 +1,27 @@
++from transformers import AutoTokenizer
+-register_cuda_ci(est_time=259, stage="base-c", runner_config="4-gpu-h100")
++register_cuda_ci(est_time=400, stage="extra-b", runner_config="4-gpu-h100")
+-KIMI_LINEAR_MODEL = "yujiepan/kimi-linear-tiny-random"
++KIMI_LINEAR_MODEL = "moonshotai/Kimi-Linear-48B-A3B-Instruct"
++PAGE_SIZE = 16
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/disaggregation/test_disaggregation_kimi_linear.py` modified +66/-12
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/pd_parity_kit.py`, `test/registered/disaggregation/test_disaggregation_kimi_linear.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41164 - [Kimi-K3] Merge fused_qkvg_proj into the loader-seeded packed_modules_mapping
+
+- Link: https://github.com/sgl-project/sglang/pull/41164
+- Status/date: merged / 2026-09-28
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`, `test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py`; associated commits `546bfa7221ce`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +70/-1, 79 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py` added +62/-0 (62 lines); hunks: -0,0 +1,62; symbols: TestKimiK3PackedModulesMapping, test_causal_lm_keeps_loader_seeded_mapping, touching `TestKimiK3PackedModulesMapping, test_causal_lm_keeps_loader_seeded_mapping`; `python/sglang/srt/models/kimi_k3.py` modified +8/-1 (9 lines); hunks: -3115,7 +3115,14 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py` added +62/-0 (62 lines); hunks: -0,0 +1,62; symbols: TestKimiK3PackedModulesMapping, test_causal_lm_keeps_loader_seeded_mapping
+  - `python/sglang/srt/models/kimi_k3.py` modified +8/-1 (9 lines); hunks: -3115,7 +3115,14 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py
+@@ -0,0 +1,62 @@
++"""KimiK3LinearForCausalLM must extend, not replace, the quant config's mapping."""
++import unittest
++from types import SimpleNamespace
++from unittest.mock import patch
++from sglang.srt.layers.quantization.modelopt_quant import ModelOptFp4Config
++from sglang.srt.layers.quantization.utils import is_layer_skipped
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -3115,7 +3115,14 @@ def __init__(
+-                quant_config.update_packed_modules_mapping(self.packed_modules_mapping)
++                # The loader seeded this mapping from the outer model class;
++                # replacing it would drop those entries.
++                quant_config.update_packed_modules_mapping(
++                    {
++                        **(quant_config.packed_modules_mapping or {}),
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py` added +62/-0
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +8/-1
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_k3_packed_modules_mapping.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35330 - [Kimi] Enable GB300 TP4 and GB200/GB300 TP16 SP collectives
+
+- Link: https://github.com/sgl-project/sglang/pull/35330
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `ced5e9fe4938`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 8 files, +511/-33, 712 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +3/-1 (4 lines); hunks: -2515,7 +2515,9 @@ def __init__(; symbols: __init__, _sp_o_proj_forward, touching `__init__, _sp_o_proj_forward`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +3/-1 (4 lines); hunks: -2515,7 +2515,9 @@ def __init__(; symbols: __init__, _sp_o_proj_forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -2515,7 +2515,9 @@ def __init__(
+-                    if k3_sp_collective.requires_symmetric_rs(output_rows, x.device):
++                    if k3_sp_collective.requires_symmetric_rs(
++                        output_rows, x.device, x.element_size()
++                    ):
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +3/-1
+- Risk and verification: The diff ships test coverage in `test/registered/unit/distributed/test_parallel_state.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40159 - [Spec] Reuse K3 auxiliary outputs across decode CUDA graph sizes
+
+- Link: https://github.com/sgl-project/sglang/pull/40159
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `84523d678511`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 12 files, +173/-9, 362 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +31/-1 (32 lines); hunks: -33,6 +33,10; -2958,7 +2962,14 @@ def forward(; symbols: forward, packs_aux_hidden_states, _dspark_capture_stream, get_pp_proxy_dspark_hidden_size, touching `forward, packs_aux_hidden_states, _dspark_capture_stream`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +31/-1 (32 lines); hunks: -33,6 +33,10; -2958,7 +2962,14 @@ def forward(; symbols: forward, packs_aux_hidden_states, _dspark_capture_stream, get_pp_proxy_dspark_hidden_size
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -33,6 +33,10 @@
++from sglang.srt.layers.aux_hidden_states import (
++    AuxHiddenStateAccumulator,
++    AuxHiddenStatePacker,
++)
+@@ -2958,7 +2962,14 @@ def forward(
+-        aux_hidden_states = []
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +31/-1
+- Risk and verification: The diff ships test coverage in `test/registered/unit/batch_overlap/test_tbo_filter_batch_marker.py`, `test/registered/unit/model_executor/model_runner_components/test_spec_aux_hidden_state.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41717 - [NPU] [DOC]: add Kimi-K3 NPU PD disaggregation recipes
+
+- Link: https://github.com/sgl-project/sglang/pull/41717
+- Status/date: merged / 2026-09-30
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; associated commits `964c45cf31e8`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +425/-44, 707 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +400/-38 (438 lines); hunks: -15,8 +15,10 @@ export const config = {; -49,12 +51,14 @@ export const config = {; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +25/-6 (31 lines); hunks: -62,6 +62,8 @@ Pick your hardware, then the deployment shape and operating po...; -70,10 +72,10 @@ Pick your hardware, then the deployment shape and operating....
+- Code diff details:
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +400/-38 (438 lines); hunks: -15,8 +15,10 @@ export const config = {; -49,12 +51,14 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +25/-6 (31 lines); hunks: -62,6 +62,8 @@ Pick your hardware, then the deployment shape and operating po...; -70,10 +72,10 @@ Pick your hardware, then the deployment shape and operating...
+- Key code excerpts:
+
+```diff
+diff -- docs/src/snippets/configs/moonshotai/kimi-k3.jsx
+@@ -15,8 +15,10 @@ export const config = {
+-  // over 2-die cards), and Ascend 950PR/DT Series (4×8, TP32, one rank per
+-  // card) have serving recipes.
++  // over 2-die cards — Unified plus an asymmetric 2-node prefill / 4-node
++  // decode PD split), and Ascend 950PR/DT Series (4×8, TP32, one rank per
++  // card — Unified plus PD prefill/decode roles over the Ascend memory
++  // fabric) have serving recipes.
+diff -- docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx
+@@ -62,6 +62,8 @@ Pick your hardware, then the deployment shape and operating point. Node count fo
++**Ascend NPU PD** — both NPU platforms split over the Ascend memory fabric, with `Default` as the only prefill strategy: two symmetric 4-node TP32 pools on the 950PR/DT Series, an
+@@ -70,10 +72,10 @@ Pick your hardware, then the deployment shape and operating point. Node count fo
+-**Spec Decode** — layers onto the strategy without changing it, on every platform except B200. DSPARK proposes 7 draft tokens per step (tune in the Playground) and requires `pp_si
++**Spec Decode** — layers onto the strategy without changing it, on every platform except B200. DSPARK proposes 7 draft tokens per step (tune in the Playground) and requires `pp_si
+-`--mamba-full-memory-ratio` is the one sizing flag, computed live: set your average request length in the [Mamba ratio calculator](#mamba-ratio-calculator); everything else follow
++`--mamba-full-memory-ratio` is the one sizing flag, computed live: set your average request length in the [Mamba ratio calculator](#mamba-ratio-calculator); everything else follow
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +400/-38; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +25/-6
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #40811 - [AMD][Quark] Serve the Kimi-K3 MXFP4 checkpoint on ROCm
+
+- Link: https://github.com/sgl-project/sglang/pull/40811
+- Status/date: merged / 2026-10-01
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx`, `docs/src/snippets/configs/moonshotai/kimi-k3.jsx`, `python/sglang/srt/models/kimi_k3.py`, `python/sglang/srt/models/kimi_k3_rocm_quant.py`, `test/registered/kernels/ops/attention/kda_flydsl/test_kimi_k3_kda_decode.py` and 6 files; associated commits `6af651ea0cb4`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 10 files, +402/-11, 546 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_kimi_k3_rocm_quant.py` added +98/-0 (98 lines); hunks: -0,0 +1,98; symbols: _per_channel_fp8, TestChannelFp8ToBf16, test_dequantizes_every_channel_with_its_own_scale, test_accepts_a_column_vector_scale, touching `_per_channel_fp8, TestChannelFp8ToBf16, test_dequantizes_every_channel_with_its_own_scale`; `python/sglang/srt/models/kimi_k3.py` modified +53/-2 (55 lines); hunks: -225,6 +225,15 @@ def _k3_bf16_gemm(; -1850,6 +1859,11 @@ def _merge_bfa_weights(self) -> None:; symbols: _k3_bf16_gemm, _is_unquantized_mergeable, _merge_weights_as_views, _merge_bfa_weights, touching `_k3_bf16_gemm, _is_unquantized_mergeable, _merge_weights_as_views`; `python/sglang/srt/models/kimi_k3_rocm_quant.py` added +45/-0 (45 lines); hunks: -0,0 +1,45; symbols: _k3_channel_fp8_to_bf16, touching `_k3_channel_fp8_to_bf16`; `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +2/-2 (4 lines); hunks: -933,10 +933,10 @@ export const config = {.
+- Code diff details:
+  - `test/registered/unit/models/test_kimi_k3_rocm_quant.py` added +98/-0 (98 lines); hunks: -0,0 +1,98; symbols: _per_channel_fp8, TestChannelFp8ToBf16, test_dequantizes_every_channel_with_its_own_scale, test_accepts_a_column_vector_scale
+  - `python/sglang/srt/models/kimi_k3.py` modified +53/-2 (55 lines); hunks: -225,6 +225,15 @@ def _k3_bf16_gemm(; -1850,6 +1859,11 @@ def _merge_bfa_weights(self) -> None:; symbols: _k3_bf16_gemm, _is_unquantized_mergeable, _merge_weights_as_views, _merge_bfa_weights
+  - `python/sglang/srt/models/kimi_k3_rocm_quant.py` added +45/-0 (45 lines); hunks: -0,0 +1,45; symbols: _k3_channel_fp8_to_bf16
+  - `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +2/-2 (4 lines); hunks: -933,10 +933,10 @@ export const config = {
+  - `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-2 (4 lines); hunks: -103,7 +103,7 @@ SGLang revision `e7f7447333`, which includes; -219,7 +219,7 @@ Outside the two verified B300 1×8 `Unified` cells, no cell h...
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_kimi_k3_rocm_quant.py
+@@ -0,0 +1,98 @@
++"""Unit tests for srt/models/kimi_k3_rocm_quant and the K3 weight-merge guard."""
++from sglang.test.ci.ci_register import register_cpu_ci
++register_cpu_ci(est_time=12, suite="base-a-test-cpu")
++import unittest
++from types import SimpleNamespace
++import torch
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -225,6 +225,15 @@ def _k3_bf16_gemm(
++def _is_unquantized_mergeable(weights: list[torch.Tensor]) -> bool:
++    """Return whether these weights may be concatenated into one fused buffer.
++    _merge_weights_as_views cats .weight alone, so anything carrying a separate
++    scale tensor (per-channel FP8, packed MXFP4) must stay unfused."""
++    dtypes = {weight.dtype for weight in weights}
++    return len(dtypes) == 1 and dtypes.pop() in (torch.bfloat16, torch.float16)
+diff -- python/sglang/srt/models/kimi_k3_rocm_quant.py
+@@ -0,0 +1,45 @@
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_kimi_k3_rocm_quant.py` added +98/-0; `test/registered/kernels/ops/attention/kda_flydsl/test_kimi_k3_kda_decode.py` modified +2/-2
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +53/-2; `python/sglang/srt/models/kimi_k3_rocm_quant.py` added +45/-0
+  - docs: `docs/src/snippets/configs/moonshotai/kimi-k3.jsx` modified +2/-2; `docs/cookbook/autoregressive/Moonshotai/Kimi-K3.mdx` modified +2/-2
+- Risk and verification: The diff ships test coverage in `test/registered/kernels/ops/attention/kda_flydsl/test_kimi_k3_kda_decode.py`, `test/registered/unit/layers/quantization/test_quark_w8a8_fp8.py`, `test/registered/unit/models/test_kimi_k3_rocm_quant.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #40269 - [Kimi-K3] Guard optimized paths by platform
+
+- Link: https://github.com/sgl-project/sglang/pull/40269
+- Status/date: merged / 2026-10-01
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/kimi_k3.py`; associated commits `3031091c3698`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +4/-4, 32 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/kimi_k3.py` modified +2/-2 (4 lines); hunks: -704,11 +704,11 @@ def _merge_front_weights(self) -> None:; symbols: _merge_front_weights, touching `_merge_front_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/kimi_k3.py` modified +2/-2 (4 lines); hunks: -704,11 +704,11 @@ def _merge_front_weights(self) -> None:; symbols: _merge_front_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/kimi_k3.py
+@@ -704,11 +704,11 @@ def _merge_front_weights(self) -> None:
+-        # These merged layouts feed CUDA-only fused front kernels. Keeping the
++        # These merged layouts feed CUDA and ROCm fused front kernels. Keeping the
+-        if _is_npu:
++        if not (get_platform().is_cuda or get_platform().is_hip):
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/kimi_k3.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/layers/attn_residual.py`, `python/sglang/srt/models/kimi_k3.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #36406 - Fix Kimi-K3 MLA output gate dispatch on non-CUDA devices
+
+- Link: https://github.com/sgl-project/sglang/pull/36406
+- Status/date: merged / 2026-10-01
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/unit/models/test_kimi_k3_mla_output_gate.py`; associated commits `f03a183719c9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +23/-3, 46 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_kimi_k3_mla_output_gate.py` added +21/-0 (21 lines); hunks: -0,0 +1,21; symbols: TestKimiK3MlaOutputGate, test_cpu_tensors_use_fallback, touching `TestKimiK3MlaOutputGate, test_cpu_tensors_use_fallback`; `python/sglang/kernels/ops/attention/mla_output_gate.py` modified +2/-3 (5 lines); hunks: -12,13 +12,11; -35,7 +33,8 @@ def _jit_mla_output_gate_module() -> Module:; symbols: _jit_mla_output_gate_module, covered, touching `_jit_mla_output_gate_module, covered`.
+- Code diff details:
+  - `test/registered/unit/models/test_kimi_k3_mla_output_gate.py` added +21/-0 (21 lines); hunks: -0,0 +1,21; symbols: TestKimiK3MlaOutputGate, test_cpu_tensors_use_fallback
+  - `python/sglang/kernels/ops/attention/mla_output_gate.py` modified +2/-3 (5 lines); hunks: -12,13 +12,11; -35,7 +33,8 @@ def _jit_mla_output_gate_module() -> Module:; symbols: _jit_mla_output_gate_module, covered
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_kimi_k3_mla_output_gate.py
+@@ -0,0 +1,21 @@
++import unittest
++import torch
++from sglang.kernels.ops.attention.mla_output_gate import covered
++from sglang.test.ci.ci_register import register_cpu_ci
++from sglang.test.test_utils import CustomTestCase
++register_cpu_ci(est_time=3, suite="base-a-test-cpu")
+diff -- python/sglang/kernels/ops/attention/mla_output_gate.py
+@@ -12,13 +12,11 @@
+-from sglang.srt.utils import is_npu
+-_is_npu = is_npu()
+@@ -35,7 +33,8 @@ def _jit_mla_output_gate_module() -> Module:
+-        not _is_npu
++        x.is_cuda
++        and gate.is_cuda
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_kimi_k3_mla_output_gate.py` added +21/-0
+  - runtime: `python/sglang/kernels/ops/attention/mla_output_gate.py` modified +2/-3
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_kimi_k3_mla_output_gate.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

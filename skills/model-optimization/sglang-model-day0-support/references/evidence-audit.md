@@ -100,3 +100,18 @@ Scripts must not generate:
 - Day-0 classification.
 
 Those require manual diff review and final-mainline verification.
+
+## Evidence Rules from the 2026-10-05 Audit
+
+- Empty bodies (#36805 Hy4, #36507 GLM-5.3-Flash) and pointer-only bodies
+  (#37500 Qwen3.8 Flash Next) require diff/test/cookbook reading. Do not invent
+  motivation or validation from missing body sections.
+- Superseded spines: #36497 closed unmerged 2026-09-08; #37500 merged that day.
+  Record both; cookbook links to the earlier PR remain branch-bound until retargeted.
+- Mirror/bot authors (#41590 by `sglang-bot`) do not establish human design intent.
+- Platform titles saying Day 0 do not backdate support. AMD GLM-5.3-Flash
+  #38545–#38547, #39317, #39341, #39778–#39779 landed 2026-09-21–23 after the
+  NVIDIA spine on 2026-09-06. Classify each platform lane independently.
+- Byte-identical files, AST-identical functions and unchanged parity tests
+  against a pinned tree are extraction evidence (#39646/#38798). They establish
+  refactor equivalence and still require numerical and dispatcher validation.

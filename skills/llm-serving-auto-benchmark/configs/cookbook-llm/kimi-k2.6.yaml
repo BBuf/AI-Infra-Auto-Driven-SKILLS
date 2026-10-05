@@ -60,7 +60,6 @@ frameworks:
       reasoning_parser: kimi_k2
       tool_call_parser: kimi_k2
       mem_fraction_static: 0.82
-      schedule_policy: lpm
     search_space:
       prefill_attention_backend:
       - fa3
@@ -100,8 +99,6 @@ frameworks:
       - 4096
       enable_prefix_caching:
       - true
-      block_size:
-      - 16
   tensorrt_llm:
     enabled: true
     server_command: trtllm-serve serve

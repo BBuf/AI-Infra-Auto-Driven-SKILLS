@@ -1,4 +1,4 @@
-# vllm Hunyuan3 Preview 模型 PR 优化历史
+# vLLM Hunyuan3 Preview 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 

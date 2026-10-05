@@ -1,4 +1,4 @@
-# sglang MiniMax M2/M3 Series 模型 PR 优化历史
+# SGLang MiniMax M2/M3 Series 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -7,7 +7,7 @@
 | `docs/cookbook/autoregressive/MiniMax/MiniMax-M2.5.mdx` | 无直接 PR 号提交 |
 | `docs/cookbook/autoregressive/MiniMax/MiniMax-M2.7.mdx` | 无直接 PR 号提交 |
 | `docs/cookbook/autoregressive/MiniMax/MiniMax-M2.mdx` | 无直接 PR 号提交 |
-| `docs/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` | [#31446](https://github.com/sgl-project/sglang/pull/31446) |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/minimax_m2_5.mdx` | 无直接 PR 号提交 |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/minimax_m2_5.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/minimax-m2-deployment.jsx` | 无直接 PR 号提交 |
@@ -18,28 +18,33 @@
 | `docs/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` | 无直接 PR 号提交 |
 | `python/sglang/kernels/jit/csrc/minimax/fused_gemma_qknorm_rope.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/jit/csrc/minimax/fused_store_kv_index.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
+| `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
 | `python/sglang/kernels/jit/csrc/minimax/per_token_quant_ue8m0.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/attention/minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/ops/attention/minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
+| `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#36549](https://github.com/sgl-project/sglang/pull/36549) |
 | `python/sglang/kernels/ops/attention/minimax_qknorm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/ops/attention/minimax_sparse/__init__.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
 | `python/sglang/kernels/ops/attention/minimax_sparse/common/index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
 | `python/sglang/kernels/ops/attention/minimax_sparse/common/utils.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/decode/indexer_cp.py` | [#41488](https://github.com/sgl-project/sglang/pull/41488) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36546](https://github.com/sgl-project/sglang/pull/36546) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#36546](https://github.com/sgl-project/sglang/pull/36546) |
 | `python/sglang/kernels/ops/kvcache/minimax_store_kv_index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/ops/layernorm/minimax_m3_rmsnorm.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/ops/moe/minimax_m3_swiglu.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `python/sglang/kernels/ops/quantization/minimax_quant_ue8m0.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/srt/arg_groups/model_overrides/minimax_m2.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/arg_groups/model_overrides/minimax_m3.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/configs/minimax_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
 | `python/sglang/srt/function_call/minimax_m2.py` | [#12129](https://github.com/sgl-project/sglang/pull/12129), [#15538](https://github.com/sgl-project/sglang/pull/15538) |
 | `python/sglang/srt/function_call/minimax_m3.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
 | `python/sglang/srt/hardware_backend/npu/modules/minimax_m3_processor.py` | [#32941](https://github.com/sgl-project/sglang/pull/32941) |
-| `python/sglang/srt/layers/attention/minimax_sparse_backend.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#32941](https://github.com/sgl-project/sglang/pull/32941) |
-| `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29250](https://github.com/sgl-project/sglang/pull/29250), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
+| `python/sglang/srt/layers/attention/minimax_sparse_backend.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36546](https://github.com/sgl-project/sglang/pull/36546), [#41488](https://github.com/sgl-project/sglang/pull/41488), [#41497](https://github.com/sgl-project/sglang/pull/41497) |
+| `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py` | [#36546](https://github.com/sgl-project/sglang/pull/36546) |
+| `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py` | [#41488](https://github.com/sgl-project/sglang/pull/41488) |
+| `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29250](https://github.com/sgl-project/sglang/pull/29250), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36546](https://github.com/sgl-project/sglang/pull/36546), [#41488](https://github.com/sgl-project/sglang/pull/41488) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/msa.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29250](https://github.com/sgl-project/sglang/pull/29250), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/naive/flash_with_topk_idx.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/naive/topk_sparse.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712) |
@@ -48,14 +53,13 @@
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_msa_fp8_parity.py` | [#30971](https://github.com/sgl-project/sglang/pull/30971) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
 | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/minimax_m3_gfx950_mxfp8_compact_moe.json` | [#28712](https://github.com/sgl-project/sglang/pull/28712) |
-| `python/sglang/srt/models/minimax_m2.py` | [#12129](https://github.com/sgl-project/sglang/pull/12129), [#12798](https://github.com/sgl-project/sglang/pull/12798), [#13297](https://github.com/sgl-project/sglang/pull/13297), [#13659](https://github.com/sgl-project/sglang/pull/13659), [#13892](https://github.com/sgl-project/sglang/pull/13892), [#14047](https://github.com/sgl-project/sglang/pull/14047), [#14416](https://github.com/sgl-project/sglang/pull/14416), [#16483](https://github.com/sgl-project/sglang/pull/16483), [#18217](https://github.com/sgl-project/sglang/pull/18217), [#19577](https://github.com/sgl-project/sglang/pull/19577), [#19995](https://github.com/sgl-project/sglang/pull/19995), [#20067](https://github.com/sgl-project/sglang/pull/20067), ... (23 total) |
-| `python/sglang/srt/models/minimax_m3.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32099](https://github.com/sgl-project/sglang/pull/32099), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#33962](https://github.com/sgl-project/sglang/pull/33962), [#34542](https://github.com/sgl-project/sglang/pull/34542) |
-| `python/sglang/srt/models/minimax_m3_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32941](https://github.com/sgl-project/sglang/pull/32941) |
+| `python/sglang/srt/models/minimax_m2.py` | [#12129](https://github.com/sgl-project/sglang/pull/12129), [#12798](https://github.com/sgl-project/sglang/pull/12798), [#13297](https://github.com/sgl-project/sglang/pull/13297), [#13659](https://github.com/sgl-project/sglang/pull/13659), [#13892](https://github.com/sgl-project/sglang/pull/13892), [#14047](https://github.com/sgl-project/sglang/pull/14047), [#14416](https://github.com/sgl-project/sglang/pull/14416), [#16483](https://github.com/sgl-project/sglang/pull/16483), [#18217](https://github.com/sgl-project/sglang/pull/18217), [#19577](https://github.com/sgl-project/sglang/pull/19577), [#19995](https://github.com/sgl-project/sglang/pull/19995), [#20067](https://github.com/sgl-project/sglang/pull/20067), ... (24 total) |
+| `python/sglang/srt/models/minimax_m3.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32099](https://github.com/sgl-project/sglang/pull/32099), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#33962](https://github.com/sgl-project/sglang/pull/33962), [#34542](https://github.com/sgl-project/sglang/pull/34542), [#35357](https://github.com/sgl-project/sglang/pull/35357), [#36557](https://github.com/sgl-project/sglang/pull/36557), [#36576](https://github.com/sgl-project/sglang/pull/36576), [#37254](https://github.com/sgl-project/sglang/pull/37254), [#41198](https://github.com/sgl-project/sglang/pull/41198) |
+| `python/sglang/srt/models/minimax_m3_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#36576](https://github.com/sgl-project/sglang/pull/36576), [#37254](https://github.com/sgl-project/sglang/pull/37254) |
 | `python/sglang/srt/models/minimax_vl_common.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
 | `python/sglang/srt/multimodal/processors/minimax_m3_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
 | `test/manual/minimax_m3/test_npu_memory_pool.py` | [#32941](https://github.com/sgl-project/sglang/pull/32941) |
 | `test/manual/minimax_m3/test_npu_topk.py` | [#32941](https://github.com/sgl-project/sglang/pull/32941) |
-| `test/registered/8-gpu-models/test_minimax_m25.py` | [#20067](https://github.com/sgl-project/sglang/pull/20067), [#20083](https://github.com/sgl-project/sglang/pull/20083) |
 | `test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py` | [#19443](https://github.com/sgl-project/sglang/pull/19443) |
 | `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py` | [#22722](https://github.com/sgl-project/sglang/pull/22722) |
 | `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py` | [#19443](https://github.com/sgl-project/sglang/pull/19443) |
@@ -66,31 +70,27 @@
 | `test/registered/amd/perf/mi30x/test_minimax_m27_perf_amd.py` | [#22722](https://github.com/sgl-project/sglang/pull/22722) |
 | `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py` | [#21524](https://github.com/sgl-project/sglang/pull/21524) |
 | `test/registered/amd/perf/mi35x/test_minimax_m27_perf_mi35x.py` | [#22722](https://github.com/sgl-project/sglang/pull/22722) |
+| `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py` | [#36142](https://github.com/sgl-project/sglang/pull/36142) |
+| `test/registered/amd/test_minimax_hd128_asm_prefill.py` | [#41707](https://github.com/sgl-project/sglang/pull/41707) |
+| `test/registered/amd/test_minimax_indexer_cp.py` | [#41488](https://github.com/sgl-project/sglang/pull/41488) |
+| `test/registered/amd/test_minimax_rocm_verify.py` | [#41497](https://github.com/sgl-project/sglang/pull/41497) |
+| `test/registered/e2e/models/test_minimax_m25_basic.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models_large/test_minimax_m25.py` | 无直接 PR 号提交 |
 | `test/registered/kernels/benchmark/attention/bench_minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `test/registered/kernels/benchmark/attention/bench_minimax_qknorm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `test/registered/kernels/benchmark/kvcache/bench_minimax_store_kv_index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/attention/test_minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `test/registered/kernels/ops/attention/test_minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
 | `test/registered/kernels/ops/attention/test_minimax_decode_topk_page_table.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `test/registered/kernels/ops/attention/test_minimax_m3_qk_norm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `test/registered/kernels/ops/attention/test_minimax_qknorm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
 | `test/registered/kernels/ops/gemm/test_minimax_fused_qkv_index_gemm.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/kvcache/test_minimax_store_kv_index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/layernorm/test_minimax_m3_rmsnorm.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/moe/test_minimax_m3_mxfp8.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/moe/test_minimax_quant_scatter.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/models_e2e/test_minimax_m25_basic.py` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/minimax_m2_5/test_npu_minimax_m2_5_w8a8_4p_in64k_out1k_prefix90_50ms_gpqa.py` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/minimax_m2_5/test_npu_minimax_m2_5_w8a8_8p_in3k5_out1k5_50ms_gpqa.py` | 无直接 PR 号提交 |
-| `test/registered/npu/llm_models/test_ascend_minimax_m2.py` | 无直接 PR 号提交 |
-| `test/registered/npu/performance/minimax_m2_5/test_npu_minimax_m2_5_w8a8_4p_in64k_out1k_prefix90_50ms.py` | 无直接 PR 号提交 |
-| `test/registered/npu/performance/minimax_m2_5/test_npu_minimax_m2_5_w8a8_8p_in3k5_out1k5_50ms.py` | 无直接 PR 号提交 |
-| ... | 4 more files omitted from table; all were used for git tracing. |
+| ... | 12 more files omitted from table; all were used for git tracing. |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 41
-- 原文档显式引用补充 PR 数: 38
-- 当前文档总 PR 数: 79
+- git 追溯 PR 数: 55
+- 原文档显式引用补充 PR 数: 39
+- 当前文档总 PR 数: 94
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -111,7 +111,6 @@
 | 2026-02-05 | [#18217](https://github.com/sgl-project/sglang/pull/18217) | merged | [piecewise graph]: support MiniMax-M2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-02-27 | [#19443](https://github.com/sgl-project/sglang/pull/19443) | merged | [AMD] [MiniMax-M2.5 Day 0] Add MiniMax-M2.5 nightly accuracy test | `test/registered/amd/accuracy/mi35x/test_minimax_m25_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m25_eval_amd.py` |
 | 2026-03-02 | [#19577](https://github.com/sgl-project/sglang/pull/19577) | merged | [Feat] add PP Support for minimax-m2 series | `python/sglang/srt/models/minimax_m2.py` |
-| 2026-03-06 | [#20031](https://github.com/sgl-project/sglang/pull/20031) | open | fix(minimax): support loading merged expert weights (w13) for awq | `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-07 | [#20083](https://github.com/sgl-project/sglang/pull/20083) | merged | [Nightly] Replace MiniMax-M2 with MiniMax-M2.5 | `test/registered/8-gpu-models/test_minimax_m25.py` |
 | 2026-03-18 | [#19995](https://github.com/sgl-project/sglang/pull/19995) | merged | Add packed_modules_mapping for MiniMax-M2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-03-18 | [#20870](https://github.com/sgl-project/sglang/pull/20870) | merged | [MiniMax M2] Fix KV cache scale loading | `python/sglang/srt/models/minimax_m2.py` |
@@ -123,12 +122,10 @@
 | 2026-04-03 | [#21524](https://github.com/sgl-project/sglang/pull/21524) | merged | [AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_minimax_m25_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_minimax_m25_perf_amd.py` |
 | 2026-04-06 | [#21792](https://github.com/sgl-project/sglang/pull/21792) | merged | [CI] Add basic unit test for Minimax-M2.5 | `test/registered/8-gpu-models/test_minimax_m25_basic.py` |
 | 2026-04-07 | [#20919](https://github.com/sgl-project/sglang/pull/20919) | merged | [NPU] Support dp-attention for MiniMax2.5 | `python/sglang/srt/models/minimax_m2.py` |
-| 2026-04-10 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-10 | [#20067](https://github.com/sgl-project/sglang/pull/20067) | merged | MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn | `python/sglang/srt/models/minimax_m2.py`, `test/registered/8-gpu-models/test_minimax_m25.py` |
+| 2026-04-10 | [#20967](https://github.com/sgl-project/sglang/pull/20967) | merged | 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-13 | [#20673](https://github.com/sgl-project/sglang/pull/20673) | merged | [Feature][JIT Kernel] Fused TP QK norm For Minimax | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-14 | [#22722](https://github.com/sgl-project/sglang/pull/22722) | merged | [AMD] Add MiniMax-M2.7 accuracy and performance nightly tests | `python/sglang/srt/models/minimax_m2.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py` |
-| 2026-04-16 | [#22934](https://github.com/sgl-project/sglang/pull/22934) | open | Minimax eplb bugfix | `python/sglang/srt/models/minimax_m2.py` |
-| 2026-04-21 | [#23301](https://github.com/sgl-project/sglang/pull/23301) | open | [sgl] Stream MiniMax M2 string parameters token-by-token | `python/sglang/srt/function_call/minimax_m2.py` |
 | 2026-04-27 | [#22432](https://github.com/sgl-project/sglang/pull/22432) | closed | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-04-30 | [#23190](https://github.com/sgl-project/sglang/pull/23190) | merged | [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2 & fix eagle3 hidden states capture in dp attn mode | `python/sglang/srt/models/minimax_m2.py` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
@@ -146,21 +143,21 @@
 | 2026-06-07 | [#22300](https://github.com/sgl-project/sglang/pull/22300) | merged | [NVIDIA] Fix FP8 gemm performance with fp16 models (MInimax-M2.5) | `python/sglang/srt/layers/quantization/fp8_utils.py`, `python/sglang/srt/layers/quantization/fp8.py`, `python/sglang/srt/model_loader/utils.py` |
 | 2026-06-09 | [#19468](https://github.com/sgl-project/sglang/pull/19468) | closed | fix[minimax]: support deepep with minimax models | `python/sglang/srt/server_args.py`, `docker/Dockerfile`, `scripts/ci/cuda/ci_install_deepep.sh` |
 | 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
-| 2026-06-11 | [#24465](https://github.com/sgl-project/sglang/pull/24465) | merged | [NVIDIA] Update Minimax-M2.5,M2.7 docs with flags for performance | `docs_new/src/snippets/autoregressive/minimax-m27-deployment.jsx`, `docs_new/src/snippets/autoregressive/minimax-m25-deployment.jsx`, `docs_new/docs/references/environment_variables.mdx` |
 | 2026-06-11 | [#17826](https://github.com/sgl-project/sglang/pull/17826) | closed | Support Pipeline and Data Parallelism for MiniMax-M2 | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-06-11 | [#24465](https://github.com/sgl-project/sglang/pull/24465) | merged | [NVIDIA] Update Minimax-M2.5,M2.7 docs with flags for performance | `docs_new/src/snippets/autoregressive/minimax-m27-deployment.jsx`, `docs_new/src/snippets/autoregressive/minimax-m25-deployment.jsx`, `docs_new/docs/references/environment_variables.mdx` |
 | 2026-06-12 | [#28060](https://github.com/sgl-project/sglang/pull/28060) | merged | docs | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
 | 2026-06-12 | [#28062](https://github.com/sgl-project/sglang/pull/28062) | merged | docs(minimax-m3): warm-steady-state benchmark numbers | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3-benchmarks.jsx` |
 | 2026-06-13 | [#28150](https://github.com/sgl-project/sglang/pull/28150) | merged | docs(minimax-m3): add high-concurrency throughput tip for H200 bf16 | `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
 | 2026-06-15 | [#28207](https://github.com/sgl-project/sglang/pull/28207) | merged | docs(minimax-m3): refresh B200 benchmarks (tp8, piecewise) + add GPQA | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3-benchmarks.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
 | 2026-06-18 | [#20489](https://github.com/sgl-project/sglang/pull/20489) | closed | fix(dp-attn): fix issues with dp-attention for MiniMax M2 and general… | `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/rotary_embedding/base.py` |
-| 2026-06-18 | [#20975](https://github.com/sgl-project/sglang/pull/20975) | closed | fix(dp-attn): fix issues with dp-attention for MiniMax M2 | `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/model_executor/model_runner.py` |
 | 2026-06-18 | [#20873](https://github.com/sgl-project/sglang/pull/20873) | closed | docs: add MiniMax-M2.7 and M2.7-highspeed model support | `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md` |
+| 2026-06-18 | [#20975](https://github.com/sgl-project/sglang/pull/20975) | closed | fix(dp-attn): fix issues with dp-attention for MiniMax M2 | `python/sglang/srt/models/minimax_m2.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/model_executor/model_runner.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-18 | [#28668](https://github.com/sgl-project/sglang/pull/28668) | merged | docs(minimax-m3): add MMMU-Pro accuracy to B200 benchmark card | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3-benchmarks.jsx` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-22 | [#28712](https://github.com/sgl-project/sglang/pull/28712) | merged | [minimax-m3] Split 1/4: sparse attention ops + JIT kernels + config foundation | `python/sglang/srt/layers/attention/minimax_sparse_ops/decode/flash_with_topk_idx.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/prefill/flash_with_topk_idx.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py` |
-| 2026-06-23 | [#28777](https://github.com/sgl-project/sglang/pull/28777) | merged | docs(minimax-m3): use published AMD ROCm images | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
 | 2026-06-23 | [#22744](https://github.com/sgl-project/sglang/pull/22744) | merged | [NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`, `docs_new/docs/advanced_features/server_arguments.mdx` |
+| 2026-06-23 | [#28777](https://github.com/sgl-project/sglang/pull/28777) | merged | docs(minimax-m3): use published AMD ROCm images | `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` |
 | 2026-06-26 | [#29250](https://github.com/sgl-project/sglang/pull/29250) | merged | Fix MiniMax MSA fallback when fmha plan is unavailable | `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/msa.py` |
 | 2026-06-27 | [#28713](https://github.com/sgl-project/sglang/pull/28713) | merged | [minimax-m3] Split 2/4: mem-cache / HiCache / sparse KV pool | `test/registered/unit/mem_cache/test_minimax_sparse_pool_host_unit.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py`, `python/sglang/srt/model_executor/pool_configurator.py` |
 | 2026-06-28 | [#28714](https://github.com/sgl-project/sglang/pull/28714) | merged | [minimax-m3] Split 3/4: disagg K-only index-K transfer | `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`, `python/sglang/srt/disaggregation/mooncake/conn.py`, `python/sglang/srt/disaggregation/nixl/conn.py` |
@@ -172,11 +169,29 @@
 | 2026-08-01 | [#30971](https://github.com/sgl-project/sglang/pull/30971) | merged | [minimax-m3] fp8 attention GEMMs on SM100 (fp8_e4m3 KV + trtllm_mha) | `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_fp8_attn_gemm.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_msa_fp8_parity.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/msa.py` |
 | 2026-08-04 | [#33402](https://github.com/sgl-project/sglang/pull/33402) | merged | [AMD] Enable block-fp8 + quick INT4 all-reduce in MiniMax-M3 MI35x nightly Test | `test/registered/amd/accuracy/mi35x/test_minimax_m3_tp4_eval_mi35x.py` |
 | 2026-08-10 | [#33962](https://github.com/sgl-project/sglang/pull/33962) | merged | enable TRT-LLM for MiniMax M3 by preserving SwiGLU params | `python/sglang/srt/models/minimax_m3.py` |
-| 2026-08-13 | [#32941](https://github.com/sgl-project/sglang/pull/32941) | merged | [minimax m3][npu]Adaptation of Minimax M3(w8a8) for NPU platforms [1/2] | `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py` |
 | 2026-08-13 | [#31956](https://github.com/sgl-project/sglang/pull/31956) | merged | Optimize MiniMax-M2.7 on CPU | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-08-13 | [#32941](https://github.com/sgl-project/sglang/pull/32941) | merged | [minimax m3][npu]Adaptation of Minimax M3(w8a8) for NPU platforms [1/2] | `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py` |
 | 2026-08-14 | [#34542](https://github.com/sgl-project/sglang/pull/34542) | merged | [MiniMax-M3] Overlap shared and routed experts | `python/sglang/srt/models/minimax_m3.py` |
 | 2026-08-18 | [#32099](https://github.com/sgl-project/sglang/pull/32099) | merged | [AMD] MiniMax-M3 : Fuse QKV+index proj for block-fp8 | `python/sglang/srt/models/minimax_m3.py` |
 | 2026-08-20 | [#18310](https://github.com/sgl-project/sglang/pull/18310) | closed | [Fix] MiniMax-M2.1 CUDA Graph + torch.compile crashes due to outplace_all_reduce being traced by Dynamo | `python/sglang/srt/distributed/parallel_state.py` |
+| 2026-08-25 | [#20031](https://github.com/sgl-project/sglang/pull/20031) | closed | fix(minimax): support loading merged expert weights (w13) for awq | `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py` |
+| 2026-08-25 | [#36142](https://github.com/sgl-project/sglang/pull/36142) | merged | [AMD][CI] Add MiniMax-M3-MXFP8 MI35x nightly perf benchmark | `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py` |
+| 2026-08-28 | [#35290](https://github.com/sgl-project/sglang/pull/35290) | merged | [XPU] Lazily import tvm_ffi-dependent all_reduce kernel in minimax_m2 | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-08-29 | [#22934](https://github.com/sgl-project/sglang/pull/22934) | closed | Minimax eplb bugfix | `python/sglang/srt/models/minimax_m2.py` |
+| 2026-08-29 | [#23301](https://github.com/sgl-project/sglang/pull/23301) | closed | [sgl] Stream MiniMax M2 string parameters token-by-token | `python/sglang/srt/function_call/minimax_m2.py` |
+| 2026-09-08 | [#36527](https://github.com/sgl-project/sglang/pull/36527) | merged | MiniMax-M3: share the sparse index top-k across layers and reuse the decode top-k buffer | `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` |
+| 2026-09-08 | [#36557](https://github.com/sgl-project/sglang/pull/36557) | merged | MiniMax-M3: Triton split-K router GEMV with in-kernel fixup | `python/sglang/srt/models/minimax_m3.py` |
+| 2026-09-12 | [#37254](https://github.com/sgl-project/sglang/pull/37254) | merged | [AMD] Fix Quark load of MiniMax-M3 MXFP4 index_qkv_proj | `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py` |
+| 2026-09-17 | [#36576](https://github.com/sgl-project/sglang/pull/36576) | merged | MiniMax-M3: allow shared-experts fusion on ROCm gfx942 and newer | `python/sglang/srt/models/minimax_m3_vl.py`, `python/sglang/srt/models/minimax_m3.py` |
+| 2026-09-22 | [#31446](https://github.com/sgl-project/sglang/pull/31446) | merged | [HiSparse] Add MHA hisparse support for MiniMax M3 | `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` |
+| 2026-09-23 | [#36546](https://github.com/sgl-project/sglang/pull/36546) | merged | MiniMax-M3: run the sparse prefill main attention through AITER Gluon paged attention | `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py` |
+| 2026-09-23 | [#36560](https://github.com/sgl-project/sglang/pull/36560) | merged | MiniMax-M3: wave64 histogram-select decode top-k, and raise kMaxNumBlocks for CUDA graphs | `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh`, `python/sglang/kernels/ops/attention/minimax_decode_topk.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` |
+| 2026-09-24 | [#36549](https://github.com/sgl-project/sglang/pull/36549) | merged | MiniMax-M3: allocate the lightning-indexer K cache in fp8 on gfx95 | `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` |
+| 2026-09-25 | [#41198](https://github.com/sgl-project/sglang/pull/41198) | merged | [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit | `python/sglang/srt/models/minimax_m3.py` |
+| 2026-10-01 | [#41497](https://github.com/sgl-project/sglang/pull/41497) | merged | [AMD] Fix MiniMax-M3 EAGLE3 verification on ROCm | `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `test/registered/amd/test_minimax_rocm_verify.py` |
+| 2026-10-02 | [#41488](https://github.com/sgl-project/sglang/pull/41488) | merged | [AMD] Add opt-in MiniMax-M3 TP4 indexer context partitioning | `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py`, `test/registered/unit/layers/attention/test_minimax_indexer_cp_gate.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` |
+| 2026-10-04 | [#41707](https://github.com/sgl-project/sglang/pull/41707) | merged | [AMD] Use AITER ASM prefill for MiniMax-M3 HD128 attention | `test/registered/amd/test_minimax_hd128_asm_prefill.py`, `python/sglang/srt/layers/attention/aiter_backend.py`, `python/sglang/srt/environ.py` |
+| 2026-10-04 | [#35357](https://github.com/sgl-project/sglang/pull/35357) | merged | [AMD] MiniMax-M3: fuse sparse QK norm, RoPE and cache writes with AITER | `python/sglang/srt/models/minimax_m3.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -538,43 +553,6 @@ diff -- python/sglang/srt/models/minimax_m2.py
   - runtime: `python/sglang/srt/models/minimax_m2.py` modified +35/-7
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #20031 - fix(minimax): support loading merged expert weights (w13) for awq
-
-- 链接: https://github.com/sgl-project/sglang/pull/20031
-- 状态/时间: open / 2026-03-06
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+203/-9，可读 patch 236 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix(minimax): support loading merged expert weights (w13) for awq」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「fix(minimax): support loading merged expert weights (w13) for awq」；主要实现面是 `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13，涉及 `TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13`；`python/sglang/srt/models/minimax_m2.py` modified +58/-9 (67 lines); hunks: -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1112,7 +1120,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights，涉及 `load_weights`。
-- 代码 diff 细节:
-  - `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13
-  - `python/sglang/srt/models/minimax_m2.py` modified +58/-9 (67 lines); hunks: -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1112,7 +1120,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights
-- 关键代码摘录:
-
-```diff
-diff -- tests/registered/models/test_minimax_m2_weights.py
-@@ -0,0 +1,145 @@
-+import unittest
-+from unittest.mock import MagicMock, patch
-+import torch
-+from transformers import PretrainedConfig
-+from sglang.srt.models.minimax_m2 import MiniMaxM2ForCausalLM
-+class TestMiniMaxM2WeightLoading(unittest.TestCase):
-diff -- python/sglang/srt/models/minimax_m2.py
-@@ -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+        expert_params_mapping_fused = FusedMoE.make_expert_params_mapping_fused(
-+            ckpt_gate_up_proj_name="w13",
-+            ckpt_down_proj_name="w2",
-+            ckpt_gate_up_proj_bias_name="w13_bias",
-+            ckpt_down_proj_bias_name="w2_bias",
-+            num_experts=self.config.num_local_experts,
-```
-
-- 已读文件:
-  - tests: `tests/registered/models/test_minimax_m2_weights.py` added +145/-0
-  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +58/-9
-- 验证与风险: diff 自带测试面 `tests/registered/models/test_minimax_m2_weights.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #20083 - [Nightly] Replace MiniMax-M2 with MiniMax-M2.5
 
 - 链接: https://github.com/sgl-project/sglang/pull/20083
@@ -902,33 +880,6 @@ diff -- python/sglang/srt/models/minimax_m2.py
   - runtime: `python/sglang/srt/models/minimax_m2.py` modified +82/-39
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/hardware_backend/npu/moe/topk.py`, `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #20967 - 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16
-
-- 链接: https://github.com/sgl-project/sglang/pull/20967
-- 状态/时间: merged / 2026-04-10
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `84194c25c1cd`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-10，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader，涉及 `rms_apply_serial, MiniMaxM2RMSNormTP, __init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/minimax_m2.py
-@@ -253,27 +253,47 @@ def rms_apply_serial(
--    def __init__(self, hidden_size: int, eps: float = 1e-6) -> None:
-+    def __init__(self, hidden_size: int, num_heads: int, eps: float = 1e-6) -> None:
-+        # Align with QKVParallelLinear pattern
-+        if self.attn_tp_size >= num_heads:
-+            assert (
-+                self.attn_tp_size % num_heads == 0
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +34/-10
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #20067 - MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn
 
 - 链接: https://github.com/sgl-project/sglang/pull/20067
@@ -965,6 +916,33 @@ diff -- test/registered/8-gpu-models/test_minimax_m25.py
   - runtime: `python/sglang/srt/models/minimax_m2.py` modified +25/-6
   - tests: `test/registered/8-gpu-models/test_minimax_m25.py` modified +10/-0
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_minimax_m25.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #20967 - 【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16
+
+- 链接: https://github.com/sgl-project/sglang/pull/20967
+- 状态/时间: merged / 2026-04-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `84194c25c1cd`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+34/-10，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「【BugFix】fix the bug of minimax_m2.5 model that causes repeated outputs when using tp16」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader，涉及 `rms_apply_serial, MiniMaxM2RMSNormTP, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m2.py` modified +34/-10 (44 lines); hunks: -253,27 +253,47 @@ def rms_apply_serial(; -641,10 +661,14 @@ def __init__(; symbols: rms_apply_serial, MiniMaxM2RMSNormTP, __init__, weight_loader
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m2.py
+@@ -253,27 +253,47 @@ def rms_apply_serial(
+-    def __init__(self, hidden_size: int, eps: float = 1e-6) -> None:
++    def __init__(self, hidden_size: int, num_heads: int, eps: float = 1e-6) -> None:
++        # Align with QKVParallelLinear pattern
++        if self.attn_tp_size >= num_heads:
++            assert (
++                self.attn_tp_size % num_heads == 0
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +34/-10
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #20673 - [Feature][JIT Kernel] Fused TP QK norm For Minimax
 
@@ -1034,60 +1012,6 @@ diff -- test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py
   - runtime: `python/sglang/srt/models/minimax_m2.py` modified +7/-1
   - tests: `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py` added +249/-0; `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py` added +245/-0; `test/registered/amd/perf/mi35x/test_minimax_m27_perf_mi35x.py` added +146/-0; `test/registered/amd/perf/mi30x/test_minimax_m27_perf_amd.py` added +140/-0
 - 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi30x/test_minimax_m27_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_minimax_m27_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_minimax_m27_perf_amd.py`, `test/registered/amd/perf/mi35x/test_minimax_m27_perf_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #22934 - Minimax eplb bugfix
-
-- 链接: https://github.com/sgl-project/sglang/pull/22934
-- 状态/时间: open / 2026-04-16
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+25/-0，可读 patch 53 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Minimax eplb bugfix」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「Minimax eplb bugfix」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunks: -66,6 +66,7; -88,6 +89,7; symbols: op_output, get_moe_weights, MiniMaxM2Attention, __init__，涉及 `op_output, get_moe_weights, MiniMaxM2Attention`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunks: -66,6 +66,7; -88,6 +89,7; symbols: op_output, get_moe_weights, MiniMaxM2Attention, __init__
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/minimax_m2.py
-@@ -66,6 +66,7 @@
-+from sglang.srt.layers.moe.utils import filter_moe_weight_param_global_expert
-@@ -88,6 +89,7 @@
-+    LazyValue,
-@@ -683,6 +685,16 @@ def op_output(self, state):
-+    def get_moe_weights(self):
-+        return [
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +25/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #23301 - [sgl] Stream MiniMax M2 string parameters token-by-token
-
-- 链接: https://github.com/sgl-project/sglang/pull/23301
-- 状态/时间: open / 2026-04-21
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+332/-280，可读 patch 742 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[sgl] Stream MiniMax M2 string parameters token-by-token」；模型线: MiniMax M2/M3 Series；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/minimax_m2.py`；技术摘要: 覆盖「[sgl] Stream MiniMax M2 string parameters token-by-token」；主要实现面是 `python/sglang/srt/function_call/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunks: -13,6 +13,11; -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):; symbols: MinimaxM2Detector, __init__，涉及 `MinimaxM2Detector, __init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunks: -13,6 +13,11; -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):; symbols: MinimaxM2Detector, __init__
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/function_call/minimax_m2.py
-@@ -13,6 +13,11 @@
-+_PARAM_END_TAG = "</parameter>"
-+_PARAM_END_TAG_LEN = len(_PARAM_END_TAG)
-+# Hold back this many chars while streaming to avoid emitting a partial end tag
-+_STREAM_HOLD_BACK = _PARAM_END_TAG_LEN - 1  # 11
-@@ -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):
-+    String-typed parameters are streamed token-by-token.
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #22432 - [NPU] add split_qkv_tp_rmsnorm_rope ops for minimax2
 
@@ -1707,6 +1631,33 @@ diff -- python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py
   - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541; `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0; `python/sglang/srt/model_executor/runner_backend/tc_piecewise_cuda_graph_backend.py` added +225/-0
 - 验证与风险: diff 自带测试面 `python/sglang/test/doc_patch.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #17826 - Support Pipeline and Data Parallelism for MiniMax-M2
+
+- 链接: https://github.com/sgl-project/sglang/pull/17826
+- 状态/时间: closed / 2026-06-11
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+167/-70，可读 patch 479 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Support Pipeline and Data Parallelism for MiniMax-M2」；模型线: MiniMax M2/M3 Series；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「Support Pipeline and Data Parallelism for MiniMax-M2」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunks: -16,7 +16,8; -28,7 +29,6; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader，涉及 `MiniMaxM2RMSNormTP, __init__, weight_loader`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunks: -16,7 +16,8; -28,7 +29,6; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m2.py
+@@ -16,7 +16,8 @@
+-from typing import Iterable, Optional, Set, Tuple, Union
++from contextlib import nullcontext
++from typing import Iterable, List, Optional, Set, Tuple, Union
+@@ -28,7 +29,6 @@
+-    get_tensor_model_parallel_rank,
+@@ -39,6 +39,11 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +167/-70
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #24465 - [NVIDIA] Update Minimax-M2.5,M2.7 docs with flags for performance
 
 - 链接: https://github.com/sgl-project/sglang/pull/24465
@@ -1745,33 +1696,6 @@ diff -- docs_new/docs/references/environment_variables.mdx
 - 已读文件:
   - docs: `docs_new/src/snippets/autoregressive/minimax-m27-deployment.jsx` modified +41/-3; `docs_new/src/snippets/autoregressive/minimax-m25-deployment.jsx` modified +16/-0; `docs_new/docs/references/environment_variables.mdx` modified +5/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/docs/references/environment_variables.mdx`, `docs_new/src/snippets/autoregressive/minimax-m25-deployment.jsx`, `docs_new/src/snippets/autoregressive/minimax-m27-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
-### PR #17826 - Support Pipeline and Data Parallelism for MiniMax-M2
-
-- 链接: https://github.com/sgl-project/sglang/pull/17826
-- 状态/时间: closed / 2026-06-11
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+167/-70，可读 patch 479 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Support Pipeline and Data Parallelism for MiniMax-M2」；模型线: MiniMax M2/M3 Series；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「Support Pipeline and Data Parallelism for MiniMax-M2」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunks: -16,7 +16,8; -28,7 +29,6; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader，涉及 `MiniMaxM2RMSNormTP, __init__, weight_loader`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/minimax_m2.py` modified +167/-70 (237 lines); hunks: -16,7 +16,8; -28,7 +29,6; symbols: MiniMaxM2RMSNormTP, __init__, weight_loader, ebias_weight_loader
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/minimax_m2.py
-@@ -16,7 +16,8 @@
--from typing import Iterable, Optional, Set, Tuple, Union
-+from contextlib import nullcontext
-+from typing import Iterable, List, Optional, Set, Tuple, Union
-@@ -28,7 +29,6 @@
--    get_tensor_model_parallel_rank,
-@@ -39,6 +39,11 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +167/-70
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #28060 - docs
 
@@ -1944,6 +1868,38 @@ diff -- python/sglang/srt/layers/rotary_embedding/base.py
   - other: `PR_DESCRIPTION.md` added +78/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/rotary_embedding/base.py`, `python/sglang/srt/mem_cache/memory_pool.py`, `python/sglang/srt/model_executor/model_runner.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #20873 - docs: add MiniMax-M2.7 and M2.7-highspeed model support
+
+- 链接: https://github.com/sgl-project/sglang/pull/20873
+- 状态/时间: closed / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-3，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs: add MiniMax-M2.7 and M2.7-highspeed model support」；模型线: MiniMax M2/M3 Series；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`；技术摘要: 覆盖「docs: add MiniMax-M2.7 and M2.7-highspeed model support」；主要实现面是 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunks: -1,13 +1,14; -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \；`docs/supported_models/text_generation/generative_models.md` modified +1/-1 (2 lines); hunks: -37,7 +37,7 @@ in the GitHub search bar.。
+- 代码 diff 细节:
+  - `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunks: -1,13 +1,14; -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \
+  - `docs/supported_models/text_generation/generative_models.md` modified +1/-1 (2 lines); hunks: -37,7 +37,7 @@ in the GitHub search bar.
+- 关键代码摘录:
+
+```diff
+diff -- docs/basic_usage/minimax_m2.md
+@@ -1,13 +1,14 @@
+-# MiniMax M2.5/M2.1/M2 Usage
++# MiniMax M2.7/M2.5/M2.1/M2 Usage
+-[MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5), [MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1), and [MiniMax-M2](https://huggingface.co/MiniMaxAI/Min
++[MiniMax-M2.7](https://huggingface.co/MiniMaxAI/MiniMax-M2.7), [MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5), [MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniM
++- [MiniMaxAI/MiniMax-M2.7](https://huggingface.co/MiniMaxAI/MiniMax-M2.7)
+@@ -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \
+diff -- docs/supported_models/text_generation/generative_models.md
+@@ -37,7 +37,7 @@ in the GitHub search bar.
+-| **MiniMax-M2** (M2, M2.1, M2.5)               | `MiniMaxAI/MiniMax-M2.5`, `MiniMaxAI/MiniMax-M2.1`, `MiniMaxAI/MiniMax-M2` | MiniMax's SOTA LLM for coding & agentic workflows. |
++| **MiniMax-M2** (M2, M2.1, M2.5, M2.7)               | `MiniMaxAI/MiniMax-M2.7`, `MiniMaxAI/MiniMax-M2.5`, `MiniMaxAI/MiniMax-M2.1`, `MiniMaxAI/MiniMax-M2` | MiniMax's SOTA LLM f
+```
+
+- 已读文件:
+  - docs: `docs/basic_usage/minimax_m2.md` modified +14/-2; `docs/supported_models/text_generation/generative_models.md` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
 ### PR #20975 - fix(dp-attn): fix issues with dp-attention for MiniMax M2
 
 - 链接: https://github.com/sgl-project/sglang/pull/20975
@@ -1985,38 +1941,6 @@ diff -- python/sglang/srt/model_executor/model_runner.py
   - runtime: `python/sglang/srt/models/minimax_m2.py` modified +33/-16; `python/sglang/srt/layers/dp_attention.py` modified +4/-0; `python/sglang/srt/model_executor/model_runner.py` modified +2/-2; `python/sglang/srt/layers/rotary_embedding/base.py` modified +2/-0; `python/sglang/srt/mem_cache/memory_pool.py` modified +3/-2
   - other: `PR_DESCRIPTION.md` added +78/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/layers/rotary_embedding/base.py`, `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #20873 - docs: add MiniMax-M2.7 and M2.7-highspeed model support
-
-- 链接: https://github.com/sgl-project/sglang/pull/20873
-- 状态/时间: closed / 2026-06-18
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+15/-3，可读 patch 41 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: add MiniMax-M2.7 and M2.7-highspeed model support」；模型线: MiniMax M2/M3 Series；类别: 文档/测试/CI；主要 diff: `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`；技术摘要: 覆盖「docs: add MiniMax-M2.7 and M2.7-highspeed model support」；主要实现面是 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunks: -1,13 +1,14; -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \；`docs/supported_models/text_generation/generative_models.md` modified +1/-1 (2 lines); hunks: -37,7 +37,7 @@ in the GitHub search bar.。
-- 代码 diff 细节:
-  - `docs/basic_usage/minimax_m2.md` modified +14/-2 (16 lines); hunks: -1,13 +1,14; -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \
-  - `docs/supported_models/text_generation/generative_models.md` modified +1/-1 (2 lines); hunks: -37,7 +37,7 @@ in the GitHub search bar.
-- 关键代码摘录:
-
-```diff
-diff -- docs/basic_usage/minimax_m2.md
-@@ -1,13 +1,14 @@
--# MiniMax M2.5/M2.1/M2 Usage
-+# MiniMax M2.7/M2.5/M2.1/M2 Usage
--[MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5), [MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1), and [MiniMax-M2](https://huggingface.co/MiniMaxAI/Min
-+[MiniMax-M2.7](https://huggingface.co/MiniMaxAI/MiniMax-M2.7), [MiniMax-M2.5](https://huggingface.co/MiniMaxAI/MiniMax-M2.5), [MiniMax-M2.1](https://huggingface.co/MiniMaxAI/MiniM
-+- [MiniMaxAI/MiniMax-M2.7](https://huggingface.co/MiniMaxAI/MiniMax-M2.7)
-@@ -83,3 +84,14 @@ curl http://localhost:8000/v1/chat/completions \
-diff -- docs/supported_models/text_generation/generative_models.md
-@@ -37,7 +37,7 @@ in the GitHub search bar.
--| **MiniMax-M2** (M2, M2.1, M2.5)               | `MiniMaxAI/MiniMax-M2.5`, `MiniMaxAI/MiniMax-M2.1`, `MiniMaxAI/MiniMax-M2` | MiniMax's SOTA LLM for coding & agentic workflows. |
-+| **MiniMax-M2** (M2, M2.1, M2.5, M2.7)               | `MiniMaxAI/MiniMax-M2.7`, `MiniMaxAI/MiniMax-M2.5`, `MiniMaxAI/MiniMax-M2.1`, `MiniMaxAI/MiniMax-M2` | MiniMax's SOTA LLM f
-```
-
-- 已读文件:
-  - docs: `docs/basic_usage/minimax_m2.md` modified +14/-2; `docs/supported_models/text_generation/generative_models.md` modified +1/-1
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/minimax_m2.md`, `docs/supported_models/text_generation/generative_models.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
 
@@ -2174,38 +2098,6 @@ diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_w
   - tests: `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py` added +480/-0; `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py` added +362/-0
 - 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_minimax_m3_mxfp8.py`, `python/sglang/jit_kernel/tests/test_minimax_m3_rmsnorm.py`, `python/sglang/jit_kernel/tests/test_moe_topk_sigmoid.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #28777 - docs(minimax-m3): use published AMD ROCm images
-
-- 链接: https://github.com/sgl-project/sglang/pull/28777
-- 状态/时间: merged / 2026-06-23
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-6，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs(minimax-m3): use published AMD ROCm images」；模型线: MiniMax M2/M3 Series；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`；技术摘要: 覆盖「docs(minimax-m3): use published AMD ROCm images」；主要实现面是 `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +5/-5 (10 lines); hunks: -97,11 +97,11 @@ sgl-eval run mmmu_pro \\；`docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-1 (2 lines); hunks: -39,7 +39,7 @@ Then run the **Python** output of the command panel below in t...。
-- 代码 diff 细节:
-  - `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +5/-5 (10 lines); hunks: -97,11 +97,11 @@ sgl-eval run mmmu_pro \\
-  - `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-1 (2 lines); hunks: -39,7 +39,7 @@ Then run the **Python** output of the command panel below in t...
-- 关键代码摘录:
-
-```diff
-diff -- docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx
-@@ -97,11 +97,11 @@ sgl-eval run mmmu_pro \\
--    // AMD ROCm images — pin the exact tag from the validated build (see Configuration Tips).
--    mi300x: "lmsysorg/sglang:<rocm-tag>-rocm700-mi30x",
--    mi325x: "lmsysorg/sglang:<rocm-tag>-rocm700-mi30x",
--    mi350x: "lmsysorg/sglang:<rocm-tag>-rocm720-mi35x",
--    mi355x: "lmsysorg/sglang:<rocm-tag>-rocm720-mi35x",
-+    // AMD ROCm images — published M3 builds, by arch (gfx942 -> mi30x, gfx950 -> mi35x).
-diff -- docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx
-@@ -39,7 +39,7 @@ Then run the **Python** output of the command panel below in that environment. T
--The command panel below fills in the right tag per platform: `dev-cu13-minimax-m3` (CUDA 13 — B300, GB200, GB300), `dev-cu12-minimax-m3` (CUDA 12 — Hopper H200), or `dev-minimax-m
-+The command panel below fills in the right tag per platform: `dev-cu13-minimax-m3` (CUDA 13 — B300, GB200, GB300), `dev-cu12-minimax-m3` (CUDA 12 — Hopper H200), or `dev-minimax-m
-```
-
-- 已读文件:
-  - docs: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +5/-5; `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-1
-- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #22744 - [NVIDIA] Support TF32 matmul to improve MiniMax gate gemm performance
 
 - 链接: https://github.com/sgl-project/sglang/pull/22744
@@ -2245,6 +2137,38 @@ diff -- docs_new/docs/advanced_features/server_arguments.mdx
   - runtime: `python/sglang/srt/model_executor/model_runner.py` modified +4/-0; `python/sglang/srt/server_args.py` modified +14/-0
   - docs: `docs_new/docs/advanced_features/server_arguments.mdx` modified +6/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/server_args.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28777 - docs(minimax-m3): use published AMD ROCm images
+
+- 链接: https://github.com/sgl-project/sglang/pull/28777
+- 状态/时间: merged / 2026-06-23
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+6/-6，可读 patch 26 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs(minimax-m3): use published AMD ROCm images」；模型线: MiniMax M2/M3 Series；类别: 文档/测试/CI；主要 diff: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`；技术摘要: 覆盖「docs(minimax-m3): use published AMD ROCm images」；主要实现面是 `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +5/-5 (10 lines); hunks: -97,11 +97,11 @@ sgl-eval run mmmu_pro \\；`docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-1 (2 lines); hunks: -39,7 +39,7 @@ Then run the **Python** output of the command panel below in t...。
+- 代码 diff 细节:
+  - `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +5/-5 (10 lines); hunks: -97,11 +97,11 @@ sgl-eval run mmmu_pro \\
+  - `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-1 (2 lines); hunks: -39,7 +39,7 @@ Then run the **Python** output of the command panel below in t...
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx
+@@ -97,11 +97,11 @@ sgl-eval run mmmu_pro \\
+-    // AMD ROCm images — pin the exact tag from the validated build (see Configuration Tips).
+-    mi300x: "lmsysorg/sglang:<rocm-tag>-rocm700-mi30x",
+-    mi325x: "lmsysorg/sglang:<rocm-tag>-rocm700-mi30x",
+-    mi350x: "lmsysorg/sglang:<rocm-tag>-rocm720-mi35x",
+-    mi355x: "lmsysorg/sglang:<rocm-tag>-rocm720-mi35x",
++    // AMD ROCm images — published M3 builds, by arch (gfx942 -> mi30x, gfx950 -> mi35x).
+diff -- docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx
+@@ -39,7 +39,7 @@ Then run the **Python** output of the command panel below in that environment. T
+-The command panel below fills in the right tag per platform: `dev-cu13-minimax-m3` (CUDA 13 — B300, GB200, GB300), `dev-cu12-minimax-m3` (CUDA 12 — Hopper H200), or `dev-minimax-m
++The command panel below fills in the right tag per platform: `dev-cu13-minimax-m3` (CUDA 13 — B300, GB200, GB300), `dev-cu12-minimax-m3` (CUDA 12 — Hopper H200), or `dev-minimax-m
+```
+
+- 已读文件:
+  - docs: `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +5/-5; `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #29250 - Fix MiniMax MSA fallback when fmha plan is unavailable
 
@@ -2640,6 +2564,33 @@ diff -- python/sglang/srt/models/minimax_m3.py
   - runtime: `python/sglang/srt/models/minimax_m3.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/flashinfer_trtllm_moe.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py`, `python/sglang/srt/layers/moe/moe_runner/base.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
+### PR #31956 - Optimize MiniMax-M2.7 on CPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/31956
+- 状态/时间: merged / 2026-08-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `3f6ef01322ca`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+687/-72，可读 patch 979 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Optimize MiniMax-M2.7 on CPU」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「Optimize MiniMax-M2.7 on CPU」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +20/-4 (24 lines); hunks: -482,10 +482,26 @@ def _forward_fused(self, q: torch.Tensor, k: torch.Tensor):; symbols: _forward_fused, _forward_cpu, MiniMaxM2MoE，涉及 `_forward_fused, _forward_cpu, MiniMaxM2MoE`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m2.py` modified +20/-4 (24 lines); hunks: -482,10 +482,26 @@ def _forward_fused(self, q: torch.Tensor, k: torch.Tensor):; symbols: _forward_fused, _forward_cpu, MiniMaxM2MoE
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m2.py
+@@ -482,10 +482,26 @@ def _forward_fused(self, q: torch.Tensor, k: torch.Tensor):
+-        # TODO: add c++ kernel for cpu
+-        q = self._q_norm(q.contiguous())
+-        k = self._k_norm(k.contiguous())
+-        return q, k
++        if self._world_size > 1:
++            sum_sq = torch.ops.sgl_kernel.fused_qk_rmsnorm_sumsq_cpu(q, k)
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +20/-4
+- 验证与风险: diff 自带测试面 `test/registered/cpu/test_norm.py`, `test/registered/cpu/test_topk.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
 ### PR #32941 - [minimax m3][npu]Adaptation of Minimax M3(w8a8) for NPU platforms [1/2]
 
 - 链接: https://github.com/sgl-project/sglang/pull/32941
@@ -2681,33 +2632,6 @@ diff -- python/sglang/srt/models/minimax_m3_vl.py
   - runtime: `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +1201/-141; `python/sglang/srt/models/minimax_m3.py` modified +115/-17; `python/sglang/srt/models/minimax_m3_vl.py` modified +41/-0; `python/sglang/srt/hardware_backend/npu/modules/minimax_m3_processor.py` added +301/-0
   - tests: `test/manual/minimax_m3/test_npu_topk.py` added +193/-0; `test/manual/minimax_m3/test_npu_memory_pool.py` added +176/-0
 - 验证与风险: diff 自带测试面 `test/manual/minimax_m3/test_npu_memory_pool.py`, `test/manual/minimax_m3/test_npu_topk.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
-### PR #31956 - Optimize MiniMax-M2.7 on CPU
-
-- 链接: https://github.com/sgl-project/sglang/pull/31956
-- 状态/时间: merged / 2026-08-13
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `3f6ef01322ca`
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 8 个文件，+687/-72，可读 patch 979 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Optimize MiniMax-M2.7 on CPU」；模型线: MiniMax M2/M3 Series；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「Optimize MiniMax-M2.7 on CPU」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +20/-4 (24 lines); hunks: -482,10 +482,26 @@ def _forward_fused(self, q: torch.Tensor, k: torch.Tensor):; symbols: _forward_fused, _forward_cpu, MiniMaxM2MoE，涉及 `_forward_fused, _forward_cpu, MiniMaxM2MoE`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/minimax_m2.py` modified +20/-4 (24 lines); hunks: -482,10 +482,26 @@ def _forward_fused(self, q: torch.Tensor, k: torch.Tensor):; symbols: _forward_fused, _forward_cpu, MiniMaxM2MoE
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/minimax_m2.py
-@@ -482,10 +482,26 @@ def _forward_fused(self, q: torch.Tensor, k: torch.Tensor):
--        # TODO: add c++ kernel for cpu
--        q = self._q_norm(q.contiguous())
--        k = self._k_norm(k.contiguous())
--        return q, k
-+        if self._world_size > 1:
-+            sum_sq = torch.ops.sgl_kernel.fused_qk_rmsnorm_sumsq_cpu(q, k)
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +20/-4
-- 验证与风险: diff 自带测试面 `test/registered/cpu/test_norm.py`, `test/registered/cpu/test_topk.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #34542 - [MiniMax-M3] Overlap shared and routed experts
 
@@ -2789,6 +2713,608 @@ diff -- python/sglang/srt/distributed/parallel_state.py
 - 已读文件:
   - runtime: `python/sglang/srt/distributed/parallel_state.py` modified +8/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/distributed/parallel_state.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #20031 - fix(minimax): support loading merged expert weights (w13) for awq
+
+- 链接: https://github.com/sgl-project/sglang/pull/20031
+- 状态/时间: closed / 2026-08-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+203/-9，可读 patch 236 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix(minimax): support loading merged expert weights (w13) for awq」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「fix(minimax): support loading merged expert weights (w13) for awq」；主要实现面是 `tests/registered/models/test_minimax_m2_weights.py`, `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13，涉及 `TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13`；`python/sglang/srt/models/minimax_m2.py` modified +58/-9 (67 lines); hunks: -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1112,7 +1120,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights，涉及 `load_weights`。
+- 代码 diff 细节:
+  - `tests/registered/models/test_minimax_m2_weights.py` added +145/-0 (145 lines); hunks: -0,0 +1,145; symbols: TestMiniMaxM2WeightLoading, setUp, test_load_weights_merged_w13
+  - `python/sglang/srt/models/minimax_m2.py` modified +58/-9 (67 lines); hunks: -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; -1112,7 +1120,9 @@ def load_weights(self, weights: Iterable[Tuple[str, torch....; symbols: load_weights
+- 关键代码摘录:
+
+```diff
+diff -- tests/registered/models/test_minimax_m2_weights.py
+@@ -0,0 +1,145 @@
++import unittest
++from unittest.mock import MagicMock, patch
++import torch
++from transformers import PretrainedConfig
++from sglang.srt.models.minimax_m2 import MiniMaxM2ForCausalLM
++class TestMiniMaxM2WeightLoading(unittest.TestCase):
+diff -- python/sglang/srt/models/minimax_m2.py
+@@ -1058,6 +1058,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++        expert_params_mapping_fused = FusedMoE.make_expert_params_mapping_fused(
++            ckpt_gate_up_proj_name="w13",
++            ckpt_down_proj_name="w2",
++            ckpt_gate_up_proj_bias_name="w13_bias",
++            ckpt_down_proj_bias_name="w2_bias",
++            num_experts=self.config.num_local_experts,
+```
+
+- 已读文件:
+  - tests: `tests/registered/models/test_minimax_m2_weights.py` added +145/-0
+  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +58/-9
+- 验证与风险: diff 自带测试面 `tests/registered/models/test_minimax_m2_weights.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36142 - [AMD][CI] Add MiniMax-M3-MXFP8 MI35x nightly perf benchmark
+
+- 链接: https://github.com/sgl-project/sglang/pull/36142
+- 状态/时间: merged / 2026-08-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py`；关联提交 `6569125e3ad9`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+164/-47，可读 patch 261 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: TestNightlyMiniMaxM3PerformanceMI35x, setUpClass, test_bench_minimax_m3，涉及 `TestNightlyMiniMaxM3PerformanceMI35x, setUpClass, test_bench_minimax_m3`。
+- 代码 diff 细节:
+  - `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: TestNightlyMiniMaxM3PerformanceMI35x, setUpClass, test_bench_minimax_m3
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py
+@@ -0,0 +1,151 @@
++"""MI35x nightly performance benchmark for MiniMax-M3-MXFP8 (4-GPU, TP=4).
++Benchmarks MiniMaxAI/MiniMax-M3-MXFP8 with the same TP=4 recipe the MI35x
++accuracy test validated (aiter attention, fp8 e4m3 KV, block-fp8 linear path,
++quick INT4 all-reduce), so a throughput regression cannot be confused with a
++configuration difference. MI35x (gfx950 / CDNA4) has hardware MX-scaled matmul,
++so the MXFP8 MoE weights are served natively.
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py` added +151/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/perf/mi35x/test_minimax_m3_perf_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #35290 - [XPU] Lazily import tvm_ffi-dependent all_reduce kernel in minimax_m2
+
+- 链接: https://github.com/sgl-project/sglang/pull/35290
+- 状态/时间: merged / 2026-08-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m2.py`；关联提交 `9cee0a31d1a7`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+8/-4，可读 patch 33 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/minimax_m2.py` modified +8/-4 (12 lines); hunks: -27,10 +27,6; -103,6 +99,7。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m2.py` modified +8/-4 (12 lines); hunks: -27,10 +27,6; -103,6 +99,7
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m2.py
+@@ -27,10 +27,6 @@
+-from sglang.kernels.ops.communication.all_reduce import (
+-    fused_parallel_qknorm,
+-    get_fused_parallel_qknorm_max_occupancy,
+-)
+@@ -103,6 +99,7 @@
++    is_xpu,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +8/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22934 - Minimax eplb bugfix
+
+- 链接: https://github.com/sgl-project/sglang/pull/22934
+- 状态/时间: closed / 2026-08-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+25/-0，可读 patch 53 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Minimax eplb bugfix」；模型线: MiniMax M2/M3 Series；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/minimax_m2.py`；技术摘要: 覆盖「Minimax eplb bugfix」；主要实现面是 `python/sglang/srt/models/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunks: -66,6 +66,7; -88,6 +89,7; symbols: op_output, get_moe_weights, MiniMaxM2Attention, __init__，涉及 `op_output, get_moe_weights, MiniMaxM2Attention`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m2.py` modified +25/-0 (25 lines); hunks: -66,6 +66,7; -88,6 +89,7; symbols: op_output, get_moe_weights, MiniMaxM2Attention, __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m2.py
+@@ -66,6 +66,7 @@
++from sglang.srt.layers.moe.utils import filter_moe_weight_param_global_expert
+@@ -88,6 +89,7 @@
++    LazyValue,
+@@ -683,6 +685,16 @@ def op_output(self, state):
++    def get_moe_weights(self):
++        return [
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/minimax_m2.py` modified +25/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #23301 - [sgl] Stream MiniMax M2 string parameters token-by-token
+
+- 链接: https://github.com/sgl-project/sglang/pull/23301
+- 状态/时间: closed / 2026-08-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+332/-280，可读 patch 742 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[sgl] Stream MiniMax M2 string parameters token-by-token」；模型线: MiniMax M2/M3 Series；类别: 模型实现调整；主要 diff: `python/sglang/srt/function_call/minimax_m2.py`；技术摘要: 覆盖「[sgl] Stream MiniMax M2 string parameters token-by-token」；主要实现面是 `python/sglang/srt/function_call/minimax_m2.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunks: -13,6 +13,11; -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):; symbols: MinimaxM2Detector, __init__，涉及 `MinimaxM2Detector, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280 (612 lines); hunks: -13,6 +13,11; -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):; symbols: MinimaxM2Detector, __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/function_call/minimax_m2.py
+@@ -13,6 +13,11 @@
++_PARAM_END_TAG = "</parameter>"
++_PARAM_END_TAG_LEN = len(_PARAM_END_TAG)
++# Hold back this many chars while streaming to avoid emitting a partial end tag
++_STREAM_HOLD_BACK = _PARAM_END_TAG_LEN - 1  # 11
+@@ -24,6 +29,9 @@ class MinimaxM2Detector(BaseFormatDetector):
++    String-typed parameters are streamed token-by-token.
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/function_call/minimax_m2.py` modified +332/-280
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/function_call/minimax_m2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #36527 - MiniMax-M3: share the sparse index top-k across layers and reuse the decode top-k buffer
+
+- 链接: https://github.com/sgl-project/sglang/pull/36527
+- 状态/时间: merged / 2026-09-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`；关联提交 `a25bbca8edfa`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+318/-88，可读 patch 571 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +109/-61 (170 lines); hunks: -73,9 +73,18 @@ def minimax_sparse_prefill(; -88,42 +97,52 @@ def minimax_sparse_prefill(; symbols: minimax_sparse_prefill, minimax_sparse_decode，涉及 `minimax_sparse_prefill, minimax_sparse_decode`；`python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +154/-15 (169 lines); hunks: -19,14 +19,15; -147,6 +148,12 @@ def __init__(self, runner: ModelRunner):; symbols: __init__, init_forward_metadata_out_graph, forward_extend，涉及 `__init__, init_forward_metadata_out_graph, forward_extend`；`python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` modified +47/-12 (59 lines); hunks: -18,29 +18,63; -228,6 +262,7 @@ def _decode_score_kernel(; symbols: _prune_decode_configs, _decode_score_block_n, _decode_score_kernel, _decode_score_attn_kernel，涉及 `_prune_decode_configs, _decode_score_block_n, _decode_score_kernel`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +109/-61 (170 lines); hunks: -73,9 +73,18 @@ def minimax_sparse_prefill(; -88,42 +97,52 @@ def minimax_sparse_prefill(; symbols: minimax_sparse_prefill, minimax_sparse_decode
+  - `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +154/-15 (169 lines); hunks: -19,14 +19,15; -147,6 +148,12 @@ def __init__(self, runner: ModelRunner):; symbols: __init__, init_forward_metadata_out_graph, forward_extend
+  - `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` modified +47/-12 (59 lines); hunks: -18,29 +18,63; -228,6 +262,7 @@ def _decode_score_kernel(; symbols: _prune_decode_configs, _decode_score_block_n, _decode_score_kernel, _decode_score_attn_kernel
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py
+@@ -73,9 +73,18 @@ def minimax_sparse_prefill(
++    cached_topk_idx: Optional[torch.Tensor] = None,
++    return_topk_idx: bool = False,
++    Index cache: when ``cached_topk_idx`` is given, skip Step 1
++    (the flash-index attention + top-k selection) and reuse the provided top-k
++    indices for Step 3's sparse attention. When ``return_topk_idx`` is True, the
++    reduced top-k tensor is returned as a third element so the caller can cache
+diff -- python/sglang/srt/layers/attention/minimax_sparse_backend.py
+@@ -19,14 +19,15 @@
++from sglang.srt.layers.moe.utils import is_tbo_enabled
+-from sglang.srt.utils import is_npu
++from sglang.srt.utils import is_gfx95_supported, is_hip, is_npu
+@@ -147,6 +148,12 @@ def __init__(self, runner: ModelRunner):
++        # (owning ForwardBatch, cu_seqlens, seq_lens, prefix_lens, cu_seqblocks_q,
++        # max_seqblock_q, all_seqblock_q). The owner is part of the key because one
+diff -- python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py
+@@ -18,29 +18,63 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +109/-61; `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +154/-15; `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` modified +47/-12
+- 验证与风险: runtime 路径改动集中在 `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py`, `python/sglang/srt/environ.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #36557 - MiniMax-M3: Triton split-K router GEMV with in-kernel fixup
+
+- 链接: https://github.com/sgl-project/sglang/pull/36557
+- 状态/时间: merged / 2026-09-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m3.py`；关联提交 `5177a3ec0854`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+189/-0，可读 patch 213 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/minimax_m3.py` modified +14/-0 (14 lines); hunks: -91,6 +91,7; -101,8 +102,17; symbols: forward_deepep, _compute_router_logits，涉及 `forward_deepep, _compute_router_logits`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m3.py` modified +14/-0 (14 lines); hunks: -91,6 +91,7; -101,8 +102,17; symbols: forward_deepep, _compute_router_logits
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m3.py
+@@ -91,6 +91,7 @@
++    is_gfx95_supported,
+@@ -101,8 +102,17 @@
++_is_gfx95_supported = _is_hip and is_gfx95_supported()
++if _is_gfx95_supported:
++    from sglang.kernels.ops.gemm.router_gemv import (
++        router_gemv,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/minimax_m3.py` modified +14/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/kernels/ops/gemm/router_gemv.py`, `python/sglang/srt/models/minimax_m3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #37254 - [AMD] Fix Quark load of MiniMax-M3 MXFP4 index_qkv_proj
+
+- 链接: https://github.com/sgl-project/sglang/pull/37254
+- 状态/时间: merged / 2026-09-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py`；关联提交 `7c195b915162`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+54/-3，可读 patch 81 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/minimax_m3.py` modified +2/-1 (3 lines); hunks: -1559,7 +1559,8 @@ class MiniMaxM3SparseForCausalLM(nn.Module):; symbols: MiniMaxM3SparseForCausalLM，涉及 `MiniMaxM3SparseForCausalLM`；`python/sglang/srt/models/minimax_m3_vl.py` modified +2/-1 (3 lines); hunks: -63,7 +63,8 @@ class MiniMaxM3SparseForConditionalGeneration(nn.Module):; symbols: MiniMaxM3SparseForConditionalGeneration，涉及 `MiniMaxM3SparseForConditionalGeneration`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m3.py` modified +2/-1 (3 lines); hunks: -1559,7 +1559,8 @@ class MiniMaxM3SparseForCausalLM(nn.Module):; symbols: MiniMaxM3SparseForCausalLM
+  - `python/sglang/srt/models/minimax_m3_vl.py` modified +2/-1 (3 lines); hunks: -63,7 +63,8 @@ class MiniMaxM3SparseForConditionalGeneration(nn.Module):; symbols: MiniMaxM3SparseForConditionalGeneration
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m3.py
+@@ -1559,7 +1559,8 @@ class MiniMaxM3SparseForCausalLM(nn.Module):
+-        "index_qkv_proj": ["index_q_proj", "index_k_proj", "index_v_proj"],
++        # no index_v_proj in the M3 checkpoint
++        "index_qkv_proj": ["index_q_proj", "index_k_proj"],
+diff -- python/sglang/srt/models/minimax_m3_vl.py
+@@ -63,7 +63,8 @@ class MiniMaxM3SparseForConditionalGeneration(nn.Module):
+-        "index_qkv_proj": ["index_q_proj", "index_k_proj", "index_v_proj"],
++        # no index_v_proj in the M3 checkpoint
++        "index_qkv_proj": ["index_q_proj", "index_k_proj"],
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/minimax_m3.py` modified +2/-1; `python/sglang/srt/models/minimax_m3_vl.py` modified +2/-1
+- 验证与风险: diff 自带测试面 `test/registered/unit/layers/quantization/test_quark_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36576 - MiniMax-M3: allow shared-experts fusion on ROCm gfx942 and newer
+
+- 链接: https://github.com/sgl-project/sglang/pull/36576
+- 状态/时间: merged / 2026-09-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py`；关联提交 `241a5b982373`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+21/-7，可读 patch 67 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/minimax_m3_vl.py` modified +15/-4 (19 lines); hunks: -47,13 +47,22; -152,10 +161,12 @@ def shared_experts_fusion_disable_reason(cls, hf_config, q...; symbols: shared_experts_fusion_disable_reason，涉及 `shared_experts_fusion_disable_reason`；`python/sglang/srt/models/minimax_m3.py` modified +4/-2 (6 lines); hunks: -1612,10 +1612,12 @@ def shared_experts_fusion_disable_reason(cls, hf_config,...; symbols: shared_experts_fusion_disable_reason，涉及 `shared_experts_fusion_disable_reason`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m3_vl.py` modified +15/-4 (19 lines); hunks: -47,13 +47,22; -152,10 +161,12 @@ def shared_experts_fusion_disable_reason(cls, hf_config, q...; symbols: shared_experts_fusion_disable_reason
+  - `python/sglang/srt/models/minimax_m3.py` modified +4/-2 (6 lines); hunks: -1612,10 +1612,12 @@ def shared_experts_fusion_disable_reason(cls, hf_config,...; symbols: shared_experts_fusion_disable_reason
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m3_vl.py
+@@ -47,13 +47,22 @@
+-from sglang.srt.utils import add_prefix, get_device_sm, is_cuda, log_info_on_rank0
++from sglang.srt.utils import (
++    add_prefix,
++    get_device_sm,
++    is_cuda,
++    is_gfx95_supported,
+diff -- python/sglang/srt/models/minimax_m3.py
+@@ -1612,10 +1612,12 @@ def shared_experts_fusion_disable_reason(cls, hf_config, quant_config):
+-        if not _is_cuda:
+-            return "Shared experts fusion currently requires CUDA devices."
++        if not (_is_cuda or _is_hip):
++            return "Shared experts fusion currently requires CUDA or ROCm devices."
++        if _is_hip and not _is_gfx95_supported:
++            return "Shared experts fusion on ROCm is validated on gfx950 only."
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/minimax_m3_vl.py` modified +15/-4; `python/sglang/srt/models/minimax_m3.py` modified +4/-2
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/minimax_m3.py`, `python/sglang/srt/models/minimax_m3_vl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #31446 - [HiSparse] Add MHA hisparse support for MiniMax M3
+
+- 链接: https://github.com/sgl-project/sglang/pull/31446
+- 状态/时间: merged / 2026-09-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py`, `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` 等 7 个文件；关联提交 `04c0913434c4`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 27 个文件，+1017/-118，可读 patch 2089 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +44/-0 (44 lines); hunks: -116,6 +116,7 @@ def __init__(self, runner: ModelRunner):; -176,6 +177,18 @@ def __init__(self, runner: ModelRunner):; symbols: __init__，涉及 `__init__`；`python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +11/-2 (13 lines); hunks: -75,6 +75,7 @@ def minimax_sparse_prefill(; -146,7 +147,7 @@ def minimax_sparse_prefill(; symbols: minimax_sparse_prefill, minimax_sparse_decode，涉及 `minimax_sparse_prefill, minimax_sparse_decode`；`test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` modified +58/-2 (60 lines); hunks: -1,14 +1,23; -26,10 +35,11 @@ def _make_k_only_pool(start_layer: int = 0) -> MiniMaxSparse...; symbols: _make_k_only_pool, TestMiniMaxSparsePoolPD，涉及 `_make_k_only_pool, TestMiniMaxSparsePoolPD`；`python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` modified +27/-6 (33 lines); hunks: -23,6 +23,7; -43,6 +44,7 @@ def _gqa_share_sparse_decode_kernel(; symbols: _gqa_share_sparse_decode_kernel, flash_decode_with_gqa_share_sparse，涉及 `_gqa_share_sparse_decode_kernel, flash_decode_with_gqa_share_sparse`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +44/-0 (44 lines); hunks: -116,6 +116,7 @@ def __init__(self, runner: ModelRunner):; -176,6 +177,18 @@ def __init__(self, runner: ModelRunner):; symbols: __init__
+  - `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +11/-2 (13 lines); hunks: -75,6 +75,7 @@ def minimax_sparse_prefill(; -146,7 +147,7 @@ def minimax_sparse_prefill(; symbols: minimax_sparse_prefill, minimax_sparse_decode
+  - `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` modified +58/-2 (60 lines); hunks: -1,14 +1,23; -26,10 +35,11 @@ def _make_k_only_pool(start_layer: int = 0) -> MiniMaxSparse...; symbols: _make_k_only_pool, TestMiniMaxSparsePoolPD
+  - `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` modified +27/-6 (33 lines); hunks: -23,6 +23,7; -43,6 +44,7 @@ def _gqa_share_sparse_decode_kernel(; symbols: _gqa_share_sparse_decode_kernel, flash_decode_with_gqa_share_sparse
+  - `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` modified +11/-0 (11 lines); hunks: -28,6 +28,7; -55,6 +56,7 @@ def _gqa_share_sparse_fwd_kernel(; symbols: _gqa_share_sparse_fwd_kernel, flash_prefill_with_gqa_share_sparse
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/minimax_sparse_backend.py
+@@ -116,6 +116,7 @@ def __init__(self, runner: ModelRunner):
++        self.hisparse_coordinator = runner.hisparse_coordinator
+@@ -176,6 +177,18 @@ def __init__(self, runner: ModelRunner):
++        if self.hisparse_coordinator is not None:
++            selected_tokens = self.topk_blocks * self.block_size_k
++            assert selected_tokens <= self.hisparse_coordinator.device_buffer_size, (
++                f"MiniMax M3 selects {selected_tokens} sparse-attention tokens, "
+diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py
+@@ -75,6 +75,7 @@ def minimax_sparse_prefill(
++    loc_mapping: Optional[torch.Tensor] = None,
+@@ -146,7 +147,7 @@ def minimax_sparse_prefill(
+-    if use_msa and sink is None:
++    if use_msa and sink is None and loc_mapping is None:
+@@ -188,6 +189,7 @@ def minimax_sparse_prefill(
++                loc_mapping=loc_mapping,
+diff -- test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py
+@@ -1,14 +1,23 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +44/-0; `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +11/-2; `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` modified +27/-6; `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` modified +11/-0
+  - tests: `test/registered/unit/mem_cache/test_minimax_sparse_pool_pd_unit.py` modified +58/-2; `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py` modified +8/-3
+  - docs: `docs/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +1/-0
+- 验证与风险: diff 自带测试面 `test/registered/kernels/ops/kvcache/test_hisparse.py`, `test/registered/unit/disaggregation/test_minimax_sparse_disagg_state_kv_args.py`, `test/registered/unit/disaggregation/test_mooncake_transfer_batching.py`, `test/registered/unit/mem_cache/test_hisparse_allocator.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36546 - MiniMax-M3: run the sparse prefill main attention through AITER Gluon paged attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/36546
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py`, `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`；关联提交 `4fa2c9c1de7b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+966/-122，可读 patch 1244 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py` added +492/-0 (492 lines); hunks: -0,0 +1,492; symbols: GluonPrefillUnavailableError, _gather_nhd_to_shuffle_kernel, _get_scratch, _gather_context_to_shuffle，涉及 `GluonPrefillUnavailableError, _gather_nhd_to_shuffle_kernel, _get_scratch`；`python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +72/-5 (77 lines); hunks: -19,9 +19,14; -35,6 +40,18 @@ def _warn_msa_fallback(err: Exception) -> None:; symbols: _warn_msa_fallback, _warn_gluon_fallback, minimax_sparse_prefill，涉及 `_warn_msa_fallback, _warn_gluon_fallback, minimax_sparse_prefill`；`python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +2/-0 (2 lines); hunks: -1570,6 +1570,7 @@ def forward_extend(; -1579,6 +1580,7 @@ def forward_extend(; symbols: forward_extend，涉及 `forward_extend`；`python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` modified +230/-45 (275 lines); hunks: -6,6 +6,8; -16,6 +18,9; symbols: _topk_index_kernel, _index_block_score_only_kernel, flash_prefill_with_topk_index，涉及 `_topk_index_kernel, _index_block_score_only_kernel, flash_prefill_with_topk_index`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py` added +492/-0 (492 lines); hunks: -0,0 +1,492; symbols: GluonPrefillUnavailableError, _gather_nhd_to_shuffle_kernel, _get_scratch, _gather_context_to_shuffle
+  - `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +72/-5 (77 lines); hunks: -19,9 +19,14; -35,6 +40,18 @@ def _warn_msa_fallback(err: Exception) -> None:; symbols: _warn_msa_fallback, _warn_gluon_fallback, minimax_sparse_prefill
+  - `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +2/-0 (2 lines); hunks: -1570,6 +1570,7 @@ def forward_extend(; -1579,6 +1580,7 @@ def forward_extend(; symbols: forward_extend
+  - `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` modified +230/-45 (275 lines); hunks: -6,6 +6,8; -16,6 +18,9; symbols: _topk_index_kernel, _index_block_score_only_kernel, flash_prefill_with_topk_index
+  - `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` modified +167/-72 (239 lines); hunks: -6,6 +6,8; -15,6 +17,11; symbols: _sparse_subk, _gqa_share_sparse_fwd_kernel, flash_prefill_with_gqa_share_sparse
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py
+@@ -0,0 +1,492 @@
++# Copyright 2025 SGLang Team
++# Ported from
++# https://github.com/alexsun07/sglang/blob/191624ff8a6d8e9fc31b9363d2138c16db66f124/python/sglang/srt/layers/attention/minimax_sparse_ops/atom_prefill.py
++"""MiniMax-M3 sparse prefill using AITER's Gluon paged attention.
++The main KV pool remains NHD ``[max_slots, 1, head_dim]``. Each request's
++context is gathered into persistent SHUFFLE 5D scratch pages:
+diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py
+@@ -19,9 +19,14 @@
++from sglang.srt.environ import envs
++from sglang.srt.utils import is_gfx95_supported, is_hip
++_use_aiter_gfx95 = envs.SGLANG_USE_AITER.get() and is_hip() and is_gfx95_supported()
++_gluon_fallback_warned = False
+@@ -35,6 +40,18 @@ def _warn_msa_fallback(err: Exception) -> None:
++def _warn_gluon_fallback(msg: str) -> None:
+diff -- python/sglang/srt/layers/attention/minimax_sparse_backend.py
+@@ -1570,6 +1570,7 @@ def forward_extend(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py` added +492/-0; `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +72/-5; `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +2/-0; `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` modified +230/-45; `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` modified +167/-72
+- 验证与风险: runtime 路径改动集中在 `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py`, `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py`, `python/sglang/srt/environ.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #36560 - MiniMax-M3: wave64 histogram-select decode top-k, and raise kMaxNumBlocks for CUDA graphs
+
+- 链接: https://github.com/sgl-project/sglang/pull/36560
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh`, `python/sglang/kernels/ops/attention/minimax_decode_topk.py`, `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py`, `test/registered/kernels/ops/attention/test_minimax_decode_topk.py`；关联提交 `f2a1366584e1`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+378/-18，可读 patch 548 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` modified +362/-16 (378 lines); hunks: -29,17 +29,34 @@ namespace sglang {; -50,14 +67,268 @@ struct TopKTrait {；`python/sglang/kernels/ops/attention/minimax_decode_topk.py` modified +9/-0 (9 lines); hunks: -29,6 +29,9; -59,6 +62,9 @@ def minimax_decode_topk(; symbols: _jit_module, minimax_decode_topk, minimax_decode_topk_page_table，涉及 `_jit_module, minimax_decode_topk, minimax_decode_topk_page_table`；`python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` modified +4/-1 (5 lines); hunks: -18,6 +18,9; -896,7 +899,7 @@ def flash_decode_with_topk_idx(; symbols: _prune_decode_configs, flash_decode_with_topk_idx，涉及 `_prune_decode_configs, flash_decode_with_topk_idx`；`test/registered/kernels/ops/attention/test_minimax_decode_topk.py` modified +3/-1 (4 lines); hunks: -64,7 +64,9 @@ def _check_contract(out, seq_lens, block_size, topk, S):; symbols: _check_contract, test_decode_topk_distinct，涉及 `_check_contract, test_decode_topk_distinct`。
+- 代码 diff 细节:
+  - `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` modified +362/-16 (378 lines); hunks: -29,17 +29,34 @@ namespace sglang {; -50,14 +67,268 @@ struct TopKTrait {
+  - `python/sglang/kernels/ops/attention/minimax_decode_topk.py` modified +9/-0 (9 lines); hunks: -29,6 +29,9; -59,6 +62,9 @@ def minimax_decode_topk(; symbols: _jit_module, minimax_decode_topk, minimax_decode_topk_page_table
+  - `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` modified +4/-1 (5 lines); hunks: -18,6 +18,9; -896,7 +899,7 @@ def flash_decode_with_topk_idx(; symbols: _prune_decode_configs, flash_decode_with_topk_idx
+  - `test/registered/kernels/ops/attention/test_minimax_decode_topk.py` modified +3/-1 (4 lines); hunks: -64,7 +64,9 @@ def _check_contract(out, seq_lens, block_size, topk, S):; symbols: _check_contract, test_decode_topk_distinct
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh
+@@ -29,17 +29,34 @@ namespace sglang {
+-struct TopKTrait {
++//
++// On ROCm every regime is replaced by rocm_hist_select over a packed
++// (score, ~id) u64 total order: one coarse histogram round (256 bins for
++// n <= 1024, else 2048), 11-bit refine rounds while > kRocmCap candidates
++// remain, then a wave-0 bitonic-sort finish.
+diff -- python/sglang/kernels/ops/attention/minimax_decode_topk.py
+@@ -29,6 +29,9 @@
++# Must match TopKTrait::kMaxNumBlocks in minimax_decode_topk.cuh.
++_MAX_NUM_BLOCKS = 16384 if torch.version.hip else 4096
+@@ -59,6 +62,9 @@ def minimax_decode_topk(
++    assert max_seqblock <= _MAX_NUM_BLOCKS, (
++        f"max_seqblock={max_seqblock} exceeds kMaxNumBlocks={_MAX_NUM_BLOCKS}"
++    )
+diff -- python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py
+@@ -18,6 +18,9 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` modified +362/-16; `python/sglang/kernels/ops/attention/minimax_decode_topk.py` modified +9/-0; `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` modified +4/-1
+  - tests: `test/registered/kernels/ops/attention/test_minimax_decode_topk.py` modified +3/-1
+- 验证与风险: diff 自带测试面 `test/registered/kernels/ops/attention/test_minimax_decode_topk.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36549 - MiniMax-M3: allocate the lightning-indexer K cache in fp8 on gfx95
+
+- 链接: https://github.com/sgl-project/sglang/pull/36549
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py`；关联提交 `ec75d3d30f02`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+46/-11，可读 patch 134 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` modified +6/-1 (7 lines); hunks: -556,7 +556,12 @@ def _sparse_qk_index_gemma_rmsnorm_rope_cache_kernel(; symbols: _sparse_qk_index_gemma_rmsnorm_rope_cache_kernel, sparse_qk_index_gemma_rmsnorm_rope_cache，涉及 `_sparse_qk_index_gemma_rmsnorm_rope_cache_kernel, sparse_qk_index_gemma_rmsnorm_rope_cache`。
+- 代码 diff 细节:
+  - `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` modified +6/-1 (7 lines); hunks: -556,7 +556,12 @@ def _sparse_qk_index_gemma_rmsnorm_rope_cache_kernel(; symbols: _sparse_qk_index_gemma_rmsnorm_rope_cache_kernel, sparse_qk_index_gemma_rmsnorm_rope_cache
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py
+@@ -556,7 +556,12 @@ def _sparse_qk_index_gemma_rmsnorm_rope_cache_kernel(
+-    tl.store(idx_cache_base, out_typed, mask=mask & is_idx_k)
++    # cast fp32 straight to the cache dtype (fp8 on gfx95) to avoid rounding twice via bf16
++    tl.store(
++        idx_cache_base,
++        out.to(idx_k_cache_ptr.dtype.element_ty),
++        mask=mask & is_idx_k,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` modified +6/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py`, `python/sglang/srt/environ.py`, `python/sglang/srt/mem_cache/kv_cache_configurator.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #41198 - [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit
+
+- 链接: https://github.com/sgl-project/sglang/pull/41198
+- 状态/时间: merged / 2026-09-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m3.py`；关联提交 `b7f6d04a9af1`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+50/-219，可读 patch 402 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/minimax_m3.py` modified +9/-31 (40 lines); hunks: -39,7 +39,6; -1395,36 +1394,15 @@ def forward(; symbols: forward, MiniMaxM3Model，涉及 `forward, MiniMaxM3Model`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m3.py` modified +9/-31 (40 lines); hunks: -39,7 +39,6; -1395,36 +1394,15 @@ def forward(; symbols: forward, MiniMaxM3Model
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m3.py
+@@ -39,7 +39,6 @@
+-    UnreducedOutput,
+@@ -1395,36 +1394,15 @@ def forward(
+-        should_allreduce_fusion = (
+-            self.layer_communicator.should_fuse_mlp_allreduce_with_next_layer(
+-                forward_batch
+-            )
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/minimax_m3.py` modified +9/-31
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41497 - [AMD] Fix MiniMax-M3 EAGLE3 verification on ROCm
+
+- 链接: https://github.com/sgl-project/sglang/pull/41497
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `test/registered/amd/test_minimax_rocm_verify.py`；关联提交 `0148d9a2fd0f`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+186/-2，可读 patch 253 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +59/-2 (61 lines); hunks: -1,5 +1,6; -115,6 +116,7 @@ class MiniMaxSparseAttnBackend(AttentionBackend):; symbols: MiniMaxSparseAttnBackend, __init__, init_forward_metadata_out_graph，涉及 `MiniMaxSparseAttnBackend, __init__, init_forward_metadata_out_graph`；`test/registered/amd/test_minimax_rocm_verify.py` added +127/-0 (127 lines); hunks: -0,0 +1,127; symbols: TestMiniMaxROCmVerify, setUp, decode, run_verify，涉及 `TestMiniMaxROCmVerify, setUp, decode`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +59/-2 (61 lines); hunks: -1,5 +1,6; -115,6 +116,7 @@ class MiniMaxSparseAttnBackend(AttentionBackend):; symbols: MiniMaxSparseAttnBackend, __init__, init_forward_metadata_out_graph
+  - `test/registered/amd/test_minimax_rocm_verify.py` added +127/-0 (127 lines); hunks: -0,0 +1,127; symbols: TestMiniMaxROCmVerify, setUp, decode, run_verify
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/minimax_sparse_backend.py
+@@ -1,5 +1,6 @@
++import copy
+@@ -115,6 +116,7 @@ class MiniMaxSparseAttnBackend(AttentionBackend):
++        self.is_hip = is_hip()
+@@ -159,6 +161,7 @@ def __init__(self, runner: ModelRunner):
++        self._linear_verify_meta: Optional[SimpleNamespace] = None
+@@ -274,6 +277,12 @@ def __init__(self, runner: ModelRunner):
+diff -- test/registered/amd/test_minimax_rocm_verify.py
+@@ -0,0 +1,127 @@
++"""Causal verify metadata and routing with no ordinary prefill metadata."""
++import unittest
++from types import SimpleNamespace
++import torch
++from sglang.test.ci.ci_register import register_amd_ci
++register_amd_ci(est_time=15, suite="stage-b-test-1-gpu-small-amd")
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +59/-2
+  - tests: `test/registered/amd/test_minimax_rocm_verify.py` added +127/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/test_minimax_rocm_verify.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41488 - [AMD] Add opt-in MiniMax-M3 TP4 indexer context partitioning
+
+- 链接: https://github.com/sgl-project/sglang/pull/41488
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/kernels/ops/attention/minimax_sparse/decode/indexer_cp.py`, `python/sglang/srt/layers/attention/minimax_sparse_backend.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py`, `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py`, `test/registered/amd/test_minimax_indexer_cp.py` 等 6 个文件；关联提交 `b69a5f296ae7`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 7 个文件，+686/-0，可读 patch 725 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py` added +201/-0 (201 lines); hunks: -0,0 +1,201; symbols: unsupported_reason, draft_is_chain_layout, make_indexer_cp, MiniMaxIndexerCP，涉及 `unsupported_reason, draft_is_chain_layout, make_indexer_cp`；`test/registered/unit/layers/attention/test_minimax_indexer_cp_gate.py` added +61/-0 (61 lines); hunks: -0,0 +1,61; symbols: TestMiniMaxIndexerCPGate, test_only_validated_draft_layouts_enable_cp，涉及 `TestMiniMaxIndexerCPGate, test_only_validated_draft_layouts_enable_cp`；`python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +26/-0 (26 lines); hunks: -326,6 +326,7 @@ def minimax_sparse_decode(; -338,6 +339,31 @@ def minimax_sparse_decode(; symbols: minimax_sparse_decode，涉及 `minimax_sparse_decode`；`python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +7/-0 (7 lines); hunks: -339,6 +339,12 @@ def __init__(self, runner: ModelRunner):; -1836,6 +1842,7 @@ def hisparse_swap_in_fn(topk_idx):; symbols: __init__, hisparse_swap_in_fn，涉及 `__init__, hisparse_swap_in_fn`。
+- 代码 diff 细节:
+  - `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py` added +201/-0 (201 lines); hunks: -0,0 +1,201; symbols: unsupported_reason, draft_is_chain_layout, make_indexer_cp, MiniMaxIndexerCP
+  - `test/registered/unit/layers/attention/test_minimax_indexer_cp_gate.py` added +61/-0 (61 lines); hunks: -0,0 +1,61; symbols: TestMiniMaxIndexerCPGate, test_only_validated_draft_layouts_enable_cp
+  - `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +26/-0 (26 lines); hunks: -326,6 +326,7 @@ def minimax_sparse_decode(; -338,6 +339,31 @@ def minimax_sparse_decode(; symbols: minimax_sparse_decode
+  - `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +7/-0 (7 lines); hunks: -339,6 +339,12 @@ def __init__(self, runner: ModelRunner):; -1836,6 +1842,7 @@ def hisparse_swap_in_fn(topk_idx):; symbols: __init__, hisparse_swap_in_fn
+  - `python/sglang/kernels/ops/attention/minimax_sparse/decode/indexer_cp.py` added +270/-0 (270 lines); hunks: -0,0 +1,270; symbols: _score_shard, _pack, _local_candidates, _merge_candidates
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py
+@@ -0,0 +1,201 @@
++"""Opt-in, decode-only context partitioning of MiniMax's replicated index K.
++This first implementation gathers the existing post-RoPE index queries rather
++than changing checkpoint loading or fused projections. Both gathers go through
++SGLang's communicator so AITER registration and graph capture remain owned by
++the runtime. Communication cost must be included in performance comparisons.
++"""
+diff -- test/registered/unit/layers/attention/test_minimax_indexer_cp_gate.py
+@@ -0,0 +1,61 @@
++import unittest
++from sglang.srt.layers.attention.minimax_sparse_ops.indexer_cp import (
++    draft_is_chain_layout,
++    unsupported_reason,
++)
++from sglang.test.ci.ci_register import register_cpu_ci
+diff -- python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py
+@@ -326,6 +326,7 @@ def minimax_sparse_decode(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py` added +201/-0; `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` modified +26/-0; `python/sglang/srt/layers/attention/minimax_sparse_backend.py` modified +7/-0; `python/sglang/kernels/ops/attention/minimax_sparse/decode/indexer_cp.py` added +270/-0
+  - tests: `test/registered/unit/layers/attention/test_minimax_indexer_cp_gate.py` added +61/-0; `test/registered/amd/test_minimax_indexer_cp.py` added +118/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/test_minimax_indexer_cp.py`, `test/registered/unit/layers/attention/test_minimax_indexer_cp_gate.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41707 - [AMD] Use AITER ASM prefill for MiniMax-M3 HD128 attention
+
+- 链接: https://github.com/sgl-project/sglang/pull/41707
+- 状态/时间: merged / 2026-10-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/test_minimax_hd128_asm_prefill.py`；关联提交 `71dc292b9702`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+211/-0，可读 patch 226 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/amd/test_minimax_hd128_asm_prefill.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: TestMiniMaxHD128AsmPrefill, setUpClass, exercise, test_first_chunk_reads_fp8_pool，涉及 `TestMiniMaxHD128AsmPrefill, setUpClass, exercise`；`python/sglang/srt/layers/attention/aiter_backend.py` modified +52/-0 (52 lines); hunks: -3613,6 +3613,58 @@ def forward_extend(; symbols: forward_extend，涉及 `forward_extend`；`python/sglang/srt/environ.py` modified +2/-0 (2 lines); hunks: -576,6 +576,8 @@ class Envs:; symbols: Envs，涉及 `Envs`。
+- 代码 diff 细节:
+  - `test/registered/amd/test_minimax_hd128_asm_prefill.py` added +157/-0 (157 lines); hunks: -0,0 +1,157; symbols: TestMiniMaxHD128AsmPrefill, setUpClass, exercise, test_first_chunk_reads_fp8_pool
+  - `python/sglang/srt/layers/attention/aiter_backend.py` modified +52/-0 (52 lines); hunks: -3613,6 +3613,58 @@ def forward_extend(; symbols: forward_extend
+  - `python/sglang/srt/environ.py` modified +2/-0 (2 lines); hunks: -576,6 +576,8 @@ class Envs:; symbols: Envs
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/test_minimax_hd128_asm_prefill.py
+@@ -0,0 +1,157 @@
++"""Exercise the SGLang HD128 route with quantized KV and non-unit scales."""
++import os
++import unittest
++from types import SimpleNamespace
++from unittest.mock import patch
++import torch
+diff -- python/sglang/srt/layers/attention/aiter_backend.py
+@@ -3613,6 +3613,58 @@ def forward_extend(
++            if (
++                envs.SGLANG_AITER_ASM_PREFILL_HD128.get()
++                and is_gfx95_supported()
++                and forward_batch.forward_mode.is_extend()
++                and not layer.is_cross_attention
++                and window_size == (-1, -1)
+diff -- python/sglang/srt/environ.py
+@@ -576,6 +576,8 @@ class Envs:
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/amd/test_minimax_hd128_asm_prefill.py` added +157/-0
+  - runtime: `python/sglang/srt/layers/attention/aiter_backend.py` modified +52/-0; `python/sglang/srt/environ.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/test_minimax_hd128_asm_prefill.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #35357 - [AMD] MiniMax-M3: fuse sparse QK norm, RoPE and cache writes with AITER
+
+- 链接: https://github.com/sgl-project/sglang/pull/35357
+- 状态/时间: merged / 2026-10-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/minimax_m3.py`；关联提交 `ff219e159e65`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+192/-0，可读 patch 227 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/minimax_m3.py` modified +188/-0 (188 lines); hunks: -150,6 +150,17; -794,6 +805,23 @@ def __init__(; symbols: __init__, _can_use_rocm_qk_norm_rope, _get_sparse_kv_pool, _get_aiter_cos_sin_cache，涉及 `__init__, _can_use_rocm_qk_norm_rope, _get_sparse_kv_pool`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/minimax_m3.py` modified +188/-0 (188 lines); hunks: -150,6 +150,17; -794,6 +805,23 @@ def __init__(; symbols: __init__, _can_use_rocm_qk_norm_rope, _get_sparse_kv_pool, _get_aiter_cos_sin_cache
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/minimax_m3.py
+@@ -150,6 +150,17 @@
++_aiter = None
++_has_aiter_fused_qknorm = False
++if _is_hip and envs.SGLANG_USE_AITER.get():
++    try:
++        import aiter as _aiter
++        _has_aiter_fused_qknorm = hasattr(_aiter, "fused_qknorm_idxrqknorm")
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/minimax_m3.py` modified +188/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/environ.py`, `python/sglang/srt/models/minimax_m3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

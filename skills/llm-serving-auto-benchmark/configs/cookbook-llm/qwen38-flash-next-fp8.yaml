@@ -1,0 +1,89 @@
+schema_version: 1
+source:
+  kind: llm_serving_cookbook
+  source_recipe_file: sglang/docs/src/snippets/configs/Qwen/qwen3.8-flash-next.jsx
+  recorded_heads:
+    sglang: b1bbd74f287f13ed1276b0403a01ebb55c597e93
+    vllm: 0c16eee3f1ff777298cc894c3eeb85f3880c6d6a
+    tensorrt_llm: bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60
+    tokenspeed: 6fa10840d5c3c23065f60428ad264fba60fa04ae
+  translation: Copies one verified single-node NVIDIA cookbook cell at the recorded
+    SGLang head. Non-speculative baseline; other frameworks require matching image
+    and workload verification. VLM workloads here exercise text only.
+  required_image: lmsysorg/sglang:qwen38flashnext
+model:
+  name: Qwen/Qwen3.8-Flash-Next-FP8
+  tokenizer: Qwen/Qwen3.8-Flash-Next-FP8
+  precision: fp8
+  quantization: model default
+hardware:
+  accelerator: NVIDIA H200
+  gpu_count: 4
+  multi_node: false
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names:
+  - chat
+  - summarization
+  input_len:
+  - 1000
+  - 8000
+  output_len:
+  - 1000
+  - 1000
+benchmark:
+  endpoint: /v1/chat/completions
+  backend: openai-compatible
+  tokenizer: Qwen/Qwen3.8-Flash-Next-FP8
+  max_concurrency:
+  - null
+  - 8
+  - 16
+  extra_request_body:
+    temperature: 0.0
+  qps:
+    lower: 0.25
+    upper: 4.0
+    tolerance: 0.1
+  sla:
+    max_p50_ttft_ms: 1500
+    max_p50_tpot_ms: 30
+    min_success_rate: 0.99
+  output_dir: ./auto_benchmark_results/cookbook-llm/qwen38-flash-next-fp8
+search:
+  tier: 2
+  max_candidates_per_framework: 6
+  candidate_generation: baseline_first_bounded_product
+  resume: true
+frameworks:
+  sglang:
+    enabled: true
+    support_status: verified_at_recorded_head
+    server_command: sglang serve
+    config_source: sglang_qwen38_flash_next_fp8_public_recipe
+    base_server_flags:
+      model_path: Qwen/Qwen3.8-Flash-Next-FP8
+      tp_size: 4
+      ep_size: 4
+      mem_fraction_static: 0.85
+      chunked_prefill_size: 8192
+      linear_attn_prefill_backend: flashinfer
+      linear_attn_decode_backend: flashinfer
+      mamba_ssm_dtype: bfloat16
+      reasoning_parser: auto
+      host: 0.0.0.0
+      port: 30000
+    search_space:
+      max_running_requests:
+      - 8
+      - 16
+  vllm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tensorrt_llm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tokenspeed:
+    enabled: false
+    support_status: not_verified_at_recorded_head

@@ -2,12 +2,15 @@
 
 ## What to count
 
-A model-specific, once-per-layer anchor is necessary. Check the exact build's
+A model-specific anchor with verified per-layer cadence is necessary. Check the exact build's
 call site; fused kernels may change names or remove earlier anchors. A kernel
 can run once per attention/FFN half, once per request, or once per draft stage.
 Those are not interchangeable with one occurrence per transformer layer.
 
-For DeepSeek-V4.1 in the examined optimized build, `_q_rope_store` occurred
+The `_q_rope_store` symbol is from a private optimized build and is absent
+from upstream SGLang `b1bbd74f` and vLLM `0c16eee3` at the 2026-10-05
+audit. Upstream traces need an independently verified anchor. In that build
+for DeepSeek-V4.1, `_q_rope_store` occurred
 40 times per target verify and 800 times over 20 iterations. Draft used another
 RoPE path. The main-model MoE finalize kernel with six routed experts gave a
 second 800-event landmark; draft used three routed experts. These are evidence
@@ -164,3 +167,26 @@ Official references:
 - [Embedding the Perfetto UI](https://perfetto.dev/docs/visualization/embedding-the-ui)
 - [Embedding API reference](https://perfetto.dev/docs/visualization/embedding-api-reference)
 - [Trace Processor Python API](https://perfetto.dev/docs/analysis/trace-processor-python)
+
+## Source-verified anchor families (2026-10-05)
+
+| Family | Candidate | Stride | Exceptions / evidence required |
+|---|---|---|---|
+| V4 | `mhc_pre_big_fuse` | 2 | L0 pre unfused, final post/head in epilogue; no extra pre anchor |
+| V4.1 | explicit router or mHC boundary | 1 or 2 | target/draft separated; batch-range AR fusion changes symbols |
+| K3 | `attn_res_fused` SGLang; `attn_res_fwd_online_v2_kernel` vLLM | 2 | one output aggregation/pass: extra=1; fallback has different symbols |
+| GLM-5 Next | `mhc_pre_big_fuse` | 2 | KDA/DSA layers share mHC family |
+| Hy4 | `_hy4_ihc_pre_stage2` / `_ihc_pre_stage2` | 2 | Triton fallback only; hpc wheel names need a trace |
+| Qwen4-exp | `grouped_gemma_rmsnorm` | 2 | vLLM can fuse combine/norm and reduce this count |
+| Add-norm / MLA-DSA | fused-add RMSNorm / AR fusion | 2 | first plain input norm and last fused norm shift phase; verify L0 |
+| Nemotron-H | residual norm | 1 | one Mamba/MoE/attention block per layer |
+| LongCat-Flash | residual boundary | 4 | two attentions, two dense MLPs, shortcut MoE branch |
+| Gemma4 | `_gemma_qkv_rmsnorm_kernel` | 1 | SGLang CUDA dispatch only; vLLM may use unfused norms |
+
+Source call sites: [V4](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/models/deepseek_v4.py),
+[K3](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/models/kimi_k3.py),
+[stage boundaries](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/layers/layer_boundary/factories.py).
+DSPARK/MTP have their own mHC/router kernels: extra-per-pass is not a
+mechanism to discard an arbitrary interleaved draft pass. Select the phase
+before counting. End-anchor validation spans the selected stride interval,
+including skipped sublayer anchors.

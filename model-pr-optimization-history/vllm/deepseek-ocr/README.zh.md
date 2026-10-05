@@ -1,19 +1,19 @@
-# vllm DeepSeek OCR 模型 PR 优化历史
+# vLLM DeepSeek OCR 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `tests/models/multimodal/processing/test_deepseek_ocr.py` | [#36670](https://github.com/vllm-project/vllm/pull/36670) |
-| `vllm/model_executor/models/deepseek_ocr.py` | [#27247](https://github.com/vllm-project/vllm/pull/27247), [#27361](https://github.com/vllm-project/vllm/pull/27361), [#28617](https://github.com/vllm-project/vllm/pull/28617), [#31569](https://github.com/vllm-project/vllm/pull/31569), [#33909](https://github.com/vllm-project/vllm/pull/33909), [#34085](https://github.com/vllm-project/vllm/pull/34085), [#36670](https://github.com/vllm-project/vllm/pull/36670), [#43586](https://github.com/vllm-project/vllm/pull/43586) |
+| `tests/models/multimodal/processing/test_deepseek_ocr.py` | [#36670](https://github.com/vllm-project/vllm/pull/36670), [#59417](https://github.com/vllm-project/vllm/pull/59417) |
+| `vllm/model_executor/models/deepseek_ocr.py` | [#27247](https://github.com/vllm-project/vllm/pull/27247), [#27361](https://github.com/vllm-project/vllm/pull/27361), [#28617](https://github.com/vllm-project/vllm/pull/28617), [#31569](https://github.com/vllm-project/vllm/pull/31569), [#33909](https://github.com/vllm-project/vllm/pull/33909), [#34085](https://github.com/vllm-project/vllm/pull/34085), [#36670](https://github.com/vllm-project/vllm/pull/36670), [#43586](https://github.com/vllm-project/vllm/pull/43586), [#59417](https://github.com/vllm-project/vllm/pull/59417) |
 | `vllm/transformers_utils/chat_templates/template_deepseek_ocr.jinja` | [#27247](https://github.com/vllm-project/vllm/pull/27247) |
 | `vllm/transformers_utils/processors/deepseek_ocr.py` | [#27247](https://github.com/vllm-project/vllm/pull/27247), [#27361](https://github.com/vllm-project/vllm/pull/27361), [#33909](https://github.com/vllm-project/vllm/pull/33909) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 8
+- git 追溯 PR 数: 9
 - 原文档显式引用补充 PR 数: 30
-- 当前文档总 PR 数: 38
+- 当前文档总 PR 数: 39
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -49,8 +49,8 @@
 | 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py` |
 | 2026-04-27 | [#36464](https://github.com/vllm-project/vllm/pull/36464) | merged | [Examples] Resettle generate examples. | `docs/features/multimodal_inputs.md`, `examples/generate/multimodal/qwen2_5_omni/README.md`, `docs/features/reasoning_outputs.md` |
 | 2026-05-02 | [#40830](https://github.com/vllm-project/vllm/pull/40830) | merged | [MM][CG] Support ViT CG for Qwen2.5-VL | `vllm/model_executor/models/qwen2_5_vl.py`, `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
-| 2026-05-13 | [#42151](https://github.com/vllm-project/vllm/pull/42151) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5 | `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
 | 2026-05-13 | [#41736](https://github.com/vllm-project/vllm/pull/41736) | merged | [MM][CG] Support ViT CG for Qwen2-VL | `vllm/model_executor/models/qwen2_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
+| 2026-05-13 | [#42151](https://github.com/vllm-project/vllm/pull/42151) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5 | `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
 | 2026-05-18 | [#42224](https://github.com/vllm-project/vllm/pull/42224) | merged | [MM][CG] Enable encoder Cudagraph for Step3VL | `vllm/model_executor/models/step3_vl.py`, `vllm/model_executor/models/interfaces.py`, `vllm/model_executor/models/utils.py` |
 | 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | merged | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vllm/model_executor/models/internvl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
 | 2026-06-09 | [#40576](https://github.com/vllm-project/vllm/pull/40576) | merged | [MM][Perf][CG] Support ViT full CUDA graph for glm4_1v image and video inference | `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md` |
@@ -59,6 +59,7 @@
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py` |
 | 2026-06-17 | [#41992](https://github.com/vllm-project/vllm/pull/41992) | merged | [MM][Perf][CG] Support ViT full CUDA graph for Kimi-VL | `vllm/model_executor/models/moonvit.py`, `vllm/model_executor/models/kimi_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 | 2026-06-22 | [#45993](https://github.com/vllm-project/vllm/pull/45993) | merged | [Model] Remove MiniMaxText01, MiniMaxVL01, MiniMaxForCausalLM | `tests/tool_parsers/test_minimax_tool_parser.py`, `vllm/model_executor/models/minimax_text_01.py`, `vllm/tool_parsers/minimax_tool_parser.py` |
+| 2026-10-02 | [#59417](https://github.com/vllm-project/vllm/pull/59417) | merged | [Security] Accept zero-sum DeepSeek-OCR pixel tensors | `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1145,48 +1146,6 @@ diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
   - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-0; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_qwen2_5_vl.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #42151 - [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5
-
-- 链接: https://github.com/vllm-project/vllm/pull/42151
-- 状态/时间: merged / 2026-05-13
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+112/-5，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；主要实现面是 `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `examples/generate/multimodal/vision_language_offline.py` modified +93/-1 (94 lines); hunks: -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str)...; -2442,6 +2528,8 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe, run_r_vl，涉及 `run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3 (18 lines); hunks: -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:; -54,16 +66,16 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template，涉及 `qwen_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...；`vllm/model_executor/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -565,6 +565,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -778,6 +779,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
-- 代码 diff 细节:
-  - `examples/generate/multimodal/vision_language_offline.py` modified +93/-1 (94 lines); hunks: -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str)...; -2442,6 +2528,8 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe, run_r_vl
-  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3 (18 lines); hunks: -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:; -54,16 +66,16 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template
-  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
-  - `vllm/model_executor/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -565,6 +565,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -778,6 +779,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
-- 关键代码摘录:
-
-```diff
-diff -- examples/generate/multimodal/vision_language_offline.py
-@@ -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str) -> ModelRequestData:
-+# Qwen3.5-Dense
-+def run_qwen3_5(questions: list[str], modality: str) -> ModelRequestData:
-+    model_name = "Qwen/Qwen3.5-4B"
-+    mm_limit = {"image": 1, "video": 1} if modality == "image+video" else {modality: 1}
-+    engine_args = EngineArgs(
-+        model=model_name,
-diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
-@@ -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:
-+    "qwen2_5_vl": VitCudagraphTestConfig(
-+        model="Qwen/Qwen2.5-VL-3B-Instruct",
-+        image_prompt=qwen_vl_chat_template(
-+            "<|vision_start|><|image_pad|><|vision_end|>What is in this image?"
-+        ),
-+        video_prompt=qwen_vl_chat_template(
-diff -- docs/design/cuda_graphs_multimodal.md
-@@ -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
-```
-
-- 已读文件:
-  - docs: `examples/generate/multimodal/vision_language_offline.py` modified +93/-1; `docs/design/cuda_graphs_multimodal.md` modified +2/-1
-  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
-  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +2/-0
-- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #41736 - [MM][CG] Support ViT CG for Qwen2-VL
 
 - 链接: https://github.com/vllm-project/vllm/pull/41736
@@ -1227,6 +1186,48 @@ diff -- docs/design/cuda_graphs_multimodal.md
   - runtime: `vllm/model_executor/models/qwen2_vl.py` modified +300/-20
   - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +12/-0
   - docs: `docs/design/cuda_graphs_multimodal.md` modified +2/-1; `examples/generate/multimodal/vision_language_offline.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42151 - [MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5
+
+- 链接: https://github.com/vllm-project/vllm/pull/42151
+- 状态/时间: merged / 2026-05-13
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+112/-5，可读 patch 187 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；模型线: DeepSeek OCR；类别: 性能/后端优化；主要 diff: `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`；技术摘要: 覆盖「[MM][Perf][CG] Support ViT full CUDA graph for Qwen3.5」；主要实现面是 `examples/generate/multimodal/vision_language_offline.py`, `tests/models/multimodal/generation/test_vit_cudagraph.py`, `docs/design/cuda_graphs_multimodal.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `examples/generate/multimodal/vision_language_offline.py` modified +93/-1 (94 lines); hunks: -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str)...; -2442,6 +2528,8 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe, run_r_vl，涉及 `run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe`；`tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3 (18 lines); hunks: -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:; -54,16 +66,16 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template，涉及 `qwen_vl_chat_template`；`docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...；`vllm/model_executor/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -565,6 +565,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -778,6 +779,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `examples/generate/multimodal/vision_language_offline.py` modified +93/-1 (94 lines); hunks: -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str)...; -2442,6 +2528,8 @@ def run_tarsier2(questions: list[str], modality: str) -> M...; symbols: run_qwen3_vl_moe, run_qwen3_5, run_qwen3_5_moe, run_r_vl
+  - `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3 (18 lines); hunks: -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:; -54,16 +66,16 @@ def qwen_vl_chat_template(content: str) -> str:; symbols: qwen_vl_chat_template
+  - `docs/design/cuda_graphs_multimodal.md` modified +2/-1 (3 lines); hunks: -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [Supp...
+  - `vllm/model_executor/models/qwen3_5.py` modified +2/-0 (2 lines); hunks: -565,6 +565,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; -778,6 +779,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- examples/generate/multimodal/vision_language_offline.py
+@@ -2179,6 +2179,92 @@ def run_qwen3_vl_moe(questions: list[str], modality: str) -> ModelRequestData:
++# Qwen3.5-Dense
++def run_qwen3_5(questions: list[str], modality: str) -> ModelRequestData:
++    model_name = "Qwen/Qwen3.5-4B"
++    mm_limit = {"image": 1, "video": 1} if modality == "image+video" else {modality: 1}
++    engine_args = EngineArgs(
++        model=model_name,
+diff -- tests/models/multimodal/generation/test_vit_cudagraph.py
+@@ -42,6 +42,18 @@ def qwen_vl_chat_template(content: str) -> str:
++    "qwen2_5_vl": VitCudagraphTestConfig(
++        model="Qwen/Qwen2.5-VL-3B-Instruct",
++        image_prompt=qwen_vl_chat_template(
++            "<|vision_start|><|image_pad|><|vision_end|>What is in this image?"
++        ),
++        video_prompt=qwen_vl_chat_template(
+diff -- docs/design/cuda_graphs_multimodal.md
+@@ -85,8 +85,9 @@ Models opt-in to encoder CUDA Graphs by implementing the [SupportsEncoderCudaGra
+```
+
+- 已读文件:
+  - docs: `examples/generate/multimodal/vision_language_offline.py` modified +93/-1; `docs/design/cuda_graphs_multimodal.md` modified +2/-1
+  - tests: `tests/models/multimodal/generation/test_vit_cudagraph.py` modified +15/-3
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +2/-0
 - 验证与风险: diff 自带测试面 `tests/models/multimodal/generation/test_vit_cudagraph.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #42224 - [MM][CG] Enable encoder Cudagraph for Step3VL
@@ -1554,6 +1555,39 @@ diff -- vllm/tool_parsers/minimax_tool_parser.py
   - runtime: `vllm/model_executor/models/minimax_text_01.py` removed +0/-1000; `vllm/tool_parsers/minimax_tool_parser.py` removed +0/-852; `vllm/model_executor/models/minimax_vl_01.py` removed +0/-385
   - docs: `examples/generate/multimodal/vision_language_offline.py` modified +0/-34
 - 验证与风险: diff 自带测试面 `rust/src/chat/tests/templates/vllm_examples/tool_chat_template_minimax_m1.jinja`, `tests/models/multimodal/generation/test_common.py`, `tests/models/multimodal/generation/vlm_utils/model_utils.py`, `tests/models/multimodal/processing/test_minimax_vl_01.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #59417 - [Security] Accept zero-sum DeepSeek-OCR pixel tensors
+
+- 链接: https://github.com/vllm-project/vllm/pull/59417
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `tests/models/multimodal/processing/test_deepseek_ocr.py`, `vllm/model_executor/models/deepseek_ocr.py`；关联提交 `c15672cfb491`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+90/-5，可读 patch 124 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `tests/models/multimodal/processing/test_deepseek_ocr.py` modified +89/-2 (91 lines); hunks: -12,12 +12,22; -155,3 +165,80 @@ def test_missing_prompt_raises_value_error(self, processor):; symbols: test_missing_prompt_raises_value_error, test_missing_images_raises_value_error, _balanced_normalized_pixels, TestDeepseekOCRZeroSumPixelsAccepted，涉及 `test_missing_prompt_raises_value_error, test_missing_images_raises_value_error, _balanced_normalized_pixels`；`vllm/model_executor/models/deepseek_ocr.py` modified +0/-2 (2 lines); hunks: -457,8 +457,6 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input，涉及 `_parse_and_validate_image_input`。
+- 代码 diff 细节:
+  - `tests/models/multimodal/processing/test_deepseek_ocr.py` modified +89/-2 (91 lines); hunks: -12,12 +12,22; -155,3 +165,80 @@ def test_missing_prompt_raises_value_error(self, processor):; symbols: test_missing_prompt_raises_value_error, test_missing_images_raises_value_error, _balanced_normalized_pixels, TestDeepseekOCRZeroSumPixelsAccepted
+  - `vllm/model_executor/models/deepseek_ocr.py` modified +0/-2 (2 lines); hunks: -457,8 +457,6 @@ def _parse_and_validate_image_input(; symbols: _parse_and_validate_image_input
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/processing/test_deepseek_ocr.py
+@@ -12,12 +12,22 @@
++from types import SimpleNamespace
++import torch
+-from vllm.model_executor.models.deepseek_ocr import DeepseekOCRImagePixelInputs
+-from vllm.transformers_utils.processors.deepseek_ocr import DeepseekOCRProcessor
++from vllm.model_executor.models.deepseek_ocr import (
++    DeepseekOCRForCausalLM,
+diff -- vllm/model_executor/models/deepseek_ocr.py
+@@ -457,8 +457,6 @@ def _parse_and_validate_image_input(
+-        if torch.sum(pixel_values).item() == 0:
+-            return None
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `tests/models/multimodal/processing/test_deepseek_ocr.py` modified +89/-2
+  - runtime: `vllm/model_executor/models/deepseek_ocr.py` modified +0/-2
+- 验证与风险: diff 自带测试面 `tests/models/multimodal/processing/test_deepseek_ocr.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

@@ -1,4 +1,4 @@
-# sglang GPT-OSS Model PR Optimization History
+# SGLang GPT-OSS Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -6,29 +6,31 @@
 | --- | --- |
 | `docs/cookbook/autoregressive/OpenAI/GPT-OSS.mdx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/gpt-oss-deployment.jsx` | no direct PR-number commit |
+| `python/sglang/srt/arg_groups/model_overrides/gpt_oss.py` | no direct PR-number commit |
 | `python/sglang/srt/function_call/gpt_oss_detector.py` | [#9043](https://github.com/sgl-project/sglang/pull/9043), [#9190](https://github.com/sgl-project/sglang/pull/9190), [#9657](https://github.com/sgl-project/sglang/pull/9657) |
-| `python/sglang/srt/models/gpt_oss.py` | [#8824](https://github.com/sgl-project/sglang/pull/8824), [#8843](https://github.com/sgl-project/sglang/pull/8843), [#8944](https://github.com/sgl-project/sglang/pull/8944), [#9028](https://github.com/sgl-project/sglang/pull/9028), [#9146](https://github.com/sgl-project/sglang/pull/9146), [#9161](https://github.com/sgl-project/sglang/pull/9161), [#9359](https://github.com/sgl-project/sglang/pull/9359), [#9433](https://github.com/sgl-project/sglang/pull/9433), [#9469](https://github.com/sgl-project/sglang/pull/9469), [#9783](https://github.com/sgl-project/sglang/pull/9783), [#14197](https://github.com/sgl-project/sglang/pull/14197), [#16775](https://github.com/sgl-project/sglang/pull/16775), ... (22 total) |
+| `python/sglang/srt/models/gpt_oss.py` | [#8824](https://github.com/sgl-project/sglang/pull/8824), [#8843](https://github.com/sgl-project/sglang/pull/8843), [#8944](https://github.com/sgl-project/sglang/pull/8944), [#9028](https://github.com/sgl-project/sglang/pull/9028), [#9146](https://github.com/sgl-project/sglang/pull/9146), [#9161](https://github.com/sgl-project/sglang/pull/9161), [#9359](https://github.com/sgl-project/sglang/pull/9359), [#9433](https://github.com/sgl-project/sglang/pull/9433), [#9469](https://github.com/sgl-project/sglang/pull/9469), [#9783](https://github.com/sgl-project/sglang/pull/9783), [#14197](https://github.com/sgl-project/sglang/pull/14197), [#16775](https://github.com/sgl-project/sglang/pull/16775), ... (24 total) |
 | `python/sglang/test/gpt_oss_common.py` | [#16426](https://github.com/sgl-project/sglang/pull/16426) |
-| `test/manual/core/test_gpt_oss_1gpu.py` | no direct PR-number commit |
-| `test/registered/8-gpu-models/test_gpt_oss_120b.py` | [#18134](https://github.com/sgl-project/sglang/pull/18134) |
 | `test/registered/amd/accuracy/mi30x/test_gpt_oss_eval_amd.py` | no direct PR-number commit |
 | `test/registered/amd/accuracy/mi35x/test_gpt_oss_eval_mi35x.py` | [#26884](https://github.com/sgl-project/sglang/pull/26884) |
 | `test/registered/amd/accuracy/mi35x/test_gpt_oss_w4a8_mxfp4_eval_mi35x.py` | [#27204](https://github.com/sgl-project/sglang/pull/27204) |
+| `test/registered/amd/accuracy/mi45x/test_gpt_oss_w4a8_mxfp4_eval_mi45x.py` | no direct PR-number commit |
 | `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` | [#34645](https://github.com/sgl-project/sglang/pull/34645) |
 | `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py` | [#34645](https://github.com/sgl-project/sglang/pull/34645) |
 | `test/registered/cp/test_gpt_oss_4gpu_mxfp4_cp.py` | [#31732](https://github.com/sgl-project/sglang/pull/31732) |
-| `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` | no direct PR-number commit |
+| `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` | [#39611](https://github.com/sgl-project/sglang/pull/39611) |
+| `test/registered/e2e/models/test_gpt_oss_4gpu_mxfp4.py` | no direct PR-number commit |
+| `test/registered/e2e/models/test_gpt_oss_sm120.py` | no direct PR-number commit |
+| `test/registered/e2e/models_large/test_gpt_oss_120b.py` | no direct PR-number commit |
 | `test/registered/lora/test_lora_gpt_oss_20b_logprob_diff.py` | [#21570](https://github.com/sgl-project/sglang/pull/21570) |
 | `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py` | [#30050](https://github.com/sgl-project/sglang/pull/30050) |
-| `test/registered/models_e2e/test_gpt_oss_4gpu_mxfp4.py` | no direct PR-number commit |
-| `test/registered/models_e2e/test_gpt_oss_sm120.py` | no direct PR-number commit |
 | `test/registered/page_major/test_page_major_gpt_oss.py` | no direct PR-number commit |
+| `test/registered/unit/models/test_gpt_oss_runai_ownership.py` | [#38908](https://github.com/sgl-project/sglang/pull/38908) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 31
-- Extra PRs preserved from existing docs: 20
-- Total PRs in this document: 51
+- Git-traced PRs: 33
+- Extra PRs preserved from existing docs: 21
+- Total PRs in this document: 54
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -40,8 +42,8 @@
 | 2025-08-06 | [#8843](https://github.com/sgl-project/sglang/pull/8843) | merged | Support mxfp4 for GPT-OSS | `python/sglang/srt/models/gpt_oss.py` |
 | 2025-08-08 | [#8944](https://github.com/sgl-project/sglang/pull/8944) | merged | Expert Parallelism for GPT-OSS | `python/sglang/srt/models/gpt_oss.py` |
 | 2025-08-12 | [#9043](https://github.com/sgl-project/sglang/pull/9043) | merged | (gpt-oss, oai, chat): Remove Harmony Integration and Implement Native GPT-OSS Tool Call Support | `python/sglang/srt/function_call/gpt_oss_detector.py` |
-| 2025-08-13 | [#9146](https://github.com/sgl-project/sglang/pull/9146) | merged | Fix gpt-oss ~2x memory consumption issue | `python/sglang/srt/models/gpt_oss.py` |
 | 2025-08-13 | [#9028](https://github.com/sgl-project/sglang/pull/9028) | merged | Support FA3 backend for gpt-oss | `python/sglang/srt/models/gpt_oss.py` |
+| 2025-08-13 | [#9146](https://github.com/sgl-project/sglang/pull/9146) | merged | Fix gpt-oss ~2x memory consumption issue | `python/sglang/srt/models/gpt_oss.py` |
 | 2025-08-13 | [#9161](https://github.com/sgl-project/sglang/pull/9161) | merged | Fix broken trtllm_mha attn backend with gpt-oss | `python/sglang/srt/models/gpt_oss.py` |
 | 2025-08-20 | [#9359](https://github.com/sgl-project/sglang/pull/9359) | merged | Support DP attention with GPT-OSS | `python/sglang/srt/models/gpt_oss.py` |
 | 2025-08-21 | [#9433](https://github.com/sgl-project/sglang/pull/9433) | merged | [fix] Fix mxfp4 weight loading bug with TP sharding in GPT-OSS | `python/sglang/srt/models/gpt_oss.py` |
@@ -87,6 +89,9 @@
 | 2026-07-31 | [#32334](https://github.com/sgl-project/sglang/pull/32334) | merged | [Speculative Decoding] Fix GPT-OSS EAGLE3 hidden states | `python/sglang/srt/models/gpt_oss.py` |
 | 2026-08-10 | [#30050](https://github.com/sgl-project/sglang/pull/30050) | merged | [MLX] Support gpt-oss: sliding-window attention, attention sinks, sm_scale | `test/registered/mlx/models_e2e/test_gpt_oss_mlx_correctness.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_wrapper.py`, `python/sglang/srt/hardware_backend/mlx/kv_cache/attention_contract.py` |
 | 2026-08-16 | [#34645](https://github.com/sgl-project/sglang/pull/34645) | merged | [AMD][CI] Add GPT-OSS perf benchmarks to the ROCm 7.2 nightly | `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` |
+| 2026-09-06 | [#37199](https://github.com/sgl-project/sglang/pull/37199) | merged | fix(gpt-oss): avoid duplicate MoE reduction with DP attention | `python/sglang/srt/models/gpt_oss.py` |
+| 2026-09-12 | [#38908](https://github.com/sgl-project/sglang/pull/38908) | merged | Fix gpt-oss RunAI streamer weight ownership | `test/registered/unit/models/test_gpt_oss_runai_ownership.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-09-15 | [#39611](https://github.com/sgl-project/sglang/pull/39611) | merged | [CI][Disaggregation] Fix EADDRINUSE flake in test_disaggregation_dwdp_gpt_oss | `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -198,6 +203,29 @@ diff -- python/sglang/srt/function_call/gpt_oss_detector.py
   - runtime: `python/sglang/srt/function_call/gpt_oss_detector.py` added +331/-0
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/entrypoints/harmony_utils.py`, `python/sglang/srt/entrypoints/http_server.py`, `python/sglang/srt/entrypoints/openai/protocol.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #9028 - Support FA3 backend for gpt-oss
+
+- Link: https://github.com/sgl-project/sglang/pull/9028
+- Status/date: merged / 2025-08-13
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/gpt_oss.py`; associated commits `0ff6d1fce122`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 4 files, +24/-6, 121 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support FA3 backend for gpt-oss"; model line: GPT-OSS; category: model support/runtime entry; main diff: `python/sglang/srt/models/gpt_oss.py`; technical summary: Covers "Support FA3 backend for gpt-oss"; the main implementation surface is `python/sglang/srt/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -294,7 +294,7 @@ def __init__(
+-            torch.empty(self.num_heads, dtype=torch.float32), requires_grad=False
++            torch.empty(self.num_heads, dtype=torch.bfloat16), requires_grad=False
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +1/-1
+- Risk and verification: Runtime changes concentrate in `python/pyproject.toml`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/gpt_oss.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #9146 - Fix gpt-oss ~2x memory consumption issue
 
 - Link: https://github.com/sgl-project/sglang/pull/9146
@@ -224,29 +252,6 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/gpt_oss.py` modified +19/-7
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/gpt_oss.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #9028 - Support FA3 backend for gpt-oss
-
-- Link: https://github.com/sgl-project/sglang/pull/9028
-- Status/date: merged / 2025-08-13
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/gpt_oss.py`; associated commits `0ff6d1fce122`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 4 files, +24/-6, 121 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support FA3 backend for gpt-oss"; model line: GPT-OSS; category: model support/runtime entry; main diff: `python/sglang/srt/models/gpt_oss.py`; technical summary: Covers "Support FA3 backend for gpt-oss"; the main implementation surface is `python/sglang/srt/models/gpt_oss.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `python/sglang/srt/models/gpt_oss.py` modified +1/-1 (2 lines); hunks: -294,7 +294,7 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/gpt_oss.py
-@@ -294,7 +294,7 @@ def __init__(
--            torch.empty(self.num_heads, dtype=torch.float32), requires_grad=False
-+            torch.empty(self.num_heads, dtype=torch.bfloat16), requires_grad=False
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +1/-1
-- Risk and verification: Runtime changes concentrate in `python/pyproject.toml`, `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/gpt_oss.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #9161 - Fix broken trtllm_mha attn backend with gpt-oss
 
@@ -1693,6 +1698,97 @@ diff -- test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py
 - Reviewed files:
   - tests: `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py` added +107/-0; `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py` added +106/-0
 - Risk and verification: The diff ships test coverage in `python/sglang/test/nightly_bench_utils.py`, `test/registered/amd/perf/mi30x/test_gpt_oss_perf_amd.py`, `test/registered/amd/perf/mi35x/test_gpt_oss_perf_mi35x.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #37199 - fix(gpt-oss): avoid duplicate MoE reduction with DP attention
+
+- Link: https://github.com/sgl-project/sglang/pull/37199
+- Status/date: merged / 2026-09-06
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/gpt_oss.py`; associated commits `28457f0dcab4`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +40/-5, 87 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/gpt_oss.py` modified +16/-3 (19 lines); hunks: -44,7 +44,10; -329,7 +332,9 @@ def forward_normal(; symbols: forward_normal, __init__, forward, touching `forward_normal, __init__, forward`.
+- Code diff details:
+  - `python/sglang/srt/models/gpt_oss.py` modified +16/-3 (19 lines); hunks: -44,7 +44,10; -329,7 +332,9 @@ def forward_normal(; symbols: forward_normal, __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -44,7 +44,10 @@
+-from sglang.srt.layers.moe import get_moe_a2a_backend
++from sglang.srt.layers.moe import (
++    get_moe_a2a_backend,
++    should_skip_post_experts_all_reduce,
++)
+@@ -329,7 +332,9 @@ def forward_normal(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +16/-3
+- Risk and verification: The diff ships test coverage in `test/registered/models_e2e/test_gpt_oss_4gpu_mxfp4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38908 - Fix gpt-oss RunAI streamer weight ownership
+
+- Link: https://github.com/sgl-project/sglang/pull/38908
+- Status/date: merged / 2026-09-12
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/gpt_oss.py`, `test/registered/unit/models/test_gpt_oss_runai_ownership.py`; associated commits `fd3222670660`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +126/-12, 163 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_gpt_oss_runai_ownership.py` added +94/-0 (94 lines); hunks: -0,0 +1,94; symbols: _streamed, _Mxfp4QuantConfig, get_name, TestGptOssRunaiOwnership, touching `_streamed, _Mxfp4QuantConfig, get_name`; `python/sglang/srt/models/gpt_oss.py` modified +32/-12 (44 lines); hunks: -66,7 +66,10; -953,20 +956,25 @@ def load_weights(; symbols: load_weights, _load_weights_mxfp4, experts, get_attention_sliding_window_size, touching `load_weights, _load_weights_mxfp4, experts`.
+- Code diff details:
+  - `test/registered/unit/models/test_gpt_oss_runai_ownership.py` added +94/-0 (94 lines); hunks: -0,0 +1,94; symbols: _streamed, _Mxfp4QuantConfig, get_name, TestGptOssRunaiOwnership
+  - `python/sglang/srt/models/gpt_oss.py` modified +32/-12 (44 lines); hunks: -66,7 +66,10; -953,20 +956,25 @@ def load_weights(; symbols: load_weights, _load_weights_mxfp4, experts, get_attention_sliding_window_size
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_gpt_oss_runai_ownership.py
+@@ -0,0 +1,94 @@
++"""Hermetic unit tests for gpt-oss RunAI-streamed weight ownership.
++The RunAI streamer hands out zero-copy views into a staging buffer it reuses
++between tensors, so a view read after later tensors arrive can come back as
++garbage. `_load_weights_mxfp4` therefore has to consume the expert weights as
++they are yielded, and take its own copy of anything it keeps for later.
++Pure Python (no GPU, no model weights): the model object is built without
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -66,7 +66,10 @@
+-from sglang.srt.model_loader.weight_utils import default_weight_loader
++from sglang.srt.model_loader.weight_utils import (
++    RUNAI_STREAMER_TENSOR_ATTR,
++    default_weight_loader,
++)
+@@ -953,20 +956,25 @@ def load_weights(
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_gpt_oss_runai_ownership.py` added +94/-0
+  - runtime: `python/sglang/srt/models/gpt_oss.py` modified +32/-12
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_gpt_oss_runai_ownership.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39611 - [CI][Disaggregation] Fix EADDRINUSE flake in test_disaggregation_dwdp_gpt_oss
+
+- Link: https://github.com/sgl-project/sglang/pull/39611
+- Status/date: merged / 2026-09-15
+- Trace source: `git log --name-only -- <model-files>` found it through `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py`; associated commits `47a157f257f1`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +25/-63, 106 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` modified +25/-63 (88 lines); hunks: -6,10 +6,6; -23,69 +19,35 @@ class TestDisaggregationDWDPGptOss(PDDisaggregationServerBase):; symbols: TestDisaggregationDWDPGptOss, setUpClass, start_prefill, start_decode, touching `TestDisaggregationDWDPGptOss, setUpClass, start_prefill`.
+- Code diff details:
+  - `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` modified +25/-63 (88 lines); hunks: -6,10 +6,6; -23,69 +19,35 @@ class TestDisaggregationDWDPGptOss(PDDisaggregationServerBase):; symbols: TestDisaggregationDWDPGptOss, setUpClass, start_prefill, start_decode
+- Key code excerpts:
+
+```diff
+diff -- test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py
+@@ -6,10 +6,6 @@
+-from sglang.test.test_utils import (
+-    DEFAULT_TIMEOUT_FOR_SERVER_LAUNCH,
+-    popen_launch_pd_server,
+-)
+@@ -23,69 +19,35 @@ class TestDisaggregationDWDPGptOss(PDDisaggregationServerBase):
++    # Drive the base fixture's launchers rather than reimplementing them, so
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py` modified +25/-63
+- Risk and verification: The diff ships test coverage in `test/registered/disaggregation/test_disaggregation_dwdp_gpt_oss.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

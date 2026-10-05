@@ -1,4 +1,4 @@
-# sglang Qwen3.6 模型 PR 优化历史
+# SGLang Qwen3.6 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -10,8 +10,8 @@
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/qwen3_6_27b.mdx` | 无直接 PR 号提交 |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/qwen3_6_35b_a3b.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/qwen36-deployment.jsx` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` | 无直接 PR 号提交 |
+| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` | [#39813](https://github.com/sgl-project/sglang/pull/39813) |
+| `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` | [#39813](https://github.com/sgl-project/sglang/pull/39813) |
 | `test/registered/npu/accuracy/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_aime26.py` | 无直接 PR 号提交 |
 | `test/registered/npu/accuracy/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in64k_out1k_prefix90_50ms_aime26.py` | 无直接 PR 号提交 |
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_1p_in1024x1024_30_out1024_50ms.py` | 无直接 PR 号提交 |
@@ -21,7 +21,6 @@
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in64k_out1k_50ms.py` | 无直接 PR 号提交 |
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_2p_in128k_out1k_50ms.py` | 无直接 PR 号提交 |
 | `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_2p_in16k_out1k_50ms.py` | 无直接 PR 号提交 |
-| `test/registered/npu/performance/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_2p_in64k_out1k_50ms.py` | 无直接 PR 号提交 |
 | `test/registered/npu/performance/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in128k_out1k_50ms.py` | 无直接 PR 号提交 |
 | `test/registered/npu/performance/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in128k_out1k_prefix90_50ms.py` | 无直接 PR 号提交 |
 | `test/registered/npu/performance/qwen3_6_35b_a3b/test_npu_qwen3_6_35b_a3b_1p_in3k5_out1k5_50ms.py` | 无直接 PR 号提交 |
@@ -30,9 +29,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 0
+- git 追溯 PR 数: 1
 - 原文档显式引用补充 PR 数: 4
-- 当前文档总 PR 数: 4
+- 当前文档总 PR 数: 5
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -44,6 +43,7 @@
 | 2026-07-02 | [#29905](https://github.com/sgl-project/sglang/pull/29905) | merged | docs: add Qwen3.6-27B-NVFP4 variant to cookbook | `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` |
 | 2026-07-07 | [#29964](https://github.com/sgl-project/sglang/pull/29964) | merged | [Docs] Use trtllm_mha for Qwen3.6 B300 | `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` |
 | 2026-07-25 | [#31413](https://github.com/sgl-project/sglang/pull/31413) | merged | [Docs] Add Qwen3.6 35B NVFP4 to cookbook | `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` |
+| 2026-09-16 | [#39813](https://github.com/sgl-project/sglang/pull/39813) | merged | [NPU][CI] Fail fast and speed up long-running qwen3.6 accuracy cases | `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -180,6 +180,34 @@ diff -- docs_new/src/snippets/autoregressive/qwen36-deployment.jsx
 - 已读文件:
   - docs: `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx` modified +21/-3; `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx` modified +5/-6
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Qwen/Qwen3.6.mdx`, `docs_new/src/snippets/autoregressive/qwen36-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39813 - [NPU][CI] Fail fast and speed up long-running qwen3.6 accuracy cases
+
+- 链接: https://github.com/sgl-project/sglang/pull/39813
+- 状态/时间: merged / 2026-09-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py`；关联提交 `00a9a81b6777`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+12/-3，可读 patch 52 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` modified +2/-1 (3 lines); hunks: -86,9 +86,10 @@ class TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa(TestNpuAccuracy...; symbols: TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa，涉及 `TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa`；`test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` modified +1/-0 (1 lines); hunks: -91,6 +91,7 @@ class TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa(TestNpuA...; symbols: TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa，涉及 `TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa`。
+- 代码 diff 细节:
+  - `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` modified +2/-1 (3 lines); hunks: -86,9 +86,10 @@ class TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa(TestNpuAccuracy...; symbols: TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa
+  - `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` modified +1/-0 (1 lines); hunks: -91,6 +91,7 @@ class TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa(TestNpuA...; symbols: TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py
+@@ -86,9 +86,10 @@ class TestNPUQwen3_6_27B_1P_In3k5_Out1k5_gpqa(TestNpuAccuracyTestCaseBase):
++    max_retries = 1
+-    eval_batch_size = 8
++    eval_batch_size = 16
+diff -- test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py
+@@ -91,6 +91,7 @@ class TestNPUQwen3_6_27B_1P_In64k_Out1k_Prefix90_gpqa(TestNpuAccuracyTestCaseBas
++    max_retries = 1
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py` modified +2/-1; `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/ascend/e2e/test_npu_accuracy_utils.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_1p_gpqa.py`, `test/registered/npu/accuracy/qwen3_6_27b/test_npu_qwen3_6_27b_w8a8_1p_in3k5_out1k5_50ms_gpqa.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

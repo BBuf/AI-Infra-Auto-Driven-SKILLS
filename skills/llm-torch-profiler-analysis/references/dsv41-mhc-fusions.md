@@ -1,10 +1,13 @@
 # DSV4.1 mHC fusion boundaries
 
-Source inspection: **2026-09-22**, SGLang main
-[`771c9d782d9e`](https://github.com/sgl-project/sglang/commit/771c9d782d9ecf0324e70b7f5a08c32644d652c5).
+Source inspection: **2026-10-05**, SGLang main
+[`b1bbd74f287f`](https://github.com/sgl-project/sglang/commit/b1bbd74f287f13ed1276b0403a01ebb55c597e93).
 Use this to interpret single-pass mHC traces and to decide where another fusion
 can remove exposed work. Eligibility below describes the inspected caller,
-not every kernel's standalone capability. No new GPU measurements are included.
+not every kernel's standalone capability. No new GPU measurements are included. The September 22 boundaries were
+rechecked against `_hc_combine`, `_hc_post_with_combine` and
+`forward_hc_pre_from_prev`; defaults still disable FlashInfer fused finalize.
+A matrix entry records eligibility, not proof of default dispatch.
 
 ## What single-pass overlaps
 
@@ -54,7 +57,9 @@ of the MoE router's one-warp thread model.
 ## Guards to inspect before transferring a result
 
 - The specialized model paths require BF16 residuals, four HC streams and
-  hidden size 5120 on supported CUDA Blackwell devices. The code also checks
+  hidden size 5120 on supported CUDA Blackwell devices. Standalone BF16
+  pre-combine/norm also accepts SM90 when quantization is not requested;
+  the collective and fused MXFP8 paths retain their separate guards. The code also checks
   contiguity, coefficient dtype, norm semantics and batch-invariant mode.
 - Collective fusions additionally need TP4, attention DP1, a registered
   compatible communicator and a sublayer that actually reduces its output.
@@ -81,9 +86,9 @@ summing overlapping kernels overstates the removable wall time.
 
 | Source at the inspected SHA | Read for |
 |---|---|
-| [deepseek_v4.py](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/srt/models/deepseek_v4.py) | `_hc_combine`, `_hc_mix_stats`, `_get_hc_stats_stream`, `_hc_post_with_combine`, `forward_hc_pre_from_prev` and cross-layer handoff eligibility |
-| [mhc.py](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/kernels/ops/layernorm/mhc.py) | Statistics projection, reduction/Sinkhorn, DeepGEMM and BF16x3 dispatch |
-| [hc_combine_norm.py](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/kernels/ops/layernorm/hc_combine_norm.py) | BF16 rounding, output partitions and optional MXFP8 epilogue |
-| [mhc_post_combine.py](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/kernels/ops/layernorm/mhc_post_combine.py) and [prefill CUDA](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/kernels/jit/csrc/deepseek_v4/mhc_post_combine_norm_prefill.cuh) | Post/combine materialization and prefill norm reduction contract |
-| [mhc_post_fusion.py](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/srt/layers/moe/mhc_post_fusion.py) | Scoped deferred-finalize state and statistics stream handoff |
-| [all_reduce_fusion.cuh](https://github.com/sgl-project/sglang/blob/771c9d782d9ecf0324e70b7f5a08c32644d652c5/python/sglang/kernels/jit/csrc/distributed/all_reduce_fusion.cuh) | Collective implementation, output epilogues and buffer/counter constraints |
+| [deepseek_v4.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/models/deepseek_v4.py) | `_hc_combine`, `_hc_mix_stats`, `_get_hc_stats_stream`, `_hc_post_with_combine`, `forward_hc_pre_from_prev` and cross-layer handoff eligibility |
+| [mhc.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/layernorm/mhc.py) | Statistics projection, reduction/Sinkhorn, DeepGEMM and BF16x3 dispatch |
+| [hc_combine_norm.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/layernorm/hc_combine_norm.py) | BF16 rounding, output partitions and optional MXFP8 epilogue |
+| [mhc_post_combine.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/layernorm/mhc_post_combine.py) and [prefill CUDA](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/jit/csrc/deepseek_v4/mhc_post_combine_norm_prefill.cuh) | Post/combine materialization and prefill norm reduction contract |
+| [mhc_post_fusion.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/layers/moe/mhc_post_fusion.py) | Scoped deferred-finalize state and statistics stream handoff |
+| [all_reduce_fusion.cuh](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/jit/csrc/distributed/all_reduce_fusion.cuh) | Collective implementation, output epilogues and buffer/counter constraints |

@@ -56,7 +56,6 @@ frameworks:
     base_server_flags:
       model_path: baidu/ERNIE-4.5-21B-A3B-PT
       mem_fraction_static: 0.82
-      schedule_policy: lpm
     search_space:
       chunked_prefill_size:
       - 4096
@@ -89,8 +88,6 @@ frameworks:
       - 4096
       enable_prefix_caching:
       - true
-      block_size:
-      - 16
   tensorrt_llm:
     enabled: true
     server_command: trtllm-serve serve

@@ -37,9 +37,15 @@ from collections import defaultdict
 
 from model_profiles import (
     ModelProfile,
+    checked_anchor_indices,
+    choose_anchor,
+    configure_anchor_profile,
     get_profile,
     infer_profile,
+    layer_label,
     normalize_compress_ratios,
+    normalize_model_config,
+    select_gpu,
 )
 
 # ── trace loading ──────────────────────────────────────────────────────────
@@ -135,7 +141,7 @@ def load_config(path):
     if path is None:
         return {}
     with open(path) as f:
-        return json.load(f)
+        return normalize_model_config(json.load(f))
 
 
 def get_compress_ratios(config):
@@ -215,23 +221,12 @@ def print_diff(kernels_a, kernels_b, label_a, label_b, profile: ModelProfile):
 
 def _layer_type_label(cr, layer_id, num_layers, num_hash_layers):
     """Return human-readable layer type label."""
-    if layer_id == 0:
-        return "FIRST"
-    if layer_id == num_layers - 1:
-        return "FINAL"
-    if layer_id >= num_layers - num_hash_layers:
-        return "HASH"
-    if cr == 0:
-        return "FULL_ATTN"
-    if cr == 4:
-        return "C4_LIGHT"
-    if cr == 128:
-        return "C128_HEAVY"
-    return f"CR{cr}"
+    return layer_label(layer_id, cr, num_layers, num_hash_layers)
 
 
 def model_architecture_fields(config):
     """Return normalized model fields shared by text and machine consumers."""
+    config = normalize_model_config(config)
     return {
         "is_moe": bool(config.get("moe")),
         "num_experts": config.get("num_experts", "?"),
@@ -293,8 +288,8 @@ def print_model_architecture(config, compress_ratios, num_hash_layers, num_layer
 
     # MHC
     if config.get("mhc"):
-        mhc_dim = config.get("mhc_bottleneck_dim", "?")
-        print(f"  MHC: enabled (bottleneck_dim={mhc_dim})")
+        mhc_dim = config.get("hc_mult", config.get("hc_count", "?"))
+        print(f"  MHC: enabled (hc_mult={mhc_dim})")
 
     # NSA
     idx_heads = config.get("index_n_heads")
@@ -537,12 +532,14 @@ def main():
         default="text",
         help="Output format: text (human-readable), compute-flow (per-kernel table), or json (machine-readable per-kernel detail)",
     )
+    ap.add_argument("--blocks-per-layer", type=int, default=None)
+    ap.add_argument("--anchor-offset", type=int, default=0)
+    ap.add_argument("--pid", default=None)
+    ap.add_argument("--device", default=None)
     args = ap.parse_args()
 
     events = load_trace(args.trace)
-    gpu = sorted(
-        [e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0)
-    )
+    gpu = select_gpu(events, args.pid, args.device)
     trace_start_ts = min(
         (e.get("ts", float("inf")) for e in events if e.get("ts") is not None),
         default=0,
@@ -557,38 +554,16 @@ def main():
         profile = infer_profile(config)
 
     # Determine anchor kernel
-    anchor_kernel = args.anchor_kernel
-    if not anchor_kernel:
-        if profile.anchor_kernel:
-            anchor_kernel = profile.anchor_kernel
-        else:
-            # Scan trace for common anchors
-            for candidate in [
-                "mhc_post_tilelang",
-                "flash_fwd_mla_combine",
-                "rms_norm",
-                "rmsnorm",
-                "RMSNorm",
-                "AllReduce",
-            ]:
-                if sum(1 for e in gpu if candidate in e.get("name", "")) >= 4:
-                    anchor_kernel = candidate
-                    break
-            if not anchor_kernel:
-                print(
-                    "ERROR: cannot auto-detect anchor kernel. Use --profile or --anchor-kernel.",
-                    file=sys.stderr,
-                )
-                sys.exit(1)
-
-    anchor_indices = [
-        i for i, e in enumerate(gpu) if anchor_kernel in e.get("name", "")
-    ]
-
+    anchor_kernel = args.anchor_kernel or choose_anchor(gpu, profile)
+    profile = configure_anchor_profile(profile, anchor_kernel, args.blocks_per_layer)
     compress_ratios = get_compress_ratios(config)
     num_hash_layers = config.get("num_hash_layers", 0)
     num_layers = args.num_layers or config.get(
         "num_hidden_layers", profile.default_num_layers
+    )
+
+    anchor_indices = checked_anchor_indices(
+        gpu, anchor_kernel, num_layers, profile.blocks_per_layer, args.anchor_offset
     )
 
     cr = compress_ratios[args.layer] if args.layer < len(compress_ratios) else -1

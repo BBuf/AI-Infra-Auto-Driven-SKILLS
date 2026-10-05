@@ -114,7 +114,7 @@ values; this schema is not tied to H100.
     "notes": ""
   },
   "server_command": "python -m sglang.launch_server ...",
-  "benchmark_command": "python -m sglang.bench_serving ...",
+  "benchmark_command": "python -m sglang.benchmark.serving ...",
   "validated_cli_flags": {
     "server": ["tp_size", "attention_backend"],
     "benchmark": ["dataset_name", "request_rate", "max_concurrency"]
@@ -123,15 +123,15 @@ values; this schema is not tied to H100.
     "server_log": "/bench/sglang/server.log",
     "raw_result": "/bench/sglang/results.jsonl",
     "server_help": "/bench/sglang/help_launch_server.txt",
-    "benchmark_help": "/bench/sglang/help_bench_serving.txt"
+    "benchmark_help": "/bench/sglang/help_benchmark_serving.txt"
   }
 }
 ```
 
 `input_len` and `output_len` are the representative scenario lengths used for
 synthetic workloads or a named bucket. For custom production-like datasets,
-also include p50/p95 buckets when available. These fields let the
-`sglang-sota-humanize-loop` skill pass the slow benchmark shape directly into
+also include p50/p95 buckets when available. These fields let a follow-up
+profiling step pass the slow benchmark shape directly into
 `llm-torch-profiler-analysis`:
 
 - prefill profile: `--prefill-input-len <slow input len>` and

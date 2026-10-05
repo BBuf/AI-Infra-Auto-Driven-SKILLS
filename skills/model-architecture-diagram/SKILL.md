@@ -20,7 +20,8 @@ python3 skills/model-architecture-diagram/scripts/model_architecture_diagram.py 
 
 ## Source Priority
 
-Use `references/diagram-index.json` as the source of truth. It stores raw GitHub image URLs from:
+Use `references/diagram-index.json` as the source of truth. It stores raw GitHub image URLs and official vendor/CDN or pinned Hugging Face
+`resolve/<sha>` URLs. Official sources include Qwen and XiaomiMiMo; GitHub sources:
 
 - `datawhalechina/self-llm`
 - `CalvinXKY/InfraTech`
@@ -38,14 +39,15 @@ paper overview. Official repository diagrams and curated implementation
 diagrams are first choice; paper figures are fallback only when no more detailed
 public original diagram is indexed.
 
-Do not copy remote image binaries into the skill. Return the raw GitHub URLs so the chat renderer can display the original image.
+Do not copy remote image binaries into the skill. Return the indexed original URLs so the chat renderer can display the original image.
 
 ## Existing Diagram Rule
 
 For a direct match, show the original image. Good direct matches include:
 
 - DeepSeek V3/V3.2/V4, GLM-5, Kimi K2/K2.5/K3, MiniMax M2.5, Qwen3.5, Qwen3-VL, and Step 3.5 Flash from InfraTech.
-- Qwen3.8 is public as of 2026-08-23 but is not yet in `diagram-index.json`; return `no_match` rather than inventing a figure.
+- Qwen3.8-Flash-Next has an official diagram (also named `qwen4_exp` in runtime code). Plain Qwen3.8 2.4T remains `no_match`; these are different architectures.
+- MiMo V2.6, MiMo V2.5 Pro and GLM-5.2 have indexed originals. GLM-5.3 remains `no_match` because no direct diagram was verified.
 - Hunyuan-A13B, Kimi-VL, Qwen3, Qwen3-VL detail flows, MiniMax M2, and Llama 4 architecture/module diagrams from self-llm.
 - Z-Image, Wan2.1, Wan2.2, HunyuanVideo, Hunyuan3D 2.0, and FLUX.1 diffusion architecture/module diagrams from public GitHub sources.
 
@@ -62,7 +64,7 @@ Current hosted artifact:
 - Zip download: https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/download/sgl-cookbook-architecture-images-2026-05-02/sgl-cookbook-model-architecture-images-2026-05-02.zip
 - Digest: `sha256:ea432081849a250429d3d1ecf246e267c5cc42f989aaf4b9ca695b581e7fa50f`
 
-The artifact contains 44 public original diagram image files from the indexed upstream repositories, plus a lightweight `index.html`, `index.md`, `manifest.json`, HTML contact sheet, and `architecture-audit.md`.
+The gallery is a 2026-05-02 snapshot containing 44 public original diagram image files; it does not mirror the current index, plus a lightweight `index.html`, `index.md`, `manifest.json`, HTML contact sheet, and `architecture-audit.md`.
 
 To inspect the gallery locally:
 

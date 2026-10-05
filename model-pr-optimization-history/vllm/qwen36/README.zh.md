@@ -1,4 +1,4 @@
-# vllm Qwen3.6 模型 PR 优化历史
+# vLLM Qwen3.6 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 

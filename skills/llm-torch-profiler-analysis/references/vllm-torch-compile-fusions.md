@@ -1,9 +1,9 @@
 # vLLM Torch Compile Fusion Patterns
 
-Source inspection: **2026-09-18**, vLLM
-`d5f0a6e829faa69d1db289bf62b14dae136c02b2`.
-[Pass manager](https://github.com/vllm-project/vllm/blob/d5f0a6e829faa69d1db289bf62b14dae136c02b2/vllm/compilation/passes/pass_manager.py)
-and [configuration](https://github.com/vllm-project/vllm/blob/d5f0a6e829faa69d1db289bf62b14dae136c02b2/vllm/config/compilation.py)
+Source inspection: **2026-10-05**, vLLM
+`0c16eee3f1ff777298cc894c3eeb85f3880c6d6a`.
+[Pass manager](https://github.com/vllm-project/vllm/blob/0c16eee3f1ff777298cc894c3eeb85f3880c6d6a/vllm/compilation/passes/pass_manager.py)
+and [configuration](https://github.com/vllm-project/vllm/blob/0c16eee3f1ff777298cc894c3eeb85f3880c6d6a/vllm/config/compilation.py)
 are the registration/gating authority. The previous MiniMax-specific pass is
 not registered in this snapshot. Transformers norm canonicalization now adds
 `AddRMSNormFusionPass` before AR+RMS matching and `RMSNormReshapeFusionPass`
@@ -38,6 +38,11 @@ vLLM registers these passes from
 | `enable_qk_norm_rope_fusion` | `QKNormRoPEFusionPass` | Q/K RMSNorm plus RoPE on packed QKV tensors |
 | `fuse_qk_norm_rope_kvcache` | `QkNormRopeKvCacheFusionPass` | supported ROCm attention layers fuse Q/K RMSNorm, RoPE, unified KV-cache update, and optional query quantization |
 
+| Transformers backend + any norm/padding/AR fusion | `AddRMSNormFusionPass`, `RMSNormReshapeFusionPass` | canonicalizes residual add and reorders output reshapes around AR+RMS matching; #54461 covers rsqrt forms |
+| `eliminate_noops` (default True) | `NoOpEliminationPass` | removes no-op graph nodes before fusion matching |
+| RoPE/QK fusion prerequisites | `SplitCoalescingPass`, `ScatterSplitReplacementPass` | canonicalizes split/slice and functionalized scatter layouts; runs before the relevant fusion |
+| Always after configured fusions | `PostCleanupPass`, `VllmIRLoweringPass`, `UnsafeCloneEliminationPass`, `FixFunctionalizationPass` | cleanup, provider lowering, clone removal, second cleanup, then final functionalization repair |
+
 ## Pattern Inventory
 
 | Source file | Pattern classes | Trace clue | Replacement |
@@ -57,6 +62,43 @@ vLLM registers these passes from
 | `fusion/mla_attn_quant_fusion.py` | `MLAAttnFp8StaticQuantPattern`, `MLAAttnNvfp4QuantPattern`, `MLAAttnFp8GroupQuantPattern` | MLA attention output followed by static FP8, NVFP4, or FP8 group quant | MLA attention op with fused output quant when supported |
 | `fusion/sequence_parallelism.py` | `FirstAllReduceRMSNormPattern`, `MiddleAllReduceRMSNormPattern`, `FirstAllReduceRMSNormStaticFP8Pattern`, `MiddleAllReduceRMSNormStaticFP8Pattern` | all-reduce plus norm block in a full-graph TP model | sequence-parallel reduce-scatter, local norm, all-gather staging |
 | `fusion/collective_fusion.py` | `GEMMReduceScatterPattern`, `AllGatherGEMMPattern`, `ScaledMMReduceScatterPattern`, `AllGatherScaledMMPattern`, `CutlassScaledMMReduceScatterPattern`, `AllGatherCutlassScaledMMPattern`, `FlashInferBMMFP8ReduceScatterPattern`, `FlashInferAllGatherBMMFP8Pattern` | matmul / scaled-mm / FlashInfer BMM adjacent to TP collectives | symmetric-memory fused matmul+reduce-scatter or all-gather+matmul |
+
+| `fusion/act_quant_fusion.py` | `ActivationQuantPattern` | see existing family row above | same registered pass and provider; inspect pattern-specific guards |
+| `fusion/add_rms_fusion.py` | `RMSNormReshapePattern`, `FusedAddRMSNormReshapePattern` | residual add, norm and output reshapes in Transformers-backend models | canonical residual-add RMSNorm and reshape movement ahead of norms; before/after AR+norm respectively |
+| `fusion/allreduce_rms_fusion.py` | `AllReduceGemmaRMSNormPattern`, `AllReduceFusedAddGemmaRMSNormPattern`, `AiterAllreduceFusedRMSNormPattern`, `AiterAllreduceFusedAddRMSNormPattern`, `AiterAllreduceFusedAddRMSNormOutputOnlyPattern`, `AiterAllreduceFusedRMSNormGroupQuantFP8Pattern`, `AiterAllreduceFusedAddRMSNormGroupQuantFP8Pattern`, `AiterAllreduceFusedAddRMSNormGroupQuantWithIndexerPattern` | all-reduce followed by Gemma (1+w) norm or ROCm residual norm/FP8 group quant/indexer fan-out | FlashInfer AR+Gemma norm or AITER AR+RMSNorm (+group quant and BF16 indexer fan-out) |
+| `fusion/attn_quant_fusion.py` | `RocmAttnFp8StaticQuantPattern` | ROCm AITER attention output then static FP8 quant | AITER attention with quantized output |
+| `fusion/collective_fusion.py` | `RocmGEMMReduceScatterPattern`, `RocmAllGatherGEMMPattern`, `FlashInferAllGatherFP4Pattern` | ROCm BF16 GEMM adjacent to collectives or NVFP4 all-gather feeding GEMM | symmetric-memory ROCm GEMM RS/AG and fused_all_gather_flashinfer_fp4_matmul |
+| `fusion/qk_norm_rope_kvcache_fusion.py` | `QkNormMRopeKvCachePattern` | MRoPE plus QK norm, optional Q quant and unified KV update on ROCm | fused_qk_norm_mrope_and_unified_kv_cache_update |
+| `fusion/rocm_aiter_fusion.py` | `DoubleAiterRMSFp8GroupQuantPattern`, `DoubleAiterRMSFp8GroupQuantViewPattern`, `AiterRMSNormGatedFp8GroupQuantPattern`, `MLADualRMSPerTokenQuantPattern` | double/gated RMSNorm plus group FP8 quant, or MLA dual Q/KV norms plus per-token quant | AITER double/gated norm-quant and dual MLA norm-quant custom ops; inspect gfx950/provider guards |
+| `fusion/sequence_parallelism.py` | `FirstAllReduceRMSNormStaticNVFP4Pattern`, `MiddleAllReduceRMSNormStaticNVFP4Pattern` | all-reduce and NVFP4 norm block | reduce-scatter/local norm-quant/all-gather staging |
+
+| `fusion/add_rms_fusion.py` | `AddRMSNormPattern` | residual add directly before RMSNorm in Transformers backend | `vllm.ir.ops.fused_add_rms_norm` canonical form |
+| `fusion/rms_quant_fusion.py` | `RMSNormQuantPattern`, `FusedAddRMSNormNvfp4QuantPattern` | residual-add RMSNorm followed by NVFP4 quant | `flashinfer_fused_add_rms_norm_nvfp4_quant` (#51925 merged 2026-09-08); base pattern dispatches by quant key |
+| `fusion/rope_kvcache_fusion.py` | `RopeStaticQQuantKVCachePattern` | RoPE plus static FP8 Q quant feeding KV update | `fused_rope_and_unified_kv_cache_update` with Q quant |
+
+Base matcher classes `BasePattern` (allreduce and collective files),
+`ActivationQuantPattern`, `RMSNormQuantPattern` and `AiterRMSNormQuantPattern`
+share the concrete patterns’ dispatch logic; they are not additional GPU kernels.
+
+## Enablement and provider interpretation
+
+`vllm/config/vllm.py::OPTIMIZATION_LEVEL_00..03` controls defaults (default O2).
+O0 disables all fusion passes and graphs. O1 conditionally enables norm-quant,
+activation-quant, AITER norm-pad and MLA dual norms, with PIECEWISE graphs.
+O2/O3 additionally conditionally enable AR+norm, RoPE/cache, combined QK-norm
+RoPE/cache and MLA RoPE/cache, with FULL_AND_PIECEWISE graphs. Platform,
+provider, TP size and graph-splitting guards still apply. Attention-output quant,
+QK-norm/RoPE, SP and AsyncTP remain opt-in at every level. Batch invariance
+force-disables AR+norm, SP and AsyncTP. XPU also registers norm-quant,
+activation-quant, QK-norm/RoPE and SP when their platform guards pass.
+
+IR ops (`vllm/ir/ops/layernorm.py`, `activation.py`) are lowered **after** matching.
+`kernel_config.ir_op_priority` chooses native/Inductor, vllm_c, AITER or Oink
+providers. Compiled CUDA/ROCm defaults use native norms: look for Inductor
+`triton_*_fused_*` kernels before concluding a custom norm-quant op is missing.
+`VLLM_USE_OINK_OPS` changes the SM100 provider. Breakable-graph models skip
+these compile passes: compare model-local eager AR+norm and
+`vllm/model_executor/layers/fusion/fused_act_quant.py` instead.
 
 ## Triage Rules
 

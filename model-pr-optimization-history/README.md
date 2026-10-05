@@ -21,20 +21,24 @@ the same timeline plus per-PR diff-card format whenever a model family has
 upstream PR evidence.
 
 Model availability is framework-specific rather than a cross-framework
-promise. For example, the current generated coverage includes Hunyuan3 Preview
-and Qwen3.6 for both SGLang and vLLM, while MOSS-VL is SGLang-only because the
-audited vLLM source head has no matching implementation files.
+promise. For example, MOSS-VL is SGLang-only and Inkling has no TensorRT-LLM
+implementation at the audited heads.
 
-When a doc is rechecked for timeliness, a dated `## <YYYY-MM-DD> PR Backfill
-Audit` section is prepended right after the title. It lists PR-numbered merges
-that touched the tracked implementation files after the doc's previous freshness
-cutoff and are not yet folded into the timeline / diff-audit cards below. Read
-that section first to see what changed most recently before trusting the older
-cards.
+All four framework trees are rebuilt by
+`tools/rebuild_model_pr_history_from_git.py` from upstream git history. Merged
+PRs that already have an audited card keep that card verbatim; only new or
+still-open PRs are fetched again. Hand-written dated notes (a source-head
+refresh, a backfill audit, or a reviewed kernel addendum) sit between the title
+and `Implementation File Coverage` and survive regeneration. Read them first.
 
 Open PRs are deliberately kept out of the merged-history cards until their
 diffs are manually reviewed. Regenerate `open-pr-watch.md` before long refresh
 work and treat it as a triage queue, not as a source of implemented behavior.
+
+Generated entries labeled **not a manual audit** are PR discovery inventories.
+Read their full diffs and current callers before making optimization conclusions;
+API file counts and snippets do not establish complete diff coverage. Existing
+manual audit notes retain their original dates.
 
 Quick queries:
 
@@ -44,7 +48,7 @@ python3 scripts/query.py --framework sglang --model qwen3-core --paths-only
 python3 scripts/query.py --framework vllm "qwen3 fused qk norm"
 ```
 
-SGLang SOTA and Humanize loops should read the matching SGLang history before
+Optimization work should read the matching target-framework history before
 patch planning, read competitor history when vLLM, TensorRT-LLM, or TokenSpeed
 is the leading competitor, and save the short extracted evidence under
 `history/model-pr-history-notes.md`.

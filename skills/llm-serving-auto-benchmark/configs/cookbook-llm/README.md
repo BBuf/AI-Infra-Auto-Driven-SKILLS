@@ -10,11 +10,11 @@ Scope:
 - The two default random scenarios remain aligned pairs: `chat` uses `1000 -> 1000`, and `summarization` uses `8000 -> 1000`.
 - A framework is enabled only when the recorded upstream head exposes the exact model/checkpoint and required launch flags. Otherwise its section is retained as `enabled: false` with `support_status: not_verified_at_recorded_head`; that status is not a claim that the framework can never support the model.
 
-Current narrow additions:
+Historical recipe additions (original source and GPU evidence retained):
 
 - `MiniMaxAI/MiniMax-M3-MXFP8`: the enabled SGLang recipe follows the verified single-node 8×B200 launch (`tp=8`, FA4 sparse attention, DeepGEMM MoE, 0.65 static-memory fraction). The 2026-08-23 source head is recorded below; the last GPU smoke for this recipe remains the earlier B200 run. vLLM lists the exact checkpoint, so its section is an enabled generic translation; TensorRT-LLM and TokenSpeed stay disabled because their recorded recipes use a different hardware or checkpoint contract.
 - `Qwen/Qwen3.6-35B-A3B-FP8`: the enabled SGLang recipe follows its current B200 single-GPU cookbook entry at the same recorded head. The other recorded heads do not expose this exact FP8 checkpoint contract, so those sections stay disabled.
-- `Qwen/Qwen3.8-27B-FP8`: the enabled SGLang section copies the public H200 single-GPU cookbook cell (`flashinfer`, FP8 KV, 0.85 static-memory fraction, 32768 prefill chunk). vLLM lists `Qwen/Qwen3.8-27B` through the existing `qwen3_5` loader, TensorRT-LLM has same-day Qwen3.8 wave-2 merges, and TokenSpeed still has open Hopper cookbook `#1111`; those sections stay disabled because this refresh did not GPU-verify a matching four-framework contract.
+- `Qwen/Qwen3.8-27B-FP8`: the enabled SGLang section copies the public H200 single-GPU cookbook cell (`flashinfer`, FP8 KV, 0.85 static-memory fraction, 32768 prefill chunk). vLLM lists `Qwen/Qwen3.8-27B` through the existing `qwen3_5` loader, TensorRT-LLM has same-day Qwen3.8 wave-2 merges, and TokenSpeed now ships a trtllm-attention recipe, whose H200 dispatch was not verified; those sections stay disabled because this refresh did not GPU-verify a matching four-framework contract.
 
 Inkling, Unlimited OCR, Kimi K3, and DeepSeek V4 are intentionally excluded
 from the cross-framework cookbook in this refresh because their current
@@ -32,3 +32,24 @@ python skills/llm-serving-auto-benchmark/scripts/validate_cookbook_configs.py   
 ```
 
 With captured help files, add `--help-dir <artifact-help-dir>` to check the concrete flag names against that environment. This check only loads configs and renders candidate commands; it does not launch model servers.
+
+## 2026-10-05 source refresh
+
+The directory now contains 51 configs. Nine added recipes copy frozen-head
+verified SGLang cells: GLM-5.3-Flash (B200 FP8), GLM-5.3 (B300 BF16,
+non-speculative), Qwen3.8-Flash-Next (H200 FP8), Hy4-preview (B200 MXFP8),
+Granite4.2 3B (H200), K2-Horizon 0.9B (H200, pinned model revision),
+MiniCPM5 2B (H200), Ling3 Flash VL (H200 BF16; text-only workload), and
+GigaChat3.5 (H100 FP8). Their other framework lanes remain explicitly
+unverified until matching image/checkpoint/hardware contracts are checked.
+GLM-5.3 FP8 recipes require speculation; the default addition uses the source's
+non-speculative BF16 cell instead. New recipes pin all four source heads to
+2026-10-05/04. Older files retain their original provenance.
+
+vLLM block-size 16 is no longer forced: it precludes preferred MLA/DSA backends.
+SGLang random-workload recipes no longer force LPM. The Qwen3.5 TP4 FP8 recipe
+is explicitly B200 with current symmetric-memory, linear-attention and MoE
+flags. FA3 is excluded from that Blackwell search. Ling3's context env is
+rendered in its server command. Model-specific image requirements are recorded
+in `source.required_image` for new recipes and in the runbook for older ones.
+No GPU runs were performed for this refresh.

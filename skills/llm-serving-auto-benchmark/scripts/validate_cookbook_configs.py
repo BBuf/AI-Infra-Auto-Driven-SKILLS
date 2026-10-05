@@ -45,6 +45,18 @@ DEPRECATED_SLA_KEYS = {
 
 STATIC_SERVER_FLAGS = {
     "sglang": {
+        "attn_dp_size",
+        "moe_a2a_backend",
+        "dsa_prefill_backend",
+        "dsa_decode_backend",
+        "quantization",
+        "linear_attn_prefill_backend",
+        "linear_attn_decode_backend",
+        "mamba_ssm_dtype",
+        "fp8_gemm_backend",
+        "revision",
+        "json_model_override_args",
+        "page_size",
         "attention_backend",
         "chunked_prefill_size",
         "context_length",
@@ -90,6 +102,11 @@ STATIC_SERVER_FLAGS = {
         "trust_remote_code",
     },
     "tensorrt_llm": {
+        "kv_cache_dtype",
+        "enable_chunked_prefill",
+        "enable_attention_dp",
+        "context_parallel_size",
+        "cp_size",
         "backend",
         "ep_size",
         "extra_llm_api_options",
@@ -113,7 +130,6 @@ STATIC_SERVER_FLAGS = {
         "dtype",
         "enable_allreduce_fusion",
         "enable_expert_parallel",
-        "enable_mla_l1_5_cache",
         "enable_prefix_caching",
         "gpu_memory_utilization",
         "host",
@@ -241,7 +257,9 @@ def load_help_flags(help_dir: Path) -> dict[str, set[str]]:
         matches = []
         for path in help_dir.rglob("*.txt"):
             name = path.name.lower()
-            if all(hint in name for hint in hints):
+            if all(hint in name for hint in hints) or (
+                framework == "sglang" and "sglang" in name and "serve" in name
+            ):
                 matches.append(path)
         if matches:
             flags: set[str] = set()
@@ -266,6 +284,12 @@ def _known_flag(
 
     concrete = flag_name(framework, key).lstrip("-")
     aliases = {concrete, concrete.replace("-", "_"), concrete.replace("_", "-")}
+    if (
+        framework == "tensorrt_llm"
+        and key == "backend"
+        and "backend" not in help_flags[framework]
+    ):
+        return True  # compatibility option deprecated on PyTorch-only current CLI
     return bool(aliases & help_flags[framework])
 
 
@@ -306,7 +330,7 @@ def _validate_framework(
     if framework == "tensorrt_llm":
         if server.get("backend_policy") != "fixed_pytorch":
             errors.append("tensorrt_llm: backend_policy must be fixed_pytorch")
-        if base_flags.get("backend") != "pytorch":
+        if base_flags.get("backend", "pytorch") != "pytorch":
             errors.append("tensorrt_llm: base backend must be pytorch")
         if "backend" in search_space:
             errors.append("tensorrt_llm: backend must not appear in search_space")

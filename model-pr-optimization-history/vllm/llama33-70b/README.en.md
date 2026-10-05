@@ -1,4 +1,4 @@
-# vllm Llama 3.3 70B Model PR Optimization History
+# vLLM Llama 3.3 70B Model PR Optimization History
 
 ## Implementation File Coverage
 

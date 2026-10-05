@@ -26,9 +26,15 @@ from collections import defaultdict
 
 from model_profiles import (
     ModelProfile,
+    checked_anchor_indices,
+    choose_anchor,
+    configure_anchor_profile,
     get_profile,
     infer_profile,
+    layer_label,
     normalize_compress_ratios,
+    normalize_model_config,
+    select_gpu,
 )
 
 # ── trace loading ──────────────────────────────────────────────────────────
@@ -56,33 +62,7 @@ def find_anchor_kernel(gpu_kernels, profile: ModelProfile) -> str:
     Otherwise, scan the trace for common anchor candidates and pick the
     most frequent one.
     """
-    if profile.anchor_kernel:
-        return profile.anchor_kernel
-    if profile.name == "dsv41":
-        raise ValueError(
-            "DSV4.1 fused boundaries depend on the active path. Supply a verified "
-            "once-per-layer --anchor-kernel and the matching --config/--num-layers; "
-            "separate target verify from draft passes first."
-        )
-
-    # Common anchor candidates across model families
-    candidates = [
-        "mhc_post_tilelang",  # DeepSeek-V4
-        "flash_fwd_mla_combine",  # DeepSeek-V3
-        "rms_norm",  # generic TP=1 traces
-        "rmsnorm",
-        "RMSNorm",
-        "AllReduce",  # generic fallback (1 per layer)
-    ]
-    for c in candidates:
-        count = sum(1 for e in gpu_kernels if c in e.get("name", ""))
-        if count >= 4:  # at least a couple of layers
-            return c
-
-    raise ValueError(
-        "Cannot auto-detect layer anchor kernel from trace. "
-        "Please specify --profile or --anchor-kernel."
-    )
+    return choose_anchor(gpu_kernels, profile)
 
 
 def detect_num_layers(
@@ -197,7 +177,7 @@ def load_config(path):
     if path is None:
         return {}
     with open(path) as f:
-        return json.load(f)
+        return normalize_model_config(json.load(f))
 
 
 def get_compress_ratios(config):
@@ -206,25 +186,7 @@ def get_compress_ratios(config):
 
 def layer_type_label(layer_id, compress_ratios, num_layers, num_hash_layers):
     cr = compress_ratios[layer_id] if layer_id < len(compress_ratios) else -1
-
-    # Hash layers are at the end
-    hash_start = num_layers - num_hash_layers if num_hash_layers else num_layers
-    is_hash = layer_id >= hash_start
-
-    if layer_id == 0:
-        return "FIRST", cr
-    elif layer_id == num_layers - 1:
-        return "FINAL", cr
-    elif is_hash:
-        return "HASH", cr
-    elif cr == 0:
-        return "FULL_ATTN", cr
-    elif cr == 4:
-        return "C4_LIGHT", cr
-    elif cr == 128:
-        return "C128_HEAVY", cr
-    else:
-        return f"CR{cr}", cr
+    return layer_label(layer_id, cr, num_layers, num_hash_layers), cr
 
 
 def select_steady_state_pass(
@@ -390,7 +352,7 @@ def print_cluster_stats(
     )
     print("-" * 85)
 
-    for name in ["FIRST", "FULL_ATTN", "C4_LIGHT", "C128_HEAVY", "HASH", "FINAL"]:
+    for name in sorted(clusters):
         if name not in clusters:
             continue
         infos = clusters[name]
@@ -462,12 +424,14 @@ def main():
         default=None,
         help="Override number of layers (default: auto-detect)",
     )
+    ap.add_argument("--blocks-per-layer", type=int, default=None)
+    ap.add_argument("--anchor-offset", type=int, default=0)
+    ap.add_argument("--pid", default=None)
+    ap.add_argument("--device", default=None)
     args = ap.parse_args()
 
     events = load_trace(args.trace)
-    gpu = sorted(
-        [e for e in events if e.get("cat") == "kernel"], key=lambda e: e.get("ts", 0)
-    )
+    gpu = select_gpu(events, args.pid, args.device)
 
     config = load_config(args.config)
 
@@ -479,6 +443,7 @@ def main():
 
     # Determine anchor kernel
     anchor_kernel = args.anchor_kernel or find_anchor_kernel(gpu, profile)
+    profile = configure_anchor_profile(profile, anchor_kernel, args.blocks_per_layer)
     anchor_indices = find_layer_boundaries(gpu, anchor_kernel)
 
     compress_ratios = get_compress_ratios(config)
@@ -494,6 +459,9 @@ def main():
             anchor_indices, gpu, profile.blocks_per_layer, profile.default_num_layers
         )
 
+    anchor_indices = checked_anchor_indices(
+        gpu, anchor_kernel, num_layers, profile.blocks_per_layer, args.anchor_offset
+    )
     bpl = profile.blocks_per_layer
     blocks_per_pass = num_layers * bpl
     n_passes = (len(anchor_indices) - 1) // blocks_per_pass

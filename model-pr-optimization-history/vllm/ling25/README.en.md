@@ -1,4 +1,4 @@
-# vllm Ling 2.5 Model PR Optimization History
+# vLLM Ling 2.5 Model PR Optimization History
 
 ## Implementation File Coverage
 

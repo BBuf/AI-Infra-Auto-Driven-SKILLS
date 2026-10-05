@@ -1,19 +1,19 @@
-# sglang Step 3.5 Model PR Optimization History
+# SGLang Step 3.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
 | `python/sglang/srt/configs/step3p5.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084) |
-| `python/sglang/srt/models/step3p5.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084), [#22076](https://github.com/sgl-project/sglang/pull/22076), [#22773](https://github.com/sgl-project/sglang/pull/22773) |
+| `python/sglang/srt/models/step3p5.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084), [#22076](https://github.com/sgl-project/sglang/pull/22076), [#22773](https://github.com/sgl-project/sglang/pull/22773), [#41082](https://github.com/sgl-project/sglang/pull/41082), [#41198](https://github.com/sgl-project/sglang/pull/41198), [#41437](https://github.com/sgl-project/sglang/pull/41437), [#41754](https://github.com/sgl-project/sglang/pull/41754), [#42302](https://github.com/sgl-project/sglang/pull/42302) |
 | `python/sglang/srt/models/step3p5_mtp.py` | [#18084](https://github.com/sgl-project/sglang/pull/18084) |
-| `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` | no direct PR-number commit |
+| `test/registered/e2e/models/test_step3p5_flash_chain_mtp.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 3
+- Git-traced PRs: 8
 - Extra PRs preserved from existing docs: 12
-- Total PRs in this document: 15
+- Total PRs in this document: 20
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -30,12 +30,17 @@
 | 2026-04-16 | [#22773](https://github.com/sgl-project/sglang/pull/22773) | merged | [Step3p5] Optimize allreduce in MoE layers | `python/sglang/srt/models/step3p5.py` |
 | 2026-04-29 | [#24105](https://github.com/sgl-project/sglang/pull/24105) | merged | relax the threshold in test_step3p5_flash_chain_mtp | `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py` |
 | 2026-05-01 | [#24192](https://github.com/sgl-project/sglang/pull/24192) | merged | [spec decoding] add tests for chain-style multi layer eagle + return_logprob | `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py` |
+| 2026-05-14 | [#24725](https://github.com/sgl-project/sglang/pull/24725) | merged | ci: tag-gated nightly migration — foundation + 40 whole-file moves | `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py` |
 | 2026-05-14 | [#25197](https://github.com/sgl-project/sglang/pull/25197) | merged | ci: decouple stage and runner for cuda registry | `test/registered/layers/test_fla_layernorm_guard.py`, `test/registered/models/test_dummy_grok_models.py`, `test/registered/models/test_ministral3_models.py` |
 | 2026-05-14 | [#25236](https://github.com/sgl-project/sglang/pull/25236) | merged | ci: H200 conditional split + dsv4 est_time recalibration (h200 partition 6→2) | `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`, `test/registered/8-gpu-models/test_deepseek_v3_mtp.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py` |
-| 2026-05-14 | [#24725](https://github.com/sgl-project/sglang/pull/24725) | merged | ci: tag-gated nightly migration — foundation + 40 whole-file moves | `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py` |
 | 2026-05-28 | [#26610](https://github.com/sgl-project/sglang/pull/26610) | merged | test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit) | `test/registered/quant/test_deepseek_v32_fp4_mtp_4gpu.py`, `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/models_e2e/test_step3p5_flash_chain_mtp.py` |
 | 2026-05-29 | [#26565](https://github.com/sgl-project/sglang/pull/26565) | merged | model: Step-3.7-Flash Support | `python/sglang/srt/models/step3p7.py`, `python/sglang/srt/configs/step3p7.py`, `python/sglang/srt/layers/moe/moe_runner/flashinfer_trtllm.py` |
 | 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-09-24 | [#41082](https://github.com/sgl-project/sglang/pull/41082) | merged | [Fix] Step-3.5: stop dense layers from summing their output twice under DP attention | `python/sglang/srt/models/step3p5.py` |
+| 2026-09-25 | [#41198](https://github.com/sgl-project/sglang/pull/41198) | merged | [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit | `python/sglang/srt/models/step3p5.py` |
+| 2026-09-27 | [#41437](https://github.com/sgl-project/sglang/pull/41437) | merged | [Refactor] Step-3.5: complete the dense MLP's sum through ffn_exit | `python/sglang/srt/models/step3p5.py` |
+| 2026-09-30 | [#41754](https://github.com/sgl-project/sglang/pull/41754) | merged | [Fix] Step-3.5: build the shared expert without TP under all-to-all MoE backends | `python/sglang/srt/models/step3p5.py` |
+| 2026-10-03 | [#42302](https://github.com/sgl-project/sglang/pull/42302) | merged | [Fix] Step-3.5 DeepEP routed scaling and Sarvam shared expert under dense TP1 | `python/sglang/srt/models/step3p5.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -336,6 +341,47 @@ diff -- test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py
   - tests: `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py` modified +136/-0
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_step3p5_flash_chain_mtp.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
+### PR #24725 - ci: tag-gated nightly migration — foundation + 40 whole-file moves
+
+- Link: https://github.com/sgl-project/sglang/pull/24725
+- Status/date: merged / 2026-05-14
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 78 files, +2263/-2140, 4964 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "ci: tag-gated nightly migration — foundation + 40 whole-file moves"; model line: Step 3.5; category: docs/tests/CI; main diff: `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`; technical summary: Covers "ci: tag-gated nightly migration — foundation + 40 whole-file moves"; the main implementation surface is `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7; `test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7; `test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7.
+- Code diff details:
+  - `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7
+  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
+  - `test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7
+  - `test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
+  - `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0 (0 lines)
+- Key code excerpts:
+
+```diff
+diff -- test/registered/models/test_ministral4_models.py
+@@ -6,11 +6,7 @@
+-register_cuda_ci(
+-    est_time=200,
+-    stage="stage-b",
+-    runner_config="2-gpu-large",
+-)
++register_cuda_ci(est_time=200, stage="extra-a", runner_config="2-gpu-large")
+diff -- test/registered/models/test_compressed_tensors_models.py
+@@ -13,7 +13,7 @@
+-register_cuda_ci(est_time=65, stage="stage-b", runner_config="1-gpu-large")
++register_cuda_ci(est_time=65, stage="extra-a", runner_config="1-gpu-large")
+diff -- test/registered/models/test_generation_models.py
+@@ -1,7 +1,7 @@
+-register_cuda_ci(est_time=150, stage="stage-b", runner_config="1-gpu-large")
++register_cuda_ci(est_time=150, stage="extra-a", runner_config="1-gpu-large")
+diff -- test/registered/models/test_vlm_models.py
+@@ -13,7 +13,7 @@
+```
+
+- Reviewed files:
+  - tests: `test/registered/models/test_ministral4_models.py` modified +1/-5; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1; `test/registered/models/test_vlm_models.py` modified +1/-1; `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0; `test/registered/sessions/test_streaming_session.py` modified +62/-1072
+- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/streaming_session_kit.py`, `python/sglang/test/server_fixtures/hybrid_attn_backend_fixture.py`, `python/sglang/test/server_fixtures/ngram_fixture.py`, `python/sglang/test/server_fixtures/pcg_spec_fixture.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #25197 - ci: decouple stage and runner for cuda registry
 
 - Link: https://github.com/sgl-project/sglang/pull/25197
@@ -417,47 +463,6 @@ diff -- test/registered/8-gpu-models/test_minimax_m25_basic.py
 - Reviewed files:
   - tests: `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py` modified +1/-1; `test/registered/8-gpu-models/test_deepseek_v3_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_dsa_models_mtp.py` modified +1/-1; `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1; `test/registered/8-gpu-models/test_minimax_m25_basic.py` modified +1/-1; `test/registered/8-gpu-models/test_nvidia_nemotron_3_super_bf16.py` modified +1/-1
 - Risk and verification: The diff ships test coverage in `test/registered/8-gpu-models/test_deepseek_v32_indexcache.py`, `test/registered/8-gpu-models/test_deepseek_v3_mtp.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`, `test/registered/8-gpu-models/test_mimo_models.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #24725 - ci: tag-gated nightly migration — foundation + 40 whole-file moves
-
-- Link: https://github.com/sgl-project/sglang/pull/24725
-- Status/date: merged / 2026-05-14
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 78 files, +2263/-2140, 4964 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "ci: tag-gated nightly migration — foundation + 40 whole-file moves"; model line: Step 3.5; category: docs/tests/CI; main diff: `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`; technical summary: Covers "ci: tag-gated nightly migration — foundation + 40 whole-file moves"; the main implementation surface is `test/registered/models/test_ministral4_models.py`, `test/registered/models/test_compressed_tensors_models.py`, `test/registered/models/test_generation_models.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7; `test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7; `test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7.
-- Code diff details:
-  - `test/registered/models/test_ministral4_models.py` modified +1/-5 (6 lines); hunks: -6,11 +6,7
-  - `test/registered/models/test_compressed_tensors_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
-  - `test/registered/models/test_generation_models.py` modified +1/-1 (2 lines); hunks: -1,7 +1,7
-  - `test/registered/models/test_vlm_models.py` modified +1/-1 (2 lines); hunks: -13,7 +13,7
-  - `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0 (0 lines)
-- Key code excerpts:
-
-```diff
-diff -- test/registered/models/test_ministral4_models.py
-@@ -6,11 +6,7 @@
--register_cuda_ci(
--    est_time=200,
--    stage="stage-b",
--    runner_config="2-gpu-large",
--)
-+register_cuda_ci(est_time=200, stage="extra-a", runner_config="2-gpu-large")
-diff -- test/registered/models/test_compressed_tensors_models.py
-@@ -13,7 +13,7 @@
--register_cuda_ci(est_time=65, stage="stage-b", runner_config="1-gpu-large")
-+register_cuda_ci(est_time=65, stage="extra-a", runner_config="1-gpu-large")
-diff -- test/registered/models/test_generation_models.py
-@@ -1,7 +1,7 @@
--register_cuda_ci(est_time=150, stage="stage-b", runner_config="1-gpu-large")
-+register_cuda_ci(est_time=150, stage="extra-a", runner_config="1-gpu-large")
-diff -- test/registered/models/test_vlm_models.py
-@@ -13,7 +13,7 @@
-```
-
-- Reviewed files:
-  - tests: `test/registered/models/test_ministral4_models.py` modified +1/-5; `test/registered/models/test_compressed_tensors_models.py` modified +1/-1; `test/registered/models/test_generation_models.py` modified +1/-1; `test/registered/models/test_vlm_models.py` modified +1/-1; `test/manual/openai_server/function_call/test_tool_choice.py` renamed +0/-0; `test/registered/sessions/test_streaming_session.py` modified +62/-1072
-- Risk and verification: The diff ships test coverage in `python/sglang/test/kits/streaming_session_kit.py`, `python/sglang/test/server_fixtures/hybrid_attn_backend_fixture.py`, `python/sglang/test/server_fixtures/ngram_fixture.py`, `python/sglang/test/server_fixtures/pcg_spec_fixture.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #26610 - test/registered: cleanup pure model e2e tests (moves, splits, dedup, kit)
 
@@ -581,6 +586,141 @@ diff -- python/sglang/srt/models/gpt_oss.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
 - Risk and verification: The diff ships test coverage in `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41082 - [Fix] Step-3.5: stop dense layers from summing their output twice under DP attention
+
+- Link: https://github.com/sgl-project/sglang/pull/41082
+- Status/date: merged / 2026-09-24
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `7c9f74c6e109`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +67/-4, 79 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/step3p5.py` modified +6/-4 (10 lines); hunks: -633,10 +633,12 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `python/sglang/srt/models/step3p5.py` modified +6/-4 (10 lines); hunks: -633,10 +633,12 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -633,10 +633,12 @@ def forward(
+-            hidden_states = self.mlp(hidden_states)
+-            # Dense MLP uses reduce_results=True, so the output is already
+-            # all-reduced.  Do NOT set the fusion flag — otherwise the next
+-            # layer would all-reduce again, multiplying values by world_size.
++            # The dense MLP all-reduces its own output unless postprocess
++            # reduce-scatters it; it never leaves the sum to the next layer.
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +6/-4
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41198 - [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit
+
+- Link: https://github.com/sgl-project/sglang/pull/41198
+- Status/date: merged / 2026-09-25
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `b7f6d04a9af1`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 6 files, +50/-219, 402 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/step3p5.py` modified +24/-41 (65 lines); hunks: -11,11 +11,7; -609,45 +605,32 @@ def forward(; symbols: forward, Step3p5Model, touching `forward, Step3p5Model`.
+- Code diff details:
+  - `python/sglang/srt/models/step3p5.py` modified +24/-41 (65 lines); hunks: -11,11 +11,7; -609,45 +605,32 @@ def forward(; symbols: forward, Step3p5Model
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -11,11 +11,7 @@
+-from sglang.srt.layers.communicator import (
+-    LayerCommunicator,
+-    LayerScatterModes,
+-    UnreducedOutput,
+-)
++from sglang.srt.layers.communicator import LayerCommunicator, LayerScatterModes
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +24/-41
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41437 - [Refactor] Step-3.5: complete the dense MLP's sum through ffn_exit
+
+- Link: https://github.com/sgl-project/sglang/pull/41437
+- Status/date: merged / 2026-09-27
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `55d2ee554635`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +31/-17, 110 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/step3p5.py` modified +5/-11 (16 lines); hunks: -572,6 +572,9 @@ def __init__(; -618,18 +621,9 @@ def forward(; symbols: __init__, forward, Step3p5Model, touching `__init__, forward, Step3p5Model`.
+- Code diff details:
+  - `python/sglang/srt/models/step3p5.py` modified +5/-11 (16 lines); hunks: -572,6 +572,9 @@ def __init__(; -618,18 +621,9 @@ def forward(; symbols: __init__, forward, Step3p5Model
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -572,6 +572,9 @@ def __init__(
++            # The dense MLP all-reduces its own output unless postprocess
++            # reduce-scatters it; it never leaves the sum to the next layer.
++            allow_deferred_ffn_reduction=self.use_moe,
+@@ -618,18 +621,9 @@ def forward(
+-        # The dense MLP all-reduces its own output unless postprocess
+-        # reduce-scatters it; it never leaves the sum to the next layer.
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +5/-11
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_last_layer_communicator.py`, `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #41754 - [Fix] Step-3.5: build the shared expert without TP under all-to-all MoE backends
+
+- Link: https://github.com/sgl-project/sglang/pull/41754
+- Status/date: merged / 2026-09-30
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `9ee065e49a12`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +33/-19, 135 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/step3p5.py` modified +33/-19 (52 lines); hunks: -4,9 +4,6; -32,6 +29,7; symbols: forward, get_moe_weights, forward_normal, touching `forward, get_moe_weights, forward_normal`.
+- Code diff details:
+  - `python/sglang/srt/models/step3p5.py` modified +33/-19 (52 lines); hunks: -4,9 +4,6; -32,6 +29,7; symbols: forward, get_moe_weights, forward_normal
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -4,9 +4,6 @@
+-from sglang.srt.distributed import (
+-    tensor_model_parallel_all_reduce,
+-)
+@@ -32,6 +29,7 @@
++    should_use_flashinfer_cutlass_moe_fp4_allgather,
+@@ -50,7 +48,7 @@
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +33/-19
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/step3p5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #42302 - [Fix] Step-3.5 DeepEP routed scaling and Sarvam shared expert under dense TP1
+
+- Link: https://github.com/sgl-project/sglang/pull/42302
+- Status/date: merged / 2026-10-03
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/step3p5.py`; associated commits `be20e7453cc8`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +18/-8, 62 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `python/sglang/srt/models/step3p5.py` modified +10/-2 (12 lines); hunks: -236,7 +236,13 @@ def forward_deepep(; -252,8 +258,10 @@ def forward_deepep(; symbols: forward_deepep, touching `forward_deepep`.
+- Code diff details:
+  - `python/sglang/srt/models/step3p5.py` modified +10/-2 (12 lines); hunks: -236,7 +236,13 @@ def forward_deepep(; -252,8 +258,10 @@ def forward_deepep(; symbols: forward_deepep
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/step3p5.py
+@@ -236,7 +236,13 @@ def forward_deepep(
+-            router_logits, _ = self.gate(hidden_states)
++            if self.need_fp32_gate:
++                router_logits = torch.matmul(
++                    hidden_states.to(torch.float32),
++                    self.gate.weight.t().to(torch.float32),
++                )
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `python/sglang/srt/models/step3p5.py` modified +10/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/sarvam_moe.py`, `python/sglang/srt/models/step3p5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

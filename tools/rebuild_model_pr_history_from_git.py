@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Rebuild model PR history docs from framework git traces.
 
-The script uses current framework worktrees as the source of truth:
+Covers SGLang, vLLM, TensorRT-LLM and TokenSpeed. The script uses current
+framework worktrees as the source of truth:
 
 * `git ls-files` + per-model path filters select implementation-related files.
 * `git log --name-only` on those files finds merged PR numbers that actually
@@ -23,6 +24,7 @@ import json
 import os
 import re
 import subprocess
+import time
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date
@@ -45,10 +47,30 @@ FRAMEWORK_ROOTS = {
             str(COMMON_ROOT / "_worktrees" / "vllm-pr-history"),
         )
     ),
+    "tensorrt_llm": Path(
+        os.environ.get(
+            "TRTLLM_PR_HISTORY_ROOT",
+            str(COMMON_ROOT / "_worktrees" / "trtllm-pr-history"),
+        )
+    ),
+    "tokenspeed": Path(
+        os.environ.get(
+            "TOKENSPEED_PR_HISTORY_ROOT",
+            str(COMMON_ROOT / "_worktrees" / "tokenspeed-pr-history"),
+        )
+    ),
 }
 REPOS = {
     "sglang": "sgl-project/sglang",
     "vllm": "vllm-project/vllm",
+    "tensorrt_llm": "NVIDIA/TensorRT-LLM",
+    "tokenspeed": "lightseekorg/tokenspeed",
+}
+FRAMEWORK_TITLES = {
+    "sglang": "SGLang",
+    "vllm": "vLLM",
+    "tensorrt_llm": "TensorRT-LLM",
+    "tokenspeed": "TokenSpeed",
 }
 HISTORY_ROOT = ROOT / "model-pr-optimization-history"
 CACHE_PATH = Path(os.environ.get("MODEL_PR_HISTORY_CACHE", "/tmp/model_pr_history_git_trace_cache_v4.json"))
@@ -63,23 +85,30 @@ MODEL_TITLES = {
     "deepseek-v31": "DeepSeek V3.1",
     "deepseek-v32": "DeepSeek V3.2",
     "deepseek-v4": "DeepSeek V4",
+    "deepseek-v41": "DeepSeek V4.1",
+    "dots3": "dots3 (dots.note)",
     "ernie45": "ERNIE 4.5",
+    "exaone4": "EXAONE 4/4.5/K-EXAONE",
     "gemma4": "Gemma 4",
     "glm-vlm-ocr": "GLM VLM/OCR",
     "glm45": "GLM-4.5",
     "glm46-glm47": "GLM-4.6/4.7",
-    "glm5-glm51": "GLM-5/5.1",
+    "glm5-glm51": "GLM-5 Series (5/5.1/5.2/5.3-Flash)",
     "gpt-oss": "GPT-OSS",
     "hunyuan3-preview": "Hunyuan3 Preview",
+    "hunyuan4": "Hunyuan V4 (Hy4)",
+    "inkling": "Inkling",
     "intern-s1": "Intern-S1",
     "internvl35": "InternVL 3.5",
     "jina-reranker-m0": "Jina Reranker M0",
     "kimi": "Kimi K2/K2.5/K3/Linear/VL",
     "ling25": "Ling 2.5",
+    "ling3": "Ling 3.0 (BailingMoeV3)",
     "llada21": "LLaDA 2.1",
     "llama31": "Llama 3.1",
     "llama33-70b": "Llama 3.3 70B",
     "llama4": "Llama 4",
+    "longcat-flash": "LongCat-Flash",
     "mimo-v2-flash": "MiMo V2 Flash",
     "minimax": "MiniMax M2/M3 Series",
     "mistral-small-4": "Mistral Small 4",
@@ -93,50 +122,11 @@ MODEL_TITLES = {
     "qwen35": "Qwen3.5",
     "qwen36": "Qwen3.6",
     "qwen38": "Qwen3.8",
+    "qwen4-exp": "Qwen4-Exp (Qwen3.8-Flash-Next)",
     "ring25": "Ring 2.5",
     "step35": "Step 3.5",
+    "step37": "Step 3.7",
 }
-
-MODEL_ORDER = [
-    "deepseek-ocr",
-    "deepseek-ocr-2",
-    "deepseek-v3-r1",
-    "deepseek-v31",
-    "deepseek-v32",
-    "deepseek-v4",
-    "ernie45",
-    "gemma4",
-    "glm-vlm-ocr",
-    "glm45",
-    "glm46-glm47",
-    "glm5-glm51",
-    "gpt-oss",
-    "hunyuan3-preview",
-    "intern-s1",
-    "internvl35",
-    "jina-reranker-m0",
-    "kimi",
-    "ling25",
-    "llada21",
-    "llama31",
-    "llama33-70b",
-    "llama4",
-    "mimo-v2-flash",
-    "minimax",
-    "mistral-small-4",
-    "mixtral-quark-int4fp8-moe",
-    "moss-vl",
-    "nemotron-super",
-    "qwen-vlm-omni-asr",
-    "qwen3-coder",
-    "qwen3-core",
-    "qwen3-next",
-    "qwen35",
-    "qwen36",
-    "qwen38",
-    "ring25",
-    "step35",
-]
 
 FRAMEWORK_MODEL_ORDER = {
     "sglang": [
@@ -146,6 +136,10 @@ FRAMEWORK_MODEL_ORDER = {
         "deepseek-v31",
         "deepseek-v32",
         "deepseek-v4",
+        "deepseek-v41",
+        "dots3",
+        "ernie45",
+        "exaone4",
         "gemma4",
         "glm-vlm-ocr",
         "glm45",
@@ -153,13 +147,17 @@ FRAMEWORK_MODEL_ORDER = {
         "glm5-glm51",
         "gpt-oss",
         "hunyuan3-preview",
+        "hunyuan4",
+        "inkling",
         "intern-s1",
         "internvl35",
         "kimi",
         "ling25",
+        "ling3",
         "llada21",
         "llama31",
         "llama4",
+        "longcat-flash",
         "mimo-v2-flash",
         "minimax",
         "mistral-small-4",
@@ -173,8 +171,10 @@ FRAMEWORK_MODEL_ORDER = {
         "qwen35",
         "qwen36",
         "qwen38",
+        "qwen4-exp",
         "ring25",
         "step35",
+        "step37",
     ],
     "vllm": [
         "deepseek-ocr",
@@ -183,35 +183,83 @@ FRAMEWORK_MODEL_ORDER = {
         "deepseek-v31",
         "deepseek-v32",
         "deepseek-v4",
+        "deepseek-v41",
+        "dots3",
         "ernie45",
+        "exaone4",
         "gemma4",
         "glm-vlm-ocr",
         "glm45",
         "glm46-glm47",
+        "glm5-glm51",
         "gpt-oss",
         "hunyuan3-preview",
+        "hunyuan4",
+        "inkling",
         "intern-s1",
         "internvl35",
         "jina-reranker-m0",
         "kimi",
         "ling25",
+        "ling3",
         "llama31",
         "llama33-70b",
         "llama4",
+        "longcat-flash",
         "mimo-v2-flash",
         "minimax",
         "mistral-small-4",
         "mixtral-quark-int4fp8-moe",
         "nemotron-super",
         "qwen-vlm-omni-asr",
+        "qwen3-coder",
         "qwen3-core",
         "qwen3-next",
         "qwen35",
         "qwen36",
+        "qwen4-exp",
         "ring25",
         "step35",
+        "step37",
+    ],
+    "tensorrt_llm": [
+        "deepseek-v3-r1",
+        "deepseek-v32",
+        "deepseek-v4",
+        "exaone4",
+        "gemma4",
+        "glm5-glm51",
+        "gpt-oss",
+        "kimi",
+        "minimax",
+        "nemotron-super",
+        "qwen3-core",
+        "qwen3-next",
+        "qwen35",
+        "qwen4-exp",
+        "step37",
+    ],
+    "tokenspeed": [
+        "deepseek-v3-r1",
+        "deepseek-v4",
+        "deepseek-v41",
+        "glm5-glm51",
+        "gpt-oss",
+        "inkling",
+        "kimi",
+        "longcat-flash",
+        "minimax",
+        "nemotron-super",
+        "qwen-vlm-omni-asr",
+        "qwen3-core",
+        "qwen35",
+        "qwen4-exp",
     ],
 }
+
+MODEL_ORDER = sorted(
+    {model for models in FRAMEWORK_MODEL_ORDER.values() for model in models}
+)
 
 # The filters intentionally start from implementation-adjacent files: model
 # wrappers, configs, processors, parsers, attention/kernel hooks, and the
@@ -261,22 +309,35 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "exclude": ["*deepseek_v4*", "*deepseek-v4*"],
         },
         "deepseek-v4": {"include": ["*deepseek_v4*", "*deepseek-v4*"], "exclude": []},
-        "ernie45": {"include": ["*ernie45*", "*ernie_4_5*", "*ernie-4.5*"], "exclude": []},
+        # DSV4.1 shares the V4 model files; subject hints keep V4.1-specific PRs.
+        "deepseek-v41": {
+            "include": ["*deepseek_v41*", "*deepseek-v4.1*", "*dsv41*", "*deepseek_v4*", "*deepseek-v4*"],
+            "exclude": [],
+        },
+        "dots3": {"include": ["*dots3*", "*dots.note*", "*dots-note*"], "exclude": []},
+        "ernie45": {"include": ["*ernie4*", "*ernie45*", "*ernie_4_5*", "*ernie-4.5*"], "exclude": []},
+        "exaone4": {"include": ["*exaone4*", "*exaone_moe*", "*exaone-4*", "*k-exaone*"], "exclude": []},
         "gemma4": {"include": ["*gemma4*"], "exclude": []},
         "glm-vlm-ocr": {"include": ["*glm_ocr*", "*glm-ocr*", "*glm4v*", "*glm-vlm*", "*glm_vlm*"], "exclude": []},
         "glm45": {"include": ["*glm4_moe*", "*glm-4.5*", "*glm45*"], "exclude": ["*glm47*", "*glm-4.7*", "*glm5*"]},
         "glm46-glm47": {"include": ["*glm47*", "*glm4_moe*", "*glm-4.6*", "*glm-4.7*"], "exclude": ["*glm5*"]},
-        "glm5-glm51": {"include": ["*glm5*", "*glm-5*", "*glm51*", "*glm-5.1*"], "exclude": []},
+        "glm5-glm51": {"include": ["*glm5*", "*glm-5*", "*glm51*", "*glm-5.1*", "*glm53*", "*glm-5.3*"], "exclude": []},
         "gpt-oss": {"include": ["*gpt_oss*", "*gpt-oss*"], "exclude": []},
         "hunyuan3-preview": {
             "include": ["*hunyuan3-preview*", "*hunyuan3_preview*", "*hy3_preview*", "*hunyuan_detector*", "*hy3*"],
             "exclude": ["*hunyuan3d*", "*diffusion*", "*image_generation*"],
         },
+        "hunyuan4": {"include": ["*hunyuan_v4*", "*hunyuan-v4*", "*hy_v4*", "*hy4*"], "exclude": ["*hunyuan3d*", "*diffusion*"]},
+        "inkling": {"include": ["*inkling*"], "exclude": []},
         "intern-s1": {"include": ["*interns1*", "*intern-s1*", "*internlm_detector*"], "exclude": []},
         "internvl35": {"include": ["*internvl*", "*intern_vit*", "*internvl35*", "*internvl3.5*"], "exclude": ["*interns1*"]},
         "kimi": {"include": ["*kimi*", "*moonvit*"], "exclude": []},
         "ling25": {
             "include": ["*ling-2.5*", "*ling_2_5*", "*ling-25*", "*ling25*"],
+            "exclude": ["*lingbot*", "*diffusion*"],
+        },
+        "ling3": {
+            "include": ["*bailing_moe_v3*", "*bailing_mm_v3*", "*ling-3*", "*ling_3*", "*ling3*"],
             "exclude": ["*lingbot*", "*diffusion*"],
         },
         "llada21": {"include": ["*llada2*", "*llada-2.1*", "*llada-21*"], "exclude": []},
@@ -289,6 +350,7 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "exclude": ["*llama4*", "*mllama4*"],
         },
         "llama4": {"include": ["*llama4*", "*mllama4*"], "exclude": []},
+        "longcat-flash": {"include": ["*longcat*"], "exclude": ["*diffusion*", "*longcat_video*", "*longcat-video*", "*longcat_image*"]},
         "mimo-v2-flash": {"include": ["*mimo*", "*mimo_v2_flash*"], "exclude": []},
         "minimax": {"include": ["*minimax*"], "exclude": []},
         "mistral-small-4": {"include": ["*mistral*", "*ministral*"], "exclude": []},
@@ -321,11 +383,13 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "include": ["*qwen38*", "*qwen3.8*", "*qwen3_8*", "*Qwen3.8*"],
             "exclude": ["*qwen3-8b*", "*qwen3_8b*", "*qwen3.8b*"],
         },
+        "qwen4-exp": {"include": ["*qwen4_exp*", "*qwen4-exp*", "*qwen4exp*"], "exclude": []},
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
             "exclude": ["*diffusion*", "*ring_sp*"],
         },
         "step35": {"include": ["*step3p5*", "*step-3.5*", "*step35*", "*step3_5*"], "exclude": []},
+        "step37": {"include": ["*step3p7*", "*step-3.7*", "*step37*", "*step3_7*"], "exclude": []},
     },
     "vllm": {
         "deepseek-ocr": {
@@ -346,14 +410,22 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "exclude": ["*deepseek_v4*", "*deepseek-v4*", "*deepseek_ocr*"],
         },
         "deepseek-v4": {"include": ["*deepseek_v4*", "*deepseek-v4*"], "exclude": ["*deepseek_ocr*"]},
+        "deepseek-v41": {
+            "include": ["*deepseek_v41*", "*deepseek-v4.1*", "*dsv41*", "*deepseek_v4*", "*deepseek-v4*"],
+            "exclude": ["*deepseek_ocr*"],
+        },
+        "dots3": {"include": ["*dots3*", "*dots.note*", "*dots-note*"], "exclude": []},
         "ernie45": {"include": ["*ernie45*", "*ernie_4_5*", "*ernie-4.5*", "*ernie_mtp*"], "exclude": []},
+        "exaone4": {"include": ["*exaone4*", "*exaone_moe*", "*exaone-4*", "*k-exaone*"], "exclude": []},
         "gemma4": {"include": ["*gemma4*"], "exclude": []},
         "glm-vlm-ocr": {"include": ["*glm_ocr*", "*glm-ocr*", "*glm4v*", "*glm4_1v*", "*glm_vlm*", "*glm-vlm*"], "exclude": []},
         "glm45": {"include": ["*glm4_moe*", "*glm-4.5*", "*glm45*"], "exclude": ["*glm47*", "*glm5*"]},
         "glm46-glm47": {"include": ["*glm47*", "*glm4_moe*", "*glm-4.6*", "*glm-4.7*"], "exclude": ["*glm5*"]},
-        "glm5-glm51": {"include": ["*glm5*", "*glm-5*", "*glm51*", "*glm-5.1*"], "exclude": []},
+        "glm5-glm51": {"include": ["*glm5*", "*glm-5*", "*glm51*", "*glm-5.1*", "*glm53*", "*glm-5.3*"], "exclude": []},
         "gpt-oss": {"include": ["*gpt_oss*", "*gpt-oss*"], "exclude": []},
         "hunyuan3-preview": {"include": ["*hy_v3*", "*hunyuan3*", "*hunyuan3-preview*"], "exclude": ["*hunyuan3d*", "*diffusion*"]},
+        "hunyuan4": {"include": ["*hy_v4*", "*hunyuan_v4*", "*hunyuan-v4*", "*hy4*"], "exclude": ["*hunyuan3d*", "*diffusion*"]},
+        "inkling": {"include": ["*inkling*"], "exclude": []},
         "intern-s1": {"include": ["*interns1*", "*intern-s1*", "*internlm2*", "*internlm*"], "exclude": ["*internvl*"]},
         "internvl35": {"include": ["*internvl*", "*intern_vit*", "*internvl35*", "*internvl3.5*"], "exclude": ["*interns1*"]},
         "jina-reranker-m0": {
@@ -365,6 +437,10 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "include": ["*ling-2.5*", "*ling_2_5*", "*ling-25*", "*ling25*"],
             "exclude": [],
         },
+        "ling3": {
+            "include": ["*bailing_moe_v3*", "*ling-3*", "*ling_3*", "*ling3*"],
+            "exclude": ["*lingbot*", "*diffusion*"],
+        },
         "llada21": {"include": ["*llada2*", "*llada-2.1*", "*llada-21*"], "exclude": []},
         "llama31": {
             "include": ["*llama3.1*", "*llama31*", "*llama3_1*", "*llama-3.1*"],
@@ -375,6 +451,7 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "exclude": ["*llama4*", "*mllama4*"],
         },
         "llama4": {"include": ["*llama4*", "*mllama4*"], "exclude": []},
+        "longcat-flash": {"include": ["*longcat*"], "exclude": ["*diffusion*", "*longcat_video*", "*longcat-video*", "*longcat_image*"]},
         "mimo-v2-flash": {"include": ["*mimo*", "*mimo_v2_flash*"], "exclude": []},
         "minimax": {"include": ["*minimax*"], "exclude": []},
         "mistral-small-4": {"include": ["*mistral*", "*ministral*"], "exclude": []},
@@ -406,11 +483,67 @@ MODEL_FILTERS: dict[str, dict[str, dict[str, list[str]]]] = {
             "include": ["*qwen38*", "*qwen3.8*", "*qwen3_8*", "*Qwen3.8*"],
             "exclude": ["*qwen3-8b*", "*qwen3_8b*", "*qwen3.8b*"],
         },
+        "qwen4-exp": {"include": ["*qwen4_exp*", "*qwen4-exp*", "*qwen4exp*"], "exclude": []},
         "ring25": {
             "include": ["*ring-2.5*", "*ring_2_5*", "*ring-25*", "*ring25*"],
             "exclude": [],
         },
         "step35": {"include": ["*step3p5*", "*step-3.5*", "*step35*", "*step3_5*", "*step3_text*", "*step3_vl*"], "exclude": []},
+        "step37": {"include": ["*step3p7*", "*step-3.7*", "*step37*", "*step3_7*"], "exclude": []},
+    },
+    "tensorrt_llm": {
+        "deepseek-v3-r1": {
+            "include": ["*deepseekv3*", "*deepseek_v3*", "*deepseek-v3*", "*deepseek-r1*", "*deepseek_r1*", "*dsv3*"],
+            "exclude": ["*deepseek-v3.2*", "*deepseek_v32*", "*deepseekv4*", "*deepseek_v4*", "*deepseek-v4*"],
+        },
+        "deepseek-v32": {
+            "include": ["*deepseekv3*", "*deepseek_v3*", "*deepseek-v3.2*", "*deepseek_v32*", "*dsv32*"],
+            "exclude": ["*deepseekv4*", "*deepseek_v4*", "*deepseek-v4*"],
+        },
+        "deepseek-v4": {"include": ["*deepseekv4*", "*deepseek_v4*", "*deepseek-v4*"], "exclude": []},
+        "exaone4": {"include": ["*exaone4*", "*exaone_moe*", "*exaone-4*", "*k-exaone*"], "exclude": []},
+        "gemma4": {"include": ["*gemma4*"], "exclude": []},
+        "glm5-glm51": {"include": ["*glm5*", "*glm-5*", "*glm_moe_dsa*", "*glm53*"], "exclude": []},
+        "gpt-oss": {"include": ["*gpt_oss*", "*gpt-oss*", "*gptoss*"], "exclude": []},
+        "kimi": {"include": ["*kimi*", "*moonvit*"], "exclude": []},
+        "minimax": {"include": ["*minimax*"], "exclude": []},
+        "nemotron-super": {"include": ["*nemotron*"], "exclude": []},
+        "qwen3-core": {
+            "include": ["*modeling_qwen3.py", "*modeling_qwen3_moe.py", "*qwen3_moe*", "*test_modeling_qwen3.py", "*qwen3-on-trtllm*"],
+            "exclude": ["*qwen3_next*", "*qwen3_5*", "*qwen3vl*", "*qwen3_vl*", "*qwen3-next*"],
+        },
+        "qwen3-next": {"include": ["*qwen3_next*", "*qwen3-next*"], "exclude": []},
+        "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
+        "qwen4-exp": {"include": ["*qwen4_exp*", "*qwen4-exp*", "*qwen4exp*"], "exclude": []},
+        "step37": {"include": ["*step3p7*", "*step-3.7*", "*step37*", "*step3_7*"], "exclude": []},
+    },
+    "tokenspeed": {
+        "deepseek-v3-r1": {
+            "include": ["*deepseek_v3*", "*deepseek_nextn*", "*deepseek-v3*", "*deepseek-r1*", "*deepseek_r1*"],
+            "exclude": ["*deepseek_v32*", "*deepseek-v3.2*", "*deepseek_v4*", "*deepseek-v4*"],
+        },
+        "deepseek-v4": {"include": ["*deepseek_v4*", "*deepseek-v4*"], "exclude": []},
+        "deepseek-v41": {
+            "include": ["*deepseek_v41*", "*deepseek-v4.1*", "*dsv41*", "*deepseek_v4*", "*deepseek-v4*"],
+            "exclude": [],
+        },
+        "glm5-glm51": {"include": ["*glm5*", "*glm-5*", "*glm53*", "*glm_moe_dsa*"], "exclude": []},
+        "gpt-oss": {"include": ["*gpt_oss*", "*gpt-oss*"], "exclude": []},
+        "inkling": {"include": ["*inkling*"], "exclude": []},
+        "kimi": {"include": ["*kimi*", "*moonvit*"], "exclude": []},
+        "longcat-flash": {"include": ["*longcat*"], "exclude": []},
+        "minimax": {"include": ["*minimax*"], "exclude": []},
+        "nemotron-super": {"include": ["*nemotron*"], "exclude": []},
+        "qwen-vlm-omni-asr": {
+            "include": ["*qwen3_omni*", "*qwen3_asr*", "*qwen3_audio*", "*qwen3_vision*", "*qwen3-vl*", "*qwen3_vl*"],
+            "exclude": [],
+        },
+        "qwen3-core": {
+            "include": ["*models/qwen3.py", "*models/qwen3_moe.py", "*qwen3_moe_config*", "*test_qwen3.py", "*test_qwen3_moe*"],
+            "exclude": ["*qwen3_5*", "*qwen3_next*", "*qwen3_omni*", "*qwen3_asr*", "*qwen3_vision*"],
+        },
+        "qwen35": {"include": ["*qwen3_5*", "*qwen35*", "*qwen3.5*", "*qwen3-5*"], "exclude": []},
+        "qwen4-exp": {"include": ["*qwen4_exp*", "*qwen4-exp*", "*qwen4exp*"], "exclude": []},
     },
 }
 
@@ -420,30 +553,37 @@ SUBJECT_HINTS = {
     "deepseek-v3-r1": ["deepseek-v3", "deepseek v3", "deepseek-r1", "deepseek r1", "deepseekv3", "r1", "dsv3"],
     "deepseek-v31": ["deepseek-v3.1", "deepseek v3.1", "deepseek-v31", "deepseekv31", "v3.1", "v31"],
     "deepseek-v32": ["deepseek-v3.2", "deepseek v3.2", "deepseek-v32", "deepseekv32", "v3.2", "v32", "dsv32", "nsa"],
-    "deepseek-v4": ["deepseek-v4", "deepseek v4", "deepseek-v4", "v4"],
-    "ernie45": ["ernie45", "ernie-4.5", "ernie 4.5"],
+    "deepseek-v4": ["deepseek-v4", "deepseek v4", "deepseek-v4", "v4", "dsv4"],
+    "deepseek-v41": ["deepseek-v4.1", "deepseek v4.1", "deepseek-v41", "dsv4.1", "dsv41", "v4.1", "v41"],
+    "dots3": ["dots3", "dots.note", "dots note", "dots-note", "dots.llm3"],
+    "ernie45": ["ernie45", "ernie-4.5", "ernie 4.5", "ernie4", "ernie"],
+    "exaone4": ["exaone", "k-exaone"],
     "gemma4": ["gemma4", "gemma-4", "gemma 4"],
     "glm-vlm-ocr": ["glm-ocr", "glm ocr", "glm4v", "glm-vlm", "glm vlm"],
     "glm45": ["glm-4.5", "glm 4.5", "glm45", "glm4-moe"],
     "glm46-glm47": ["glm-4.6", "glm 4.6", "glm-4.7", "glm 4.7", "glm46", "glm47"],
-    "glm5-glm51": ["glm-5", "glm 5", "glm5", "glm-5.1", "glm 5.1", "glm51"],
-    "gpt-oss": ["gpt-oss", "gpt oss", "gpt_oss"],
+    "glm5-glm51": ["glm-5", "glm 5", "glm5", "glm-5.1", "glm 5.1", "glm51", "glm53", "glmmoedsa", "glm-moe-dsa"],
+    "gpt-oss": ["gpt-oss", "gpt oss", "gpt_oss", "gptoss"],
     "hunyuan3-preview": ["hunyuan3", "hy3", "hunyuan 3"],
+    "hunyuan4": ["hunyuan4", "hunyuan-v4", "hunyuan v4", "hy4", "hy-v4", "hunyuan 4"],
+    "inkling": ["inkling"],
     "intern-s1": ["intern-s1", "intern s1", "interns1"],
     "internvl35": ["internvl", "intern-vl", "internvl3.5", "internvl35"],
     "jina-reranker-m0": ["jina", "reranker", "rerank"],
-    "kimi": ["kimi", "moonvit"],
+    "kimi": ["kimi", "moonvit", "k2.5", "k3"],
     "ling25": ["ling-2.5", "ling 2.5", "ling25"],
+    "ling3": ["ling-3", "ling 3", "ling3", "bailingmoev3", "bailing-moe-v3", "bailing moe v3"],
     "llada21": ["llada", "llada-2.1", "llada 2.1"],
     "llama31": ["llama3.1", "llama 3.1", "llama31"],
     "llama33-70b": ["llama3.3", "llama 3.3", "llama33"],
     "llama4": ["llama4", "llama-4", "llama 4", "mllama4"],
+    "longcat-flash": ["longcat", "long-cat"],
     "mimo-v2-flash": ["mimo", "mimo-v2", "mimo v2"],
     "minimax": ["minimax", "mini max"],
     "mistral-small-4": ["mistral", "ministral"],
     "mixtral-quark-int4fp8-moe": ["mixtral", "quark", "int4", "fp8", "moe"],
     "moss-vl": ["moss-vl", "moss vl", "moss_vl"],
-    "nemotron-super": ["nemotron", "jet-nemotron", "nano-nemotron"],
+    "nemotron-super": ["nemotron", "jet-nemotron", "nano-nemotron", "nemotron-h", "nemotronh"],
     "qwen-vlm-omni-asr": ["qwen-vl", "qwen vl", "qwen2-vl", "qwen2.5-vl", "qwen3-vl", "omni", "asr", "glmasr", "qwen-audio"],
     "qwen3-coder": ["qwen3-coder", "qwen3 coder"],
     "qwen3-core": ["qwen3", "qwen3-moe", "qwen3 moe"],
@@ -451,8 +591,10 @@ SUBJECT_HINTS = {
     "qwen35": ["qwen3.5", "qwen35", "qwen3-5"],
     "qwen36": ["qwen3.6", "qwen36", "qwen3_6"],
     "qwen38": ["qwen3.8", "qwen38", "qwen3_8"],
+    "qwen4-exp": ["qwen4", "qwen-4", "qwen 4", "qwen3.8 flash next", "qwen3.8-flash-next"],
     "ring25": ["ring-2.5", "ring 2.5", "ring25"],
     "step35": ["step3.5", "step-3.5", "step35", "step3p5"],
+    "step37": ["step3.7", "step-3.7", "step37", "step3p7", "step 3.7"],
 }
 
 # Some model-specific files are changed by PRs whose subjects only name a
@@ -489,11 +631,33 @@ def run(cmd: list[str], cwd: Path | None = None, check: bool = True, timeout: in
     return proc.stdout
 
 
+def wait_for_core_rate_limit(min_remaining: int = 50) -> None:
+    """Sleep until the REST core quota recovers instead of dropping PRs."""
+    while True:
+        try:
+            data = json.loads(run(["gh", "api", "rate_limit"], timeout=60))
+            core = data["resources"]["core"]
+        except Exception:  # pragma: no cover - network dependent
+            time.sleep(60)
+            continue
+        if int(core.get("remaining", 0)) >= min_remaining:
+            return
+        delay = max(30, int(core.get("reset", 0)) - int(time.time()) + 5)
+        print(f"rate limit low ({core.get('remaining')}); sleeping {delay}s", flush=True)
+        time.sleep(min(delay, 900))
+
+
 def gh_api(path: str, paginate: bool = False) -> Any:
     cmd = ["gh", "api", path]
     if paginate:
         cmd.append("--paginate")
-    out = run(cmd, timeout=90)
+    try:
+        out = run(cmd, timeout=90)
+    except RuntimeError as exc:
+        if "rate limit" not in str(exc).lower():
+            raise
+        wait_for_core_rate_limit()
+        out = run(cmd, timeout=90)
     if not out.strip():
         return [] if paginate else {}
     if paginate:
@@ -585,14 +749,17 @@ def selected_files(framework: str, model: str, all_files: list[str]) -> list[str
         ".github/",
         "benchmark",
         "benchmarks",
+        "cpp/",
         "docs",
         "docs_new",
         "examples",
         "python/",
         "scripts/",
         "sglang/",
+        "tensorrt_llm/",
         "test",
         "tests",
+        "tokenspeed-",
         "vllm/",
     )
     return sorted({path for path in files if path.startswith(wanted_roots) or "/" not in path})
@@ -685,10 +852,9 @@ def filter_traces_by_subject(
 def read_existing_history(framework: str, model: str, lang: str) -> str:
     path = HISTORY_ROOT / framework / model / f"README.{lang}.md"
     relpath = path.relative_to(ROOT)
-    # Preserve both cards committed on the branch being refreshed and cards
-    # present at the branch point. Reading only `main` drops cards added by an
-    # earlier regeneration; reading only `HEAD` cannot recover a historical
-    # card that an earlier, partially failed regeneration already removed.
+    # Prefer uncommitted manual edits and earlier regeneration output, then
+    # recover missing historical cards from HEAD and the branch point.
+    work_text = path.read_text(encoding="utf-8") if path.exists() else ""
     head_text = run(
         ["git", "show", f"HEAD:{relpath.as_posix()}"], ROOT, check=False
     )
@@ -698,7 +864,98 @@ def read_existing_history(framework: str, model: str, lang: str) -> str:
         if base
         else ""
     )
-    return "\n".join(part for part in (head_text, base_text) if part)
+    return "\n\n## Preservation boundary\n\n".join(
+        part for part in (work_text, head_text, base_text) if part
+    )
+
+
+GENERATED_FIRST_HEADING = {
+    "en": "## Implementation File Coverage",
+    "zh": "## 模型实现文件覆盖",
+}
+CARD_BLOCK_RE = re.compile(r"(?ms)^### PR #\d+\b.*?(?=^### PR #\d+\b|^#{1,2} |\Z)")
+
+
+def extract_preamble(framework: str, model: str, lang: str) -> str:
+    """Return manual addenda between the H1 title and the generated sections.
+
+    Hand-written refresh notes (for example a dated source-head refresh or a
+    reviewed kernel addendum) live there. PR cards embedded in those notes are
+    removed because the regenerated card list below already carries them.
+    """
+    path = HISTORY_ROOT / framework / model / f"README.{lang}.md"
+    relpath = path.relative_to(ROOT)
+    text = path.read_text(encoding="utf-8") if path.exists() else ""
+    if GENERATED_FIRST_HEADING[lang] not in text:
+        text = run(["git", "show", f"HEAD:{relpath.as_posix()}"], ROOT, check=False)
+    lines = text.splitlines()
+    if not lines or not lines[0].startswith("# "):
+        return ""
+    marker = GENERATED_FIRST_HEADING[lang]
+    end = next((i for i, line in enumerate(lines) if line.strip() == marker), None)
+    if end is None:
+        return ""
+    body = "\n".join(lines[1:end]).strip()
+    body = CARD_BLOCK_RE.sub("", body)
+    return re.sub(r"\n{3,}", "\n\n", body).strip()
+
+
+def card_state(card_text: str) -> str:
+    match = re.search(r"(?m)^- (?:Status/date|状态/时间):\s*([^/\n]+?)\s*/", card_text)
+    return match.group(1).strip() if match else "unknown"
+
+
+REUSABLE_STATES = {"merged", "closed", "closed-unmerged"}
+
+
+def reusable_existing_numbers(
+    numbers: set[int],
+    cards_en: dict[int, str],
+    cards_zh: dict[int, str],
+    rows_en: dict[int, str],
+    rows_zh: dict[int, str],
+) -> set[int]:
+    """PRs whose audited card and timeline row can be kept without refetching.
+
+    A merged or closed PR diff is immutable, so a card that already exists in
+    both languages together with its timeline rows is carried forward verbatim.
+    This keeps hand-reviewed cards intact and limits GitHub API use to new or
+    still-open PRs.
+    """
+    reusable: set[int] = set()
+    for number in numbers:
+        if not all(number in table for table in (cards_en, cards_zh, rows_en, rows_zh)):
+            continue
+        if card_state(cards_en[number]) in REUSABLE_STATES:
+            reusable.add(number)
+    return reusable
+
+
+def reused_bundles(
+    framework: str,
+    numbers: set[int],
+    traces: dict[int, "TraceInfo"],
+    source_tags: dict[int, set[str]],
+    cards_en: dict[int, str],
+    cards_zh: dict[int, str],
+) -> list["PRBundle"]:
+    bundles: list[PRBundle] = []
+    for number in numbers:
+        info = existing_card_info(
+            framework, number, cards_en.get(number, ""), cards_zh.get(number, "")
+        )
+        bundles.append(
+            PRBundle(
+                framework=framework,
+                repo=REPOS[framework],
+                number=number,
+                info=info,
+                files=[],
+                trace=traces.get(number, TraceInfo()),
+                source_tags=source_tags.get(number, set()) | {"existing-card-reuse"},
+            )
+        )
+    return bundles
 
 
 def extract_existing_prs(framework: str, model: str) -> set[int]:
@@ -719,11 +976,11 @@ def extract_existing_cards(
     text = read_existing_history(framework, model, lang)
     cards: dict[int, str] = {}
     pattern = re.compile(
-        r"(?ms)^(### PR #(\d+)\b.*?)(?=^### PR #\d+\b|^## |\Z)"
+        r"(?ms)^(### PR #(\d+)\b.*?)(?=^### PR #\d+\b|^#{1,2} |\Z)"
     )
     for match in pattern.finditer(text):
-        # HEAD text is concatenated before the branch-point text, so retain
-        # the current-branch version when the card exists in both.
+        # Working-tree text precedes HEAD and the branch point; retain the
+        # most recent version when a card exists in multiple snapshots.
         cards.setdefault(int(match.group(2)), match.group(1).rstrip())
     return cards
 
@@ -1026,7 +1283,9 @@ def file_category(path: str) -> str:
         return "tests"
     if lower.startswith("docs") or "/docs" in lower or lower.startswith("examples") or "cookbook" in lower:
         return "docs"
-    if is_runtime_file(path) or lower.startswith("python/") or lower.startswith("vllm/"):
+    if is_runtime_file(path) or lower.startswith(
+        ("python/", "vllm/", "tensorrt_llm/", "cpp/", "tokenspeed-")
+    ):
         return "runtime"
     if ".github" in lower or "workflow" in lower:
         return "ci"
@@ -1285,9 +1544,9 @@ def card_zh(bundle: PRBundle, model_title: str) -> str:
         - 链接: {pr_url(bundle)}
         - 状态/时间: {pr_state(bundle)} / {pr_when(bundle)}
         - 反查来源: {source_text_zh(bundle)}
-        - 代码 diff 已读范围: GitHub Pull Request files API 返回 {total_files} 个文件，+{additions}/-{deletions}，可读 patch {patch_count} 行；本卡优先审计模型相关文件和高变更量文件。
-        - 动机: {motivation_zh(bundle, model_title)}
-        - 实现要点: {implementation_zh(bundle)}
+        - 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 {total_files} 个文件，+{additions}/-{deletions}，可读 patch {patch_count} 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+        - 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+        - 实现变更清单（机器提取）: {implementation_zh(bundle)}
         - 代码 diff 细节:
         {digest}
         - 关键代码摘录:
@@ -1296,7 +1555,7 @@ def card_zh(bundle: PRBundle, model_title: str) -> str:
         {diff_snippet(files)}
         ```
 
-        - 已读文件:
+        - 提取文件（未人工审阅）:
         {grouped_text}
         - 验证与风险: {validation_zh(bundle)}
         """
@@ -1322,9 +1581,9 @@ def card_en(bundle: PRBundle, model_title: str) -> str:
         - Link: {pr_url(bundle)}
         - Status/date: {pr_state(bundle)} / {pr_when(bundle)}
         - Trace source: {source_text_en(bundle)}
-        - Diff scope read: GitHub Pull Request files API returned {total_files} files, +{additions}/-{deletions}, {patch_count} readable patch lines; this card prioritizes model-related and high-change files.
-        - Motivation: {motivation_en(bundle, model_title)}
-        - Key implementation: {implementation_en(bundle)}
+        - Extracted diff scope (not a manual audit): GitHub Pull Request files API returned {total_files} files, +{additions}/-{deletions}, {patch_count} readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+        - Motivation: Manual review pending; the PR title and file inventory below are discovery evidence, not an inferred rationale.
+        - Key implementation inventory (machine-extracted): {implementation_en(bundle)}
         - Code diff details:
         {digest}
         - Key code excerpts:
@@ -1333,7 +1592,7 @@ def card_en(bundle: PRBundle, model_title: str) -> str:
         {diff_snippet(files)}
         ```
 
-        - Reviewed files:
+        - Extracted files (not manually reviewed):
         {grouped_text}
         - Risk and verification: {validation_en(bundle)}
         """
@@ -1356,7 +1615,7 @@ def timeline_zh(
     existing_rows = existing_rows or {}
     for bundle in bundles:
         if (
-            "existing-card-fallback" in bundle.source_tags
+            bundle.source_tags & {"existing-card-fallback", "existing-card-reuse"}
             and bundle.number in existing_rows
         ):
             rows.append(existing_rows[bundle.number])
@@ -1373,7 +1632,7 @@ def timeline_en(
     existing_rows = existing_rows or {}
     for bundle in bundles:
         if (
-            "existing-card-fallback" in bundle.source_tags
+            bundle.source_tags & {"existing-card-fallback", "existing-card-reuse"}
             and bundle.number in existing_rows
         ):
             rows.append(existing_rows[bundle.number])
@@ -1441,13 +1700,25 @@ def render_history_zh(
     existing_only_count: int,
     existing_cards: dict[int, str] | None = None,
     existing_timeline_rows: dict[int, str] | None = None,
+    preamble: str = "",
 ) -> str:
     title = MODEL_TITLES[model]
     repo = REPOS[framework]
     existing_cards = existing_cards or {}
+    # The body is dedented line by line, so indent the preamble to match.
+    preamble_block = (
+        "\n".join("        " + line if line else "" for line in preamble.splitlines())
+        .lstrip()
+        + "\n\n"
+        if preamble
+        else ""
+    )
     cards = "\n\n".join(
         annotate_preserved_card(existing_cards[bundle.number], bundle, "zh")
         if "existing-card-fallback" in bundle.source_tags
+        and bundle.number in existing_cards
+        else existing_cards[bundle.number]
+        if bundle.source_tags & {"existing-card-reuse", "existing-card-keep"}
         and bundle.number in existing_cards
         else card_zh(bundle, title)
         for bundle in bundles
@@ -1461,9 +1732,9 @@ def render_history_zh(
     )
     body = clean_block(
         f"""\
-        # {framework} {title} 模型 PR 优化历史
+        # {FRAMEWORK_TITLES[framework]} {title} 模型 PR 优化历史
 
-        ## 模型实现文件覆盖
+        {preamble_block}## 模型实现文件覆盖
 
         {coverage_table(files, traces, repo, "zh")}
 
@@ -1473,7 +1744,7 @@ def render_history_zh(
         - 原文档显式引用补充 PR 数: {existing_only_count}
         - 当前文档总 PR 数: {len(bundles)}
         - 文件追溯命令: `git log --name-only -- <model-files>`
-        - diff 审计来源: GitHub Pull Request files API
+        - diff 清单来源: GitHub Pull Request files API；新生成条目不是人工审计
 
         ## 时间线
 
@@ -1499,13 +1770,25 @@ def render_history_en(
     existing_only_count: int,
     existing_cards: dict[int, str] | None = None,
     existing_timeline_rows: dict[int, str] | None = None,
+    preamble: str = "",
 ) -> str:
     title = MODEL_TITLES[model]
     repo = REPOS[framework]
     existing_cards = existing_cards or {}
+    # The body is dedented line by line, so indent the preamble to match.
+    preamble_block = (
+        "\n".join("        " + line if line else "" for line in preamble.splitlines())
+        .lstrip()
+        + "\n\n"
+        if preamble
+        else ""
+    )
     cards = "\n\n".join(
         annotate_preserved_card(existing_cards[bundle.number], bundle, "en")
         if "existing-card-fallback" in bundle.source_tags
+        and bundle.number in existing_cards
+        else existing_cards[bundle.number]
+        if bundle.source_tags & {"existing-card-reuse", "existing-card-keep"}
         and bundle.number in existing_cards
         else card_en(bundle, title)
         for bundle in bundles
@@ -1519,9 +1802,9 @@ def render_history_en(
     )
     body = clean_block(
         f"""\
-        # {framework} {title} Model PR Optimization History
+        # {FRAMEWORK_TITLES[framework]} {title} Model PR Optimization History
 
-        ## Implementation File Coverage
+        {preamble_block}## Implementation File Coverage
 
         {coverage_table(files, traces, repo, "en")}
 
@@ -1531,7 +1814,7 @@ def render_history_en(
         - Extra PRs preserved from existing docs: {existing_only_count}
         - Total PRs in this document: {len(bundles)}
         - File trace command: `git log --name-only -- <model-files>`
-        - Diff audit source: GitHub Pull Request files API
+        - Diff inventory source: GitHub Pull Request files API; generated entries are not manual audits
 
         ## Timeline
 
@@ -1548,47 +1831,57 @@ def render_history_en(
     return body.strip() + "\n"
 
 
-def update_indexes(dry_run: bool = False) -> None:
-    sglang_model_lines = "\n".join(f"- `{model}`" for model in FRAMEWORK_MODEL_ORDER["sglang"])
-    vllm_model_lines = "\n".join(f"- `{model}`" for model in FRAMEWORK_MODEL_ORDER["vllm"])
+def index_tail(framework: str) -> str:
+    """Keep hand-curated sections (from the first `## ` heading) of an index."""
+    path = HISTORY_ROOT / framework / "README.md"
+    if not path.exists():
+        return ""
+    text = path.read_text(encoding="utf-8")
+    match = re.search(r"(?m)^## ", text)
+    return text[match.start():].strip() if match else ""
+
+
+def update_indexes(
+    dry_run: bool = False, frameworks: list[str] | None = None
+) -> None:
     if dry_run:
         print("dry-run: would update framework index READMEs", flush=True)
         return
-    sglang_head = framework_commit("sglang")
-    vllm_head = framework_commit("vllm")
-    (HISTORY_ROOT / "sglang" / "README.md").write_text(
-        (
-            "# SGLang Model PR Optimization History\n\n"
-            f"Refresh: `{TODAY}`. Source head: `sgl-project/sglang@{sglang_head}`.\n\n"
+    for framework in frameworks or list(REPOS):
+        model_lines = "\n".join(
+            f"- `{model}`" for model in FRAMEWORK_MODEL_ORDER[framework]
+        )
+        head = framework_commit(framework)
+        tail = index_tail(framework)
+        text = (
+            f"# {FRAMEWORK_TITLES[framework]} Model PR Optimization History\n\n"
+            f"Refresh: `{TODAY}`. Source head: `{REPOS[framework]}@{head}`.\n\n"
             "Current model families:\n\n"
-            f"{sglang_model_lines}\n\n"
+            f"{model_lines}\n\n"
             "Open and recently landed work is tracked by `tools/check_open_pr_watch.py`; "
-            "regenerate that report before a long SOTA or model-history refresh so open PRs "
-            "are not confused with missing local support.\n"
-        ),
-        encoding="utf-8",
-    )
-    (HISTORY_ROOT / "vllm" / "README.md").write_text(
-        (
-            "# vLLM Model PR Optimization History\n\n"
-            f"Refresh: `{TODAY}`. Source head: `vllm-project/vllm@{vllm_head}`.\n\n"
-            "Current model families:\n\n"
-            f"{vllm_model_lines}\n\n"
-            "Open and recently landed work is tracked by `tools/check_open_pr_watch.py`; "
-            "regenerate that report before a long SOTA or model-history refresh so open PRs "
-            "are not confused with missing competitor support.\n"
-        ),
-        encoding="utf-8",
-    )
+            "regenerate that report before a long model-history refresh so open PRs "
+            "are not confused with missing support.\n"
+        )
+        if tail:
+            text += "\n" + tail + "\n"
+        (HISTORY_ROOT / framework / "README.md").write_text(text, encoding="utf-8")
 
 
-def rebuild(dry_run: bool = False) -> None:
+def rebuild(
+    dry_run: bool = False,
+    frameworks: list[str] | None = None,
+    models: list[str] | None = None,
+    refetch_existing: bool = False,
+) -> None:
+    frameworks = frameworks or list(REPOS)
     cache = load_cache()
-    all_files = {framework: git_files(framework) for framework in REPOS}
-    update_indexes(dry_run=dry_run)
-    for framework in ("sglang", "vllm"):
+    all_files = {framework: git_files(framework) for framework in frameworks}
+    update_indexes(dry_run=dry_run, frameworks=frameworks)
+    for framework in frameworks:
         print(f"== {framework} ==")
         for model in FRAMEWORK_MODEL_ORDER[framework]:
+            if models and model not in models:
+                continue
             files = selected_files(framework, model, all_files[framework])
             raw_traces = trace_model_prs(framework, files)
             traces = filter_traces_by_subject(framework, model, raw_traces)
@@ -1608,23 +1901,55 @@ def rebuild(dry_run: bool = False) -> None:
                 source_tags[number].add("existing-doc")
             numbers = set(traces) | existing
             existing_only_count = sum(1 for number in existing if number not in traces)
-            if dry_run:
-                print(
-                    f"{framework}/{model}: files={len(files)} git_prs={len(traces)} "
-                    f"raw_git_prs={len(raw_traces)} existing_extra={existing_only_count} total_candidates={len(numbers)}",
-                    flush=True,
+            reuse = (
+                set()
+                if refetch_existing
+                else reusable_existing_numbers(
+                    numbers,
+                    existing_cards_en,
+                    existing_cards_zh,
+                    existing_timeline_rows_en,
+                    existing_timeline_rows_zh,
                 )
-                continue
+            )
+            to_fetch = numbers - reuse
             print(
                 f"{framework}/{model}: files={len(files)} git_prs={len(traces)} "
-                f"raw_git_prs={len(raw_traces)} existing_extra={existing_only_count} fetching={len(numbers)}",
+                f"raw_git_prs={len(raw_traces)} existing_extra={existing_only_count} "
+                f"reuse={len(reuse)} fetching={len(to_fetch)}",
                 flush=True,
             )
-            bundles = retain_existing_card_fallbacks(
+            if dry_run:
+                continue
+            fetched = retain_existing_card_fallbacks(
                 framework,
-                fetch_many(framework, numbers, traces, source_tags, cache),
+                fetch_many(framework, to_fetch, traces, source_tags, cache),
                 existing_cards_en,
                 existing_cards_zh,
+            )
+            if not refetch_existing:
+                # A hand-reviewed card for a merged PR (for example one written
+                # in a dated addendum without a timeline row) keeps its text;
+                # the fetch only supplies the missing timeline metadata.
+                for bundle in fetched:
+                    if (
+                        bundle.number in existing_cards_en
+                        and bundle.number in existing_cards_zh
+                        and card_state(existing_cards_en[bundle.number])
+                        in REUSABLE_STATES
+                    ):
+                        bundle.source_tags.add("existing-card-keep")
+            bundles = sorted(
+                fetched
+                + reused_bundles(
+                    framework,
+                    reuse,
+                    traces,
+                    source_tags,
+                    existing_cards_en,
+                    existing_cards_zh,
+                ),
+                key=sort_key,
             )
             print(f"{framework}/{model}: fetched total={len(bundles)}", flush=True)
             model_dir = HISTORY_ROOT / framework / model
@@ -1639,6 +1964,7 @@ def rebuild(dry_run: bool = False) -> None:
                     existing_only_count,
                     existing_cards_zh,
                     existing_timeline_rows_zh,
+                    extract_preamble(framework, model, "zh"),
                 ),
                 encoding="utf-8",
             )
@@ -1652,6 +1978,7 @@ def rebuild(dry_run: bool = False) -> None:
                     existing_only_count,
                     existing_cards_en,
                     existing_timeline_rows_en,
+                    extract_preamble(framework, model, "en"),
                 ),
                 encoding="utf-8",
             )
@@ -1662,11 +1989,37 @@ def rebuild(dry_run: bool = False) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--framework",
+        action="append",
+        choices=sorted(REPOS),
+        help="Restrict to one framework; repeat for several (default: all).",
+    )
+    parser.add_argument(
+        "--model",
+        action="append",
+        help="Restrict to one model slug; repeat for several (default: all).",
+    )
+    parser.add_argument(
+        "--refetch-existing",
+        action="store_true",
+        help="Refetch and re-render merged PRs that already have audited cards.",
+    )
     args = parser.parse_args()
-    missing = [str(path) for path in FRAMEWORK_ROOTS.values() if not path.exists()]
+    frameworks = args.framework or list(REPOS)
+    missing = [
+        str(FRAMEWORK_ROOTS[framework])
+        for framework in frameworks
+        if not FRAMEWORK_ROOTS[framework].exists()
+    ]
     if missing:
         raise SystemExit(f"missing framework worktrees: {', '.join(missing)}")
-    rebuild(dry_run=args.dry_run)
+    rebuild(
+        dry_run=args.dry_run,
+        frameworks=frameworks,
+        models=args.model,
+        refetch_existing=args.refetch_existing,
+    )
 
 
 if __name__ == "__main__":

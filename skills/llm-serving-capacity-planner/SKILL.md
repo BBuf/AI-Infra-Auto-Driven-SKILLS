@@ -37,20 +37,29 @@ Before running analysis, collect or verify these inputs:
 The user should provide the startup log from an SGLang or vLLM serving instance. Key log lines that the analyzer needs:
 
 - `Load weight begin. avail mem=XX GB`
-- `Memory profiling: available_gpu_memory=XX GB, ...` (newer sglang)
-- `SW KV memory calculation: bytes_per_full_token=XX, available_bytes=XX GB, full_token=XX` (SWA models like DeepSeek-V4)
+- `server_args={'model_path': '...', 'tp_size': 8, ...}` (resolved parameters)
+- `Load weight end. ... avail mem=X GB, mem usage=X GB.` (weight footprint)
+- `DSV4 memory calculation: ... bytes_per_full_token=X, available_bytes=X GB, ... full_token=N`
+- `[label] KV Cache is allocated. dtype: ..., #tokens: N, K size: X GB, V size: Y GB` (or `KV size`)
+- `Mamba Cache is allocated. ... conv_state size: X GB, ssm_state size: Y GB`
 - `Memory pool end. avail mem=XX GB`
-- `Capture cuda graph end. ... mem usage=XX GB. avail mem=XX GB.`
-- `max_total_num_tokens=XX, ... max_running_requests=XX, ... available_gpu_mem=XX GB`
-- `server_args=ServerArgs(...)` (for serving parameters)
+- `Capture target|draft decode|verify|prefill CUDA graph end. elapsed=X s, mem usage=X GB, avail mem=X GB.`
+- `Post-capture KV sizing: KV cache allocated. ... KV size: X GB, avail mem=X GB` (opt-in)
+- `max_total_num_tokens=XX, ... chunked_prefill_size=-1|N, ... available_gpu_mem=XX GB`
+
+Legacy `ServerArgs(...)`, `Memory profiling:` and `Capture cuda graph end.`
+remain accepted for older/private branch logs; they are not current main emitters.
 
 Current vLLM V1 logs instead expose:
 
-- `Initial free memory: ...; Requested memory: ...`
+- `Initial free memory: ...; Requested memory: ...` (DEBUG only)
 - `Model loading took ... GiB`
 - `Available KV cache memory: ... GiB`
 - `Graph capturing finished ... took ... GiB`
-- `GPU KV cache size: ... tokens`
+- `<device> KV cache size: ... tokens, Maximum concurrency for ... tokens per request: ...x`
+- `Free memory on device (F/T GiB) ... Current kv cache memory in use is K GiB` (INFO)
+- `CUDA graph pool memory: A GiB (actual), E GiB (estimated), ...`
+- `Initial free memory X GiB, reserved Y GiB memory for KV Cache ...` (explicit KV bytes)
 - `Maximum concurrency for ... tokens per request: ...x`
 
 If the log is from a running instance, capture it by redirecting stdout/stderr to a file at launch time.
@@ -114,8 +123,9 @@ model-specific reservations. It is not `post_weight_free * fraction`.
 Post-capture sizing may update the pool again. Use final logged capacity and
 rank-local evidence; see [source contracts](../../docs/upstream-source-contracts.md).
 
-- `0.88` (default): aggressive — 88% of post-weight memory goes to KV pool
-- `0.60`: conservative — more free memory left for runtime, but significantly less KV capacity
+The default is auto-resolved from the hardware and configuration. Read the
+resolved value from `server_args={...}`. A lower value increases runtime
+headroom at the cost of KV capacity. Do not infer 0.88 when it is absent.
 
 ### KV Head Replication
 
@@ -165,3 +175,13 @@ weight footprint.
 - `references/log-patterns.md`: log line patterns and their semantics for memory analysis.
 - `references/gpu-specs.json`: GPU HBM specifications for `h20`, `h100`, `h200`, and `b200` aliases.
 - `scripts/capacity_analyzer.py`: the core analysis script.
+
+## Memory capacity sources
+
+The bundled hardware table records vendor GB maxima, not usable GiB. Prefer
+`nvidia-smi` used+free or vLLM's logged total. B200 retains the DGX 180GB SKU;
+other Blackwell SKUs may differ. DGX Spark's 128GB is unified system memory,
+not dedicated HBM. L20 is the official 48GB SKU; do not infer a capacity for
+`l20n` from the name. GB200 records the physical 192GB package maximum; its deployed SKU and
+custom SKUs require measured totals. Official
+source URLs are stored with each newly added hardware entry.

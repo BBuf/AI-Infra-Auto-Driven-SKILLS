@@ -396,7 +396,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         candidate_path=(
             "python/sglang/srt/layers/flashinfer_comm_fusion.py"
             "<br>python/sglang/srt/layers/layernorm.py"
-            "<br>python/sglang/srt/layers/communicator.py"
+            "<br>python/sglang/srt/layers/layer_boundary/fusions/allreduce.py"
         ),
         active_keywords=(
             "allreduce_fusion",
@@ -424,12 +424,14 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="AITER allreduce fusion",
         candidate_path=(
             "python/sglang/srt/distributed/communication_op.py"
-            "<br>python/sglang/srt/layers/communicator.py"
+            "<br>python/sglang/srt/layers/layer_boundary/fusions/allreduce.py"
             "<br>python/sglang/srt/layers/layernorm.py"
         ),
         active_keywords=(
             "tensor_model_parallel_fused_allreduce_rmsnorm",
-            "apply_aiter_all_reduce_fusion",
+            "apply_aiter_all_reduce_fusion",  # legacy scope
+            "fused_attn_input",
+            "fused_ffn_input",
             "custom_fused_ar_rms",
         ),
         split_groups=(
@@ -732,7 +734,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     FusionPatternSpec(
         pattern="DeepSeek comm-prep fused RMSNorm + quant / flatten-quant",
         candidate_path=(
-            "python/sglang/srt/layers/communicator.py"
+            "python/sglang/srt/layers/layer_boundary/residual/add_norm.py"
             "<br>python/sglang/srt/models/deepseek_common/attention_forward_methods/"
             "forward_mla.py"
             "<br>python/sglang/srt/models/deepseek_common/attention_forward_methods/"
@@ -758,7 +760,7 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
     ),
     FusionPatternSpec(
         pattern="NSA fused top-k transform / page-table build",
-        candidate_path="python/sglang/srt/layers/attention/nsa_backend.py",
+        candidate_path="python/sglang/srt/layers/attention/dsa_backend.py",
         active_keywords=(
             "fast_topk_transform_fused",
             "fast_topk_transform_ragged_fused",
@@ -1141,8 +1143,8 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="PR #38621 fused QK norm + RoPE + cache + quant",
         candidate_path=(
             "PR #38621"
-            "<br>vllm/csrc/fused_qk_norm_rope_cache_quant.cu"
-            "<br>vllm/compilation/passes/fusion/qk_norm_rope_cache_quant_fusion.py"
+            "<br>csrc/fused_qk_norm_rope_cache_quant.cu (PR-branch only)"
+            "<br>vllm/compilation/passes/fusion/qk_norm_rope_cache_quant_fusion.py (PR-branch only)"
         ),
         active_keywords=("fused_qk_norm_rope_cache_quant",),
         split_groups=(
@@ -1221,59 +1223,34 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         candidate_path=(
             "tensorrt_llm/_torch/custom_ops/flashinfer_custom_ops.py"
             "<br>tensorrt_llm/_torch/modules/rms_norm.py"
-            "<br>tensorrt_llm/_torch/auto_deploy/transform/library/fused_add_rms_norm.py"
         ),
         active_keywords=(
             "flashinfer_fused_add_rmsnorm",
             "flashinfer_gemma_fused_add_rmsnorm",
             "flashinfer::norm::FusedAddRMSNormKernel",
             "FusedAddRMSNormKernel",
-            "auto_deploy::flashinfer_fused_add_rms_norm_inplace",
         ),
         rationale_hint=(
             "TensorRT-LLM exposes a FlashInfer fused residual-add plus RMSNorm"
-            " family, including AutoDeploy rewrites."
+            " family in the PyTorch backend."
         ),
         origin="upstream",
         min_share=0.1,
         likely_share=1.0,
     ),
     FusionPatternSpec(
-        pattern="TensorRT-LLM Triton fused residual add + RMSNorm + FP8 quant",
-        candidate_path=(
-            "tensorrt_llm/_torch/auto_deploy/custom_ops/normalization/"
-            "triton_fused_add_rms_norm_quant_fp8.py"
-            "<br>tensorrt_llm/_torch/auto_deploy/transform/library/"
-            "fuse_rmsnorm_quant_fp8.py"
-        ),
-        active_keywords=(
-            "triton_fused_add_rms_norm_quant_fp8",
-            "fuse_rmsnorm_quant_fp8",
-        ),
-        rationale_hint=(
-            "TensorRT-LLM mainline has a Triton residual-add plus RMSNorm plus"
-            " FP8-quant family in AutoDeploy."
-        ),
-        origin="upstream",
-        min_share=0.2,
-        likely_share=1.0,
-        priority=20,
-    ),
-    FusionPatternSpec(
         pattern="TensorRT-LLM FlashInfer RMSNorm family",
         candidate_path=(
             "tensorrt_llm/_torch/custom_ops/flashinfer_custom_ops.py"
             "<br>tensorrt_llm/_torch/modules/rms_norm.py"
-            "<br>tensorrt_llm/_torch/auto_deploy/custom_ops/normalization/rms_norm.py"
         ),
         active_keywords=(
             "flashinfer_rmsnorm",
             "flashinfer_gemma_rmsnorm",
-            "auto_deploy::flashinfer_rms_norm",
         ),
         rationale_hint=(
             "TensorRT-LLM lowers RMSNorm-style ladders to FlashInfer kernels"
-            " and AutoDeploy custom ops."
+            " in the PyTorch backend."
         ),
         origin="upstream",
         min_share=0.1,
@@ -1283,13 +1260,11 @@ FUSION_PATTERN_REGISTRY: Tuple[FusionPatternSpec, ...] = (
         pattern="TensorRT-LLM FlashInfer activation / gate epilogues",
         candidate_path=(
             "tensorrt_llm/_torch/custom_ops/flashinfer_custom_ops.py"
-            "<br>tensorrt_llm/_torch/auto_deploy/transform/library/fuse_silu_mul.py"
             "<br>tensorrt_llm/_torch/models/modeling_gemma3.py"
         ),
         active_keywords=(
             "flashinfer_silu_and_mul",
             "flashinfer_gelu_tanh_and_mul",
-            "auto_deploy::silu_and_mul",
         ),
         rationale_hint=(
             "TensorRT-LLM already rewrites gate activation plus multiply"

@@ -22,9 +22,11 @@ reviewer can see how the diff actually runs before reading any findings. See
 [PR Comprehension Diagram](#pr-comprehension-diagram).
 
 The bundled corpus is collected from `sgl-project/sglang` PRs from the first
-public PR through `2026-07-27`, excluding PRs authored by bots
-or obvious coding-agent accounts. Public framework knowledge around this
-skill was refreshed on 2026-08-23; the gzip corpus itself was not recrawled
+public PR through `2026-07-27`, intended to exclude bot/agent PR authors. The historical snapshot contains
+User-type bot leaks (59 `sglang-bot` PRs / 60 inline threads); its contents and
+counts were preserved. Future collection excludes `-bot`, `metamergebot` and
+`diffray` accounts. Mirror authorship is not evidence of human design intent. Public framework knowledge around this
+skill was refreshed on 2026-10-05; the gzip corpus itself was not recrawled
 in that pass, so reviews after 2026-07-27 must be read live from GitHub. The collector paginates every PR's full
 conversation and review history, so long multi-round discussions are captured in
 their entirety rather than truncated at the first 100 events. It is organized as
@@ -328,3 +330,19 @@ For a review-prep pass before the user opens a PR, return:
 
 For a corpus-backed explanation, include the query terms and summarize the
 matched review behavior without dumping long comment bodies.
+
+## Path Aliases and Corpus Cutoff
+
+The corpus predates current path refactors. When querying a touched path, also
+include its historical owner:
+
+| Current diff surface | Additional `--path` query |
+|---|---|
+| `python/sglang/srt/arg_groups/**` | `python/sglang/srt/server_args.py` |
+| `python/sglang/kernels/**` | `python/sglang/jit_kernel/`, `sgl-kernel/` |
+| `.agents/skills/**` | `.claude/skills/` |
+
+The collector has no incremental/resume mode and overwrites all three output
+files. `--end-year` defaults to 2025: pass 2026 explicitly for a future full
+recrawl. This refresh did not recrawl or relabel the 2026-07-27 corpus.
+The saved collection policy now records login exclusion patterns.

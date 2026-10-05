@@ -1,7 +1,9 @@
 schema_version: 1
 source:
   kind: llm_serving_cookbook
-  source_recipe_file: qwen35-397b-a17b-fp8.yaml
+  source_recipe_file: sglang/docs/src/snippets/autoregressive/qwen35-deployment.jsx
+  recorded_heads:
+    sglang: b1bbd74f287f13ed1276b0403a01ebb55c597e93
   translation: SGLang flags preserve the source recipe where applicable, with sequence
     limits raised when needed for the default dataset; vLLM and TensorRT-LLM use framework-native
     serving flags for the same model and dataset shape.
@@ -11,6 +13,7 @@ model:
   precision: auto
   quantization: model default
 hardware:
+  accelerator: NVIDIA B200
   gpu_count: 4
   multi_node: false
 dataset:
@@ -56,14 +59,14 @@ frameworks:
     base_server_flags:
       tp_size: 4
       model_path: Qwen/Qwen3.5-397B-A17B-FP8
-      mem_fraction_static: 0.82
-      schedule_policy: lpm
+      mem_fraction_static: 0.8
+      enable_symm_mem: true
+      linear_attn_prefill_backend: flashinfer
+      moe_runner_backend: flashinfer_trtllm
     search_space:
       prefill_attention_backend:
-      - fa3
       - flashinfer
       decode_attention_backend:
-      - fa3
       - flashinfer
       chunked_prefill_size:
       - 4096
@@ -100,8 +103,6 @@ frameworks:
       - 4096
       enable_prefix_caching:
       - true
-      block_size:
-      - 16
   tensorrt_llm:
     enabled: true
     server_command: trtllm-serve serve

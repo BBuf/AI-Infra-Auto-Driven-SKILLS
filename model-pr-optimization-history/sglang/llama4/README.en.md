@@ -1,4 +1,4 @@
-# sglang Llama 4 Model PR Optimization History
+# SGLang Llama 4 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -8,6 +8,7 @@
 | `docs/src/snippets/autoregressive/llama4-maverick-deployment.jsx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/llama4-scout-deployment.jsx` | no direct PR-number commit |
 | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja` | [#6679](https://github.com/sgl-project/sglang/pull/6679) |
+| `python/sglang/srt/arg_groups/model_overrides/llama4.py` | no direct PR-number commit |
 | `python/sglang/srt/models/llama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5127](https://github.com/sgl-project/sglang/pull/5127), [#5128](https://github.com/sgl-project/sglang/pull/5128), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5159](https://github.com/sgl-project/sglang/pull/5159), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6752](https://github.com/sgl-project/sglang/pull/6752), [#7729](https://github.com/sgl-project/sglang/pull/7729), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#8683](https://github.com/sgl-project/sglang/pull/8683), [#9101](https://github.com/sgl-project/sglang/pull/9101), [#10047](https://github.com/sgl-project/sglang/pull/10047), ... (17 total) |
 | `python/sglang/srt/models/mllama4.py` | [#5092](https://github.com/sgl-project/sglang/pull/5092), [#5144](https://github.com/sgl-project/sglang/pull/5144), [#5194](https://github.com/sgl-project/sglang/pull/5194), [#6985](https://github.com/sgl-project/sglang/pull/6985), [#7129](https://github.com/sgl-project/sglang/pull/7129), [#8272](https://github.com/sgl-project/sglang/pull/8272), [#8512](https://github.com/sgl-project/sglang/pull/8512), [#10042](https://github.com/sgl-project/sglang/pull/10042), [#10047](https://github.com/sgl-project/sglang/pull/10047), [#10611](https://github.com/sgl-project/sglang/pull/10611), [#11282](https://github.com/sgl-project/sglang/pull/11282) |
 | `python/sglang/srt/multimodal/processors/mllama4.py` | [#7840](https://github.com/sgl-project/sglang/pull/7840), [#8156](https://github.com/sgl-project/sglang/pull/8156) |
@@ -31,8 +32,8 @@
 | 2025-04-07 | [#5092](https://github.com/sgl-project/sglang/pull/5092) | merged | Add Llama4 support | `python/sglang/srt/models/llama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/mllama4.py` |
 | 2025-04-08 | [#5159](https://github.com/sgl-project/sglang/pull/5159) | merged | Support 2x8xH100 for Llama 4 | `python/sglang/srt/models/llama4.py` |
 | 2025-04-09 | [#5128](https://github.com/sgl-project/sglang/pull/5128) | merged | Optimize topk operation in llama4 | `python/sglang/srt/models/llama4.py` |
-| 2025-04-09 | [#5194](https://github.com/sgl-project/sglang/pull/5194) | merged | Support Llama4 fp8 inference | `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py` |
 | 2025-04-09 | [#5144](https://github.com/sgl-project/sglang/pull/5144) | merged | model: support mllama4 | `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/managers/multimodal_processors/mllama4.py`, `python/sglang/srt/models/llama4.py` |
+| 2025-04-09 | [#5194](https://github.com/sgl-project/sglang/pull/5194) | merged | Support Llama4 fp8 inference | `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py` |
 | 2025-04-11 | [#5127](https://github.com/sgl-project/sglang/pull/5127) | merged | Optimize attention in llama4 | `python/sglang/srt/models/llama4.py` |
 | 2025-05-09 | [#6162](https://github.com/sgl-project/sglang/pull/6162) | merged | [Bugfix] Fix Llama4 gibberish output with long context and CUDA graph | `python/sglang/srt/layers/attention/flashattention_backend.py` |
 | 2025-05-31 | [#6679](https://github.com/sgl-project/sglang/pull/6679) | merged | update llama4 chat template and pythonic parser | `examples/chat_template/tool_chat_template_llama4_pythonic.jinja`, `python/sglang/srt/function_call/pythonic_detector.py` |
@@ -157,38 +158,6 @@ diff -- python/sglang/srt/models/llama4.py
   - runtime: `python/sglang/srt/models/llama4.py` modified +2/-2
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/llama4.py`, `python/sglang/srt/speculative/eagle_utils.py`, `python/sglang/srt/speculative/eagle_worker.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #5194 - Support Llama4 fp8 inference
-
-- Link: https://github.com/sgl-project/sglang/pull/5194
-- Status/date: merged / 2025-04-09
-- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `406524821457`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 14 files, +537/-106, 1026 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "Support Llama4 fp8 inference"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`; technical summary: Covers "Support Llama4 fp8 inference"; the main implementation surface is `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/mllama4.py` modified +52/-18 (70 lines); hunks: -7,6 +7,7; -16,6 +17,7; symbols: Llama4ForConditionalGeneration, __init__, load_weights, touching `Llama4ForConditionalGeneration, __init__, load_weights`; `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `python/sglang/srt/models/mllama4.py` modified +52/-18 (70 lines); hunks: -7,6 +7,7; -16,6 +17,7; symbols: Llama4ForConditionalGeneration, __init__, load_weights
-  - `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/mllama4.py
-@@ -7,6 +7,7 @@
-+from sglang.srt.layers.moe.fused_moe_triton import FusedMoE
-@@ -16,6 +17,7 @@
-+        "gate_up_proj": ["gate_proj", "up_proj"],
-@@ -96,6 +98,15 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]) -> Set[str]:
-+        # Params for weights, fp8 weight scales, fp8 activation scales
-+        # (param_name, weight_name, expert_id, shard_id)
-diff -- python/sglang/srt/models/llama4.py
-@@ -414,7 +414,7 @@ def __init__(
--            prefix="model.layers",
-+            prefix=add_prefix("layers", prefix),
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/mllama4.py` modified +52/-18; `python/sglang/srt/models/llama4.py` modified +1/-1
-- Risk and verification: The diff ships test coverage in `test/srt/run_suite.py`, `test/srt/test_int8_kernel.py`, `test/srt/test_triton_moe_channel_fp8_kernel.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #5144 - model: support mllama4
 
 - Link: https://github.com/sgl-project/sglang/pull/5144
@@ -227,6 +196,38 @@ diff -- python/sglang/srt/models/llama4.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/mllama4.py` modified +50/-11; `python/sglang/srt/managers/multimodal_processors/mllama4.py` modified +21/-36; `python/sglang/srt/models/llama4.py` modified +3/-0
 - Risk and verification: The diff ships test coverage in `test/srt/test_vision_openai_server.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #5194 - Support Llama4 fp8 inference
+
+- Link: https://github.com/sgl-project/sglang/pull/5194
+- Status/date: merged / 2025-04-09
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/llama4.py`, `python/sglang/srt/models/mllama4.py`; associated commits `406524821457`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 14 files, +537/-106, 1026 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "Support Llama4 fp8 inference"; model line: Llama 4; category: performance/backend optimization; main diff: `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`; technical summary: Covers "Support Llama4 fp8 inference"; the main implementation surface is `python/sglang/srt/models/mllama4.py`, `python/sglang/srt/models/llama4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/mllama4.py` modified +52/-18 (70 lines); hunks: -7,6 +7,7; -16,6 +17,7; symbols: Llama4ForConditionalGeneration, __init__, load_weights, touching `Llama4ForConditionalGeneration, __init__, load_weights`; `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/mllama4.py` modified +52/-18 (70 lines); hunks: -7,6 +7,7; -16,6 +17,7; symbols: Llama4ForConditionalGeneration, __init__, load_weights
+  - `python/sglang/srt/models/llama4.py` modified +1/-1 (2 lines); hunks: -414,7 +414,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/mllama4.py
+@@ -7,6 +7,7 @@
++from sglang.srt.layers.moe.fused_moe_triton import FusedMoE
+@@ -16,6 +17,7 @@
++        "gate_up_proj": ["gate_proj", "up_proj"],
+@@ -96,6 +98,15 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]) -> Set[str]:
++        # Params for weights, fp8 weight scales, fp8 activation scales
++        # (param_name, weight_name, expert_id, shard_id)
+diff -- python/sglang/srt/models/llama4.py
+@@ -414,7 +414,7 @@ def __init__(
+-            prefix="model.layers",
++            prefix=add_prefix("layers", prefix),
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/mllama4.py` modified +52/-18; `python/sglang/srt/models/llama4.py` modified +1/-1
+- Risk and verification: The diff ships test coverage in `test/srt/run_suite.py`, `test/srt/test_int8_kernel.py`, `test/srt/test_triton_moe_channel_fp8_kernel.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #5127 - Optimize attention in llama4
 
