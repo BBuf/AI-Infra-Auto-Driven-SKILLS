@@ -1,4 +1,4 @@
-# vllm InternVL 3.5 模型 PR 优化历史
+# vLLM InternVL 3.5 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -7,14 +7,14 @@
 | `tests/models/multimodal/pooling/test_intern_vit.py` | 无直接 PR 号提交 |
 | `tests/models/multimodal/processing/test_internvl.py` | [#12553](https://github.com/vllm-project/vllm/pull/12553), [#37260](https://github.com/vllm-project/vllm/pull/37260) |
 | `vllm/model_executor/models/intern_vit.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#9528](https://github.com/vllm-project/vllm/pull/9528), [#23909](https://github.com/vllm-project/vllm/pull/23909), [#38049](https://github.com/vllm-project/vllm/pull/38049) |
-| `vllm/model_executor/models/internvl.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#7164](https://github.com/vllm-project/vllm/pull/7164), [#7860](https://github.com/vllm-project/vllm/pull/7860), [#8201](https://github.com/vllm-project/vllm/pull/8201), [#8250](https://github.com/vllm-project/vllm/pull/8250), [#8299](https://github.com/vllm-project/vllm/pull/8299), [#8375](https://github.com/vllm-project/vllm/pull/8375), [#8614](https://github.com/vllm-project/vllm/pull/8614), [#8946](https://github.com/vllm-project/vllm/pull/8946), [#9351](https://github.com/vllm-project/vllm/pull/9351), [#9528](https://github.com/vllm-project/vllm/pull/9528), ... (29 total) |
+| `vllm/model_executor/models/internvl.py` | [#6514](https://github.com/vllm-project/vllm/pull/6514), [#7067](https://github.com/vllm-project/vllm/pull/7067), [#7164](https://github.com/vllm-project/vllm/pull/7164), [#7860](https://github.com/vllm-project/vllm/pull/7860), [#8201](https://github.com/vllm-project/vllm/pull/8201), [#8250](https://github.com/vllm-project/vllm/pull/8250), [#8299](https://github.com/vllm-project/vllm/pull/8299), [#8375](https://github.com/vllm-project/vllm/pull/8375), [#8614](https://github.com/vllm-project/vllm/pull/8614), [#8946](https://github.com/vllm-project/vllm/pull/8946), [#9351](https://github.com/vllm-project/vllm/pull/9351), [#9528](https://github.com/vllm-project/vllm/pull/9528), ... (30 total) |
 | `vllm/transformers_utils/processors/internvl.py` | [#37260](https://github.com/vllm-project/vllm/pull/37260), [#37324](https://github.com/vllm-project/vllm/pull/37324) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 30
+- git 追溯 PR 数: 31
 - 原文档显式引用补充 PR 数: 7
-- 当前文档总 PR 数: 37
+- 当前文档总 PR 数: 38
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -52,13 +52,14 @@
 | 2026-03-18 | [#37324](https://github.com/vllm-project/vllm/pull/37324) | merged | [2/3] Refactor InternVL-based processors | `vllm/transformers_utils/processors/internvl.py`, `vllm/model_executor/models/internvl.py` |
 | 2026-03-25 | [#35182](https://github.com/vllm-project/vllm/pull/35182) | merged | [Misc] Reorganize inputs | `vllm/multimodal/inputs.py`, `vllm/entrypoints/pooling/score/serving.py`, `vllm/entrypoints/serve/render/serving.py` |
 | 2026-03-26 | [#38049](https://github.com/vllm-project/vllm/pull/38049) | merged | [Model] Add torch.compile support for InternVL vision encoder | `vllm/model_executor/models/intern_vit.py` |
-| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | merged | refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor | `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py` |
 | 2026-04-15 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | merged | Update to transformers v5 | `tests/models/registry.py`, `vllm/model_executor/models/gemma4_mm.py`, `tests/models/multimodal/generation/test_common.py` |
+| 2026-04-15 | [#38901](https://github.com/vllm-project/vllm/pull/38901) | merged | refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor | `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py` |
 | 2026-05-19 | [#42347](https://github.com/vllm-project/vllm/pull/42347) | merged | [Perf][4/n] Eliminate various GPU CPU syncs | `vllm/model_executor/models/utils.py`, `vllm/model_executor/models/qwen2_5_vl.py`, `vllm/model_executor/models/granite_speech.py` |
 | 2026-06-04 | [#41759](https://github.com/vllm-project/vllm/pull/41759) | merged | [MM][Perf][CG] Support ViT full CUDA graph for InternVL | `vllm/model_executor/models/internvl.py` |
 | 2026-06-12 | [#45129](https://github.com/vllm-project/vllm/pull/45129) | merged | [Model] Remove Mono-InternVL (InternLM2VEForCausalLM) | `vllm/model_executor/models/internvl.py` |
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 | 2026-06-18 | [#42727](https://github.com/vllm-project/vllm/pull/42727) | merged | fix(quantization): Fix AWQ dequantize on Intel XPU and refactor AutoAWQ config | `vllm/model_executor/layers/quantization/auto_awq.py`, `vllm/model_executor/layers/quantization/awq.py`, `vllm/model_executor/layers/quantization/moe_wna16.py` |
+| 2026-09-08 | [#55779](https://github.com/vllm-project/vllm/pull/55779) | merged | [Bugfix][InternVL] Stop the video parser consuming image_embeds | `vllm/model_executor/models/internvl.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -1009,47 +1010,6 @@ diff -- vllm/model_executor/models/intern_vit.py
   - runtime: `vllm/model_executor/models/intern_vit.py` modified +11/-2
 - 验证与风险: runtime 路径改动集中在 `vllm/config/utils.py`, `vllm/model_executor/models/intern_vit.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #38901 - refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor
-
-- 链接: https://github.com/vllm-project/vllm/pull/38901
-- 状态/时间: merged / 2026-04-15
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+122/-66，可读 patch 760 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`；技术摘要: 覆盖「refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor」；主要实现面是 `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test，涉及 `run_intern_vit_test`；`tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test，涉及 `run_radio_test`；`tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync，涉及 `ModuleWithBatchNorm, __init__, __exit__`；`tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10。
-- 代码 diff 细节:
-  - `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test
-  - `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test
-  - `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync
-  - `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10
-  - `tests/basic_correctness/test_cumem.py` modified +10/-8 (18 lines); hunks: -13,6 +13,8; -26,13 +28,13 @@ def test_python_error():; symbols: test_python_error, test_basic_cumem
-- 关键代码摘录:
-
-```diff
-diff -- tests/models/multimodal/pooling/test_intern_vit.py
-@@ -7,6 +7,7 @@
-+from vllm.platforms import current_platform
-@@ -15,6 +16,8 @@
-+DEVICE_TYPE = current_platform.device_type
-@@ -39,9 +42,9 @@ def run_intern_vit_test(
--    ).to("cuda")
-+    ).to(DEVICE_TYPE)
-diff -- tests/models/multimodal/pooling/test_radio.py
-@@ -8,6 +8,7 @@
-+from vllm.platforms import current_platform
-@@ -17,6 +18,8 @@
-+DEVICE_TYPE = current_platform.device_type
-@@ -51,7 +54,7 @@ def run_radio_test(
--    ).to("cuda")
-+    ).to(DEVICE_TYPE)
-diff -- tests/models/test_utils.py
-@@ -10,6 +10,8 @@
-```
-
-- 已读文件:
-  - tests: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4; `tests/models/test_utils.py` modified +8/-2; `tests/model_executor/test_eagle_quantization.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +10/-8; `tests/quantization/test_torchao.py` modified +9/-8
-- 验证与风险: diff 自带测试面 `tests/basic_correctness/test_cumem.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_fusion_all_reduce.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #30566 - Update to transformers v5
 
 - 链接: https://github.com/vllm-project/vllm/pull/30566
@@ -1091,6 +1051,47 @@ diff -- tests/models/multimodal/generation/test_common.py
   - tests: `tests/models/registry.py` modified +130/-9; `tests/models/multimodal/generation/test_common.py` modified +38/-6; `tests/model_executor/test_weight_utils.py` modified +0/-18; `tests/models/multimodal/generation/test_phi4siglip.py` modified +11/-0; `tests/models/utils.py` modified +10/-1
   - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +36/-15; `vllm/tokenizers/registry.py` modified +34/-1; `vllm/model_executor/model_loader/gguf_loader.py` modified +12/-0
 - 验证与风险: diff 自带测试面 `requirements/test/cuda.in`, `requirements/test/cuda.txt`, `requirements/test/nightly-torch.txt`, `requirements/test/rocm.in`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #38901 - refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor
+
+- 链接: https://github.com/vllm-project/vllm/pull/38901
+- 状态/时间: merged / 2026-04-15
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 24 个文件，+122/-66，可读 patch 760 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor」；模型线: InternVL 3.5；类别: 文档/测试/CI；主要 diff: `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`；技术摘要: 覆盖「refactor hard coded device string in test files under tests/compile tests/quantization tests/models and tests/model_executor」；主要实现面是 `tests/models/multimodal/pooling/test_intern_vit.py`, `tests/models/multimodal/pooling/test_radio.py`, `tests/models/test_utils.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test，涉及 `run_intern_vit_test`；`tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test，涉及 `run_radio_test`；`tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync，涉及 `ModuleWithBatchNorm, __init__, __exit__`；`tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10。
+- 代码 diff 细节:
+  - `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4 (12 lines); hunks: -7,6 +7,7; -15,6 +16,8; symbols: run_intern_vit_test
+  - `tests/models/multimodal/pooling/test_radio.py` modified +8/-4 (12 lines); hunks: -8,6 +8,7; -17,6 +18,8; symbols: run_radio_test
+  - `tests/models/test_utils.py` modified +8/-2 (10 lines); hunks: -10,6 +10,8; -174,8 +176,12 @@ def __exit__(self, exception_type, exception_value, traceba...; symbols: ModuleWithBatchNorm, __init__, __exit__, test_merge_multimodal_embeddings_no_sync
+  - `tests/model_executor/test_eagle_quantization.py` modified +3/-2 (5 lines); hunks: -10,9 +10,10
+  - `tests/basic_correctness/test_cumem.py` modified +10/-8 (18 lines); hunks: -13,6 +13,8; -26,13 +28,13 @@ def test_python_error():; symbols: test_python_error, test_basic_cumem
+- 关键代码摘录:
+
+```diff
+diff -- tests/models/multimodal/pooling/test_intern_vit.py
+@@ -7,6 +7,7 @@
++from vllm.platforms import current_platform
+@@ -15,6 +16,8 @@
++DEVICE_TYPE = current_platform.device_type
+@@ -39,9 +42,9 @@ def run_intern_vit_test(
+-    ).to("cuda")
++    ).to(DEVICE_TYPE)
+diff -- tests/models/multimodal/pooling/test_radio.py
+@@ -8,6 +8,7 @@
++from vllm.platforms import current_platform
+@@ -17,6 +18,8 @@
++DEVICE_TYPE = current_platform.device_type
+@@ -51,7 +54,7 @@ def run_radio_test(
+-    ).to("cuda")
++    ).to(DEVICE_TYPE)
+diff -- tests/models/test_utils.py
+@@ -10,6 +10,8 @@
+```
+
+- 已读文件:
+  - tests: `tests/models/multimodal/pooling/test_intern_vit.py` modified +8/-4; `tests/models/multimodal/pooling/test_radio.py` modified +8/-4; `tests/models/test_utils.py` modified +8/-2; `tests/model_executor/test_eagle_quantization.py` modified +3/-2; `tests/basic_correctness/test_cumem.py` modified +10/-8; `tests/quantization/test_torchao.py` modified +9/-8
+- 验证与风险: diff 自带测试面 `tests/basic_correctness/test_cumem.py`, `tests/compile/passes/distributed/test_async_tp.py`, `tests/compile/passes/distributed/test_fusion_all_reduce.py`, `tests/compile/passes/distributed/test_sequence_parallelism.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #42347 - [Perf][4/n] Eliminate various GPU CPU syncs
 
@@ -1270,6 +1271,29 @@ diff -- vllm/model_executor/layers/quantization/moe_wna16.py
 - 已读文件:
   - runtime: `vllm/model_executor/layers/quantization/auto_awq.py` renamed +285/-71; `vllm/model_executor/layers/quantization/awq.py` removed +0/-286; `vllm/model_executor/layers/quantization/moe_wna16.py` modified +8/-24; `vllm/model_executor/layers/fused_moe/oracle/int_wna16.py` modified +10/-10; `vllm/model_executor/layers/quantization/inc/schemes/inc_wna16_linear.py` modified +11/-9; `vllm/model_executor/layers/quantization/__init__.py` modified +5/-4
 - 验证与风险: diff 自带测试面 `tests/quantization/test_auto_awq.py`, `tests/quantization/test_auto_round.py`, `tests/quantization/test_configs.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #55779 - [Bugfix][InternVL] Stop the video parser consuming image_embeds
+
+- 链接: https://github.com/vllm-project/vllm/pull/55779
+- 状态/时间: merged / 2026-09-08
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `vllm/model_executor/models/internvl.py`；关联提交 `782f36cd0c79`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `vllm/model_executor/models/internvl.py` modified +1/-1 (2 lines); hunks: -755,7 +755,7 @@ def _parse_and_validate_video_input(; symbols: _parse_and_validate_video_input，涉及 `_parse_and_validate_video_input`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/internvl.py` modified +1/-1 (2 lines); hunks: -755,7 +755,7 @@ def _parse_and_validate_video_input(; symbols: _parse_and_validate_video_input
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/internvl.py
+@@ -755,7 +755,7 @@ def _parse_and_validate_video_input(
+-        video_embeds = kwargs.pop("image_embeds", None)
++        video_embeds = kwargs.pop("video_embeds", None)
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `vllm/model_executor/models/internvl.py` modified +1/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/internvl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

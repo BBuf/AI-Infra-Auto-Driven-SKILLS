@@ -1,4 +1,4 @@
-# sglang Mistral Small 4 Model PR Optimization History
+# SGLang Mistral Small 4 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -13,25 +13,25 @@
 | `docs/src/snippets/autoregressive/mistral-small-4-deployment.jsx` | no direct PR-number commit |
 | `python/sglang/srt/function_call/mistral_detector.py` | [#6597](https://github.com/sgl-project/sglang/pull/6597), [#14921](https://github.com/sgl-project/sglang/pull/14921), [#20708](https://github.com/sgl-project/sglang/pull/20708) |
 | `python/sglang/srt/models/ministral3.py` | [#14251](https://github.com/sgl-project/sglang/pull/14251), [#29111](https://github.com/sgl-project/sglang/pull/29111) |
-| `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099) |
+| `python/sglang/srt/models/mistral.py` | [#108](https://github.com/sgl-project/sglang/pull/108), [#5099](https://github.com/sgl-project/sglang/pull/5099), [#39185](https://github.com/sgl-project/sglang/pull/39185) |
 | `python/sglang/srt/models/mistral_eagle.py` | no direct PR-number commit |
 | `python/sglang/srt/models/mistral_large_3.py` | [#14213](https://github.com/sgl-project/sglang/pull/14213), [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485) |
 | `python/sglang/srt/models/mistral_large_3_eagle.py` | [#14466](https://github.com/sgl-project/sglang/pull/14466), [#14485](https://github.com/sgl-project/sglang/pull/14485), [#20708](https://github.com/sgl-project/sglang/pull/20708), [#33785](https://github.com/sgl-project/sglang/pull/33785) |
-| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396), [#35215](https://github.com/sgl-project/sglang/pull/35215) |
+| `python/sglang/srt/utils/hf_transformers/mistral_utils.py` | [#30396](https://github.com/sgl-project/sglang/pull/30396), [#35215](https://github.com/sgl-project/sglang/pull/35215), [#35915](https://github.com/sgl-project/sglang/pull/35915) |
 | `test/manual/models/test_mistral_large3_basic.py` | no direct PR-number commit |
-| `test/registered/8-gpu-models/test_mistral_large3.py` | [#15422](https://github.com/sgl-project/sglang/pull/15422), [#18065](https://github.com/sgl-project/sglang/pull/18065), [#19402](https://github.com/sgl-project/sglang/pull/19402), [#33785](https://github.com/sgl-project/sglang/pull/33785) |
-| `test/registered/models_e2e/test_ministral3_models.py` | no direct PR-number commit |
-| `test/registered/models_e2e/test_ministral4_models.py` | no direct PR-number commit |
-| `test/registered/npu/llm_models/test_npu_mistral_7b.py` | no direct PR-number commit |
+| `test/registered/e2e/models/test_ministral4_models.py` | no direct PR-number commit |
+| `test/registered/e2e/models_large/test_mistral_large3.py` | no direct PR-number commit |
 | `test/registered/npu/vlm_models/test_npu_mistral_small_3_1_24b_instruct_2503.py` | no direct PR-number commit |
 | `test/registered/unit/constrained/test_mistral_common_xgrammar.py` | [#35215](https://github.com/sgl-project/sglang/pull/35215) |
 | `test/registered/unit/function_call/test_mistral_detector.py` | [#21399](https://github.com/sgl-project/sglang/pull/21399) |
+| `test/registered/unit/models/test_mistral3_vision_feature.py` | [#39185](https://github.com/sgl-project/sglang/pull/39185) |
+| `test/registered/unit/tokenizer/test_mistral_empty_assistant.py` | [#35915](https://github.com/sgl-project/sglang/pull/35915) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 17
-- Extra PRs preserved from existing docs: 9
-- Total PRs in this document: 26
+- Git-traced PRs: 16
+- Extra PRs preserved from existing docs: 12
+- Total PRs in this document: 28
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -65,6 +65,8 @@
 | 2026-07-17 | [#31507](https://github.com/sgl-project/sglang/pull/31507) | merged | [Docs] Mistral Medium 3.5 cookbook: replace stale day-0 dev images with latest | `docs_new/cookbook/autoregressive/Mistral/Mistral-Medium-3.5.mdx` |
 | 2026-08-06 | [#33785](https://github.com/sgl-project/sglang/pull/33785) | merged | Fix Mistral-Large-3 EAGLE draft skipping DeepseekV2Model.__init__ | `python/sglang/srt/models/mistral_large_3_eagle.py`, `test/registered/8-gpu-models/test_mistral_large3.py` |
 | 2026-08-19 | [#35215](https://github.com/sgl-project/sglang/pull/35215) | merged | [Constrained] Support MistralCommon tokenizers in the XGrammar backend | `test/registered/unit/constrained/test_mistral_common_xgrammar.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
+| 2026-08-24 | [#35915](https://github.com/sgl-project/sglang/pull/35915) | merged | [OpenAI] Drop empty assistant turns for mistral_common tokenizers | `test/registered/unit/tokenizer/test_mistral_empty_assistant.py`, `python/sglang/srt/utils/hf_transformers/mistral_utils.py` |
+| 2026-09-18 | [#39185](https://github.com/sgl-project/sglang/pull/39185) | merged | Fix Mistral3 retaining every vision-tower layer to read one | `test/registered/unit/models/test_mistral3_vision_feature.py`, `python/sglang/srt/models/mistral.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -913,6 +915,80 @@ diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
   - tests: `test/registered/unit/constrained/test_mistral_common_xgrammar.py` added +112/-0
   - runtime: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +43/-0
 - Risk and verification: The diff ships test coverage in `test/registered/unit/constrained/test_mistral_common_xgrammar.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #35915 - [OpenAI] Drop empty assistant turns for mistral_common tokenizers
+
+- Link: https://github.com/sgl-project/sglang/pull/35915
+- Status/date: merged / 2026-08-24
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/utils/hf_transformers/mistral_utils.py`, `test/registered/unit/tokenizer/test_mistral_empty_assistant.py`; associated commits `0c1e9bda5773`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +125/-0, 136 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/tokenizer/test_mistral_empty_assistant.py` added +86/-0 (86 lines); hunks: -0,0 +1,86; symbols: _user, _assistant, _MistralCommonStub, name, touching `_user, _assistant, _MistralCommonStub`; `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +39/-0 (39 lines); hunks: -628,9 +628,48 @@ def _adapt_placeholder_messages_for_mistral_common(messages):; symbols: _adapt_placeholder_messages_for_mistral_common, _assistant_content_is_empty, _drop_empty_assistant_messages, _safe_apply_chat_template, touching `_adapt_placeholder_messages_for_mistral_common, _assistant_content_is_empty, _drop_empty_assistant_messages`.
+- Code diff details:
+  - `test/registered/unit/tokenizer/test_mistral_empty_assistant.py` added +86/-0 (86 lines); hunks: -0,0 +1,86; symbols: _user, _assistant, _MistralCommonStub, name
+  - `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +39/-0 (39 lines); hunks: -628,9 +628,48 @@ def _adapt_placeholder_messages_for_mistral_common(messages):; symbols: _adapt_placeholder_messages_for_mistral_common, _assistant_content_is_empty, _drop_empty_assistant_messages, _safe_apply_chat_template
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/tokenizer/test_mistral_empty_assistant.py
+@@ -0,0 +1,86 @@
++import unittest
++from sglang.srt.utils.hf_transformers.mistral_utils import (
++    patch_mistral_common_tokenizer,
++)
++from sglang.test.ci.ci_register import register_cpu_ci
++register_cpu_ci(est_time=3, suite="base-a-test-cpu")
+diff -- python/sglang/srt/utils/hf_transformers/mistral_utils.py
+@@ -628,9 +628,48 @@ def _adapt_placeholder_messages_for_mistral_common(messages):
++    def _assistant_content_is_empty(content):
++        if content is None:
++            return True
++        if isinstance(content, str):
++            return not content.strip()
++        if isinstance(content, list):
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/tokenizer/test_mistral_empty_assistant.py` added +86/-0
+  - runtime: `python/sglang/srt/utils/hf_transformers/mistral_utils.py` modified +39/-0
+- Risk and verification: The diff ships test coverage in `test/registered/unit/tokenizer/test_mistral_empty_assistant.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39185 - Fix Mistral3 retaining every vision-tower layer to read one
+
+- Link: https://github.com/sgl-project/sglang/pull/39185
+- Status/date: merged / 2026-09-18
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/models/mistral.py`, `test/registered/unit/models/test_mistral3_vision_feature.py`; associated commits `2394b231c226`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +133/-12, 168 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/models/test_mistral3_vision_feature.py` added +109/-0 (109 lines); hunks: -0,0 +1,109; symbols: RecordingTower, __init__, __call__, _model, touching `RecordingTower, __init__, __call__`; `python/sglang/srt/models/mistral.py` modified +12/-6 (18 lines); hunks: -115,16 +115,22 @@ def get_image_feature(self, items: List[MultimodalDataItem...; symbols: get_image_feature, touching `get_image_feature`.
+- Code diff details:
+  - `test/registered/unit/models/test_mistral3_vision_feature.py` added +109/-0 (109 lines); hunks: -0,0 +1,109; symbols: RecordingTower, __init__, __call__, _model
+  - `python/sglang/srt/models/mistral.py` modified +12/-6 (18 lines); hunks: -115,16 +115,22 @@ def get_image_feature(self, items: List[MultimodalDataItem...; symbols: get_image_feature
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/models/test_mistral3_vision_feature.py
+@@ -0,0 +1,109 @@
++"""Pixtral adaptors should not ask the vision tower for every layer to read one.
++The tower materialises one hidden-state tensor per layer when hidden states are
++requested, ~49x the tensor the model actually consumes. These tests pin that the
++final-layer case takes the cheap path and that both paths agree, for each
++adaptor that reads the Pixtral tower this way.
++"""
+diff -- python/sglang/srt/models/mistral.py
+@@ -115,16 +115,22 @@ def get_image_feature(self, items: List[MultimodalDataItem]) -> torch.Tensor:
++        # Requesting hidden states materialises one tensor per layer (~1.8 GiB per
++        # 1540px image); the plain forward returns the same tensor as the last entry.
++        last_layer_only = self.vision_feature_layer == -1
+-            image_outputs = self.vision_tower(
+-                pixel_values, image_sizes, output_hidden_states=True
+-            )
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/models/test_mistral3_vision_feature.py` added +109/-0
+  - runtime: `python/sglang/srt/models/mistral.py` modified +12/-6
+- Risk and verification: The diff ships test coverage in `test/registered/unit/models/test_mistral3_vision_feature.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

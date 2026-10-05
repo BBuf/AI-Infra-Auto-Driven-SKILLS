@@ -1,4 +1,4 @@
-# vllm Qwen3 Next 模型 PR 优化历史
+# vLLM Qwen3 Next 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -30,7 +30,6 @@
 | 2025-10-16 | [#26437](https://github.com/vllm-project/vllm/pull/26437) | merged | [PERF] Qwen3-next MTP speedup (change bool mask indexing to index_select / index_copy to reduce d2h) | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-10-17 | [#27030](https://github.com/vllm-project/vllm/pull/27030) | merged | [Bugfix][Qwen] fixes the weights dtype in qwen3_next: it is actually a bfloat16 | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-10-29 | [#27578](https://github.com/vllm-project/vllm/pull/27578) | merged | [perf] Enable concurrent execution of "shared_experts" and "selected_experts" in qwen3-next | `vllm/model_executor/models/qwen3_next.py` |
-| 2025-11-06 | [#28182](https://github.com/vllm-project/vllm/pull/28182) | open | [Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-11-09 | [#28267](https://github.com/vllm-project/vllm/pull/28267) | merged | [Misc] Add some comments in qwen3-next | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-11-11 | [#28202](https://github.com/vllm-project/vllm/pull/28202) | merged | [Bugfix] fix qwen3-next crash | `vllm/model_executor/models/qwen3_next.py` |
 | 2025-11-19 | [#28960](https://github.com/vllm-project/vllm/pull/28960) | merged | [Bugfix] Fix typo in Qwen3 Next model executor | `vllm/model_executor/models/qwen3_next.py` |
@@ -49,6 +48,7 @@
 | 2026-05-08 | [#39280](https://github.com/vllm-project/vllm/pull/39280) | merged | [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next | `vllm/model_executor/models/qwen3_next.py`, `vllm/model_executor/models/qwen3_next_mtp.py` |
 | 2026-05-22 | [#41126](https://github.com/vllm-project/vllm/pull/41126) | merged | [Attention] Mamba attention module refactor | `vllm/model_executor/models/olmo_hybrid.py`, `vllm/model_executor/layers/mamba/gdn/olmo_gdn_linear_attn.py`, `vllm/model_executor/layers/mamba/gdn/kimi_gdn_linear_attn.py` |
 | 2026-06-11 | [#45161](https://github.com/vllm-project/vllm/pull/45161) | merged | Deprecate Transformers v4 support | `vllm/model_executor/models/transformers/base.py`, `vllm/model_executor/models/qwen3_omni_moe_thinker.py`, `vllm/model_executor/model_loader/weight_utils.py` |
+| 2026-08-19 | [#28182](https://github.com/vllm-project/vllm/pull/28182) | closed | [Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead | `vllm/model_executor/models/qwen3_next.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -337,32 +337,6 @@ diff -- vllm/model_executor/models/qwen3_next.py
 
 - 已读文件:
   - runtime: `vllm/model_executor/models/qwen3_next.py` modified +12/-5
-- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #28182 - [Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead
-
-- 链接: https://github.com/vllm-project/vllm/pull/28182
-- 状态/时间: open / 2025-11-06
-- 元数据刷新说明: 当前 GitHub API 查询失败（`command failed: gh api repos/vllm-project/vllm/pulls/28182 gh: API rate limit exceeded for user ID 35585791. If you reach out to GitHub Support for help, please include the requ...`）；保留此前已审计卡片，避免丢弃不可变提交与 diff 证据。
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +2/-1 (3 lines); hunks: -462,7 +462,7 @@ def forward(; -503,6 +503,7 @@ def _forward_core(; symbols: forward, _forward_core，涉及 `forward, _forward_core`。
-- 代码 diff 细节:
-  - `vllm/model_executor/models/qwen3_next.py` modified +2/-1 (3 lines); hunks: -462,7 +462,7 @@ def forward(; -503,6 +503,7 @@ def _forward_core(; symbols: forward, _forward_core
-- 关键代码摘录:
-
-```diff
-diff -- vllm/model_executor/models/qwen3_next.py
-@@ -462,7 +462,7 @@ def forward(
--        core_attn_out = torch.zeros(
-+        core_attn_out = torch.empty(
-@@ -503,6 +503,7 @@ def _forward_core(
-+            core_attn_out.fill_(0)
-```
-
-- 已读文件:
-  - runtime: `vllm/model_executor/models/qwen3_next.py` modified +2/-1
 - 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #28267 - [Misc] Add some comments in qwen3-next
@@ -925,6 +899,31 @@ diff -- vllm/model_executor/model_loader/weight_utils.py
 - 已读文件:
   - runtime: `vllm/model_executor/models/transformers/base.py` modified +16/-42; `vllm/model_executor/models/qwen3_omni_moe_thinker.py` modified +0/-36; `vllm/model_executor/model_loader/weight_utils.py` modified +1/-18; `vllm/transformers_utils/configs/qwen3_5.py` modified +5/-12; `vllm/transformers_utils/configs/qwen3_5_moe.py` modified +5/-12; `vllm/model_executor/models/ultravox.py` modified +0/-15
 - 验证与风险: runtime 路径改动集中在 `vllm/config/vllm.py`, `vllm/model_executor/model_loader/weight_utils.py`, `vllm/model_executor/models/gemma3n_mm.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #28182 - [Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead
+
+- 链接: https://github.com/vllm-project/vllm/pull/28182
+- 状态/时间: closed / 2026-08-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 17 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；模型线: Qwen3 Next；类别: 性能/后端优化；主要 diff: `vllm/model_executor/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen3-Next][Perf][Attention] Replace torch.zeros with torch.empty to reduce overhead」；主要实现面是 `vllm/model_executor/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `vllm/model_executor/models/qwen3_next.py` modified +2/-1 (3 lines); hunks: -462,7 +462,7 @@ def forward(; -503,6 +503,7 @@ def _forward_core(; symbols: forward, _forward_core，涉及 `forward, _forward_core`。
+- 代码 diff 细节:
+  - `vllm/model_executor/models/qwen3_next.py` modified +2/-1 (3 lines); hunks: -462,7 +462,7 @@ def forward(; -503,6 +503,7 @@ def _forward_core(; symbols: forward, _forward_core
+- 关键代码摘录:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_next.py
+@@ -462,7 +462,7 @@ def forward(
+-        core_attn_out = torch.zeros(
++        core_attn_out = torch.empty(
+@@ -503,6 +503,7 @@ def _forward_core(
++            core_attn_out.fill_(0)
+```
+
+- 已读文件:
+  - runtime: `vllm/model_executor/models/qwen3_next.py` modified +2/-1
+- 验证与风险: runtime 路径改动集中在 `vllm/model_executor/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

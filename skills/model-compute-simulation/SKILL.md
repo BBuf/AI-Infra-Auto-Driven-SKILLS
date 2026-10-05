@@ -28,9 +28,12 @@ Before running a simulation, collect or verify these inputs:
 
 If the model is not in `model-config-index.json`, ask the user for a
 `config.json` path or add an indexed config before running estimates.
-The 2026-08-23 refresh added public `Qwen/Qwen3.8-27B` (`qwen3.8-27b`):
-64-layer hybrid GDN/GQA, no MoE. The 2.4T Qwen3.8-A95B checkpoint is not
-indexed here because this pass did not lock a serving config.json.
+The 2026-10-05 index pins public HF config revisions for V4 Flash/Pro/V4.1,
+K3, GLM-5.2/5.3/5.3-Flash, Qwen3.8-Flash-Next, Hy3/Hy4, Inkling, dots3,
+Step-3.7, Nemotron-3/3.5, LongCat and Gemma4, and corrects older model dimensions.
+`Qwen/Qwen3.8-A95B` returned HTTP 401 at this audit and is not indexed.
+Use `--config /path/to/config.json` for a raw nested HF config; the local
+normalizer expands text wrappers and expert/layer aliases.
 
 ## Shape and timing limits for speculative MoE
 
@@ -39,12 +42,17 @@ can issue six target-verify rows with DSPARK block size 5. Do not substitute
 acceptance length for the number of rows computed. Account for TP-sharded
 shared-expert shapes separately from routed expert assignments and EP.
 Do not divide an unverified model template by TP/EP and call it measured FLOPs.
-The indexed model configs are historical examples, not an automatic V4.1 config.
+The simulator applies uniform TP division outside routed experts and uniform
+EP division inside routed experts. This is a what-if approximation: replicated
+routers, norms, latent projections and backend-dependent shared-expert
+ownership require a run-specific adjustment before interpreting MFU.
+The pinned V4.1 entry is a static target-model template; DSPARK draft, vision,
+Engram/PLE memory traffic and backend dispatch require separate evidence.
 
 Kernel-duration sums include overlap and possibly PDL dependency waits. Use
 wall-clock time for a whole-pass MFU denominator, and measured GPU SKU/dtype
 peaks rather than assuming every FP8 operation doubles useful FLOPs. Follow the
-[DSV4.1 source and profiling lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+[dispatch and timing principles](../llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts)
 when assigning kernel names to attention, shared experts, routing or mHC.
 
 ## Workflow
@@ -69,7 +77,7 @@ Run the simulator with batch size, sequence length, and parallelism configuratio
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 1 \
   --tp 8 --dp 1 --ep 8 \
-  --gpu h20 --dtype bf16
+  --gpu b200 --dtype bf16
 ```
 
 The simulator prints:
@@ -77,7 +85,14 @@ The simulator prints:
 - Attention vs MoE/FFN FLOPs proportion per layer
 - Total model FLOPs for a single forward pass
 
-For **decode**: use `--seq-len 1`.
+For **decode**: use `--seq-len 1 --context-len TOTAL_KV_LENGTH`.
+For extend, `--context-len` is the prefix length, with causal work for the new
+`--seq-len` tokens. Full/window attention includes KV context in QK and AV FLOPs.
+The LM head computes last-token logits unless `--all-token-logits` is given.
+Every run prints batch/shape/parallelism/GPU/dtype assumptions to stderr.
+Sparse selection, KDA/Mamba scalar work, norm/Sinkhorn and zero-expert top-k
+are architecture estimates, not measured instruction counts. LongCat routed
+FLOPs assume all top-k are nonzero (an upper bound until routing is measured).
 For **prefill**: use `--seq-len <prompt_length>`.
 
 ### Step 3: Estimate MFU with measured latency
@@ -88,7 +103,7 @@ Provide the measured forward-pass latency to compute MFU:
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 1 \
   --tp 8 --dp 1 --ep 8 \
-  --gpu h20 --dtype bf16 \
+  --gpu b200 --dtype bf16 \
   --measured-ms 15.0
 ```
 
@@ -100,8 +115,12 @@ The simulator prints:
 - Per-operator FLOPs proportion (for identifying which ops dominate)
 
 GPU peak FLOPS are loaded from `references/gpu-specs.json`. The bundled
-hardware table includes H20, H100 SXM 80GB, H200 SXM 141GB, and B200 SXM
-180GB. Use aliases such as `--gpu h100`, `--gpu h200`, or `--gpu b200` when
+hardware table includes H100/H200/B200, B300, GB300, MI355X, RTX PRO 6000
+and DGX Spark, each with official URLs. H20 is retained as an unverified
+historical estimate. Unknown dense peaks are null and MFU for that dtype is
+refused; RTX Server and Spark sparsity is unconfirmed. B300/GB300 memory
+capacity is physical maximum, not usable allocation. `--dtype` accepts bf16,
+fp8/mxfp8 and fp4/mxfp4/nvfp4; INT8 must use its separately published peak. Use aliases such as `--gpu h100`, `--gpu b2000`, or `--gpu b200` when
 running on those local boxes.
 
 ### Step 4: Per-operator MFU with kernel-level latency
@@ -119,8 +138,8 @@ flow and adds FLOPs/MFU columns.
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
-  --gpu h20 --dtype bf16 \
-  --kernel-flow @/tmp/layer3_detail.json
+  --gpu b200 --dtype bf16 \
+  --measured-ms 100 --kernel-flow @/tmp/layer3_detail.json
 ```
 
 The `--kernel-flow` parameter accepts a JSON string or `@file` path. It produces
@@ -160,8 +179,8 @@ Same input as `--kernel-flow` but outputs an **operator-level** summary table
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
-  --gpu h20 --dtype bf16 \
-  --kernel-detail @/tmp/layer3_detail.json
+  --gpu b200 --dtype bf16 \
+  --measured-ms 100 --kernel-detail @/tmp/layer3_detail.json
 ```
 
 #### Method C: `--kernel-ms` (category-level approximation)
@@ -172,8 +191,8 @@ Use a hand-aggregated category map only when per-kernel detail is unavailable:
 python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen3-235B-A22B" \
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
-  --gpu h20 --dtype bf16 \
-  --kernel-ms '{
+  --gpu b200 --dtype bf16 \
+  --measured-ms 100 --kernel-ms '{
     "mla": 4.922, "moe": 1.644, "allreduce": 0.769,
     "hadamard": 0.348, "mhc": 1.388, "gemm_fp8": 1.692,
     "gemm_bf16": 0.125, "rmsnorm": 0.227, "quant": 0.311,
@@ -188,7 +207,10 @@ distribution across entire categories, which is less precise than `--kernel-deta
 because generic GEMM categories (gemm_fp8, gemm_bf16) span multiple operator categories.
 
 Choose only one of `--per-layer-ms`, `--kernel-ms`, `--kernel-detail`, or
-`--kernel-flow`. All measured durations must be positive.
+`--kernel-flow`. All measured durations must be positive. The three kernel
+inputs also require `--measured-ms` from whole-pass wall-clock timing; the
+100 ms in these examples is a placeholder to replace with the measurement.
+Kernel-duration sums cannot establish elapsed time when streams overlap.
 
 Output includes:
 - Model architecture summary (layers, hidden_size, attention_type, MoE config)
@@ -273,9 +295,9 @@ When the static template or trace extraction cannot fully confirm the compute pr
 1. **Static template** (`model_compute_simulator.py` + `model-config-index.json`) — fast, covers known models
 2. **Trace extraction** (`extract_compute_flow_from_trace.py`) — validates template against real execution
 3. **Inference framework source code** — when trace is insufficient (missing `Input Dims`, CUDA Graph replay, compiled kernels without scope), read the model's forward flow directly from the serving framework source:
-   - **SGLang**: `python/sglang/srt/models/<model_name>.py` — contains the `forward()` method with the exact operator sequence, tensor shapes, and parallelism split logic
-   - **vLLM**: `vllm/model_executor/models/<model_name>.py`
-   - **TensorRT-LLM**: `cpp/tensorrt_llm/pyexecutor/py_executor.cpp` + model config files
+   - **SGLang**: `python/sglang/srt/models/<model_name>.py` — contains the `forward()` method and `declare_attn`/`declare_ffn` stage boundaries in `python/sglang/srt/layers/layer_boundary/factories.py`
+   - **vLLM**: `vllm/models/<family>/{common,nvidia,amd}/` for migrated 2026 families; older models remain under `model_executor/models`
+   - **TensorRT-LLM**: `tensorrt_llm/_torch/models/modeling_<family>.py` + model configs
 
    When consulting framework source, focus on:
    - The `forward()` method: operator call order and residual connections
@@ -301,3 +323,11 @@ When the static template or trace extraction cannot fully confirm the compute pr
 - `references/model-config-index.json`: model configuration parameters (hidden_size, expert counts, MLA ranks, etc.).
 - `references/gpu-specs.json`: GPU peak FLOPS specifications for MFU calculation.
 - `scripts/extract_compute_flow_from_trace.py`: trace-based compute flow extraction and template validation tool.
+
+Source audit: [SGLang V4](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/models/deepseek_v4.py),
+[K3 latent experts](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/models/kimi_k3.py),
+[NVIDIA HGX dense/sparse specs](https://www.nvidia.com/en-us/data-center/hgx/),
+[AMD MI355X specs](https://www.amd.com/en/products/accelerators/instinct/mi350/mi355x.html).
+HF field provenance is `hf_config_source` at `hf_config_revision`; construct
+`https://huggingface.co/<repo>/blob/<revision>/config.json` for the exact source.
+No GPU run is implied by a config refresh.

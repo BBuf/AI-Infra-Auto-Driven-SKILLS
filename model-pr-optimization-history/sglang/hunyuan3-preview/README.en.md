@@ -1,10 +1,10 @@
-# sglang Hunyuan3 Preview Model PR Optimization History
+# SGLang Hunyuan3 Preview Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
-| `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | no direct PR-number commit |
+| `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | [#36823](https://github.com/sgl-project/sglang/pull/36823) |
 | `docs/cookbook/autoregressive/Tencent/Hy3.mdx` | no direct PR-number commit |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` | [#30223](https://github.com/sgl-project/sglang/pull/30223) |
 | `docs/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` | no direct PR-number commit |
@@ -15,9 +15,9 @@
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 2
+- Git-traced PRs: 3
 - Extra PRs preserved from existing docs: 2
-- Total PRs in this document: 4
+- Total PRs in this document: 5
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -29,6 +29,7 @@
 | 2026-04-24 | [#23533](https://github.com/sgl-project/sglang/pull/23533) | merged | support Hy3 preview | `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py` |
 | 2026-07-06 | [#30201](https://github.com/sgl-project/sglang/pull/30201) | merged | cookbook: add Hunyuan 3 (Hy3) Day-0 page | `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` |
 | 2026-08-11 | [#30223](https://github.com/sgl-project/sglang/pull/30223) | merged | Add Hunyuan3 On Ascend Doc | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` |
+| 2026-08-28 | [#36823](https://github.com/sgl-project/sglang/pull/36823) | merged | [Docs] Rename Tencent cookbook page titles to "Hy4 preview" / "Hy3 preview" | `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` |
 
 ## Per-PR Diff Audit Cards
 
@@ -175,6 +176,33 @@ diff -- docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.
 - Reviewed files:
   - docs: `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` added +388/-0
 - Risk and verification: This is mostly docs/examples in `docs/docs.json`, `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
+
+### PR #36823 - [Docs] Rename Tencent cookbook page titles to "Hy4 preview" / "Hy3 preview"
+
+- Link: https://github.com/sgl-project/sglang/pull/36823
+- Status/date: merged / 2026-08-28
+- Trace source: `git log --name-only -- <model-files>` found it through `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`; associated commits `989e51ba9c4c`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +12/-12, 87 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +3/-3 (6 lines); hunks: -1,12 +1,12.
+- Code diff details:
+  - `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +3/-3 (6 lines); hunks: -1,12 +1,12
+- Key code excerpts:
+
+```diff
+diff -- docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx
+@@ -1,12 +1,12 @@
+-title: Hunyuan 3 Preview
++title: Hy3 preview
+-    description: "Deploy Tencent Hunyuan 3 Preview BF16 (~276B / ~20B active MoE) on NVIDIA GPUs with SGLang — hybrid thinking, native tool calling, 256K context, and built-in MTP
++    description: "Deploy Tencent Hy3 preview BF16 (~276B / ~20B active MoE) on NVIDIA GPUs with SGLang — hybrid thinking, native tool calling, 256K context, and built-in MTP specu
+-Hunyuan 3 Preview (Hy3-preview) is Tencent's preview of its third-generation flagship MoE language model, featuring hybrid thinking, native tool calling, long-context reasoning, a
++Hy3 preview is Tencent's preview of its third-generation flagship MoE language model, featuring hybrid thinking, native tool calling, long-context reasoning, and Multi-Token Predi
+```
+
+- Extracted files (not manually reviewed):
+  - docs: `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +3/-3
+- Risk and verification: This is mostly docs/examples in `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs/cookbook/autoregressive/Tencent/Hy4-Preview.mdx`; validation should confirm the documented command still maps to current CLI flags and model repo names.
 
 ## Gap-Closure Notes
 

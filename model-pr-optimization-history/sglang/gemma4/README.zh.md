@@ -1,4 +1,4 @@
-# sglang Gemma 4 模型 PR 优化历史
+# SGLang Gemma 4 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -7,28 +7,37 @@
 | `docs/cookbook/autoregressive/Google/Gemma4.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/gemma4-deployment.jsx` | 无直接 PR 号提交 |
 | `python/sglang/kernels/ops/layernorm/gemma4_fused_ops.py` | 无直接 PR 号提交 |
+| `python/sglang/kernels/ops/moe/gemma4_routing.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/arg_groups/model_overrides/gemma4.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/dllm/algorithm/gemma4_renoise.py` | 无直接 PR 号提交 |
 | `python/sglang/srt/function_call/gemma4_detector.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952) |
 | `python/sglang/srt/models/gemma4_audio.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952) |
-| `python/sglang/srt/models/gemma4_causal.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498), [#23280](https://github.com/sgl-project/sglang/pull/23280), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26026](https://github.com/sgl-project/sglang/pull/26026), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#26502](https://github.com/sgl-project/sglang/pull/26502), [#27471](https://github.com/sgl-project/sglang/pull/27471) |
+| `python/sglang/srt/models/gemma4_causal.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498), [#23280](https://github.com/sgl-project/sglang/pull/23280), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26026](https://github.com/sgl-project/sglang/pull/26026), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#26502](https://github.com/sgl-project/sglang/pull/26502), [#27471](https://github.com/sgl-project/sglang/pull/27471), ... (13 total) |
 | `python/sglang/srt/models/gemma4_mm.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498), [#24048](https://github.com/sgl-project/sglang/pull/24048), [#24436](https://github.com/sgl-project/sglang/pull/24436), [#24696](https://github.com/sgl-project/sglang/pull/24696), [#25054](https://github.com/sgl-project/sglang/pull/25054), [#25284](https://github.com/sgl-project/sglang/pull/25284), [#26147](https://github.com/sgl-project/sglang/pull/26147), [#27471](https://github.com/sgl-project/sglang/pull/27471), [#31672](https://github.com/sgl-project/sglang/pull/31672) |
 | `python/sglang/srt/models/gemma4_mtp.py` | [#24436](https://github.com/sgl-project/sglang/pull/24436), [#26026](https://github.com/sgl-project/sglang/pull/26026), [#32440](https://github.com/sgl-project/sglang/pull/32440) |
-| `python/sglang/srt/models/gemma4_unified.py` | 无直接 PR 号提交 |
+| `python/sglang/srt/models/gemma4_unified.py` | [#35809](https://github.com/sgl-project/sglang/pull/35809) |
 | `python/sglang/srt/models/gemma4_vision.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#22498](https://github.com/sgl-project/sglang/pull/22498) |
 | `python/sglang/srt/multimodal/processors/gemma4.py` | [#21952](https://github.com/sgl-project/sglang/pull/21952), [#26320](https://github.com/sgl-project/sglang/pull/26320) |
 | `python/sglang/srt/multimodal/processors/gemma4_unified.py` | 无直接 PR 号提交 |
 | `test/registered/attention/test_gemma4_swa_triton_oob_regression.py` | 无直接 PR 号提交 |
-| `test/registered/kernels/ops/layernorm/test_gemma4_fused_routing.py` | 无直接 PR 号提交 |
-| `test/registered/models_e2e/test_gemma4_fp8_per_expert_loading.py` | 无直接 PR 号提交 |
+| `test/registered/attention/test_gemma4_unified_swa_virtual_ids.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models/test_gemma4_fp8_per_expert_loading.py` | 无直接 PR 号提交 |
+| `test/registered/kernels/ops/layernorm/test_gemma4_qkv_norm.py` | 无直接 PR 号提交 |
+| `test/registered/kernels/ops/moe/test_gemma4_expert_activation.py` | 无直接 PR 号提交 |
+| `test/registered/kernels/ops/moe/test_gemma4_fused_routing.py` | 无直接 PR 号提交 |
 | `test/registered/pp/test_pp_gemma4.py` | 无直接 PR 号提交 |
 | `test/registered/spec/test_gemma4_dflash_31b_extra.py` | [#27471](https://github.com/sgl-project/sglang/pull/27471) |
-| `test/registered/spec/test_gemma4_mtp_26b_a4b_extra.py` | [#24552](https://github.com/sgl-project/sglang/pull/24552), [#26653](https://github.com/sgl-project/sglang/pull/26653), [#27082](https://github.com/sgl-project/sglang/pull/27082) |
 | `test/registered/spec/test_gemma4_mtp_31b_extra.py` | [#24552](https://github.com/sgl-project/sglang/pull/24552), [#27101](https://github.com/sgl-project/sglang/pull/27101) |
+| `test/registered/unit/dllm/algorithm/test_gemma4_sampling_cuda.py` | 无直接 PR 号提交 |
+| `test/registered/unit/dllm/test_gemma4_cuda_graph.py` | 无直接 PR 号提交 |
+| `test/registered/unit/dllm/test_gemma4_renoise.py` | 无直接 PR 号提交 |
+| `test/registered/unit/dllm/test_gemma4_uniform_lifecycle.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
 - git 追溯 PR 数: 19
-- 原文档显式引用补充 PR 数: 19
-- 当前文档总 PR 数: 38
+- 原文档显式引用补充 PR 数: 21
+- 当前文档总 PR 数: 40
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -60,8 +69,8 @@
 | 2026-06-03 | [#27167](https://github.com/sgl-project/sglang/pull/27167) | merged | [Model] Support encoder-free unified Text/Vision/Audio model | `python/sglang/srt/models/gemma4_unified.py`, `python/sglang/srt/multimodal/processors/gemma4_unified.py`, `python/sglang/srt/models/gemma4_mtp.py` |
 | 2026-06-03 | [#27171](https://github.com/sgl-project/sglang/pull/27171) | merged | [Docs] Update unified Text/Vision/Audio model cookbook: install + sgl-eval accuracy | `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
 | 2026-06-04 | [#27287](https://github.com/sgl-project/sglang/pull/27287) | merged | docs(cookbook): add Docker install option for Gemma 4 | `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
-| 2026-06-05 | [#27321](https://github.com/sgl-project/sglang/pull/27321) | merged | docs(cookbook): restore Gemma 4 transformers commit pin | `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
 | 2026-06-05 | [#23280](https://github.com/sgl-project/sglang/pull/23280) | merged | [XPU] Enable Gemma 4 E2B / E4B / 31B/ 26B-A4B on Intel XPU | `python/sglang/srt/models/gemma4_causal.py` |
+| 2026-06-05 | [#27321](https://github.com/sgl-project/sglang/pull/27321) | merged | docs(cookbook): restore Gemma 4 transformers commit pin | `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
 | 2026-06-05 | [#27396](https://github.com/sgl-project/sglang/pull/27396) | merged | Cookbook for QAT | `docs_new/src/snippets/autoregressive/gemma4-deployment.jsx`, `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` |
 | 2026-06-06 | [#26588](https://github.com/sgl-project/sglang/pull/26588) | merged | Optimize Gemma4 H200 MoE and extend attention | `python/sglang/srt/layers/gemma4_fused_ops.py`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=128,N=704,device_name=NVIDIA_H200.json`, `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/triton_3_6_0/E=128,N=704,device_name=NVIDIA_H200_down.json` |
 | 2026-06-09 | [#26320](https://github.com/sgl-project/sglang/pull/26320) | merged | fix(gemma4): register image/video/audio token_regex for HF-expanded prompts | `python/sglang/srt/multimodal/processors/gemma4.py` |
@@ -74,6 +83,8 @@
 | 2026-07-19 | [#31672](https://github.com/sgl-project/sglang/pull/31672) | merged | fix(gemma4): prevent attention mask offset overflow | `python/sglang/srt/models/gemma4_mm.py` |
 | 2026-08-17 | [#22498](https://github.com/sgl-project/sglang/pull/22498) | merged | [CPU] Add support for Gemma4 on Xeon | `python/sglang/srt/models/gemma4_mm.py`, `python/sglang/srt/models/gemma4_causal.py`, `python/sglang/srt/models/gemma4_vision.py` |
 | 2026-08-19 | [#32440](https://github.com/sgl-project/sglang/pull/32440) | merged | fix(gemma4): quantize MTP bridge projections | `python/sglang/srt/models/gemma4_mtp.py` |
+| 2026-09-15 | [#35809](https://github.com/sgl-project/sglang/pull/35809) | merged | fix(gemma4): set lm_head_is_tied for Gemma4UnifiedForConditionalGeneration | `python/sglang/srt/models/gemma4_unified.py` |
+| 2026-10-03 | [#42311](https://github.com/sgl-project/sglang/pull/42311) | merged | [Refactor] Build the ZAYA1, IQuest-Q1 and Gemma 4 decoders from stage boundaries | `python/sglang/srt/models/gemma4_causal.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -873,31 +884,6 @@ diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
   - docs: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +20/-3
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #27321 - docs(cookbook): restore Gemma 4 transformers commit pin
-
-- 链接: https://github.com/sgl-project/sglang/pull/27321
-- 状态/时间: merged / 2026-06-05
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs(cookbook): restore Gemma 4 transformers commit pin」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；技术摘要: 覆盖「docs(cookbook): restore Gemma 4 transformers commit pin」；主要实现面是 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1 (5 lines); hunks: -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, b...。
-- 代码 diff 细节:
-  - `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1 (5 lines); hunks: -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, b...
-- 关键代码摘录:
-
-```diff
-diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
-@@ -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, building on the Gemma
--Gemma 4 (including the encoder-free unified 12B, [sgl-project/sglang#27167](https://github.com/sgl-project/sglang/pull/27167)) is supported on SGLang main:
-+Gemma 4 (including the encoder-free unified 12B, [sgl-project/sglang#27167](https://github.com/sgl-project/sglang/pull/27167)) is supported on SGLang main. Install it together wit
-+# Install transformers with Gemma 4 support (encoder-free unified family included)
-+pip install 'git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897'
-```
-
-- 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1
-- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #23280 - [XPU] Enable Gemma 4 E2B / E4B / 31B/ 26B-A4B on Intel XPU
 
 - 链接: https://github.com/sgl-project/sglang/pull/23280
@@ -924,6 +910,31 @@ diff -- python/sglang/srt/models/gemma4_causal.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/gemma4_causal.py` modified +44/-17
 - 验证与风险: diff 自带测试面 `test/registered/xpu/test_gemma_4_e2b.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #27321 - docs(cookbook): restore Gemma 4 transformers commit pin
+
+- 链接: https://github.com/sgl-project/sglang/pull/27321
+- 状态/时间: merged / 2026-06-05
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 16 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs(cookbook): restore Gemma 4 transformers commit pin」；模型线: Gemma 4；类别: 文档/测试/CI；主要 diff: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；技术摘要: 覆盖「docs(cookbook): restore Gemma 4 transformers commit pin」；主要实现面是 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1 (5 lines); hunks: -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, b...。
+- 代码 diff 细节:
+  - `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1 (5 lines); hunks: -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, b...
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/Google/Gemma4.mdx
+@@ -67,11 +67,14 @@ Gemma 4 is Google's next-generation family of open models, building on the Gemma
+-Gemma 4 (including the encoder-free unified 12B, [sgl-project/sglang#27167](https://github.com/sgl-project/sglang/pull/27167)) is supported on SGLang main:
++Gemma 4 (including the encoder-free unified 12B, [sgl-project/sglang#27167](https://github.com/sgl-project/sglang/pull/27167)) is supported on SGLang main. Install it together wit
++# Install transformers with Gemma 4 support (encoder-free unified family included)
++pip install 'git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897'
+```
+
+- 已读文件:
+  - docs: `docs_new/cookbook/autoregressive/Google/Gemma4.mdx` modified +4/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Google/Gemma4.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #27396 - Cookbook for QAT
 
@@ -1320,6 +1331,57 @@ diff -- python/sglang/srt/models/gemma4_mtp.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/gemma4_mtp.py` modified +2/-2
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/gemma4_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #35809 - fix(gemma4): set lm_head_is_tied for Gemma4UnifiedForConditionalGeneration
+
+- 链接: https://github.com/sgl-project/sglang/pull/35809
+- 状态/时间: merged / 2026-09-15
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gemma4_unified.py`；关联提交 `08b192240540`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+2/-1，可读 patch 10 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/gemma4_unified.py` modified +2/-1 (3 lines); hunks: -190,7 +190,8 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gemma4_unified.py` modified +2/-1 (3 lines); hunks: -190,7 +190,8 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gemma4_unified.py
+@@ -190,7 +190,8 @@ def __init__(
+-        if self.pp_group.world_size == 1 and text_tie:
++        self.lm_head_is_tied = self.pp_group.world_size == 1 and text_tie
++        if self.lm_head_is_tied:
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/gemma4_unified.py` modified +2/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/gemma4_unified.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #42311 - [Refactor] Build the ZAYA1, IQuest-Q1 and Gemma 4 decoders from stage boundaries
+
+- 链接: https://github.com/sgl-project/sglang/pull/42311
+- 状态/时间: merged / 2026-10-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/gemma4_causal.py`；关联提交 `71b04e02cfd8`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 10 个文件，+433/-174，可读 patch 1082 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/gemma4_causal.py` modified +96/-46 (142 lines); hunks: -33,6 +33,16; -219,6 +229,7 @@ def __init__(; symbols: __init__, routing_function, forward，涉及 `__init__, routing_function, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/gemma4_causal.py` modified +96/-46 (142 lines); hunks: -33,6 +33,16; -219,6 +229,7 @@ def __init__(; symbols: __init__, routing_function, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/gemma4_causal.py
+@@ -33,6 +33,16 @@
++from sglang.srt.layers.aux_hidden_states import AuxHiddenStateList
++from sglang.srt.layers.layer_boundary import (
++    SumGroup,
++    declare_attn,
++    declare_ffn,
++    make_stages,
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/gemma4_causal.py` modified +96/-46
+- 验证与风险: diff 自带测试面 `test/registered/unit/layer_boundary/test_boundary_output_contracts.py`, `test/registered/unit/models/test_zaya_mod_tp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

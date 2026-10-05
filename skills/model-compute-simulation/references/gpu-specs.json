@@ -1,31 +1,96 @@
 {
   "h20": {
     "display_name": "NVIDIA H20",
-    "bf16_tflops": 148,
-    "fp8_tflops": 296,
-    "memory_bw_tb_s": 4.00,
-    "hbm_gb": 96
+    "bf16_tflops": null,
+    "fp8_tflops": null,
+    "memory_bw_tb_s": null,
+    "hbm_gb": null,
+    "source": "No verified public NVIDIA datasheet; peaks and capacity unknown"
   },
   "h100-sxm-80gb": {
     "display_name": "NVIDIA H100 SXM 80GB",
     "bf16_tflops": 989,
     "fp8_tflops": 1979,
     "memory_bw_tb_s": 3.35,
-    "hbm_gb": 80
+    "hbm_gb": 80,
+    "source": "https://www.nvidia.com/en-us/data-center/h100/"
   },
   "h200-sxm-141gb": {
     "display_name": "NVIDIA H200 SXM 141GB",
     "bf16_tflops": 989,
     "fp8_tflops": 1979,
-    "memory_bw_tb_s": 4.80,
-    "hbm_gb": 141
+    "memory_bw_tb_s": 4.8,
+    "hbm_gb": 141,
+    "source": "https://www.nvidia.com/en-us/data-center/h200/"
   },
   "b200-sxm-180gb": {
     "display_name": "NVIDIA B200 SXM 180GB",
     "bf16_tflops": 2250,
     "fp8_tflops": 4500,
     "fp4_tflops": 9000,
-    "memory_bw_tb_s": 7.70,
-    "hbm_gb": 180
+    "memory_bw_tb_s": 8.0,
+    "hbm_gb": 180,
+    "source": "https://www.nvidia.com/en-us/data-center/dgx-b200/",
+    "dense_derivation": "8 GPUs; FP8 sparse 72 PF / 8 / 2; FP4 dense 72 PF / 8; BW 64 TB/s / 8"
+  },
+  "b300-sxm-288gb": {
+    "display_name": "NVIDIA B300 SXM (physical 288GB)",
+    "bf16_tflops": 2250,
+    "fp8_tflops": 4500,
+    "fp4_tflops": 13500,
+    "memory_bw_tb_s": 8.0,
+    "hbm_gb": 288,
+    "source": "https://www.nvidia.com/en-us/data-center/hgx/",
+    "notes": "8 GPUs; BF16/FP8 dense half sparse. Physical capacity maximum per Blackwell Ultra blog; HGX usable total is 2.1 TB. https://developer.nvidia.com/blog/inside-nvidia-blackwell-ultra-the-chip-powering-the-ai-factory-era/"
+  },
+  "gb300": {
+    "display_name": "NVIDIA GB300 NVL72 (per GPU)",
+    "bf16_tflops": 2500,
+    "fp8_tflops": 5000,
+    "fp4_tflops": 15000,
+    "memory_bw_tb_s": 8.0,
+    "hbm_gb": 288,
+    "source": "https://www.nvidia.com/en-us/data-center/gb300-nvl72/",
+    "notes": "Divide by 72 GPUs; BF16/FP8 half sparse. Physical capacity maximum 288GB; NVL72 advertised usable total 20 TB."
+  },
+  "rtx-pro-6000-blackwell-server": {
+    "display_name": "NVIDIA RTX PRO 6000 Blackwell Server",
+    "bf16_tflops": null,
+    "fp8_tflops": null,
+    "fp4_tflops": null,
+    "memory_bw_tb_s": 1.597,
+    "hbm_gb": 96,
+    "source": "https://www.nvidia.com/en-us/data-center/rtx-pro-6000-blackwell-server-edition/",
+    "notes": "Published BF16 1PF, FP8 2PF and FP4 4PF have unconfirmed sparsity; no dense MFU peak inferred."
+  },
+  "rtx-pro-6000-blackwell-workstation": {
+    "display_name": "NVIDIA RTX PRO 6000 Blackwell Workstation",
+    "bf16_tflops": null,
+    "fp8_tflops": null,
+    "fp4_tflops": 2000,
+    "memory_bw_tb_s": 1.792,
+    "hbm_gb": 96,
+    "source": "https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000/",
+    "notes": "FP4 4000 sparse TOPS / 2. BF16 and FP8 not published."
+  },
+  "dgx-spark-gb10": {
+    "display_name": "NVIDIA DGX Spark (GB10)",
+    "bf16_tflops": null,
+    "fp8_tflops": null,
+    "fp4_tflops": null,
+    "memory_bw_tb_s": 0.273,
+    "hbm_gb": 128,
+    "source": "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
+    "notes": "128GB unified LPDDR5x (not HBM). Published up to 1PF FP4 sparsity unconfirmed."
+  },
+  "mi355x": {
+    "display_name": "AMD Instinct MI355X",
+    "bf16_tflops": 2500,
+    "fp8_tflops": 5000,
+    "fp4_tflops": 10100,
+    "memory_bw_tb_s": 8.0,
+    "hbm_gb": 288,
+    "source": "https://www.amd.com/en/products/accelerators/instinct/mi350/mi355x.html",
+    "notes": "Official dense BF16/FP8 and MXFP4 figures, not sparse peaks."
   }
 }

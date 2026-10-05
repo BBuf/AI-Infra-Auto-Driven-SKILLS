@@ -3,7 +3,7 @@
     "display_name": "NVIDIA H20",
     "bf16_tflops": 148,
     "fp8_tflops": 296,
-    "memory_bw_tb_s": 4.00,
+    "memory_bw_tb_s": 4.0,
     "hbm_gb": 96
   },
   "h100-sxm-80gb": {
@@ -17,7 +17,7 @@
     "display_name": "NVIDIA H200 SXM 141GB",
     "bf16_tflops": 989,
     "fp8_tflops": 1979,
-    "memory_bw_tb_s": 4.80,
+    "memory_bw_tb_s": 4.8,
     "hbm_gb": 141
   },
   "b200-sxm-180gb": {
@@ -25,7 +25,90 @@
     "bf16_tflops": 2250,
     "fp8_tflops": 4500,
     "fp4_tflops": 9000,
-    "memory_bw_tb_s": 7.70,
+    "memory_bw_tb_s": 7.7,
     "hbm_gb": 180
+  },
+  "b300": {
+    "display_name": "NVIDIA B300",
+    "hbm_gb": 288,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://docs.nvidia.com/enterprise-reference-architectures/hgx-ai-factory/latest/components.html"
+  },
+  "gb300": {
+    "display_name": "NVIDIA GB300 GPU",
+    "hbm_gb": 288,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://developer.nvidia.com/blog/nvidia-blackwell-ultra-for-the-era-of-ai-reasoning/"
+  },
+  "h20-3e": {
+    "display_name": "NVIDIA H20 SXM5 141GB",
+    "hbm_gb": 141,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://docs.nvidia.com/ai-enterprise/release-8/latest/infra-software/vgpu/reference/hopper.html"
+  },
+  "h800": {
+    "display_name": "NVIDIA H800 80GB",
+    "hbm_gb": 80,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://docs.nvidia.com/ai-enterprise/release-8/latest/infra-software/vgpu/reference/hopper.html"
+  },
+  "l20-48gb": {
+    "display_name": "NVIDIA L20 48GB",
+    "hbm_gb": 48,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://docs.nvidia.com/ai-enterprise/5.0/pdf/nvidia-ai-enterprise-release-notes.pdf"
+  },
+  "rtx-pro-6000": {
+    "display_name": "NVIDIA RTX PRO 6000 Blackwell",
+    "hbm_gb": 96,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://www.nvidia.com/en-us/data-center/rtx-pro-6000-blackwell-server-edition/"
+  },
+  "rtx5090": {
+    "display_name": "NVIDIA RTX 5090",
+    "hbm_gb": 32,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/"
+  },
+  "dgx-spark": {
+    "display_name": "NVIDIA DGX Spark (unified system memory)",
+    "hbm_gb": 128,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://docs.nvidia.com/dgx/dgx-spark/system-overview.html"
+  },
+  "mi300x": {
+    "display_name": "AMD Instinct MI300X",
+    "hbm_gb": 192,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://www.amd.com/en/products/accelerators/instinct/mi300/mi300x.html"
+  },
+  "mi325x": {
+    "display_name": "AMD Instinct MI325X",
+    "hbm_gb": 256,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://www.amd.com/en/products/accelerators/instinct/mi300.html"
+  },
+  "mi350x": {
+    "display_name": "AMD Instinct MI350X",
+    "hbm_gb": 288,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://rocm.docs.amd.com/en/docs-7.2.4/how-to/rocm-for-ai/inference-optimization/workload.html"
+  },
+  "mi355x": {
+    "display_name": "AMD Instinct MI355X",
+    "hbm_gb": 288,
+    "memory_capacity_unit": "vendor GB (SKU maximum; measure usable GiB)",
+    "source_url": "https://www.amd.com/en/products/accelerators/instinct/mi350/mi355x.html"
+  },
+  "l20n": {
+    "display_name": "L20N (SKU capacity unverified)",
+    "hbm_gb": 0,
+    "notes": "Provide measured nvidia-smi total; no official capacity was verified."
+  },
+  "gb200": {
+    "display_name": "NVIDIA GB200 Blackwell GPU (physical package maximum)",
+    "hbm_gb": 192,
+    "memory_capacity_unit": "vendor GB; SKU-specific usable GiB requires measurement",
+    "source_url": "https://developer.nvidia.com/blog/inside-nvidia-blackwell-ultra-the-chip-powering-the-ai-factory-era/"
   }
 }

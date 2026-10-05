@@ -1,4 +1,4 @@
-# sglang InternVL 3.5 模型 PR 优化历史
+# SGLang InternVL 3.5 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -42,8 +42,8 @@
 | 2026-03-15 | [#20282](https://github.com/sgl-project/sglang/pull/20282) | merged | Add Conv2dLayer/Conv3dLayer to fix PyTorch 2.9.1 CuDNN Conv3d bug | `python/sglang/srt/layers/conv.py`, `python/sglang/srt/models/glm4v.py`, `python/sglang/srt/models/pixtral.py` |
 | 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py` |
 | 2026-03-29 | [#19749](https://github.com/sgl-project/sglang/pull/19749) | merged | [Feature] Optimizations for JPEG input on NVIDIA GPU | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/llava.py`, `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` |
-| 2026-04-03 | [#21899](https://github.com/sgl-project/sglang/pull/21899) | merged | [VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality | `python/sglang/srt/models/llava.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/llava.py` |
 | 2026-04-03 | [#21738](https://github.com/sgl-project/sglang/pull/21738) | merged | refactor: replace mm_inputs dict with MultimodalProcessorOutput | `python/sglang/srt/multimodal/processors/qwen_vl.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
+| 2026-04-03 | [#21899](https://github.com/sgl-project/sglang/pull/21899) | merged | [VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality | `python/sglang/srt/models/llava.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/llava.py` |
 | 2026-04-20 | [#23001](https://github.com/sgl-project/sglang/pull/23001) | merged | Add new Mintlify documentation site (docs_new/) | `docs_new/docs/advanced_features/tool_parser.mdx`, `docs_new/docs/advanced_features/structured_outputs_for_reasoning_models.mdx`, `docs_new/docs/advanced_features/separate_reasoning.mdx` |
 | 2026-04-25 | [#23568](https://github.com/sgl-project/sglang/pull/23568) | merged | Parakeet nemotron encoder | `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py`, `python/sglang/srt/multimodal/internvl_utils.py`, `python/sglang/srt/models/radio.py` |
 | 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | merged | chore: add vLLM SPDX copyright headers to ported files | `python/sglang/srt/models/baichuan.py`, `python/sglang/srt/models/commandr.py`, `python/sglang/srt/models/dbrx.py` |
@@ -691,47 +691,6 @@ diff -- python/sglang/srt/multimodal/processors/nano_nemotron_vl.py
   - runtime: `python/sglang/srt/multimodal/processors/base_processor.py` modified +14/-6; `python/sglang/srt/multimodal/processors/llava.py` modified +2/-1; `python/sglang/srt/multimodal/processors/nano_nemotron_vl.py` modified +3/-0; `python/sglang/srt/multimodal/processors/internvl.py` modified +1/-0; `python/sglang/srt/multimodal/processors/kimi_k25.py` modified +1/-0; `python/sglang/srt/multimodal/processors/kimi_vl.py` modified +1/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #21899 - [VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality
-
-- 链接: https://github.com/sgl-project/sglang/pull/21899
-- 状态/时间: merged / 2026-04-03
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+217/-136，可读 patch 647 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/llava.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/llava.py`；技术摘要: 覆盖「[VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality」；主要实现面是 `python/sglang/srt/models/llava.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/llava.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/llava.py` modified +47/-34 (81 lines); hunks: -55,6 +55,21; -63,13 +78,8 @@ def pad_input_ids(self, input_ids: List[int], image_inputs: M...; symbols: LlavaBaseForCausalLM, _infer_image_aspect_ratio, pad_input_ids, forward，涉及 `LlavaBaseForCausalLM, _infer_image_aspect_ratio, pad_input_ids`；`python/sglang/srt/multimodal/processors/internvl.py` modified +28/-8 (36 lines); hunks: -588,11 +588,21 @@ async def process_qwen_mm_data_async(; -702,11 +712,21 @@ async def process_internlm2_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async，涉及 `process_qwen_mm_data_async, process_internlm2_mm_data_async`；`python/sglang/srt/multimodal/processors/llava.py` modified +16/-11 (27 lines); hunks: -187,34 +187,39 @@ async def process_mm_data_async(; symbols: process_mm_data_async，涉及 `process_mm_data_async`；`python/sglang/srt/multimodal/processors/minicpm.py` modified +19/-7 (26 lines); hunks: -223,6 +223,8 @@ async def process_mm_data_async(; -231,6 +233,7 @@ async def process_mm_data_async(; symbols: process_mm_data_async，涉及 `process_mm_data_async`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/llava.py` modified +47/-34 (81 lines); hunks: -55,6 +55,21; -63,13 +78,8 @@ def pad_input_ids(self, input_ids: List[int], image_inputs: M...; symbols: LlavaBaseForCausalLM, _infer_image_aspect_ratio, pad_input_ids, forward
-  - `python/sglang/srt/multimodal/processors/internvl.py` modified +28/-8 (36 lines); hunks: -588,11 +588,21 @@ async def process_qwen_mm_data_async(; -702,11 +712,21 @@ async def process_internlm2_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async
-  - `python/sglang/srt/multimodal/processors/llava.py` modified +16/-11 (27 lines); hunks: -187,34 +187,39 @@ async def process_mm_data_async(; symbols: process_mm_data_async
-  - `python/sglang/srt/multimodal/processors/minicpm.py` modified +19/-7 (26 lines); hunks: -223,6 +223,8 @@ async def process_mm_data_async(; -231,6 +233,7 @@ async def process_mm_data_async(; symbols: process_mm_data_async
-  - `python/sglang/srt/models/minicpmv.py` modified +15/-3 (18 lines); hunks: -993,7 +993,11 @@ def pad_input_ids(self, input_ids: List[int], image_inputs:...; -1155,7 +1159,11 @@ def pad_input_ids(self, input_ids: List[int], image_input...; symbols: pad_input_ids
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/llava.py
-@@ -55,6 +55,21 @@
-+    @staticmethod
-+    def _infer_image_aspect_ratio(mm_items):
-+        """Determine image_aspect_ratio from processor metadata or item count."""
-+        # Check if processor stored the aspect_ratio it used
-+        for item in mm_items:
-+            ar = item.model_specific_data.get("image_aspect_ratio")
-diff -- python/sglang/srt/multimodal/processors/internvl.py
-@@ -588,11 +588,21 @@ async def process_qwen_mm_data_async(
--            items.append(
--                MultimodalDataItem(
--                    feature=image_tensor, modality=Modality.IMAGE, offsets=image_offsets
--                )
-+            # Split per-image for better cache granularity
-+            assert len(num_patches_list) == len(image_offsets), (
-diff -- python/sglang/srt/multimodal/processors/llava.py
-@@ -187,34 +187,39 @@ async def process_mm_data_async(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/llava.py` modified +47/-34; `python/sglang/srt/multimodal/processors/internvl.py` modified +28/-8; `python/sglang/srt/multimodal/processors/llava.py` modified +16/-11; `python/sglang/srt/multimodal/processors/minicpm.py` modified +19/-7; `python/sglang/srt/models/minicpmv.py` modified +15/-3; `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-3
-- 验证与风险: diff 自带测试面 `python/sglang/test/test_mm_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #21738 - refactor: replace mm_inputs dict with MultimodalProcessorOutput
 
 - 链接: https://github.com/sgl-project/sglang/pull/21738
@@ -772,6 +731,47 @@ diff -- python/sglang/srt/multimodal/processors/minicpm.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/qwen_vl.py` modified +27/-23; `python/sglang/srt/multimodal/processors/internvl.py` modified +25/-24; `python/sglang/srt/multimodal/processors/minicpm.py` modified +23/-22; `python/sglang/srt/multimodal/processors/interns1pro.py` modified +23/-19; `python/sglang/srt/multimodal/processors/qwen_audio.py` modified +19/-15; `python/sglang/srt/multimodal/processors/transformers_auto.py` modified +18/-14
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/disaggregation/encode_receiver.py`, `python/sglang/srt/disaggregation/encode_server.py`, `python/sglang/srt/managers/io_struct.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #21899 - [VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality
+
+- 链接: https://github.com/sgl-project/sglang/pull/21899
+- 状态/时间: merged / 2026-04-03
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 12 个文件，+217/-136，可读 patch 647 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality」；模型线: InternVL 3.5；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/llava.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/llava.py`；技术摘要: 覆盖「[VLM] Enable per-image MM splitting by default and remove MULTI_IMAGES modality」；主要实现面是 `python/sglang/srt/models/llava.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/llava.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/llava.py` modified +47/-34 (81 lines); hunks: -55,6 +55,21; -63,13 +78,8 @@ def pad_input_ids(self, input_ids: List[int], image_inputs: M...; symbols: LlavaBaseForCausalLM, _infer_image_aspect_ratio, pad_input_ids, forward，涉及 `LlavaBaseForCausalLM, _infer_image_aspect_ratio, pad_input_ids`；`python/sglang/srt/multimodal/processors/internvl.py` modified +28/-8 (36 lines); hunks: -588,11 +588,21 @@ async def process_qwen_mm_data_async(; -702,11 +712,21 @@ async def process_internlm2_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async，涉及 `process_qwen_mm_data_async, process_internlm2_mm_data_async`；`python/sglang/srt/multimodal/processors/llava.py` modified +16/-11 (27 lines); hunks: -187,34 +187,39 @@ async def process_mm_data_async(; symbols: process_mm_data_async，涉及 `process_mm_data_async`；`python/sglang/srt/multimodal/processors/minicpm.py` modified +19/-7 (26 lines); hunks: -223,6 +223,8 @@ async def process_mm_data_async(; -231,6 +233,7 @@ async def process_mm_data_async(; symbols: process_mm_data_async，涉及 `process_mm_data_async`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/llava.py` modified +47/-34 (81 lines); hunks: -55,6 +55,21; -63,13 +78,8 @@ def pad_input_ids(self, input_ids: List[int], image_inputs: M...; symbols: LlavaBaseForCausalLM, _infer_image_aspect_ratio, pad_input_ids, forward
+  - `python/sglang/srt/multimodal/processors/internvl.py` modified +28/-8 (36 lines); hunks: -588,11 +588,21 @@ async def process_qwen_mm_data_async(; -702,11 +712,21 @@ async def process_internlm2_mm_data_async(; symbols: process_qwen_mm_data_async, process_internlm2_mm_data_async
+  - `python/sglang/srt/multimodal/processors/llava.py` modified +16/-11 (27 lines); hunks: -187,34 +187,39 @@ async def process_mm_data_async(; symbols: process_mm_data_async
+  - `python/sglang/srt/multimodal/processors/minicpm.py` modified +19/-7 (26 lines); hunks: -223,6 +223,8 @@ async def process_mm_data_async(; -231,6 +233,7 @@ async def process_mm_data_async(; symbols: process_mm_data_async
+  - `python/sglang/srt/models/minicpmv.py` modified +15/-3 (18 lines); hunks: -993,7 +993,11 @@ def pad_input_ids(self, input_ids: List[int], image_inputs:...; -1155,7 +1159,11 @@ def pad_input_ids(self, input_ids: List[int], image_input...; symbols: pad_input_ids
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/llava.py
+@@ -55,6 +55,21 @@
++    @staticmethod
++    def _infer_image_aspect_ratio(mm_items):
++        """Determine image_aspect_ratio from processor metadata or item count."""
++        # Check if processor stored the aspect_ratio it used
++        for item in mm_items:
++            ar = item.model_specific_data.get("image_aspect_ratio")
+diff -- python/sglang/srt/multimodal/processors/internvl.py
+@@ -588,11 +588,21 @@ async def process_qwen_mm_data_async(
+-            items.append(
+-                MultimodalDataItem(
+-                    feature=image_tensor, modality=Modality.IMAGE, offsets=image_offsets
+-                )
++            # Split per-image for better cache granularity
++            assert len(num_patches_list) == len(image_offsets), (
+diff -- python/sglang/srt/multimodal/processors/llava.py
+@@ -187,34 +187,39 @@ async def process_mm_data_async(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/llava.py` modified +47/-34; `python/sglang/srt/multimodal/processors/internvl.py` modified +28/-8; `python/sglang/srt/multimodal/processors/llava.py` modified +16/-11; `python/sglang/srt/multimodal/processors/minicpm.py` modified +19/-7; `python/sglang/srt/models/minicpmv.py` modified +15/-3; `python/sglang/srt/multimodal/processors/base_processor.py` modified +8/-3
+- 验证与风险: diff 自带测试面 `python/sglang/test/test_mm_utils.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #23001 - Add new Mintlify documentation site (docs_new/)
 

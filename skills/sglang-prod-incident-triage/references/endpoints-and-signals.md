@@ -4,41 +4,37 @@ Use this reference when checking a live server.
 
 ## Auth
 
-Most read endpoints are public unless the server is protected by `api_key` or
-`admin_api_key`.
+Python ingress authorization has three levels:
 
-Use:
+- `/health*`, `/ready*`, `/metrics*` and OPTIONS are always open.
+- NORMAL routes need `api_key` when configured.
+- ADMIN_OPTIONAL routes accept no key when neither is configured; use the API key if it is the only key, and the admin key whenever it is configured. When both are set, the API key is rejected for admin routes.
+
+`/configure_logging`, `/start_profile`, `/stop_profile`, `/set_trace_level`,
+`/hicache/*`, `/abort_request`, `/set_internal_state`, `/freeze_gc` and
+expert-distribution routes are ADMIN_OPTIONAL. HiCache GET/PUT/DELETE additionally
+require an admin key to be configured; clear does not add that check.
+Pass the admin key to `collect-bundle --token` when both keys are configured.
 
 ```bash
-curl -H "Authorization: Bearer <token>" ...
+curl -H "Authorization: Bearer <admin token>" ...
 ```
-
-Rules:
-
-- normal protected endpoints require `api_key`
-- admin endpoints require `admin_api_key`
-- some HiCache endpoints fail if `admin_api_key` is not configured at all
-- `/health` and metrics-style health checks are usually still exposed
 
 ## Core Endpoints
 
-### `/health`
+### `/health` and `/health_generate`
 
-Cheap liveness check.
+Both use the same handler and run one-token generation by default. They return
+503 during startup/shutdown or when no detokenizer output arrives within
+`SGLANG_HEALTH_CHECK_TIMEOUT` (default 20 s). Use a client timeout of at least
+25 s; transport timeout is not a server 503 verdict.
+`SGLANG_ENABLE_HEALTH_ENDPOINT_GENERATION=0` disables generation only for
+`/health`. `SGLANG_DIAG_BYPASS_HEALTH_GENERATE=1` forces success and hides hangs.
 
-- `200`: process is alive enough to answer health
-- `503`: starting, shutting down, or unhealthy
+### `/ready`
 
-`/health` alone is not enough for latency or hang diagnosis.
-
-### `/health_generate`
-
-Active health check.
-
-- exercises a real generate or embedding path
-- catches stuck schedulers or broken worker paths that `/health` can miss
-
-Use this when requests time out but `/health` is still green.
+No generation. Returns 503 while paused, draining or not Up. `/ready` 503 with
+`/health` 200 points to paused/draining state. Added by #37488.
 
 ### `/model_info`
 
@@ -57,9 +53,9 @@ This is the first check for wrong-output or wrong-weight problems.
 
 Use for runtime shape:
 
-- serialized `server_args`
+- flattened resolved startup fields and the original `launch_command`
 - scheduler info
-- per-DP `internal_states`
+- per-DP `internal_states`; `memory_usage.graph` maps capture phases to GiB
 - SGLang version
 
 This is usually the single best live snapshot.
@@ -68,7 +64,14 @@ This is usually the single best live snapshot.
 
 ### `/v1/loads?include=all`
 
-Best structured load endpoint for a first pass.
+Best structured load endpoint for a first pass. The response is
+`{timestamp, version, accelerator, num_accelerators, loads:[...]}`; there is no
+`aggregate`. Sum running/waiting requests across DP ranks. Report the maximum
+token usage and per-rank cache-hit/utilization values. Valid include values are
+`core,memory,spec,lora,disagg,queues,all`; others return 400. Snapshots publish
+every 15 decode iterations by default, so readings can lag.
+`loads[*].dp_rank` identifies the rank; optional `speculative`, `memory`,
+`disaggregation`, `queues` carry their nested fields.
 
 Useful fields:
 
@@ -102,12 +105,15 @@ What to look for:
 
 ### `/metrics`
 
-Prometheus endpoint. Use it when you need trends rather than one live snapshot.
+Prometheus endpoint, mounted only with `--enable-metrics` (otherwise 404).
+Use it when you need trends rather than one live snapshot. TTFT/E2E/TPOT
+histograms carry `is_streaming` labels.
 
 High-value metrics:
 
 - `sglang:time_to_first_token_seconds`
-- `sglang:time_per_output_token_seconds`
+- `sglang:inter_token_latency_seconds`
+- `sglang:request_time_per_output_token_seconds`
 - `sglang:e2e_request_latency_seconds`
 - `sglang:num_running_reqs`
 - `sglang:num_queue_reqs`
@@ -115,6 +121,14 @@ High-value metrics:
 - `sglang:cache_hit_rate`
 - `sglang:gen_throughput`
 - `sglang:token_usage`
+
+Additional signals: `sglang:queue_time_seconds`, `sglang:per_stage_req_latency_seconds`,
+`sglang:spec_accept_length`, `sglang:spec_accept_rate`, `sglang:num_retracted_reqs`,
+`sglang:num_retracted_requests_total`, `sglang:num_paused_reqs`,
+`sglang:scheduler_idle_seconds_total`, `sglang:kv_transfer_latency_ms`,
+`sglang:kv_transfer_speed_gb_s`, `sglang:num_transfer_failed_reqs_total`,
+`sglang:num_streaming_sessions`, `sglang:streaming_session_held_tokens`,
+`sglang:get_loads_duration_seconds`.
 
 ## Request Capture
 
@@ -136,9 +150,15 @@ Typical payload:
   "log_requests": true,
   "log_requests_level": 3,
   "dump_requests_folder": "/tmp/sglang_request_dump",
-  "dump_requests_threshold": 100
+  "dump_requests_threshold": 1
 }
 ```
+
+The payload also accepts `log_level`, `log_requests_format`, `crash_dump_folder`
+(runtime activation without restart), and `dump_requests_exclude_meta_keys`.
+The stock CLI sends no auth, defaults its threshold to 1000 and turns request
+logging off when `--log-requests` is omitted. Use authenticated curl on keyed
+servers and threshold 1–10 for rare failures; dumps flush after finished requests.
 
 Use this when the problem is ongoing and you need the next failing request
 without restarting the service.
@@ -224,3 +244,5 @@ Read:
 - exact request payload and parser or template config
 
 Do not jump to kernel profiling until config drift is ruled out.
+
+Source audit 2026-10-05: [HTTP routes](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/entrypoints/http_server.py), [authorization](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/utils/auth.py), [load response](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/entrypoints/v1_loads.py), [metrics](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/observability/metrics_collector.py).

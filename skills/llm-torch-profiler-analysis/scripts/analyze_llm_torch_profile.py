@@ -161,6 +161,11 @@ def build_triage_parser() -> argparse.ArgumentParser:
         help="Warmup steps to run before arming the profiler for URL capture.",
     )
     parser.add_argument(
+        "--sglang-profile-v2",
+        action="store_true",
+        help="Declare profiler v2; this v1 helper refuses incompatible live capture.",
+    )
+    parser.add_argument(
         "--profile-by-stage", action=argparse.BooleanOptionalAction, default=True
     )
     parser.add_argument(
@@ -293,6 +298,7 @@ def resolve_profile_targets(
             output_dir=output_dir,
             num_steps=args.num_steps,
             profile_by_stage=args.profile_by_stage,
+            sglang_profile_v2=getattr(args, "sglang_profile_v2", False),
             merge_profiles=args.merge_profiles,
             profile_prefix=profile_prefix,
             probe_requests=max(0, args.probe_requests),

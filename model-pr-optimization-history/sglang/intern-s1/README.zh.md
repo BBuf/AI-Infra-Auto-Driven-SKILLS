@@ -1,4 +1,4 @@
-# sglang Intern-S1 模型 PR 优化历史
+# SGLang Intern-S1 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -10,6 +10,7 @@
 | `python/sglang/srt/models/interns1.py` | [#8350](https://github.com/sgl-project/sglang/pull/8350), [#9299](https://github.com/sgl-project/sglang/pull/9299), [#12367](https://github.com/sgl-project/sglang/pull/12367), [#28629](https://github.com/sgl-project/sglang/pull/28629) |
 | `python/sglang/srt/models/interns1pro.py` | [#18145](https://github.com/sgl-project/sglang/pull/18145) |
 | `python/sglang/srt/multimodal/processors/interns1pro.py` | [#18145](https://github.com/sgl-project/sglang/pull/18145) |
+| `test/registered/unit/models/test_interns1pro_processor.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 

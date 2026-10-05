@@ -1,10 +1,10 @@
-# sglang Hunyuan3 Preview 模型 PR 优化历史
+# SGLang Hunyuan3 Preview 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
-| `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` | [#36823](https://github.com/sgl-project/sglang/pull/36823) |
 | `docs/cookbook/autoregressive/Tencent/Hy3.mdx` | 无直接 PR 号提交 |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` | [#30223](https://github.com/sgl-project/sglang/pull/30223) |
 | `docs/src/snippets/autoregressive/hunyuan3-preview-deployment.jsx` | 无直接 PR 号提交 |
@@ -15,9 +15,9 @@
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 2
+- git 追溯 PR 数: 3
 - 原文档显式引用补充 PR 数: 2
-- 当前文档总 PR 数: 4
+- 当前文档总 PR 数: 5
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -29,6 +29,7 @@
 | 2026-04-24 | [#23533](https://github.com/sgl-project/sglang/pull/23533) | merged | support Hy3 preview | `test/registered/unit/function_call/test_hunyuan_detector.py`, `python/sglang/srt/function_call/hunyuan_detector.py` |
 | 2026-07-06 | [#30201](https://github.com/sgl-project/sglang/pull/30201) | merged | cookbook: add Hunyuan 3 (Hy3) Day-0 page | `docs_new/src/snippets/configs/tencent/hy3.jsx`, `docs_new/src/snippets/configs/tencent/hy3-benchmarks.jsx`, `docs_new/cookbook/autoregressive/Tencent/Hy3.mdx` |
 | 2026-08-11 | [#30223](https://github.com/sgl-project/sglang/pull/30223) | merged | Add Hunyuan3 On Ascend Doc | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` |
+| 2026-08-28 | [#36823](https://github.com/sgl-project/sglang/pull/36823) | merged | [Docs] Rename Tencent cookbook page titles to "Hy4 preview" / "Hy3 preview" | `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` |
 
 ## 逐 PR diff 审计卡
 
@@ -175,6 +176,33 @@ diff -- docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.
 - 已读文件:
   - docs: `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx` added +388/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/docs.json`, `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/hy3.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36823 - [Docs] Rename Tencent cookbook page titles to "Hy4 preview" / "Hy3 preview"
+
+- 链接: https://github.com/sgl-project/sglang/pull/36823
+- 状态/时间: merged / 2026-08-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`；关联提交 `989e51ba9c4c`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+12/-12，可读 patch 87 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +3/-3 (6 lines); hunks: -1,12 +1,12。
+- 代码 diff 细节:
+  - `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +3/-3 (6 lines); hunks: -1,12 +1,12
+- 关键代码摘录:
+
+```diff
+diff -- docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx
+@@ -1,12 +1,12 @@
+-title: Hunyuan 3 Preview
++title: Hy3 preview
+-    description: "Deploy Tencent Hunyuan 3 Preview BF16 (~276B / ~20B active MoE) on NVIDIA GPUs with SGLang — hybrid thinking, native tool calling, 256K context, and built-in MTP
++    description: "Deploy Tencent Hy3 preview BF16 (~276B / ~20B active MoE) on NVIDIA GPUs with SGLang — hybrid thinking, native tool calling, 256K context, and built-in MTP specu
+-Hunyuan 3 Preview (Hy3-preview) is Tencent's preview of its third-generation flagship MoE language model, featuring hybrid thinking, native tool calling, long-context reasoning, a
++Hy3 preview is Tencent's preview of its third-generation flagship MoE language model, featuring hybrid thinking, native tool calling, long-context reasoning, and Multi-Token Predi
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx` modified +3/-3
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/Tencent/Hunyuan3-Preview.mdx`, `docs/cookbook/autoregressive/Tencent/Hy4-Preview.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ## 补漏结论
 

@@ -1,4 +1,4 @@
-# vllm Hunyuan3 Preview Model PR Optimization History
+# vLLM Hunyuan3 Preview Model PR Optimization History
 
 ## Implementation File Coverage
 

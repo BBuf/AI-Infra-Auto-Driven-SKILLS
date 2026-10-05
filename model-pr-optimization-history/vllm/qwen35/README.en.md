@@ -1,4 +1,4 @@
-# vllm Qwen3.5 Model PR Optimization History
+# vLLM Qwen3.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -11,31 +11,39 @@
 | `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-MXFP4-EMU-TP2.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` | [#44700](https://github.com/vllm-project/vllm/pull/44700), [#49881](https://github.com/vllm-project/vllm/pull/49881), [#52007](https://github.com/vllm-project/vllm/pull/52007) |
 | `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml` | [#38083](https://github.com/vllm-project/vllm/pull/38083), [#38632](https://github.com/vllm-project/vllm/pull/38632), [#52007](https://github.com/vllm-project/vllm/pull/52007) |
+| `tests/evals/gsm8k/configs/Qwen3.5-4B-watermark.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-35B-A3B-FP8-humming-act-fp8.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-35B-A3B-FP8-humming.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-35B-A3B-experts-int8-humming-act-int8.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-35B-A3B-experts-int8-humming.yaml` | no direct PR-number commit |
+| `tests/evals/gsm8k/configs/humming/Qwen3.5-35B-A3B-int6wc-hadamard-humming-act-int8.yaml` | no direct PR-number commit |
+| `tests/evals/gsm8k/configs/humming/Qwen3.5-35B-A3B-int6wc-hadamard-humming.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-4B-quantized.w4a16-humming-act-fp8.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-4B-quantized.w4a16-humming-act-int8.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/humming/Qwen3.5-4B-quantized.w4a16-humming.yaml` | no direct PR-number commit |
+| `tests/evals/gsm8k/configs/humming/Qwen3.5-9B-int6wc-hadamard-humming-act-int8.yaml` | no direct PR-number commit |
+| `tests/evals/gsm8k/configs/humming/Qwen3.5-9B-int6wc-hadamard-humming.yaml` | no direct PR-number commit |
 | `tests/evals/gsm8k/configs/models-qwen35-blackwell.txt` | [#38083](https://github.com/vllm-project/vllm/pull/38083), [#44700](https://github.com/vllm-project/vllm/pull/44700) |
 | `tests/evals/gsm8k/configs/models-qwen35-mi355.txt` | [#38155](https://github.com/vllm-project/vllm/pull/38155), [#38664](https://github.com/vllm-project/vllm/pull/38664) |
 | `tests/evals/mrcr/configs/Qwen3.5-4B.yaml` | no direct PR-number commit |
 | `tests/lora/test_qwen35_densemodel_lora.py` | [#37816](https://github.com/vllm-project/vllm/pull/37816) |
 | `tests/model_executor/test_qwen3_5_quantization.py` | no direct PR-number commit |
 | `tests/models/multimodal/pooling/test_colqwen3_5.py` | [#36887](https://github.com/vllm-project/vllm/pull/36887), [#46108](https://github.com/vllm-project/vllm/pull/46108), [#49372](https://github.com/vllm-project/vllm/pull/49372) |
-| `tests/models/test_qwen3_5_mtp_config.py` | [#50734](https://github.com/vllm-project/vllm/pull/50734) |
-| `vllm/model_executor/models/colqwen3_5.py` | [#36887](https://github.com/vllm-project/vllm/pull/36887), [#46108](https://github.com/vllm-project/vllm/pull/46108) |
-| `vllm/model_executor/models/qwen3_5.py` | [#34110](https://github.com/vllm-project/vllm/pull/34110), [#34198](https://github.com/vllm-project/vllm/pull/34198), [#34200](https://github.com/vllm-project/vllm/pull/34200), [#34313](https://github.com/vllm-project/vllm/pull/34313), [#34489](https://github.com/vllm-project/vllm/pull/34489), [#34492](https://github.com/vllm-project/vllm/pull/34492), [#34512](https://github.com/vllm-project/vllm/pull/34512), [#34683](https://github.com/vllm-project/vllm/pull/34683), [#34697](https://github.com/vllm-project/vllm/pull/34697), [#34719](https://github.com/vllm-project/vllm/pull/34719), [#34723](https://github.com/vllm-project/vllm/pull/34723), [#35617](https://github.com/vllm-project/vllm/pull/35617), ... (28 total) |
+| `tests/models/test_qwen3_5_mtp_config.py` | [#50734](https://github.com/vllm-project/vllm/pull/50734), [#55369](https://github.com/vllm-project/vllm/pull/55369) |
+| `tests/v1/e2e/spec_decode/mtp/qwen3_5/__init__.py` | no direct PR-number commit |
+| `tests/v1/e2e/spec_decode/mtp/qwen3_5/test_mtp.py` | no direct PR-number commit |
+| `tests/v1/e2e/spec_decode/mtp/qwen3_5/test_rejected_placeholders.py` | no direct PR-number commit |
+| `vllm/model_executor/models/colqwen3_5.py` | [#36887](https://github.com/vllm-project/vllm/pull/36887), [#46108](https://github.com/vllm-project/vllm/pull/46108), [#54847](https://github.com/vllm-project/vllm/pull/54847) |
+| `vllm/model_executor/models/qwen3_5.py` | [#34110](https://github.com/vllm-project/vllm/pull/34110), [#34198](https://github.com/vllm-project/vllm/pull/34198), [#34200](https://github.com/vllm-project/vllm/pull/34200), [#34313](https://github.com/vllm-project/vllm/pull/34313), [#34489](https://github.com/vllm-project/vllm/pull/34489), [#34492](https://github.com/vllm-project/vllm/pull/34492), [#34512](https://github.com/vllm-project/vllm/pull/34512), [#34683](https://github.com/vllm-project/vllm/pull/34683), [#34697](https://github.com/vllm-project/vllm/pull/34697), [#34719](https://github.com/vllm-project/vllm/pull/34719), [#34723](https://github.com/vllm-project/vllm/pull/34723), [#35617](https://github.com/vllm-project/vllm/pull/35617), ... (29 total) |
 | `vllm/model_executor/models/qwen3_5_mtp.py` | [#34110](https://github.com/vllm-project/vllm/pull/34110), [#34512](https://github.com/vllm-project/vllm/pull/34512), [#35581](https://github.com/vllm-project/vllm/pull/35581), [#37114](https://github.com/vllm-project/vllm/pull/37114), [#38832](https://github.com/vllm-project/vllm/pull/38832), [#42716](https://github.com/vllm-project/vllm/pull/42716), [#45002](https://github.com/vllm-project/vllm/pull/45002), [#48816](https://github.com/vllm-project/vllm/pull/48816) |
 | `vllm/transformers_utils/configs/qwen3_5.py` | [#34512](https://github.com/vllm-project/vllm/pull/34512), [#34554](https://github.com/vllm-project/vllm/pull/34554), [#34604](https://github.com/vllm-project/vllm/pull/34604), [#34610](https://github.com/vllm-project/vllm/pull/34610) |
 | `vllm/transformers_utils/configs/qwen3_5_moe.py` | [#34512](https://github.com/vllm-project/vllm/pull/34512), [#34554](https://github.com/vllm-project/vllm/pull/34554), [#34604](https://github.com/vllm-project/vllm/pull/34604), [#34610](https://github.com/vllm-project/vllm/pull/34610) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 41
+- Git-traced PRs: 52
 - Extra PRs preserved from existing docs: 7
-- Total PRs in this document: 48
+- Total PRs in this document: 59
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -91,6 +99,17 @@
 | 2026-07-23 | [#48816](https://github.com/vllm-project/vllm/pull/48816) | merged | Fix GPTQ quantized Qwen3.5 MTP weight loading with spec decode | `vllm/model_executor/models/qwen3_5_mtp.py` |
 | 2026-07-26 | [#49372](https://github.com/vllm-project/vllm/pull/49372) | merged | [Bugfix] Respect declared attention contract for ColQwen3.5 retrievers | `tests/models/multimodal/pooling/test_colqwen3_5.py`, `vllm/model_executor/models/config.py` |
 | 2026-07-27 | [#48912](https://github.com/vllm-project/vllm/pull/48912) | merged | [Model] Enable EVS for Qwen3.5 | `vllm/model_executor/models/qwen3_5.py` |
+| 2026-07-28 | [#49881](https://github.com/vllm-project/vllm/pull/49881) | merged | [CI] Increase Qwen3.5 MTP GSM8K generation length | `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` |
+| 2026-07-29 | [#50210](https://github.com/vllm-project/vllm/pull/50210) | merged | [Model] Support Qwen3.5 text-only dense and MoE models | `vllm/model_executor/models/qwen3_5.py` |
+| 2026-08-02 | [#50704](https://github.com/vllm-project/vllm/pull/50704) | merged | [Bugfix][Models] Accept Qwen3_5MoeTextConfig in Qwen3_5MoeProcessingInfo for transformers 5.x compatibility | `vllm/model_executor/models/qwen3_5.py` |
+| 2026-08-06 | [#50355](https://github.com/vllm-project/vllm/pull/50355) | merged | [Model] Fix weight prefix mapping for native Qwen3.5 text-only checkp… | `vllm/model_executor/models/qwen3_5.py` |
+| 2026-08-07 | [#51293](https://github.com/vllm-project/vllm/pull/51293) | merged | [CI] Re-enable FI autotune in GSM8K config for Qwen3.5-35B-A3B | `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml` |
+| 2026-08-10 | [#50734](https://github.com/vllm-project/vllm/pull/50734) | merged | [Bugfix][Model] Fix Qwen3.5 MTP for text-only checkpoints | `tests/models/test_qwen3_5_mtp_config.py`, `vllm/multimodal/registry.py`, `vllm/config/speculative.py` |
+| 2026-08-12 | [#52007](https://github.com/vllm-project/vllm/pull/52007) | merged | [CI Bug] Fix ci qwen3.5 | `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml`, `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml` |
+| 2026-08-19 | [#48850](https://github.com/vllm-project/vllm/pull/48850) | merged | [Bugfix][LoRA] Add embedding_modules for Qwen3.5 CausalLM | `vllm/model_executor/models/qwen3_5.py` |
+| 2026-09-02 | [#54847](https://github.com/vllm-project/vllm/pull/54847) | merged | [Bugfix] Fix ColQwen3.5 pooler projector initialization | `vllm/model_executor/models/colqwen3_5.py` |
+| 2026-09-07 | [#55369](https://github.com/vllm-project/vllm/pull/55369) | merged | [Bugfix][Spec Decode] Resolve n_predict from text_config for Qwen3.5 multimodal MTP | `tests/models/test_qwen3_5_mtp_config.py`, `vllm/config/speculative.py` |
+| 2026-09-29 | [#51289](https://github.com/vllm-project/vllm/pull/51289) | merged | [Model] Extend device-side mm normalization to Qwen3VL/Qwen3.5/Qwen4Next | `vllm/model_executor/models/qwen3_5.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -1598,6 +1617,314 @@ diff -- vllm/model_executor/models/qwen3_5.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/qwen3_5.py` modified +32/-12
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #49881 - [CI] Increase Qwen3.5 MTP GSM8K generation length
+
+- Link: https://github.com/vllm-project/vllm/pull/49881
+- Status/date: merged / 2026-07-28
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml`; associated commits `25ace8fe5df0`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +2/-1, 11 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` modified +2/-1 (3 lines); hunks: -3,8 +3,9 @@ accuracy_threshold: 0.88.
+- Code diff details:
+  - `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` modified +2/-1 (3 lines); hunks: -3,8 +3,9 @@ accuracy_threshold: 0.88
+- Key code excerpts:
+
+```diff
+diff -- tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml
+@@ -3,8 +3,9 @@ accuracy_threshold: 0.88
++max_tokens: 12000
+-  --max-model-len 4096
++  --max-model-len 16384
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` modified +2/-1
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #50210 - [Model] Support Qwen3.5 text-only dense and MoE models
+
+- Link: https://github.com/vllm-project/vllm/pull/50210
+- Status/date: merged / 2026-07-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_5.py`; associated commits `ad5d29db702c`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 5 files, +62/-0, 113 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_5.py` modified +40/-0 (40 lines); hunks: -282,6 +282,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; -361,6 +362,45 @@ def forward(; symbols: load_weights, Qwen3_5ForCausalLMBase, forward, get_mamba_state_dtype_from_config, touching `load_weights, Qwen3_5ForCausalLMBase, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_5.py` modified +40/-0 (40 lines); hunks: -282,6 +282,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; -361,6 +362,45 @@ def forward(; symbols: load_weights, Qwen3_5ForCausalLMBase, forward, get_mamba_state_dtype_from_config
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5.py
+@@ -282,6 +282,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
++    IsHybrid,
+@@ -361,6 +362,45 @@ def forward(
++    @classmethod
++    def get_mamba_state_dtype_from_config(
++        cls,
++        vllm_config: "VllmConfig",
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +40/-0
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #50704 - [Bugfix][Models] Accept Qwen3_5MoeTextConfig in Qwen3_5MoeProcessingInfo for transformers 5.x compatibility
+
+- Link: https://github.com/vllm-project/vllm/pull/50704
+- Status/date: merged / 2026-08-02
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_5.py`; associated commits `060185079115`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +5/-1, 13 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_5.py` modified +5/-1 (6 lines); hunks: -108,7 +108,11 @@ def get_hf_config(self):; symbols: get_hf_config, Qwen3_5MoeProcessingInfo, to, Qwen3_5DecoderLayer, touching `get_hf_config, Qwen3_5MoeProcessingInfo, to`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_5.py` modified +5/-1 (6 lines); hunks: -108,7 +108,11 @@ def get_hf_config(self):; symbols: get_hf_config, Qwen3_5MoeProcessingInfo, to, Qwen3_5DecoderLayer
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5.py
+@@ -108,7 +108,11 @@ def get_hf_config(self):
+-        return self.ctx.get_hf_config(Qwen3_5MoeConfig)
++        # transformers 5.x renames the top-level Qwen3.5-MoE config class to
++        # Qwen3_5MoeTextConfig for text-only models, while transformers ≤4.x
++        # returns Qwen3_5MoeConfig (the multimodal wrapper).  Accept both so
++        # that vLLM works regardless of which transformers version is installed.
++        return self.ctx.get_hf_config((Qwen3_5MoeConfig, Qwen3_5MoeTextConfig))
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +5/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #50355 - [Model] Fix weight prefix mapping for native Qwen3.5 text-only checkp…
+
+- Link: https://github.com/vllm-project/vllm/pull/50355
+- Status/date: merged / 2026-08-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_5.py`; associated commits `febea17f6aa9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +13/-2, 36 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_5.py` modified +8/-1 (9 lines); hunks: -303,6 +303,13 @@ class Qwen3_5ForCausalLMBase(; -416,7 +423,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: Qwen3_5ForCausalLMBase, __init__, load_weights, Qwen3_5ForCausalLM, touching `Qwen3_5ForCausalLMBase, __init__, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_5.py` modified +8/-1 (9 lines); hunks: -303,6 +303,13 @@ class Qwen3_5ForCausalLMBase(; -416,7 +423,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: Qwen3_5ForCausalLMBase, __init__, load_weights, Qwen3_5ForCausalLM
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5.py
+@@ -303,6 +303,13 @@ class Qwen3_5ForCausalLMBase(
++    # Some community text-only checkpoints keep the extraneous
++    # `model.language_model.` prefix inherited from the VL training stack.
++    # Strip it so both prefixed and clean checkpoints load correctly.
++    hf_to_vllm_mapper = WeightsMapper(
++        orig_to_new_prefix={"model.language_model.": "model."},
++    )
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +8/-1
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #51293 - [CI] Re-enable FI autotune in GSM8K config for Qwen3.5-35B-A3B
+
+- Link: https://github.com/vllm-project/vllm/pull/51293
+- Status/date: merged / 2026-08-07
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml`; associated commits `5ac2684976ee`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +0/-1, 6 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml` modified +0/-1 (1 lines); hunks: -7,4 +7,3 @@ server_args: >-.
+- Code diff details:
+  - `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml` modified +0/-1 (1 lines); hunks: -7,4 +7,3 @@ server_args: >-
+- Key code excerpts:
+
+```diff
+diff -- tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml
+@@ -7,4 +7,3 @@ server_args: >-
+-  --no-enable-flashinfer-autotune
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml` modified +0/-1
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/Qwen3.5-35B-A3B-DEP2.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #50734 - [Bugfix][Model] Fix Qwen3.5 MTP for text-only checkpoints
+
+- Link: https://github.com/vllm-project/vllm/pull/50734
+- Status/date: merged / 2026-08-10
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/test_qwen3_5_mtp_config.py`; associated commits `900d09f91a1f`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +55/-7, 77 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/test_qwen3_5_mtp_config.py` added +33/-0 (33 lines); hunks: -0,0 +1,33; symbols: _mtp_config, test_mtp_override_recognizes_text_only_types, touching `_mtp_config, test_mtp_override_recognizes_text_only_types`; `vllm/multimodal/registry.py` modified +12/-5 (17 lines); hunks: -114,11 +114,18 @@ def supports_multimodal_inputs(self, model_config: "ModelC...; symbols: supports_multimodal_inputs, touching `supports_multimodal_inputs`; `vllm/config/speculative.py` modified +10/-2 (12 lines); hunks: -528,8 +528,16 @@ def hf_config_override(hf_config: PretrainedConfig) -> Pret...; symbols: hf_config_override, touching `hf_config_override`.
+- Code diff details:
+  - `tests/models/test_qwen3_5_mtp_config.py` added +33/-0 (33 lines); hunks: -0,0 +1,33; symbols: _mtp_config, test_mtp_override_recognizes_text_only_types
+  - `vllm/multimodal/registry.py` modified +12/-5 (17 lines); hunks: -114,11 +114,18 @@ def supports_multimodal_inputs(self, model_config: "ModelC...; symbols: supports_multimodal_inputs
+  - `vllm/config/speculative.py` modified +10/-2 (12 lines); hunks: -528,8 +528,16 @@ def hf_config_override(hf_config: PretrainedConfig) -> Pret...; symbols: hf_config_override
+- Key code excerpts:
+
+```diff
+diff -- tests/models/test_qwen3_5_mtp_config.py
+@@ -0,0 +1,33 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""CPU-only tests for Qwen3.5 text-only MTP speculative decoding."""
++import pytest
++from transformers import PretrainedConfig
++from vllm.config.speculative import SpeculativeConfig
+diff -- vllm/multimodal/registry.py
+@@ -114,11 +114,18 @@ def supports_multimodal_inputs(self, model_config: "ModelConfig") -> bool:
+-            logger.warning_once(
+-                "Model %s is treated as multimodal but has no registered "
+-                "multimodal processor; running in text-only mode.",
+-                model_config.model,
+-            )
++            # Speculative drafters for multimodal targets (e.g. Qwen3_5MTP,
+diff -- vllm/config/speculative.py
+@@ -528,8 +528,16 @@ def hf_config_override(hf_config: PretrainedConfig) -> PretrainedConfig:
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/test_qwen3_5_mtp_config.py` added +33/-0
+  - runtime: `vllm/multimodal/registry.py` modified +12/-5; `vllm/config/speculative.py` modified +10/-2
+- Risk and verification: The diff ships test coverage in `tests/models/test_qwen3_5_mtp_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #52007 - [CI Bug] Fix ci qwen3.5
+
+- Link: https://github.com/vllm-project/vllm/pull/52007
+- Status/date: merged / 2026-08-12
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml`, `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml`; associated commits `0fb168e6ee54`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +2/-2, 14 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` modified +1/-1 (2 lines); hunks: -8,6 +8,6 @@ server_args: >-; `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml` modified +1/-1 (2 lines); hunks: -7,4 +7,4 @@ server_args: >-.
+- Code diff details:
+  - `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` modified +1/-1 (2 lines); hunks: -8,6 +8,6 @@ server_args: >-
+  - `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml` modified +1/-1 (2 lines); hunks: -7,4 +7,4 @@ server_args: >-
+- Key code excerpts:
+
+```diff
+diff -- tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml
+@@ -8,6 +8,6 @@ server_args: >-
+-  --max-num-seqs 384
++  --max-num-seqs 256
+diff -- tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml
+@@ -7,4 +7,4 @@ server_args: >-
+-  --max-num-seqs 512
++  --max-num-seqs 256
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml` modified +1/-1; `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml` modified +1/-1
+- Risk and verification: The diff ships test coverage in `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2-MTP.yaml`, `tests/evals/gsm8k/configs/Qwen3.5-397B-A17B-NVFP4-DEP2.yaml`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #48850 - [Bugfix][LoRA] Add embedding_modules for Qwen3.5 CausalLM
+
+- Link: https://github.com/vllm-project/vllm/pull/48850
+- Status/date: merged / 2026-08-19
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_5.py`; associated commits `5a4c8d99242e`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +5/-0, 12 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_5.py` modified +5/-0 (5 lines); hunks: -309,6 +309,11 @@ class Qwen3_5ForCausalLMBase(; symbols: Qwen3_5ForCausalLMBase, touching `Qwen3_5ForCausalLMBase`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_5.py` modified +5/-0 (5 lines); hunks: -309,6 +309,11 @@ class Qwen3_5ForCausalLMBase(; symbols: Qwen3_5ForCausalLMBase
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5.py
+@@ -309,6 +309,11 @@ class Qwen3_5ForCausalLMBase(
++    # Maps PEFT embed/lm_head LoRA targets onto vLLM embedding wrappers.
++    embedding_modules = {
++        "embed_tokens": "input_embeddings",
++        "lm_head": "output_embeddings",
++    }
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +5/-0
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/qwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #54847 - [Bugfix] Fix ColQwen3.5 pooler projector initialization
+
+- Link: https://github.com/vllm-project/vllm/pull/54847
+- Status/date: merged / 2026-09-02
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/colqwen3_5.py`; associated commits `dbf1a044eacd`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +10/-17, 64 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/colqwen3_5.py` modified +10/-17 (27 lines); hunks: -121,13 +121,13 @@ class ColQwen3_5Model(; -187,7 +187,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: ColQwen3_5Model, __init__, forward, load_weights, touching `ColQwen3_5Model, __init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/colqwen3_5.py` modified +10/-17 (27 lines); hunks: -121,13 +121,13 @@ class ColQwen3_5Model(; -187,7 +187,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: ColQwen3_5Model, __init__, forward, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/colqwen3_5.py
+@@ -121,13 +121,13 @@ class ColQwen3_5Model(
+-    The model produces per-token embeddings by:
++    The model produces L2-normalized per-token embeddings by:
+-    2. Projecting hidden states through a linear layer (hidden_size -> embed_dim)
+-    3. L2 normalization is handled by the pooler via PoolerNormalize
++    2. Projection and L2-normalization via the pooler (TokenEmbeddingPoolerHead)
+-        custom_text_proj: Linear projection from hidden_size to embed_dim
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/colqwen3_5.py` modified +10/-17
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/colqwen3_5.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #55369 - [Bugfix][Spec Decode] Resolve n_predict from text_config for Qwen3.5 multimodal MTP
+
+- Link: https://github.com/vllm-project/vllm/pull/55369
+- Status/date: merged / 2026-09-07
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/test_qwen3_5_mtp_config.py`; associated commits `b339d75a410e`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +101/-9, 145 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/test_qwen3_5_mtp_config.py` modified +96/-8 (104 lines); hunks: -1,19 +1,45; -26,8 +52,70 @@ def _mtp_config(model_type: str) -> PretrainedConfig:; symbols: _mtp_config, _multimodal_wrapper_mtp_config, test_mtp_override_recognizes_text_only_types, touching `_mtp_config, _multimodal_wrapper_mtp_config, test_mtp_override_recognizes_text_only_types`; `vllm/config/speculative.py` modified +3/-0 (3 lines); hunks: -897,6 +897,9 @@ def hf_config_override(hf_config: PretrainedConfig) -> Pretr...; symbols: hf_config_override, touching `hf_config_override`.
+- Code diff details:
+  - `tests/models/test_qwen3_5_mtp_config.py` modified +96/-8 (104 lines); hunks: -1,19 +1,45; -26,8 +52,70 @@ def _mtp_config(model_type: str) -> PretrainedConfig:; symbols: _mtp_config, _multimodal_wrapper_mtp_config, test_mtp_override_recognizes_text_only_types
+  - `vllm/config/speculative.py` modified +3/-0 (3 lines); hunks: -897,6 +897,9 @@ def hf_config_override(hf_config: PretrainedConfig) -> Pretr...; symbols: hf_config_override
+- Key code excerpts:
+
+```diff
+diff -- tests/models/test_qwen3_5_mtp_config.py
+@@ -1,19 +1,45 @@
+-"""CPU-only tests for Qwen3.5 text-only MTP speculative decoding."""
++"""CPU-only tests for Qwen3.5 MTP speculative decoding config overrides."""
++from typing import Any
+-from transformers import PretrainedConfig
++from transformers import AutoConfig, PretrainedConfig
++_CHECKPOINTS = {
+diff -- vllm/config/speculative.py
+@@ -897,6 +897,9 @@ def hf_config_override(hf_config: PretrainedConfig) -> PretrainedConfig:
++            if n_predict is None:
++                text_config = get_hf_text_config(hf_config)
++                n_predict = getattr(text_config, "mtp_num_hidden_layers", None)
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/test_qwen3_5_mtp_config.py` modified +96/-8
+  - runtime: `vllm/config/speculative.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `tests/models/test_qwen3_5_mtp_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #51289 - [Model] Extend device-side mm normalization to Qwen3VL/Qwen3.5/Qwen4Next
+
+- Link: https://github.com/vllm-project/vllm/pull/51289
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/qwen3_5.py`; associated commits `491f44adfa42`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 11 files, +87/-25, 321 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/qwen3_5.py` modified +3/-0 (3 lines); hunks: -39,6 +39,7; -517,6 +518,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `vllm/model_executor/models/qwen3_5.py` modified +3/-0 (3 lines); hunks: -39,6 +39,7; -517,6 +518,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str =...; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/qwen3_5.py
+@@ -39,6 +39,7 @@
++from vllm.model_executor.layers.fusion.mm_input_norm import build_mm_input_norm
+@@ -517,6 +518,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "model"):
++                input_norm=build_mm_input_norm(self.model_config),
+@@ -739,6 +741,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = "model"):
++                input_norm=build_mm_input_norm(self.model_config),
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/qwen3_5.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation_ppl_test/ppl_utils.py`, `tests/models/multimodal/generation_ppl_test/test_qwen.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

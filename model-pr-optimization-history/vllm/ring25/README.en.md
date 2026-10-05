@@ -1,4 +1,4 @@
-# vllm Ring 2.5 Model PR Optimization History
+# vLLM Ring 2.5 Model PR Optimization History
 
 ## Implementation File Coverage
 

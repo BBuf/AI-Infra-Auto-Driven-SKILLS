@@ -1,24 +1,31 @@
-# vllm MiMo V2 Flash Model PR Optimization History
+# vLLM MiMo V2 Flash Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
-| `tests/models/multimodal/test_mimo_v2_omni.py` | [#49815](https://github.com/vllm-project/vllm/pull/49815) |
+| `tests/models/multimodal/test_mimo_v2_omni.py` | [#49815](https://github.com/vllm-project/vllm/pull/49815), [#58900](https://github.com/vllm-project/vllm/pull/58900) |
+| `tests/models/quantization/test_mimo_v2_qkv_shard.py` | [#57508](https://github.com/vllm-project/vllm/pull/57508) |
+| `tests/models/quantization/test_mimo_v2_w4a16_routing.py` | [#58262](https://github.com/vllm-project/vllm/pull/58262) |
+| `tests/v1/e2e/spec_decode/mtp/mimo/__init__.py` | no direct PR-number commit |
+| `tests/v1/e2e/spec_decode/mtp/mimo/test_mtp.py` | no direct PR-number commit |
 | `vllm/model_executor/models/mimo.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433) |
 | `vllm/model_executor/models/mimo_audio.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/model_executor/models/mimo_mtp.py` | [#17433](https://github.com/vllm-project/vllm/pull/17433), [#25136](https://github.com/vllm-project/vllm/pull/25136) |
-| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200), [#46104](https://github.com/vllm-project/vllm/pull/46104) |
-| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905) |
-| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#49815](https://github.com/vllm-project/vllm/pull/49815) |
+| `vllm/model_executor/models/mimo_v2.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41029](https://github.com/vllm-project/vllm/pull/41029), [#41797](https://github.com/vllm-project/vllm/pull/41797), [#45200](https://github.com/vllm-project/vllm/pull/45200), [#46104](https://github.com/vllm-project/vllm/pull/46104), [#57508](https://github.com/vllm-project/vllm/pull/57508), [#57784](https://github.com/vllm-project/vllm/pull/57784), [#58142](https://github.com/vllm-project/vllm/pull/58142) |
+| `vllm/model_executor/models/mimo_v2_mtp.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#41905](https://github.com/vllm-project/vllm/pull/41905), [#57508](https://github.com/vllm-project/vllm/pull/57508), [#58142](https://github.com/vllm-project/vllm/pull/58142) |
+| `vllm/model_executor/models/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#49815](https://github.com/vllm-project/vllm/pull/49815), [#57784](https://github.com/vllm-project/vllm/pull/57784), [#58938](https://github.com/vllm-project/vllm/pull/58938) |
+| `vllm/parser/mimo.py` | [#58019](https://github.com/vllm-project/vllm/pull/58019) |
+| `vllm/reasoning/mimo_engine_reasoning_parser.py` | [#58019](https://github.com/vllm-project/vllm/pull/58019) |
+| `vllm/tool_parsers/mimo_tool_parser.py` | [#58019](https://github.com/vllm-project/vllm/pull/58019) |
 | `vllm/transformers_utils/configs/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967) |
 | `vllm/transformers_utils/processors/mimo_v2_omni.py` | [#40967](https://github.com/vllm-project/vllm/pull/40967), [#43117](https://github.com/vllm-project/vllm/pull/43117) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 9
+- Git-traced PRs: 17
 - Extra PRs preserved from existing docs: 4
-- Total PRs in this document: 13
+- Total PRs in this document: 21
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -39,6 +46,14 @@
 | 2026-06-15 | [#45200](https://github.com/vllm-project/vllm/pull/45200) | merged | [Models] Fix MiMo v2.x QKV TP sharding + FP4 support | `vllm/model_executor/models/mimo_v2.py` |
 | 2026-07-01 | [#46104](https://github.com/vllm-project/vllm/pull/46104) | merged | [Spec Decode] Support SWA + DFlash for MiMo | `vllm/model_executor/models/mimo_v2.py` |
 | 2026-07-11 | [#43117](https://github.com/vllm-project/vllm/pull/43117) | merged | fix(processor): route MiMo-V2-Omni media fetch through MediaConnector | `vllm/transformers_utils/processors/mimo_v2_omni.py` |
+| 2026-08-10 | [#49815](https://github.com/vllm-project/vllm/pull/49815) | merged | [Bugfix][MiMo] Apply vision attention sinks in the window attention path | `tests/models/multimodal/test_mimo_v2_omni.py`, `vllm/model_executor/models/mimo_v2_omni.py` |
+| 2026-09-19 | [#57508](https://github.com/vllm-project/vllm/pull/57508) | merged | [Bugfix][Model] Fix MiMo-V2.5 fused fp8 qkv_proj sharding (pre-shard count is num_key_value_heads; MTP path too) | `tests/models/quantization/test_mimo_v2_qkv_shard.py`, `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py` |
+| 2026-09-20 | [#57784](https://github.com/vllm-project/vllm/pull/57784) | merged | [Feature] support bf16 MoE router and mxfp4 MoE for MiMo V2 | `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_omni.py` |
+| 2026-09-28 | [#58900](https://github.com/vllm-project/vllm/pull/58900) | merged | [Bugfix] Fix the two multimodal root tests that fail on main (OpenPangu-VL embed merge, MiMo sink test fixture) | `tests/models/multimodal/test_mimo_v2_omni.py`, `vllm/model_executor/models/openpangu_vl.py` |
+| 2026-09-29 | [#58142](https://github.com/vllm-project/vllm/pull/58142) | merged | [Bugfix][Model] MiMo: keep fused fp8 qkv_proj pairing state across weight-loading calls | `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py` |
+| 2026-09-29 | [#58019](https://github.com/vllm-project/vllm/pull/58019) | merged | [Frontend] Support strict MiMo-V2.6 tool calling | `vllm/tool_parsers/mimo_tool_parser.py`, `vllm/reasoning/mimo_engine_reasoning_parser.py`, `vllm/parser/mimo.py` |
+| 2026-09-29 | [#58938](https://github.com/vllm-project/vllm/pull/58938) | merged | [Bugfix][MiMo] Declare embedding_fields so an EPD pair can serve images | `vllm/model_executor/models/mimo_v2_omni.py` |
+| 2026-09-30 | [#58262](https://github.com/vllm-project/vllm/pull/58262) | merged | [ROCm][MoE] Support MiMo-V2.6 MXFP4 on gfx942 | `tests/models/quantization/test_mimo_v2_w4a16_routing.py`, `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp4_w4a16_moe.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -470,6 +485,295 @@ diff -- vllm/transformers_utils/processors/mimo_v2_omni.py
 - Reviewed files:
   - runtime: `vllm/transformers_utils/processors/mimo_v2_omni.py` modified +22/-76
 - Risk and verification: Runtime changes concentrate in `vllm/transformers_utils/processors/mimo_v2_omni.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #49815 - [Bugfix][MiMo] Apply vision attention sinks in the window attention path
+
+- Link: https://github.com/vllm-project/vllm/pull/49815
+- Status/date: merged / 2026-08-10
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_mimo_v2_omni.py`, `vllm/model_executor/models/mimo_v2_omni.py`; associated commits `c3cac8c63d91`; preserved from an explicit existing history/skill citation
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +132/-12, 200 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/test_mimo_v2_omni.py` added +91/-0 (91 lines); hunks: -0,0 +1,91; symbols: vision_attn_env, _reference, test_window_attention_applies_sinks, touching `vision_attn_env, _reference, test_window_attention_applies_sinks`; `vllm/model_executor/models/mimo_v2_omni.py` modified +27/-10 (37 lines); hunks: -193,7 +193,7 @@ def __init__(; -214,21 +214,38 @@ def _forward_window_attn(; symbols: __init__, _forward_window_attn, touching `__init__, _forward_window_attn`.
+- Code diff details:
+  - `tests/models/multimodal/test_mimo_v2_omni.py` added +91/-0 (91 lines); hunks: -0,0 +1,91; symbols: vision_attn_env, _reference, test_window_attention_applies_sinks
+  - `vllm/model_executor/models/mimo_v2_omni.py` modified +27/-10 (37 lines); hunks: -193,7 +193,7 @@ def __init__(; -214,21 +214,38 @@ def _forward_window_attn(; symbols: __init__, _forward_window_attn
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/test_mimo_v2_omni.py
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""MiMo-V2 vision window attention has to apply the per-head sink logits."""
++import pytest
++import torch
++from tests.utils import ensure_current_vllm_config
+diff -- vllm/model_executor/models/mimo_v2_omni.py
+@@ -193,7 +193,7 @@ def __init__(
+-        # Sink attention weights (loaded but not used in vLLM flash_attn)
++        # Per-head sink logits, applied in the window attention path.
+@@ -214,21 +214,38 @@ def _forward_window_attn(
+-        """Window attention via flash_attn_varlen_func with window_size."""
+-        from vllm.vllm_flash_attn import flash_attn_varlen_func
++        """Window attention with the per-head sink applied to key 0.
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/test_mimo_v2_omni.py` added +91/-0
+  - runtime: `vllm/model_executor/models/mimo_v2_omni.py` modified +27/-10
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/test_mimo_v2_omni.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #57508 - [Bugfix][Model] Fix MiMo-V2.5 fused fp8 qkv_proj sharding (pre-shard count is num_key_value_heads; MTP path too)
+
+- Link: https://github.com/vllm-project/vllm/pull/57508
+- Status/date: merged / 2026-09-19
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/quantization/test_mimo_v2_qkv_shard.py`, `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`; associated commits `211e252d0b4f`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +415/-63, 543 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/quantization/test_mimo_v2_qkv_shard.py` added +225/-0 (225 lines); hunks: -0,0 +1,225; symbols: _chunk_rows, _quantize_chunks, _owned_rows, _dequantize, touching `_chunk_rows, _quantize_chunks, _owned_rows`; `vllm/model_executor/models/mimo_v2.py` modified +141/-55 (196 lines); hunks: -50,6 +50,7; -460,6 +461,28 @@ def is_compressed_softmax_layer(self) -> bool:; symbols: is_compressed_softmax_layer, _requantize_fp8, _shard_fp8_qkv_proj, MiMoV2Model, touching `is_compressed_softmax_layer, _requantize_fp8, _shard_fp8_qkv_proj`; `vllm/model_executor/models/mimo_v2_mtp.py` modified +49/-8 (57 lines); hunks: -45,7 +45,7; -266,6 +266,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `tests/models/quantization/test_mimo_v2_qkv_shard.py` added +225/-0 (225 lines); hunks: -0,0 +1,225; symbols: _chunk_rows, _quantize_chunks, _owned_rows, _dequantize
+  - `vllm/model_executor/models/mimo_v2.py` modified +141/-55 (196 lines); hunks: -50,6 +50,7; -460,6 +461,28 @@ def is_compressed_softmax_layer(self) -> bool:; symbols: is_compressed_softmax_layer, _requantize_fp8, _shard_fp8_qkv_proj, MiMoV2Model
+  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +49/-8 (57 lines); hunks: -45,7 +45,7; -266,6 +266,7 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Te...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- tests/models/quantization/test_mimo_v2_qkv_shard.py
+@@ -0,0 +1,225 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Unit test for MiMo-V2 fused fp8 ``qkv_proj`` sharding.
++The checkpoint stores the fused QKV pre-sharded at ``num_key_value_heads``
++chunks (``ckpt_tp``), each holding that slice's ``[Q_c | K_c | V_c]`` rows with
++its own block scale grid. ``ckpt_tp`` is not the layer's KV-head count: a
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -50,6 +50,7 @@
++from vllm.utils.math_utils import cdiv
+@@ -460,6 +461,28 @@ def is_compressed_softmax_layer(self) -> bool:
++def _requantize_fp8(
++    grouped: torch.Tensor, rows_rank: int, block: int, dtype: torch.dtype
++) -> tuple[torch.Tensor, torch.Tensor]:
++    """Block-quantize a rank's ``[Q | K | V]`` rows back to fp8.
+diff -- vllm/model_executor/models/mimo_v2_mtp.py
+@@ -45,7 +45,7 @@
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/quantization/test_mimo_v2_qkv_shard.py` added +225/-0
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +141/-55; `vllm/model_executor/models/mimo_v2_mtp.py` modified +49/-8
+- Risk and verification: The diff ships test coverage in `tests/models/quantization/test_mimo_v2_qkv_shard.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #57784 - [Feature] support bf16 MoE router and mxfp4 MoE for MiMo V2
+
+- Link: https://github.com/vllm-project/vllm/pull/57784
+- Status/date: merged / 2026-09-20
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_omni.py`; associated commits `9b2f34cad446`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 3 files, +21/-6, 109 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/mimo_v2.py` modified +8/-5 (13 lines); hunks: -27,6 +27,7; -156,14 +157,16 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`; `vllm/model_executor/models/mimo_v2_omni.py` modified +4/-1 (5 lines); hunks: -52,6 +52,7; -1209,7 +1210,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, MiMoV2OmniForCausalLM, touching `get_dummy_mm_data, MiMoV2OmniForCausalLM`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2.py` modified +8/-5 (13 lines); hunks: -27,6 +27,7; -156,14 +157,16 @@ def __init__(; symbols: __init__, forward
+  - `vllm/model_executor/models/mimo_v2_omni.py` modified +4/-1 (5 lines); hunks: -52,6 +52,7; -1209,7 +1210,9 @@ def get_dummy_mm_data(; symbols: get_dummy_mm_data, MiMoV2OmniForCausalLM
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -27,6 +27,7 @@
++from vllm.model_executor.layers.fused_moe.router.gate_linear import GateLinear
+@@ -156,14 +157,16 @@ def __init__(
+-        self.gate = nn.Linear(
++        self.gate = GateLinear(
+-            dtype=self.gate_dtype,
++            params_dtype=self.gate_dtype,
+diff -- vllm/model_executor/models/mimo_v2_omni.py
+@@ -52,6 +52,7 @@
++    SupportsEagle3,
+@@ -1209,7 +1210,9 @@ def get_dummy_mm_data(
+-class MiMoV2OmniForCausalLM(nn.Module, SupportsMultiModal, SupportsPP, SupportsQuant):
++class MiMoV2OmniForCausalLM(
++    nn.Module, SupportsMultiModal, SupportsPP, SupportsQuant, SupportsEagle3
++):
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +8/-5; `vllm/model_executor/models/mimo_v2_omni.py` modified +4/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_omni.py`, `vllm/model_executor/models/qwen3_dflash.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #58900 - [Bugfix] Fix the two multimodal root tests that fail on main (OpenPangu-VL embed merge, MiMo sink test fixture)
+
+- Link: https://github.com/vllm-project/vllm/pull/58900
+- Status/date: merged / 2026-09-28
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/test_mimo_v2_omni.py`; associated commits `0da126676e38`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +15/-27, 66 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/test_mimo_v2_omni.py` modified +3/-18 (21 lines); hunks: -5,13 +5,7; -21,20 +15,11; symbols: vision_attn_env, touching `vision_attn_env`; `vllm/model_executor/models/openpangu_vl.py` modified +12/-9 (21 lines); hunks: -1055,15 +1055,18 @@ def get_input_embeddings(; symbols: get_input_embeddings, _process_image_input, touching `get_input_embeddings, _process_image_input`.
+- Code diff details:
+  - `tests/models/multimodal/test_mimo_v2_omni.py` modified +3/-18 (21 lines); hunks: -5,13 +5,7; -21,20 +15,11; symbols: vision_attn_env
+  - `vllm/model_executor/models/openpangu_vl.py` modified +12/-9 (21 lines); hunks: -1055,15 +1055,18 @@ def get_input_embeddings(; symbols: get_input_embeddings, _process_image_input
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/test_mimo_v2_omni.py
+@@ -5,13 +5,7 @@
+-from tests.utils import ensure_current_vllm_config
+-from vllm.distributed.parallel_state import (
+-    init_distributed_environment,
+-    initialize_model_parallel,
+-)
+-from vllm.utils.network_utils import get_open_port
+diff -- vllm/model_executor/models/openpangu_vl.py
+@@ -1055,15 +1055,18 @@ def get_input_embeddings(
+-        inputs_embeds = self.language_model.embed_input_ids(input_ids)
+-        if multimodal_embeddings is not None:
+-            inputs_embeds = self.embed_input_ids(  # type: ignore[call-overload]
+-                input_ids,
+-                inputs_embeds,
+-                multimodal_embeddings,
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/test_mimo_v2_omni.py` modified +3/-18
+  - runtime: `vllm/model_executor/models/openpangu_vl.py` modified +12/-9
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/test_mimo_v2_omni.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #58142 - [Bugfix][Model] MiMo: keep fused fp8 qkv_proj pairing state across weight-loading calls
+
+- Link: https://github.com/vllm-project/vllm/pull/58142
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`; associated commits `77e52645e9ba`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +12/-3, 29 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/mimo_v2.py` modified +6/-2 (8 lines); hunks: -742,8 +742,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, touching `load_weights`; `vllm/model_executor/models/mimo_v2_mtp.py` modified +6/-1 (7 lines); hunks: -266,7 +266,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2.py` modified +6/-2 (8 lines); hunks: -742,8 +742,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights
+  - `vllm/model_executor/models/mimo_v2_mtp.py` modified +6/-1 (7 lines); hunks: -266,7 +266,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2.py
+@@ -742,8 +742,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-        # sharded together.
+-        pending_fp8_qkv_proj: dict[str, dict[str, torch.Tensor]] = {}
++        # sharded together. The state must outlive this call: AutoWeightsLoader
++        # delegates per contiguous group of names, so a pair can straddle two
++        # calls and would otherwise be dropped silently.
++        pending_fp8_qkv_proj = getattr(self, "_pending_fp8_qkv_proj", None)
+diff -- vllm/model_executor/models/mimo_v2_mtp.py
+@@ -266,7 +266,12 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+-        pending_qkv_proj: dict[str, dict[str, torch.Tensor]] = {}
++        # The pairing state must outlive this call: AutoWeightsLoader delegates
++        # per contiguous group of names, so a pair can straddle two calls and
++        # would otherwise be dropped silently.
++        pending_qkv_proj = getattr(self, "_pending_qkv_proj", None)
++        if pending_qkv_proj is None:
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/mimo_v2.py` modified +6/-2; `vllm/model_executor/models/mimo_v2_mtp.py` modified +6/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mimo_v2.py`, `vllm/model_executor/models/mimo_v2_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #58019 - [Frontend] Support strict MiMo-V2.6 tool calling
+
+- Link: https://github.com/vllm-project/vllm/pull/58019
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/parser/mimo.py`, `vllm/reasoning/mimo_engine_reasoning_parser.py`, `vllm/tool_parsers/mimo_tool_parser.py`; associated commits `dfc8e0f3e2ad`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 17 files, +243/-15, 437 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tool_parsers/mimo_tool_parser.py` added +25/-0 (25 lines); hunks: -0,0 +1,25; symbols: MiMoToolParser, get_structural_tag, touching `MiMoToolParser, get_structural_tag`; `vllm/reasoning/mimo_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6; `vllm/parser/mimo.py` added +42/-0 (42 lines); hunks: -0,0 +1,42; symbols: _mimo_arg_converter, MiMoParser, __init__, touching `_mimo_arg_converter, MiMoParser, __init__`.
+- Code diff details:
+  - `vllm/tool_parsers/mimo_tool_parser.py` added +25/-0 (25 lines); hunks: -0,0 +1,25; symbols: MiMoToolParser, get_structural_tag
+  - `vllm/reasoning/mimo_engine_reasoning_parser.py` added +6/-0 (6 lines); hunks: -0,0 +1,6
+  - `vllm/parser/mimo.py` added +42/-0 (42 lines); hunks: -0,0 +1,42; symbols: _mimo_arg_converter, MiMoParser, __init__
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/mimo_tool_parser.py
+@@ -0,0 +1,25 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from xgrammar.structural_tag import TriggeredTagsFormat
++from vllm.parser.engine.registered_adapters import MiMoParserToolAdapter
++from vllm.tool_parsers.tool_strict_level import ToolStrictLevel
++class MiMoToolParser(MiMoParserToolAdapter):  # type: ignore[valid-type, misc]
+diff -- vllm/reasoning/mimo_engine_reasoning_parser.py
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++from vllm.parser.engine.registered_adapters import MiMoParserReasoningAdapter
++__all__ = ["MiMoParserReasoningAdapter"]
+diff -- vllm/parser/mimo.py
+@@ -0,0 +1,42 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tool_parsers/mimo_tool_parser.py` added +25/-0; `vllm/reasoning/mimo_engine_reasoning_parser.py` added +6/-0; `vllm/parser/mimo.py` added +42/-0
+- Risk and verification: The diff ships test coverage in `requirements/test/cpu.txt`, `requirements/test/cuda.txt`, `requirements/test/rocm.txt`, `requirements/test/xpu.txt`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #58938 - [Bugfix][MiMo] Declare embedding_fields so an EPD pair can serve images
+
+- Link: https://github.com/vllm-project/vllm/pull/58938
+- Status/date: merged / 2026-09-29
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/mimo_v2_omni.py`; associated commits `8aaeef343a10`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +20/-4, 45 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/mimo_v2_omni.py` modified +20/-4 (24 lines); hunks: -69,7 +69,10; -670,6 +673,14 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, MiMoV2OmniMultiModalDataParser, MiMoV2OmniProcessingInfo, get_supported_mm_limits, touching `load_weights, MiMoV2OmniMultiModalDataParser, MiMoV2OmniProcessingInfo`.
+- Code diff details:
+  - `vllm/model_executor/models/mimo_v2_omni.py` modified +20/-4 (24 lines); hunks: -69,7 +69,10; -670,6 +673,14 @@ def load_weights(self, weights: Iterable[tuple[str, torch.T...; symbols: load_weights, MiMoV2OmniMultiModalDataParser, MiMoV2OmniProcessingInfo, get_supported_mm_limits
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/mimo_v2_omni.py
+@@ -69,7 +69,10 @@
+-from .qwen2_vl import _create_qwen2vl_field_factory
++from .qwen2_vl import (
++    Qwen2VLMultiModalDataParser,
++    _create_qwen2vl_field_factory,
++)
+@@ -670,6 +673,14 @@ def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/mimo_v2_omni.py` modified +20/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/mimo_v2_omni.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #58262 - [ROCm][MoE] Support MiMo-V2.6 MXFP4 on gfx942
+
+- Link: https://github.com/vllm-project/vllm/pull/58262
+- Status/date: merged / 2026-09-30
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/quantization/test_mimo_v2_w4a16_routing.py`; associated commits `16d4ac4ba3a0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +192/-5, 219 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/quantization/test_mimo_v2_w4a16_routing.py` added +176/-0 (176 lines); hunks: -0,0 +1,176; symbols: mimo_routing_method, mimo_moe_config, test_ungrouped_sigmoid_router_is_deepseekv3, test_aiter_w4a16_supports_mimo_routing, touching `mimo_routing_method, mimo_moe_config, test_ungrouped_sigmoid_router_is_deepseekv3`; `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp4_w4a16_moe.py` modified +16/-5 (21 lines); hunks: -295,6 +295,7 @@ def __init__(; -344,6 +345,7 @@ def _supports_routing_method(; symbols: __init__, _supports_routing_method, apply, touching `__init__, _supports_routing_method, apply`.
+- Code diff details:
+  - `tests/models/quantization/test_mimo_v2_w4a16_routing.py` added +176/-0 (176 lines); hunks: -0,0 +1,176; symbols: mimo_routing_method, mimo_moe_config, test_ungrouped_sigmoid_router_is_deepseekv3, test_aiter_w4a16_supports_mimo_routing
+  - `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp4_w4a16_moe.py` modified +16/-5 (21 lines); hunks: -295,6 +295,7 @@ def __init__(; -344,6 +345,7 @@ def _supports_routing_method(; symbols: __init__, _supports_routing_method, apply
+- Key code excerpts:
+
+```diff
+diff -- tests/models/quantization/test_mimo_v2_w4a16_routing.py
+@@ -0,0 +1,176 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Routing support for the AITER Triton MXFP4 W4A16 MoE backend.
++MiMo-V2.6 uses an ungrouped sigmoid router with a per-expert correction bias
++(``scoring_func=sigmoid``, ``topk_method=noaux_tc``, ``n_group == 1``), which
++``get_routing_method_type`` classifies as ``RoutingMethodType.DeepSeekV3``.
+diff -- vllm/model_executor/layers/fused_moe/experts/aiter_mxfp4_w4a16_moe.py
+@@ -295,6 +295,7 @@ def __init__(
++            RoutingMethodType.DeepSeekV3,
+@@ -344,6 +345,7 @@ def _supports_routing_method(
++            RoutingMethodType.DeepSeekV3,
+@@ -373,11 +375,20 @@ def apply(
+-        score_mode = (
+-            "sqrtsoftplus"
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/quantization/test_mimo_v2_w4a16_routing.py` added +176/-0
+  - runtime: `vllm/model_executor/layers/fused_moe/experts/aiter_mxfp4_w4a16_moe.py` modified +16/-5
+- Risk and verification: The diff ships test coverage in `tests/models/quantization/test_mimo_v2_w4a16_routing.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

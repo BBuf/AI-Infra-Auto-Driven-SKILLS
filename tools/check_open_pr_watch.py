@@ -26,6 +26,7 @@ DEFAULT_REPOS = {
     "vllm": "vllm-project/vllm",
     "tensorrt_llm": "NVIDIA/TensorRT-LLM",
     "tokenspeed": "lightseekorg/tokenspeed",
+    "flashinfer": "flashinfer-ai/flashinfer",
 }
 
 DEFAULT_TERMS = [
@@ -33,6 +34,7 @@ DEFAULT_TERMS = [
     "Qwen3.6",
     "Qwen3.8",
     "DeepSeek V4",
+    "DeepSeek V4.1",
     "Kimi K2.5",
     "Kimi K3",
     "KimiLinear",
@@ -42,6 +44,14 @@ DEFAULT_TERMS = [
     "Unlimited OCR",
     "GLM-5",
     "GLM-5.2",
+    "GLM-5.3",
+    "Qwen3.8 Flash Next",
+    "Qwen4",
+    "Hy4",
+    "Step-3.7",
+    "LongCat",
+    "Ling-3",
+    "dots.note",
     "MLA",
     "GDN",
     "KDA",
@@ -50,6 +60,12 @@ DEFAULT_TERMS = [
     "NVFP4",
     "WideEP",
     "DFlash",
+    "DSpark",
+    "fused",
+    "fusion",
+    "overlap",
+    "PDL",
+    "CUDA graph",
 ]
 
 

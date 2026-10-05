@@ -1,4 +1,4 @@
-# sglang Qwen3 Core 模型 PR 优化历史
+# SGLang Qwen3 Core 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
@@ -6,17 +6,18 @@
 | --- | --- |
 | `docs/cookbook/autoregressive/Qwen/Qwen3.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/qwen3-deployment.jsx` | 无直接 PR 号提交 |
+| `python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py` | [#39126](https://github.com/sgl-project/sglang/pull/39126) |
 | `python/sglang/srt/models/qwen3.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6990](https://github.com/sgl-project/sglang/pull/6990), [#7312](https://github.com/sgl-project/sglang/pull/7312), [#7681](https://github.com/sgl-project/sglang/pull/7681), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#10574](https://github.com/sgl-project/sglang/pull/10574), [#15223](https://github.com/sgl-project/sglang/pull/15223), [#15390](https://github.com/sgl-project/sglang/pull/15390), [#16115](https://github.com/sgl-project/sglang/pull/16115), [#17535](https://github.com/sgl-project/sglang/pull/17535), [#19532](https://github.com/sgl-project/sglang/pull/19532), ... (17 total) |
-| `python/sglang/srt/models/qwen3_moe.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#5917](https://github.com/sgl-project/sglang/pull/5917), [#6120](https://github.com/sgl-project/sglang/pull/6120), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6533](https://github.com/sgl-project/sglang/pull/6533), [#6598](https://github.com/sgl-project/sglang/pull/6598), [#6652](https://github.com/sgl-project/sglang/pull/6652), [#6709](https://github.com/sgl-project/sglang/pull/6709), [#6820](https://github.com/sgl-project/sglang/pull/6820), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#8751](https://github.com/sgl-project/sglang/pull/8751), [#9973](https://github.com/sgl-project/sglang/pull/9973), ... (34 total) |
+| `python/sglang/srt/models/qwen3_moe.py` | [#4693](https://github.com/sgl-project/sglang/pull/4693), [#5917](https://github.com/sgl-project/sglang/pull/5917), [#6120](https://github.com/sgl-project/sglang/pull/6120), [#6250](https://github.com/sgl-project/sglang/pull/6250), [#6533](https://github.com/sgl-project/sglang/pull/6533), [#6598](https://github.com/sgl-project/sglang/pull/6598), [#6652](https://github.com/sgl-project/sglang/pull/6652), [#6709](https://github.com/sgl-project/sglang/pull/6709), [#6820](https://github.com/sgl-project/sglang/pull/6820), [#7740](https://github.com/sgl-project/sglang/pull/7740), [#8751](https://github.com/sgl-project/sglang/pull/8751), [#9973](https://github.com/sgl-project/sglang/pull/9973), ... (36 total) |
 | `python/sglang/srt/models/qwen3_moe_mtp.py` | [#26468](https://github.com/sgl-project/sglang/pull/26468) |
 | `test/registered/cpu/test_qwen3.py` | [#31171](https://github.com/sgl-project/sglang/pull/31171) |
 | `test/registered/lora/test_lora_qwen3.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 45
+- git 追溯 PR 数: 48
 - 原文档显式引用补充 PR 数: 67
-- 当前文档总 PR 数: 112
+- 当前文档总 PR 数: 115
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -40,10 +41,10 @@
 | 2025-06-10 | [#6964](https://github.com/sgl-project/sglang/pull/6964) | merged | Support both approximate and exact expert distribution collection | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/managers/expert_distribution.py` |
 | 2025-06-29 | [#7580](https://github.com/sgl-project/sglang/pull/7580) | merged | Move files related to EPLB | `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
 | 2025-07-03 | [#7681](https://github.com/sgl-project/sglang/pull/7681) | merged | support qwen3 dense model dp attention | `python/sglang/srt/models/qwen3.py` |
-| 2025-07-03 | [#7740](https://github.com/sgl-project/sglang/pull/7740) | merged | [optimize] add two stream norm for qwen3 | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2025-07-03 | [#7723](https://github.com/sgl-project/sglang/pull/7723) | merged | [Bug] add flashinfer bool check for fusedmoe in Qwen moe models | `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_moe.py` |
-| 2025-07-05 | [#7745](https://github.com/sgl-project/sglang/pull/7745) | merged | [feat] Support EAGLE3 for Qwen | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py` |
+| 2025-07-03 | [#7740](https://github.com/sgl-project/sglang/pull/7740) | merged | [optimize] add two stream norm for qwen3 | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2025-07-05 | [#7222](https://github.com/sgl-project/sglang/pull/7222) | merged | DP Attention with Auto DeepEP Dispatch | `python/sglang/srt/layers/moe/ep_moe/token_dispatcher.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/deepseek_v2.py` |
+| 2025-07-05 | [#7745](https://github.com/sgl-project/sglang/pull/7745) | merged | [feat] Support EAGLE3 for Qwen | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py` |
 | 2025-07-07 | [#7762](https://github.com/sgl-project/sglang/pull/7762) | merged | feat: support DeepSeek-R1-W4AFP8 model with ep-moe mode | `python/sglang/srt/layers/quantization/w4afp8.py`, `python/sglang/srt/layers/moe/cutlass_w4a8_moe.py`, `python/sglang/srt/layers/moe/ep_moe/layer.py` |
 | 2025-07-16 | [#7634](https://github.com/sgl-project/sglang/pull/7634) | merged | [Feature] Layer-wise Prefill | `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/models/gemma2.py`, `python/sglang/srt/models/gemma.py` |
 | 2025-07-19 | [#7966](https://github.com/sgl-project/sglang/pull/7966) | merged | [1/N] MoE Refactor: refactor `select_experts` | `python/sglang/srt/layers/quantization/unquant.py`, `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/layers/quantization/compressed_tensors/compressed_tensors_moe.py` |
@@ -87,25 +88,23 @@
 | 2026-02-03 | [#17535](https://github.com/sgl-project/sglang/pull/17535) | merged | Update weight rename check for Qwen3 Embeddings | `python/sglang/srt/models/qwen3.py` |
 | 2026-02-08 | [#18189](https://github.com/sgl-project/sglang/pull/18189) | merged | [ModelOpt] Fix broken Qwen3-235B-A22B-Instruct-2507-NVFP4 launch | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-03 | [#19532](https://github.com/sgl-project/sglang/pull/19532) | merged | [NPU] bugs fix: fix a condition bug when using speculative inference on Qwen3 and Qwen3 moe | `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py` |
-| 2026-03-08 | [#20127](https://github.com/sgl-project/sglang/pull/20127) | open | [Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py` |
 | 2026-03-18 | [#17784](https://github.com/sgl-project/sglang/pull/17784) | merged | Upgrade transformers==5.3.0 | `python/sglang/srt/models/gemma3_causal.py`, `python/sglang/srt/layers/rotary_embedding/factory.py`, `python/sglang/srt/configs/model_config.py` |
 | 2026-03-20 | [#20931](https://github.com/sgl-project/sglang/pull/20931) | merged | [Bugifx] qwen3 rope parameter compatibility | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-22 | [#18233](https://github.com/sgl-project/sglang/pull/18233) | merged | Support Qwen3 MoE context parallel | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-24 | [#21195](https://github.com/sgl-project/sglang/pull/21195) | merged | Enable the qwen3 test | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-03-27 | [#19059](https://github.com/sgl-project/sglang/pull/19059) | merged | [jit_kernel] Add fused_qknorm_rope JIT kernel | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py`, `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh` |
-| 2026-04-01 | [#21654](https://github.com/sgl-project/sglang/pull/21654) | merged | Fused_qknorm_rope kernel optimization: up to 2.4× faster | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh`, `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` |
 | 2026-04-01 | [#21458](https://github.com/sgl-project/sglang/pull/21458) | merged | [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write | `python/sglang/srt/models/qwen3.py` |
-| 2026-04-09 | [#22429](https://github.com/sgl-project/sglang/pull/22429) | merged | [NPU]add Qwen3-32b and Qwen3-8b low latency md | `docs/platforms/ascend/ascend_npu_best_practice.md` |
+| 2026-04-01 | [#21654](https://github.com/sgl-project/sglang/pull/21654) | merged | Fused_qknorm_rope kernel optimization: up to 2.4× faster | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh`, `python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py` |
 | 2026-04-09 | [#22358](https://github.com/sgl-project/sglang/pull/22358) | merged | Enable DFLASH support for additional model backends | `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/kimi_k25.py`, `python/sglang/srt/models/qwen3_next.py` |
-| 2026-04-10 | [#22529](https://github.com/sgl-project/sglang/pull/22529) | open | [Model] Support sliding window attention for Qwen3 | `python/sglang/srt/models/qwen3.py` |
+| 2026-04-09 | [#22429](https://github.com/sgl-project/sglang/pull/22429) | merged | [NPU]add Qwen3-32b and Qwen3-8b low latency md | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-11 | [#22446](https://github.com/sgl-project/sglang/pull/22446) | merged | [NPU] add qwen3-30b-a3b low latency example | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-13 | [#22687](https://github.com/sgl-project/sglang/pull/22687) | merged | [NPU]qwen3-8b and 32b md bugfix | `docs/platforms/ascend/ascend_npu_best_practice.md` |
 | 2026-04-14 | [#22739](https://github.com/sgl-project/sglang/pull/22739) | merged | Restore Qwen3 rope config fallback | `python/sglang/srt/models/qwen3.py` |
 | 2026-04-20 | [#22003](https://github.com/sgl-project/sglang/pull/22003) | merged | Support moe_dp_size = 1 for various attention_cp_size | `python/sglang/srt/layers/communicator.py`, `python/sglang/srt/layers/dp_attention.py`, `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-21 | [#23397](https://github.com/sgl-project/sglang/pull/23397) | open | [alignment-sglang] PR3: Dense Deterministic Math | `test/srt/models/test_params_mapping.py`, `python/sglang/srt/layers/on_policy_utils.py`, `python/sglang/srt/model_executor/model_runner.py` |
 | 2026-04-25 | [#23731](https://github.com/sgl-project/sglang/pull/23731) | merged | Fix Qwen3 MoE double-reduce when DP attention + EP + reduce_scatterv (#23729) | `python/sglang/srt/models/qwen3_moe.py` |
-| 2026-04-26 | [#23734](https://github.com/sgl-project/sglang/pull/23734) | merged | Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731) | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-26 | [#19484](https://github.com/sgl-project/sglang/pull/19484) | merged | [CPU] Add Qwen3.5 model optimization for CPU | `python/sglang/srt/configs/update_config.py`, `python/sglang/srt/models/qwen3_5.py`, `python/sglang/srt/models/qwen3_vl.py` |
+| 2026-04-26 | [#23734](https://github.com/sgl-project/sglang/pull/23734) | merged | Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731) | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-04-29 | [#23434](https://github.com/sgl-project/sglang/pull/23434) | merged | [Model] Qwen3ForPooledOutput: forward get_input_embeddings to inner model | `python/sglang/srt/models/qwen3_classification.py` |
 | 2026-05-02 | [#20520](https://github.com/sgl-project/sglang/pull/20520) | merged | [NPU]TP Communications compression For Qwen3 models for NPU | `python/sglang/srt/models/qwen3.py` |
 | 2026-05-07 | [#22674](https://github.com/sgl-project/sglang/pull/22674) | closed | [NPU] Support Qwen3.5-MoE and Qwen3-Next quantization | `python/sglang/srt/model_loader/loader.py` |
@@ -114,15 +113,15 @@
 | 2026-05-23 | [#23292](https://github.com/sgl-project/sglang/pull/23292) | merged | [CP] 1/N: Support MLA Prefill Context Parallel | `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
 | 2026-05-26 | [#25971](https://github.com/sgl-project/sglang/pull/25971) | merged | [CPU Doc]Add Xeon CPU info in Qwen3 Cookbook | `docs_new/src/snippets/autoregressive/qwen3-deployment.jsx`, `docs_new/cookbook/autoregressive/Qwen/Qwen3.mdx` |
 | 2026-05-27 | [#23269](https://github.com/sgl-project/sglang/pull/23269) | merged | Support batch size > 1 when enable CP | `python/sglang/srt/layers/utils/cp_utils.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/model_executor/forward_batch_info.py` |
-| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | merged | [refactor] remove unused op_mlp | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-05-29 | [#26468](https://github.com/sgl-project/sglang/pull/26468) | merged | [Model] Add Qwen3-MoE MTP | `python/sglang/srt/models/qwen3_moe_mtp.py`, `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-05-29 | [#26673](https://github.com/sgl-project/sglang/pull/26673) | merged | [refactor] remove unused op_mlp | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py` |
 | 2026-05-31 | [#26798](https://github.com/sgl-project/sglang/pull/26798) | merged | Make qwen3's set_embed_and_head idempotent | `python/sglang/srt/models/qwen3.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
-| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
 | 2026-06-10 | [#9147](https://github.com/sgl-project/sglang/pull/9147) | closed | support Qwen3-MoE-w4afp8 | `python/sglang/srt/models/phi4mm_utils.py`, `python/sglang/srt/layers/attention/dual_chunk_flashattention_backend.py`, `python/sglang/srt/entrypoints/openai/serving_responses.py` |
 | 2026-06-10 | [#22837](https://github.com/sgl-project/sglang/pull/22837) | closed | [Bug] Qwen3 reasoning detector silently swallows tool_call when is missing | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
-| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
+| 2026-06-10 | [#23906](https://github.com/sgl-project/sglang/pull/23906) | merged | [Refactor] Cuda Graph Runner/Backend Refactor | `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` |
 | 2026-06-18 | [#28421](https://github.com/sgl-project/sglang/pull/28421) | merged | [3/N][CP] Implement zigzag CP strategy | `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/utils.py`, `python/sglang/srt/model_executor/model_runner.py` |
+| 2026-06-18 | [#28567](https://github.com/sgl-project/sglang/pull/28567) | merged | Add get_parallel(): a structured accessor for parallel-topology state | `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py` |
 | 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-20 | [#28810](https://github.com/sgl-project/sglang/pull/28810) | merged | [CI] Remove deprecated test/srt legacy CI setup | `test/srt/cpu/test_qkv_proj_with_rope.py`, `test/srt/cpu/utils.py`, `test/srt/cpu/test_norm.py` |
 | 2026-06-29 | [#29505](https://github.com/sgl-project/sglang/pull/29505) | merged | [NPU] Qwen3-VL-30B use split_qkv_rmsnorm_rope for extend | `python/sglang/srt/models/qwen3_moe.py` |
@@ -136,6 +135,11 @@
 | 2026-08-11 | [#21770](https://github.com/sgl-project/sglang/pull/21770) | closed | [Apple][MLX][Test] Add Qwen3 correctness and accuracy tests for Apple Silicon | `test/registered/models/test_qwen3_mlx_correctness.py`, `test/registered/models/test_qwen3_mlx_accuracy.py` |
 | 2026-08-14 | [#34810](https://github.com/sgl-project/sglang/pull/34810) | merged | fix(qwen3): support DeepEP-class backends and early EPLB state | `python/sglang/srt/models/qwen3_moe.py` |
 | 2026-08-18 | [#23372](https://github.com/sgl-project/sglang/pull/23372) | closed | [NPU] Add CI tests for Speculative Decoding | `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` |
+| 2026-08-26 | [#20127](https://github.com/sgl-project/sglang/pull/20127) | closed | [Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next | `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py` |
+| 2026-08-28 | [#22529](https://github.com/sgl-project/sglang/pull/22529) | closed | [Model] Support sliding window attention for Qwen3 | `python/sglang/srt/models/qwen3.py` |
+| 2026-09-13 | [#39126](https://github.com/sgl-project/sglang/pull/39126) | merged | [Qwen3.8] Enable NVIDIA NVFP4 on DGX Spark with file-backed PLE and PDL router fix | `python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py` |
+| 2026-09-23 | [#40870](https://github.com/sgl-project/sglang/pull/40870) | merged | [Refactor] Let LayerCommunicator own the FFN exit in Qwen3-MoE, DeepSeek-V2 and GLM4-MoE | `python/sglang/srt/models/qwen3_moe.py` |
+| 2026-10-04 | [#40190](https://github.com/sgl-project/sglang/pull/40190) | merged | [XPU] Enable fused QK-norm + RoPE for Qwen3-MoE | `python/sglang/srt/models/qwen3_moe.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -644,42 +648,6 @@ diff -- python/sglang/srt/models/qwen3.py
   - runtime: `python/sglang/srt/models/qwen3.py` modified +42/-16
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2.py`, `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #7740 - [optimize] add two stream norm for qwen3
-
-- 链接: https://github.com/sgl-project/sglang/pull/7740
-- 状态/时间: merged / 2025-07-03
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`；关联提交 `264dc6e74462`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+54/-10，可读 patch 229 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[optimize] add two stream norm for qwen3」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「[optimize] add two stream norm for qwen3」；主要实现面是 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3.py` modified +24/-5 (29 lines); hunks: -23,15 +23,17; -49,6 +51,7 @@ def __init__(; symbols: Qwen3Attention, __init__, _apply_qk_norm，涉及 `Qwen3Attention, __init__, _apply_qk_norm`；`python/sglang/srt/models/qwen3_moe.py` modified +24/-5 (29 lines); hunks: -67,6 +67,7; -76,11 +77,12; symbols: Qwen3MoeSparseMoeBlock, __init__, _apply_qk_norm，涉及 `Qwen3MoeSparseMoeBlock, __init__, _apply_qk_norm`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3.py` modified +24/-5 (29 lines); hunks: -23,15 +23,17; -49,6 +51,7 @@ def __init__(; symbols: Qwen3Attention, __init__, _apply_qk_norm
-  - `python/sglang/srt/models/qwen3_moe.py` modified +24/-5 (29 lines); hunks: -67,6 +67,7; -76,11 +77,12; symbols: Qwen3MoeSparseMoeBlock, __init__, _apply_qk_norm
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3.py
-@@ -23,15 +23,17 @@
-+from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode
--from sglang.srt.utils import add_prefix
-+from sglang.srt.utils import add_prefix, is_cuda
-+_is_cuda = is_cuda()
-@@ -49,6 +51,7 @@ def __init__(
-+        alt_stream: Optional[torch.cuda.Stream] = None,
-diff -- python/sglang/srt/models/qwen3_moe.py
-@@ -67,6 +67,7 @@
-+from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode
-@@ -76,11 +77,12 @@
--from sglang.srt.utils import DeepEPMode, add_prefix, is_non_idle_and_non_empty
-+from sglang.srt.utils import DeepEPMode, add_prefix, is_cuda, is_non_idle_and_non_empty
-+_is_cuda = is_cuda()
-@@ -352,6 +354,7 @@ def __init__(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3.py` modified +24/-5; `python/sglang/srt/models/qwen3_moe.py` modified +24/-5
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #7723 - [Bug] add flashinfer bool check for fusedmoe in Qwen moe models
 
 - 链接: https://github.com/sgl-project/sglang/pull/7723
@@ -716,44 +684,40 @@ diff -- python/sglang/srt/models/qwen3_moe.py
   - runtime: `python/sglang/srt/models/qwen2_moe.py` modified +9/-0; `python/sglang/srt/models/qwen3_moe.py` modified +9/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #7745 - [feat] Support EAGLE3 for Qwen
+### PR #7740 - [optimize] add two stream norm for qwen3
 
-- 链接: https://github.com/sgl-project/sglang/pull/7745
-- 状态/时间: merged / 2025-07-05
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+81/-6，可读 patch 197 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[feat] Support EAGLE3 for Qwen」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`；技术摘要: 覆盖「[feat] Support EAGLE3 for Qwen」；主要实现面是 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3.py` modified +28/-2 (30 lines); hunks: -2,7 +2,7; -325,6 +325,9 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, set_embed_and_head，涉及 `__init__, get_input_embeddings, forward`；`python/sglang/srt/models/qwen3_moe.py` modified +25/-2 (27 lines); hunks: -18,7 +18,7; -717,6 +717,7 @@ def __init__(; symbols: __init__, forward, start_layer, end_layer，涉及 `__init__, forward, start_layer`；`python/sglang/srt/models/qwen2_moe.py` modified +15/-1 (16 lines); hunks: -440,6 +440,9 @@ def __init__(; -459,6 +462,7 @@ def forward(; symbols: __init__, forward，涉及 `__init__, forward`；`python/sglang/srt/models/qwen2.py` modified +13/-1 (14 lines); hunks: -293,6 +293,9 @@ def __init__(; -321,7 +324,12 @@ def forward(; symbols: __init__, get_input_embedding, forward，涉及 `__init__, get_input_embedding, forward`。
+- 链接: https://github.com/sgl-project/sglang/pull/7740
+- 状态/时间: merged / 2025-07-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`；关联提交 `264dc6e74462`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+54/-10，可读 patch 229 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[optimize] add two stream norm for qwen3」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「[optimize] add two stream norm for qwen3」；主要实现面是 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3.py` modified +24/-5 (29 lines); hunks: -23,15 +23,17; -49,6 +51,7 @@ def __init__(; symbols: Qwen3Attention, __init__, _apply_qk_norm，涉及 `Qwen3Attention, __init__, _apply_qk_norm`；`python/sglang/srt/models/qwen3_moe.py` modified +24/-5 (29 lines); hunks: -67,6 +67,7; -76,11 +77,12; symbols: Qwen3MoeSparseMoeBlock, __init__, _apply_qk_norm，涉及 `Qwen3MoeSparseMoeBlock, __init__, _apply_qk_norm`。
 - 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3.py` modified +28/-2 (30 lines); hunks: -2,7 +2,7; -325,6 +325,9 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, set_embed_and_head
-  - `python/sglang/srt/models/qwen3_moe.py` modified +25/-2 (27 lines); hunks: -18,7 +18,7; -717,6 +717,7 @@ def __init__(; symbols: __init__, forward, start_layer, end_layer
-  - `python/sglang/srt/models/qwen2_moe.py` modified +15/-1 (16 lines); hunks: -440,6 +440,9 @@ def __init__(; -459,6 +462,7 @@ def forward(; symbols: __init__, forward
-  - `python/sglang/srt/models/qwen2.py` modified +13/-1 (14 lines); hunks: -293,6 +293,9 @@ def __init__(; -321,7 +324,12 @@ def forward(; symbols: __init__, get_input_embedding, forward
+  - `python/sglang/srt/models/qwen3.py` modified +24/-5 (29 lines); hunks: -23,15 +23,17; -49,6 +51,7 @@ def __init__(; symbols: Qwen3Attention, __init__, _apply_qk_norm
+  - `python/sglang/srt/models/qwen3_moe.py` modified +24/-5 (29 lines); hunks: -67,6 +67,7; -76,11 +77,12; symbols: Qwen3MoeSparseMoeBlock, __init__, _apply_qk_norm
 - 关键代码摘录:
 
 ```diff
 diff -- python/sglang/srt/models/qwen3.py
-@@ -2,7 +2,7 @@
--from typing import Any, Dict, Iterable, Optional, Tuple
-+from typing import Any, Dict, Iterable, List, Optional, Tuple
-@@ -325,6 +325,9 @@ def __init__(
-+        # For EAGLE3 support
-+        self.capture_aux_hidden_states = False
-@@ -346,10 +349,18 @@ def forward(
+@@ -23,15 +23,17 @@
++from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode
+-from sglang.srt.utils import add_prefix
++from sglang.srt.utils import add_prefix, is_cuda
++_is_cuda = is_cuda()
+@@ -49,6 +51,7 @@ def __init__(
++        alt_stream: Optional[torch.cuda.Stream] = None,
 diff -- python/sglang/srt/models/qwen3_moe.py
-@@ -18,7 +18,7 @@
--from typing import Any, Dict, Iterable, Optional, Tuple
-+from typing import Any, Dict, Iterable, List, Optional, Tuple
-@@ -717,6 +717,7 @@ def __init__(
-+        self.capture_aux_hidden_states = False
-@@ -735,9 +736,13 @@ def forward(
-+        aux_hidden_states = None
-diff -- python/sglang/srt/models/qwen2_moe.py
-@@ -440,6 +440,9 @@ def __init__(
+@@ -67,6 +67,7 @@
++from sglang.srt.model_executor.cuda_graph_runner import get_is_capture_mode
+@@ -76,11 +77,12 @@
+-from sglang.srt.utils import DeepEPMode, add_prefix, is_non_idle_and_non_empty
++from sglang.srt.utils import DeepEPMode, add_prefix, is_cuda, is_non_idle_and_non_empty
++_is_cuda = is_cuda()
+@@ -352,6 +354,7 @@ def __init__(
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3.py` modified +28/-2; `python/sglang/srt/models/qwen3_moe.py` modified +25/-2; `python/sglang/srt/models/qwen2_moe.py` modified +15/-1; `python/sglang/srt/models/qwen2.py` modified +13/-1
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +24/-5; `python/sglang/srt/models/qwen3_moe.py` modified +24/-5
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #7222 - DP Attention with Auto DeepEP Dispatch
@@ -797,6 +761,46 @@ diff -- python/sglang/srt/models/deepseek_v2.py
   - runtime: `python/sglang/srt/layers/moe/ep_moe/token_dispatcher.py` modified +15/-13; `python/sglang/srt/models/qwen3_moe.py` modified +7/-9; `python/sglang/srt/models/deepseek_v2.py` modified +7/-7; `python/sglang/srt/layers/moe/ep_moe/layer.py` modified +5/-3; `python/sglang/srt/model_executor/forward_batch_info.py` modified +2/-0; `python/sglang/srt/two_batch_overlap.py` modified +7/-3
   - tests: `test/srt/test_hybrid_dp_ep_tp_mtp.py` modified +80/-40
 - 验证与风险: diff 自带测试面 `test/srt/test_hybrid_dp_ep_tp_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #7745 - [feat] Support EAGLE3 for Qwen
+
+- 链接: https://github.com/sgl-project/sglang/pull/7745
+- 状态/时间: merged / 2025-07-05
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 4 个文件，+81/-6，可读 patch 197 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[feat] Support EAGLE3 for Qwen」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`；技术摘要: 覆盖「[feat] Support EAGLE3 for Qwen」；主要实现面是 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3.py` modified +28/-2 (30 lines); hunks: -2,7 +2,7; -325,6 +325,9 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, set_embed_and_head，涉及 `__init__, get_input_embeddings, forward`；`python/sglang/srt/models/qwen3_moe.py` modified +25/-2 (27 lines); hunks: -18,7 +18,7; -717,6 +717,7 @@ def __init__(; symbols: __init__, forward, start_layer, end_layer，涉及 `__init__, forward, start_layer`；`python/sglang/srt/models/qwen2_moe.py` modified +15/-1 (16 lines); hunks: -440,6 +440,9 @@ def __init__(; -459,6 +462,7 @@ def forward(; symbols: __init__, forward，涉及 `__init__, forward`；`python/sglang/srt/models/qwen2.py` modified +13/-1 (14 lines); hunks: -293,6 +293,9 @@ def __init__(; -321,7 +324,12 @@ def forward(; symbols: __init__, get_input_embedding, forward，涉及 `__init__, get_input_embedding, forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3.py` modified +28/-2 (30 lines); hunks: -2,7 +2,7; -325,6 +325,9 @@ def __init__(; symbols: __init__, get_input_embeddings, forward, set_embed_and_head
+  - `python/sglang/srt/models/qwen3_moe.py` modified +25/-2 (27 lines); hunks: -18,7 +18,7; -717,6 +717,7 @@ def __init__(; symbols: __init__, forward, start_layer, end_layer
+  - `python/sglang/srt/models/qwen2_moe.py` modified +15/-1 (16 lines); hunks: -440,6 +440,9 @@ def __init__(; -459,6 +462,7 @@ def forward(; symbols: __init__, forward
+  - `python/sglang/srt/models/qwen2.py` modified +13/-1 (14 lines); hunks: -293,6 +293,9 @@ def __init__(; -321,7 +324,12 @@ def forward(; symbols: __init__, get_input_embedding, forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3.py
+@@ -2,7 +2,7 @@
+-from typing import Any, Dict, Iterable, Optional, Tuple
++from typing import Any, Dict, Iterable, List, Optional, Tuple
+@@ -325,6 +325,9 @@ def __init__(
++        # For EAGLE3 support
++        self.capture_aux_hidden_states = False
+@@ -346,10 +349,18 @@ def forward(
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -18,7 +18,7 @@
+-from typing import Any, Dict, Iterable, Optional, Tuple
++from typing import Any, Dict, Iterable, List, Optional, Tuple
+@@ -717,6 +717,7 @@ def __init__(
++        self.capture_aux_hidden_states = False
+@@ -735,9 +736,13 @@ def forward(
++        aux_hidden_states = None
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -440,6 +440,9 @@ def __init__(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +28/-2; `python/sglang/srt/models/qwen3_moe.py` modified +25/-2; `python/sglang/srt/models/qwen2_moe.py` modified +15/-1; `python/sglang/srt/models/qwen2.py` modified +13/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #7762 - feat: support DeepSeek-R1-W4AFP8 model with ep-moe mode
 
@@ -2332,45 +2336,6 @@ diff -- python/sglang/srt/models/qwen3_moe.py
   - runtime: `python/sglang/srt/models/qwen3.py` modified +4/-1; `python/sglang/srt/models/qwen3_moe.py` modified +4/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`, `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #20127 - [Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next
-
-- 链接: https://github.com/sgl-project/sglang/pull/20127
-- 状态/时间: open / 2026-03-08
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+66/-25，可读 patch 148 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next」；模型线: Qwen3 Core；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next」；主要实现面是 `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +25/-8 (33 lines); hunks: -62,7 +62,7; -947,13 +947,20 @@ def __init__(; symbols: __init__, load_weights，涉及 `__init__, load_weights`；`python/sglang/srt/models/qwen2_moe.py` modified +24/-7 (31 lines); hunks: -743,13 +743,20 @@ def __init__(; -850,6 +857,16 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, load_weights，涉及 `__init__, load_weights`；`python/sglang/srt/models/qwen3_next.py` modified +17/-10 (27 lines); hunks: -888,14 +888,17 @@ def __init__(; -936,9 +939,11 @@ def get_embed_and_head(self):; symbols: __init__, get_embed_and_head, set_embed_and_head, load_weights，涉及 `__init__, get_embed_and_head, set_embed_and_head`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_moe.py` modified +25/-8 (33 lines); hunks: -62,7 +62,7; -947,13 +947,20 @@ def __init__(; symbols: __init__, load_weights
-  - `python/sglang/srt/models/qwen2_moe.py` modified +24/-7 (31 lines); hunks: -743,13 +743,20 @@ def __init__(; -850,6 +857,16 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, load_weights
-  - `python/sglang/srt/models/qwen3_next.py` modified +17/-10 (27 lines); hunks: -888,14 +888,17 @@ def __init__(; -936,9 +939,11 @@ def get_embed_and_head(self):; symbols: __init__, get_embed_and_head, set_embed_and_head, load_weights
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_moe.py
-@@ -62,7 +62,7 @@
--from sglang.srt.layers.utils import get_layer_id
-+from sglang.srt.layers.utils import PPMissingLayer, get_layer_id
-@@ -947,13 +947,20 @@ def __init__(
--        self.lm_head = ParallelLMHead(
--            config.vocab_size,
--            config.hidden_size,
-diff -- python/sglang/srt/models/qwen2_moe.py
-@@ -743,13 +743,20 @@ def __init__(
--        self.lm_head = ParallelLMHead(
--            config.vocab_size,
--            config.hidden_size,
--            quant_config=quant_config,
--            prefix=add_prefix("lm_head", prefix),
--            use_attn_tp_group=get_global_server_args().enable_dp_lm_head,
-diff -- python/sglang/srt/models/qwen3_next.py
-@@ -888,14 +888,17 @@ def __init__(
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +25/-8; `python/sglang/srt/models/qwen2_moe.py` modified +24/-7; `python/sglang/srt/models/qwen3_next.py` modified +17/-10
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #17784 - Upgrade transformers==5.3.0
 
 - 链接: https://github.com/sgl-project/sglang/pull/17784
@@ -2533,6 +2498,33 @@ diff -- python/sglang/jit_kernel/csrc/elementwise/fused_qknorm_rope.cuh
   - tests: `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py` added +444/-0
 - 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #21458 - [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write
+
+- 链接: https://github.com/sgl-project/sglang/pull/21458
+- 状态/时间: merged / 2026-04-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`；关联提交 `912494f59665`, `a188208e9a03`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+101/-3，可读 patch 152 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope，涉及 `__init__, forward_prepare_native, forward_prepare_npu`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3.py
+@@ -19,6 +19,7 @@
++from sglang.srt.layers.rotary_embedding.mrope import MRotaryEmbedding
+@@ -30,13 +31,25 @@
+-from sglang.srt.utils import add_prefix, is_cuda, is_npu
++from sglang.srt.utils import add_prefix, get_bool_env_var, is_cuda, is_hip, is_npu
++_is_hip = is_hip()
++_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +101/-3
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #21654 - Fused_qknorm_rope kernel optimization: up to 2.4× faster
 
 - 链接: https://github.com/sgl-project/sglang/pull/21654
@@ -2575,60 +2567,6 @@ diff -- python/sglang/jit_kernel/benchmark/bench_fused_qknorm_rope.py
   - tests: `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py` modified +2/-2
 - 验证与风险: diff 自带测试面 `python/sglang/jit_kernel/tests/test_fused_qknorm_rope.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #21458 - [AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write
-
-- 链接: https://github.com/sgl-project/sglang/pull/21458
-- 状态/时间: merged / 2026-04-01
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3.py`；关联提交 `912494f59665`, `a188208e9a03`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+101/-3，可读 patch 152 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[AMD] Optimize Qwen3-VL decode - fuse QK-norm + 3D mRoPE + KV cache write」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope，涉及 `__init__, forward_prepare_native, forward_prepare_npu`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3.py` modified +101/-3 (104 lines); hunks: -19,6 +19,7; -30,13 +31,25; symbols: __init__, forward_prepare_native, forward_prepare_npu, forward_prepare_aiter_fused_mrope
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3.py
-@@ -19,6 +19,7 @@
-+from sglang.srt.layers.rotary_embedding.mrope import MRotaryEmbedding
-@@ -30,13 +31,25 @@
--from sglang.srt.utils import add_prefix, is_cuda, is_npu
-+from sglang.srt.utils import add_prefix, get_bool_env_var, is_cuda, is_hip, is_npu
-+_is_hip = is_hip()
-+_use_aiter = get_bool_env_var("SGLANG_USE_AITER") and _is_hip
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3.py` modified +101/-3
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #22429 - [NPU]add Qwen3-32b and Qwen3-8b low latency md
-
-- 链接: https://github.com/sgl-project/sglang/pull/22429
-- 状态/时间: merged / 2026-04-09
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+296/-0，可读 patch 310 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[NPU]add Qwen3-32b and Qwen3-8b low latency md」；模型线: Qwen3 Core；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU]add Qwen3-32b and Qwen3-8b low latency md」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0 (296 lines); hunks: -37,6 +37,10 @@ you encounter issues or have any questions, please [open an i...; -2345,6 +2349,298 @@ We tested it based on the `RANDOM` dataset.。
-- 代码 diff 细节:
-  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0 (296 lines); hunks: -37,6 +37,10 @@ you encounter issues or have any questions, please [open an i...; -2345,6 +2349,298 @@ We tested it based on the `RANDOM` dataset.
-- 关键代码摘录:
-
-```diff
-diff -- docs/platforms/ascend/ascend_npu_best_practice.md
-@@ -37,6 +37,10 @@ you encounter issues or have any questions, please [open an issue](https://githu
-+| Qwen3-32B       | Atlas 800I A3 | 2     | PD Mixed    | 1K+0.3K | 12ms | W8A8 INT8    | [Optimal Configuration](#qwen3-32b-1k-0_3k-12ms-on-a3-2-cards-mixed-mode)      |
-+| Qwen3-32B       | Atlas 800I A3 | 2     | PD Mixed    | 6K+1.5K | 17ms | W8A8 INT8    | [Optimal Configuration](#qwen3-32b-6k-1_5k-17ms-on-a3-2-cards-mixed-mode)      |
-+| Qwen3-8B        | Atlas 800I A3 | 1     | PD Mixed    | 1K+0.3K | 7ms  | W8A8 INT8    | [Optimal Configuration](#qwen3-8b-1k-0_3k-7ms-on-a3-1-cards-mixed-mode)        |
-+| Qwen3-8B        | Atlas 800I A3 | 1     | PD Mixed    | 6K+1.5K | 9ms  | W8A8 INT8    | [Optimal Configuration](#qwen3-8b-6k-1_5k-9ms-on-a3-1-cards-mixed-mode)        |
-@@ -2345,6 +2349,298 @@ We tested it based on the `RANDOM` dataset.
-+### Qwen3-32B 1K-0_3K 12ms on A3 2 Cards Mixed Mode
-```
-
-- 已读文件:
-  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #22358 - Enable DFLASH support for additional model backends
 
 - 链接: https://github.com/sgl-project/sglang/pull/22358
@@ -2670,32 +2608,32 @@ diff -- python/sglang/srt/models/qwen3_next.py
   - runtime: `python/sglang/srt/models/qwen3_5.py` modified +34/-5; `python/sglang/srt/models/kimi_k25.py` modified +24/-0; `python/sglang/srt/models/qwen3_next.py` modified +20/-0; `python/sglang/srt/models/qwen3_moe.py` modified +17/-0; `python/sglang/srt/models/qwen3_vl.py` modified +16/-0; `python/sglang/srt/models/gpt_oss.py` modified +15/-0
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/kimi_k25.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #22529 - [Model] Support sliding window attention for Qwen3
+### PR #22429 - [NPU]add Qwen3-32b and Qwen3-8b low latency md
 
-- 链接: https://github.com/sgl-project/sglang/pull/22529
-- 状态/时间: open / 2026-04-10
+- 链接: https://github.com/sgl-project/sglang/pull/22429
+- 状态/时间: merged / 2026-04-09
 - 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-0，可读 patch 71 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Support sliding window attention for Qwen3」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[Model] Support sliding window attention for Qwen3」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3.py` modified +29/-0 (29 lines); hunks: -36,6 +36,17; -71,6 +82,7 @@ def __init__(; symbols: get_attention_sliding_window_size, __init__，涉及 `get_attention_sliding_window_size, __init__`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+296/-0，可读 patch 310 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[NPU]add Qwen3-32b and Qwen3-8b low latency md」；模型线: Qwen3 Core；类别: 文档/测试/CI；主要 diff: `docs/platforms/ascend/ascend_npu_best_practice.md`；技术摘要: 覆盖「[NPU]add Qwen3-32b and Qwen3-8b low latency md」；主要实现面是 `docs/platforms/ascend/ascend_npu_best_practice.md`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0 (296 lines); hunks: -37,6 +37,10 @@ you encounter issues or have any questions, please [open an i...; -2345,6 +2349,298 @@ We tested it based on the `RANDOM` dataset.。
 - 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3.py` modified +29/-0 (29 lines); hunks: -36,6 +36,17; -71,6 +82,7 @@ def __init__(; symbols: get_attention_sliding_window_size, __init__
+  - `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0 (296 lines); hunks: -37,6 +37,10 @@ you encounter issues or have any questions, please [open an i...; -2345,6 +2349,298 @@ We tested it based on the `RANDOM` dataset.
 - 关键代码摘录:
 
 ```diff
-diff -- python/sglang/srt/models/qwen3.py
-@@ -36,6 +36,17 @@
-+# Aligned with HF's implementation, using sliding window inclusive with the last token
-+# SGLang assumes exclusive
-+def get_attention_sliding_window_size(config):
-+    if getattr(config, "sliding_window", None) is not None:
-+        return config.sliding_window - 1
-+    else:
+diff -- docs/platforms/ascend/ascend_npu_best_practice.md
+@@ -37,6 +37,10 @@ you encounter issues or have any questions, please [open an issue](https://githu
++| Qwen3-32B       | Atlas 800I A3 | 2     | PD Mixed    | 1K+0.3K | 12ms | W8A8 INT8    | [Optimal Configuration](#qwen3-32b-1k-0_3k-12ms-on-a3-2-cards-mixed-mode)      |
++| Qwen3-32B       | Atlas 800I A3 | 2     | PD Mixed    | 6K+1.5K | 17ms | W8A8 INT8    | [Optimal Configuration](#qwen3-32b-6k-1_5k-17ms-on-a3-2-cards-mixed-mode)      |
++| Qwen3-8B        | Atlas 800I A3 | 1     | PD Mixed    | 1K+0.3K | 7ms  | W8A8 INT8    | [Optimal Configuration](#qwen3-8b-1k-0_3k-7ms-on-a3-1-cards-mixed-mode)        |
++| Qwen3-8B        | Atlas 800I A3 | 1     | PD Mixed    | 6K+1.5K | 9ms  | W8A8 INT8    | [Optimal Configuration](#qwen3-8b-6k-1_5k-9ms-on-a3-1-cards-mixed-mode)        |
+@@ -2345,6 +2349,298 @@ We tested it based on the `RANDOM` dataset.
++### Qwen3-32B 1K-0_3K 12ms on A3 2 Cards Mixed Mode
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3.py` modified +29/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+  - docs: `docs/platforms/ascend/ascend_npu_best_practice.md` modified +296/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/platforms/ascend/ascend_npu_best_practice.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #22446 - [NPU] add qwen3-30b-a3b low latency example
 
@@ -2889,28 +2827,6 @@ diff -- python/sglang/srt/models/qwen3_moe.py
   - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +7/-1
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
-### PR #23734 - Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731)
-
-- 链接: https://github.com/sgl-project/sglang/pull/23734
-- 状态/时间: merged / 2026-04-26
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `71029abd640f`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731)」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731)」；主要实现面是 `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -335,6 +335,7 @@ def forward_normal(; symbols: forward_normal，涉及 `forward_normal`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -335,6 +335,7 @@ def forward_normal(; symbols: forward_normal
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_moe.py
-@@ -335,6 +335,7 @@ def forward_normal(
-+            and not use_reduce_scatter
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +1/-0
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #19484 - [CPU] Add Qwen3.5 model optimization for CPU
 
 - 链接: https://github.com/sgl-project/sglang/pull/19484
@@ -2951,6 +2867,28 @@ diff -- python/sglang/srt/models/qwen3_vl.py
 - 已读文件:
   - runtime: `python/sglang/srt/configs/update_config.py` modified +178/-75; `python/sglang/srt/models/qwen3_5.py` modified +37/-4; `python/sglang/srt/models/qwen3_vl.py` modified +29/-6; `python/sglang/srt/layers/attention/fla/fused_norm_gate.py` modified +19/-11; `python/sglang/srt/layers/attention/mamba/mamba.py` modified +18/-2; `python/sglang/srt/models/qwen3_next.py` modified +14/-5
 - 验证与风险: diff 自带测试面 `test/srt/cpu/test_mamba.py`, `test/srt/cpu/test_qwen3.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #23734 - Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731)
+
+- 链接: https://github.com/sgl-project/sglang/pull/23734
+- 状态/时间: merged / 2026-04-26
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `71029abd640f`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-0，可读 patch 8 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731)」；模型线: Qwen3 Core；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「Fix Qwen3 MoE: also guard EP all-reduce with not use_reduce_scatter (follow-up to #23731)」；主要实现面是 `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -335,6 +335,7 @@ def forward_normal(; symbols: forward_normal，涉及 `forward_normal`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +1/-0 (1 lines); hunks: -335,6 +335,7 @@ def forward_normal(; symbols: forward_normal
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -335,6 +335,7 @@ def forward_normal(
++            and not use_reduce_scatter
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +1/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3_moe.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #23434 - [Model] Qwen3ForPooledOutput: forward get_input_embeddings to inner model
 
@@ -3220,6 +3158,42 @@ diff -- python/sglang/srt/model_executor/forward_batch_info.py
   - runtime: `python/sglang/srt/layers/utils/cp_utils.py` modified +236/-153; `python/sglang/srt/layers/attention/dsa/dsa_indexer.py` modified +8/-4; `python/sglang/srt/model_executor/forward_batch_info.py` modified +3/-2; `python/sglang/srt/layers/attention/dsa/utils.py` modified +3/-1; `python/sglang/srt/models/deepseek_nextn.py` modified +2/-2; `python/sglang/srt/models/deepseek_v2.py` modified +2/-2
 - 验证与风险: diff 自带测试面 `test/registered/cp/test_qwen3_30b.py`, `test/registered/kernels/test_cp_prefix_len_fa3_parity.py`, `test/registered/kernels/test_mla_cp_fa3_parity.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
+### PR #26468 - [Model] Add Qwen3-MoE MTP
+
+- 链接: https://github.com/sgl-project/sglang/pull/26468
+- 状态/时间: merged / 2026-05-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_moe_mtp.py`；关联提交 `cf66693b3530`；保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+163/-4，可读 patch 206 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Add Qwen3-MoE MTP」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_moe_mtp.py`, `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「[Model] Add Qwen3-MoE MTP」；主要实现面是 `python/sglang/srt/models/qwen3_moe_mtp.py`, `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_moe_mtp.py` added +131/-0 (131 lines); hunks: -0,0 +1,131; symbols: Qwen3MoeForCausalLMMTP, __init__, set_embed_and_head, forward，涉及 `Qwen3MoeForCausalLMMTP, __init__, set_embed_and_head`；`python/sglang/srt/models/qwen3_moe.py` modified +18/-1 (19 lines); hunks: -1111,7 +1111,9 @@ def set_dflash_layers_to_capture(self, layer_ids: List[int]):; -1132,6 +1134,21 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: set_dflash_layers_to_capture, load_weights，涉及 `set_dflash_layers_to_capture, load_weights`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe_mtp.py` added +131/-0 (131 lines); hunks: -0,0 +1,131; symbols: Qwen3MoeForCausalLMMTP, __init__, set_embed_and_head, forward
+  - `python/sglang/srt/models/qwen3_moe.py` modified +18/-1 (19 lines); hunks: -1111,7 +1111,9 @@ def set_dflash_layers_to_capture(self, layer_ids: List[int]):; -1132,6 +1134,21 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: set_dflash_layers_to_capture, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe_mtp.py
+@@ -0,0 +1,131 @@
++# Copyright 2023-2024 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -1111,7 +1111,9 @@ def set_dflash_layers_to_capture(self, layer_ids: List[int]):
+-    def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++    def load_weights(
++        self, weights: Iterable[Tuple[str, torch.Tensor]], is_mtp: bool = False
++    ):
+@@ -1132,6 +1134,21 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++            if is_mtp:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_moe_mtp.py` added +131/-0; `python/sglang/srt/models/qwen3_moe.py` modified +18/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_moe_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
 ### PR #26673 - [refactor] remove unused op_mlp
 
 - 链接: https://github.com/sgl-project/sglang/pull/26673
@@ -3260,42 +3234,6 @@ diff -- python/sglang/srt/models/glm4_moe_lite.py
 - 已读文件:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +0/-13; `python/sglang/srt/models/glm4_moe.py` modified +0/-13; `python/sglang/srt/models/glm4_moe_lite.py` modified +0/-13; `python/sglang/srt/models/minimax_m2.py` modified +0/-6; `python/sglang/srt/models/mimo_v2.py` modified +0/-4; `python/sglang/srt/models/qwen3_moe.py` modified +0/-4
 - 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/models/glm4_moe.py`, `python/sglang/srt/models/glm4_moe_lite.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
-### PR #26468 - [Model] Add Qwen3-MoE MTP
-
-- 链接: https://github.com/sgl-project/sglang/pull/26468
-- 状态/时间: merged / 2026-05-29
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_moe_mtp.py`；关联提交 `cf66693b3530`；保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 5 个文件，+163/-4，可读 patch 206 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Model] Add Qwen3-MoE MTP」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3_moe_mtp.py`, `python/sglang/srt/models/qwen3_moe.py`；技术摘要: 覆盖「[Model] Add Qwen3-MoE MTP」；主要实现面是 `python/sglang/srt/models/qwen3_moe_mtp.py`, `python/sglang/srt/models/qwen3_moe.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/qwen3_moe_mtp.py` added +131/-0 (131 lines); hunks: -0,0 +1,131; symbols: Qwen3MoeForCausalLMMTP, __init__, set_embed_and_head, forward，涉及 `Qwen3MoeForCausalLMMTP, __init__, set_embed_and_head`；`python/sglang/srt/models/qwen3_moe.py` modified +18/-1 (19 lines); hunks: -1111,7 +1111,9 @@ def set_dflash_layers_to_capture(self, layer_ids: List[int]):; -1132,6 +1134,21 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: set_dflash_layers_to_capture, load_weights，涉及 `set_dflash_layers_to_capture, load_weights`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/qwen3_moe_mtp.py` added +131/-0 (131 lines); hunks: -0,0 +1,131; symbols: Qwen3MoeForCausalLMMTP, __init__, set_embed_and_head, forward
-  - `python/sglang/srt/models/qwen3_moe.py` modified +18/-1 (19 lines); hunks: -1111,7 +1111,9 @@ def set_dflash_layers_to_capture(self, layer_ids: List[int]):; -1132,6 +1134,21 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: set_dflash_layers_to_capture, load_weights
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/models/qwen3_moe_mtp.py
-@@ -0,0 +1,131 @@
-+# Copyright 2023-2024 SGLang Team
-+# Licensed under the Apache License, Version 2.0 (the "License");
-+# you may not use this file except in compliance with the License.
-+# You may obtain a copy of the License at
-+#
-+#     http://www.apache.org/licenses/LICENSE-2.0
-diff -- python/sglang/srt/models/qwen3_moe.py
-@@ -1111,7 +1111,9 @@ def set_dflash_layers_to_capture(self, layer_ids: List[int]):
--    def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+    def load_weights(
-+        self, weights: Iterable[Tuple[str, torch.Tensor]], is_mtp: bool = False
-+    ):
-@@ -1132,6 +1134,21 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+            if is_mtp:
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/models/qwen3_moe_mtp.py` added +131/-0; `python/sglang/srt/models/qwen3_moe.py` modified +18/-1
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/model_config.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_moe_mtp.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #26798 - Make qwen3's set_embed_and_head idempotent
 
@@ -3364,47 +3302,6 @@ diff -- docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx
 - 已读文件:
   - docs: `docs_new/docs/basic_usage/deepseek_v32.mdx` removed +0/-601; `docs_new/docs/basic_usage/deepseek_v3.mdx` removed +0/-375; `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` modified +244/-3; `docs_new/cookbook/autoregressive/GLM/GLM-4.6V.mdx` modified +156/-26; `docs_new/docs/basic_usage/gpt_oss.mdx` removed +0/-181; `docs_new/docs/basic_usage/glmv.mdx` removed +0/-139
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-OCR.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-R1.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
-### PR #23906 - [Refactor] Cuda Graph Runner/Backend Refactor
-
-- 链接: https://github.com/sgl-project/sglang/pull/23906
-- 状态/时间: merged / 2026-06-10
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 160 个文件，+5197/-3068，可读 patch 12233 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[Refactor] Cuda Graph Runner/Backend Refactor」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`；技术摘要: 覆盖「[Refactor] Cuda Graph Runner/Backend Refactor」；主要实现面是 `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool，涉及 `freeze_gc, _to_torch, patch_model`；`python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype，涉及 `PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled`；`python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode，涉及 `_make_graph_key, build_replay_fb_view, _allocate_decode_buffers`；`python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers，涉及 `BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank`。
-- 代码 diff 细节:
-  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool
-  - `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype
-  - `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode
-  - `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers
-  - `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0 (442 lines); hunks: -0,0 +1,442; symbols: _grouped_foreach_copy_, foreach_copy, DecodeInputBuffers, create
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
-@@ -1,860 +0,0 @@
--# Copyright 2023-2024 SGLang Team
--# Licensed under the Apache License, Version 2.0 (the "License");
--# you may not use this file except in compliance with the License.
--# You may obtain a copy of the License at
--#
--#     http://www.apache.org/licenses/LICENSE-2.0
-diff -- python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py
-@@ -0,0 +1,846 @@
-+# Copyright 2023-2026 SGLang Team
-+# Licensed under the Apache License, Version 2.0 (the "License");
-+# you may not use this file except in compliance with the License.
-+# You may obtain a copy of the License at
-+#
-+#     http://www.apache.org/licenses/LICENSE-2.0
-diff -- python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py
-@@ -1,4 +1,4 @@
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541; `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0; `python/sglang/srt/model_executor/runner_backend/tc_piecewise_cuda_graph_backend.py` added +225/-0
-- 验证与风险: diff 自带测试面 `python/sglang/test/doc_patch.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #9147 - support Qwen3-MoE-w4afp8
 
@@ -3479,46 +3376,46 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
   - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +1/-0
 - 验证与风险: diff 自带测试面 `test/registered/unit/parser/test_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+### PR #23906 - [Refactor] Cuda Graph Runner/Backend Refactor
 
-- 链接: https://github.com/sgl-project/sglang/pull/28567
-- 状态/时间: merged / 2026-06-18
+- 链接: https://github.com/sgl-project/sglang/pull/23906
+- 状态/时间: merged / 2026-06-10
 - 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 184 个文件，+1865/-1727，可读 patch 8932 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Add get_parallel(): a structured accessor for parallel-topology state」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Add get_parallel(): a structured accessor for parallel-topology state」；主要实现面是 `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention，涉及 `ApertusMLP, __init__, forward`；`python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales，涉及 `__init__, forward, load_kv_cache_scales`；`python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__，涉及 `_resolve_moe_input_pad_multiple, __init__`；`python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__，涉及 `__init__`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 160 个文件，+5197/-3068，可读 patch 12233 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Refactor] Cuda Graph Runner/Backend Refactor」；模型线: Qwen3 Core；类别: 性能/后端优化；主要 diff: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`；技术摘要: 覆盖「[Refactor] Cuda Graph Runner/Backend Refactor」；主要实现面是 `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py`, `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool，涉及 `freeze_gc, _to_torch, patch_model`；`python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype，涉及 `PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled`；`python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode，涉及 `_make_graph_key, build_replay_fb_view, _allocate_decode_buffers`；`python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers，涉及 `BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank`。
 - 代码 diff 细节:
-  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
-  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
-  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
-  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
-  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+  - `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860 (860 lines); hunks: -1,860 +0,0; symbols: freeze_gc, _to_torch, patch_model, get_global_graph_memory_pool
+  - `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0 (846 lines); hunks: -0,0 +1,846; symbols: PrefillCudaGraphRunner, __init__, _is_mamba_track_enabled, _cache_loc_dtype
+  - `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463 (757 lines); hunks: -1,4 +1,4; -11,33 +11,36; symbols: _make_graph_key, build_replay_fb_view, _allocate_decode_buffers, get_is_capture_mode
+  - `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541 (541 lines); hunks: -1,541 +0,0; symbols: BreakableCudaGraphRunner, __init__, _has_inactive_dp_rank, _init_buffers
+  - `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0 (442 lines); hunks: -0,0 +1,442; symbols: _grouped_foreach_copy_, foreach_copy, DecodeInputBuffers, create
 - 关键代码摘录:
 
 ```diff
-diff -- python/sglang/srt/models/apertus.py
-@@ -1,687 +1,686 @@
--# SPDX-License-Identifier: Apache-2.0
--# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
--# Copyright 2025 The SwissAI Initiative
+diff -- python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py
+@@ -1,860 +0,0 @@
 -# Copyright 2023-2024 SGLang Team
 -# Licensed under the Apache License, Version 2.0 (the "License");
 -# you may not use this file except in compliance with the License.
-diff -- python/sglang/srt/models/solar.py
-@@ -1,37 +1,14 @@
--# Adapted from
--# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
--# Copyright 2023 The vLLM team.
--# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-# You may obtain a copy of the License at
 -#
--# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
-diff -- python/sglang/srt/models/gpt_oss.py
-@@ -28,21 +28,13 @@
+-#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py
+@@ -0,0 +1,846 @@
++# Copyright 2023-2026 SGLang Team
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
+diff -- python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py
+@@ -1,4 +1,4 @@
 ```
 
 - 已读文件:
-  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
-- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+  - runtime: `python/sglang/srt/model_executor/piecewise_cuda_graph_runner.py` removed +0/-860; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` added +846/-0; `python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py` renamed +294/-463; `python/sglang/srt/model_executor/breakable_cuda_graph_runner.py` removed +0/-541; `python/sglang/srt/model_executor/runner_utils/buffers.py` added +442/-0; `python/sglang/srt/model_executor/runner_backend/tc_piecewise_cuda_graph_backend.py` added +225/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/doc_patch.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #28421 - [3/N][CP] Implement zigzag CP strategy
 
@@ -3560,6 +3457,47 @@ diff -- python/sglang/srt/model_executor/model_runner.py
 - 已读文件:
   - runtime: `python/sglang/srt/layers/cp/zigzag.py` modified +264/-15; `python/sglang/srt/layers/cp/utils.py` modified +101/-1; `python/sglang/srt/model_executor/model_runner.py` modified +64/-3; `python/sglang/srt/layers/attention/flashattention_backend.py` modified +39/-17; `python/sglang/srt/layers/cp/base.py` modified +4/-8; `python/sglang/srt/layers/cp/interleave.py` modified +3/-1
 - 验证与风险: diff 自带测试面 `test/registered/cp/test_cp_strategy_unit.py`, `test/registered/cp/test_gqa_prefill_cp_legacy.py`, `test/registered/cp/test_gqa_preill_cp.py`, `test/registered/unit/server_args/test_server_args.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28567 - Add get_parallel(): a structured accessor for parallel-topology state
+
+- 链接: https://github.com/sgl-project/sglang/pull/28567
+- 状态/时间: merged / 2026-06-18
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 184 个文件，+1865/-1727，可读 patch 8932 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Add get_parallel(): a structured accessor for parallel-topology state」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`；技术摘要: 覆盖「Add get_parallel(): a structured accessor for parallel-topology state」；主要实现面是 `python/sglang/srt/models/apertus.py`, `python/sglang/srt/models/solar.py`, `python/sglang/srt/models/gpt_oss.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention，涉及 `ApertusMLP, __init__, forward`；`python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales，涉及 `__init__, forward, load_kv_cache_scales`；`python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__，涉及 `_resolve_moe_input_pad_multiple, __init__`；`python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/apertus.py` modified +686/-687 (1373 lines); hunks: -1,687 +1,686; symbols: ApertusMLP, __init__, forward, ApertusAttention
+  - `python/sglang/srt/models/solar.py` modified +28/-27 (55 lines); hunks: -1,37 +1,14; -54,6 +31,30; symbols: __init__, forward, load_kv_cache_scales
+  - `python/sglang/srt/models/gpt_oss.py` modified +17/-24 (41 lines); hunks: -28,21 +28,13; -76,6 +68,7; symbols: _resolve_moe_input_pad_multiple, __init__
+  - `python/sglang/srt/models/deepseek_v2.py` modified +14/-23 (37 lines); hunks: -47,9 +47,7; -72,12 +70,6; symbols: __init__
+  - `python/sglang/srt/layers/communicator.py` modified +13/-19 (32 lines); hunks: -23,8 +23,6; -44,12 +42,7; symbols: apply_aiter_all_reduce_fusion, init_context, should_fuse_mlp_allreduce_with_next_layer, is_same_group_size
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/apertus.py
+@@ -1,687 +1,686 @@
+-# SPDX-License-Identifier: Apache-2.0
+-# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+-# Copyright 2025 The SwissAI Initiative
+-# Copyright 2023-2024 SGLang Team
+-# Licensed under the Apache License, Version 2.0 (the "License");
+-# you may not use this file except in compliance with the License.
+diff -- python/sglang/srt/models/solar.py
+@@ -1,37 +1,14 @@
+-# Adapted from
+-# https://github.com/huggingface/transformers/blob/v4.28.0/src/transformers/models/llama/modeling_llama.py
+-# Copyright 2023 The vLLM team.
+-# Copyright 2022 EleutherAI and the HuggingFace Inc. team. All rights reserved.
+-#
+-# This code is based on EleutherAI's GPT-NeoX library and the GPT-NeoX
+diff -- python/sglang/srt/models/gpt_oss.py
+@@ -28,21 +28,13 @@
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/apertus.py` modified +686/-687; `python/sglang/srt/models/solar.py` modified +28/-27; `python/sglang/srt/models/gpt_oss.py` modified +17/-24; `python/sglang/srt/models/deepseek_v2.py` modified +14/-23; `python/sglang/srt/layers/communicator.py` modified +13/-19; `python/sglang/srt/models/qwen3_moe.py` modified +12/-18
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/attention_unittest/attention_methods/dense_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsa_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dsv4_attention.py`, `python/sglang/test/kits/attention_unittest/attention_methods/dual_chunk_attention.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #28697 - [docs] Add B300 cookbook deployment options
 
@@ -3984,6 +3922,153 @@ diff -- test/registered/ascend/basic_function/speculative_inference/test_npu_spe
 - 已读文件:
   - tests: `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py` added +193/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_multi_npu.py` added +164/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_token_map.py` added +161/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py` added +110/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_moe_a2a_backend.py` added +104/-0; `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py` modified +14/-12
 - 验证与风险: diff 自带测试面 `python/sglang/test/ascend/test_ascend_utils.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_eagle3.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_attention_mode.py`, `test/registered/ascend/basic_function/speculative_inference/test_npu_speculative_draft_attention_backend.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #20127 - [Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next
+
+- 链接: https://github.com/sgl-project/sglang/pull/20127
+- 状态/时间: closed / 2026-08-26
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+66/-25，可读 patch 148 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next」；模型线: Qwen3 Core；类别: 模型实现调整；主要 diff: `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py`；技术摘要: 覆盖「[Qwen] Handle tie_word_embeddings for Qwen MoE and Qwen3Next」；主要实现面是 `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_next.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3_moe.py` modified +25/-8 (33 lines); hunks: -62,7 +62,7; -947,13 +947,20 @@ def __init__(; symbols: __init__, load_weights，涉及 `__init__, load_weights`；`python/sglang/srt/models/qwen2_moe.py` modified +24/-7 (31 lines); hunks: -743,13 +743,20 @@ def __init__(; -850,6 +857,16 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, load_weights，涉及 `__init__, load_weights`；`python/sglang/srt/models/qwen3_next.py` modified +17/-10 (27 lines); hunks: -888,14 +888,17 @@ def __init__(; -936,9 +939,11 @@ def get_embed_and_head(self):; symbols: __init__, get_embed_and_head, set_embed_and_head, load_weights，涉及 `__init__, get_embed_and_head, set_embed_and_head`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +25/-8 (33 lines); hunks: -62,7 +62,7; -947,13 +947,20 @@ def __init__(; symbols: __init__, load_weights
+  - `python/sglang/srt/models/qwen2_moe.py` modified +24/-7 (31 lines); hunks: -743,13 +743,20 @@ def __init__(; -850,6 +857,16 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.T...; symbols: __init__, load_weights
+  - `python/sglang/srt/models/qwen3_next.py` modified +17/-10 (27 lines); hunks: -888,14 +888,17 @@ def __init__(; -936,9 +939,11 @@ def get_embed_and_head(self):; symbols: __init__, get_embed_and_head, set_embed_and_head, load_weights
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -62,7 +62,7 @@
+-from sglang.srt.layers.utils import get_layer_id
++from sglang.srt.layers.utils import PPMissingLayer, get_layer_id
+@@ -947,13 +947,20 @@ def __init__(
+-        self.lm_head = ParallelLMHead(
+-            config.vocab_size,
+-            config.hidden_size,
+diff -- python/sglang/srt/models/qwen2_moe.py
+@@ -743,13 +743,20 @@ def __init__(
+-        self.lm_head = ParallelLMHead(
+-            config.vocab_size,
+-            config.hidden_size,
+-            quant_config=quant_config,
+-            prefix=add_prefix("lm_head", prefix),
+-            use_attn_tp_group=get_global_server_args().enable_dp_lm_head,
+diff -- python/sglang/srt/models/qwen3_next.py
+@@ -888,14 +888,17 @@ def __init__(
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +25/-8; `python/sglang/srt/models/qwen2_moe.py` modified +24/-7; `python/sglang/srt/models/qwen3_next.py` modified +17/-10
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen2_moe.py`, `python/sglang/srt/models/qwen3_moe.py`, `python/sglang/srt/models/qwen3_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #22529 - [Model] Support sliding window attention for Qwen3
+
+- 链接: https://github.com/sgl-project/sglang/pull/22529
+- 状态/时间: closed / 2026-08-28
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+29/-0，可读 patch 71 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[Model] Support sliding window attention for Qwen3」；模型线: Qwen3 Core；类别: 模型支持/运行时入口；主要 diff: `python/sglang/srt/models/qwen3.py`；技术摘要: 覆盖「[Model] Support sliding window attention for Qwen3」；主要实现面是 `python/sglang/srt/models/qwen3.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/models/qwen3.py` modified +29/-0 (29 lines); hunks: -36,6 +36,17; -71,6 +82,7 @@ def __init__(; symbols: get_attention_sliding_window_size, __init__，涉及 `get_attention_sliding_window_size, __init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3.py` modified +29/-0 (29 lines); hunks: -36,6 +36,17; -71,6 +82,7 @@ def __init__(; symbols: get_attention_sliding_window_size, __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3.py
+@@ -36,6 +36,17 @@
++# Aligned with HF's implementation, using sliding window inclusive with the last token
++# SGLang assumes exclusive
++def get_attention_sliding_window_size(config):
++    if getattr(config, "sliding_window", None) is not None:
++        return config.sliding_window - 1
++    else:
+```
+
+- 已读文件:
+  - runtime: `python/sglang/srt/models/qwen3.py` modified +29/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/qwen3.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #39126 - [Qwen3.8] Enable NVIDIA NVFP4 on DGX Spark with file-backed PLE and PDL router fix
+
+- 链接: https://github.com/sgl-project/sglang/pull/39126
+- 状态/时间: merged / 2026-09-13
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py`；关联提交 `cebca698e2da`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 21 个文件，+1376/-31，可读 patch 1715 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py` modified +45/-2 (47 lines); hunks: -10,12 +10,25; -38,8 +51,38 @@ def _qwen3_moe_family_overrides(server_args: Any, hf_config:...; symbols: _mixed_precision_moe_quant_algos, _qwen3_moe_family_overrides，涉及 `_mixed_precision_moe_quant_algos, _qwen3_moe_family_overrides`。
+- 代码 diff 细节:
+  - `python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py` modified +45/-2 (47 lines); hunks: -10,12 +10,25; -38,8 +51,38 @@ def _qwen3_moe_family_overrides(server_args: Any, hf_config:...; symbols: _mixed_precision_moe_quant_algos, _qwen3_moe_family_overrides
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py
+@@ -10,12 +10,25 @@
++from sglang.srt.environ import envs
++def _mixed_precision_moe_quant_algos(hf_config: Any) -> set:
++    """quant_algo values ModelOpt MIXED_PRECISION assigns to `*.experts` layers."""
++    quantization_config = getattr(hf_config, "quantization_config", None)
++    if not isinstance(quantization_config, dict):
++        return set()
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/arg_groups/model_overrides/qwen3_moe.py` modified +45/-2
+- 验证与风险: diff 自带测试面 `test/registered/kernel/embeddings/test_qwen4_ple_offload.py`, `test/registered/unit/layers/quantization/test_fp8_moe_runner_fallback.py`, `test/registered/unit/model_loader/test_modelopt_loader.py`, `test/registered/unit/models/test_qwen4_exp_ple_table.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40870 - [Refactor] Let LayerCommunicator own the FFN exit in Qwen3-MoE, DeepSeek-V2 and GLM4-MoE
+
+- 链接: https://github.com/sgl-project/sglang/pull/40870
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `e1048a215ce9`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+190/-74，可读 patch 324 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/qwen3_moe.py` modified +3/-23 (26 lines); hunks: -63,7 +63,7; -907,29 +907,9 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +3/-23 (26 lines); hunks: -63,7 +63,7; -907,29 +907,9 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -63,7 +63,7 @@
+-from sglang.srt.runtime_context import get_exec, get_forward, get_parallel, get_stream
++from sglang.srt.runtime_context import get_exec, get_parallel, get_stream
+@@ -907,29 +907,9 @@ def forward(
+-        fuse_mlp_allreduce = (
+-            self.layer_communicator.should_fuse_mlp_allreduce_with_next_layer(
+-                forward_batch
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +3/-23
+- 验证与风险: diff 自带测试面 `test/registered/unit/layers/test_communicator_ffn_exit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40190 - [XPU] Enable fused QK-norm + RoPE for Qwen3-MoE
+
+- 链接: https://github.com/sgl-project/sglang/pull/40190
+- 状态/时间: merged / 2026-10-04
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/qwen3_moe.py`；关联提交 `9631f6f2d085`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+130/-6，可读 patch 169 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/qwen3_moe.py` modified +29/-6 (35 lines); hunks: -77,17 +77,21; -573,12 +577,17 @@ def __init__(; symbols: __init__, apply_qk_norm_rope，涉及 `__init__, apply_qk_norm_rope`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/qwen3_moe.py` modified +29/-6 (35 lines); hunks: -77,17 +77,21; -573,12 +577,17 @@ def __init__(; symbols: __init__, apply_qk_norm_rope
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/qwen3_moe.py
+@@ -77,17 +77,21 @@
++    is_xpu,
++_is_xpu = is_xpu()
++if _is_xpu:
++    from sgl_kernel import fused_inplace_qknorm_rope
+@@ -573,12 +577,17 @@ def __init__(
+-            and _is_cuda
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/qwen3_moe.py` modified +29/-6
+- 验证与风险: diff 自带测试面 `test/registered/xpu/test_fused_inplace_qknorm_rope_xpu.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

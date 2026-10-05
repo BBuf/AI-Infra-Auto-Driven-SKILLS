@@ -28,8 +28,8 @@ Options:
   --gpu-memory-util FLOAT       vLLM --gpu-memory-utilization.
   --max-model-len INT           vLLM --max-model-len.
     --tensor-parallel-size INT    vLLM --tensor-parallel-size. Defaults to the visible GPU count.
-    --profiler-active-iterations INT
-                                 Torch-profiler active iterations.
+    --profiler-max-iterations INT
+                                 Worker capture limit; --profiler-active-iterations is an alias.
     --enforce-eager               Launch vLLM with --enforce-eager for mapping traces.
   --trust-remote-code           Pass --trust-remote-code.
   --request-max-tokens INT      Generation length for the probe request.
@@ -52,6 +52,8 @@ Notes:
     `/start_profile` and `/stop_profile`.
   - Default capture is two labeled profiles: prefill 4090->1 and decode 1->2048.
   - Current vLLM profiler config already defaults `torch_profiler_with_stack=true`.
+  - max_iterations bounds worker capture; active_iterations alone needs a schedule.
+  - Two rounds require vLLM #57460 (merged 2026-09-21).
   - A small benchmark summary is written after profiling.
 EOF
 }
@@ -64,7 +66,7 @@ TP_SIZE=""
 ENFORCE_EAGER=0
 TRUST_REMOTE_CODE=0
 REQUEST_MAX_TOKENS=12
-PROFILER_ACTIVE_ITERATIONS=5
+PROFILER_MAX_ITERATIONS=5
 PROMPT="Explain the difference between CUDA graph mode and eager mode in two sentences."
 WARMUP_STEPS=10
 PROFILE_WORKLOAD="both"
@@ -122,8 +124,8 @@ while [[ $# -gt 0 ]]; do
       TP_SIZE="$2"
       shift 2
       ;;
-    --profiler-active-iterations)
-      PROFILER_ACTIVE_ITERATIONS="$2"
+    --profiler-max-iterations|--profiler-active-iterations)
+      PROFILER_MAX_ITERATIONS="$2"
       shift 2
       ;;
     --enforce-eager)
@@ -211,7 +213,7 @@ if (( TP_SIZE < 1 || TP_SIZE > GPU_COUNT )); then
   echo "--tensor-parallel-size must be between 1 and the visible GPU count ($GPU_COUNT)." >&2
   exit 2
 fi
-if (( PROFILER_ACTIVE_ITERATIONS < 1 )); then
+if (( PROFILER_MAX_ITERATIONS < 1 )); then
   echo "--profiler-active-iterations must be >= 1." >&2
   exit 2
 fi
@@ -241,7 +243,8 @@ import json
 print(json.dumps({
     "profiler": "torch",
     "torch_profiler_dir": ${PROFILE_DIR@Q},
-    "active_iterations": int(${PROFILER_ACTIVE_ITERATIONS@Q}),
+    "max_iterations": int(${PROFILER_MAX_ITERATIONS@Q}),
+    "ignore_frontend": True,
 }))
 PY
 )
@@ -255,7 +258,6 @@ docker_args=(
   -e "CUDA_VISIBLE_DEVICES=$GPUS"
   -e "HF_TOKEN=$HF_TOKEN"
   -e "HUGGINGFACE_HUB_TOKEN=$HUGGINGFACE_HUB_TOKEN"
-  -e "VLLM_RPC_TIMEOUT=1800000"
   -v "$HF_CACHE:/root/.cache/huggingface"
   -v "$RUN_DIR:$RUN_DIR"
 )
@@ -302,7 +304,7 @@ python3 "$SCRIPT_DIR/analyze_llm_torch_profile.py" \
   --framework vllm \
   --url "http://127.0.0.1:${PORT}" \
   --output-dir "$PROFILE_DIR" \
-  --num-steps "$PROFILER_ACTIVE_ITERATIONS" \
+  --num-steps "$PROFILER_MAX_ITERATIONS" \
   --warmup-steps "$WARMUP_STEPS" \
   --probe-requests 1 \
   --no-profile-by-stage \

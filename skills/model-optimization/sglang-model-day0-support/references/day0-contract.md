@@ -32,6 +32,11 @@ secrets or private artifact identifiers in the public bundle.
 
 ### Source and configuration
 
+Own a PR-DAG node for model override declarations in
+`python/sglang/srt/arg_groups/model_overrides/<family>.py`; each field has one
+family owner (#37087). Field declarations live in `arg_groups/fields/*.py`
+(#38047), while resolved runtime configuration remains flat.
+
 - architecture and `model_type` detection;
 - configuration defaults, nested sub-configs, and remote-code requirements;
 - model/tokenizer/processor revisions and generation configuration;
@@ -48,6 +53,10 @@ secrets or private artifact identifiers in the public bundle.
 - target and speculative-draft paths independently.
 
 ### Model execution
+
+Decoder residual/boundary wiring uses `python/sglang/srt/layers/layer_boundary/`
+(#41555), including residual `ihc.py`, fusion adapters and `ffn_exit`. Include
+it in graph/overlap/kernel ownership as well as model execution.
 
 - embeddings, normalization, dense MLP, MoE routing/activation/experts, and LM
   head;

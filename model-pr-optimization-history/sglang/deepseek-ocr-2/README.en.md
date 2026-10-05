@@ -1,4 +1,4 @@
-# sglang DeepSeek OCR 2 Model PR Optimization History
+# SGLang DeepSeek OCR 2 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -6,18 +6,19 @@
 | --- | --- |
 | `docs/cookbook/autoregressive/DeepSeek/DeepSeek-OCR-2.mdx` | no direct PR-number commit |
 | `docs/src/snippets/autoregressive/deepseek-ocr-v2-deployment.jsx` | no direct PR-number commit |
-| `python/sglang/srt/configs/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
-| `python/sglang/srt/models/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#19732](https://github.com/sgl-project/sglang/pull/19732) |
-| `python/sglang/srt/multimodal/processors/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897) |
+| `python/sglang/srt/configs/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#38996](https://github.com/sgl-project/sglang/pull/38996) |
+| `python/sglang/srt/models/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#19732](https://github.com/sgl-project/sglang/pull/19732), [#38996](https://github.com/sgl-project/sglang/pull/38996) |
+| `python/sglang/srt/multimodal/processors/deepseek_ocr.py` | [#17897](https://github.com/sgl-project/sglang/pull/17897), [#38996](https://github.com/sgl-project/sglang/pull/38996) |
+| `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py` | [#38996](https://github.com/sgl-project/sglang/pull/38996) |
 | `test/registered/xpu/test_deepseek_ocr.py` | no direct PR-number commit |
 | `test/registered/xpu/test_deepseek_ocr_2_olmbench.py` | no direct PR-number commit |
 | `test/registered/xpu/test_deepseek_ocr_triton.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 2
+- Git-traced PRs: 3
 - Extra PRs preserved from existing docs: 29
-- Total PRs in this document: 31
+- Total PRs in this document: 32
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -29,7 +30,6 @@
 | 2025-10-31 | [#12384](https://github.com/sgl-project/sglang/pull/12384) | merged | [Bugfix]: distinguish processors for deepseek_vl2 and deepseek_ocr to p… | `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/configs/deepseekvl2.py`, `python/sglang/srt/multimodal/customized_mm_processor_utils.py` |
 | 2025-10-31 | [#12415](https://github.com/sgl-project/sglang/pull/12415) | merged | Feat: deepseek-ocr logits processor | `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/sampling/custom_logit_processor.py` |
 | 2025-10-31 | [#12470](https://github.com/sgl-project/sglang/pull/12470) | merged | Fix lint in deepseek-ocr | `python/sglang/srt/configs/deepseek_ocr.py` |
-| 2025-11-04 | [#12619](https://github.com/sgl-project/sglang/pull/12619) | open | [NPU] supports ds-ocr model on ascend | `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py` |
 | 2026-01-30 | [#17897](https://github.com/sgl-project/sglang/pull/17897) | merged | Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833 | `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py` |
 | 2026-02-05 | [#13561](https://github.com/sgl-project/sglang/pull/13561) | merged | [XPU] Integrate MoE and minor improvements in XPU attention backend | `python/sglang/srt/layers/quantization/unquant.py`, `python/sglang/srt/layers/moe/fused_moe_triton/fused_moe.py`, `python/sglang/srt/layers/moe/moe_runner/triton.py` |
 | 2026-02-15 | [#18860](https://github.com/sgl-project/sglang/pull/18860) | merged | update pre-commit config | `python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py`, `python/sglang/srt/models/pixtral.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim_moe.py` |
@@ -45,9 +45,9 @@
 | 2026-04-29 | [#23820](https://github.com/sgl-project/sglang/pull/23820) | merged | Update XPU Docker runtime stack & hf_home config | `test/srt/xpu/test_intel_xpu_backend.py`, `test/srt/xpu/test_deepseek_ocr.py`, `docker/xpu.Dockerfile` |
 | 2026-05-13 | [#25182](https://github.com/sgl-project/sglang/pull/25182) | merged | chore: add vLLM SPDX copyright headers to ported files | `python/sglang/srt/models/baichuan.py`, `python/sglang/srt/models/commandr.py`, `python/sglang/srt/models/dbrx.py` |
 | 2026-05-21 | [#25257](https://github.com/sgl-project/sglang/pull/25257) | merged | [NPU] Support model DeepSeek-OCR and DeepSeek-OCR-2 | `python/sglang/srt/models/deepseek.py` |
+| 2026-05-22 | [#24701](https://github.com/sgl-project/sglang/pull/24701) | merged | [FIX][1/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/multimodal/processors/step3_vl.py` |
 | 2026-05-22 | [#24751](https://github.com/sgl-project/sglang/pull/24751) | merged | fix(mm): make multimodal data loading non-blocking to prevent health check stalls | `python/sglang/srt/multimodal/processors/base_processor.py`, `python/sglang/srt/multimodal/processors/internvl.py`, `python/sglang/srt/multimodal/processors/minicpm.py` |
 | 2026-05-22 | [#25589](https://github.com/sgl-project/sglang/pull/25589) | closed | [Fix] DeepSeek-OCR-2 bench_serving: fix processor loading and GPU JPEG tensor conversion | `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/benchmark/utils.py` |
-| 2026-05-22 | [#24701](https://github.com/sgl-project/sglang/pull/24701) | merged | [FIX][1/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/multimodal/processors/step3_vl.py` |
 | 2026-05-23 | [#25403](https://github.com/sgl-project/sglang/pull/25403) | merged | [FIX][2/2] fix step3-vl/deepseek-ocr image processor error | `python/sglang/srt/configs/deepseek_ocr.py` |
 | 2026-05-27 | [#25405](https://github.com/sgl-project/sglang/pull/25405) | merged | [XPU] Add registry mechanism for XPU CI tests | `.github/workflows/pr-test-xpu.yml`, `test/registered/xpu/test_xpu_basic.py`, `test/srt/run_suite.py` |
 | 2026-06-02 | [#25813](https://github.com/sgl-project/sglang/pull/25813) | merged | docs(cookbook): port popular model usage guides into cookbook pages | `docs_new/docs/basic_usage/deepseek_v32.mdx`, `docs_new/docs/basic_usage/deepseek_v3.mdx`, `docs_new/cookbook/autoregressive/DeepSeek/DeepSeek-V3_2.mdx` |
@@ -56,6 +56,8 @@
 | 2026-06-23 | [#28988](https://github.com/sgl-project/sglang/pull/28988) | merged | [CI] Fix lint brought by #27527 | `python/sglang/srt/models/deepseek_ocr.py`, `test/manual/test_create_custom_4d_mask.py` |
 | 2026-07-06 | [#25364](https://github.com/sgl-project/sglang/pull/25364) | merged | Add Accuracy Benchmark for OCR models | `benchmark/ocr/bench_sglang.py`, `benchmark/ocr/eval_utils.py`, `benchmark/ocr/generate_report.py` |
 | 2026-08-11 | [#19722](https://github.com/sgl-project/sglang/pull/19722) | closed | fix: align DeepSeek OCR vision dtypes | `python/sglang/srt/models/deepseek_ocr.py` |
+| 2026-09-17 | [#12619](https://github.com/sgl-project/sglang/pull/12619) | closed | [NPU] supports ds-ocr model on ascend | `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py` |
+| 2026-09-20 | [#38996](https://github.com/sgl-project/sglang/pull/38996) | merged | [Model] Serve DeepSeek-OCR-2 with its official 768px local-crop geometry | `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py`, `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -197,42 +199,6 @@ diff -- python/sglang/srt/configs/deepseek_ocr.py
 - Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +0/-1
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/configs/deepseek_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #12619 - [NPU] supports ds-ocr model on ascend
-
-- Link: https://github.com/sgl-project/sglang/pull/12619
-- Status/date: open / 2025-11-04
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +200/-60, 389 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[NPU] supports ds-ocr model on ascend"; model line: DeepSeek OCR 2; category: model support/runtime entry; main diff: `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py`; technical summary: Covers "[NPU] supports ds-ocr model on ascend"; the main implementation surface is `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/deepseek.py` modified +142/-49 (191 lines); hunks: -23,11 +23,14; -36,19 +39,21; symbols: DeepseekMLP, __init__, get_moe_weights, touching `DeepseekMLP, __init__, get_moe_weights`; `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11 (69 lines); hunks: -30,6 +30,7; -1770,6 +1771,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, touching `load_weights`.
-- Code diff details:
-  - `python/sglang/srt/models/deepseek.py` modified +142/-49 (191 lines); hunks: -23,11 +23,14; -36,19 +39,21; symbols: DeepseekMLP, __init__, get_moe_weights
-  - `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11 (69 lines); hunks: -30,6 +30,7; -1770,6 +1771,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/deepseek.py
-@@ -23,11 +23,14 @@
-+    get_pp_group,
-+from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
-+from sglang.srt.layers.dp_attention import is_dp_attention_enabled
-@@ -36,19 +39,21 @@
--from sglang.srt.layers.moe.fused_moe_triton import fused_moe
--from sglang.srt.layers.moe.moe_runner import MoeRunnerConfig
-diff -- python/sglang/srt/models/deepseek_ocr.py
-@@ -30,6 +30,7 @@
-+from sglang.srt.layers.moe.fused_moe_triton import FusedMoE
-@@ -1770,6 +1771,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
-+        expert_params_mapping = FusedMoE.make_expert_params_mapping(
-+            ckpt_gate_proj_name="gate_proj",
-+            ckpt_down_proj_name="down_proj",
-+            ckpt_up_proj_name="up_proj",
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/deepseek.py` modified +142/-49; `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #17897 - Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833
 
@@ -798,6 +764,33 @@ diff -- python/sglang/srt/models/deepseek.py
   - runtime: `python/sglang/srt/models/deepseek.py` modified +11/-3
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #24701 - [FIX][1/2] fix step3-vl/deepseek-ocr image processor error
+
+- Link: https://github.com/sgl-project/sglang/pull/24701
+- Status/date: merged / 2026-05-22
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +67/-20, 160 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[FIX][1/2] fix step3-vl/deepseek-ocr image processor error"; model line: DeepSeek OCR 2; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/step3_vl.py`; technical summary: Covers "[FIX][1/2] fix step3-vl/deepseek-ocr image processor error"; the main implementation surface is `python/sglang/srt/multimodal/processors/step3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20 (87 lines); hunks: -8,6 +8,7; -20,14 +21,37; symbols: GPUToTensor, forward, __call__, ImagePatcher, touching `GPUToTensor, forward, __call__`.
+- Code diff details:
+  - `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20 (87 lines); hunks: -8,6 +8,7; -20,14 +21,37; symbols: GPUToTensor, forward, __call__, ImagePatcher
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/step3_vl.py
+@@ -8,6 +8,7 @@
++from torchvision.transforms import functional as F
+@@ -20,14 +21,37 @@
+-ImageWithPatches = tuple[Image.Image, list[Image.Image], list[int] | None]
++Step3Image = Union[Image.Image, torch.Tensor]
++ImageWithPatches = tuple[Step3Image, list[Step3Image], list[int] | None]
+-    def forward(self, raw_image: Union[np.ndarray, Image.Image]) -> torch.Tensor:
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/step3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #24751 - fix(mm): make multimodal data loading non-blocking to prevent health check stalls
 
 - Link: https://github.com/sgl-project/sglang/pull/24751
@@ -872,33 +865,6 @@ diff -- python/sglang/benchmark/utils.py
 - Reviewed files:
   - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +5/-0; `python/sglang/benchmark/utils.py` modified +7/-11
 - Risk and verification: Runtime changes concentrate in `python/sglang/benchmark/utils.py`, `python/sglang/srt/configs/deepseek_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
-### PR #24701 - [FIX][1/2] fix step3-vl/deepseek-ocr image processor error
-
-- Link: https://github.com/sgl-project/sglang/pull/24701
-- Status/date: merged / 2026-05-22
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +67/-20, 160 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[FIX][1/2] fix step3-vl/deepseek-ocr image processor error"; model line: DeepSeek OCR 2; category: bug fix; main diff: `python/sglang/srt/multimodal/processors/step3_vl.py`; technical summary: Covers "[FIX][1/2] fix step3-vl/deepseek-ocr image processor error"; the main implementation surface is `python/sglang/srt/multimodal/processors/step3_vl.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20 (87 lines); hunks: -8,6 +8,7; -20,14 +21,37; symbols: GPUToTensor, forward, __call__, ImagePatcher, touching `GPUToTensor, forward, __call__`.
-- Code diff details:
-  - `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20 (87 lines); hunks: -8,6 +8,7; -20,14 +21,37; symbols: GPUToTensor, forward, __call__, ImagePatcher
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/multimodal/processors/step3_vl.py
-@@ -8,6 +8,7 @@
-+from torchvision.transforms import functional as F
-@@ -20,14 +21,37 @@
--ImageWithPatches = tuple[Image.Image, list[Image.Image], list[int] | None]
-+Step3Image = Union[Image.Image, torch.Tensor]
-+ImageWithPatches = tuple[Step3Image, list[Step3Image], list[int] | None]
--    def forward(self, raw_image: Union[np.ndarray, Image.Image]) -> torch.Tensor:
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/multimodal/processors/step3_vl.py` modified +67/-20
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/multimodal/processors/step3_vl.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #25403 - [FIX][2/2] fix step3-vl/deepseek-ocr image processor error
 
@@ -1193,6 +1159,83 @@ diff -- python/sglang/srt/models/deepseek_ocr.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_ocr.py` modified +14/-6
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #12619 - [NPU] supports ds-ocr model on ascend
+
+- Link: https://github.com/sgl-project/sglang/pull/12619
+- Status/date: closed / 2026-09-17
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +200/-60, 389 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[NPU] supports ds-ocr model on ascend"; model line: DeepSeek OCR 2; category: model support/runtime entry; main diff: `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py`; technical summary: Covers "[NPU] supports ds-ocr model on ascend"; the main implementation surface is `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/deepseek.py` modified +142/-49 (191 lines); hunks: -23,11 +23,14; -36,19 +39,21; symbols: DeepseekMLP, __init__, get_moe_weights, touching `DeepseekMLP, __init__, get_moe_weights`; `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11 (69 lines); hunks: -30,6 +30,7; -1770,6 +1771,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights, touching `load_weights`.
+- Code diff details:
+  - `python/sglang/srt/models/deepseek.py` modified +142/-49 (191 lines); hunks: -23,11 +23,14; -36,19 +39,21; symbols: DeepseekMLP, __init__, get_moe_weights
+  - `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11 (69 lines); hunks: -30,6 +30,7; -1770,6 +1771,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: load_weights
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/deepseek.py
+@@ -23,11 +23,14 @@
++    get_pp_group,
++from sglang.srt.eplb.expert_location import ModelConfigForExpertLocation
++from sglang.srt.layers.dp_attention import is_dp_attention_enabled
+@@ -36,19 +39,21 @@
+-from sglang.srt.layers.moe.fused_moe_triton import fused_moe
+-from sglang.srt.layers.moe.moe_runner import MoeRunnerConfig
+diff -- python/sglang/srt/models/deepseek_ocr.py
+@@ -30,6 +30,7 @@
++from sglang.srt.layers.moe.fused_moe_triton import FusedMoE
+@@ -1770,6 +1771,13 @@ def load_weights(self, weights: Iterable[Tuple[str, torch.Tensor]]):
++        expert_params_mapping = FusedMoE.make_expert_params_mapping(
++            ckpt_gate_proj_name="gate_proj",
++            ckpt_down_proj_name="down_proj",
++            ckpt_up_proj_name="up_proj",
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/deepseek.py` modified +142/-49; `python/sglang/srt/models/deepseek_ocr.py` modified +58/-11
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/deepseek.py`, `python/sglang/srt/models/deepseek_ocr.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #38996 - [Model] Serve DeepSeek-OCR-2 with its official 768px local-crop geometry
+
+- Link: https://github.com/sgl-project/sglang/pull/38996
+- Status/date: merged / 2026-09-20
+- Trace source: `git log --name-only -- <model-files>` found it through `python/sglang/srt/configs/deepseek_ocr.py`, `python/sglang/srt/models/deepseek_ocr.py`, `python/sglang/srt/multimodal/processors/deepseek_ocr.py`, `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py`; associated commits `2d216a11f8c2`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 4 files, +140/-24, 251 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: _hf_config, _ocr2_config, _ocr1_config, TestDeepseekOcrGeometry, touching `_hf_config, _ocr2_config, _ocr1_config`; `python/sglang/srt/configs/deepseek_ocr.py` modified +39/-5 (44 lines); hunks: -23,7 +23,8; -218,7 +219,11 @@ def find_closest_aspect_ratio(aspect_ratio, target_ratios,...; symbols: find_closest_aspect_ratio, dynamic_preprocess, is_ocr2_config, local_crop_size, touching `find_closest_aspect_ratio, dynamic_preprocess, is_ocr2_config`; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +15/-9 (24 lines); hunks: -1,5 +1,6; -8,19 +9,24; symbols: apply_ocr_geometry, DeepseekOCRProcessor, __init__, touching `apply_ocr_geometry, DeepseekOCRProcessor, __init__`; `python/sglang/srt/models/deepseek_ocr.py` modified +4/-10 (14 lines); hunks: -31,7 +31,7; -1420,18 +1420,12 @@ def build_qwen2_decoder_as_encoder(; symbols: build_qwen2_decoder_as_encoder, _is_ocr2, DeepseekOCRForCausalLM, shared_experts_fusion_disable_reason, touching `build_qwen2_decoder_as_encoder, _is_ocr2, DeepseekOCRForCausalLM`.
+- Code diff details:
+  - `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py` added +82/-0 (82 lines); hunks: -0,0 +1,82; symbols: _hf_config, _ocr2_config, _ocr1_config, TestDeepseekOcrGeometry
+  - `python/sglang/srt/configs/deepseek_ocr.py` modified +39/-5 (44 lines); hunks: -23,7 +23,8; -218,7 +219,11 @@ def find_closest_aspect_ratio(aspect_ratio, target_ratios,...; symbols: find_closest_aspect_ratio, dynamic_preprocess, is_ocr2_config, local_crop_size
+  - `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +15/-9 (24 lines); hunks: -1,5 +1,6; -8,19 +9,24; symbols: apply_ocr_geometry, DeepseekOCRProcessor, __init__
+  - `python/sglang/srt/models/deepseek_ocr.py` modified +4/-10 (14 lines); hunks: -31,7 +31,7; -1420,18 +1420,12 @@ def build_qwen2_decoder_as_encoder(; symbols: build_qwen2_decoder_as_encoder, _is_ocr2, DeepseekOCRForCausalLM, shared_experts_fusion_disable_reason
+- Key code excerpts:
+
+```diff
+diff -- test/registered/unit/multimodal/test_deepseek_ocr_geometry.py
+@@ -0,0 +1,82 @@
++"""DeepSeek-OCR-2 must run 768px local crops, not the 640px ones inherited from
++DeepSeek-OCR: a 768px crop expands to (768 // 16 // 4) ** 2 == 144 visual tokens,
++exactly the length of the tuned query_768 table in Qwen2Decoder2Encoder, while
++640px yields 100 and falls back to interpolation.
++Neither checkpoint carries the crop size -- both ship identical processor configs
++whose candidate_resolutions=[[1024, 1024]] is the *global* base -- so it is
+diff -- python/sglang/srt/configs/deepseek_ocr.py
+@@ -23,7 +23,8 @@
+-IMAGE_SIZE = 640
++IMAGE_SIZE = 640  # DeepSeek-OCR local crop; OCR-2 uses OCR2_IMAGE_SIZE
++OCR2_IMAGE_SIZE = 768
+@@ -218,7 +219,11 @@ def find_closest_aspect_ratio(aspect_ratio, target_ratios, width, height, image_
+-    image, min_num=MIN_CROPS, max_num=MAX_CROPS, image_size=640, use_thumbnail=False
++    image,
+diff -- python/sglang/srt/multimodal/processors/deepseek_ocr.py
+@@ -1,5 +1,6 @@
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py` added +82/-0
+  - runtime: `python/sglang/srt/configs/deepseek_ocr.py` modified +39/-5; `python/sglang/srt/multimodal/processors/deepseek_ocr.py` modified +15/-9; `python/sglang/srt/models/deepseek_ocr.py` modified +4/-10
+- Risk and verification: The diff ships test coverage in `test/registered/unit/multimodal/test_deepseek_ocr_geometry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

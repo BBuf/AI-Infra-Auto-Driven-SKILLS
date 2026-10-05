@@ -1,4 +1,4 @@
-# vllm Qwen3.6 Model PR Optimization History
+# vLLM Qwen3.6 Model PR Optimization History
 
 ## Implementation File Coverage
 

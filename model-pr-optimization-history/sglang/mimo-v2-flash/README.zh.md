@@ -1,42 +1,45 @@
-# sglang MiMo V2 Flash 模型 PR 优化历史
+# SGLang MiMo V2 Flash 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `docs/cookbook/autoregressive/Xiaomi/MiMo-V2-Flash.mdx` | 无直接 PR 号提交 |
-| `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | 无直接 PR 号提交 |
+| `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` | [#40622](https://github.com/sgl-project/sglang/pull/40622) |
+| `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` | [#40622](https://github.com/sgl-project/sglang/pull/40622), [#40969](https://github.com/sgl-project/sglang/pull/40969) |
+| `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx` | [#40577](https://github.com/sgl-project/sglang/pull/40577) |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_flash.mdx` | 无直接 PR 号提交 |
 | `docs/docs/hardware-platforms/ascend-npus/model-deployment/tutorials/mimo_v2_flash.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/mimo-v2-flash-deployment.jsx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/mimo-v25-deployment.jsx` | 无直接 PR 号提交 |
+| `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` | [#40622](https://github.com/sgl-project/sglang/pull/40622), [#40969](https://github.com/sgl-project/sglang/pull/40969) |
+| `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` | [#41668](https://github.com/sgl-project/sglang/pull/41668), [#41886](https://github.com/sgl-project/sglang/pull/41886), [#42172](https://github.com/sgl-project/sglang/pull/42172) |
 | `python/sglang/srt/entrypoints/openai/transcription_adapters/mimo_v2_asr.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278) |
 | `python/sglang/srt/function_call/mimo_detector.py` | [#15207](https://github.com/sgl-project/sglang/pull/15207) |
 | `python/sglang/srt/models/mimo.py` | [#6059](https://github.com/sgl-project/sglang/pull/6059) |
 | `python/sglang/srt/models/mimo_audio.py` | [#23811](https://github.com/sgl-project/sglang/pull/23811), [#26278](https://github.com/sgl-project/sglang/pull/26278), [#31343](https://github.com/sgl-project/sglang/pull/31343) |
 | `python/sglang/srt/models/mimo_mtp.py` | [#6059](https://github.com/sgl-project/sglang/pull/6059), [#7370](https://github.com/sgl-project/sglang/pull/7370) |
-| `python/sglang/srt/models/mimo_v2.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808), [#23811](https://github.com/sgl-project/sglang/pull/23811), [#24931](https://github.com/sgl-project/sglang/pull/24931), [#25455](https://github.com/sgl-project/sglang/pull/25455), [#26278](https://github.com/sgl-project/sglang/pull/26278), [#29493](https://github.com/sgl-project/sglang/pull/29493), [#31343](https://github.com/sgl-project/sglang/pull/31343) |
+| `python/sglang/srt/models/mimo_v2.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808), [#23811](https://github.com/sgl-project/sglang/pull/23811), [#24931](https://github.com/sgl-project/sglang/pull/24931), [#25455](https://github.com/sgl-project/sglang/pull/25455), [#26278](https://github.com/sgl-project/sglang/pull/26278), [#29493](https://github.com/sgl-project/sglang/pull/29493), [#31343](https://github.com/sgl-project/sglang/pull/31343), [#37565](https://github.com/sgl-project/sglang/pull/37565), [#40448](https://github.com/sgl-project/sglang/pull/40448) |
 | `python/sglang/srt/models/mimo_v2_asr.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278), [#31343](https://github.com/sgl-project/sglang/pull/31343) |
 | `python/sglang/srt/models/mimo_v2_nextn.py` | [#23808](https://github.com/sgl-project/sglang/pull/23808), [#23811](https://github.com/sgl-project/sglang/pull/23811) |
 | `python/sglang/srt/models/mimo_vl.py` | [#23811](https://github.com/sgl-project/sglang/pull/23811), [#29994](https://github.com/sgl-project/sglang/pull/29994), [#31343](https://github.com/sgl-project/sglang/pull/31343) |
-| `python/sglang/srt/multimodal/processors/mimo_audio.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278) |
-| `python/sglang/srt/multimodal/processors/mimo_v2.py` | [#23811](https://github.com/sgl-project/sglang/pull/23811), [#24931](https://github.com/sgl-project/sglang/pull/24931), [#25588](https://github.com/sgl-project/sglang/pull/25588), [#26278](https://github.com/sgl-project/sglang/pull/26278) |
+| `python/sglang/srt/multimodal/processors/mimo_audio.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278), [#41667](https://github.com/sgl-project/sglang/pull/41667) |
+| `python/sglang/srt/multimodal/processors/mimo_v2.py` | [#23811](https://github.com/sgl-project/sglang/pull/23811), [#24931](https://github.com/sgl-project/sglang/pull/24931), [#25588](https://github.com/sgl-project/sglang/pull/25588), [#26278](https://github.com/sgl-project/sglang/pull/26278), [#41667](https://github.com/sgl-project/sglang/pull/41667) |
 | `python/sglang/srt/multimodal/processors/mimo_v2_asr.py` | [#26278](https://github.com/sgl-project/sglang/pull/26278) |
+| `test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py` | [#37565](https://github.com/sgl-project/sglang/pull/37565) |
 | `test/manual/ascend/llm_models/test_npu_mimo_v2_5_w8a8.py` | [#29131](https://github.com/sgl-project/sglang/pull/29131) |
 | `test/manual/ascend/llm_models/test_npu_mimo_v2_flash.py` | [#28223](https://github.com/sgl-project/sglang/pull/28223) |
-| `test/registered/models_e2e/test_mimo_v2.py` | [#27378](https://github.com/sgl-project/sglang/pull/27378) |
-| `test/registered/models_e2e/test_mimo_v2_flash.py` | [#27378](https://github.com/sgl-project/sglang/pull/27378) |
+| `test/registered/e2e/models/test_mimo_v2.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models/test_mimo_v2_flash.py` | 无直接 PR 号提交 |
 | `test/registered/npu/llm_models/test_npu_mimo_7b_rl.py` | 无直接 PR 号提交 |
-| `test/registered/npu/performance/mimo_v2_flash/test_npu_mimo_v2_flash_1p1d_12p_in16k_out1_ttft_5s.py` | 无直接 PR 号提交 |
-| `test/registered/npu/performance/mimo_v2_flash/test_npu_mimo_v2_flash_1p1d_12p_in16k_out1k_tpot_20ms.py` | 无直接 PR 号提交 |
 | `test/registered/npu/vlm_models/test_npu_mimo_vl_7b_rl.py` | 无直接 PR 号提交 |
 | `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_mimo.py` | 无直接 PR 号提交 |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 15
-- 原文档显式引用补充 PR 数: 22
-- 当前文档总 PR 数: 37
+- git 追溯 PR 数: 23
+- 原文档显式引用补充 PR 数: 23
+- 当前文档总 PR 数: 46
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -56,8 +59,8 @@
 | 2026-04-28 | [#23808](https://github.com/sgl-project/sglang/pull/23808) | merged | [Feature] Xiaomi MiMo-V2.5-Pro day0 support | `python/sglang/srt/models/mimo_v2.py`, `python/sglang/srt/models/mimo_v2_nextn.py` |
 | 2026-04-28 | [#23945](https://github.com/sgl-project/sglang/pull/23945) | merged | docs: enable MiMo V2.5 MTP cookbook path | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` |
 | 2026-04-29 | [#23936](https://github.com/sgl-project/sglang/pull/23936) | merged | mimo v2.5 pro sglang-jax cookbook | `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`, `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` |
-| 2026-04-30 | [#24118](https://github.com/sgl-project/sglang/pull/24118) | merged | fix: rename mimo spec threshold attr to num_accepted_drafts_thres | `test/registered/8-gpu-models/test_mimo_models.py` |
 | 2026-04-30 | [#23811](https://github.com/sgl-project/sglang/pull/23811) | merged | [Feature] Xiaomi MiMo-V2.5 day0 support | `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/models/mimo_audio.py`, `python/sglang/srt/models/mimo_vl.py` |
+| 2026-04-30 | [#24118](https://github.com/sgl-project/sglang/pull/24118) | merged | fix: rename mimo spec threshold attr to num_accepted_drafts_thres | `test/registered/8-gpu-models/test_mimo_models.py` |
 | 2026-05-11 | [#24983](https://github.com/sgl-project/sglang/pull/24983) | merged | Update MiMo V2.5 cookbook image to nightly | `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` |
 | 2026-05-18 | [#24931](https://github.com/sgl-project/sglang/pull/24931) | merged | feat(mimo-v2): add EPD disaggregation support | `python/sglang/srt/multimodal/processors/mimo_v2.py`, `python/sglang/srt/models/mimo_v2.py` |
 | 2026-05-19 | [#25588](https://github.com/sgl-project/sglang/pull/25588) | merged | perf(mimo-v2-epd): enable GPU image preprocess and parallel video decode | `python/sglang/srt/multimodal/processors/mimo_v2.py` |
@@ -81,6 +84,15 @@
 | 2026-07-15 | [#31343](https://github.com/sgl-project/sglang/pull/31343) | merged | Fix MiMo-V2 on Blackwell: FA3 fallback and TP-aware audio weight loading | `python/sglang/srt/models/mimo_audio.py`, `python/sglang/srt/models/mimo_v2_asr.py`, `python/sglang/srt/models/mimo_v2.py` |
 | 2026-07-19 | [#29972](https://github.com/sgl-project/sglang/pull/29972) | merged | Support MiMo V2.5 with zigzag context parallelism | `python/sglang/srt/layers/cp/zigzag.py`, `python/sglang/srt/layers/cp/padding.py`, `python/sglang/srt/layers/utils/cp_utils.py` |
 | 2026-07-21 | [#29131](https://github.com/sgl-project/sglang/pull/29131) | merged | [NPU] Adapt MiMo-V2.5-W8A8 | `test/manual/ascend/llm_models/test_npu_mimo_v2_5_w8a8.py`, `python/sglang/srt/layers/quantization/modelslim/modelslim.py` |
+| 2026-09-12 | [#37565](https://github.com/sgl-project/sglang/pull/37565) | merged | [NPU] Support DFlash speculative decoding for MiMo-V2.5-Pro (mxfp4) | `python/sglang/srt/models/mimo_v2.py`, `test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py` |
+| 2026-09-20 | [#40448](https://github.com/sgl-project/sglang/pull/40448) | merged | [Feature] Xiaomi MiMo-V2.6/MiMo-V2.6-Pro day0 support | `python/sglang/srt/models/mimo_v2.py` |
+| 2026-09-21 | [#40577](https://github.com/sgl-project/sglang/pull/40577) | merged | [Docs][NPU] Add MiMo-V2.5-Pro FP4 DFlash best practice on Ascend NPU | `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx` |
+| 2026-09-21 | [#40622](https://github.com/sgl-project/sglang/pull/40622) | merged | Add MiMo-V2.6 cookbook | `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx`, `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx`, `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` |
+| 2026-09-23 | [#40969](https://github.com/sgl-project/sglang/pull/40969) | merged | [Doc] Add H200 recipes to MiMo-V2.6 cookbook | `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx`, `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` |
+| 2026-09-30 | [#41667](https://github.com/sgl-project/sglang/pull/41667) | merged | [Fix] Keep MiMo-V2 processor available without TorchCodec | `python/sglang/srt/multimodal/processors/mimo_audio.py`, `python/sglang/srt/multimodal/processors/mimo_v2.py` |
+| 2026-10-01 | [#41886](https://github.com/sgl-project/sglang/pull/41886) | merged | [Perf] Use FA4 by default for MiMo on SM100 | `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` |
+| 2026-10-01 | [#41668](https://github.com/sgl-project/sglang/pull/41668) | merged | [Fix] Select the MXFP4 MoE runner for MiMo-V2 packed experts on SM100 | `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` |
+| 2026-10-02 | [#42172](https://github.com/sgl-project/sglang/pull/42172) | merged | [Fix] Select the Marlin MoE runner for MiMo-V2 packed MXFP4 experts on SM90 | `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -471,29 +483,6 @@ diff -- docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx
   - docs: `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx` modified +78/-16; `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +36/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs_new/src/snippets/autoregressive/mimo-v25-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #24118 - fix: rename mimo spec threshold attr to num_accepted_drafts_thres
-
-- 链接: https://github.com/sgl-project/sglang/pull/24118
-- 状态/时间: merged / 2026-04-30
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「fix: rename mimo spec threshold attr to num_accepted_drafts_thres」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `test/registered/8-gpu-models/test_mimo_models.py`；技术摘要: 覆盖「fix: rename mimo spec threshold attr to num_accepted_drafts_thres」；主要实现面是 `test/registered/8-gpu-models/test_mimo_models.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1 (2 lines); hunks: -45,7 +45,7 @@ class TestMiMoV2Flash(GSM8KMixin, SpecDecodingMixin, DefaultSe...; symbols: TestMiMoV2Flash，涉及 `TestMiMoV2Flash`。
-- 代码 diff 细节:
-  - `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1 (2 lines); hunks: -45,7 +45,7 @@ class TestMiMoV2Flash(GSM8KMixin, SpecDecodingMixin, DefaultSe...; symbols: TestMiMoV2Flash
-- 关键代码摘录:
-
-```diff
-diff -- test/registered/8-gpu-models/test_mimo_models.py
-@@ -45,7 +45,7 @@ class TestMiMoV2Flash(GSM8KMixin, SpecDecodingMixin, DefaultServerBase):
--    accept_length_thres = 3.2
-+    num_accepted_drafts_thres = 3.2
-```
-
-- 已读文件:
-  - tests: `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1
-- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_mimo_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
-
 ### PR #23811 - [Feature] Xiaomi MiMo-V2.5 day0 support
 
 - 链接: https://github.com/sgl-project/sglang/pull/23811
@@ -534,6 +523,29 @@ diff -- python/sglang/srt/models/mimo_vl.py
 - 已读文件:
   - runtime: `python/sglang/srt/multimodal/processors/mimo_v2.py` added +2039/-0; `python/sglang/srt/models/mimo_audio.py` added +1350/-0; `python/sglang/srt/models/mimo_vl.py` added +507/-0; `python/sglang/srt/models/mimo_v2.py` modified +222/-13; `python/sglang/srt/models/mimo_v2_nextn.py` modified +12/-7
 - 验证与风险: diff 自带测试面 `python/sglang/test/server_fixtures/mmmu_fixture.py`, `test/registered/8-gpu-models/test_mimo_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #24118 - fix: rename mimo spec threshold attr to num_accepted_drafts_thres
+
+- 链接: https://github.com/sgl-project/sglang/pull/24118
+- 状态/时间: merged / 2026-04-30
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「fix: rename mimo spec threshold attr to num_accepted_drafts_thres」；模型线: MiMo V2 Flash；类别: 缺陷修复；主要 diff: `test/registered/8-gpu-models/test_mimo_models.py`；技术摘要: 覆盖「fix: rename mimo spec threshold attr to num_accepted_drafts_thres」；主要实现面是 `test/registered/8-gpu-models/test_mimo_models.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1 (2 lines); hunks: -45,7 +45,7 @@ class TestMiMoV2Flash(GSM8KMixin, SpecDecodingMixin, DefaultSe...; symbols: TestMiMoV2Flash，涉及 `TestMiMoV2Flash`。
+- 代码 diff 细节:
+  - `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1 (2 lines); hunks: -45,7 +45,7 @@ class TestMiMoV2Flash(GSM8KMixin, SpecDecodingMixin, DefaultSe...; symbols: TestMiMoV2Flash
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/8-gpu-models/test_mimo_models.py
+@@ -45,7 +45,7 @@ class TestMiMoV2Flash(GSM8KMixin, SpecDecodingMixin, DefaultServerBase):
+-    accept_length_thres = 3.2
++    num_accepted_drafts_thres = 3.2
+```
+
+- 已读文件:
+  - tests: `test/registered/8-gpu-models/test_mimo_models.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_mimo_models.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #24983 - Update MiMo V2.5 cookbook image to nightly
 
@@ -1332,6 +1344,288 @@ diff -- python/sglang/srt/layers/quantization/modelslim/modelslim.py
   - tests: `test/manual/ascend/llm_models/test_npu_mimo_v2_5_w8a8.py` added +49/-0
   - runtime: `python/sglang/srt/layers/quantization/modelslim/modelslim.py` modified +4/-0
 - 验证与风险: diff 自带测试面 `python/sglang/test/ascend/test_ascend_utils.py`, `test/manual/ascend/llm_models/test_npu_mimo_v2_5_w8a8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #37565 - [NPU] Support DFlash speculative decoding for MiMo-V2.5-Pro (mxfp4)
+
+- 链接: https://github.com/sgl-project/sglang/pull/37565
+- 状态/时间: merged / 2026-09-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_v2.py`, `test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py`；关联提交 `a984c78330a8`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 15 个文件，+742/-81，可读 patch 1341 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/mimo_v2.py` modified +62/-5 (67 lines); hunks: -31,6 +31,10; -873,10 +877,16 @@ def forward(; symbols: forward, __init__，涉及 `forward, __init__`；`test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py` added +47/-0 (47 lines); hunks: -0,0 +1,47; symbols: TestMiMoV25ProFP4GraphWithDFlash，涉及 `TestMiMoV25ProFP4GraphWithDFlash`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/mimo_v2.py` modified +62/-5 (67 lines); hunks: -31,6 +31,10; -873,10 +877,16 @@ def forward(; symbols: forward, __init__
+  - `test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py` added +47/-0 (47 lines); hunks: -0,0 +1,47; symbols: TestMiMoV25ProFP4GraphWithDFlash
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/mimo_v2.py
+@@ -31,6 +31,10 @@
++from sglang.srt.layers.aux_hidden_states import (
++    AuxHiddenStateAccumulator,
++    AuxHiddenStatePacker,
++)
+@@ -873,10 +877,16 @@ def forward(
++        captured_last_layer_outputs: Optional[AuxHiddenStateAccumulator] = None,
+diff -- test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py
+@@ -0,0 +1,47 @@
++import unittest
++from sglang.test.ascend.gsm8k_ascend_mixin import GSM8KAscendMixin
++from sglang.test.ascend.test_ascend_utils import (
++    MIMO_V2_5_PRO_FP4_DFLASH_DRAFT_WEIGHTS_PATH,
++    MIMO_V2_5_PRO_FP4_DFLASH_WEIGHTS_PATH,
++)
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/mimo_v2.py` modified +62/-5
+  - tests: `test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py` added +47/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/ascend/test_ascend_utils.py`, `test/manual/ascend/llm_models/test_npu_mimo_v2_5_pro_fp4_dflash.py`, `test/registered/spec/dspark/test_dspark_stacked_ctx_kv_parity.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40448 - [Feature] Xiaomi MiMo-V2.6/MiMo-V2.6-Pro day0 support
+
+- 链接: https://github.com/sgl-project/sglang/pull/40448
+- 状态/时间: merged / 2026-09-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/mimo_v2.py`；关联提交 `983e643854f1`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+26/-6，可读 patch 82 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/mimo_v2.py` modified +18/-4 (22 lines); hunks: -349,7 +349,7 @@ def __init__(; -359,7 +359,7 @@ def __init__(; symbols: __init__, forward, MiMoV2MoE，涉及 `__init__, forward, MiMoV2MoE`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/mimo_v2.py` modified +18/-4 (22 lines); hunks: -349,7 +349,7 @@ def __init__(; -359,7 +359,7 @@ def __init__(; symbols: __init__, forward, MiMoV2MoE
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/mimo_v2.py
+@@ -349,7 +349,7 @@ def __init__(
+-        self.dtype = torch.float32
++        self.dtype = getattr(torch, getattr(config, "moe_router_dtype", "float32"))
+@@ -359,7 +359,7 @@ def __init__(
+-                else self.dtype
++                else torch.float32
+@@ -368,9 +368,15 @@ def __init__(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/mimo_v2.py` modified +18/-4
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/layers/attention/flashattention_backend.py`, `python/sglang/srt/models/dflash.py`, `python/sglang/srt/models/mimo_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #40577 - [Docs][NPU] Add MiMo-V2.5-Pro FP4 DFlash best practice on Ascend NPU
+
+- 链接: https://github.com/sgl-project/sglang/pull/40577
+- 状态/时间: merged / 2026-09-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx`；关联提交 `69d1e5cfe06e`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+175/-0，可读 patch 190 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx` added +170/-0 (170 lines); hunks: -0,0 +1,170。
+- 代码 diff 细节:
+  - `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx` added +170/-0 (170 lines); hunks: -0,0 +1,170
+- 关键代码摘录:
+
+```diff
+diff -- docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx
+@@ -0,0 +1,170 @@
++---
++title: "MiMo-V2.5-Pro"
++metatags:
++  description: "Best Practice for MiMo-V2.5-Pro on Ascend NPU"
++---
++<Note>
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx` added +170/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/docs.json`, `docs/docs/hardware-platforms/ascend-npus/model-deployment/best-practices/mimo_v2_5_pro.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #40622 - Add MiMo-V2.6 cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/40622
+- 状态/时间: merged / 2026-09-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx`, `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx`；关联提交 `2261c2e6188a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+264/-2，可读 patch 289 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` added +138/-0 (138 lines); hunks: -0,0 +1,138；`docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` added +124/-0 (124 lines); hunks: -0,0 +1,124；`docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` added +138/-0 (138 lines); hunks: -0,0 +1,138
+  - `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` added +124/-0 (124 lines); hunks: -0,0 +1,124
+  - `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +0/-1 (1 lines); hunks: -2,7 +2,6
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx
+@@ -0,0 +1,138 @@
++// Instantiated from cookbook-add-model/templates/config.jsx.tmpl.
++// Recipes: https://github.com/sgl-project/sglang/pull/40448
++// SGLang: 983e643854f15cf9ef4370a49dfd74b6af54c3e3.
++// B300 validation reported by the model team. Public V2.6 checkpoints are
++// XiaomiMiMo/MiMo-V2.6-{Flash,Pro}-RL (MXFP4 experts, bf16 router, bundled
++// dflash/ drafter); modelNames are served aliases, and the checkpoint paths
+diff -- docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx
+@@ -0,0 +1,124 @@
++---
++title: MiMo-V2.6
++description: "Deploy MiMo-V2.6-Flash and Pro with SGLang on NVIDIA B300 GPUs, using MXFP4 MoE weights, BF16 routing, DFlash decoding, and a 1M-token context window."
++tag: NEW
++---
++## Deployment
+diff -- docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx
+@@ -2,7 +2,6 @@
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` added +138/-0; `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` added +124/-0; `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx` modified +0/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.5.mdx`, `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx`, `docs/cookbook/autoregressive/intro.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #40969 - [Doc] Add H200 recipes to MiMo-V2.6 cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/40969
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx`, `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx`；关联提交 `ffac53d779c0`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+41/-8，可读 patch 100 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` modified +36/-3 (39 lines); hunks: -1,13 +1,14; -35,7 +36,7 @@ export const config = {；`docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` modified +5/-5 (10 lines); hunks: -1,12 +1,12; -69,7 +69,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` modified +36/-3 (39 lines); hunks: -1,13 +1,14; -35,7 +36,7 @@ export const config = {
+  - `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` modified +5/-5 (10 lines); hunks: -1,12 +1,12; -69,7 +69,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx
+@@ -1,13 +1,14 @@
+-// B300 validation reported by the model team. Public V2.6 checkpoints are
++// B300 validation reported by the model team. H200 cells reuse the B300
++// recipes with `--moe-runner-backend marlin` in place of deep_gemm. Public V2.6 checkpoints are
+-  supportedHardware: ["b300"],
++  supportedHardware: ["h200", "b300"],
+@@ -35,7 +36,7 @@ export const config = {
+diff -- docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx
+@@ -1,12 +1,12 @@
+-description: "Deploy MiMo-V2.6-Flash and Pro with SGLang on NVIDIA B300 GPUs, using MXFP4 MoE weights, BF16 routing, DFlash decoding, and a 1M-token context window."
++description: "Deploy MiMo-V2.6-Flash and Pro with SGLang on NVIDIA H200 and B300 GPUs, using MXFP4 MoE weights, BF16 routing, DFlash decoding, and a 1M-token context window."
+-The recipes below target **MiMo-V2.6-Flash on 4× B300** and **MiMo-V2.6-Pro on 8× B300**, each on a single node. Both use MXFP4 MoE weights, a BF16 MoE router, and DFlash speculat
++The recipes below target **MiMo-V2.6-Flash on 4× H200 or B300** and **MiMo-V2.6-Pro on 8× H200 or B300**, each on a single node. Both use MXFP4 MoE weights, a BF16 MoE router, and
+@@ -69,7 +69,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-      <th style={{textAlign: "left", padding: "10px 12px", backgroundColor: "rgba(255,255,255,0.05)"}}>B300 recipe</th>
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx` modified +36/-3; `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx` modified +5/-5
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/Xiaomi/MiMo-V2.6.mdx`, `docs/src/snippets/configs/XiaomiMiMo/mimo-v2.6.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #41667 - [Fix] Keep MiMo-V2 processor available without TorchCodec
+
+- 链接: https://github.com/sgl-project/sglang/pull/41667
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/multimodal/processors/mimo_audio.py`, `python/sglang/srt/multimodal/processors/mimo_v2.py`；关联提交 `488869c2d0f3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+11/-3，可读 patch 43 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/multimodal/processors/mimo_audio.py` modified +5/-2 (7 lines); hunks: -17,9 +17,12；`python/sglang/srt/multimodal/processors/mimo_v2.py` modified +6/-1 (7 lines); hunks: -16,7 +16,6; -33,6 +32,7; symbols: _as_dict, has_audio_track，涉及 `_as_dict, has_audio_track`。
+- 代码 diff 细节:
+  - `python/sglang/srt/multimodal/processors/mimo_audio.py` modified +5/-2 (7 lines); hunks: -17,9 +17,12
+  - `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +6/-1 (7 lines); hunks: -16,7 +16,6; -33,6 +32,7; symbols: _as_dict, has_audio_track
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/multimodal/processors/mimo_audio.py
+@@ -17,9 +17,12 @@
+-except ImportError:
++except (ImportError, OSError, RuntimeError) as e:
++    # TorchCodec may be installed but unable to load its FFmpeg libraries.
+-        "torchcodec is not installed; audio inputs will fail at request time"
++        "torchcodec is unavailable; video audio-track detection and "
++        "audio decoding via AudioDecoder are disabled: %s",
+diff -- python/sglang/srt/multimodal/processors/mimo_v2.py
+@@ -16,7 +16,6 @@
+-from torchcodec.decoders import AudioDecoder
+@@ -33,6 +32,7 @@
++    AudioDecoder,
+@@ -452,6 +452,11 @@ def _as_dict(obj):
++        if AudioDecoder is None:
++            raise ValueError(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/multimodal/processors/mimo_audio.py` modified +5/-2; `python/sglang/srt/multimodal/processors/mimo_v2.py` modified +6/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/multimodal/processors/mimo_audio.py`, `python/sglang/srt/multimodal/processors/mimo_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #41886 - [Perf] Use FA4 by default for MiMo on SM100
+
+- 链接: https://github.com/sgl-project/sglang/pull/41886
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py`；关联提交 `a702970ecbb7`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+32/-6，可读 patch 74 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +5/-0 (5 lines); hunks: -5,6 +5,7; -22,6 +23,10 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> d...; symbols: _mimo_v2_overrides，涉及 `_mimo_v2_overrides`。
+- 代码 diff 细节:
+  - `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +5/-0 (5 lines); hunks: -5,6 +5,7; -22,6 +23,10 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> d...; symbols: _mimo_v2_overrides
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/arg_groups/model_overrides/mimo_v2.py
+@@ -5,6 +5,7 @@
++    is_attention_backend_not_set,
+@@ -22,6 +23,10 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> dict:
++    if get_platform().is_sm100 and is_attention_backend_not_set(cfg):
++        overrides["attention_backend"] = "fa4"
++        logger.info("MiMoV2 on SM100: attention_backend=fa4.")
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +5/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/test_model_overrides.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41668 - [Fix] Select the MXFP4 MoE runner for MiMo-V2 packed experts on SM100
+
+- 链接: https://github.com/sgl-project/sglang/pull/41668
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py`；关联提交 `80bb3fb6511a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+45/-4，可读 patch 80 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +15/-4 (19 lines); hunks: -6,6 +6,7; -27,13 +28,23 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) ->...; symbols: _mimo_v2_overrides，涉及 `_mimo_v2_overrides`。
+- 代码 diff 细节:
+  - `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +15/-4 (19 lines); hunks: -6,6 +6,7; -27,13 +28,23 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) ->...; symbols: _mimo_v2_overrides
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/arg_groups/model_overrides/mimo_v2.py
+@@ -6,6 +6,7 @@
++    model_config_of,
+@@ -27,13 +28,23 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> dict:
+-    # On Blackwell "auto" falls through to the triton fused-MoE runner, ~12%
+-    # slower at bs=1 decode. FP4 checkpoints use flashinfer_mxfp4 instead.
++    # Mixed checkpoints also advertise quant_method=fp8; select the runner
++    # using the routed-expert layout already resolved by ModelConfig.
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +15/-4
+- 验证与风险: diff 自带测试面 `test/registered/unit/test_model_overrides.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42172 - [Fix] Select the Marlin MoE runner for MiMo-V2 packed MXFP4 experts on SM90
+
+- 链接: https://github.com/sgl-project/sglang/pull/42172
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py`；关联提交 `6be84e1b72df`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+9/-0，可读 patch 14 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +9/-0 (9 lines); hunks: -47,4 +47,13 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> d...; symbols: _mimo_v2_overrides，涉及 `_mimo_v2_overrides`。
+- 代码 diff 细节:
+  - `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +9/-0 (9 lines); hunks: -47,4 +47,13 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> d...; symbols: _mimo_v2_overrides
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/arg_groups/model_overrides/mimo_v2.py
+@@ -47,4 +47,13 @@ def _mimo_v2_overrides(server_args: Any, hf_config: Any) -> dict:
++    elif (
++        get_platform().is_sm90
++        and cfg.moe_runner_backend == "auto"
++        and get_quantization_config(hf_config) == "fp8"
++        and model_config_of(server_args).is_fp4_experts
++    ):
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py` modified +9/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/arg_groups/model_overrides/mimo_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ## 补漏结论
 

@@ -1,0 +1,82 @@
+schema_version: 1
+source:
+  kind: llm_serving_cookbook
+  source_recipe_file: sglang/docs/src/snippets/configs/openbmb/minicpm5-2b.jsx
+  recorded_heads:
+    sglang: b1bbd74f287f13ed1276b0403a01ebb55c597e93
+    vllm: 0c16eee3f1ff777298cc894c3eeb85f3880c6d6a
+    tensorrt_llm: bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60
+    tokenspeed: 6fa10840d5c3c23065f60428ad264fba60fa04ae
+  translation: Copies one verified single-node NVIDIA cookbook cell at the recorded
+    SGLang head. Non-speculative baseline; other frameworks require matching image
+    and workload verification. VLM workloads here exercise text only.
+model:
+  name: openbmb/MiniCPM5-2B
+  tokenizer: openbmb/MiniCPM5-2B
+  precision: bf16
+  quantization: model default
+hardware:
+  accelerator: NVIDIA H200
+  gpu_count: 1
+  multi_node: false
+dataset:
+  kind: random
+  num_prompts: 80
+  scenario_names:
+  - chat
+  - summarization
+  input_len:
+  - 1000
+  - 8000
+  output_len:
+  - 1000
+  - 1000
+benchmark:
+  endpoint: /v1/chat/completions
+  backend: openai-compatible
+  tokenizer: openbmb/MiniCPM5-2B
+  max_concurrency:
+  - null
+  - 8
+  - 16
+  extra_request_body:
+    temperature: 0.0
+  qps:
+    lower: 0.25
+    upper: 4.0
+    tolerance: 0.1
+  sla:
+    max_p50_ttft_ms: 1500
+    max_p50_tpot_ms: 30
+    min_success_rate: 0.99
+  output_dir: ./auto_benchmark_results/cookbook-llm/minicpm5-2b
+search:
+  tier: 2
+  max_candidates_per_framework: 6
+  candidate_generation: baseline_first_bounded_product
+  resume: true
+frameworks:
+  sglang:
+    enabled: true
+    support_status: verified_at_recorded_head
+    server_command: sglang serve
+    config_source: sglang_minicpm5_2b_public_recipe
+    base_server_flags:
+      model_path: openbmb/MiniCPM5-2B
+      reasoning_parser: qwen3
+      tool_call_parser: minicpm5
+      host: 0.0.0.0
+      port: 30000
+    search_space:
+      max_running_requests:
+      - 8
+      - 16
+  vllm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tensorrt_llm:
+    enabled: false
+    support_status: not_verified_at_recorded_head
+  tokenspeed:
+    enabled: false
+    support_status: not_verified_at_recorded_head

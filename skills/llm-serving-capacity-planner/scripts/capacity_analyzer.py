@@ -21,6 +21,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import os
 import re
@@ -50,10 +51,23 @@ def load_gpu_specs() -> Dict:
 
 
 GPU_ALIAS = {
+    "b300": "b300",
+    "gb300": "gb300",
+    "gb200": "gb200",
+    "h20-3e": "h20-3e",
+    "h800": "h800",
+    "l20-48gb": "l20-48gb",
+    "rtx-pro-6000": "rtx-pro-6000",
+    "rtx5090": "rtx5090",
+    "dgx-spark": "dgx-spark",
+    "mi300x": "mi300x",
+    "mi325x": "mi325x",
+    "mi350x": "mi350x",
+    "mi355x": "mi355x",
     "h20": "h20",
     "h20-sxm": "h20",
     "l20n": "l20n",
-    "l20": "l20n",
+    "l20": "l20-48gb",
     "h100": "h100-sxm-80gb",
     "h100-sxm": "h100-sxm-80gb",
     "h100-sxm5": "h100-sxm-80gb",
@@ -86,7 +100,7 @@ class ServerArgs:
     pp_size: int = 1
     dp_size: int = 1
     ep_size: int = 1
-    mem_fraction_static: float = 0.88
+    mem_fraction_static: Optional[float] = None
     kv_cache_dtype: str = "auto"
     cuda_graph_max_bs: int = 0
     disable_radix_cache: bool = False
@@ -143,7 +157,7 @@ class FinalInfo:
     max_total_num_tokens: int = 0
     chunked_prefill_size: int = 0
     max_prefill_tokens: int = 0
-    max_running_requests: int = 0
+    max_running_requests: Optional[int] = None
     context_len: int = 0
     available_gpu_mem_gb: float = 0.0
 
@@ -152,6 +166,10 @@ class FinalInfo:
 class VllmMemoryInfo:
     """Memory and KV capacity fields emitted by current vLLM startup logs."""
 
+    consumed_gib: Optional[float] = None
+    peak_activation_gib: Optional[float] = None
+    total_memory_gib: Optional[float] = None
+    max_num_seqs: Optional[int] = None
     initial_free_gib: Optional[float] = None
     requested_utilization: Optional[float] = None
     requested_memory_gib: Optional[float] = None
@@ -183,7 +201,8 @@ class ModelConfig:
     head_dim: int = 0
     attention_type: str = "gqa"  # "gqa", "mla", "csa_hca"
     # MLA specific
-    kv_lora_rank: int = 0  # aka compress_dim / q_lora_rank for MLA
+    kv_lora_rank: int = 0  # compressed KV latent (distinct from query LoRA)
+    qk_rope_head_dim: int = 0
     # SWA/CSA/HCA specific
     compress_ratios: List = field(default_factory=list)
     mhc_bottleneck_dim: int = 0
@@ -201,6 +220,18 @@ class ModelConfig:
 def parse_server_args(line: str) -> ServerArgs:
     """Extract key serving parameters from the server_args= line."""
     args = ServerArgs()
+    if "server_args={" in line:
+        try:
+            values = ast.literal_eval(line.split("server_args=", 1)[1].strip())
+        except (ValueError, SyntaxError):
+            values = {}
+        for key in args.__dataclass_fields__:
+            if key in values:
+                setattr(args, key, values[key])
+        args.cuda_graph_max_bs = values.get(
+            "cuda_graph_max_bs_decode", args.cuda_graph_max_bs
+        )
+        return args
 
     m = re.search(r"model_path='([^']*)'", line)
     if m:
@@ -234,14 +265,19 @@ def parse_server_args(line: str) -> ServerArgs:
     return args
 
 
+def _tp_rank(prefix: str) -> int:
+    match = re.search(r"\bTP(\d+)\b", prefix)
+    return int(match.group(1)) if match else 0
+
+
 def parse_load_weight_begin(line: str) -> Optional[MemCheckpoint]:
     """Parse: [timestamp TP0] Load weight begin. avail mem=93.61 GB"""
-    m = re.search(
-        r"\[.*TP(\d+)\]\s+Load weight begin\.\s+avail mem=([\d.]+)\s+GB", line
-    )
+    m = re.search(r"\[([^\]]*)\]\s+Load weight begin\.\s+avail mem=([\d.]+)\s+GB", line)
     if m:
         return MemCheckpoint(
-            rank=int(m.group(1)), label="load_weight_begin", avail_gb=float(m.group(2))
+            rank=_tp_rank(m.group(1)),
+            label="load_weight_begin",
+            avail_gb=float(m.group(2)),
         )
     return None
 
@@ -249,7 +285,7 @@ def parse_load_weight_begin(line: str) -> Optional[MemCheckpoint]:
 def parse_memory_profiling(line: str) -> Optional[MemoryProfiling]:
     """Parse: [timestamp TP0] Memory profiling: available_gpu_memory=57.01 GB, total_gpu_memory=93.58 GB, mem_fraction_static=0.60, rest_memory=19.58 GB"""
     m = re.search(
-        r"\[.*TP(\d+)\]\s+Memory profiling:\s+"
+        r"\[([^\]]*)\]\s+Memory profiling:\s+"
         r"available_gpu_memory=([\d.]+)\s+GB,\s+"
         r"total_gpu_memory=([\d.]+)\s+GB,\s+"
         r"mem_fraction_static=([\d.]+),\s+"
@@ -258,7 +294,7 @@ def parse_memory_profiling(line: str) -> Optional[MemoryProfiling]:
     )
     if m:
         return MemoryProfiling(
-            rank=int(m.group(1)),
+            rank=_tp_rank(m.group(1)),
             available_gpu_memory_gb=float(m.group(2)),
             total_gpu_memory_gb=float(m.group(3)),
             mem_fraction_static=float(m.group(4)),
@@ -272,49 +308,44 @@ def parse_sw_kv_memory_calc(line: str) -> Optional[SwKvMemoryCalc]:
 
     Also matches legacy format: [timestamp TP0] DSv4 memory calculation: ...
     """
-    m = re.search(
-        r"\[.*TP(\d+)\]\s+(?:DSv4|SW KV) memory calculation:\s+"
-        r"bytes_per_full_token=([\d.]+),\s+"
-        r"available_bytes=([\d.]+)\s+GB,\s+"
-        r"full_token=(\d+)",
-        line,
-    )
-    if m:
-        return SwKvMemoryCalc(
-            rank=int(m.group(1)),
-            bytes_per_full_token=float(m.group(2)),
-            available_bytes_gb=float(m.group(3)),
-            full_token=int(m.group(4)),
+    if re.search(r"(?:DSV4|SW KV) memory calculation:", line, re.I):
+        fields = dict(
+            re.findall(
+                r"(bytes_per_full_token|available_bytes|full_token)=([\d.]+)", line
+            )
         )
+        if len(fields) == 3:
+            return SwKvMemoryCalc(
+                rank=_tp_rank(line),
+                bytes_per_full_token=float(fields["bytes_per_full_token"]),
+                available_bytes_gb=float(fields["available_bytes"]),
+                full_token=int(fields["full_token"]),
+            )
     return None
 
 
 def parse_memory_pool_end(line: str) -> Optional[MemCheckpoint]:
     """Parse: [timestamp TP0] Memory pool end. avail mem=10.18 GB"""
-    m = re.search(r"\[.*TP(\d+)\]\s+Memory pool end\.\s+avail mem=([\d.]+)\s+GB", line)
+    m = re.search(r"\[([^\]]*)\]\s+Memory pool end\.\s+avail mem=([\d.]+)\s+GB", line)
     if m:
         return MemCheckpoint(
-            rank=int(m.group(1)), label="memory_pool_end", avail_gb=float(m.group(2))
+            rank=_tp_rank(m.group(1)),
+            label="memory_pool_end",
+            avail_gb=float(m.group(2)),
         )
     return None
 
 
 def parse_cuda_graph_end(line: str) -> Optional[CudaGraphInfo]:
     """Parse: [timestamp TP0] Capture cuda graph end. Time elapsed: 54.61 s. mem usage=1.93 GB. avail mem=8.16 GB."""
-    m = re.search(
-        r"\[.*TP(\d+)\]\s+Capture cuda graph end\.\s+"
-        r"Time elapsed:\s+([\d.]+)\s+s\.\s+"
-        r"mem usage=([\d.]+)\s+GB\.\s+"
-        r"avail mem=([\d.]+)\s+GB",
-        line,
-    )
-    if m:
-        return CudaGraphInfo(
-            rank=int(m.group(1)),
-            elapsed_s=float(m.group(2)),
-            mem_usage_gb=float(m.group(3)),
-            avail_gb=float(m.group(4)),
-        )
+    if re.search(r"Capture .*cuda graph end\.", line, re.I):
+        elapsed = re.search(r"(?:Time elapsed:|elapsed=)\s*([\d.]+)\s*s", line)
+        usage = re.search(r"mem usage=([\d.]+)\s*GB", line)
+        avail = re.search(r"avail mem=([\d.]+)\s*GB", line)
+        if elapsed and usage and avail:
+            return CudaGraphInfo(
+                _tp_rank(line), float(usage[1]), float(avail[1]), float(elapsed[1])
+            )
     return None
 
 
@@ -322,11 +353,11 @@ def parse_max_total_tokens(line: str) -> Optional[FinalInfo]:
     """Parse: [timestamp TP0] max_total_num_tokens=3080960, chunked_prefill_size=8192, max_prefill_tokens=16384, max_running_requests=256, context_len=1048576, available_gpu_mem=8.16 GB"""
     m = re.search(
         r"max_total_num_tokens=(\d+),\s+"
-        r"chunked_prefill_size=(\d+),\s+"
+        r"chunked_prefill_size=(-?\d+),\s+"
         r"max_prefill_tokens=(\d+),\s+"
         r"max_running_requests=(\d+),\s+"
         r"context_len=(\d+),\s+"
-        r"available_gpu_mem=([\d.]+)\s+GB",
+        r"available_(?:gpu|cpu)_mem=([\d.]+)\s+GB",
         line,
     )
     if m:
@@ -344,6 +375,43 @@ def parse_max_total_tokens(line: str) -> Optional[FinalInfo]:
 def parse_vllm_memory_line(line: str, info: VllmMemoryInfo) -> bool:
     """Parse one current vLLM startup-memory line into ``info``."""
     matched = False
+    if "non-default args:" in line:
+        try:
+            config = ast.literal_eval(line.split("non-default args:", 1)[1].strip())
+            info.max_num_seqs = config.get("max_num_seqs")
+        except (ValueError, SyntaxError):
+            pass
+    m = re.search(
+        r"Free memory on device \(([\d.]+)/([\d.]+) GiB\).*?utilization is \(([\d.]+), ([\d.]+) GiB\).*?([\d.]+) GiB for CUDAGraph memory.*?in use is ([\d.]+) GiB",
+        line,
+    )
+    if m:
+        consumed = re.search(
+            r"Actual usage is ([\d.]+) GiB for consumed memory.*?([\d.]+) GiB for peak activation",
+            line,
+        )
+        if consumed:
+            info.consumed_gib, info.peak_activation_gib = map(float, consumed.groups())
+        (
+            info.initial_free_gib,
+            info.total_memory_gib,
+            info.requested_utilization,
+            info.requested_memory_gib,
+            info.cuda_graph_gib,
+            info.available_kv_cache_gib,
+        ) = map(float, m.groups())
+        matched = True
+    m = re.search(
+        r"Initial free memory ([\d.]+) GiB, reserved ([\d.]+) GiB memory for KV Cache",
+        line,
+    )
+    if m:
+        info.initial_free_gib, info.available_kv_cache_gib = map(float, m.groups())
+        matched = True
+    m = re.search(r"CUDA graph pool memory: ([\d.]+) GiB \(actual\)", line)
+    if m:
+        info.cuda_graph_gib = float(m[1])
+        matched = True
 
     m = re.search(
         r"Initial free memory:\s*([\d.]+)\s*GiB;\s*"
@@ -377,7 +445,7 @@ def parse_vllm_memory_line(line: str, info: VllmMemoryInfo) -> bool:
         info.cuda_graph_gib = float(m.group(1))
         matched = True
 
-    m = re.search(r"GPU KV cache size:\s*([\d,]+)\s*tokens", line)
+    m = re.search(r"\w+ KV cache size:\s*([\d,]+)\s*tokens", line)
     if m:
         info.gpu_kv_cache_tokens = int(m.group(1).replace(",", ""))
         matched = True
@@ -432,6 +500,11 @@ class ParsedLog:
     sw_kv_calcs: List[SwKvMemoryCalc] = field(default_factory=list)
     cuda_graphs: List[CudaGraphInfo] = field(default_factory=list)
     final_info: Optional[FinalInfo] = None
+    weight_allocations: Dict[int, float] = field(default_factory=dict)
+    kv_allocations: Dict[int, float] = field(default_factory=dict)
+    mamba_allocations: Dict[int, float] = field(default_factory=dict)
+    post_capture_allocations: Dict[int, float] = field(default_factory=dict)
+    kv_va_ranks: set = field(default_factory=set)
     framework: str = "unknown"  # "sglang" or "vllm"
     vllm: VllmMemoryInfo = field(default_factory=VllmMemoryInfo)
 
@@ -443,7 +516,12 @@ def parse_log(text: str) -> ParsedLog:
     for line in text.splitlines():
         # Detect framework
         if result.framework == "unknown":
-            if "sglang" in line.lower() or "server_args=ServerArgs" in line:
+            if (
+                "sglang" in line.lower()
+                or "server_args=" in line
+                or "Load weight begin" in line
+                or "max_total_num_tokens=" in line
+            ):
                 result.framework = "sglang"
         if result.framework == "unknown":
             if "vllm" in line.lower() or "vllm_engine" in line.lower():
@@ -452,8 +530,35 @@ def parse_log(text: str) -> ParsedLog:
         parse_vllm_memory_line(line, result.vllm)
 
         # server_args (only parse once, from the first occurrence)
-        if result.server_args is None and "server_args=ServerArgs(" in line:
+        if result.server_args is None and "server_args=" in line:
             result.server_args = parse_server_args(line)
+
+        rank = _tp_rank(line)
+        if "KV Cache VA upper bound." in line:
+            result.kv_va_ranks.add(rank)
+        if "Load weight end." in line:
+            m = re.search(r"mem usage=([\d.]+) GB", line)
+            if m:
+                result.weight_allocations[rank] = result.weight_allocations.get(
+                    rank, 0
+                ) + float(m[1])
+        if "KV Cache is allocated." in line:
+            sizes = re.findall(r"(?:KV|K|V) size: ([\d.]+)\s*GB", line)
+            result.kv_allocations[rank] = result.kv_allocations.get(rank, 0) + sum(
+                map(float, sizes)
+            )
+        if "Mamba Cache is allocated." in line:
+            sizes = re.findall(
+                r"(?:conv_state|ssm_state|intermediate_ssm_state_cache|intermediate_conv_window_cache) size: ([\d.]+)\s*GB",
+                line,
+            )
+            result.mamba_allocations[rank] = result.mamba_allocations.get(
+                rank, 0
+            ) + sum(map(float, sizes))
+        if "Post-capture KV sizing:" in line:
+            m = re.search(r"KV size: ([\d.]+) GB", line)
+            if m:
+                result.post_capture_allocations[rank] = float(m[1])
 
         # Load weight begin
         ck = parse_load_weight_begin(line)
@@ -492,7 +597,7 @@ def parse_log(text: str) -> ParsedLog:
     ):
         result.final_info = FinalInfo(
             max_total_num_tokens=result.vllm.gpu_kv_cache_tokens,
-            max_running_requests=int(result.vllm.maximum_concurrency),
+            max_running_requests=result.vllm.max_num_seqs,
             context_len=result.vllm.max_model_len or 0,
             available_gpu_mem_gb=result.vllm.available_kv_cache_gib or 0.0,
         )
@@ -510,6 +615,7 @@ def load_model_config(config_json_path: str) -> ModelConfig:
     with open(config_json_path) as f:
         cfg = json.load(f)
 
+    cfg = cfg.get("text_config", cfg)
     mc = ModelConfig()
     mc.num_hidden_layers = cfg.get("num_hidden_layers", 0)
     mc.hidden_size = cfg.get("hidden_size", 0)
@@ -525,6 +631,7 @@ def load_model_config(config_json_path: str) -> ModelConfig:
     )
 
     # MLA (DeepSeek-V3 style)
+    mc.qk_rope_head_dim = cfg.get("qk_rope_head_dim", 0)
     mc.kv_lora_rank = cfg.get("kv_lora_rank", 0)
     if mc.kv_lora_rank > 0:
         mc.attention_type = "mla"
@@ -543,9 +650,11 @@ def load_model_config(config_json_path: str) -> ModelConfig:
 # ---------------------------------------------------------------------------
 
 
-def kv_dtype_bytes(dtype_str: str) -> int:
+def kv_dtype_bytes(dtype_str: str) -> float:
     """Return bytes per element for a KV cache dtype string."""
     dtype_str = dtype_str.lower().strip("'\"")
+    if "fp4" in dtype_str:
+        return 0.5  # payload only; scales and alignment need log-derived sizing
     if "fp8" in dtype_str or "e4m3" in dtype_str or "e5m2" in dtype_str:
         return 1
     if (
@@ -573,9 +682,8 @@ def calc_kv_bytes_per_token(
 
     if mc.attention_type == "mla":
         # MLA: KV is the compressed latent, replicated when kv_heads < tp
-        # per_token = 2 * L * kv_lora_rank * dtype_bytes
-        # With TP, MLA latent is replicated (not split) when kv_lora_rank < tp
-        per_token = 2 * L * mc.kv_lora_rank * kv_dtype_bytes
+        # One latent plus RoPE key per layer; replicated across TP ranks
+        per_token = L * (mc.kv_lora_rank + mc.qk_rope_head_dim) * kv_dtype_bytes
         return per_token  # MLA latent is replicated, no TP division
 
     if mc.attention_type == "csa_hca":
@@ -587,11 +695,9 @@ def calc_kv_bytes_per_token(
 
     # Standard GQA/MHA:
     # per_token = 2 * L * kv_heads * head_dim * dtype_bytes / tp_size
-    # But when kv_heads < tp_size, KV is replicated, so no TP division for KV
-    if mc.num_key_value_heads >= tp_size:
-        kv_heads_per_gpu = mc.num_key_value_heads / tp_size
-    else:
-        kv_heads_per_gpu = mc.num_key_value_heads  # replicated
+    # Replicate individual KV heads when TP exceeds the number of heads.
+    # Each rank stores one head, not the whole set of KV heads.
+    kv_heads_per_gpu = max(1, mc.num_key_value_heads // tp_size)
 
     per_token = 2 * L * kv_heads_per_gpu * mc.head_dim * kv_dtype_bytes
     return per_token
@@ -647,6 +753,12 @@ def decompose_memory(
     """
     bd = MemoryBreakdown()
     bd.rank = target_rank
+    if parsed.vllm.total_memory_gib is not None:
+        gpu_hbm_gib = parsed.vllm.total_memory_gib
+    elif smi_entries:
+        card = next((e for e in smi_entries if e.index == target_rank), None)
+        if card:
+            gpu_hbm_gib = (card.memory_used_mib + card.memory_free_mib) / 1024
     bd.gpu_hbm_gib = gpu_hbm_gib
     bd.gpu_hbm_mib = gpu_hbm_gib * 1024
 
@@ -745,7 +857,7 @@ def decompose_memory(
 
     # Framework overhead
     if avail_before_weight is not None:
-        bd.framework_overhead_gib = gpu_hbm_gib - avail_before_weight
+        bd.framework_overhead_gib = max(0.0, gpu_hbm_gib - avail_before_weight)
         bd.derivation["framework_overhead"] = (
             f"{gpu_hbm_gib:.2f} - {avail_before_weight:.2f} (HBM - avail_before_weight)"
         )
@@ -819,6 +931,34 @@ def decompose_memory(
             f"reported mem_usage from Capture cuda graph end (rank {cg_info.rank})"
         )
 
+    if (
+        target_rank in parsed.kv_allocations
+        or target_rank in parsed.mamba_allocations
+        or target_rank in parsed.post_capture_allocations
+    ):
+        bd.kv_pool_gib = parsed.kv_allocations.get(
+            target_rank, 0
+        ) + parsed.mamba_allocations.get(target_rank, 0)
+        if target_rank in parsed.post_capture_allocations:
+            # Main emits a VA upper bound for the target, not an allocation.
+            # Any regular allocation lines alongside that belong to independent
+            # draft pools and must survive the target-only final resize.
+            if target_rank not in parsed.kv_va_ranks:
+                bd.kv_pool_gib = parsed.mamba_allocations.get(target_rank, 0)
+            bd.kv_pool_gib += parsed.post_capture_allocations[target_rank]
+        bd.derivation["kv_pool"] = (
+            "sum of logged pool allocations (post-capture replacement when present)"
+        )
+    if target_rank in parsed.weight_allocations:
+        bd.model_weights_gib = parsed.weight_allocations[target_rank]
+        bd.derivation["model_weights"] = (
+            "sum of Load weight end mem usage for this rank"
+        )
+    rank_graphs = [g for g in parsed.cuda_graphs if g.rank == target_rank]
+    if rank_graphs:
+        bd.cuda_graph_gib = sum(g.mem_usage_gb for g in rank_graphs)
+        bd.derivation["cuda_graph"] = "sum of target/draft phase captures for this rank"
+
     # Total used
     bd.total_used_gib = (
         bd.framework_overhead_gib
@@ -862,7 +1002,7 @@ class ConcurrencyEstimate:
 
     request_tokens: int
     max_total_num_tokens: int
-    max_running_requests: int
+    max_running_requests: Optional[int]
     max_concurrent: (
         int  # min(max_total_num_tokens / request_tokens, max_running_requests)
     )
@@ -885,7 +1025,11 @@ def estimate_concurrency(
     results = []
     for rt in request_tokens_list:
         token_limit = final_info.max_total_num_tokens // rt if rt > 0 else 0
-        max_conc = min(token_limit, final_info.max_running_requests)
+        max_conc = (
+            min(token_limit, final_info.max_running_requests)
+            if final_info.max_running_requests is not None
+            else token_limit
+        )
         results.append(
             ConcurrencyEstimate(
                 request_tokens=rt,
@@ -1054,15 +1198,22 @@ def format_concurrency_table(
             if est.request_tokens > 0
             else 0
         )
+        req_limit = (
+            str(est.max_running_requests)
+            if est.max_running_requests is not None
+            else "unknown"
+        )
         lines.append(
-            f"{est.request_tokens:>12}  {token_limit:>12}  {est.max_running_requests:>12}  {est.max_concurrent:>15}"
+            f"{est.request_tokens:>12}  {token_limit:>12}  {req_limit:>12}  {est.max_concurrent:>15}"
         )
 
     lines.append("")
     if estimates:
         e0 = estimates[0]
         lines.append(f"  max_total_num_tokens = {e0.max_total_num_tokens}")
-        lines.append(f"  max_running_requests = {e0.max_running_requests}")
+        lines.append(
+            f"  max_running_requests = {e0.max_running_requests if e0.max_running_requests is not None else 'unknown; estimates are token-capacity upper bounds'}"
+        )
         if e0.bytes_per_full_token > 0:
             lines.append(
                 f"  bytes_per_full_token = {e0.bytes_per_full_token:.2f} ({e0.bytes_per_full_token / 1024:.2f} KB)"
@@ -1125,7 +1276,7 @@ def format_kv_pool_detail(
         if mc.num_key_value_heads < tp_size:
             replication = tp_size // mc.num_key_value_heads
             lines.append(
-                f"  Replication factor: {replication}x (kv_heads < tp_size, KV replicated across all TP ranks)"
+                f"  Replication factor: {replication}x (each KV head replicated across a subgroup of TP ranks)"
             )
         else:
             lines.append(f"  KV split across TP ranks (kv_heads >= tp_size)")
@@ -1139,9 +1290,14 @@ def format_kv_pool_detail(
             lines.append(
                 f"  Theoretical per-token KV: {per_token:.0f} bytes ({per_token / 1024:.2f} KB)"
             )
-            lines.append(
-                f"    = 2 x {mc.num_hidden_layers} layers x kv_heads_per_gpu x {mc.head_dim} head_dim x {kv_bytes} bytes"
-            )
+            if mc.attention_type == "mla":
+                lines.append(
+                    f"    = {mc.num_hidden_layers} layers x ({mc.kv_lora_rank} latent + {mc.qk_rope_head_dim} RoPE key) x {kv_bytes} bytes"
+                )
+            else:
+                lines.append(
+                    f"    = 2 x {mc.num_hidden_layers} layers x kv_heads_per_gpu x {mc.head_dim} head_dim x {kv_bytes} bytes"
+                )
 
     lines.append("")
     return "\n".join(lines)
@@ -1163,7 +1319,7 @@ def format_tuning_suggestions(
     lines.append("")
 
     avail_free_gib = bd.smi_free_mib / 1024.0 if bd.smi_free_mib > 0 else 0
-    mfs = parsed.server_args.mem_fraction_static if parsed.server_args else 0.88
+    mfs = parsed.server_args.mem_fraction_static if parsed.server_args else None
 
     suggestions = []
 
@@ -1178,7 +1334,7 @@ def format_tuning_suggestions(
                 f"   Current reported utilization={current_text}; increase it only "
                 "after accounting for runtime headroom"
             )
-        else:
+        elif mfs is not None:
             suggestions.append(
                 f"1. Free GPU memory: {avail_free_gib:.2f} GiB — consider "
                 "increasing --mem-fraction-static\n"
@@ -1478,8 +1634,6 @@ def main():
     gpu_hbm_gib = 0.0
     if gpu_key and gpu_key in gpu_specs:
         gpu_hbm_gib = gpu_specs[gpu_key].get("hbm_gb", 0)
-    elif gpu_key == "l20n":
-        gpu_hbm_gib = 72  # L20N has 72GB HBM
     else:
         # Try to infer from nvidia-smi or log
         if smi_entries:
@@ -1497,7 +1651,7 @@ def main():
             "Warning: Could not determine GPU HBM size. Use --gpu flag.",
             file=sys.stderr,
         )
-        gpu_hbm_gib = 96  # fallback
+        gpu_hbm_gib = 0  # keep total unknown; do not invent a SKU capacity
 
     # Load model config
     mc = None
@@ -1506,6 +1660,7 @@ def main():
 
     # Decompose memory
     bd = decompose_memory(parsed, gpu_hbm_gib, smi_entries, args.target_rank)
+    gpu_hbm_gib = bd.gpu_hbm_gib  # use the measured/logged total in every report
 
     # Concurrency estimation
     concurrency = []

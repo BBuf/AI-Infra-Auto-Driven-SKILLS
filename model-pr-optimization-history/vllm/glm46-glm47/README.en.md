@@ -1,9 +1,10 @@
-# vllm GLM-4.6/4.7 Model PR Optimization History
+# vLLM GLM-4.6/4.7 Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
+| `tests/parser/engine/test_glm47_moe.py` | no direct PR-number commit |
 | `tests/reasoning/test_glm4_moe_reasoning_parser.py` | no direct PR-number commit |
 | `tests/tool_parsers/test_glm47_moe_tool_parser.py` | [#37386](https://github.com/vllm-project/vllm/pull/37386) |
 | `tests/tool_parsers/test_glm4_moe_tool_parser.py` | [#37386](https://github.com/vllm-project/vllm/pull/37386) |
@@ -13,13 +14,13 @@
 | `vllm/model_executor/models/glm4_moe_mtp.py` | [#27597](https://github.com/vllm-project/vllm/pull/27597), [#31386](https://github.com/vllm-project/vllm/pull/31386) |
 | `vllm/parser/glm47_moe.py` | no direct PR-number commit |
 | `vllm/reasoning/glm47_moe_reasoning_parser.py` | no direct PR-number commit |
-| `vllm/tool_parsers/glm47_moe_tool_parser.py` | [#30876](https://github.com/vllm-project/vllm/pull/30876), [#37386](https://github.com/vllm-project/vllm/pull/37386) |
+| `vllm/tool_parsers/glm47_moe_tool_parser.py` | [#30876](https://github.com/vllm-project/vllm/pull/30876), [#37386](https://github.com/vllm-project/vllm/pull/37386), [#56403](https://github.com/vllm-project/vllm/pull/56403) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 4
+- Git-traced PRs: 5
 - Extra PRs preserved from existing docs: 20
-- Total PRs in this document: 24
+- Total PRs in this document: 25
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -35,8 +36,8 @@
 | 2026-01-19 | [#31386](https://github.com/vllm-project/vllm/pull/31386) | merged | [GLM-4.7] GLM Model support for GLM-Lite | `vllm/model_executor/models/glm4_moe_lite.py`, `vllm/model_executor/models/glm4_moe_lite_mtp.py`, `vllm/model_executor/models/glm4_moe_mtp.py` |
 | 2026-03-18 | [#37386](https://github.com/vllm-project/vllm/pull/37386) | merged | fix(glm47): improve tool call parsing and content normalization | `tests/tool_parsers/test_glm47_moe_tool_parser.py`, `vllm/tool_parsers/glm47_moe_tool_parser.py`, `tests/tool_parsers/test_glm4_moe_tool_parser.py` |
 | 2026-03-26 | [#38029](https://github.com/vllm-project/vllm/pull/38029) | merged | [Tool Parser][1/3] Pass tools to ToolParser constructor | `vllm/tool_parsers/abstract_tool_parser.py`, `vllm/tool_parsers/qwen3coder_tool_parser.py`, `vllm/tool_parsers/step3p5_tool_parser.py` |
-| 2026-03-31 | [#38264](https://github.com/vllm-project/vllm/pull/38264) | merged | [Mypy] Fix adjust_request typing | `vllm/tool_parsers/deepseekv32_tool_parser.py`, `vllm/tool_parsers/functiongemma_tool_parser.py`, `vllm/tool_parsers/gigachat3_tool_parser.py` |
 | 2026-03-31 | [#38189](https://github.com/vllm-project/vllm/pull/38189) | merged | [Tool Parser][2/3] Use self.tools instead of request.tools in tool parsers | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `tests/tool_parsers/test_qwen3coder_tool_parser.py` |
+| 2026-03-31 | [#38264](https://github.com/vllm-project/vllm/pull/38264) | merged | [Mypy] Fix adjust_request typing | `vllm/tool_parsers/deepseekv32_tool_parser.py`, `vllm/tool_parsers/functiongemma_tool_parser.py`, `vllm/tool_parsers/gigachat3_tool_parser.py` |
 | 2026-04-01 | [#38172](https://github.com/vllm-project/vllm/pull/38172) | merged | [Misc] Add 20 regression tests for 11 tool parser bug fixes | `tests/tool_parsers/test_qwen3coder_tool_parser.py`, `tests/tool_parsers/test_step3p5_tool_parser.py`, `tests/tool_parsers/test_minimax_m2_tool_parser.py` |
 | 2026-04-13 | [#39253](https://github.com/vllm-project/vllm/pull/39253) | merged | [Bugfix] Fix GLM tool parser streaming with MTP or stream interval | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`, `tests/tool_parsers/test_glm47_moe_tool_parser.py` |
 | 2026-04-17 | [#39870](https://github.com/vllm-project/vllm/pull/39870) | merged | [BugFix] Support custom tool parsers when tool_choice is `required` and named function | `vllm/entrypoints/openai/chat_completion/serving.py`, `vllm/entrypoints/openai/engine/serving.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py` |
@@ -51,6 +52,7 @@
 | 2026-06-12 | [#45003](https://github.com/vllm-project/vllm/pull/45003) | merged | [Frontend] Support strict mode for tool calling | `vllm/tool_parsers/qwen3xml_tool_parser.py`, `vllm/tool_parsers/structural_tag_registry.py`, `tests/tool_parsers/test_structural_tag_registry.py` |
 | 2026-06-18 | [#45915](https://github.com/vllm-project/vllm/pull/45915) | merged | [Frontend] Add Streaming Parser Engine and new GLM4.7/GLM5.1/GLM5.2 Parser | `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `vllm/tool_parsers/glm4_moe_tool_parser.py`, `tests/reasoning/test_glm4_moe_reasoning_parser.py` |
 | 2026-06-25 | [#46651](https://github.com/vllm-project/vllm/pull/46651) | merged | [Perf] Remove redundant clone for GLM, Deepseek etc | `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py` |
+| 2026-10-02 | [#56403](https://github.com/vllm-project/vllm/pull/56403) | merged | [Frontend] Constrain non-strict GLM-4.7 tool calls with a shallow structural tag | `vllm/tool_parsers/glm47_moe_tool_parser.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -346,47 +348,6 @@ diff -- vllm/tool_parsers/step3p5_tool_parser.py
   - runtime: `vllm/tool_parsers/abstract_tool_parser.py` modified +14/-2; `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +5/-7; `vllm/tool_parsers/step3p5_tool_parser.py` modified +5/-6; `vllm/tool_parsers/qwen3xml_tool_parser.py` modified +5/-5; `vllm/tool_parsers/llama4_pythonic_tool_parser.py` modified +7/-2; `vllm/tool_parsers/llama_tool_parser.py` modified +7/-2
 - Risk and verification: Runtime changes concentrate in `vllm/entrypoints/openai/chat_completion/serving.py`, `vllm/entrypoints/openai/engine/serving.py`, `vllm/entrypoints/openai/parser/responses_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #38264 - [Mypy] Fix adjust_request typing
-
-- Link: https://github.com/vllm-project/vllm/pull/38264
-- Status/date: merged / 2026-03-31
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 14 files, +49/-17, 241 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Mypy] Fix adjust_request typing"; model line: GLM-4.6/4.7; category: bug fix; main diff: `vllm/tool_parsers/deepseekv32_tool_parser.py`, `vllm/tool_parsers/functiongemma_tool_parser.py`, `vllm/tool_parsers/gigachat3_tool_parser.py`; technical summary: Covers "[Mypy] Fix adjust_request typing"; the main implementation surface is `vllm/tool_parsers/deepseekv32_tool_parser.py`, `vllm/tool_parsers/functiongemma_tool_parser.py`, `vllm/tool_parsers/gigachat3_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +4/-1 (5 lines); hunks: -19,6 +19,7; -78,7 +79,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request, touching `__init__, adjust_request`; `vllm/tool_parsers/functiongemma_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -86,7 +87,9 @@ def _parse_arguments(self, args_str: str) -> dict:; symbols: _parse_arguments, adjust_request, touching `_parse_arguments, adjust_request`; `vllm/tool_parsers/gigachat3_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -55,7 +56,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request, touching `__init__, adjust_request`; `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +4/-1 (5 lines); hunks: -30,6 +30,7; -151,7 +152,9 @@ def _tools_enabled(request: ChatCompletionRequest) -> bool:; symbols: _tools_enabled, adjust_request, touching `_tools_enabled, adjust_request`.
-- Code diff details:
-  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +4/-1 (5 lines); hunks: -19,6 +19,7; -78,7 +79,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request
-  - `vllm/tool_parsers/functiongemma_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -86,7 +87,9 @@ def _parse_arguments(self, args_str: str) -> dict:; symbols: _parse_arguments, adjust_request
-  - `vllm/tool_parsers/gigachat3_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -55,7 +56,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request
-  - `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +4/-1 (5 lines); hunks: -30,6 +30,7; -151,7 +152,9 @@ def _tools_enabled(request: ChatCompletionRequest) -> bool:; symbols: _tools_enabled, adjust_request
-  - `vllm/tool_parsers/granite4_tool_parser.py` modified +4/-1 (5 lines); hunks: -19,6 +19,7; -59,7 +60,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request
-- Key code excerpts:
-
-```diff
-diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
-@@ -19,6 +19,7 @@
-+from vllm.entrypoints.openai.responses.protocol import ResponsesRequest
-@@ -78,7 +79,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
--    def adjust_request(self, request):
-+    def adjust_request(
-+        self, request: ChatCompletionRequest | ResponsesRequest
-+    ) -> ChatCompletionRequest | ResponsesRequest:
-diff -- vllm/tool_parsers/functiongemma_tool_parser.py
-@@ -18,6 +18,7 @@
-+from vllm.entrypoints.openai.responses.protocol import ResponsesRequest
-@@ -86,7 +87,9 @@ def _parse_arguments(self, args_str: str) -> dict:
--    def adjust_request(self, request: ChatCompletionRequest) -> ChatCompletionRequest:
-+    def adjust_request(
-+        self, request: ChatCompletionRequest | ResponsesRequest
-+    ) -> ChatCompletionRequest | ResponsesRequest:
-diff -- vllm/tool_parsers/gigachat3_tool_parser.py
-@@ -18,6 +18,7 @@
-```
-
-- Reviewed files:
-  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +4/-1; `vllm/tool_parsers/functiongemma_tool_parser.py` modified +4/-1; `vllm/tool_parsers/gigachat3_tool_parser.py` modified +4/-1; `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +4/-1; `vllm/tool_parsers/granite4_tool_parser.py` modified +4/-1; `vllm/tool_parsers/hermes_tool_parser.py` modified +4/-1
-- Risk and verification: Runtime changes concentrate in `vllm/entrypoints/serve/render/serving.py`, `vllm/parser/abstract_parser.py`, `vllm/tool_parsers/abstract_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #38189 - [Tool Parser][2/3] Use self.tools instead of request.tools in tool parsers
 
 - Link: https://github.com/vllm-project/vllm/pull/38189
@@ -428,6 +389,47 @@ diff -- tests/tool_parsers/test_qwen3coder_tool_parser.py
   - tests: `tests/tool_parsers/test_glm4_moe_tool_parser.py` modified +32/-27; `tests/tool_parsers/test_deepseekv32_tool_parser.py` modified +19/-13; `tests/tool_parsers/test_qwen3coder_tool_parser.py` modified +10/-12; `tests/tool_parsers/test_glm47_moe_tool_parser.py` modified +13/-8; `tests/tool_parsers/test_step3p5_tool_parser.py` modified +8/-10
   - runtime: `vllm/tool_parsers/abstract_tool_parser.py` modified +10/-1; `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +3/-6; `vllm/tool_parsers/qwen3coder_tool_parser.py` modified +3/-5
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_deepseekv32_tool_parser.py`, `tests/tool_parsers/test_glm47_moe_tool_parser.py`, `tests/tool_parsers/test_glm4_moe_tool_parser.py`, `tests/tool_parsers/test_qwen3coder_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #38264 - [Mypy] Fix adjust_request typing
+
+- Link: https://github.com/vllm-project/vllm/pull/38264
+- Status/date: merged / 2026-03-31
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 14 files, +49/-17, 241 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Mypy] Fix adjust_request typing"; model line: GLM-4.6/4.7; category: bug fix; main diff: `vllm/tool_parsers/deepseekv32_tool_parser.py`, `vllm/tool_parsers/functiongemma_tool_parser.py`, `vllm/tool_parsers/gigachat3_tool_parser.py`; technical summary: Covers "[Mypy] Fix adjust_request typing"; the main implementation surface is `vllm/tool_parsers/deepseekv32_tool_parser.py`, `vllm/tool_parsers/functiongemma_tool_parser.py`, `vllm/tool_parsers/gigachat3_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +4/-1 (5 lines); hunks: -19,6 +19,7; -78,7 +79,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request, touching `__init__, adjust_request`; `vllm/tool_parsers/functiongemma_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -86,7 +87,9 @@ def _parse_arguments(self, args_str: str) -> dict:; symbols: _parse_arguments, adjust_request, touching `_parse_arguments, adjust_request`; `vllm/tool_parsers/gigachat3_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -55,7 +56,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request, touching `__init__, adjust_request`; `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +4/-1 (5 lines); hunks: -30,6 +30,7; -151,7 +152,9 @@ def _tools_enabled(request: ChatCompletionRequest) -> bool:; symbols: _tools_enabled, adjust_request, touching `_tools_enabled, adjust_request`.
+- Code diff details:
+  - `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +4/-1 (5 lines); hunks: -19,6 +19,7; -78,7 +79,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request
+  - `vllm/tool_parsers/functiongemma_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -86,7 +87,9 @@ def _parse_arguments(self, args_str: str) -> dict:; symbols: _parse_arguments, adjust_request
+  - `vllm/tool_parsers/gigachat3_tool_parser.py` modified +4/-1 (5 lines); hunks: -18,6 +18,7; -55,7 +56,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request
+  - `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +4/-1 (5 lines); hunks: -30,6 +30,7; -151,7 +152,9 @@ def _tools_enabled(request: ChatCompletionRequest) -> bool:; symbols: _tools_enabled, adjust_request
+  - `vllm/tool_parsers/granite4_tool_parser.py` modified +4/-1 (5 lines); hunks: -19,6 +19,7; -59,7 +60,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool]...; symbols: __init__, adjust_request
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/deepseekv32_tool_parser.py
+@@ -19,6 +19,7 @@
++from vllm.entrypoints.openai.responses.protocol import ResponsesRequest
+@@ -78,7 +79,9 @@ def __init__(self, tokenizer: TokenizerLike, tools: list[Tool] | None = None):
+-    def adjust_request(self, request):
++    def adjust_request(
++        self, request: ChatCompletionRequest | ResponsesRequest
++    ) -> ChatCompletionRequest | ResponsesRequest:
+diff -- vllm/tool_parsers/functiongemma_tool_parser.py
+@@ -18,6 +18,7 @@
++from vllm.entrypoints.openai.responses.protocol import ResponsesRequest
+@@ -86,7 +87,9 @@ def _parse_arguments(self, args_str: str) -> dict:
+-    def adjust_request(self, request: ChatCompletionRequest) -> ChatCompletionRequest:
++    def adjust_request(
++        self, request: ChatCompletionRequest | ResponsesRequest
++    ) -> ChatCompletionRequest | ResponsesRequest:
+diff -- vllm/tool_parsers/gigachat3_tool_parser.py
+@@ -18,6 +18,7 @@
+```
+
+- Reviewed files:
+  - runtime: `vllm/tool_parsers/deepseekv32_tool_parser.py` modified +4/-1; `vllm/tool_parsers/functiongemma_tool_parser.py` modified +4/-1; `vllm/tool_parsers/gigachat3_tool_parser.py` modified +4/-1; `vllm/tool_parsers/glm4_moe_tool_parser.py` modified +4/-1; `vllm/tool_parsers/granite4_tool_parser.py` modified +4/-1; `vllm/tool_parsers/hermes_tool_parser.py` modified +4/-1
+- Risk and verification: Runtime changes concentrate in `vllm/entrypoints/serve/render/serving.py`, `vllm/parser/abstract_parser.py`, `vllm/tool_parsers/abstract_tool_parser.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #38172 - [Misc] Add 20 regression tests for 11 tool parser bug fixes
 
@@ -982,6 +984,30 @@ diff -- vllm/model_executor/models/openpangu.py
 - Reviewed files:
   - runtime: `vllm/model_executor/models/AXK1.py` modified +1/-1; `vllm/model_executor/models/deepseek_v2.py` modified +1/-1; `vllm/model_executor/models/glm4_moe_lite.py` modified +1/-1; `vllm/model_executor/models/openpangu.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/AXK1.py`, `vllm/model_executor/models/deepseek_v2.py`, `vllm/model_executor/models/glm4_moe_lite.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #56403 - [Frontend] Constrain non-strict GLM-4.7 tool calls with a shallow structural tag
+
+- Link: https://github.com/vllm-project/vllm/pull/56403
+- Status/date: merged / 2026-10-02
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/tool_parsers/glm47_moe_tool_parser.py`; associated commits `d1a974c14031`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 5 files, +729/-2, 795 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/tool_parsers/glm47_moe_tool_parser.py` modified +3/-0 (3 lines); hunks: -4,8 +4,11; symbols: Glm47MoeModelToolParser, touching `Glm47MoeModelToolParser`.
+- Code diff details:
+  - `vllm/tool_parsers/glm47_moe_tool_parser.py` modified +3/-0 (3 lines); hunks: -4,8 +4,11; symbols: Glm47MoeModelToolParser
+- Key code excerpts:
+
+```diff
+diff -- vllm/tool_parsers/glm47_moe_tool_parser.py
+@@ -4,8 +4,11 @@
++from vllm.tool_parsers.tool_strict_level import ToolStrictLevel
++    # Constrain auto tool calls with the shallow tag by default.
++    default_tool_strict_level = ToolStrictLevel.FUNCTION
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/tool_parsers/glm47_moe_tool_parser.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_structural_tag_registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 

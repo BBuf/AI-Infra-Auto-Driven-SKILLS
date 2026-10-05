@@ -38,7 +38,7 @@ python3 scripts/incident_artifact_tool.py summarize-dump \
   --input-file /path/to/crash_dump.pkl
 ```
 
-Current crash-dump tests show at least:
+Crash-dump tests assert `server_args` and `requests`; crash dumps additionally record `launch_command`, `config_updates`, `resolved_config`.
 
 - `server_args`
 - `requests`
@@ -234,3 +234,44 @@ See:
 3. replay stable workload
 4. bisect if one older commit is known-good
 5. profile only if compute still looks suspicious
+
+## Current dump, replay and tracing contract — 2026-10-05
+
+Crash dumps land at `<crash_dump_folder>/<hostname>/crash_dump_<timestamp>.pkl`.
+Request dumps land directly under the request-dump folder and omit
+`launch_command`. Crash keys are `server_args`, `config_updates`,
+`resolved_config`, `requests`, `launch_command`; pickling fallback can set
+config objects to None. Crash buffers retain finished requests for five minutes
+plus in-flight requests, and only capture requests with `log_metrics=True`.
+The bundle summarizer recursively discovers hostname subdirectories.
+
+Code reading indicates stock SafeUnpickler rejects embedded `ServerArgs`.
+Use `replay_trusted_request_dump.py` for locally captured, trusted dumps when
+stock replay rejects them. This has not been verified with a real GPU crash
+dump. Stock folder replay is non-recursive: point it at the hostname folder.
+
+On keyed Python servers use curl instead of the stock unauthenticated logging CLI:
+
+```bash
+curl -X POST http://127.0.0.1:30000/configure_logging \
+  -H "Authorization: Bearer $SGLANG_ADMIN_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"log_requests":true,"dump_requests_folder":"/tmp/requests","dump_requests_threshold":1}'
+```
+
+`--crash-dump-folder X` alone enables CUDA coredump environment defaults and
+writes `X/<hostname>/core.cuda.<timestamp>.<pid>`; the `cuda_coredump_*` examples
+above apply only with `SGLANG_CUDA_COREDUMP=1`. See SKILL.md for precedence.
+
+`SGLANG_TRACE_LEVEL` defaults to 3; `/set_trace_level` changes it at runtime.
+`SGLANG_TRACE_ASYNC=1` moves span creation off the scheduler hot path, with
+`SGLANG_TRACE_ASYNC_FLUSH_THRESHOLD=100` by default. Record these because tracing
+can itself regress throughput. Configure `--otlp-service-name`,
+`--trace-modules request,mooncake`, and optionally
+`OTEL_EXPORTER_OTLP_TRACES_PROTOCOL=http/protobuf` for the HTTP exporter.
+`convert_otel_2_perfetto.py -f <torch trace>` merges request spans into a Torch
+Profiler trace for the profiler skill.
+
+Evidence: [dump writer](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/managers/tokenizer_manager.py),
+[trace controls](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/arg_groups/fields/observability.py),
+[converter](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/scripts/convert_otel_2_perfetto.py).

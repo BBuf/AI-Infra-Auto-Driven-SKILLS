@@ -1,4 +1,4 @@
-# vllm Gemma 4 Model PR Optimization History
+# vLLM Gemma 4 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -7,20 +7,22 @@
 | `examples/tool_chat_template_gemma4.jinja` | [#39027](https://github.com/vllm-project/vllm/pull/39027), [#39570](https://github.com/vllm-project/vllm/pull/39570), [#41459](https://github.com/vllm-project/vllm/pull/41459), [#42188](https://github.com/vllm-project/vllm/pull/42188), [#45553](https://github.com/vllm-project/vllm/pull/45553), [#45867](https://github.com/vllm-project/vllm/pull/45867) |
 | `tests/kernels/moe/test_gemma4router.py` | [#39083](https://github.com/vllm-project/vllm/pull/39083) |
 | `tests/lora/test_gemma4_tp.py` | [#42662](https://github.com/vllm-project/vllm/pull/42662) |
-| `tests/models/multimodal/processing/test_gemma4.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#40796](https://github.com/vllm-project/vllm/pull/40796), [#41799](https://github.com/vllm-project/vllm/pull/41799), [#41837](https://github.com/vllm-project/vllm/pull/41837), [#42217](https://github.com/vllm-project/vllm/pull/42217), [#43296](https://github.com/vllm-project/vllm/pull/43296) |
-| `tests/models/multimodal/processing/test_gemma4_unified.py` | [#44429](https://github.com/vllm-project/vllm/pull/44429) |
+| `tests/models/multimodal/processing/test_gemma4.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#40796](https://github.com/vllm-project/vllm/pull/40796), [#41799](https://github.com/vllm-project/vllm/pull/41799), [#41837](https://github.com/vllm-project/vllm/pull/41837), [#42217](https://github.com/vllm-project/vllm/pull/42217), [#43296](https://github.com/vllm-project/vllm/pull/43296), [#56652](https://github.com/vllm-project/vllm/pull/56652) |
+| `tests/models/multimodal/processing/test_gemma4_unified.py` | [#44429](https://github.com/vllm-project/vllm/pull/44429), [#56721](https://github.com/vllm-project/vllm/pull/56721) |
 | `tests/parser/engine/test_gemma4_streaming_reasoning.py` | [#45588](https://github.com/vllm-project/vllm/pull/45588), [#45834](https://github.com/vllm-project/vllm/pull/45834), [#45852](https://github.com/vllm-project/vllm/pull/45852), [#48262](https://github.com/vllm-project/vllm/pull/48262), [#52430](https://github.com/vllm-project/vllm/pull/52430) |
 | `tests/reasoning/test_gemma4_reasoning_parser.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#39027](https://github.com/vllm-project/vllm/pull/39027), [#45553](https://github.com/vllm-project/vllm/pull/45553), [#45588](https://github.com/vllm-project/vllm/pull/45588), [#52430](https://github.com/vllm-project/vllm/pull/52430) |
 | `tests/renderers/test_gemma4_chat_template.py` | [#39027](https://github.com/vllm-project/vllm/pull/39027), [#41459](https://github.com/vllm-project/vllm/pull/41459), [#45553](https://github.com/vllm-project/vllm/pull/45553) |
-| `tests/tool_parsers/test_gemma4_tool_parser.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38909](https://github.com/vllm-project/vllm/pull/38909), [#38992](https://github.com/vllm-project/vllm/pull/38992), [#39027](https://github.com/vllm-project/vllm/pull/39027), [#39114](https://github.com/vllm-project/vllm/pull/39114), [#39679](https://github.com/vllm-project/vllm/pull/39679), [#41991](https://github.com/vllm-project/vllm/pull/41991), [#42128](https://github.com/vllm-project/vllm/pull/42128), [#45588](https://github.com/vllm-project/vllm/pull/45588) |
+| `tests/tool_parsers/test_gemma4_tool_parser.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38909](https://github.com/vllm-project/vllm/pull/38909), [#38992](https://github.com/vllm-project/vllm/pull/38992), [#39027](https://github.com/vllm-project/vllm/pull/39027), [#39114](https://github.com/vllm-project/vllm/pull/39114), [#39679](https://github.com/vllm-project/vllm/pull/39679), [#41991](https://github.com/vllm-project/vllm/pull/41991), [#42128](https://github.com/vllm-project/vllm/pull/42128), [#45588](https://github.com/vllm-project/vllm/pull/45588), [#53444](https://github.com/vllm-project/vllm/pull/53444) |
 | `tests/tool_use/test_gemma4_responses_adjust_request.py` | [#45588](https://github.com/vllm-project/vllm/pull/45588), [#45795](https://github.com/vllm-project/vllm/pull/45795), [#45832](https://github.com/vllm-project/vllm/pull/45832) |
+| `tests/v1/e2e/spec_decode/mtp/gemma4/__init__.py` | no direct PR-number commit |
+| `tests/v1/e2e/spec_decode/mtp/gemma4/test_mtp.py` | no direct PR-number commit |
 | `vllm/model_executor/layers/rotary_embedding/gemma4_rope.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826) |
-| `vllm/model_executor/models/gemma4.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38844](https://github.com/vllm-project/vllm/pull/38844), [#38879](https://github.com/vllm-project/vllm/pull/38879), [#39045](https://github.com/vllm-project/vllm/pull/39045), [#39083](https://github.com/vllm-project/vllm/pull/39083), [#39450](https://github.com/vllm-project/vllm/pull/39450), [#40588](https://github.com/vllm-project/vllm/pull/40588), [#40708](https://github.com/vllm-project/vllm/pull/40708), [#40786](https://github.com/vllm-project/vllm/pull/40786), [#41206](https://github.com/vllm-project/vllm/pull/41206), [#41574](https://github.com/vllm-project/vllm/pull/41574), [#42250](https://github.com/vllm-project/vllm/pull/42250), ... (16 total) |
-| `vllm/model_executor/models/gemma4_dspark.py` | [#47216](https://github.com/vllm-project/vllm/pull/47216), [#49797](https://github.com/vllm-project/vllm/pull/49797) |
-| `vllm/model_executor/models/gemma4_mm.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38872](https://github.com/vllm-project/vllm/pull/38872), [#39234](https://github.com/vllm-project/vllm/pull/39234), [#39291](https://github.com/vllm-project/vllm/pull/39291), [#39450](https://github.com/vllm-project/vllm/pull/39450), [#39842](https://github.com/vllm-project/vllm/pull/39842), [#40411](https://github.com/vllm-project/vllm/pull/40411), [#40534](https://github.com/vllm-project/vllm/pull/40534), [#40796](https://github.com/vllm-project/vllm/pull/40796), [#41799](https://github.com/vllm-project/vllm/pull/41799), [#41837](https://github.com/vllm-project/vllm/pull/41837), [#42217](https://github.com/vllm-project/vllm/pull/42217), ... (24 total) |
-| `vllm/model_executor/models/gemma4_mtp.py` | [#41745](https://github.com/vllm-project/vllm/pull/41745), [#43909](https://github.com/vllm-project/vllm/pull/43909), [#44429](https://github.com/vllm-project/vllm/pull/44429), [#47091](https://github.com/vllm-project/vllm/pull/47091), [#49797](https://github.com/vllm-project/vllm/pull/49797) |
+| `vllm/model_executor/models/gemma4.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38844](https://github.com/vllm-project/vllm/pull/38844), [#38879](https://github.com/vllm-project/vllm/pull/38879), [#39045](https://github.com/vllm-project/vllm/pull/39045), [#39083](https://github.com/vllm-project/vllm/pull/39083), [#39450](https://github.com/vllm-project/vllm/pull/39450), [#40588](https://github.com/vllm-project/vllm/pull/40588), [#40708](https://github.com/vllm-project/vllm/pull/40708), [#40786](https://github.com/vllm-project/vllm/pull/40786), [#41206](https://github.com/vllm-project/vllm/pull/41206), [#41574](https://github.com/vllm-project/vllm/pull/41574), [#42250](https://github.com/vllm-project/vllm/pull/42250), ... (18 total) |
+| `vllm/model_executor/models/gemma4_dspark.py` | [#47216](https://github.com/vllm-project/vllm/pull/47216), [#49797](https://github.com/vllm-project/vllm/pull/49797), [#57263](https://github.com/vllm-project/vllm/pull/57263) |
+| `vllm/model_executor/models/gemma4_mm.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826), [#38872](https://github.com/vllm-project/vllm/pull/38872), [#39234](https://github.com/vllm-project/vllm/pull/39234), [#39291](https://github.com/vllm-project/vllm/pull/39291), [#39450](https://github.com/vllm-project/vllm/pull/39450), [#39842](https://github.com/vllm-project/vllm/pull/39842), [#40411](https://github.com/vllm-project/vllm/pull/40411), [#40534](https://github.com/vllm-project/vllm/pull/40534), [#40796](https://github.com/vllm-project/vllm/pull/40796), [#41799](https://github.com/vllm-project/vllm/pull/41799), [#41837](https://github.com/vllm-project/vllm/pull/41837), [#42217](https://github.com/vllm-project/vllm/pull/42217), ... (27 total) |
+| `vllm/model_executor/models/gemma4_mtp.py` | [#41745](https://github.com/vllm-project/vllm/pull/41745), [#43909](https://github.com/vllm-project/vllm/pull/43909), [#44429](https://github.com/vllm-project/vllm/pull/44429), [#47091](https://github.com/vllm-project/vllm/pull/47091), [#49797](https://github.com/vllm-project/vllm/pull/49797), [#53884](https://github.com/vllm-project/vllm/pull/53884) |
 | `vllm/model_executor/models/gemma4_unified.py` | [#44429](https://github.com/vllm-project/vllm/pull/44429), [#44571](https://github.com/vllm-project/vllm/pull/44571), [#50958](https://github.com/vllm-project/vllm/pull/50958) |
-| `vllm/parser/gemma4.py` | [#45553](https://github.com/vllm-project/vllm/pull/45553), [#45588](https://github.com/vllm-project/vllm/pull/45588), [#45832](https://github.com/vllm-project/vllm/pull/45832), [#45834](https://github.com/vllm-project/vllm/pull/45834), [#45852](https://github.com/vllm-project/vllm/pull/45852), [#48262](https://github.com/vllm-project/vllm/pull/48262), [#52430](https://github.com/vllm-project/vllm/pull/52430) |
+| `vllm/parser/gemma4.py` | [#45553](https://github.com/vllm-project/vllm/pull/45553), [#45588](https://github.com/vllm-project/vllm/pull/45588), [#45832](https://github.com/vllm-project/vllm/pull/45832), [#45834](https://github.com/vllm-project/vllm/pull/45834), [#45852](https://github.com/vllm-project/vllm/pull/45852), [#48262](https://github.com/vllm-project/vllm/pull/48262), [#52430](https://github.com/vllm-project/vllm/pull/52430), [#53444](https://github.com/vllm-project/vllm/pull/53444), [#53657](https://github.com/vllm-project/vllm/pull/53657) |
 | `vllm/reasoning/gemma4_engine_reasoning_parser.py` | [#45588](https://github.com/vllm-project/vllm/pull/45588) |
 | `vllm/reasoning/gemma4_utils.py` | [#38826](https://github.com/vllm-project/vllm/pull/38826) |
 | `vllm/tool_parsers/gemma4_engine_tool_parser.py` | [#45588](https://github.com/vllm-project/vllm/pull/45588), [#45795](https://github.com/vllm-project/vllm/pull/45795) |
@@ -28,13 +30,13 @@
 | `vllm/transformers_utils/configs/gemma4.py` | [#49797](https://github.com/vllm-project/vllm/pull/49797) |
 | `vllm/v1/spec_decode/gemma4.py` | [#41745](https://github.com/vllm-project/vllm/pull/41745), [#43982](https://github.com/vllm-project/vllm/pull/43982), [#47920](https://github.com/vllm-project/vllm/pull/47920) |
 | `vllm/v1/worker/gpu/spec_decode/gemma4/__init__.py` | [#43241](https://github.com/vllm-project/vllm/pull/43241) |
-| `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` | [#43241](https://github.com/vllm-project/vllm/pull/43241), [#48666](https://github.com/vllm-project/vllm/pull/48666), [#52987](https://github.com/vllm-project/vllm/pull/52987) |
+| `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` | [#43241](https://github.com/vllm-project/vllm/pull/43241), [#48666](https://github.com/vllm-project/vllm/pull/48666), [#52987](https://github.com/vllm-project/vllm/pull/52987), [#53175](https://github.com/vllm-project/vllm/pull/53175) |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 63
+- Git-traced PRs: 72
 - Extra PRs preserved from existing docs: 5
-- Total PRs in this document: 68
+- Total PRs in this document: 77
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -48,8 +50,8 @@
 | 2026-04-05 | [#38992](https://github.com/vllm-project/vllm/pull/38992) | merged | [Bugfix] Fix invalid JSON in Gemma 4 streaming tool calls by stripping partial delimiters | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-06 | [#38879](https://github.com/vllm-project/vllm/pull/38879) | merged | [Gemma4] Enable Fast Prefill Optimization | `vllm/model_executor/models/gemma4.py` |
 | 2026-04-08 | [#38909](https://github.com/vllm-project/vllm/pull/38909) | merged | [Bugfix][Frontend] Fix Gemma4 streaming HTML duplication after tool calls | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
-| 2026-04-08 | [#39114](https://github.com/vllm-project/vllm/pull/39114) | merged | [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-08 | [#39027](https://github.com/vllm-project/vllm/pull/39027) | merged | [Tool] `adjust_request` to reasoning parser, and Gemma4 fixes | `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `tests/renderers/test_gemma4_chat_template.py` |
+| 2026-04-08 | [#39114](https://github.com/vllm-project/vllm/pull/39114) | merged | [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
 | 2026-04-09 | [#39045](https://github.com/vllm-project/vllm/pull/39045) | merged | [Gemma4] Support quantized MoE | `vllm/model_executor/models/gemma4.py` |
 | 2026-04-10 | [#39450](https://github.com/vllm-project/vllm/pull/39450) | merged | Add Gemma4 Eagle3 support | `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-04-11 | [#38844](https://github.com/vllm-project/vllm/pull/38844) | merged | [Gemma4][Bugfix]: Enable Gemma4ForCasualLM to load lora adapters correctly | `vllm/model_executor/models/gemma4.py` |
@@ -65,8 +67,8 @@
 | 2026-05-02 | [#39570](https://github.com/vllm-project/vllm/pull/39570) | merged | [Fix] Sync gemma4 chat template from hf | `examples/tool_chat_template_gemma4.jinja` |
 | 2026-05-02 | [#40796](https://github.com/vllm-project/vllm/pull/40796) | merged | [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-05 | [#41574](https://github.com/vllm-project/vllm/pull/41574) | merged | [Model] Fix Gemma4 MoE activation mismatch | `vllm/model_executor/models/gemma4.py` |
-| 2026-05-06 | [#41799](https://github.com/vllm-project/vllm/pull/41799) | merged | [MM][Gemma4] Respect max_soft_tokens in encoder budget | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-06 | [#41745](https://github.com/vllm-project/vllm/pull/41745) | merged | [Spec Decode] Add Gemma4 MTP speculative decoding support | `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py` |
+| 2026-05-06 | [#41799](https://github.com/vllm-project/vllm/pull/41799) | merged | [MM][Gemma4] Respect max_soft_tokens in encoder budget | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-07 | [#41837](https://github.com/vllm-project/vllm/pull/41837) | merged | [MM][Gemma4] Use video profiling hints in encoder budget | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-05-08 | [#40588](https://github.com/vllm-project/vllm/pull/40588) | merged | [Models][Gemma3/Gemma4] Support hidden_act variants in gated MLP | `vllm/model_executor/models/gemma4.py` |
 | 2026-05-08 | [#41991](https://github.com/vllm-project/vllm/pull/41991) | merged | [Bugfix][Gemma4] Fix infinite loop and array boundary issues in tool parser | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py` |
@@ -82,13 +84,13 @@
 | 2026-06-02 | [#43798](https://github.com/vllm-project/vllm/pull/43798) | merged | [Bugfix] Convert Gemma4-MM ViT linear layers to vllm native impl | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-06-02 | [#44232](https://github.com/vllm-project/vllm/pull/44232) | merged | [Bugfix] Fix Gemma4 startup crash with recent transformers multimodal processor | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-06-03 | [#44429](https://github.com/vllm-project/vllm/pull/44429) | merged | [Model] Add Gemma4 Unified (encoder-free) support | `vllm/model_executor/models/gemma4_unified.py`, `tests/models/multimodal/processing/test_gemma4_unified.py`, `vllm/model_executor/models/gemma4_mm.py` |
-| 2026-06-04 | [#43982](https://github.com/vllm-project/vllm/pull/43982) | merged | [Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load | `vllm/v1/spec_decode/gemma4.py` |
 | 2026-06-04 | [#43241](https://github.com/vllm-project/vllm/pull/43241) | merged | [Model Runner V2][Spec Decode] Add Gemma4 MTP support | `vllm/v1/worker/gpu/spec_decode/eagle/speculator.py`, `vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py`, `vllm/v1/worker/gpu/spec_decode/speculator.py` |
+| 2026-06-04 | [#43982](https://github.com/vllm-project/vllm/pull/43982) | merged | [Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load | `vllm/v1/spec_decode/gemma4.py` |
 | 2026-06-04 | [#44340](https://github.com/vllm-project/vllm/pull/44340) | merged | [Quant] Support compressed-tensors WNA8O8Int linears and WNInt embeddings | `vllm/model_executor/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa8o8.py`, `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors_embedding.py`, `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` |
-| 2026-06-05 | [#44571](https://github.com/vllm-project/vllm/pull/44571) | merged | [Bugfix] Exclude vision embedder from quantization in Gemma4 Unified | `vllm/model_executor/models/gemma4_unified.py` |
 | 2026-06-05 | [#43167](https://github.com/vllm-project/vllm/pull/43167) | merged | Remove KV cache scale boilerplate from model weight loading methods | `tests/model_executor/test_eagle_quantization.py`, `vllm/model_executor/models/gpt_oss.py`, `vllm/model_executor/layers/quantization/kv_cache.py` |
-| 2026-06-08 | [#44828](https://github.com/vllm-project/vllm/pull/44828) | merged | [BugFix] Use served model name in gemma4 audio-tower error message | `vllm/model_executor/models/gemma4_mm.py` |
+| 2026-06-05 | [#44571](https://github.com/vllm-project/vllm/pull/44571) | merged | [Bugfix] Exclude vision embedder from quantization in Gemma4 Unified | `vllm/model_executor/models/gemma4_unified.py` |
 | 2026-06-08 | [#41184](https://github.com/vllm-project/vllm/pull/41184) | merged | [MoE Refactor] FusedMoE/MoERunner inversion refactor | `vllm/model_executor/layers/fused_moe/layer.py`, `vllm/model_executor/layers/fused_moe/routed_experts.py`, `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` |
+| 2026-06-08 | [#44828](https://github.com/vllm-project/vllm/pull/44828) | merged | [BugFix] Use served model name in gemma4 audio-tower error message | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-06-12 | [#45163](https://github.com/vllm-project/vllm/pull/45163) | merged | [Model] Add DiffusionGemma Support | `vllm/tool_parsers/gemma4_tool_parser.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/model_executor/models/config.py` |
 | 2026-06-15 | [#45588](https://github.com/vllm-project/vllm/pull/45588) | merged | [Frontend] Replace legacy Gemma4 parsers with engine-based implementation | `tests/parser/engine/test_gemma4_streaming_reasoning.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`, `tests/reasoning/test_gemma4_reasoning_parser.py` |
 | 2026-06-16 | [#45553](https://github.com/vllm-project/vllm/pull/45553) | merged | [Bugfix][Gemma4] Fix offline parser truncation, adjust_request token leak, and chat template sync | `vllm/tool_parsers/gemma4_utils.py`, `tests/reasoning/test_gemma4_reasoning_parser.py`, `examples/tool_chat_template_gemma4.jinja` |
@@ -110,6 +112,15 @@
 | 2026-08-16 | [#52441](https://github.com/vllm-project/vllm/pull/52441) | merged | [Bugfix][Multimodal] Keep Gemma 4 video frame counts on CPU | `vllm/model_executor/models/gemma4_mm.py` |
 | 2026-08-18 | [#52430](https://github.com/vllm-project/vllm/pull/52430) | merged | [Bugfix][Gemma4] Align parser enable_thinking default with template | `tests/parser/engine/test_gemma4_streaming_reasoning.py`, `tests/reasoning/test_gemma4_reasoning_parser.py`, `vllm/parser/gemma4.py` |
 | 2026-08-19 | [#52987](https://github.com/vllm-project/vllm/pull/52987) | merged | Revert "[Kernel] Gemma-4 FA4 FP8 Kernel" | `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` |
+| 2026-08-25 | [#53657](https://github.com/vllm-project/vllm/pull/53657) | merged | [Bugfix] Handle parenthesized Gemma4 tool calls | `vllm/parser/gemma4.py` |
+| 2026-08-26 | [#53884](https://github.com/vllm-project/vllm/pull/53884) | merged | [Bugfix] Make Gemma4 MTP suppress_tokens masking CUDA-graph-safe | `vllm/model_executor/models/gemma4_mtp.py` |
+| 2026-09-13 | [#56652](https://github.com/vllm-project/vllm/pull/56652) | merged | [Bugfix][Gemma4] Keep image kwargs out of video preprocessing | `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
+| 2026-09-15 | [#53444](https://github.com/vllm-project/vllm/pull/53444) | merged | [Bugfix] Handle bare and malformed tool call openers in Gemma4 parser | `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/parser/gemma4.py` |
+| 2026-09-15 | [#56721](https://github.com/vllm-project/vllm/pull/56721) | merged | [Bugfix][Gemma 4] Don't read fft_length when profiling unified audio | `tests/models/multimodal/processing/test_gemma4_unified.py`, `vllm/model_executor/models/gemma4_mm.py` |
+| 2026-09-18 | [#55911](https://github.com/vllm-project/vllm/pull/55911) | merged | [Model][Gemma4] Load Weights with AutoWeightsLoader | `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py` |
+| 2026-09-24 | [#53175](https://github.com/vllm-project/vllm/pull/53175) | merged | [Kernel] Resubmit PR 48666 - Gemma4 FP8 KV FA4 head dim 512 backend selection | `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` |
+| 2026-09-26 | [#57263](https://github.com/vllm-project/vllm/pull/57263) | merged | [Spec Decode] Enable Gemma4 DSpark adaptive verification with FlashInfer | `vllm/model_executor/models/gemma4_dspark.py` |
+| 2026-09-28 | [#54213](https://github.com/vllm-project/vllm/pull/54213) | merged | [Bugfix][Model] Gemma4: register aliased embedding scalars as buffers | `vllm/model_executor/models/gemma4.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -310,43 +321,6 @@ diff -- vllm/tool_parsers/gemma4_tool_parser.py
   - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2
 - Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #39114 - [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values
-
-- Link: https://github.com/vllm-project/vllm/pull/39114
-- Status/date: merged / 2026-04-08
-- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `13151a4df43d`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 2 files, +78/-8, 159 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks, touching `test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args, touching `_parse_gemma4_value, _parse_gemma4_args`.
-- Code diff details:
-  - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks
-  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args
-- Key code excerpts:
-
-```diff
-diff -- tests/tool_parsers/test_gemma4_tool_parser.py
-@@ -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):
-+    def test_streaming_boolean_split_across_chunks(self, parser, mock_request):
-+        """Boolean value split across token boundaries must not corrupt JSON."""
-+        chunks = [
-+            "<|tool_call>",
-+            "call:search{input:{all:" + "true"[:3],
-+            "e}}",
-diff -- vllm/tool_parsers/gemma4_tool_parser.py
-@@ -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:
--def _parse_gemma4_args(args_str: str) -> dict:
-+def _parse_gemma4_args(args_str: str, *, partial: bool = False) -> dict:
-@@ -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:
-+    Args:
-+        args_str: The raw Gemma4 argument string.
-+        partial: When True (streaming), bare values at end of string are
-```
-
-- Reviewed files:
-  - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0
-  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8
-- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
 ### PR #39027 - [Tool] `adjust_request` to reasoning parser, and Gemma4 fixes
 
 - Link: https://github.com/vllm-project/vllm/pull/39027
@@ -389,6 +363,43 @@ diff -- tests/renderers/test_gemma4_chat_template.py
   - docs: `examples/tool_chat_template_gemma4.jinja` added +331/-0
   - runtime: `vllm/reasoning/gemma4_reasoning_parser.py` modified +35/-3; `vllm/entrypoints/serve/render/serving.py` modified +13/-0; `vllm/reasoning/abs_reasoning_parsers.py` modified +8/-2; `vllm/tool_parsers/gemma4_tool_parser.py` modified +4/-2
 - Risk and verification: The diff ships test coverage in `tests/reasoning/test_gemma4_reasoning_parser.py`, `tests/renderers/test_gemma4_chat_template.py`, `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #39114 - [Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values
+
+- Link: https://github.com/vllm-project/vllm/pull/39114
+- Status/date: merged / 2026-04-08
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`; associated commits `13151a4df43d`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 2 files, +78/-8, 159 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; model line: Gemma 4; category: bug fix; main diff: `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`; technical summary: Covers "[Bugfix] Fix Gemma4 streaming tool call corruption for split boolean/number values"; the main implementation surface is `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/tool_parsers/gemma4_tool_parser.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks, touching `test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks`; `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args, touching `_parse_gemma4_value, _parse_gemma4_args`.
+- Code diff details:
+  - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0 (45 lines); hunks: -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):; symbols: test_streaming_numeric_args, test_streaming_boolean_split_across_chunks, test_streaming_false_split_across_chunks, test_streaming_number_split_across_chunks
+  - `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8 (41 lines); hunks: -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:; -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:; symbols: _parse_gemma4_value, _parse_gemma4_args
+- Key code excerpts:
+
+```diff
+diff -- tests/tool_parsers/test_gemma4_tool_parser.py
+@@ -491,6 +491,51 @@ def test_streaming_numeric_args(self, parser, mock_request):
++    def test_streaming_boolean_split_across_chunks(self, parser, mock_request):
++        """Boolean value split across token boundaries must not corrupt JSON."""
++        chunks = [
++            "<|tool_call>",
++            "call:search{input:{all:" + "true"[:3],
++            "e}}",
+diff -- vllm/tool_parsers/gemma4_tool_parser.py
+@@ -78,7 +78,7 @@ def _parse_gemma4_value(value_str: str) -> object:
+-def _parse_gemma4_args(args_str: str) -> dict:
++def _parse_gemma4_args(args_str: str, *, partial: bool = False) -> dict:
+@@ -89,6 +89,12 @@ def _parse_gemma4_args(args_str: str) -> dict:
++    Args:
++        args_str: The raw Gemma4 argument string.
++        partial: When True (streaming), bare values at end of string are
+```
+
+- Reviewed files:
+  - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +45/-0
+  - runtime: `vllm/tool_parsers/gemma4_tool_parser.py` modified +33/-8
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #39045 - [Gemma4] Support quantized MoE
 
@@ -825,6 +836,42 @@ diff -- vllm/model_executor/models/gemma4.py
   - runtime: `vllm/model_executor/models/gemma4.py` modified +1/-1
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/fused_moe/activation.py`, `vllm/model_executor/layers/fused_moe/fused_batched_moe.py`, `vllm/model_executor/layers/fused_moe/fused_humming_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #41745 - [Spec Decode] Add Gemma4 MTP speculative decoding support
+
+- Link: https://github.com/vllm-project/vllm/pull/41745
+- Status/date: merged / 2026-05-06
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py`; associated commits `27e0057aeda6`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 9 files, +1121/-72, 1390 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Spec Decode] Add Gemma4 MTP speculative decoding support"; model line: Gemma 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py`; technical summary: Covers "[Spec Decode] Add Gemma4 MTP speculative decoding support"; the main implementation surface is `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/gemma4_mtp.py` added +603/-0 (603 lines); hunks: -0,0 +1,603; symbols: Gemma4MTPMaskedEmbedder, __init__, _select_and_score, forward, touching `Gemma4MTPMaskedEmbedder, __init__, _select_and_score`; `vllm/v1/spec_decode/gemma4.py` added +335/-0 (335 lines); hunks: -0,0 +1,335; symbols: Gemma4Proposer, __init__, set_per_group_block_table, model_returns_tuple, touching `Gemma4Proposer, __init__, set_per_group_block_table`.
+- Code diff details:
+  - `vllm/model_executor/models/gemma4_mtp.py` added +603/-0 (603 lines); hunks: -0,0 +1,603; symbols: Gemma4MTPMaskedEmbedder, __init__, _select_and_score, forward
+  - `vllm/v1/spec_decode/gemma4.py` added +335/-0 (335 lines); hunks: -0,0 +1,335; symbols: Gemma4Proposer, __init__, set_per_group_block_table, model_returns_tuple
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/gemma4_mtp.py
+@@ -0,0 +1,603 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Inference-only Gemma4 MTP (Multi-Token Prediction) model.
++The Gemma4 assistant model is a lightweight decoder that shares KV cache
++with the target (backbone) model.  All assistant decoder layers are
++KV-shared: they only have Q projections (no K/V projections or norms),
+diff -- vllm/v1/spec_decode/gemma4.py
+@@ -0,0 +1,335 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""Gemma4 MTP (Multi-Token Prediction) proposer for speculative decoding.
++The Gemma4 assistant model runs all decoder layers per draft step
++(producing one token), and all its attention layers share KV cache
++with the target model via cross-model KV sharing.
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/gemma4_mtp.py` added +603/-0; `vllm/v1/spec_decode/gemma4.py` added +335/-0
+- Risk and verification: The diff ships test coverage in `tests/models/registry.py`, `tests/v1/e2e/spec_decode/test_spec_decode.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
 ### PR #41799 - [MM][Gemma4] Respect max_soft_tokens in encoder budget
 
 - Link: https://github.com/vllm-project/vllm/pull/41799
@@ -861,42 +908,6 @@ diff -- vllm/model_executor/models/gemma4_mm.py
   - tests: `tests/models/multimodal/processing/test_gemma4.py` modified +60/-0
   - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +31/-11
 - Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_gemma4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #41745 - [Spec Decode] Add Gemma4 MTP speculative decoding support
-
-- Link: https://github.com/vllm-project/vllm/pull/41745
-- Status/date: merged / 2026-05-06
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py`; associated commits `27e0057aeda6`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 9 files, +1121/-72, 1390 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Spec Decode] Add Gemma4 MTP speculative decoding support"; model line: Gemma 4; category: model support/runtime entry; main diff: `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py`; technical summary: Covers "[Spec Decode] Add Gemma4 MTP speculative decoding support"; the main implementation surface is `vllm/model_executor/models/gemma4_mtp.py`, `vllm/v1/spec_decode/gemma4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/gemma4_mtp.py` added +603/-0 (603 lines); hunks: -0,0 +1,603; symbols: Gemma4MTPMaskedEmbedder, __init__, _select_and_score, forward, touching `Gemma4MTPMaskedEmbedder, __init__, _select_and_score`; `vllm/v1/spec_decode/gemma4.py` added +335/-0 (335 lines); hunks: -0,0 +1,335; symbols: Gemma4Proposer, __init__, set_per_group_block_table, model_returns_tuple, touching `Gemma4Proposer, __init__, set_per_group_block_table`.
-- Code diff details:
-  - `vllm/model_executor/models/gemma4_mtp.py` added +603/-0 (603 lines); hunks: -0,0 +1,603; symbols: Gemma4MTPMaskedEmbedder, __init__, _select_and_score, forward
-  - `vllm/v1/spec_decode/gemma4.py` added +335/-0 (335 lines); hunks: -0,0 +1,335; symbols: Gemma4Proposer, __init__, set_per_group_block_table, model_returns_tuple
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/gemma4_mtp.py
-@@ -0,0 +1,603 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+"""Inference-only Gemma4 MTP (Multi-Token Prediction) model.
-+The Gemma4 assistant model is a lightweight decoder that shares KV cache
-+with the target (backbone) model.  All assistant decoder layers are
-+KV-shared: they only have Q projections (no K/V projections or norms),
-diff -- vllm/v1/spec_decode/gemma4.py
-@@ -0,0 +1,335 @@
-+# SPDX-License-Identifier: Apache-2.0
-+# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
-+"""Gemma4 MTP (Multi-Token Prediction) proposer for speculative decoding.
-+The Gemma4 assistant model runs all decoder layers per draft step
-+(producing one token), and all its attention layers share KV cache
-+with the target model via cross-model KV sharing.
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/gemma4_mtp.py` added +603/-0; `vllm/v1/spec_decode/gemma4.py` added +335/-0
-- Risk and verification: The diff ships test coverage in `tests/models/registry.py`, `tests/v1/e2e/spec_decode/test_spec_decode.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ### PR #41837 - [MM][Gemma4] Use video profiling hints in encoder budget
 
@@ -1377,33 +1388,6 @@ diff -- vllm/model_executor/models/gemma4_mm.py
   - tests: `tests/models/multimodal/processing/test_gemma4_unified.py` added +205/-0
 - Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_gemma4_unified.py`, `tests/models/registry.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #43982 - [Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load
-
-- Link: https://github.com/vllm-project/vllm/pull/43982
-- Status/date: merged / 2026-06-04
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/v1/spec_decode/gemma4.py`; associated commits `128adabfe0fe`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-1, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load"; model line: Gemma 4; category: bug fix; main diff: `vllm/v1/spec_decode/gemma4.py`; technical summary: Covers "[Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load"; the main implementation surface is `vllm/v1/spec_decode/gemma4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/v1/spec_decode/gemma4.py` modified +6/-1 (7 lines); hunks: -81,11 +81,16 @@ def build_per_group_and_layer_attn_metadata(; symbols: build_per_group_and_layer_attn_metadata, touching `build_per_group_and_layer_attn_metadata`.
-- Code diff details:
-  - `vllm/v1/spec_decode/gemma4.py` modified +6/-1 (7 lines); hunks: -81,11 +81,16 @@ def build_per_group_and_layer_attn_metadata(; symbols: build_per_group_and_layer_attn_metadata
-- Key code excerpts:
-
-```diff
-diff -- vllm/v1/spec_decode/gemma4.py
-@@ -81,11 +81,16 @@ def build_per_group_and_layer_attn_metadata(
-+        batch_size = common_attn_metadata.batch_size()
--                cm.block_table_tensor = self._per_group_block_tables[gid]
-+                # Slice to actual batch size to match cu_seqlens_q dimension.
-+                # The stored block tables may be padded (num_reqs_padded) from
-+                # the target forward pass, but the drafter operates on the
-+                # unpadded batch.
-```
-
-- Reviewed files:
-  - runtime: `vllm/v1/spec_decode/gemma4.py` modified +6/-1
-- Risk and verification: Runtime changes concentrate in `vllm/v1/spec_decode/gemma4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #43241 - [Model Runner V2][Spec Decode] Add Gemma4 MTP support
 
 - Link: https://github.com/vllm-project/vllm/pull/43241
@@ -1445,6 +1429,33 @@ diff -- vllm/v1/worker/gpu/spec_decode/speculator.py
   - runtime: `vllm/v1/worker/gpu/spec_decode/eagle/speculator.py` modified +8/-893; `vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py` added +795/-0; `vllm/v1/worker/gpu/spec_decode/speculator.py` added +224/-0; `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` added +158/-0; `vllm/v1/worker/gpu/spec_decode/mtp/speculator.py` added +22/-0; `vllm/v1/worker/gpu/spec_decode/__init__.py` modified +16/-3
 - Risk and verification: Runtime changes concentrate in `vllm/v1/attention/backends/flashinfer.py`, `vllm/v1/attention/backends/triton_attn.py`, `vllm/v1/attention/backends/utils.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
+### PR #43982 - [Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load
+
+- Link: https://github.com/vllm-project/vllm/pull/43982
+- Status/date: merged / 2026-06-04
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/v1/spec_decode/gemma4.py`; associated commits `128adabfe0fe`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +6/-1, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load"; model line: Gemma 4; category: bug fix; main diff: `vllm/v1/spec_decode/gemma4.py`; technical summary: Covers "[Bugfix] Fix Gemma4 MTP block_table batch_size mismatch under concurrent load"; the main implementation surface is `vllm/v1/spec_decode/gemma4.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/v1/spec_decode/gemma4.py` modified +6/-1 (7 lines); hunks: -81,11 +81,16 @@ def build_per_group_and_layer_attn_metadata(; symbols: build_per_group_and_layer_attn_metadata, touching `build_per_group_and_layer_attn_metadata`.
+- Code diff details:
+  - `vllm/v1/spec_decode/gemma4.py` modified +6/-1 (7 lines); hunks: -81,11 +81,16 @@ def build_per_group_and_layer_attn_metadata(; symbols: build_per_group_and_layer_attn_metadata
+- Key code excerpts:
+
+```diff
+diff -- vllm/v1/spec_decode/gemma4.py
+@@ -81,11 +81,16 @@ def build_per_group_and_layer_attn_metadata(
++        batch_size = common_attn_metadata.batch_size()
+-                cm.block_table_tensor = self._per_group_block_tables[gid]
++                # Slice to actual batch size to match cu_seqlens_q dimension.
++                # The stored block tables may be padded (num_reqs_padded) from
++                # the target forward pass, but the drafter operates on the
++                # unpadded batch.
+```
+
+- Reviewed files:
+  - runtime: `vllm/v1/spec_decode/gemma4.py` modified +6/-1
+- Risk and verification: Runtime changes concentrate in `vllm/v1/spec_decode/gemma4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
 ### PR #44340 - [Quant] Support compressed-tensors WNA8O8Int linears and WNInt embeddings
 
 - Link: https://github.com/vllm-project/vllm/pull/44340
@@ -1485,33 +1496,6 @@ diff -- vllm/model_executor/layers/quantization/compressed_tensors/compressed_te
 - Reviewed files:
   - runtime: `vllm/model_executor/layers/quantization/compressed_tensors/schemes/compressed_tensors_wNa8o8.py` added +257/-0; `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors_embedding.py` added +170/-0; `vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors.py` modified +101/-2; `vllm/model_executor/layers/quantization/utils/humming_utils.py` modified +61/-5; `vllm/model_executor/kernels/linear/mixed_precision/humming.py` added +61/-0; `vllm/model_executor/models/gemma4_mm.py` modified +12/-12
 - Risk and verification: The diff ships test coverage in `requirements/test/rocm.txt`, `tests/kernels/quantization/test_quantized_embedding.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
-
-### PR #44571 - [Bugfix] Exclude vision embedder from quantization in Gemma4 Unified
-
-- Link: https://github.com/vllm-project/vllm/pull/44571
-- Status/date: merged / 2026-06-05
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_unified.py`; associated commits `da1daf40bf18`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 25 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[Bugfix] Exclude vision embedder from quantization in Gemma4 Unified"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4_unified.py`; technical summary: Covers "[Bugfix] Exclude vision embedder from quantization in Gemma4 Unified"; the main implementation surface is `vllm/model_executor/models/gemma4_unified.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/gemma4_unified.py` modified +3/-1 (4 lines); hunks: -80,7 +80,7 @@ class Gemma4UnifiedVisionEmbedder(nn.Module):; -91,6 +91,7 @@ def __init__(self, config, quant_config=None):; symbols: Gemma4UnifiedVisionEmbedder, __init__, touching `Gemma4UnifiedVisionEmbedder, __init__`.
-- Code diff details:
-  - `vllm/model_executor/models/gemma4_unified.py` modified +3/-1 (4 lines); hunks: -80,7 +80,7 @@ class Gemma4UnifiedVisionEmbedder(nn.Module):; -91,6 +91,7 @@ def __init__(self, config, quant_config=None):; symbols: Gemma4UnifiedVisionEmbedder, __init__
-- Key code excerpts:
-
-```diff
-diff -- vllm/model_executor/models/gemma4_unified.py
-@@ -80,7 +80,7 @@ class Gemma4UnifiedVisionEmbedder(nn.Module):
--    def __init__(self, config, quant_config=None):
-+    def __init__(self, config, quant_config=None, prefix=""):
-@@ -91,6 +91,7 @@ def __init__(self, config, quant_config=None):
-+            prefix=f"{prefix}.patch_dense",
-@@ -267,6 +268,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
-+                prefix=maybe_prefix(prefix, "vision_embedder"),
-```
-
-- Reviewed files:
-  - runtime: `vllm/model_executor/models/gemma4_unified.py` modified +3/-1
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/gemma4_unified.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #43167 - Remove KV cache scale boilerplate from model weight loading methods
 
@@ -1555,32 +1539,32 @@ diff -- vllm/model_executor/layers/quantization/kv_cache.py
   - runtime: `vllm/model_executor/models/gpt_oss.py` modified +0/-46; `vllm/model_executor/layers/quantization/kv_cache.py` modified +28/-4; `vllm/model_executor/layers/quantization/fp8.py` modified +12/-19; `vllm/model_executor/layers/quantization/quark/quark.py` modified +10/-20; `vllm/model_executor/models/llama4.py` modified +3/-18; `vllm/model_executor/models/glm_ocr_mtp.py` modified +4/-13
 - Risk and verification: The diff ships test coverage in `tests/model_executor/test_eagle_quantization.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
-### PR #44828 - [BugFix] Use served model name in gemma4 audio-tower error message
+### PR #44571 - [Bugfix] Exclude vision embedder from quantization in Gemma4 Unified
 
-- Link: https://github.com/vllm-project/vllm/pull/44828
-- Status/date: merged / 2026-06-08
-- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mm.py`; associated commits `469f3dcf1d70`; preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +5/-1, 20 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "[BugFix] Use served model name in gemma4 audio-tower error message"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4_mm.py`; technical summary: Covers "[BugFix] Use served model name in gemma4 audio-tower error message"; the main implementation surface is `vllm/model_executor/models/gemma4_mm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `vllm/model_executor/models/gemma4_mm.py` modified +5/-1 (6 lines); hunks: -34,6 +34,7; -217,7 +218,10 @@ def validate_num_items(self, modality: str, num_items: int)...; symbols: validate_num_items, touching `validate_num_items`.
+- Link: https://github.com/vllm-project/vllm/pull/44571
+- Status/date: merged / 2026-06-05
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_unified.py`; associated commits `da1daf40bf18`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +3/-1, 25 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[Bugfix] Exclude vision embedder from quantization in Gemma4 Unified"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4_unified.py`; technical summary: Covers "[Bugfix] Exclude vision embedder from quantization in Gemma4 Unified"; the main implementation surface is `vllm/model_executor/models/gemma4_unified.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/gemma4_unified.py` modified +3/-1 (4 lines); hunks: -80,7 +80,7 @@ class Gemma4UnifiedVisionEmbedder(nn.Module):; -91,6 +91,7 @@ def __init__(self, config, quant_config=None):; symbols: Gemma4UnifiedVisionEmbedder, __init__, touching `Gemma4UnifiedVisionEmbedder, __init__`.
 - Code diff details:
-  - `vllm/model_executor/models/gemma4_mm.py` modified +5/-1 (6 lines); hunks: -34,6 +34,7; -217,7 +218,10 @@ def validate_num_items(self, modality: str, num_items: int)...; symbols: validate_num_items
+  - `vllm/model_executor/models/gemma4_unified.py` modified +3/-1 (4 lines); hunks: -80,7 +80,7 @@ class Gemma4UnifiedVisionEmbedder(nn.Module):; -91,6 +91,7 @@ def __init__(self, config, quant_config=None):; symbols: Gemma4UnifiedVisionEmbedder, __init__
 - Key code excerpts:
 
 ```diff
-diff -- vllm/model_executor/models/gemma4_mm.py
-@@ -34,6 +34,7 @@
-+from vllm.config.model import get_served_model_name
-@@ -217,7 +218,10 @@ def validate_num_items(self, modality: str, num_items: int) -> None:
--            model = self.ctx.model_config.model
-+            model_config = self.ctx.model_config
-+            model = get_served_model_name(
-+                model_config.model, model_config.served_model_name
+diff -- vllm/model_executor/models/gemma4_unified.py
+@@ -80,7 +80,7 @@ class Gemma4UnifiedVisionEmbedder(nn.Module):
+-    def __init__(self, config, quant_config=None):
++    def __init__(self, config, quant_config=None, prefix=""):
+@@ -91,6 +91,7 @@ def __init__(self, config, quant_config=None):
++            prefix=f"{prefix}.patch_dense",
+@@ -267,6 +268,7 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++                prefix=maybe_prefix(prefix, "vision_embedder"),
 ```
 
 - Reviewed files:
-  - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +5/-1
-- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/gemma4_mm.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+  - runtime: `vllm/model_executor/models/gemma4_unified.py` modified +3/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/gemma4_unified.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #41184 - [MoE Refactor] FusedMoE/MoERunner inversion refactor
 
@@ -1622,6 +1606,33 @@ diff -- vllm/model_executor/layers/fused_moe/runner/moe_runner.py
 - Reviewed files:
   - runtime: `vllm/model_executor/layers/fused_moe/layer.py` modified +314/-1334; `vllm/model_executor/layers/fused_moe/routed_experts.py` added +1144/-0; `vllm/model_executor/layers/fused_moe/runner/moe_runner.py` modified +257/-82; `vllm/lora/layers/fused_moe.py` modified +76/-43; `vllm/model_executor/model_loader/weight_utils.py` modified +106/-1; `vllm/model_executor/layers/fused_moe/runner/moe_runner_interface.py` modified +102/-2
 - Risk and verification: The diff ships test coverage in `tests/distributed/test_eplb_fused_moe_layer.py`, `tests/distributed/test_eplb_fused_moe_layer_dep_nvfp4.py`, `tests/kernels/moe/modular_kernel_tools/common.py`, `tests/kernels/moe/modular_kernel_tools/parallel_utils.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #44828 - [BugFix] Use served model name in gemma4 audio-tower error message
+
+- Link: https://github.com/vllm-project/vllm/pull/44828
+- Status/date: merged / 2026-06-08
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mm.py`; associated commits `469f3dcf1d70`; preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +5/-1, 20 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "[BugFix] Use served model name in gemma4 audio-tower error message"; model line: Gemma 4; category: bug fix; main diff: `vllm/model_executor/models/gemma4_mm.py`; technical summary: Covers "[BugFix] Use served model name in gemma4 audio-tower error message"; the main implementation surface is `vllm/model_executor/models/gemma4_mm.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `vllm/model_executor/models/gemma4_mm.py` modified +5/-1 (6 lines); hunks: -34,6 +34,7; -217,7 +218,10 @@ def validate_num_items(self, modality: str, num_items: int)...; symbols: validate_num_items, touching `validate_num_items`.
+- Code diff details:
+  - `vllm/model_executor/models/gemma4_mm.py` modified +5/-1 (6 lines); hunks: -34,6 +34,7; -217,7 +218,10 @@ def validate_num_items(self, modality: str, num_items: int)...; symbols: validate_num_items
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/gemma4_mm.py
+@@ -34,6 +34,7 @@
++from vllm.config.model import get_served_model_name
+@@ -217,7 +218,10 @@ def validate_num_items(self, modality: str, num_items: int) -> None:
+-            model = self.ctx.model_config.model
++            model_config = self.ctx.model_config
++            model = get_served_model_name(
++                model_config.model, model_config.served_model_name
+```
+
+- Reviewed files:
+  - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +5/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/gemma4_mm.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #45163 - [Model] Add DiffusionGemma Support
 
@@ -2332,6 +2343,285 @@ diff -- vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py
 - Reviewed files:
   - runtime: `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` modified +12/-43
 - Risk and verification: Runtime changes concentrate in `vllm/model_executor/layers/attention/attention.py`, `vllm/platforms/interface.py`, `vllm/v1/attention/backend.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #53657 - [Bugfix] Handle parenthesized Gemma4 tool calls
+
+- Link: https://github.com/vllm-project/vllm/pull/53657
+- Status/date: merged / 2026-08-25
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/parser/gemma4.py`; associated commits `9c8e90eb2637`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +10/-1, 32 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/parser/gemma4.py` modified +10/-1 (11 lines); hunks: -285,7 +285,7 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = Fal...; -304,6 +304,7 @@ def gemma4_config() -> ParserEngineConfig:; symbols: _parse_gemma4_array, _gemma4_arg_converter, gemma4_config, touching `_parse_gemma4_array, _gemma4_arg_converter, gemma4_config`.
+- Code diff details:
+  - `vllm/parser/gemma4.py` modified +10/-1 (11 lines); hunks: -285,7 +285,7 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = Fal...; -304,6 +304,7 @@ def gemma4_config() -> ParserEngineConfig:; symbols: _parse_gemma4_array, _gemma4_arg_converter, gemma4_config
+- Key code excerpts:
+
+```diff
+diff -- vllm/parser/gemma4.py
+@@ -285,7 +285,7 @@ def _parse_gemma4_array(arr_str: str, *, partial: bool = False) -> list:
+-    if text.endswith("}"):
++    if text.endswith("}") or text.endswith(")") and text.count("(") < text.count(")"):
+@@ -304,6 +304,7 @@ def gemma4_config() -> ParserEngineConfig:
++            "OPEN_PAREN": "(",
+@@ -351,6 +352,14 @@ def gemma4_config() -> ParserEngineConfig:
++            (ParserState.TOOL_NAME, "OPEN_PAREN"): Transition(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/parser/gemma4.py` modified +10/-1
+- Risk and verification: Runtime changes concentrate in `vllm/parser/gemma4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #53884 - [Bugfix] Make Gemma4 MTP suppress_tokens masking CUDA-graph-safe
+
+- Link: https://github.com/vllm-project/vllm/pull/53884
+- Status/date: merged / 2026-08-26
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_mtp.py`; associated commits `2ab187430b6b`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +14/-3, 35 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/gemma4_mtp.py` modified +14/-3 (17 lines); hunks: -524,6 +524,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -576,8 +580,8 @@ def compute_logits(; symbols: __init__, embed_input_ids, compute_logits, get_top_tokens, touching `__init__, embed_input_ids, compute_logits`.
+- Code diff details:
+  - `vllm/model_executor/models/gemma4_mtp.py` modified +14/-3 (17 lines); hunks: -524,6 +524,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; -576,8 +580,8 @@ def compute_logits(; symbols: __init__, embed_input_ids, compute_logits, get_top_tokens
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/gemma4_mtp.py
+@@ -524,6 +524,10 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
++        # Materialized on-device in load_weights: compute_logits runs under CUDA
++        # graph capture in the V2 speculator, where indexing with a Python list
++        # would issue an unpinned H2D copy (illegal during capture).
++        self._suppress_idx: torch.Tensor | None = None
+@@ -576,8 +580,8 @@ def compute_logits(
+-        if logits is not None and self._suppress_token_ids:
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/gemma4_mtp.py` modified +14/-3
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/gemma4_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #56652 - [Bugfix][Gemma4] Keep image kwargs out of video preprocessing
+
+- Link: https://github.com/vllm-project/vllm/pull/56652
+- Status/date: merged / 2026-09-13
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `a987777755c8`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +71/-0, 99 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/processing/test_gemma4.py` modified +68/-0 (68 lines); hunks: -3,6 +3,7; -13,6 +14,7; symbols: test_get_prompt_updates_respects_nested_max_soft_tokens, test_video_cache_is_independent_of_image_kwargs, process, pixels, touching `test_get_prompt_updates_respects_nested_max_soft_tokens, test_video_cache_is_independent_of_image_kwargs, process`; `vllm/model_executor/models/gemma4_mm.py` modified +3/-0 (3 lines); hunks: -629,6 +629,9 @@ def _apply_hf_processor_main(; symbols: _apply_hf_processor_main, touching `_apply_hf_processor_main`.
+- Code diff details:
+  - `tests/models/multimodal/processing/test_gemma4.py` modified +68/-0 (68 lines); hunks: -3,6 +3,7; -13,6 +14,7; symbols: test_get_prompt_updates_respects_nested_max_soft_tokens, test_video_cache_is_independent_of_image_kwargs, process, pixels
+  - `vllm/model_executor/models/gemma4_mm.py` modified +3/-0 (3 lines); hunks: -629,6 +629,9 @@ def _apply_hf_processor_main(; symbols: _apply_hf_processor_main
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/processing/test_gemma4.py
+@@ -3,6 +3,7 @@
++import numpy as np
+@@ -13,6 +14,7 @@
++from vllm.multimodal.cache import MultiModalProcessorOnlyCache
+@@ -199,6 +201,72 @@ def test_get_prompt_updates_respects_nested_max_soft_tokens(model_id: str):
++@pytest.mark.parametrize("model_id", [GEMMA4_MODEL_ID])
++@pytest.mark.parametrize("kwargs_on_init", [False, True])
+diff -- vllm/model_executor/models/gemma4_mm.py
+@@ -629,6 +629,9 @@ def _apply_hf_processor_main(
++                # Override configured image options too: these inputs are video
++                # frames, whose cache keys exclude images_kwargs.
++                video_mm_kwargs["images_kwargs"] = {}
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/processing/test_gemma4.py` modified +68/-0
+  - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +3/-0
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_gemma4.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #53444 - [Bugfix] Handle bare and malformed tool call openers in Gemma4 parser
+
+- Link: https://github.com/vllm-project/vllm/pull/53444
+- Status/date: merged / 2026-09-15
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/tool_parsers/test_gemma4_tool_parser.py`, `vllm/parser/gemma4.py`; associated commits `a529c1a748d3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +116/-0, 134 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/tool_parsers/test_gemma4_tool_parser.py` modified +108/-0 (108 lines); hunks: -897,3 +897,111 @@ def test_streaming_trailing_bare_bool_not_duplicated(self,...; symbols: test_streaming_trailing_bare_bool_not_duplicated, TestBareAndMalformedOpeners, test_bare_opener_non_streaming, test_documented_form_still_works, touching `test_streaming_trailing_bare_bool_not_duplicated, TestBareAndMalformedOpeners, test_bare_opener_non_streaming`; `vllm/parser/gemma4.py` modified +8/-0 (8 lines); hunks: -303,6 +303,7 @@ def gemma4_config() -> ParserEngineConfig:; -348,6 +349,13 @@ def gemma4_config() -> ParserEngineConfig:; symbols: gemma4_config, touching `gemma4_config`.
+- Code diff details:
+  - `tests/tool_parsers/test_gemma4_tool_parser.py` modified +108/-0 (108 lines); hunks: -897,3 +897,111 @@ def test_streaming_trailing_bare_bool_not_duplicated(self,...; symbols: test_streaming_trailing_bare_bool_not_duplicated, TestBareAndMalformedOpeners, test_bare_opener_non_streaming, test_documented_form_still_works
+  - `vllm/parser/gemma4.py` modified +8/-0 (8 lines); hunks: -303,6 +303,7 @@ def gemma4_config() -> ParserEngineConfig:; -348,6 +349,13 @@ def gemma4_config() -> ParserEngineConfig:; symbols: gemma4_config
+- Key code excerpts:
+
+```diff
+diff -- tests/tool_parsers/test_gemma4_tool_parser.py
+@@ -897,3 +897,111 @@ def test_streaming_trailing_bare_bool_not_duplicated(self, parser, mock_request)
++class TestBareAndMalformedOpeners:
++    """Tests for bare and malformed tool call openers.
++    See https://github.com/vllm-project/vllm/issues/53431.
++    """
++    def test_bare_opener_non_streaming(self, parser, mock_request):
++        model_output = '<|tool_call>:get_weather{location:<|"|>London<|"|>}<tool_call|>'
+diff -- vllm/parser/gemma4.py
+@@ -303,6 +303,7 @@ def gemma4_config() -> ParserEngineConfig:
++            "COLON": ":",
+@@ -348,6 +349,13 @@ def gemma4_config() -> ParserEngineConfig:
++            # Bare opener: some checkpoints emit "<|tool_call>:name{...}"
++            # without the "call" prefix.  Match the colon directly so the
++            # tool call is not silently dropped.
++            (ParserState.TOOL_PREAMBLE, "COLON"): Transition(
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/tool_parsers/test_gemma4_tool_parser.py` modified +108/-0
+  - runtime: `vllm/parser/gemma4.py` modified +8/-0
+- Risk and verification: The diff ships test coverage in `tests/tool_parsers/test_gemma4_tool_parser.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #56721 - [Bugfix][Gemma 4] Don't read fft_length when profiling unified audio
+
+- Link: https://github.com/vllm-project/vllm/pull/56721
+- Status/date: merged / 2026-09-15
+- Trace source: `git log --name-only -- <model-files>` found it through `tests/models/multimodal/processing/test_gemma4_unified.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `1e47ec00d2e6`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 2 files, +67/-2, 103 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `tests/models/multimodal/processing/test_gemma4_unified.py` modified +43/-1 (44 lines); hunks: -6,9 +6,13; -204,3 +208,41 @@ def test_limit_mm_per_prompt(; symbols: test_limit_mm_per_prompt, test_dummy_audio_length_falls_back_for_the_unified_extractor, _UnifiedFeatureExtractor, _UnifiedProcessor, touching `test_limit_mm_per_prompt, test_dummy_audio_length_falls_back_for_the_unified_extractor, _UnifiedFeatureExtractor`; `vllm/model_executor/models/gemma4_mm.py` modified +24/-1 (25 lines); hunks: -24,6 +24,7; -456,6 +457,28 @@ def get_video_repl(; symbols: get_video_repl, _dummy_audio_num_samples, Gemma4DummyInputsBuilder, get_dummy_text, touching `get_video_repl, _dummy_audio_num_samples, Gemma4DummyInputsBuilder`.
+- Code diff details:
+  - `tests/models/multimodal/processing/test_gemma4_unified.py` modified +43/-1 (44 lines); hunks: -6,9 +6,13; -204,3 +208,41 @@ def test_limit_mm_per_prompt(; symbols: test_limit_mm_per_prompt, test_dummy_audio_length_falls_back_for_the_unified_extractor, _UnifiedFeatureExtractor, _UnifiedProcessor
+  - `vllm/model_executor/models/gemma4_mm.py` modified +24/-1 (25 lines); hunks: -24,6 +24,7; -456,6 +457,28 @@ def get_video_repl(; symbols: get_video_repl, _dummy_audio_num_samples, Gemma4DummyInputsBuilder, get_dummy_text
+- Key code excerpts:
+
+```diff
+diff -- tests/models/multimodal/processing/test_gemma4_unified.py
+@@ -6,9 +6,13 @@
++from transformers.models.gemma4 import Gemma4AudioFeatureExtractor
+-from vllm.model_executor.models.gemma4_mm import Gemma4ImagePixelInputs
++from vllm.model_executor.models.gemma4_mm import (
++    Gemma4ImagePixelInputs,
++    _dummy_audio_num_samples,
++)
+diff -- vllm/model_executor/models/gemma4_mm.py
+@@ -24,6 +24,7 @@
++    Gemma4AudioFeatureExtractor,
+@@ -456,6 +457,28 @@ def get_video_repl(
++def _dummy_audio_num_samples(processor: Any) -> int:
++    """Length in samples of a worst-case dummy audio item.
++    ``fft_length`` is set in ``Gemma4AudioFeatureExtractor.__init__`` and is not
++    defined by ``Gemma4UnifiedAudioFeatureExtractor``, which the encoder-free
+```
+
+- Extracted files (not manually reviewed):
+  - tests: `tests/models/multimodal/processing/test_gemma4_unified.py` modified +43/-1
+  - runtime: `vllm/model_executor/models/gemma4_mm.py` modified +24/-1
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_gemma4_unified.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #55911 - [Model][Gemma4] Load Weights with AutoWeightsLoader
+
+- Link: https://github.com/vllm-project/vllm/pull/55911
+- Status/date: merged / 2026-09-18
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4.py`, `vllm/model_executor/models/gemma4_mm.py`; associated commits `44dd18fe0bb0`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 8 files, +238/-517, 1035 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/gemma4.py` modified +113/-362 (475 lines); hunks: -22,12 +22,12; -40,7 +40,7; symbols: _gemma4_layer_weights_mapper, _remap_gemma4_expert_weight_name, __init__, forward, touching `_gemma4_layer_weights_mapper, _remap_gemma4_expert_weight_name, __init__`; `vllm/model_executor/models/gemma4_mm.py` modified +2/-5 (7 lines); hunks: -46,10 +46,7; -1060,7 +1057,7 @@ class Gemma4ForConditionalGeneration(; symbols: Gemma4ForConditionalGeneration, touching `Gemma4ForConditionalGeneration`.
+- Code diff details:
+  - `vllm/model_executor/models/gemma4.py` modified +113/-362 (475 lines); hunks: -22,12 +22,12; -40,7 +40,7; symbols: _gemma4_layer_weights_mapper, _remap_gemma4_expert_weight_name, __init__, forward
+  - `vllm/model_executor/models/gemma4_mm.py` modified +2/-5 (7 lines); hunks: -46,10 +46,7; -1060,7 +1057,7 @@ class Gemma4ForConditionalGeneration(; symbols: Gemma4ForConditionalGeneration
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/gemma4.py
+@@ -22,12 +22,12 @@
+-import regex as re
++from vllm.config.utils import getattr_iter
+@@ -40,7 +40,7 @@
+-    fused_moe_make_expert_params_mapping,
++    MoERunner,
+@@ -57,10 +57,6 @@
+diff -- vllm/model_executor/models/gemma4_mm.py
+@@ -46,10 +46,7 @@
+-from vllm.model_executor.models.gemma4 import (
+-    _GEMMA4_EXPERT_PARENT_MAPPER,
+-    Gemma4ForCausalLM,
+-)
++from vllm.model_executor.models.gemma4 import Gemma4ForCausalLM
+@@ -1060,7 +1057,7 @@ class Gemma4ForConditionalGeneration(
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/gemma4.py` modified +113/-362; `vllm/model_executor/models/gemma4_mm.py` modified +2/-5
+- Risk and verification: The diff ships test coverage in `tests/lora/test_lora_checkpoints.py`, `tests/models/language/generation/test_gemma.py`, `tests/models/test_utils.py`, `tests/quantization/test_modelopt.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #53175 - [Kernel] Resubmit PR 48666 - Gemma4 FP8 KV FA4 head dim 512 backend selection
+
+- Link: https://github.com/vllm-project/vllm/pull/53175
+- Status/date: merged / 2026-09-24
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py`; associated commits `4fb767ff0a0e`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 47 files, +241/-103, 872 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` modified +37/-2 (39 lines); hunks: -24,6 +24,27; -77,7 +98,7 @@ def _setup_gemma4_kv_sharing(; symbols: _copy_target_kv_scales, Gemma4Speculator, advance_draft_positions, _setup_gemma4_kv_sharing, touching `_copy_target_kv_scales, Gemma4Speculator, advance_draft_positions`.
+- Code diff details:
+  - `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` modified +37/-2 (39 lines); hunks: -24,6 +24,27; -77,7 +98,7 @@ def _setup_gemma4_kv_sharing(; symbols: _copy_target_kv_scales, Gemma4Speculator, advance_draft_positions, _setup_gemma4_kv_sharing
+- Key code excerpts:
+
+```diff
+diff -- vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py
+@@ -24,6 +24,27 @@
++def _copy_target_kv_scales(attn: nn.Module, target_attn: nn.Module) -> None:
++    """Copy target KV scales while preserving their tensor representation.
++    Default attention scales are scalar buffers, while some quantization
++    methods replace them with length-one or per-head parameters. Preserve the
++    draft layer's registration type so the shared KV cache is interpreted with
++    the target's values and shapes without aliasing target parameters.
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/v1/worker/gpu/spec_decode/gemma4/speculator.py` modified +37/-2
+- Risk and verification: The diff ships test coverage in `tests/kernels/attention/test_attention_selector.py`, `tests/v1/attention/test_backend_per_kind.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #57263 - [Spec Decode] Enable Gemma4 DSpark adaptive verification with FlashInfer
+
+- Link: https://github.com/vllm-project/vllm/pull/57263
+- Status/date: merged / 2026-09-26
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4_dspark.py`; associated commits `a4eb3f25d6f9`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 24 files, +894/-135, 1479 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/gemma4_dspark.py` modified +22/-3 (25 lines); hunks: -24,7 +24,11; -187,6 +191,18 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, embed_input_ids, load_weights, touching `__init__, embed_input_ids, load_weights`.
+- Code diff details:
+  - `vllm/model_executor/models/gemma4_dspark.py` modified +22/-3 (25 lines); hunks: -24,7 +24,11; -187,6 +191,18 @@ def __init__(self, *, vllm_config: VllmConfig, prefix: str...; symbols: __init__, embed_input_ids, load_weights
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/gemma4_dspark.py
+@@ -24,7 +24,11 @@
+-from .qwen3_dspark import DSparkMarkovHead, Qwen3DSparkForCausalLM
++from .qwen3_dspark import (
++    DSparkConfidenceHead,
++    DSparkMarkovHead,
++    Qwen3DSparkForCausalLM,
++)
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/gemma4_dspark.py` modified +22/-3
+- Risk and verification: The diff ships test coverage in `tests/distributed/test_dcp_direct_a2a_lse_reduce.py`, `tests/models/language/generation/test_gemma.py`, `tests/test_config.py`, `tests/transformers_utils/test_config.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #54213 - [Bugfix][Model] Gemma4: register aliased embedding scalars as buffers
+
+- Link: https://github.com/vllm-project/vllm/pull/54213
+- Status/date: merged / 2026-09-28
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/gemma4.py`; associated commits `8cc9aa5ad350`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +13/-4, 27 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/gemma4.py` modified +13/-4 (17 lines); hunks: -846,13 +846,22 @@ def __init__(; symbols: __init__, embed_input_ids, touching `__init__, embed_input_ids`.
+- Code diff details:
+  - `vllm/model_executor/models/gemma4.py` modified +13/-4 (17 lines); hunks: -846,13 +846,22 @@ def __init__(; symbols: __init__, embed_input_ids
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/gemma4.py
+@@ -846,13 +846,22 @@ def __init__(
+-        self.normalizer = normalizer
+-        self.embed_scale_per_layer = embed_scale_per_layer
+-        self.per_layer_input_scale = per_layer_input_scale
+-        self.per_layer_projection_scale = per_layer_projection_scale
++        # Register the shared scalars as buffers so they follow the model on
++        # .to(device); plain attributes stay on CPU.
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/gemma4.py` modified +13/-4
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/gemma4.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ## Gap-Closure Notes
 

@@ -98,18 +98,18 @@ class TestModelProfile(unittest.TestCase):
 
     def test_dsv4_profile_attributes(self):
         p = self.mod.get_profile("dsv4_csa_hca")
-        self.assertEqual(p.anchor_kernel, "mhc_post_tilelang")
+        self.assertEqual(p.anchor_kernel, "mhc_pre_big_fuse")
         self.assertEqual(p.blocks_per_layer, 2)
         self.assertEqual(p.half_labels, ["attn", "ffn"])
-        self.assertEqual(p.default_num_layers, 43)
+        self.assertEqual(p.default_num_layers, 1)
         self.assertTrue(len(p.category_rules) > 10)
 
     def test_dsv3_profile_attributes(self):
         p = self.mod.get_profile("dsv3_mla")
-        self.assertEqual(p.anchor_kernel, "flash_fwd_mla_combine")
+        self.assertIsNone(p.anchor_kernel)
         self.assertEqual(p.blocks_per_layer, 1)
         self.assertEqual(p.half_labels, ["full"])
-        self.assertEqual(p.default_num_layers, 61)
+        self.assertEqual(p.default_num_layers, 1)
 
     def test_generic_profile_attributes(self):
         p = self.mod.get_profile("generic")
@@ -283,11 +283,11 @@ class TestTimelineSelection(unittest.TestCase):
     def test_final_layer_label_wins_over_hash_suffix(self):
         self.assertEqual(
             self.timeline.layer_type_label(3, [0, 0, 128, 128], 4, 2),
-            ("FINAL", 128),
+            ("FINAL+HCA_C128", 128),
         )
         self.assertEqual(
             self.breakdown._layer_type_label(128, 3, 4, 2),
-            "FINAL",
+            "FINAL+HCA_C128",
         )
 
     def test_select_steady_state_pass_uses_relative_stability(self):
@@ -303,14 +303,13 @@ class TestTimelineSelection(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.timeline.select_steady_state_pass([1.0, 1.0], stable_pairs=0)
 
-    def test_generic_anchor_falls_back_to_repeated_rmsnorm(self):
-        kernels = [{"name": "rms_norm_kernel"} for _ in range(8)]
-        self.assertEqual(
-            self.timeline.find_anchor_kernel(
-                kernels, self.profiles.get_profile("generic")
-            ),
-            "rms_norm",
-        )
+    def test_generic_rejects_bare_rmsnorm_and_counts_residual_boundaries(self):
+        profile = self.profiles.get_profile("generic")
+        with self.assertRaises(ValueError):
+            self.timeline.find_anchor_kernel([{"name": "rms_norm_kernel"}] * 8, profile)
+        anchor = self.timeline.find_anchor_kernel([{"name": "fused_add_rms_norm_kernel"}] * 8, profile)
+        self.assertEqual(anchor, "fused_add_rms_norm")
+        self.assertEqual(self.profiles.configure_anchor_profile(profile, anchor).blocks_per_layer, 2)
 
     def test_moe_topk_accepts_num_experts_per_token_alias(self):
         fields = self.breakdown.model_architecture_fields(
@@ -584,7 +583,7 @@ class TestModelConfigIndex(unittest.TestCase):
 
     def test_gpu_specs_include_local_accelerators(self):
         specs = json.loads(GPU_SPECS.read_text())
-        for key in ["h20", "h100-sxm-80gb", "h200-sxm-141gb", "b200-sxm-180gb"]:
+        for key in ["h100-sxm-80gb", "h200-sxm-141gb", "b200-sxm-180gb"]:
             self.assertIn(key, specs)
             self.assertGreater(specs[key]["bf16_tflops"], 0)
             self.assertGreater(specs[key]["fp8_tflops"], 0)
@@ -637,6 +636,8 @@ class TestMeasuredComputeFlow(unittest.TestCase):
                 "b200",
                 "--kernel-flow",
                 json.dumps(kernel_flow),
+                "--measured-ms",
+                "10",
                 "--format",
                 "json",
             ],
@@ -648,7 +649,7 @@ class TestMeasuredComputeFlow(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual(
             payload["measured_ms"],
-            2.0 * config["num_hidden_layers"],
+            10.0,
         )
         self.assertIsNotNone(payload["mfu_pct"])
         self.assertEqual(payload["kernel_flow"]["metadata"]["total_dur_us"], 2000)
@@ -730,3 +731,181 @@ def test_dsv41_does_not_reuse_unfused_v4_layer_anchor():
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRefreshCorrectness(unittest.TestCase):
+    def test_nested_identity_precedes_mla_and_hash_is_prefix(self):
+        p = load_profiles()
+        for identity, expected in [('deepseek_v41_text','dsv41'),('kimi_k3','kimi_k3'),('glm5_next_text','glm5_next'),('hy_v4','hy_v4'),('glm_moe_dsa','mla_dsa')]:
+            config = {'model_type':'wrapper','text_config':{'model_type':identity,'kv_lora_rank':512,'num_hidden_layers':4}}
+            self.assertEqual(p.infer_profile(config).name, expected)
+            self.assertEqual(p.normalize_model_config(config)['num_hidden_layers'],4)
+        self.assertEqual(p.layer_label(0,4,43,3),'FIRST+CSA_C4+HASH')
+        self.assertEqual(p.layer_label(2,128,43,3),'HCA_C128+HASH')
+        self.assertNotIn('HASH',p.layer_label(42,4,43,3))
+
+    def test_aliases_normalize_raw_hf_expert_dimensions(self):
+        p=load_profiles()
+        c=p.normalize_model_config({'model_type':'wrapper','text_config':{'num_layers':28,'n_routed_experts':512,'moe_topk':12,'n_shared_experts':2,'moe_intermediate_size':2048}})
+        self.assertEqual((c['num_hidden_layers'],c['num_experts'],c['num_experts_per_tok']), (28,512,12))
+        self.assertEqual(c['shared_expert_intermediate_size'],4096)
+        self.assertTrue(c['moe'])
+
+    def test_anchor_count_residue_and_multirank_are_rejected(self):
+        p=load_profiles()
+        gpu=[{'name':'anchor','pid':1,'ts':i,'args':{'device':0}} for i in range(7)]
+        with self.assertRaisesRegex(ValueError,'residue'):
+            p.checked_anchor_indices(gpu,'anchor',2,2)
+        gpu.append({'name':'anchor','pid':1,'ts':7,'args':{'device':0}})
+        self.assertEqual(p.checked_anchor_indices(gpu,'anchor',2,2),list(range(9)))
+        with self.assertRaisesRegex(ValueError,'ranks/devices'):
+            p.select_gpu([{'cat':'kernel','pid':1},{'cat':'kernel','pid':2}])
+        self.assertEqual(len(p.select_gpu([{'cat':'kernel','pid':1},{'cat':'kernel','pid':2}],pid=2)),1)
+
+    def test_dense_decode_and_causal_prefill_include_context(self):
+        sim=load_simulator()
+        cfg={'num_hidden_layers':1,'hidden_size':64,'num_attention_heads':4,'num_key_value_heads':2,'head_dim':16,'attention_type':'gqa','moe':False}
+        def flop(seq,ctx):
+            ops=sim.build_layer_ops(cfg,2,seq,1,1,context_len=ctx)
+            return {op.name:op.flops for op in ops}
+        self.assertEqual(flop(1,100)['attn_score'],2*2*4*100*16)
+        self.assertEqual(flop(1,100)['attn_v'],2*2*4*100*16)
+        self.assertEqual(flop(3,10)['attn_score'],2*2*4*(11+12+13)*16)
+
+    def test_mla_projection_and_absorbed_decode_shapes(self):
+        sim=load_simulator()
+        cfg=json.loads(CONFIG_INDEX.read_text())['deepseek-v3']
+        ops={op.name:op for op in sim.build_layer_ops(cfg,1,1,1,1,layer_idx=3,context_len=100)}
+        self.assertEqual(ops['q_lora_down'].flops,2*7168*1536)
+        self.assertEqual(ops['q_lora_up'].flops,2*1536*128*192)
+        self.assertEqual(ops['kv_compress'].flops,2*7168*(512+64))
+        self.assertEqual(ops['attn_score'].flops,2*128*100*(512+64))
+        self.assertEqual(ops['routed_experts_swiglu'].flops,6*8*7168*2048)
+        self.assertNotIn('routed_experts_swiglu',{o.name for o in sim.build_layer_ops(cfg,1,1,1,1,layer_idx=0)})
+
+    def test_v4_indexer_ratio_and_v41_source_roles(self):
+        sim=load_simulator();configs=json.loads(CONFIG_INDEX.read_text())
+        cfg=configs['deepseek-v4-flash']
+        c4={o.name for o in sim.build_layer_ops(cfg,1,1,1,1,compress_ratio=4,layer_idx=3,context_len=1024)}
+        c128={o.name for o in sim.build_layer_ops(cfg,1,1,1,1,compress_ratio=128,layer_idx=4,context_len=1024)}
+        self.assertIn('indexer_proj',c4);self.assertNotIn('indexer_proj',c128)
+        self.assertNotIn('hca_attn_score',c4)
+        v41=configs['deepseek-v4.1-flash']
+        for i in (2,3):
+            names={o.name for o in sim.build_layer_ops(v41,1,1,1,1,compress_ratio=2,layer_idx=i)}
+            self.assertEqual('compressor_proj' in names,i==2)
+            self.assertEqual('indexer_proj' in names,i==2)
+
+    def test_hybrids_mhc_latent_and_lm_head(self):
+        sim=load_simulator();configs=json.loads(CONFIG_INDEX.read_text())
+        k3=configs['kimi-k3']
+        first={o.name for o in sim.build_layer_ops(k3,1,1,1,1,layer_idx=0)}
+        fourth={o.name:o for o in sim.build_layer_ops(k3,1,1,1,1,layer_idx=3)}
+        self.assertIn('kda_attention',first);self.assertIn('attn_score',fourth)
+        self.assertEqual(fourth['routed_experts_swiglu'].flops,6*16*3584*3072)
+        v4=configs['deepseek-v4-flash']
+        ops={o.name:o for o in sim.build_layer_ops(v4,1,1,1,1,layer_idx=3)}
+        self.assertEqual(ops['mhc_pre_gemm'].flops,4*4*v4['hidden_size']*24)
+        r=sim.simulate(v4,'v4',1,128,1,1,1,'b200','bf16')
+        self.assertEqual(r.embed_flops,2*v4['hidden_size']*v4['vocab_size'])
+
+    def test_all_indexed_models_build_both_phases_and_unknown_peak_refuses_mfu(self):
+        sim=load_simulator();configs=json.loads(CONFIG_INDEX.read_text())
+        for name,cfg in configs.items():
+            for seq in (1,16):
+                result=sim.simulate(cfg,name,1,seq,1,1,1,'b200','bf16',context_len=100)
+                self.assertEqual(len(result.layers),cfg['num_hidden_layers'])
+                self.assertGreater(result.total_flops,0)
+        with self.assertRaisesRegex(ValueError,'verified dense'):
+            sim.simulate(configs['deepseek-v3'],'v3',1,1,1,1,1,'dgx-spark','bf16',measured_ms=1)
+        self.assertEqual(sim.peak_dtype_key('nvfp4'),'fp4_tflops')
+
+
+def test_compute_skill_is_independently_installable(tmp_path):
+    import shutil
+    skill = SIM_SCRIPT_DIR.parent
+    copied = tmp_path / "standalone"
+    shutil.copytree(skill, copied)
+    result = subprocess.run([sys.executable, str(copied / "scripts/model_compute_simulator.py"), "deepseek-v3", "--gpu", "b200", "--format", "json"], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout)["num_layers"] == 61
+    specs = json.loads(GPU_SPECS.read_text())
+    assert specs['h20']['bf16_tflops'] is None
+    assert specs['h20']['hbm_gb'] is None
+
+
+def test_kda_gates_match_full_and_low_rank_source_linears():
+    sim = load_simulator()
+    base = {'num_hidden_layers': 1, 'hidden_size': 64, 'num_attention_heads': 4,
+            'attention_type': 'hybrid_kda_mla', 'model_type': 'kimi_linear',
+            'linear_attn_config': {'num_heads': 4, 'head_dim': 8, 'kda_layers': [1],
+                                 'short_conv_kernel_size': 3, 'use_full_rank_gate': True}}
+    ops = {o.name: o.flops for o in sim.build_layer_ops(base, 2, 3, 1, 1)}
+    assert ops['linear_in_proj_qkvz'] == 2 * 6 * 64 * (4 * 32)
+    assert ops['linear_in_proj_ba'] == 2 * 6 * 64 * (4 + 8)
+    assert ops['linear_forget_gate_up'] == 2 * 6 * 8 * 32
+    assert ops['linear_conv1d'] == 2 * 6 * 3 * 32 * 3
+    assert 'linear_output_gate_down' not in ops
+    base['linear_attn_config']['use_full_rank_gate'] = False
+    ops = {o.name: o.flops for o in sim.build_layer_ops(base, 2, 3, 1, 1)}
+    assert ops['linear_in_proj_qkvz'] == 2 * 6 * 64 * (3 * 32)
+    assert ops['linear_output_gate_down'] == 2 * 6 * 64 * 8
+    assert ops['linear_output_gate_up'] == 2 * 6 * 8 * 32
+
+
+def test_nemotron_shared_relu2_and_hf_shared_width():
+    sim = load_simulator()
+    cfg = json.loads(CONFIG_INDEX.read_text())['nemotron-3-super-120b-a12b']
+    ops = {o.name: o.flops for o in sim.build_layer_ops(cfg, 2, 3, 1, 1, layer_idx=1)}
+    assert ops['shared_experts_relu2'] == 4 * 6 * 4096 * 5376
+    assert 'shared_experts_swiglu' not in ops
+    raw = {'model_type': 'nemotron_h', 'n_shared_experts': 2,
+           'moe_shared_expert_intermediate_size': 100}
+    assert sim.normalize_model_config(raw)['shared_expert_intermediate_size'] == 200
+    assert load_profiles().normalize_model_config(raw)['shared_expert_intermediate_size'] == 200
+    assert sim.normalize_model_config(cfg)['shared_expert_intermediate_size'] == 5376
+
+
+def test_compressor_overlap_and_indexer_projection_work():
+    sim = load_simulator()
+    cfg = json.loads(CONFIG_INDEX.read_text())['deepseek-v4-flash']
+    c4 = {o.name: o.flops for o in sim.build_layer_ops(cfg, 1, 3, 1, 1, compress_ratio=4)}
+    c128 = {o.name: o.flops for o in sim.build_layer_ops(cfg, 1, 3, 1, 1, compress_ratio=128)}
+    assert c4['compressor_proj'] == 2 * 3 * cfg['hidden_size'] * 4 * cfg['head_dim']
+    assert c128['compressor_proj'] == 2 * 3 * cfg['hidden_size'] * 2 * cfg['head_dim']
+    assert c4['indexer_compressor_proj'] == 2 * 3 * cfg['hidden_size'] * 4 * cfg['index_head_dim']
+    assert c4['indexer_weights_proj'] == 2 * 3 * cfg['hidden_size'] * cfg['index_n_heads']
+
+
+def test_final_norm_covers_all_tokens_before_selected_logits():
+    sim = load_simulator()
+    cfg = {'num_hidden_layers': 1, 'hidden_size': 64, 'num_attention_heads': 4,
+           'attention_type': 'gqa', 'vocab_size': 100}
+    last = sim.simulate(cfg, 'dense', 2, 3, 1, 1, 1, 'b200', 'bf16')
+    all_rows = sim.simulate(cfg, 'dense', 2, 3, 1, 1, 1, 'b200', 'bf16', all_token_logits=True)
+    assert last.epilogue_flops == all_rows.epilogue_flops == 6 * 2 * 3 * 64
+    assert all_rows.embed_flops == 3 * last.embed_flops
+    assert 'moe' not in sim.FP8_INTERNAL_KERNEL_CATEGORIES
+
+
+def test_pipeline_tools_refuse_unknown_layer_count(tmp_path):
+    trace = tmp_path / 'trace.json'
+    trace.write_text(json.dumps({'traceEvents': [
+        {'name': 'fused_add_rms_norm', 'cat': 'kernel', 'ph': 'X',
+         'ts': i * 10, 'dur': 2, 'pid': 1, 'tid': 1} for i in range(4)
+    ]}))
+    for script in ('layer_timeline_analyzer.py', 'layer_kernel_breakdown.py', 'perfetto_time_mapper.py'):
+        extra = ['--fwd-pass', '0', '--layer', '0'] if script == 'layer_kernel_breakdown.py' else []
+        result = subprocess.run([sys.executable, str(SCRIPT_DIR / script), '--trace', str(trace),
+                                 '--anchor-kernel', 'fused_add_rms_norm', *extra], capture_output=True, text=True)
+        assert result.returncode != 0
+        assert 'Verified layer count required' in result.stderr, (script, result.stderr)
+
+
+def test_kernel_duration_sum_does_not_become_wall_clock():
+    result = subprocess.run([sys.executable, str(SIM_SCRIPT_DIR / "model_compute_simulator.py"),
+                             "deepseek-v3", "--gpu", "b200", "--kernel-flow",
+                             json.dumps({"metadata": {"total_dur_us": 2000}}), "--format", "json"],
+                            capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "wall-clock latency" in result.stderr

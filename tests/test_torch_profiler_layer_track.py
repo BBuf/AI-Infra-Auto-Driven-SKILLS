@@ -254,3 +254,31 @@ def test_local_server_only_exposes_viewer_and_exact_trace(tmp_path):
         thread.join()
     page = viewer.viewer_html("</script><script>alert(1)</script>")
     assert "</script><script>alert(1)</script>" not in page
+
+
+def test_stride_and_extra_output_anchor_reset_each_pass():
+    events = [kernel('anchor', ts) for ts in (0,10,20,30,40,100,110,120,130,140)]
+    output, report = track.annotate(events, anchor_regex='anchor', num_layers=2,
+                                   anchor_offset=0, passes=2, phase='target',
+                                   evidence='fixture 2 anchors/layer + output',
+                                   anchor_stride=2, extra_anchors_per_pass=1)
+    assert [r['anchor_index'] for r in report['layers']] == [0,2,5,7]
+    assert [r['start_us'] for r in report['layers']] == [0,20,100,120]
+    assert report['anchor_stride'] == 2
+    assert report['extra_anchors_per_pass'] == 1
+    assert output[:len(events)] == events
+    assert report['layers'][1]['end_us'] == 20
+    assert report['layers'][3]['end_us'] == 120
+
+
+def test_stride_terminal_spans_skipped_sublayer_anchor():
+    events = [kernel('anchor',ts) for ts in (0,10,20,30)]
+    events += [kernel('terminal',15),kernel('terminal',35)]
+    _, report = track.annotate(events, anchor_regex='anchor', num_layers=2,
+                              anchor_offset=0, passes=1, phase='target',
+                              evidence='fixture stride 2 verified',anchor_stride=2,
+                              end_anchor_regex='terminal')
+    assert report['layers'][-1]['end_us'] == 37
+    with pytest.raises(ValueError,match='Need 4 anchors'):
+        track.annotate(events[:3],anchor_regex='anchor',num_layers=2,anchor_offset=0,
+                       passes=1,phase='target',evidence='fixture',anchor_stride=2)

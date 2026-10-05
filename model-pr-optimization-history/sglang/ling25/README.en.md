@@ -1,4 +1,4 @@
-# sglang Ling 2.5 Model PR Optimization History
+# SGLang Ling 2.5 Model PR Optimization History
 
 ## Implementation File Coverage
 
@@ -25,8 +25,8 @@
 | 2025-09-15 | [#9338](https://github.com/sgl-project/sglang/pull/9338) | merged | Refactor TopK to ensure readability and extensibility | `python/sglang/srt/layers/moe/topk.py`, `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/layers/moe/fused_moe_triton/layer.py` |
 | 2025-09-24 | [#10860](https://github.com/sgl-project/sglang/pull/10860) | merged | fix bailing_moe with enable_dp_attention | `python/sglang/srt/models/bailing_moe.py` |
 | 2025-09-26 | [#10749](https://github.com/sgl-project/sglang/pull/10749) | merged | Fuse write kv buffer into rope for qwen3 moe & bailing moe | `python/sglang/srt/models/utils.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/bailing_moe.py` |
-| 2025-10-12 | [#11465](https://github.com/sgl-project/sglang/pull/11465) | merged | bailingMoE: Fix Key error of deepep_mode | `python/sglang/srt/models/bailing_moe.py` |
 | 2025-10-12 | [#11331](https://github.com/sgl-project/sglang/pull/11331) | merged | Deprecate `global_server_args_dict` | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py` |
+| 2025-10-12 | [#11465](https://github.com/sgl-project/sglang/pull/11465) | merged | bailingMoE: Fix Key error of deepep_mode | `python/sglang/srt/models/bailing_moe.py` |
 | 2025-10-13 | [#11520](https://github.com/sgl-project/sglang/pull/11520) | merged | Revert "Deprecate `global_server_args_dict`" | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py` |
 | 2025-10-13 | [#11528](https://github.com/sgl-project/sglang/pull/11528) | merged | Depreate `global_server_args_dict` | `python/sglang/srt/models/deepseek_v2.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/models/glm4_moe.py` |
 | 2025-10-17 | [#11685](https://github.com/sgl-project/sglang/pull/11685) | merged | [Lint] Add `python/sglang` to ruff F401 checks and remove unused imports in files | `python/sglang/srt/layers/quantization/w8a8_int8.py`, `python/sglang/srt/models/qwen2_audio.py`, `python/sglang/srt/models/longcat_flash.py` |
@@ -283,32 +283,6 @@ diff -- python/sglang/srt/models/bailing_moe.py
   - runtime: `python/sglang/srt/models/utils.py` added +51/-0; `python/sglang/srt/models/gpt_oss.py` modified +7/-30; `python/sglang/srt/models/bailing_moe.py` modified +25/-2; `python/sglang/srt/models/qwen3_moe.py` modified +22/-2
 - Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`, `python/sglang/srt/models/gpt_oss.py`, `python/sglang/srt/models/qwen3_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
-### PR #11465 - bailingMoE: Fix Key error of deepep_mode
-
-- Link: https://github.com/sgl-project/sglang/pull/11465
-- Status/date: merged / 2025-10-12
-- Trace source: preserved from an explicit existing history/skill citation
-- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
-- Motivation: Title: "bailingMoE: Fix Key error of deepep_mode"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "bailingMoE: Fix Key error of deepep_mode"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
-- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -293,7 +293,7 @@ def __init__(; symbols: __init__, touching `__init__`.
-- Code diff details:
-  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -293,7 +293,7 @@ def __init__(; symbols: __init__
-- Key code excerpts:
-
-```diff
-diff -- python/sglang/srt/models/bailing_moe.py
-@@ -54,7 +54,7 @@
--from sglang.srt.layers.moe import get_moe_a2a_backend
-+from sglang.srt.layers.moe import get_deepep_mode, get_moe_a2a_backend
-@@ -293,7 +293,7 @@ def __init__(
--                deepep_mode=DeepEPMode[global_server_args_dict["deepep_mode"]],
-+                deepep_mode=get_deepep_mode(),
-```
-
-- Reviewed files:
-  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-2
-- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
-
 ### PR #11331 - Deprecate `global_server_args_dict`
 
 - Link: https://github.com/sgl-project/sglang/pull/11331
@@ -349,6 +323,32 @@ diff -- python/sglang/srt/models/glm4_moe.py
 - Reviewed files:
   - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +23/-21; `python/sglang/srt/model_executor/model_runner.py` modified +16/-21; `python/sglang/srt/models/glm4_moe.py` modified +8/-12; `python/sglang/srt/layers/logits_processor.py` modified +6/-10; `python/sglang/srt/models/qwen3_vl_moe.py` modified +3/-11; `python/sglang/srt/layers/communicator.py` modified +8/-5
 - Risk and verification: The diff ships test coverage in `test/srt/rl/test_fp32_lm_head.py`, `test/srt/test_gptqmodel_dynamic.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #11465 - bailingMoE: Fix Key error of deepep_mode
+
+- Link: https://github.com/sgl-project/sglang/pull/11465
+- Status/date: merged / 2025-10-12
+- Trace source: preserved from an explicit existing history/skill citation
+- Diff scope read: GitHub Pull Request files API returned 1 files, +2/-2, 18 readable patch lines; this card prioritizes model-related and high-change files.
+- Motivation: Title: "bailingMoE: Fix Key error of deepep_mode"; model line: Ling 2.5; category: bug fix; main diff: `python/sglang/srt/models/bailing_moe.py`; technical summary: Covers "bailingMoE: Fix Key error of deepep_mode"; the main implementation surface is `python/sglang/srt/models/bailing_moe.py`. File-level evidence, code excerpts, and validation risks are preserved below.
+- Key implementation: `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -293,7 +293,7 @@ def __init__(; symbols: __init__, touching `__init__`.
+- Code diff details:
+  - `python/sglang/srt/models/bailing_moe.py` modified +2/-2 (4 lines); hunks: -54,7 +54,7; -293,7 +293,7 @@ def __init__(; symbols: __init__
+- Key code excerpts:
+
+```diff
+diff -- python/sglang/srt/models/bailing_moe.py
+@@ -54,7 +54,7 @@
+-from sglang.srt.layers.moe import get_moe_a2a_backend
++from sglang.srt.layers.moe import get_deepep_mode, get_moe_a2a_backend
+@@ -293,7 +293,7 @@ def __init__(
+-                deepep_mode=DeepEPMode[global_server_args_dict["deepep_mode"]],
++                deepep_mode=get_deepep_mode(),
+```
+
+- Reviewed files:
+  - runtime: `python/sglang/srt/models/bailing_moe.py` modified +2/-2
+- Risk and verification: Runtime changes concentrate in `python/sglang/srt/models/bailing_moe.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
 
 ### PR #11520 - Revert "Deprecate `global_server_args_dict`"
 

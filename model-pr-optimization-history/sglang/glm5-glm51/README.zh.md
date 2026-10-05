@@ -1,30 +1,41 @@
-# sglang GLM-5/5.1 模型 PR 优化历史
+# SGLang GLM-5 Series (5/5.1/5.2/5.3-Flash) 模型 PR 优化历史
 
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |
 | --- | --- |
 | `docs/cookbook/autoregressive/GLM/GLM-5.1.mdx` | 无直接 PR 号提交 |
-| `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` | [#31554](https://github.com/sgl-project/sglang/pull/31554), [#34379](https://github.com/sgl-project/sglang/pull/34379) |
+| `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` | [#31554](https://github.com/sgl-project/sglang/pull/31554), [#34379](https://github.com/sgl-project/sglang/pull/34379), [#35368](https://github.com/sgl-project/sglang/pull/35368), [#36440](https://github.com/sgl-project/sglang/pull/36440), [#39106](https://github.com/sgl-project/sglang/pull/39106), [#39230](https://github.com/sgl-project/sglang/pull/39230), [#39406](https://github.com/sgl-project/sglang/pull/39406), [#40148](https://github.com/sgl-project/sglang/pull/40148), [#40570](https://github.com/sgl-project/sglang/pull/40570), [#41597](https://github.com/sgl-project/sglang/pull/41597), [#42278](https://github.com/sgl-project/sglang/pull/42278) |
+| `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` | [#36440](https://github.com/sgl-project/sglang/pull/36440), [#36519](https://github.com/sgl-project/sglang/pull/36519), [#36544](https://github.com/sgl-project/sglang/pull/36544), [#36608](https://github.com/sgl-project/sglang/pull/36608), [#36660](https://github.com/sgl-project/sglang/pull/36660), [#36719](https://github.com/sgl-project/sglang/pull/36719), [#36740](https://github.com/sgl-project/sglang/pull/36740), [#37109](https://github.com/sgl-project/sglang/pull/37109), [#37380](https://github.com/sgl-project/sglang/pull/37380), [#38522](https://github.com/sgl-project/sglang/pull/38522), [#39213](https://github.com/sgl-project/sglang/pull/39213), [#39273](https://github.com/sgl-project/sglang/pull/39273), ... (15 total) |
+| `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` | [#36827](https://github.com/sgl-project/sglang/pull/36827), [#37392](https://github.com/sgl-project/sglang/pull/37392), [#40497](https://github.com/sgl-project/sglang/pull/40497) |
 | `docs/cookbook/autoregressive/GLM/GLM-5.mdx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/glm-5-deployment.jsx` | 无直接 PR 号提交 |
 | `docs/src/snippets/autoregressive/glm-51-deployment.jsx` | 无直接 PR 号提交 |
 | `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` | [#31554](https://github.com/sgl-project/sglang/pull/31554) |
-| `docs/src/snippets/configs/zai-org/glm-5.2.jsx` | [#33935](https://github.com/sgl-project/sglang/pull/33935), [#34379](https://github.com/sgl-project/sglang/pull/34379) |
+| `docs/src/snippets/configs/zai-org/glm-5.2.jsx` | [#33935](https://github.com/sgl-project/sglang/pull/33935), [#34379](https://github.com/sgl-project/sglang/pull/34379), [#39106](https://github.com/sgl-project/sglang/pull/39106), [#39230](https://github.com/sgl-project/sglang/pull/39230), [#39406](https://github.com/sgl-project/sglang/pull/39406), [#40148](https://github.com/sgl-project/sglang/pull/40148), [#40570](https://github.com/sgl-project/sglang/pull/40570), [#41109](https://github.com/sgl-project/sglang/pull/41109), [#42109](https://github.com/sgl-project/sglang/pull/42109) |
+| `docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx` | [#36827](https://github.com/sgl-project/sglang/pull/36827) |
+| `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` | [#36440](https://github.com/sgl-project/sglang/pull/36440), [#36513](https://github.com/sgl-project/sglang/pull/36513), [#36519](https://github.com/sgl-project/sglang/pull/36519), [#36544](https://github.com/sgl-project/sglang/pull/36544), [#36608](https://github.com/sgl-project/sglang/pull/36608), [#36660](https://github.com/sgl-project/sglang/pull/36660), [#37109](https://github.com/sgl-project/sglang/pull/37109), [#37380](https://github.com/sgl-project/sglang/pull/37380), [#37412](https://github.com/sgl-project/sglang/pull/37412), [#37576](https://github.com/sgl-project/sglang/pull/37576), [#39213](https://github.com/sgl-project/sglang/pull/39213), [#40036](https://github.com/sgl-project/sglang/pull/40036), ... (13 total) |
+| `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` | [#36440](https://github.com/sgl-project/sglang/pull/36440), [#36513](https://github.com/sgl-project/sglang/pull/36513), [#36519](https://github.com/sgl-project/sglang/pull/36519), [#36544](https://github.com/sgl-project/sglang/pull/36544), [#36608](https://github.com/sgl-project/sglang/pull/36608), [#36660](https://github.com/sgl-project/sglang/pull/36660), [#36740](https://github.com/sgl-project/sglang/pull/36740), [#37109](https://github.com/sgl-project/sglang/pull/37109), [#37380](https://github.com/sgl-project/sglang/pull/37380), [#37412](https://github.com/sgl-project/sglang/pull/37412), [#37576](https://github.com/sgl-project/sglang/pull/37576), [#38522](https://github.com/sgl-project/sglang/pull/38522), ... (17 total) |
+| `docs/src/snippets/configs/zai-org/glm-5.3.jsx` | [#36827](https://github.com/sgl-project/sglang/pull/36827), [#36950](https://github.com/sgl-project/sglang/pull/36950), [#37392](https://github.com/sgl-project/sglang/pull/37392), [#40497](https://github.com/sgl-project/sglang/pull/40497) |
+| `python/sglang/srt/configs/glm5_next.py` | [#36507](https://github.com/sgl-project/sglang/pull/36507) |
+| `python/sglang/srt/models/glm5_next.py` | [#36507](https://github.com/sgl-project/sglang/pull/36507), [#38546](https://github.com/sgl-project/sglang/pull/38546), [#38621](https://github.com/sgl-project/sglang/pull/38621), [#39200](https://github.com/sgl-project/sglang/pull/39200), [#39273](https://github.com/sgl-project/sglang/pull/39273), [#39688](https://github.com/sgl-project/sglang/pull/39688), [#39720](https://github.com/sgl-project/sglang/pull/39720), [#40466](https://github.com/sgl-project/sglang/pull/40466), [#41161](https://github.com/sgl-project/sglang/pull/41161), [#41198](https://github.com/sgl-project/sglang/pull/41198), [#41870](https://github.com/sgl-project/sglang/pull/41870) |
+| `python/sglang/srt/models/glm5_next_nextn.py` | [#36507](https://github.com/sgl-project/sglang/pull/36507), [#39779](https://github.com/sgl-project/sglang/pull/39779) |
 | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
 | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
-| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
+| `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120), [#41135](https://github.com/sgl-project/sglang/pull/41135) |
 | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` | [#32120](https://github.com/sgl-project/sglang/pull/32120) |
 | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml` | [#34476](https://github.com/sgl-project/sglang/pull/34476) |
 | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` | [#34476](https://github.com/sgl-project/sglang/pull/34476) |
-| `test/registered/8-gpu-models/test_glm52_fp8.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
 | `test/registered/amd/accuracy/mi30x/test_glm51_hisparse_eval_mi30x.py` | 无直接 PR 号提交 |
+| `test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py` | [#41602](https://github.com/sgl-project/sglang/pull/41602) |
 | `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` | [#18911](https://github.com/sgl-project/sglang/pull/18911), [#21710](https://github.com/sgl-project/sglang/pull/21710) |
 | `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
 | `test/registered/amd/accuracy/mi35x/test_glm51_hisparse_eval_mi35x.py` | 无直接 PR 号提交 |
 | `test/registered/amd/accuracy/mi35x/test_glm51_mxfp4_tp2_gsm8k_mi35x.py` | [#26396](https://github.com/sgl-project/sglang/pull/26396) |
 | `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` | [#32570](https://github.com/sgl-project/sglang/pull/32570) |
+| `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py` | [#41602](https://github.com/sgl-project/sglang/pull/41602) |
+| `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py` | [#36903](https://github.com/sgl-project/sglang/pull/36903) |
 | `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py` | [#18911](https://github.com/sgl-project/sglang/pull/18911), [#21710](https://github.com/sgl-project/sglang/pull/21710) |
 | `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py` | [#21773](https://github.com/sgl-project/sglang/pull/21773) |
 | `test/registered/amd/perf/mi30x/test_glm51_perf_amd.py` | [#22336](https://github.com/sgl-project/sglang/pull/22336) |
@@ -33,23 +44,35 @@
 | `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py` | [#32570](https://github.com/sgl-project/sglang/pull/32570) |
 | `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py` | [#21773](https://github.com/sgl-project/sglang/pull/21773) |
 | `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py` | [#21710](https://github.com/sgl-project/sglang/pull/21710) |
+| `test/registered/e2e/models/test_dsa_glm52_dp_mtp.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models/test_dsa_glm52_hisparse.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py` | [#38725](https://github.com/sgl-project/sglang/pull/38725) |
+| `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` | [#38725](https://github.com/sgl-project/sglang/pull/38725), [#39816](https://github.com/sgl-project/sglang/pull/39816) |
+| `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py` | [#41207](https://github.com/sgl-project/sglang/pull/41207) |
+| `test/registered/e2e/models/test_dsa_glm52_tp_mtp.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models/test_glm53_flash_b200.py` | [#40862](https://github.com/sgl-project/sglang/pull/40862) |
+| `test/registered/e2e/models/test_glm53_flash_h200.py` | [#40862](https://github.com/sgl-project/sglang/pull/40862) |
+| `test/registered/e2e/models/test_glm53_flash_kda_ptx_prefill_blackwell.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/models_large/test_glm52_fp8.py` | 无直接 PR 号提交 |
+| `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` | [#38546](https://github.com/sgl-project/sglang/pull/38546), [#41464](https://github.com/sgl-project/sglang/pull/41464) |
 | `test/registered/gb300/test_glm52_nvfp4.py` | 无直接 PR 号提交 |
-| `test/registered/models_e2e/test_dsa_glm52_dp_mtp.py` | 无直接 PR 号提交 |
-| `test/registered/models_e2e/test_dsa_glm52_hisparse.py` | 无直接 PR 号提交 |
-| `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py` | [#30021](https://github.com/sgl-project/sglang/pull/30021) |
-| `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` | [#30021](https://github.com/sgl-project/sglang/pull/30021), [#31289](https://github.com/sgl-project/sglang/pull/31289) |
-| `test/registered/models_e2e/test_dsa_glm52_pd_mtp_cp_layersplit.py` | 无直接 PR 号提交 |
-| `test/registered/models_e2e/test_dsa_glm52_tp_mtp.py` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w4a8_16p_gpqa.py` | 无直接 PR 号提交 |
-| `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` | 无直接 PR 号提交 |
+| `test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py` | [#41161](https://github.com/sgl-project/sglang/pull/41161) |
+| `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` | [#36459](https://github.com/sgl-project/sglang/pull/36459) |
+| `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py` | [#38775](https://github.com/sgl-project/sglang/pull/38775) |
+| `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` | [#38775](https://github.com/sgl-project/sglang/pull/38775) |
 | `test/registered/npu/performance/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms.py` | 无直接 PR 号提交 |
+| `test/registered/npu/rl/indexer_replay/test_npu_return_indexer_topk_glm52.py` | 无直接 PR 号提交 |
+| `test/registered/radix_cache/unified_radix_tree/linker/test_unified_cache_linker_kl_glm52.py` | 无直接 PR 号提交 |
+| `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py` | [#36281](https://github.com/sgl-project/sglang/pull/36281) |
+| `test/registered/unit/layer_boundary/test_glm5_next_dflash_capture.py` | 无直接 PR 号提交 |
+| `test/registered/unit/models/test_glm5_next_bfg_fusion.py` | [#39688](https://github.com/sgl-project/sglang/pull/39688), [#41870](https://github.com/sgl-project/sglang/pull/41870) |
+| `test/registered/unit/models/test_glm5_next_modelopt.py` | [#38621](https://github.com/sgl-project/sglang/pull/38621), [#39273](https://github.com/sgl-project/sglang/pull/39273), [#39779](https://github.com/sgl-project/sglang/pull/39779) |
 
 ## PR 覆盖总览
 
-- git 追溯 PR 数: 13
-- 原文档显式引用补充 PR 数: 50
-- 当前文档总 PR 数: 63
+- git 追溯 PR 数: 64
+- 原文档显式引用补充 PR 数: 52
+- 当前文档总 PR 数: 116
 - 文件追溯命令: `git log --name-only -- <model-files>`
 - diff 审计来源: GitHub Pull Request files API
 
@@ -62,11 +85,11 @@
 | 2026-02-25 | [#18911](https://github.com/sgl-project/sglang/pull/18911) | merged | [AMD] [GLM-5 Day 0] Add GLM-5 nightly test | `test/registered/amd/accuracy/mi35x/test_glm5_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` |
 | 2026-03-09 | [#20062](https://github.com/sgl-project/sglang/pull/20062) | merged | [V32/GLM5] Control the threshold of applying dense attention with an environ | `python/sglang/srt/layers/attention/nsa_backend.py`, `python/sglang/srt/server_args.py`, `test/registered/quant/test_deepseek_v32_fp4_4gpu.py` |
 | 2026-04-06 | [#22179](https://github.com/sgl-project/sglang/pull/22179) | merged | [Doc] Fix and improve DeepSeek V3.2/GLM-5 documentation | `docs/basic_usage/deepseek_v32.md` |
-| 2026-04-08 | [#22314](https://github.com/sgl-project/sglang/pull/22314) | merged | [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300 | `python/sglang/srt/mem_cache/memory_pool.py` |
 | 2026-04-08 | [#21710](https://github.com/sgl-project/sglang/pull/21710) | merged | [AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x | `test/registered/amd/perf/mi35x/test_glm5_perf_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm5_perf_amd.py`, `test/registered/amd/accuracy/mi30x/test_glm5_eval_amd.py` |
 | 2026-04-08 | [#22285](https://github.com/sgl-project/sglang/pull/22285) | merged | Add CI tests for GLM-5 | `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py` |
-| 2026-04-09 | [#22399](https://github.com/sgl-project/sglang/pull/22399) | merged | [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model | `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py` |
+| 2026-04-08 | [#22314](https://github.com/sgl-project/sglang/pull/22314) | merged | [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300 | `python/sglang/srt/mem_cache/memory_pool.py` |
 | 2026-04-09 | [#22336](https://github.com/sgl-project/sglang/pull/22336) | merged | [AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x | `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` |
+| 2026-04-09 | [#22399](https://github.com/sgl-project/sglang/pull/22399) | merged | [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model | `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py` |
 | 2026-04-13 | [#22712](https://github.com/sgl-project/sglang/pull/22712) | merged | [NPU] update GLM5 running guide | `docs/platforms/ascend/ascend_npu_glm5_examples.md` |
 | 2026-04-14 | [#22543](https://github.com/sgl-project/sglang/pull/22543) | merged | GLM-5/5.1 MXFP4 Checkpoint Inference Compatibility Fix | `python/sglang/srt/models/deepseek_common/deepseek_weight_loader.py`, `python/sglang/srt/model_loader/loader.py`, `python/sglang/srt/server_args.py` |
 | 2026-04-15 | [#21773](https://github.com/sgl-project/sglang/pull/21773) | merged | [AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests for MI35x | `test/registered/amd/accuracy/mi35x/test_glm5_mxfp4_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm5_mxfp4_perf_mi35x.py` |
@@ -92,19 +115,19 @@
 | 2026-06-17 | [#28433](https://github.com/sgl-project/sglang/pull/28433) | merged | [Ascend]GLM 5.2 deployment | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_glm5.2_examples.mdx` |
 | 2026-06-17 | [#28460](https://github.com/sgl-project/sglang/pull/28460) | merged | docs(cookbook): verify GLM-5.2 single-node B300 (FP8 + BF16) | `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-06-18 | [#28607](https://github.com/sgl-project/sglang/pull/28607) | merged | [misc] Drop redundant req_pool_indices_cpu guards; fold hisparse into GLM-5.1 e2e | `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py`, `test/registered/8-gpu-models/test_dsa_models_hisparse.py`, `test/registered/models_e2e/test_dsa_glm5_hisparse.py` |
-| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-19 | [#28536](https://github.com/sgl-project/sglang/pull/28536) | merged | ci: run GB300 nightly suite in the standard Nvidia nightly workflow | `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_qwen35_fp8.py` |
+| 2026-06-19 | [#28697](https://github.com/sgl-project/sglang/pull/28697) | merged | [docs] Add B300 cookbook deployment options | `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` |
 | 2026-06-22 | [#27893](https://github.com/sgl-project/sglang/pull/27893) | merged | [NPU] [DOC] Create deployment tutorials for mainstream models on Ascend NPU | `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_best_practice.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/model-tutorials/qwen3_235b_a22b.mdx`, `docs_new/docs/hardware-platforms/ascend-npus/ascend_npu_qwen3_5_examples.mdx` |
 | 2026-06-24 | [#27053](https://github.com/sgl-project/sglang/pull/27053) | merged | [BCG][GLM5] perf: BCG support and prefill enhancements | `python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py`, `python/sglang/srt/layers/attention/dsa/dsa_indexer.py`, `python/sglang/srt/models/deepseek_v2.py` |
-| 2026-06-25 | [#29194](https://github.com/sgl-project/sglang/pull/29194) | merged | [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook | `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` |
 | 2026-06-25 | [#28103](https://github.com/sgl-project/sglang/pull/28103) | merged | Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test | `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_kimi_k25_nvfp4.py`, `.github/workflows/nightly-test-nvidia.yml` |
+| 2026-06-25 | [#29194](https://github.com/sgl-project/sglang/pull/29194) | merged | [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook | `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` |
 | 2026-06-26 | [#29313](https://github.com/sgl-project/sglang/pull/29313) | merged | [AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook | `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` |
 | 2026-06-26 | [#29380](https://github.com/sgl-project/sglang/pull/29380) | merged | [Docs] Add NVFP4 quantization to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-06-26 | [#29466](https://github.com/sgl-project/sglang/pull/29466) | merged | Update GLM-5.2 B300 and GB300 NVFP4 cookbook settings | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` |
 | 2026-06-27 | [#29486](https://github.com/sgl-project/sglang/pull/29486) | merged | [Cookbook] GLM-5.2: tune GB300 NVFP4 recipes + fill benchmarks | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
 | 2026-06-29 | [#28731](https://github.com/sgl-project/sglang/pull/28731) | merged | [cookbook] drop redundant serve flags (GLM-5.2) + fix M3 page-size note | `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` |
-| 2026-06-29 | [#29674](https://github.com/sgl-project/sglang/pull/29674) | merged | docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
 | 2026-06-29 | [#29557](https://github.com/sgl-project/sglang/pull/29557) | merged | [cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
+| 2026-06-29 | [#29674](https://github.com/sgl-project/sglang/pull/29674) | merged | docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` |
 | 2026-06-30 | [#28471](https://github.com/sgl-project/sglang/pull/28471) | merged | docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2 | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-07-02 | [#29544](https://github.com/sgl-project/sglang/pull/29544) | merged | docs: add PD disaggregation to GLM-5.2 cookbook playground | `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/_playground.jsx`, `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-07-03 | [#30021](https://github.com/sgl-project/sglang/pull/30021) | merged | [CI] Add GLM52 NVFP4 MTP B200 tests | `test/registered/models_e2e/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
@@ -114,12 +137,65 @@
 | 2026-07-15 | [#31289](https://github.com/sgl-project/sglang/pull/31289) | merged | [CI] Lower GLM-5.2 NVFP4 MTP speed threshold | `test/registered/models_e2e/test_dsa_glm52_nvfp4_tp_mtp.py` |
 | 2026-07-17 | [#31512](https://github.com/sgl-project/sglang/pull/31512) | merged | Add nightly test for GLM5.2 LayerSplit | `test/registered/models_e2e/test_dsa_glm52_cache_layer_split.py` |
 | 2026-07-17 | [#31577](https://github.com/sgl-project/sglang/pull/31577) | merged | [Doc] Update GLM5.2 Cookbook with LayerSplit usage | `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
-| 2026-08-07 | [#33935](https://github.com/sgl-project/sglang/pull/33935) | merged | Clean GLM-5.2 NVFP4 cookbook | `docs/src/snippets/configs/zai-org/glm-5.2.jsx` |
 | 2026-08-07 | [#32120](https://github.com/sgl-project/sglang/pull/32120) | merged | [AMD][DI][CI] 8/N Add GLM-5.2 MXFP4 1P1D DI/CI recipes (base + MTP + DP8/EP8) | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` |
+| 2026-08-07 | [#33935](https://github.com/sgl-project/sglang/pull/33935) | merged | Clean GLM-5.2 NVFP4 cookbook | `docs/src/snippets/configs/zai-org/glm-5.2.jsx` |
 | 2026-08-12 | [#34379](https://github.com/sgl-project/sglang/pull/34379) | merged | [AMD] GLM 5.2 MXFP4 SGLANG COOKBOOK | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-08-12 | [#34476](https://github.com/sgl-project/sglang/pull/34476) | merged | [AMD][DI][CI] Add GLM-5.2 MXFP4 wide-EP16 2P1D nightly recipes | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16-mtp.yaml`, `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/2p1d-ep16.yaml` |
 | 2026-08-14 | [#31554](https://github.com/sgl-project/sglang/pull/31554) | merged | [Docs] Fill GLM-5.2 H200 FP8 speed cells (low-latency, balanced); fix MTP notation | `docs/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
 | 2026-08-20 | [#32570](https://github.com/sgl-project/sglang/pull/32570) | merged | [AMD] Add GLM-5.2 MI35x nightly accuracy and perf benchmark | `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`, `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` |
+| 2026-08-26 | [#36281](https://github.com/sgl-project/sglang/pull/36281) | merged | [Unified Cache]: add glm5.2 per commit ci | `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py` |
+| 2026-08-26 | [#36440](https://github.com/sgl-project/sglang/pull/36440) | merged | Add GLM-5.3-Flash cookbook | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-26 | [#36513](https://github.com/sgl-project/sglang/pull/36513) | merged | GLM-5.3-Flash cookbook: FP8 KV + TRT-LLM benchmark cards and Blackwell default | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` |
+| 2026-08-26 | [#36519](https://github.com/sgl-project/sglang/pull/36519) | merged | GLM-5.3-Flash cookbook: default Blackwell recipes to FP8 KV + TRT-LLM DSA | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-27 | [#36608](https://github.com/sgl-project/sglang/pull/36608) | merged | [AMD] Add GLM-5.3-Flash recipes for MI300X, MI325X, and MI355X | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-27 | [#36660](https://github.com/sgl-project/sglang/pull/36660) | merged | cookbook: fix GLM-5.3-Flash speculative flag, size Hopper memory, record GSM8K | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-27 | [#36719](https://github.com/sgl-project/sglang/pull/36719) | merged | [Docs] GLM-5.3-Flash: point at compute-mamba-ratio for the KDA/KV pool split | `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-27 | [#36544](https://github.com/sgl-project/sglang/pull/36544) | merged | GLM-5.3-Flash cookbook: HiCache for LL, fusion-flag drop, EAGLE, default-cell numbers, DCP4 overlay | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-27 | [#36740](https://github.com/sgl-project/sglang/pull/36740) | merged | cookbook: add a Speculative card to the GLM-5.3-Flash playground | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-08-28 | [#36827](https://github.com/sgl-project/sglang/pull/36827) | merged | [Docs] Add GLM-5.3 cookbook | `docs/src/snippets/configs/zai-org/glm-5.3.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` |
+| 2026-08-29 | [#36950](https://github.com/sgl-project/sglang/pull/36950) | merged | [Docs] Restore the AIME25 label so GLM-5.3 FP8 and BF16 scores render again | `docs/src/snippets/configs/zai-org/glm-5.3.jsx` |
+| 2026-08-31 | [#36459](https://github.com/sgl-project/sglang/pull/36459) | merged | [NPU] Fix evalscope accuracy parsing and add glm5_1 aime26 request timeout | `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` |
+| 2026-09-01 | [#37109](https://github.com/sgl-project/sglang/pull/37109) | merged | [Docs] Add NVFP4 section to GLM-5.3-Flash cookbook | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-09-01 | [#37380](https://github.com/sgl-project/sglang/pull/37380) | merged | Revert "[AMD] Add GLM-5.3-Flash recipes for MI300X, MI325X, and MI355X (#36608)" | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-09-01 | [#37392](https://github.com/sgl-project/sglang/pull/37392) | merged | [Cookbook] Add the DFlash2 speculative option to GLM-5.3 | `docs/src/snippets/configs/zai-org/glm-5.3.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` |
+| 2026-09-01 | [#37412](https://github.com/sgl-project/sglang/pull/37412) | merged | [Docs] GLM-5.3-Flash cookbook: add NVFP4 FP8+TRT-LLM benchmark rows (follow-up to #37109) | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` |
+| 2026-09-02 | [#35368](https://github.com/sgl-project/sglang/pull/35368) | merged | Update GLM-5.2 NVFP4 B200/B300 for AgentX HiCache | `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-03 | [#37576](https://github.com/sgl-project/sglang/pull/37576) | merged | [Docs] GLM-5.3-Flash cookbook: drop stale EP caveat, add B300/H100/B200 FP8 speed data | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` |
+| 2026-09-06 | [#36507](https://github.com/sgl-project/sglang/pull/36507) | merged | GLM-5.3-Flash support | `python/sglang/srt/models/glm5_next.py`, `python/sglang/srt/configs/glm5_next.py`, `python/sglang/srt/models/glm5_next_nextn.py` |
+| 2026-09-09 | [#38725](https://github.com/sgl-project/sglang/pull/38725) | merged | Relax GSM8K thresholds for the GLM-5.2 DSA-MTP variants | `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` |
+| 2026-09-09 | [#38621](https://github.com/sgl-project/sglang/pull/38621) | merged | [Model] Support GLM-5.3 Flash NVFP4 loading | `test/registered/unit/models/test_glm5_next_modelopt.py`, `python/sglang/srt/models/glm5_next.py` |
+| 2026-09-10 | [#38522](https://github.com/sgl-project/sglang/pull/38522) | merged | Add Opt-In for GLM-5.3 Flash breakable prefill CUDA graphs | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `python/sglang/srt/layers/attention/dsa/kpool_prefill_cuda_graph.py` |
+| 2026-09-10 | [#38775](https://github.com/sgl-project/sglang/pull/38775) | merged | [NPU] Set DEEPEP_HYBRID_DEPLOYMENT for new DeepEP tests; switch glm5_2 to w8a8; tune nightly timeouts | `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py`, `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` |
+| 2026-09-11 | [#39106](https://github.com/sgl-project/sglang/pull/39106) | merged | [AMD] Use the triton DSA backend for GLM-5.2 MXFP4 on MI355X | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-12 | [#39213](https://github.com/sgl-project/sglang/pull/39213) | merged | [Docs] GLM-5.3-Flash cookbook: fixed MTP 5/1/6, EP1 + flashinfer_trtllm on Blackwell | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-09-12 | [#39230](https://github.com/sgl-project/sglang/pull/39230) | merged | [AMD] Document GLM-5.2 MXFP4 recipe update on MI355X | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-14 | [#39406](https://github.com/sgl-project/sglang/pull/39406) | merged | [AMD] GLM-5.2 MI355X MXFP4: bump image to 20260916 | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-16 | [#39720](https://github.com/sgl-project/sglang/pull/39720) | merged | [Fix] Fix GLM5 mHC PP forward | `python/sglang/srt/models/glm5_next.py` |
+| 2026-09-17 | [#40036](https://github.com/sgl-project/sglang/pull/40036) | merged | [Docs] GLM-5.3-Flash cookbook: temporarily remove the DCP option | `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-09-18 | [#40148](https://github.com/sgl-project/sglang/pull/40148) | merged | [AMD] GLM-5.2 MI355X MXFP4: bump image to 20260916, use HIP Top-K | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-20 | [#39688](https://github.com/sgl-project/sglang/pull/39688) | merged | Fuse GLM-5.3-Flash KDA projections and prefill metadata | `python/sglang/srt/models/glm5_next.py`, `test/registered/unit/models/test_glm5_next_bfg_fusion.py` |
+| 2026-09-20 | [#39200](https://github.com/sgl-project/sglang/pull/39200) | merged | [Perf] Fuse the glm5_next mHC attn->MLP boundary | `python/sglang/srt/models/glm5_next.py` |
+| 2026-09-21 | [#40570](https://github.com/sgl-project/sglang/pull/40570) | merged | [AMD] Enable HiCache for GLM-5.2 MI355X throughput recipe | `docs/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-22 | [#38546](https://github.com/sgl-project/sglang/pull/38546) | merged | [AMD] [GLM-5.3-Flash Day 0] Enable FP8 and Quark MXFP4 MoE on gfx950 | `python/sglang/srt/models/glm5_next.py`, `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` |
+| 2026-09-22 | [#40497](https://github.com/sgl-project/sglang/pull/40497) | merged | [Docs] GLM-5.3/5.3-Flash cookbooks: enable reasoning/tool-call parsers by default via auto | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-09-22 | [#39779](https://github.com/sgl-project/sglang/pull/39779) | merged | [AMD] [GLM-5.3-Flash Day 0] Load the MXFP4 MTP draft layer | `test/registered/unit/models/test_glm5_next_modelopt.py`, `python/sglang/srt/models/glm5_next_nextn.py` |
+| 2026-09-23 | [#40466](https://github.com/sgl-project/sglang/pull/40466) | merged | [deepep_v2] support GLM-5.3-Flash (Glm5NextForConditionalGeneration) | `python/sglang/srt/models/glm5_next.py` |
+| 2026-09-23 | [#40862](https://github.com/sgl-project/sglang/pull/40862) | merged | [CI] Update GLM-5.3-Flash H200/B200 test args | `test/registered/e2e/models/test_glm53_flash_b200.py`, `test/registered/e2e/models/test_glm53_flash_h200.py` |
+| 2026-09-24 | [#39816](https://github.com/sgl-project/sglang/pull/39816) | merged | Refactor the Cute-DSL AR fusion to support DeepseekV2 archs (GLM-5.3, etc.) | `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py`, `python/sglang/srt/layers/moe/cutedsl_ar_fusion.py`, `python/sglang/srt/layers/flashinfer_mnnvl_cutedsl.py` |
+| 2026-09-24 | [#41109](https://github.com/sgl-project/sglang/pull/41109) | merged | [AMD] GLM-5.2 MI355X MXFP4: bump image to 20260923 daily | `docs/src/snippets/configs/zai-org/glm-5.2.jsx` |
+| 2026-09-25 | [#41207](https://github.com/sgl-project/sglang/pull/41207) | merged | [CI] Move GLM-5.2 layer-split test to extra-b-test-8-gpu-b300 | `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py` |
+| 2026-09-25 | [#41198](https://github.com/sgl-project/sglang/pull/41198) | merged | [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit | `python/sglang/srt/models/glm5_next.py` |
+| 2026-09-28 | [#36903](https://github.com/sgl-project/sglang/pull/36903) | merged | [AMD] Add GLM-5.3-Flash MI35x nightly test | `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py` |
+| 2026-09-28 | [#41161](https://github.com/sgl-project/sglang/pull/41161) | merged | [AMD] [GLM5] Fuse shared expert into AITER MoE on gfx950 | `python/sglang/srt/models/glm5_next.py`, `test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py` |
+| 2026-09-28 | [#41597](https://github.com/sgl-project/sglang/pull/41597) | merged | [Docs][AMD] Update GLM-5.2 MI355X daily image | `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-09-29 | [#41464](https://github.com/sgl-project/sglang/pull/41464) | merged | [AMD] Fix GLM-5.3 quark MoE MI35x test runner config | `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` |
+| 2026-09-29 | [#41602](https://github.com/sgl-project/sglang/pull/41602) | merged | [AMD] Add GLM-5.3 MI30x and MI35x nightly accuracy tests | `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py`, `test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py` |
+| 2026-09-30 | [#41135](https://github.com/sgl-project/sglang/pull/41135) | merged | [AMD][DI][CI] Leave the GLM-5.2 MTP decode room to load its Triton kernels | `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` |
+| 2026-10-01 | [#41986](https://github.com/sgl-project/sglang/pull/41986) | merged | [Docs] Add NVIDIA NVFP4 checkpoint to GLM-5.3-Flash cookbook | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` |
+| 2026-10-01 | [#39273](https://github.com/sgl-project/sglang/pull/39273) | merged | [AMD] [GLM-5.3-Flash] Enable FP8 and MXFP4 serving on gfx950 | `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `test/registered/unit/models/test_glm5_next_modelopt.py`, `python/sglang/srt/models/glm5_next.py` |
+| 2026-10-02 | [#42109](https://github.com/sgl-project/sglang/pull/42109) | merged | [Docs] GLM-5.2 GB300 NVFP4: add env vars from InferenceX AgentX recipe | `docs/src/snippets/configs/zai-org/glm-5.2.jsx` |
+| 2026-10-02 | [#42278](https://github.com/sgl-project/sglang/pull/42278) | merged | [Docs][AMD] Update GLM-5.2 MI355X daily image to 20260930 | `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` |
+| 2026-10-03 | [#41870](https://github.com/sgl-project/sglang/pull/41870) | merged | [AMD] GLM-5.3-Flash: fuse shared expert and KDA projections on Quark MXFP4 | `test/registered/unit/models/test_glm5_next_bfg_fusion.py`, `python/sglang/srt/models/glm5_next.py` |
 
 ## 逐 PR diff 审计卡
 
@@ -292,33 +368,6 @@ diff -- docs/basic_usage/deepseek_v32.md
   - docs: `docs/basic_usage/deepseek_v32.md` modified +11/-12
 - 验证与风险: 该 PR 主要落在文档/示例 `docs/basic_usage/deepseek_v32.md`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #22314 - [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300
-
-- 链接: https://github.com/sgl-project/sglang/pull/22314
-- 状态/时间: merged / 2026-04-08
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+27/-31，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/memory_pool.py`；技术摘要: 覆盖「[AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300」；主要实现面是 `python/sglang/srt/mem_cache/memory_pool.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: -45,7 +45,7; -1575,37 +1575,33 @@ def set_mla_kv_buffer(; symbols: set_mla_kv_buffer，涉及 `set_mla_kv_buffer`。
-- 代码 diff 细节:
-  - `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: -45,7 +45,7; -1575,37 +1575,33 @@ def set_mla_kv_buffer(; symbols: set_mla_kv_buffer
-- 关键代码摘录:
-
-```diff
-diff -- python/sglang/srt/mem_cache/memory_pool.py
-@@ -45,7 +45,7 @@
--from sglang.srt.layers.quantization.fp8_kernel import is_fp8_fnuz
-+from sglang.srt.layers.quantization.fp8_kernel import fp8_dtype, is_fp8_fnuz
-@@ -1575,37 +1575,33 @@ def set_mla_kv_buffer(
--        if self.nsa_kv_cache_store_fp8:
--            if _is_hip:
--                # HIP FP8 path uses raw MLA KV layout (nope + rope) without per-block scales.
-```
-
-- 已读文件:
-  - runtime: `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
-
 ### PR #21710 - [AMD] Add GLM-5-FP8 nightly performance benchmarks for MI30x and MI35x
 
 - 链接: https://github.com/sgl-project/sglang/pull/21710
@@ -395,44 +444,32 @@ diff -- test/registered/8-gpu-models/test_dsa_models_mtp.py
   - tests: `test/registered/8-gpu-models/test_dsa_models_basic.py` renamed +121/-1; `test/registered/8-gpu-models/test_dsa_models_mtp.py` renamed +32/-29
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_dsa_models_basic.py`, `test/registered/8-gpu-models/test_dsa_models_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #22399 - [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model
+### PR #22314 - [AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300
 
-- 链接: https://github.com/sgl-project/sglang/pull/22399
-- 状态/时间: merged / 2026-04-09
+- 链接: https://github.com/sgl-project/sglang/pull/22314
+- 状态/时间: merged / 2026-04-08
 - 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+82/-6，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`；技术摘要: 覆盖「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；主要实现面是 `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: TestGlm51Fp8, test_glm51_fp8，涉及 `TestGlm51Fp8, test_glm51_fp8`；`test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35，涉及 `TestQwen35, test_qwen35`；`test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8，涉及 `TestGlm5Fp8, test_glm5_fp8`。
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+27/-31，可读 patch 73 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300」；模型线: GLM-5/5.1；类别: 缺陷修复；主要 diff: `python/sglang/srt/mem_cache/memory_pool.py`；技术摘要: 覆盖「[AMD] Fix GLM-5 fp8 KV quant path dispatch on MI300」；主要实现面是 `python/sglang/srt/mem_cache/memory_pool.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: -45,7 +45,7; -1575,37 +1575,33 @@ def set_mla_kv_buffer(; symbols: set_mla_kv_buffer，涉及 `set_mla_kv_buffer`。
 - 代码 diff 细节:
-  - `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: TestGlm51Fp8, test_glm51_fp8
-  - `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35
-  - `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8
+  - `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31 (58 lines); hunks: -45,7 +45,7; -1575,37 +1575,33 @@ def set_mla_kv_buffer(; symbols: set_mla_kv_buffer
 - 关键代码摘录:
 
 ```diff
-diff -- test/registered/8-gpu-models/test_glm_51_fp8.py
-@@ -0,0 +1,69 @@
-+import unittest
-+from sglang.test.accuracy_test_runner import AccuracyTestParams
-+from sglang.test.ci.ci_register import register_cuda_ci
-+from sglang.test.performance_test_runner import PerformanceTestParams
-+from sglang.test.run_combined_tests import run_combined_tests
-+from sglang.test.test_utils import ModelLaunchSettings
-diff -- test/registered/8-gpu-models/test_qwen35.py
-@@ -9,7 +9,7 @@
--QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B"
-+QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B-FP8"
-@@ -30,6 +30,7 @@ def test_qwen35(self):
-+        dp_args = ["--dp=8", "--enable-dp-attention"]
-@@ -48,8 +49,14 @@ def test_qwen35(self):
--                extra_args=base_args + mtp_args,
-diff -- test/registered/gb300/test_glm5_fp8.py
-@@ -8,7 +8,7 @@
+diff -- python/sglang/srt/mem_cache/memory_pool.py
+@@ -45,7 +45,7 @@
+-from sglang.srt.layers.quantization.fp8_kernel import is_fp8_fnuz
++from sglang.srt.layers.quantization.fp8_kernel import fp8_dtype, is_fp8_fnuz
+@@ -1575,37 +1575,33 @@ def set_mla_kv_buffer(
+-        if self.nsa_kv_cache_store_fp8:
+-            if _is_hip:
+-                # HIP FP8 path uses raw MLA KV layout (nope + rope) without per-block scales.
 ```
 
 - 已读文件:
-  - tests: `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0; `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3; `test/registered/gb300/test_glm5_fp8.py` modified +3/-3
-- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+  - runtime: `python/sglang/srt/mem_cache/memory_pool.py` modified +27/-31
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/mem_cache/memory_pool.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
 
 ### PR #22336 - [AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x
 
@@ -473,6 +510,45 @@ diff -- test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py
 - 已读文件:
   - tests: `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py` added +242/-0; `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py` added +238/-0; `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py` added +146/-0; `test/registered/amd/perf/mi30x/test_glm51_perf_amd.py` added +138/-0
 - 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi30x/test_glm51_eval_amd.py`, `test/registered/amd/accuracy/mi35x/test_glm51_eval_mi35x.py`, `test/registered/amd/perf/mi30x/test_glm51_perf_amd.py`, `test/registered/amd/perf/mi35x/test_glm51_perf_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #22399 - [CI] Add GLM-5.1 nightly tests and update Qwen3.5 model
+
+- 链接: https://github.com/sgl-project/sglang/pull/22399
+- 状态/时间: merged / 2026-04-09
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 3 个文件，+82/-6，可读 patch 131 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`；技术摘要: 覆盖「[CI] Add GLM-5.1 nightly tests and update Qwen3.5 model」；主要实现面是 `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: TestGlm51Fp8, test_glm51_fp8，涉及 `TestGlm51Fp8, test_glm51_fp8`；`test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35，涉及 `TestQwen35, test_qwen35`；`test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8，涉及 `TestGlm5Fp8, test_glm5_fp8`。
+- 代码 diff 细节:
+  - `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0 (69 lines); hunks: -0,0 +1,69; symbols: TestGlm51Fp8, test_glm51_fp8
+  - `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3 (13 lines); hunks: -9,7 +9,7; -30,6 +30,7 @@ def test_qwen35(self):; symbols: TestQwen35, test_qwen35
+  - `test/registered/gb300/test_glm5_fp8.py` modified +3/-3 (6 lines); hunks: -8,7 +8,7; -27,7 +27,7; symbols: TestGlm5Fp8, test_glm5_fp8
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/8-gpu-models/test_glm_51_fp8.py
+@@ -0,0 +1,69 @@
++import unittest
++from sglang.test.accuracy_test_runner import AccuracyTestParams
++from sglang.test.ci.ci_register import register_cuda_ci
++from sglang.test.performance_test_runner import PerformanceTestParams
++from sglang.test.run_combined_tests import run_combined_tests
++from sglang.test.test_utils import ModelLaunchSettings
+diff -- test/registered/8-gpu-models/test_qwen35.py
+@@ -9,7 +9,7 @@
+-QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B"
++QWEN35_MODEL_PATH = "Qwen/Qwen3.5-397B-A17B-FP8"
+@@ -30,6 +30,7 @@ def test_qwen35(self):
++        dp_args = ["--dp=8", "--enable-dp-attention"]
+@@ -48,8 +49,14 @@ def test_qwen35(self):
+-                extra_args=base_args + mtp_args,
+diff -- test/registered/gb300/test_glm5_fp8.py
+@@ -8,7 +8,7 @@
+```
+
+- 已读文件:
+  - tests: `test/registered/8-gpu-models/test_glm_51_fp8.py` added +69/-0; `test/registered/8-gpu-models/test_qwen35.py` modified +10/-3; `test/registered/gb300/test_glm5_fp8.py` modified +3/-3
+- 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_glm_51_fp8.py`, `test/registered/8-gpu-models/test_qwen35.py`, `test/registered/gb300/test_glm5_fp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ### PR #22712 - [NPU] update GLM5 running guide
 
@@ -1331,47 +1407,6 @@ diff -- test/registered/models_e2e/test_dsa_glm5_hisparse.py
   - runtime: `python/sglang/srt/managers/schedule_batch.py` modified +2/-23
 - 验证与风险: diff 自带测试面 `test/registered/8-gpu-models/test_dsa_models_hisparse.py`, `test/registered/models_e2e/test_dsa_glm5_hisparse.py`, `test/registered/unit/managers/test_schedule_batch_req_pool_indices.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #28697 - [docs] Add B300 cookbook deployment options
-
-- 链接: https://github.com/sgl-project/sglang/pull/28697
-- 状态/时间: merged / 2026-06-19
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+503/-69，可读 patch 1291 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[docs] Add B300 cookbook deployment options」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`；技术摘要: 覆盖「[docs] Add B300 cookbook deployment options」；主要实现面是 `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167；`docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {；`docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {；`docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {。
-- 代码 diff 细节:
-  - `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167
-  - `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {
-  - `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {
-  - `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {
-  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15 (38 lines); hunks: -8,19 +8,19 @@ export const Qwen35Deployment = () => {; -149,7 +149,7 @@ export const Qwen35Deployment = () => {
-- 关键代码摘录:
-
-```diff
-diff -- docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx
-@@ -0,0 +1,167 @@
-+export const InternS1Deployment = () => {
-+  const options = {
-+    hardware: {
-+      name: 'hardware',
-+      title: 'Hardware Platform',
-+      items: [
-diff -- docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx
-@@ -9,6 +9,11 @@ const lookupData = {
-+      {
-+        "id": "b300",
-+        "label": "B300",
-+        "default": false
-+      },
-@@ -182,6 +187,66 @@ const lookupData = {
-diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
-@@ -4,6 +4,7 @@ export const GLM5Deployment = () => {
-```
-
-- 已读文件:
-  - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
-- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #28536 - ci: run GB300 nightly suite in the standard Nvidia nightly workflow
 
 - 链接: https://github.com/sgl-project/sglang/pull/28536
@@ -1413,6 +1448,47 @@ diff -- test/registered/gb300/test_qwen35_fp8.py
   - tests: `test/registered/gb300/test_deepseek_v32_nvfp4.py` removed +0/-81; `test/registered/gb300/test_deepseek_v32.py` removed +0/-78; `test/registered/gb300/test_qwen35_fp8.py` modified +14/-14; `test/registered/gb300/test_glm5_nvfp4.py` modified +12/-12; `test/registered/gb300/test_qwen35_nvfp4.py` modified +5/-3; `test/registered/gb300/test_glm5_fp8.py` modified +4/-2
   - ci: `.github/workflows/nightly-test-nvidia.yml` modified +27/-0
 - 验证与风险: diff 自带测试面 `python/sglang/test/performance_test_runner.py`, `test/registered/gb300/test_deepseek_v32.py`, `test/registered/gb300/test_deepseek_v32_nvfp4.py`, `test/registered/gb300/test_glm5_fp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #28697 - [docs] Add B300 cookbook deployment options
+
+- 链接: https://github.com/sgl-project/sglang/pull/28697
+- 状态/时间: merged / 2026-06-19
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 27 个文件，+503/-69，可读 patch 1291 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[docs] Add B300 cookbook deployment options」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`；技术摘要: 覆盖「[docs] Add B300 cookbook deployment options」；主要实现面是 `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`, `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167；`docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {；`docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {；`docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {。
+- 代码 diff 细节:
+  - `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0 (167 lines); hunks: -0,0 +1,167
+  - `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2 (70 lines); hunks: -9,6 +9,11 @@ const lookupData = {; -182,6 +187,66 @@ const lookupData = {
+  - `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16 (56 lines); hunks: -4,6 +4,7 @@ export const GLM5Deployment = () => {; -13,6 +14,7 @@ export const GLM5Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10 (39 lines); hunks: -3,7 +3,7 @@ export const DeepSeekV32Deployment = () => {; -12,6 +12,7 @@ export const DeepSeekV32Deployment = () => {
+  - `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15 (38 lines); hunks: -8,19 +8,19 @@ export const Qwen35Deployment = () => {; -149,7 +149,7 @@ export const Qwen35Deployment = () => {
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx
+@@ -0,0 +1,167 @@
++export const InternS1Deployment = () => {
++  const options = {
++    hardware: {
++      name: 'hardware',
++      title: 'Hardware Platform',
++      items: [
+diff -- docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx
+@@ -9,6 +9,11 @@ const lookupData = {
++      {
++        "id": "b300",
++        "label": "B300",
++        "default": false
++      },
+@@ -182,6 +187,66 @@ const lookupData = {
+diff -- docs_new/src/snippets/autoregressive/glm-5-deployment.jsx
+@@ -4,6 +4,7 @@ export const GLM5Deployment = () => {
+```
+
+- 已读文件:
+  - docs: `docs_new/src/snippets/autoregressive/intern-s1-deployment.jsx` added +167/-0; `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx` modified +68/-2; `docs_new/src/snippets/autoregressive/glm-5-deployment.jsx` modified +40/-16; `docs_new/src/snippets/autoregressive/deepseek-v32-deployment.jsx` modified +29/-10; `docs_new/src/snippets/autoregressive/qwen35-deployment.jsx` modified +23/-15; `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx` modified +16/-13
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/InternLM/Intern-S1.mdx`, `docs_new/src/snippets/autoregressive/deepseek-math-v2-deployment.jsx`, `docs_new/src/snippets/autoregressive/deepseek-r1-advanced-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #27893 - [NPU] [DOC] Create deployment tutorials for mainstream models on Ascend NPU
 
@@ -1497,42 +1573,6 @@ diff -- python/sglang/srt/models/deepseek_v2.py
   - tests: `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py` added +75/-0
 - 验证与风险: diff 自带测试面 `test/registered/cuda_graph/piecewise/test_pcg_glm5_fp8_tp8.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #29194 - [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook
-
-- 链接: https://github.com/sgl-project/sglang/pull/29194
-- 状态/时间: merged / 2026-06-25
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+53/-17，可读 patch 188 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；技术摘要: 覆盖「[AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1 (35 lines); hunks: -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/...; -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressiv...；`docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16 (35 lines); hunks: -4,7 +4,9 @@ export const GLM51Deployment = () => {; -25,11 +27,13 @@ export const GLM51Deployment = () => {。
-- 代码 diff 细节:
-  - `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1 (35 lines); hunks: -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/...; -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressiv...
-  - `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16 (35 lines); hunks: -4,7 +4,9 @@ export const GLM51Deployment = () => {; -25,11 +27,13 @@ export const GLM51Deployment = () => {
-- 关键代码摘录:
-
-```diff
-diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx
-@@ -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/glm-51-deployment.
-+      <th style={{textAlign: "left", padding: "10px 12px", fontWeight: 700, whiteSpace: "nowrap", backgroundColor: "rgba(255,255,255,0.02)"}}>MXFP4</th>
-@@ -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/glm-51-deployment.
-+      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
-+      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
-+      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
-+      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
-diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
-@@ -4,7 +4,9 @@ export const GLM51Deployment = () => {
--  //   MI300X/MI325X/MI355X → BF16 (FP8 not verified on AMD)
-+  //   MI300X / MI325X → BF16 (FP8 not verified on AMD)
-+  //   MI355X (gfx950) → MXFP4 (amd/GLM-5.1-MXFP4); BF16 also supported.
-+  //     MI350X is identical to MI355X (cooling only) and is omitted here.
-@@ -25,11 +27,13 @@ export const GLM51Deployment = () => {
-+        const isGfx950 = hw === 'mi355x'; // MI350X identical (cooling only)
-```
-
-- 已读文件:
-  - docs: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1; `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16
-- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #28103 - Add DeepSeek V4 Pro GB300 nightly and expand Kimi K25 nightly test
 
 - 链接: https://github.com/sgl-project/sglang/pull/28103
@@ -1574,6 +1614,42 @@ diff -- .github/workflows/nightly-test-nvidia.yml
   - tests: `test/registered/gb300/test_deepseek_v4_pro_fp4.py` added +152/-0; `test/registered/gb300/test_kimi_k25_nvfp4.py` modified +26/-10; `test/run_suite.py` modified +8/-1; `test/registered/gb300/test_glm5_fp8.py` modified +4/-1; `test/registered/gb300/test_kimi_k25.py` modified +4/-1; `test/registered/gb300/test_qwen35_nvfp4.py` modified +4/-1
   - ci: `.github/workflows/nightly-test-nvidia.yml` modified +18/-3
 - 验证与风险: diff 自带测试面 `test/registered/gb300/test_deepseek_v4_pro_fp4.py`, `test/registered/gb300/test_glm5_fp8.py`, `test/registered/gb300/test_glm5_nvfp4.py`, `test/registered/gb300/test_kimi_k25.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #29194 - [AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/29194
+- 状态/时间: merged / 2026-06-25
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+53/-17，可读 patch 188 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「[AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；技术摘要: 覆盖「[AMD] [GLM5] GLM-5.1 MXFP4 (MI355X) + enable EAGLE for gfx950 in cookbook」；主要实现面是 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1 (35 lines); hunks: -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/...; -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressiv...；`docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16 (35 lines); hunks: -4,7 +4,9 @@ export const GLM51Deployment = () => {; -25,11 +27,13 @@ export const GLM51Deployment = () => {。
+- 代码 diff 细节:
+  - `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1 (35 lines); hunks: -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/...; -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressiv...
+  - `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16 (35 lines); hunks: -4,7 +4,9 @@ export const GLM51Deployment = () => {; -25,11 +27,13 @@ export const GLM51Deployment = () => {
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx
+@@ -43,6 +43,7 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/glm-51-deployment.
++      <th style={{textAlign: "left", padding: "10px 12px", fontWeight: 700, whiteSpace: "nowrap", backgroundColor: "rgba(255,255,255,0.02)"}}>MXFP4</th>
+@@ -51,43 +52,49 @@ import { GLM51Deployment } from '/src/snippets/autoregressive/glm-51-deployment.
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
++      <td style={{padding: "9px 12px", backgroundColor: "rgba(255,255,255,0.02)"}}>—</td>
+diff -- docs_new/src/snippets/autoregressive/glm-51-deployment.jsx
+@@ -4,7 +4,9 @@ export const GLM51Deployment = () => {
+-  //   MI300X/MI325X/MI355X → BF16 (FP8 not verified on AMD)
++  //   MI300X / MI325X → BF16 (FP8 not verified on AMD)
++  //   MI355X (gfx950) → MXFP4 (amd/GLM-5.1-MXFP4); BF16 also supported.
++  //     MI350X is identical to MI355X (cooling only) and is omitted here.
+@@ -25,11 +27,13 @@ export const GLM51Deployment = () => {
++        const isGfx950 = hw === 'mi355x'; // MI350X identical (cooling only)
+```
+
+- 已读文件:
+  - docs: `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx` modified +34/-1; `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx` modified +19/-16
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.1.mdx`, `docs_new/src/snippets/autoregressive/glm-51-deployment.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #29313 - [AMD] [GLM5] Mark EAGLE verified on MI300X/MI325X (gfx942) in GLM-5.1 cookbook
 
@@ -1755,42 +1831,6 @@ diff -- docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx
   - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +50/-157; `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +8/-30; `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` modified +0/-4; `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +4/-0; `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx` modified +2/-2
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs_new/cookbook/autoregressive/MiniMax/MiniMax-M3.mdx`, `docs_new/src/snippets/configs/MiniMaxAI/minimax-m3.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #29674 - docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook
-
-- 链接: https://github.com/sgl-project/sglang/pull/29674
-- 状态/时间: merged / 2026-06-29
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+97/-4，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；技术摘要: 覆盖「docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [。
-- 代码 diff 细节:
-  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\
-  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [
-- 关键代码摘录:
-
-```diff
-diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
-@@ -94,6 +94,7 @@ sgl-eval run aime25 \\
-+    "b200|nvfp4":  "lmsysorg/sglang:dev-glm52-nvfp4",
-@@ -613,11 +614,71 @@ sgl-eval run aime25 \\
--    // NVFP4 (Blackwell Ultra) — nvidia/GLM-5.2-NVFP4 (Model Optimizer). TP4.
--    // B300: low-latency + balanced (the 4-GPU GB300 node fits the ~381 GB build).
--    // GB300: low-latency / balanced / high-throughput measured on a single 4xGB300
--    // node — balanced & high-throughput add DP-Attention (dp4); low-latency uses MTP 5-1-6.
-diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
-@@ -102,4 +102,36 @@ export const benchmarks = [
-+  // ---- B200 + NVFP4 ----  (8-GPU single node, TP8; nvidia/GLM-5.2-NVFP4 via --quantization modelopt_fp4,
-+  // measured on the lmsysorg/sglang:dev-glm52-nvfp4 preview image, flush-cache every run.
-+  // ttft_ms/tpot_ms are P50; tokens_per_sec_per_gpu = output tok/s/GPU.
-+  // balanced & high-throughput add DP-Attention (dp8); low-latency uses MTP 5-1-6, balanced MTP 2-1-3.)
-+  {
-+    match: { hw: "b200", variant: "default", quant: "nvfp4", strategy: "low-latency", nodes: "single" },
-```
-
-- 已读文件:
-  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0
-- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #29557 - [cookbook] GLM-5.2 NVFP4 B300: TP8 recipe + 3 strategies
 
 - 链接: https://github.com/sgl-project/sglang/pull/29557
@@ -1825,6 +1865,42 @@ diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
 
 - 已读文件:
   - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +39/-8; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +35/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #29674 - docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/29674
+- 状态/时间: merged / 2026-06-29
+- 反查来源: 保留自原 history/skill 显式引用
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 2 个文件，+97/-4，可读 patch 121 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`；技术摘要: 覆盖「docs: add B200 NVFP4 recipes + benchmarks to GLM-5.2 cookbook」；主要实现面是 `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\；`docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [。
+- 代码 diff 细节:
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4 (69 lines); hunks: -94,6 +94,7 @@ sgl-eval run aime25 \\; -613,11 +614,71 @@ sgl-eval run aime25 \\
+  - `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0 (32 lines); hunks: -102,4 +102,36 @@ export const benchmarks = [
+- 关键代码摘录:
+
+```diff
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -94,6 +94,7 @@ sgl-eval run aime25 \\
++    "b200|nvfp4":  "lmsysorg/sglang:dev-glm52-nvfp4",
+@@ -613,11 +614,71 @@ sgl-eval run aime25 \\
+-    // NVFP4 (Blackwell Ultra) — nvidia/GLM-5.2-NVFP4 (Model Optimizer). TP4.
+-    // B300: low-latency + balanced (the 4-GPU GB300 node fits the ~381 GB build).
+-    // GB300: low-latency / balanced / high-throughput measured on a single 4xGB300
+-    // node — balanced & high-throughput add DP-Attention (dp4); low-latency uses MTP 5-1-6.
+diff -- docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx
+@@ -102,4 +102,36 @@ export const benchmarks = [
++  // ---- B200 + NVFP4 ----  (8-GPU single node, TP8; nvidia/GLM-5.2-NVFP4 via --quantization modelopt_fp4,
++  // measured on the lmsysorg/sglang:dev-glm52-nvfp4 preview image, flush-cache every run.
++  // ttft_ms/tpot_ms are P50; tokens_per_sec_per_gpu = output tok/s/GPU.
++  // balanced & high-throughput add DP-Attention (dp8); low-latency uses MTP 5-1-6, balanced MTP 2-1-3.)
++  {
++    match: { hw: "b200", variant: "default", quant: "nvfp4", strategy: "low-latency", nodes: "single" },
+```
+
+- 已读文件:
+  - docs: `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx` modified +65/-4; `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx` modified +32/-0
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/src/snippets/configs/zai-org/glm-5.2-benchmarks.jsx`, `docs_new/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #28471 - docs(cookbook): add AMD MI300X/MI325X/MI355X support for GLM-5.2
@@ -2141,32 +2217,6 @@ diff -- docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx
   - docs: `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +18/-1
 - 验证与风险: 该 PR 主要落在文档/示例 `docs_new/cookbook/autoregressive/GLM/GLM-5.2.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
-### PR #33935 - Clean GLM-5.2 NVFP4 cookbook
-
-- 链接: https://github.com/sgl-project/sglang/pull/33935
-- 状态/时间: merged / 2026-08-07
-- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `0c3a76fa0a5b`
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-4，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「Clean GLM-5.2 NVFP4 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；技术摘要: 覆盖「Clean GLM-5.2 NVFP4 cookbook」；主要实现面是 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4 (4 lines); hunks: -763,8 +763,6 @@ sgl-eval run aime25 \\; -830,8 +828,6 @@ sgl-eval run aime25 \\。
-- 代码 diff 细节:
-  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4 (4 lines); hunks: -763,8 +763,6 @@ sgl-eval run aime25 \\; -830,8 +828,6 @@ sgl-eval run aime25 \\
-- 关键代码摘录:
-
-```diff
-diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
-@@ -763,8 +763,6 @@ sgl-eval run aime25 \\
--        "--kv-cache-dtype fp8_e4m3",
--        "--bf16-gemm-backend cutedsl",
-@@ -830,8 +828,6 @@ sgl-eval run aime25 \\
--        "--kv-cache-dtype fp8_e4m3",
--        "--bf16-gemm-backend cutedsl",
-```
-
-- 已读文件:
-  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4
-- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
-
 ### PR #32120 - [AMD][DI][CI] 8/N Add GLM-5.2 MXFP4 1P1D DI/CI recipes (base + MTP + DP8/EP8)
 
 - 链接: https://github.com/sgl-project/sglang/pull/32120
@@ -2206,6 +2256,32 @@ diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml
 - 已读文件:
   - other: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` added +81/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8-mtp.yaml` added +80/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d.yaml` added +78/-0; `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-dp8ep8.yaml` added +71/-0
 - 验证与风险: 未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。
+
+### PR #33935 - Clean GLM-5.2 NVFP4 cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/33935
+- 状态/时间: merged / 2026-08-07
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `0c3a76fa0a5b`
+- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+0/-4，可读 patch 18 行；本卡优先审计模型相关文件和高变更量文件。
+- 动机: 标题「Clean GLM-5.2 NVFP4 cookbook」；模型线: GLM-5/5.1；类别: 性能/后端优化；主要 diff: `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；技术摘要: 覆盖「Clean GLM-5.2 NVFP4 cookbook」；主要实现面是 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`。下方保留文件级证据、代码摘录和验证风险。
+- 实现要点: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4 (4 lines); hunks: -763,8 +763,6 @@ sgl-eval run aime25 \\; -830,8 +828,6 @@ sgl-eval run aime25 \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4 (4 lines); hunks: -763,8 +763,6 @@ sgl-eval run aime25 \\; -830,8 +828,6 @@ sgl-eval run aime25 \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -763,8 +763,6 @@ sgl-eval run aime25 \\
+-        "--kv-cache-dtype fp8_e4m3",
+-        "--bf16-gemm-backend cutedsl",
+@@ -830,8 +828,6 @@ sgl-eval run aime25 \\
+-        "--kv-cache-dtype fp8_e4m3",
+-        "--bf16-gemm-backend cutedsl",
+```
+
+- 已读文件:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +0/-4
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
 
 ### PR #34379 - [AMD] GLM 5.2 MXFP4 SGLANG COOKBOOK
 
@@ -2346,6 +2422,1759 @@ diff -- test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py
 - 已读文件:
   - tests: `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py` added +106/-0; `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py` added +103/-0
 - 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_glm52_fp8_eval_mi35x.py`, `test/registered/amd/perf/mi35x/test_glm52_fp8_perf_mi35x.py`, `test/run_suite.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36281 - [Unified Cache]: add glm5.2 per commit ci
+
+- 链接: https://github.com/sgl-project/sglang/pull/36281
+- 状态/时间: merged / 2026-08-26
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py`；关联提交 `bec624827235`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+207/-263，可读 patch 501 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py` added +85/-0 (85 lines); hunks: -0,0 +1,85; symbols: TestGLM5UnifiedRadixCacheL3Accuracy, setUpClass, tearDownClass，涉及 `TestGLM5UnifiedRadixCacheL3Accuracy, setUpClass, tearDownClass`。
+- 代码 diff 细节:
+  - `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py` added +85/-0 (85 lines); hunks: -0,0 +1,85; symbols: TestGLM5UnifiedRadixCacheL3Accuracy, setUpClass, tearDownClass
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py
+@@ -0,0 +1,85 @@
++"""UnifiedRadixTree + HiCache accuracy tests for GLM-5.2.
++Runs GLM-5.2-FP8 with HiCache L3 (file backend) under UnifiedRadixTree,
++verifying accuracy stays stable across a cache flush.
++"""
++import os
++import shutil
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py` added +85/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/kits/unified_radix_cache_kit.py`, `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_dsv4.py`, `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_glm52.py`, `test/registered/radix_cache/unified_radix_tree/test_unified_radix_cache_kl_mamba.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36440 - Add GLM-5.3-Flash cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/36440
+- 状态/时间: merged / 2026-08-26
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `dfc40e0efe10`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+850/-4，可读 patch 890 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` added +502/-0 (502 lines); hunks: -0,0 +1,502；`docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` added +80/-0 (80 lines); hunks: -0,0 +1,80；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` added +250/-0 (250 lines); hunks: -0,0 +1,250；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +0/-1 (1 lines); hunks: -1,7 +1,6。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` added +502/-0 (502 lines); hunks: -0,0 +1,502
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` added +80/-0 (80 lines); hunks: -0,0 +1,80
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` added +250/-0 (250 lines); hunks: -0,0 +1,250
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +0/-1 (1 lines); hunks: -1,7 +1,6
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -0,0 +1,502 @@
++export const config = {
++  modelName: "GLM-5.3-Flash",
++  supportedHardware: ["gb300", "h100", "h200", "b200", "b300", "gb200"],
++  matchDims: [
++    {
++      id: "strategy",
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -0,0 +1,80 @@
++export const benchmarks = [
++  {
++    match: { hw: "gb300", strategy: "low-latency" },
++    sglang_version: "f13cb6f6a7",
++    latencyPercentile: "Mean",
++    speed: [
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -0,0 +1,250 @@
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` added +502/-0; `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` added +80/-0; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` added +250/-0; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +0/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/docs.json`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36513 - GLM-5.3-Flash cookbook: FP8 KV + TRT-LLM benchmark cards and Blackwell default
+
+- 链接: https://github.com/sgl-project/sglang/pull/36513
+- 状态/时间: merged / 2026-08-26
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `f8cc1f9525c3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+84/-4，可读 patch 123 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +66/-0 (66 lines); hunks: -21,6 +21,27 @@ export const benchmarks = [; -67,6 +88,51 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +10/-2 (12 lines); hunks: -239,7 +239,11 @@ sgl-eval run gsm8k \\; -264,7 +268,11 @@ sgl-eval run gsm8k \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +66/-0 (66 lines); hunks: -21,6 +21,27 @@ export const benchmarks = [; -67,6 +88,51 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +10/-2 (12 lines); hunks: -239,7 +239,11 @@ sgl-eval run gsm8k \\; -264,7 +268,11 @@ sgl-eval run gsm8k \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -21,6 +21,27 @@ export const benchmarks = [
++  {
++    match: { hw: "gb300", strategy: "low-latency", kvDsaPair: "fp8-trtllm" },
++    sglang_version: "f13cb6f6a7",
++    latencyPercentile: "Mean",
++    speed: [
++      {
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -239,7 +239,11 @@ sgl-eval run gsm8k \\
+-      verificationStatus: (s) => config.isRecommendedSelection(s) ? "verified" : "unverified",
++      verificationStatus: (s) =>
++        config.isRecommendedSelection(s) ||
++        (s.kvDsaPair === "fp8-trtllm" && s.mmTransport === "auto" && s.hicache === "off")
++          ? "verified"
++          : "unverified",
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +66/-0; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +10/-2
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/_deployment.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36519 - GLM-5.3-Flash cookbook: default Blackwell recipes to FP8 KV + TRT-LLM DSA
+
+- 链接: https://github.com/sgl-project/sglang/pull/36519
+- 状态/时间: merged / 2026-08-26
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `e27a7fac772b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+74/-53，可读 patch 335 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +60/-41 (101 lines); hunks: -15,8 +15,9 @@ export const config = {; -26,18 +27,8 @@ export const config = {；`docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +10/-9 (19 lines); hunks: -12,14 +12,14 @@ export const benchmarks = [; -34,13 +34,13 @@ export const benchmarks = [；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +3/-3 (6 lines); hunks: -25,7 +25,7 @@ Choose your hardware, then choose the operating point that mat...; -65,7 +65,7 @@ GLM-5.3-Flash is a natively multimodal Mixture-of-Experts mode...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +60/-41 (101 lines); hunks: -15,8 +15,9 @@ export const config = {; -26,18 +27,8 @@ export const config = {
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +10/-9 (19 lines); hunks: -12,14 +12,14 @@ export const benchmarks = [; -34,13 +34,13 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +3/-3 (6 lines); hunks: -25,7 +25,7 @@ Choose your hardware, then choose the operating point that mat...; -65,7 +65,7 @@ GLM-5.3-Flash is a natively multimodal Mixture-of-Experts mode...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -15,8 +15,9 @@ export const config = {
++    const pairing = ["h100", "h200"].includes(s.hw) ? "bf16-tilelang" : "fp8-trtllm";
+-      s.kvDsaPair === "bf16-tilelang" &&
++      s.kvDsaPair === pairing &&
+@@ -26,18 +27,8 @@ export const config = {
+-      default: "bf16-tilelang",
++      default: "fp8-trtllm",
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -12,14 +12,14 @@ export const benchmarks = [
+-        ttft_ms: 589.2,
++        ttft_ms: 599.91,
+-        tokens_per_sec_per_gpu: 2277.46,
++        tokens_per_sec_per_gpu: 2266.08,
+-      "Measured on 4x GB300 (TP4/EP4) with the final weights (zai-org/GLM-5.3-Flash, c5b82b63e37b) at the rc2 cut (f13cb6f6a7), adaptive MTP 5/1/6 with SGLANG_SIMULATE_ACC_LEN=3 (
++      "Measured on 4x GB300 (TP4/EP4) with the final weights (zai-org/GLM-5.3-Flash, c5b82b63e37b) at the rc2 cut (f13cb6f6a7), adaptive MTP 5/1/6 with SGLANG_SIMULATE_ACC_LEN=3 (
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -25,7 +25,7 @@ Choose your hardware, then choose the operating point that matches your workload
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +60/-41; `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +10/-9; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +3/-3
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/_deployment.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36608 - [AMD] Add GLM-5.3-Flash recipes for MI300X, MI325X, and MI355X
+
+- 链接: https://github.com/sgl-project/sglang/pull/36608
+- 状态/时间: merged / 2026-08-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `0f7b5b8b2a67`, `6c72b49a5796`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+112/-12，可读 patch 223 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +90/-7 (97 lines); hunks: -1,21 +1,32; -32,8 +43,8 @@ export const config = {；`docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +15/-0 (15 lines); hunks: -144,4 +144,19 @@ export const benchmarks = [；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +7/-5 (12 lines); hunks: -1,6 +1,6; -10,7 +10,7 @@ tag: NEW。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +90/-7 (97 lines); hunks: -1,21 +1,32; -32,8 +43,8 @@ export const config = {
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +15/-0 (15 lines); hunks: -144,4 +144,19 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +7/-5 (12 lines); hunks: -1,6 +1,6; -10,7 +10,7 @@ tag: NEW
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -1,21 +1,32 @@
+-  supportedHardware: ["gb300", "h100", "h200", "b200", "b300", "gb200"],
++  supportedHardware: [
++    "gb300", "h100", "h200", "b200", "b300", "gb200",
++    "mi300x", "mi325x", "mi355x",
++  ],
+-        { id: "low-latency", label: "Low Latency", subtitle: "Adaptive MTP 5/1/6" },
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -144,4 +144,19 @@ export const benchmarks = [
++  {
++    match: { hw: "mi300x", strategy: "high-throughput" },
++    sglang_version: "9e692c9216",
++    accuracy: { gsm8k_pct: 97.35 },
++    notes:
++      "Accuracy-only validation on 8x MI300X (gfx942, TP8) with zai-org/GLM-5.3-Flash revision 3f1971b7b5f7a528c9c4ef6212c8785298a8c24a, SGLang PR #36607 head 9e692c9216c3b5e5c443
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -1,6 +1,6 @@
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +90/-7; `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +15/-0; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +7/-5
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36660 - cookbook: fix GLM-5.3-Flash speculative flag, size Hopper memory, record GSM8K
+
+- 链接: https://github.com/sgl-project/sglang/pull/36660
+- 状态/时间: merged / 2026-08-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `636a6f7dbad2`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+92/-26，可读 patch 243 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +56/-8 (64 lines); hunks: -134,14 +134,62 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +34/-16 (50 lines); hunks: -277,7 +277,7 @@ sgl-eval run gsm8k \\; -317,20 +317,23 @@ sgl-eval run gsm8k \\；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +2/-2 (4 lines); hunks: -88,7 +88,7 @@ The deployment recipes use the checkpoint's generation configu...; -168,7 +168,7 @@ sglang serve \。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +56/-8 (64 lines); hunks: -134,14 +134,62 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +34/-16 (50 lines); hunks: -277,7 +277,7 @@ sgl-eval run gsm8k \\; -317,20 +317,23 @@ sgl-eval run gsm8k \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +2/-2 (4 lines); hunks: -88,7 +88,7 @@ The deployment recipes use the checkpoint's generation configu...; -168,7 +168,7 @@ sglang serve \
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -134,14 +134,62 @@ export const benchmarks = [
+-  { match: { hw: "h100", strategy: "low-latency" } },
+-  { match: { hw: "h100", strategy: "high-throughput" } },
+-  { match: { hw: "h200", strategy: "low-latency" } },
+-  { match: { hw: "h200", strategy: "high-throughput" } },
+-  { match: { hw: "b200", strategy: "low-latency" } },
+-  { match: { hw: "b200", strategy: "high-throughput" } },
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -277,7 +277,7 @@ sgl-eval run gsm8k \\
+-        "--speculative-algorithm NEXTN",
++        "--speculative-algorithm EAGLE",
+@@ -317,20 +317,23 @@ sgl-eval run gsm8k \\
+-      verified: false,
+-      verificationStatus: (s) => config.isRecommendedSelection(s) ? "in-progress" : "unverified",
++      verified: true,
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -88,7 +88,7 @@ The deployment recipes use the checkpoint's generation configuration. Override s
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +56/-8; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +34/-16; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +2/-2
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36719 - [Docs] GLM-5.3-Flash: point at compute-mamba-ratio for the KDA/KV pool split
+
+- 链接: https://github.com/sgl-project/sglang/pull/36719
+- 状态/时间: merged / 2026-08-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`；关联提交 `46a544e0a067`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+4/-0，可读 patch 11 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +4/-0 (4 lines); hunks: -35,6 +35,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...。
+- 代码 diff 细节:
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +4/-0 (4 lines); hunks: -35,6 +35,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm...
+- 关键代码摘录:
+
+```diff
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -35,6 +35,10 @@ import { benchmarks } from "/src/snippets/configs/zai-org/glm-5.3-flash-benchmar
++<Note>
++Generated commands leave `--mamba-full-memory-ratio` at its `0.9` default, which is a generic starting point rather than a workload-tuned split: too low starves the KDA state pool
++</Note>
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +4/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36544 - GLM-5.3-Flash cookbook: HiCache for LL, fusion-flag drop, EAGLE, default-cell numbers, DCP4 overlay
+
+- 链接: https://github.com/sgl-project/sglang/pull/36544
+- 状态/时间: merged / 2026-08-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `d1f14431fdf0`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+102/-53，可读 patch 382 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +74/-32 (106 lines); hunks: -1,7 +1,7; -12,18 +12,18 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +22/-19 (41 lines); hunks: -30,7 +30,8 @@ export const config = {; -90,8 +91,6 @@ export const config = {；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +6/-2 (8 lines); hunks: -88,7 +88,7 @@ The deployment recipes use the checkpoint's generation configu...; -102,10 +102,14 @@ Keep the checkpoint's KDA lower-bound setting unchanged. I...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +74/-32 (106 lines); hunks: -1,7 +1,7; -12,18 +12,18 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +22/-19 (41 lines); hunks: -30,7 +30,8 @@ export const config = {; -90,8 +91,6 @@ export const config = {
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +6/-2 (8 lines); hunks: -88,7 +88,7 @@ The deployment recipes use the checkpoint's generation configu...; -102,10 +102,14 @@ Keep the checkpoint's KDA lower-bound setting unchanged. I...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -1,7 +1,7 @@
+-    sglang_version: "f13cb6f6a7",
++    sglang_version: "d6ab04bdf1",
+@@ -12,18 +12,18 @@ export const benchmarks = [
+-        ttft_ms: 599.91,
+-        tpot_ms: 6.48,
+-        tokens_per_sec_per_gpu: 2266.08,
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -30,7 +30,8 @@ export const config = {
+-      s.hicache === "off"
++      s.hicache === "off" &&
++      s.dcp === "off"
+@@ -90,8 +91,6 @@ export const config = {
+-          disabled: (s) => s.strategy === "low-latency",
+-          disableReason: "HiCache with MTP speculative decoding crashes at startup in the current build (DSA draft pool lacks full_kv_pool); use it with High Throughput only.",
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -88,7 +88,7 @@ The deployment recipes use the checkpoint's generation configuration. Override s
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +74/-32; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +22/-19; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +6/-2
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36740 - cookbook: add a Speculative card to the GLM-5.3-Flash playground
+
+- 链接: https://github.com/sgl-project/sglang/pull/36740
+- 状态/时间: merged / 2026-08-27
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `6ccfeb59bcbc`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+103/-2，可读 patch 168 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +66/-0 (66 lines); hunks: -267,6 +267,72 @@ sgl-eval run gsm8k \\；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +11/-1 (12 lines); hunks: -41,7 +41,7 @@ Generated commands leave `--mamba-full-memory-ratio` at its `0...; -96,6 +96,16 @@ Start with **Low Latency** for chat and agent workloads. Adap...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +66/-0 (66 lines); hunks: -267,6 +267,72 @@ sgl-eval run gsm8k \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +11/-1 (12 lines); hunks: -41,7 +41,7 @@ Generated commands leave `--mamba-full-memory-ratio` at its `0...; -96,6 +96,16 @@ Start with **Low Latency** for chat and agent workloads. Adap...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -267,6 +267,72 @@ sgl-eval run gsm8k \\
++    // ----- Card: "Speculative" -----
++    // The Deploy panel only picks speculation through the Strategy dim (Low
++    // Latency = the checkpoint's adaptive MTP head, High Throughput = off).
++    // This card is the finer control, and it adds the one algorithm no cell
++    // ships: DFlash2, whose draft is a separate checkpoint.
++    //
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -41,7 +41,7 @@ Generated commands leave `--mamba-full-memory-ratio` at its `0.9` default, which
+-Use the Playground for lower-level tuning such as attention parallelism, MoE communication, and reasoning or tool parsers. It inherits every selection from the deployment panel an
++Use the Playground for lower-level tuning such as attention parallelism, MoE communication, speculative decoding, and reasoning or tool parsers. It inherits every selection from t
+@@ -96,6 +96,16 @@ Start with **Low Latency** for chat and agent workloads. Adaptive MTP changes th
++### Change the speculative algorithm
++The **Speculative** card in the Playground changes the algorithm without leaving the selected strategy:
++- **EAGLE / Adaptive MTP 5-1-6** is exactly what Low Latency serves, so a Low Latency base starts on this chip. Pick it from a High Throughput base to keep that recipe's other set
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +66/-0; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +11/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/_playground.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36827 - [Docs] Add GLM-5.3 cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/36827
+- 状态/时间: merged / 2026-08-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3.jsx`；关联提交 `395c2258c374`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+1509/-0，可读 patch 1519 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3.jsx` added +1028/-0 (1028 lines); hunks: -0,0 +1,1028；`docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx` added +221/-0 (221 lines); hunks: -0,0 +1,221；`docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` added +259/-0 (259 lines); hunks: -0,0 +1,259。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3.jsx` added +1028/-0 (1028 lines); hunks: -0,0 +1,1028
+  - `docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx` added +221/-0 (221 lines); hunks: -0,0 +1,221
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` added +259/-0 (259 lines); hunks: -0,0 +1,259
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3.jsx
+@@ -0,0 +1,1028 @@
++// Single `export const config` literal — no spreads/calls/IIFE (Mintlify re-evals at hydration).
++// Cells are denormalized: no `--nnodes`/`--node-rank`/`--dist-init-addr`/`--host`/`--port` literals — engine injects them.
++export const config = {
++  modelName: "GLM-5.3",
++  supportedHardware: [
++    "h200", "b200", "gb300", "b300",
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx
+@@ -0,0 +1,221 @@
++// GLM-5.3 benchmark placeholders, keyed by the same `match` tuple as glm-5.3.jsx cells.
++// Bare match stubs render as pending until speed and accuracy measurements are available.
++export const benchmarks = [
++  // NVIDIA FP8, single node.
++  {
++    match: { hw: "h200",  variant: "default", quant: "fp8", strategy: "low-latency",     nodes: "single" },
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3.mdx
+@@ -0,0 +1,259 @@
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3.jsx` added +1028/-0; `docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx` added +221/-0; `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` added +259/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx`, `docs/docs.json`, `docs/src/snippets/configs/zai-org/glm-5.3-benchmarks.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36950 - [Docs] Restore the AIME25 label so GLM-5.3 FP8 and BF16 scores render again
+
+- 链接: https://github.com/sgl-project/sglang/pull/36950
+- 状态/时间: merged / 2026-08-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.3.jsx`；关联提交 `8a4c517a6007`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+9/-0，可读 patch 23 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +9/-0 (9 lines); hunks: -68,6 +68,14 @@ sgl-eval run gsm8k \\; -79,6 +87,7 @@ sgl-eval run aime26 \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +9/-0 (9 lines); hunks: -68,6 +68,14 @@ sgl-eval run gsm8k \\; -79,6 +87,7 @@ sgl-eval run aime26 \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3.jsx
+@@ -68,6 +68,14 @@ sgl-eval run gsm8k \\
++  --model {{MODEL_NAME}} --api-key <api-key> \\
++  --n-repeats 16 --max-tokens 64000 \\
++  --temperature 1.0 --top-p 0.95 --thinking \\
++  --out-dir /sgl-workspace/logs \\
++  --base-url http://{{CURL_HOST}}:{{CURL_PORT}}/v1`,
++      aime25_pct:
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +9/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.3.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36459 - [NPU] Fix evalscope accuracy parsing and add glm5_1 aime26 request timeout
+
+- 链接: https://github.com/sgl-project/sglang/pull/36459
+- 状态/时间: merged / 2026-08-31
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py`；关联提交 `63b2adbeac38`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+12/-67，可读 patch 130 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7。
+- 代码 diff 细节:
+  - `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` modified +1/-1 (2 lines); hunks: -159,7 +159,7
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py
+@@ -159,7 +159,7 @@
+-    "router_args": ["--policy", "round_robin"],
++    "router_args": ["--policy", "round_robin", "--request-timeout-secs", 7200],
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `python/sglang/test/ascend/e2e/test_npu_accuracy_utils.py`, `test/registered/npu/accuracy/glm5_1/test_npu_glm5_1_w4a8_1p1d_32p_in64k_out1k_50ms_aime26.py`, `test/registered/npu/accuracy/qwen3_next_80b_a3b_instruct/test_npu_qwen3_next_80b_w8a8_2p_in6k_out1k5_bs16_aime25.py`, `test/registered/npu/performance/kimi_k2_6/test_npu_kimi_k2_6_w4a8_16p_in64k_out1k_100ms.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #37109 - [Docs] Add NVFP4 section to GLM-5.3-Flash cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/37109
+- 状态/时间: merged / 2026-09-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `442c7c1e2997`, `60548501bb13`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+324/-20，可读 patch 520 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +244/-15 (259 lines); hunks: -21,6 +21,19 @@ export const config = {; -123,6 +136,7 @@ export const config = {；`docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +80/-4 (84 lines); hunks: -22,7 +22,7 @@ export const benchmarks = [; -43,7 +43,7 @@ export const benchmarks = [；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +0/-1 (1 lines); hunks: -184,7 +184,6 @@ sglang serve \。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +244/-15 (259 lines); hunks: -21,6 +21,19 @@ export const config = {; -123,6 +136,7 @@ export const config = {
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +80/-4 (84 lines); hunks: -22,7 +22,7 @@ export const benchmarks = [; -43,7 +43,7 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +0/-1 (1 lines); hunks: -184,7 +184,6 @@ sglang serve \
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -21,6 +21,19 @@ export const config = {
++    {
++      id: "quant",
++      title: "Quantization",
++      options: [
++        { id: "fp8", label: "FP8" },
++        {
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -22,7 +22,7 @@ export const benchmarks = [
+-    match: { hw: "gb300", strategy: "low-latency", kvDsaPair: "fp8-trtllm" },
++    match: { hw: "gb300", strategy: "low-latency", kvDsaPair: "fp8-trtllm", quant: "fp8" },
+@@ -43,7 +43,7 @@ export const benchmarks = [
+-    match: { hw: "gb300", strategy: "low-latency", kvDsaPair: "fp8-trtllm", dcp: "4" },
++    match: { hw: "gb300", strategy: "low-latency", kvDsaPair: "fp8-trtllm", dcp: "4", quant: "fp8" },
+@@ -64,7 +64,7 @@ export const benchmarks = [
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -184,7 +184,6 @@ sglang serve \
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +244/-15; `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +80/-4; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +0/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #37380 - Revert "[AMD] Add GLM-5.3-Flash recipes for MI300X, MI325X, and MI355X (#36608)"
+
+- 链接: https://github.com/sgl-project/sglang/pull/37380
+- 状态/时间: merged / 2026-09-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `6c72b49a5796`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+14/-122，可读 patch 263 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +8/-99 (107 lines); hunks: -1,23 +1,14; -30,16 +21,14 @@ export const config = {；`docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +0/-15 (15 lines); hunks: -310,19 +310,4 @@ export const benchmarks = [；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +6/-8 (14 lines); hunks: -1,6 +1,6; -10,7 +10,7 @@ tag: NEW。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +8/-99 (107 lines); hunks: -1,23 +1,14; -30,16 +21,14 @@ export const config = {
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +0/-15 (15 lines); hunks: -310,19 +310,4 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +6/-8 (14 lines); hunks: -1,6 +1,6; -10,7 +10,7 @@ tag: NEW
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -1,23 +1,14 @@
+-  supportedHardware: [
+-    "gb300", "h100", "h200", "b200", "b300", "gb200",
+-    "mi300x", "mi325x", "mi355x",
+-  ],
++  supportedHardware: ["gb300", "h100", "h200", "b200", "b300", "gb200"],
+-        {
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -310,19 +310,4 @@ export const benchmarks = [
+-  {
+-    match: { hw: "mi300x", strategy: "high-throughput" },
+-    sglang_version: "9e692c9216",
+-    accuracy: { gsm8k_pct: 97.35 },
+-    notes:
+-      "Accuracy-only validation on 8x MI300X (gfx942, TP8) with zai-org/GLM-5.3-Flash revision 3f1971b7b5f7a528c9c4ef6212c8785298a8c24a, SGLang PR #36607 head 9e692c9216c3b5e5c443
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -1,6 +1,6 @@
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +8/-99; `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +0/-15; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +6/-8
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #37392 - [Cookbook] Add the DFlash2 speculative option to GLM-5.3
+
+- 链接: https://github.com/sgl-project/sglang/pull/37392
+- 状态/时间: merged / 2026-09-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3.jsx`；关联提交 `dc1ae02684d4`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+22/-1，可读 patch 44 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +21/-1 (22 lines); hunks: -169,7 +169,8 @@ sgl-eval run aime25 \\; -184,6 +185,25 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` modified +1/-0 (1 lines); hunks: -103,6 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +21/-1 (22 lines); hunks: -169,7 +169,8 @@ sgl-eval run aime25 \\; -184,6 +185,25 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` modified +1/-0 (1 lines); hunks: -103,6 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3.jsx
+@@ -169,7 +169,8 @@ sgl-eval run aime25 \\
+-    // DSA indexer topk across draft steps (topk==1 only).
++    // DSA indexer topk across draft steps (topk==1 only). DFlash2 is the one
++    // algorithm no Deploy cell ships: its draft is a separate checkpoint.
+@@ -184,6 +185,25 @@ sgl-eval run aime25 \\
++        { id: "dflash", label: "DFlash2 (block diffusion)",
++          // Block-wise draft from a separate checkpoint, not the in-checkpoint
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3.mdx
+@@ -103,6 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
++- **DFlash2 (block-diffusion draft).** The **Speculative** card in the [Playground above](#playground) also offers **DFlash2**, which replaces the in-checkpoint MTP layer with the
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +21/-1; `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` modified +1/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #37412 - [Docs] GLM-5.3-Flash cookbook: add NVFP4 FP8+TRT-LLM benchmark rows (follow-up to #37109)
+
+- 链接: https://github.com/sgl-project/sglang/pull/37412
+- 状态/时间: merged / 2026-09-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `442c7c1e2997`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+95/-11，可读 patch 176 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +91/-3 (94 lines); hunks: -181,6 +181,18 @@ export const benchmarks = [; -196,7 +208,7 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +4/-8 (12 lines); hunks: -451,8 +451,10 @@ sgl-eval run gsm8k \\; -462,7 +464,6 @@ sgl-eval run gsm8k \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +91/-3 (94 lines); hunks: -181,6 +181,18 @@ export const benchmarks = [; -196,7 +208,7 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +4/-8 (12 lines); hunks: -451,8 +451,10 @@ sgl-eval run gsm8k \\; -462,7 +464,6 @@ sgl-eval run gsm8k \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -181,6 +181,18 @@ export const benchmarks = [
++      {
++        workload: {
++          dataset: "random",
++          isl: 1024,
++          osl: 256,
++          max_concurrency: 1,
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -451,8 +451,10 @@ sgl-eval run gsm8k \\
+-    // cell's parallelism (gb200 TP4/EP4, b200/b300 TP8/EP8). Not measured on
+-    // this hardware, so every cell here reports unverified.
++    // cell's TP size (gb200 TP4, b200/b300 TP8). Not measured on this
++    // hardware, so every cell here reports unverified. All NVFP4 cells are
++    // TP-only: --ep-size crashes for this checkpoint on the stock image (the
++    // shared-expert NVFP4 weight arrives 1-D under EP).
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +91/-3; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +4/-8
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #35368 - Update GLM-5.2 NVFP4 B200/B300 for AgentX HiCache
+
+- 链接: https://github.com/sgl-project/sglang/pull/35368
+- 状态/时间: merged / 2026-09-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；关联提交 `9c70d22721d3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+30/-0，可读 patch 34 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +30/-0 (30 lines); hunks: -269,3 +269,33 @@ When deploying with PD Disaggregation, the prefill node can...。
+- 代码 diff 细节:
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +30/-0 (30 lines); hunks: -269,3 +269,33 @@ When deploying with PD Disaggregation, the prefill node can...
+- 关键代码摘录:
+
+```diff
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -269,3 +269,33 @@ When deploying with PD Disaggregation, the prefill node can choose to enable [La
++### 3.6 Agentic Long-Context with HiCache DRAM Offload (NVFP4, MTP)
++**B300 (TP8):**
++'''bash Command
++python3 -m sglang.launch_server \
++  --model-path nvidia/GLM-5.2-NVFP4 \
++  --trust-remote-code \
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +30/-0
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #37576 - [Docs] GLM-5.3-Flash cookbook: drop stale EP caveat, add B300/H100/B200 FP8 speed data
+
+- 链接: https://github.com/sgl-project/sglang/pull/37576
+- 状态/时间: merged / 2026-09-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `3421d4375b31`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+154/-53，可读 patch 397 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +151/-46 (197 lines); hunks: -4,6 +4,18 @@ export const benchmarks = [; -19,13 +31,25 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +3/-7 (10 lines); hunks: -386,10 +386,8 @@ sgl-eval run gsm8k \\; -452,9 +450,7 @@ sgl-eval run gsm8k \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +151/-46 (197 lines); hunks: -4,6 +4,18 @@ export const benchmarks = [; -19,13 +31,25 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +3/-7 (10 lines); hunks: -386,10 +386,8 @@ sgl-eval run gsm8k \\; -452,9 +450,7 @@ sgl-eval run gsm8k \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -4,6 +4,18 @@ export const benchmarks = [
++      {
++        workload: {
++          dataset: "random",
++          isl: 1024,
++          osl: 256,
++          max_concurrency: 1,
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -386,10 +386,8 @@ sgl-eval run gsm8k \\
+-    // 4x GB300 on the stock image with both KV/DSA pairings: the speed rows
+-    // were measured with BF16 KV + TileLang DSA, while FP8 KV + TRT-LLM DSA
+-    // passed smoke, a 200-example GSM8K check, a 600-request soak, and the
+-    // TB2.1 run without separate speed measurements.
++    // 4x GB300 and 4x B300 with both KV/DSA pairings; the benchmark rows
++    // carry measured speed for both pairings on the current release image.
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +151/-46; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +3/-7
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #36507 - GLM-5.3-Flash support
+
+- 链接: https://github.com/sgl-project/sglang/pull/36507
+- 状态/时间: merged / 2026-09-06
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/configs/glm5_next.py`, `python/sglang/srt/models/glm5_next.py`, `python/sglang/srt/models/glm5_next_nextn.py`；关联提交 `97c6978369ac`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 103 个文件，+7740/-558，可读 patch 10897 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` added +1630/-0 (1630 lines); hunks: -0,0 +1,1630; symbols: swiglu_clamped, Glm5NextVisionMLP, __init__, forward，涉及 `swiglu_clamped, Glm5NextVisionMLP, __init__`；`python/sglang/srt/configs/glm5_next.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: Glm5NextTextConfig, __init__, is_kda_layer, linear_layer_ids，涉及 `Glm5NextTextConfig, __init__, is_kda_layer`；`python/sglang/srt/models/glm5_next_nextn.py` added +80/-0 (80 lines); hunks: -0,0 +1,80; symbols: Glm5NextForConditionalGenerationNextN, get_hf_to_sglang_mapper, _resolve_nextn_quant_config, __init__，涉及 `Glm5NextForConditionalGenerationNextN, get_hf_to_sglang_mapper, _resolve_nextn_quant_config`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` added +1630/-0 (1630 lines); hunks: -0,0 +1,1630; symbols: swiglu_clamped, Glm5NextVisionMLP, __init__, forward
+  - `python/sglang/srt/configs/glm5_next.py` added +341/-0 (341 lines); hunks: -0,0 +1,341; symbols: Glm5NextTextConfig, __init__, is_kda_layer, linear_layer_ids
+  - `python/sglang/srt/models/glm5_next_nextn.py` added +80/-0 (80 lines); hunks: -0,0 +1,80; symbols: Glm5NextForConditionalGenerationNextN, get_hf_to_sglang_mapper, _resolve_nextn_quant_config, __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -0,0 +1,1630 @@
++import logging
++from contextlib import nullcontext
++from functools import partial
++from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
++import torch
++from torch import nn
+diff -- python/sglang/srt/configs/glm5_next.py
+@@ -0,0 +1,341 @@
++from typing import List, Optional, Union
++from transformers.configuration_utils import PretrainedConfig
++from transformers.models.glm_ocr.configuration_glm_ocr import GlmOcrVisionConfig
++from sglang.srt.configs.mamba_utils import KimiLinearCacheParams, KimiLinearStateShape
++from sglang.srt.runtime_context import get_parallel
++_GLM5_NEXT_TOP_LEVEL_CONFIG_KEYS = (
+diff -- python/sglang/srt/models/glm5_next_nextn.py
+@@ -0,0 +1,80 @@
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` added +1630/-0; `python/sglang/srt/configs/glm5_next.py` added +341/-0; `python/sglang/srt/models/glm5_next_nextn.py` added +80/-0
+- 验证与风险: diff 自带测试面 `test/registered/kernels/ops/attention/test_dsa_indexer.py`, `test/registered/kernels/ops/attention/test_fused_verify_triton_gdn.py`, `test/registered/kernels/test_lean_attention.py`, `test/registered/models_e2e/test_glm53_flash_b200.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #38725 - Relax GSM8K thresholds for the GLM-5.2 DSA-MTP variants
+
+- 链接: https://github.com/sgl-project/sglang/pull/38725
+- 状态/时间: merged / 2026-09-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py`；关联提交 `95a88bfd69d3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+5/-2，可读 patch 28 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py` modified +1/-0 (1 lines); hunks: -24,6 +24,7 @@ class TestGLM52NVFP4DPMTP(; symbols: TestGLM52NVFP4DPMTP，涉及 `TestGLM52NVFP4DPMTP`；`test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-0 (1 lines); hunks: -22,6 +22,7 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP，涉及 `TestGLM52NVFP4TPMTP`。
+- 代码 diff 细节:
+  - `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py` modified +1/-0 (1 lines); hunks: -24,6 +24,7 @@ class TestGLM52NVFP4DPMTP(; symbols: TestGLM52NVFP4DPMTP
+  - `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-0 (1 lines); hunks: -22,6 +22,7 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py
+@@ -24,6 +24,7 @@ class TestGLM52NVFP4DPMTP(
++    gsm8k_accuracy_thres = 0.92
+diff -- test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py
+@@ -22,6 +22,7 @@ class TestGLM52NVFP4TPMTP(
++    gsm8k_accuracy_thres = 0.92
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py` modified +1/-0; `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/server_fixtures/dsa_mtp_fixture.py`, `test/registered/e2e/models/test_dsa_glm52_nvfp4_dp_mtp.py`, `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #38621 - [Model] Support GLM-5.3 Flash NVFP4 loading
+
+- 链接: https://github.com/sgl-project/sglang/pull/38621
+- 状态/时间: merged / 2026-09-09
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`, `test/registered/unit/models/test_glm5_next_modelopt.py`；关联提交 `96d91ef9266d`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+123/-0，可读 patch 145 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/unit/models/test_glm5_next_modelopt.py` added +104/-0 (104 lines); hunks: -0,0 +1,104; symbols: TestGlm5NextModelOpt, _config, _hf_config, test_checkpoint_exclusions_match_sglang_module_names，涉及 `TestGlm5NextModelOpt, _config, _hf_config`；`python/sglang/srt/models/glm5_next.py` modified +19/-0 (19 lines); hunks: -94,6 +94,7; -1077,6 +1078,13 @@ def forward(; symbols: forward, Glm5NextForConditionalGeneration, shared_experts_fusion_disable_reason，涉及 `forward, Glm5NextForConditionalGeneration, shared_experts_fusion_disable_reason`。
+- 代码 diff 细节:
+  - `test/registered/unit/models/test_glm5_next_modelopt.py` added +104/-0 (104 lines); hunks: -0,0 +1,104; symbols: TestGlm5NextModelOpt, _config, _hf_config, test_checkpoint_exclusions_match_sglang_module_names
+  - `python/sglang/srt/models/glm5_next.py` modified +19/-0 (19 lines); hunks: -94,6 +94,7; -1077,6 +1078,13 @@ def forward(; symbols: forward, Glm5NextForConditionalGeneration, shared_experts_fusion_disable_reason
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/models/test_glm5_next_modelopt.py
+@@ -0,0 +1,104 @@
++import unittest
++from types import SimpleNamespace
++from unittest.mock import patch
++from sglang.srt.layers.quantization.modelopt_quant import ModelOptFp4Config
++from sglang.srt.models import glm5_next
++from sglang.srt.models.glm5_next import Glm5NextForConditionalGeneration
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -94,6 +94,7 @@
++from sglang.srt.models.utils import WeightsMapper
+@@ -1077,6 +1078,13 @@ def forward(
++    hf_to_sglang_mapper = WeightsMapper(
++        orig_to_new_substr={
++            "model.language_model.": "model.",
++            "model.visual": "visual",
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/unit/models/test_glm5_next_modelopt.py` added +104/-0
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +19/-0
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_glm5_next_modelopt.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #38522 - Add Opt-In for GLM-5.3 Flash breakable prefill CUDA graphs
+
+- 链接: https://github.com/sgl-project/sglang/pull/38522
+- 状态/时间: merged / 2026-09-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `0084030179bf`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 9 个文件，+219/-10，可读 patch 429 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +29/-2 (31 lines); hunks: -33,6 +33,7 @@ export const config = {; -68,6 +69,20 @@ export const config = {；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +3/-1 (4 lines); hunks: -27,7 +27,9 @@ Choose your hardware, then choose the operating point that mat...；`python/sglang/srt/layers/attention/dsa/kpool_prefill_cuda_graph.py` added +60/-0 (60 lines); hunks: -0,0 +1,60; symbols: _kpool_indexer_prefill_with_output, _kpool_indexer_prefill_capture_stub，涉及 `_kpool_indexer_prefill_with_output, _kpool_indexer_prefill_capture_stub`；`python/sglang/srt/layers/attention/dsa/dsa_indexer_kpool.py` modified +45/-0 (45 lines); hunks: -39,6 +39,9; -1356,6 +1359,42 @@ def forward_cuda(; symbols: forward_cuda, _forward_cuda_impl，涉及 `forward_cuda, _forward_cuda_impl`。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +29/-2 (31 lines); hunks: -33,6 +33,7 @@ export const config = {; -68,6 +69,20 @@ export const config = {
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +3/-1 (4 lines); hunks: -27,7 +27,9 @@ Choose your hardware, then choose the operating point that mat...
+  - `python/sglang/srt/layers/attention/dsa/kpool_prefill_cuda_graph.py` added +60/-0 (60 lines); hunks: -0,0 +1,60; symbols: _kpool_indexer_prefill_with_output, _kpool_indexer_prefill_capture_stub
+  - `python/sglang/srt/layers/attention/dsa/dsa_indexer_kpool.py` modified +45/-0 (45 lines); hunks: -39,6 +39,9; -1356,6 +1359,42 @@ def forward_cuda(; symbols: forward_cuda, _forward_cuda_impl
+  - `python/sglang/srt/layers/radix_linear_attention.py` modified +15/-5 (20 lines); hunks: -171,8 +171,8 @@ def _linear_attention_with_output_impl(; -229,6 +229,16 @@ def unified_linear_attention_with_output(; symbols: _linear_attention_with_output_impl, unified_linear_attention_with_output, _linear_attention_capture_stub
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -33,6 +33,7 @@ export const config = {
++      s.bcg === "off" &&
+@@ -68,6 +69,20 @@ export const config = {
++    {
++      id: "bcg",
++      title: "Breakable Cuda Graph",
++      default: "off",
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -27,7 +27,9 @@ Choose your hardware, then choose the operating point that matches your workload
+-The recommended selection is only a starting point. The same panel also lets you override the KV/DSA pairing, multimodal feature transport, and HiCache tiers. Changing an option t
++The recommended selection is only a starting point. The same panel also lets you override the KV/DSA pairing, multimodal feature transport, Breakable Cuda Graph, and HiCache tiers
++**Breakable Cuda Graph** defaults to **Off**. Select **On** to add `--cuda-graph-backend-prefill breakable` to the generated command. This requires a build that includes [PR #3852
+diff -- python/sglang/srt/layers/attention/dsa/kpool_prefill_cuda_graph.py
+@@ -0,0 +1,60 @@
++"""Breakable prefill bridge for the request-dependent pooled-key indexer."""
++import torch
++from sglang.srt.model_executor.runner_backend_utils.breakable_cuda_graph import (
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +29/-2; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +3/-1
+  - runtime: `python/sglang/srt/layers/attention/dsa/kpool_prefill_cuda_graph.py` added +60/-0; `python/sglang/srt/layers/attention/dsa/dsa_indexer_kpool.py` modified +45/-0; `python/sglang/srt/layers/radix_linear_attention.py` modified +15/-5; `python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py` modified +12/-1; `python/sglang/srt/configs/model_config.py` modified +2/-1; `python/sglang/srt/arg_groups/cuda_graph_hook.py` modified +47/-0
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/arg_groups/cuda_graph_hook.py`, `python/sglang/srt/arg_groups/pipeline.py`, `python/sglang/srt/configs/model_config.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #38775 - [NPU] Set DEEPEP_HYBRID_DEPLOYMENT for new DeepEP tests; switch glm5_2 to w8a8; tune nightly timeouts
+
+- 链接: https://github.com/sgl-project/sglang/pull/38775
+- 状态/时间: merged / 2026-09-10
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py`, `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py`；关联提交 `92dffebe16f5`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 7 个文件，+37/-31，可读 patch 179 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py` renamed +13/-13 (26 lines); hunks: -6,7 +6,7; -17,7 +17,7; symbols: TestNPUGLM_5_2_W4A8_16P_GPQA, TestNPUGLM_5_2_W8A8_16P_GPQA, test_npu_glm_5_2_w4a8_16p_gpqa, test_npu_glm_5_2_w8a8_16p_gpqa，涉及 `TestNPUGLM_5_2_W4A8_16P_GPQA, TestNPUGLM_5_2_W8A8_16P_GPQA, test_npu_glm_5_2_w4a8_16p_gpqa`；`test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` modified +1/-0 (1 lines); hunks: -19,6 +19,7。
+- 代码 diff 细节:
+  - `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py` renamed +13/-13 (26 lines); hunks: -6,7 +6,7; -17,7 +17,7; symbols: TestNPUGLM_5_2_W4A8_16P_GPQA, TestNPUGLM_5_2_W8A8_16P_GPQA, test_npu_glm_5_2_w4a8_16p_gpqa, test_npu_glm_5_2_w8a8_16p_gpqa
+  - `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` modified +1/-0 (1 lines); hunks: -19,6 +19,7
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py
+@@ -6,7 +6,7 @@
+-    GLM_5_2_W4A8_MODEL_PATH,
++    GLM_5_2_W8A8_MODEL_PATH,
+@@ -17,7 +17,7 @@
+-GLM_5_2_W4A8_16P_TWO_NODE_ENVS = {
++GLM_5_2_W8A8_16P_TWO_NODE_ENVS = {
+@@ -34,7 +34,7 @@
+diff -- test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py
+@@ -19,6 +19,7 @@
++    "DEEPEP_HYBRID_DEPLOYMENT": "1",
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py` renamed +13/-13; `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py` modified +1/-0
+- 验证与风险: diff 自带测试面 `python/sglang/test/ascend/e2e/test_npu_performance_utils.py`, `test/registered/npu/accuracy/glm5_2/test_npu_glm_5_2_w8a8_16p_gpqa.py`, `test/registered/npu/accuracy/glm5_top64_pruned/test_npu_glm5_top64_pruned_bf16_8p_gsm8k.py`, `test/registered/npu/accuracy/kimi_k2_6/test_npu_kimi_k2_6_w4a8_16p_in64k_out1k_100ms_aime25.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #39106 - [AMD] Use the triton DSA backend for GLM-5.2 MXFP4 on MI355X
+
+- 链接: https://github.com/sgl-project/sglang/pull/39106
+- 状态/时间: merged / 2026-09-11
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `d7c284b894e9`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+12/-9，可读 patch 63 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +11/-8 (19 lines); hunks: -1011,6 +1011,9 @@ sgl-eval run aime25 \\; -1021,8 +1024,8 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -118,7 +118,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +11/-8 (19 lines); hunks: -1011,6 +1011,9 @@ sgl-eval run aime25 \\; -1021,8 +1024,8 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -118,7 +118,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -1011,6 +1011,9 @@ sgl-eval run aime25 \\
++    // DSA backend: triton (SGLang's ROCm default). At TP4 this shape hits the
++    // gfx950 FP8 sparse-MLA tuning; the TP8 FP8/BF16 cells above stay on
++    // tilelang, where their published numbers were measured.
+@@ -1021,8 +1024,8 @@ sgl-eval run aime25 \\
+-        "--dsa-prefill-backend tilelang",
+-        "--dsa-decode-backend tilelang",
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -118,7 +118,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MI355X MXFP4 (gfx950-only).** AMD publishes a Quark-quantized **`amd/GLM-5.2-MXFP4`** build for MI355X. It needs `--trust-remote-code` (Quark's custom quant config) and runs a
++- **MI355X MXFP4 (gfx950-only).** AMD publishes a Quark-quantized **`amd/GLM-5.2-MXFP4`** build for MI355X. It needs `--trust-remote-code` (Quark's custom quant config) and runs a
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +11/-8; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39213 - [Docs] GLM-5.3-Flash cookbook: fixed MTP 5/1/6, EP1 + flashinfer_trtllm on Blackwell
+
+- 链接: https://github.com/sgl-project/sglang/pull/39213
+- 状态/时间: merged / 2026-09-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `b5a2aebc7ecc`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+111/-73，可读 patch 584 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +71/-13 (84 lines); hunks: -1,4 +1,5; -35,37 +36,86 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +32/-51 (83 lines); hunks: -8,7 +8,7 @@ export const config = {; -130,9 +130,9 @@ export const config = {；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +8/-9 (17 lines); hunks: -22,7 +22,7 @@ The deployment panel can render a complete `docker run` comman...; -94,15 +94,15 @@ The deployment recipes use the checkpoint's generation confi...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +71/-13 (84 lines); hunks: -1,4 +1,5; -35,37 +36,86 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +32/-51 (83 lines); hunks: -8,7 +8,7 @@ export const config = {; -130,9 +130,9 @@ export const config = {
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +8/-9 (17 lines); hunks: -22,7 +22,7 @@ The deployment panel can render a complete `docker run` comman...; -94,15 +94,15 @@ The deployment recipes use the checkpoint's generation confi...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -1,4 +1,5 @@
++  // TODO: speed measured on the earlier TP4/EP4 deep_gemm command with adaptive MTP; re-measure on the current recipe.
+@@ -35,37 +36,86 @@ export const benchmarks = [
+-    sglang_version: "d6ab04bdf1",
++    sglang_version: "b3dc0388ed",
+-          isl: 1024,
+-          osl: 256,
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -8,7 +8,7 @@ export const config = {
+-        { id: "low-latency", label: "Low Latency", subtitle: "Adaptive MTP 5/1/6" },
++        { id: "low-latency", label: "Low Latency", subtitle: "MTP 5/1/6" },
+@@ -130,9 +130,9 @@ export const config = {
+-          disableReason: "DCP is validated only on 4x GB300 TP4/EP4 for now.",
++          disableReason: "DCP is validated only on 4x GB300 for now.",
+-          hints: ["Measured on 4x GB300 with both KV/DSA pairings, adaptive MTP 5/1/6, full decode graph."],
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -22,7 +22,7 @@ The deployment panel can render a complete `docker run` command for the selected
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +71/-13; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +32/-51; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +8/-9
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39230 - [AMD] Document GLM-5.2 MXFP4 recipe update on MI355X
+
+- 链接: https://github.com/sgl-project/sglang/pull/39230
+- 状态/时间: merged / 2026-09-12
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `288627e4006a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+23/-12，可读 patch 83 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +22/-11 (33 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -178,8 +178,12 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +22/-11 (33 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -178,8 +178,12 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -97,7 +97,7 @@ sgl-eval run aime25 \\
+-    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.16-rocm720-mi35x-20260728",
++    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910",
+@@ -178,8 +178,12 @@ sgl-eval run aime25 \\
+-          disable: { hw: ["mi355x", "mi325x", "mi300x"] },
+-          disableReason: "MTP/EAGLE speculative decoding is not yet validated on AMD ROCm (MI300X/MI325X/MI355X): the gfx950 spec-decode draft kernel is not yet validated and at -
++          disable: [
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MTP / EAGLE speculative decoding** is disabled for AMD in the Deploy panel. The block-FP8 accuracy bug that previously degraded it is now fixed (see note above), but MTP on gf
++- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910`. Choose **Lo
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +22/-11; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39406 - [AMD] GLM-5.2 MI355X MXFP4: bump image to 20260916
+
+- 链接: https://github.com/sgl-project/sglang/pull/39406
+- 状态/时间: merged / 2026-09-14
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `242d8a70c05b`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+7/-7，可读 patch 60 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +6/-6 (12 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -1019,7 +1019,7 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +6/-6 (12 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -1019,7 +1019,7 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -97,7 +97,7 @@ sgl-eval run aime25 \\
+-    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910",
++    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260913",
+@@ -1019,7 +1019,7 @@ sgl-eval run aime25 \\
+-      env: [],
++      env: ["SGLANG_OPT_USE_TOPK_V2=true"],
+@@ -1042,7 +1042,7 @@ sgl-eval run aime25 \\
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260910`. Choose **Lo
++- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260913`. Choose **Lo
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +6/-6; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39720 - [Fix] Fix GLM5 mHC PP forward
+
+- 链接: https://github.com/sgl-project/sglang/pull/39720
+- 状态/时间: merged / 2026-09-16
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`；关联提交 `9c8d4641ff64`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+4/-1，可读 patch 19 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +4/-1 (5 lines); hunks: -981,7 +981,8 @@ def forward(; -1059,6 +1060,8 @@ def forward(; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +4/-1 (5 lines); hunks: -981,7 +981,8 @@ def forward(; -1059,6 +1060,8 @@ def forward(; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -981,7 +981,8 @@ def forward(
+-            residual = pp_proxy_tensors["residual"]
++            # mHC carries its residual streams in hidden_states across PP stages.
++            residual = None if self.config.mhc else pp_proxy_tensors["residual"]
+@@ -1059,6 +1060,8 @@ def forward(
++            if self.config.mhc:
++                return PPProxyTensors({"hidden_states": hidden_states})
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +4/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/glm5_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #40036 - [Docs] GLM-5.3-Flash cookbook: temporarily remove the DCP option
+
+- 链接: https://github.com/sgl-project/sglang/pull/40036
+- 状态/时间: merged / 2026-09-17
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `b98a2d1096f6`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+6/-74，可读 patch 136 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +0/-44 (44 lines); hunks: -115,50 +115,6 @@ export const benchmarks = [；`docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +6/-26 (32 lines); hunks: -33,8 +33,7 @@ export const config = {; -120,22 +119,6 @@ export const config = {；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +0/-4 (4 lines); hunks: -120,10 +120,6 @@ Keep the checkpoint's KDA lower-bound setting unchanged. In...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +0/-44 (44 lines); hunks: -115,50 +115,6 @@ export const benchmarks = [
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +6/-26 (32 lines); hunks: -33,8 +33,7 @@ export const config = {; -120,22 +119,6 @@ export const config = {
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +0/-4 (4 lines); hunks: -120,10 +120,6 @@ Keep the checkpoint's KDA lower-bound setting unchanged. In...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -115,50 +115,6 @@ export const benchmarks = [
+-  // TODO: speed measured on the earlier TP4/EP4 deep_gemm command with adaptive MTP; re-measure on the current recipe.
+-  {
+-    match: { hw: "gb300", strategy: "low-latency", kvDsaPair: "fp8-trtllm", dcp: "4", quant: "fp8" },
+-    sglang_version: "d6ab04bdf1",
+-    latencyPercentile: "Mean",
+-    speed: [
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -33,8 +33,7 @@ export const config = {
+-      s.bcg === "off" &&
+-      s.dcp === "off"
++      s.bcg === "off"
+@@ -120,22 +119,6 @@ export const config = {
+-    {
+-      id: "dcp",
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -120,10 +120,6 @@ Keep the checkpoint's KDA lower-bound setting unchanged. In particular, do not o
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +0/-44; `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +6/-26; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +0/-4
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #40148 - [AMD] GLM-5.2 MI355X MXFP4: bump image to 20260916, use HIP Top-K
+
+- 链接: https://github.com/sgl-project/sglang/pull/40148
+- 状态/时间: merged / 2026-09-18
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `45938a24ae41`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+6/-6，可读 patch 54 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +5/-5 (10 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -1019,7 +1019,7 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +5/-5 (10 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -1019,7 +1019,7 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -97,7 +97,7 @@ sgl-eval run aime25 \\
+-    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260913",
++    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916",
+@@ -1019,7 +1019,7 @@ sgl-eval run aime25 \\
+-      env: ["SGLANG_OPT_USE_TOPK_V2=true"],
++      env: [],
+@@ -1042,7 +1042,7 @@ sgl-eval run aime25 \\
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260913`. Choose **Lo
++- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916`. Choose **Lo
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +5/-5; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39688 - Fuse GLM-5.3-Flash KDA projections and prefill metadata
+
+- 链接: https://github.com/sgl-project/sglang/pull/39688
+- 状态/时间: merged / 2026-09-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`, `test/registered/unit/models/test_glm5_next_bfg_fusion.py`；关联提交 `c8eb54c41da1`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 14 个文件，+1027/-87，可读 patch 1507 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +149/-62 (211 lines); hunks: -36,6 +36,7; -49,6 +50,7; symbols: __init__, Glm5NextLinearAttention, _can_fuse_proj，涉及 `__init__, Glm5NextLinearAttention, _can_fuse_proj`；`test/registered/unit/models/test_glm5_next_bfg_fusion.py` added +182/-0 (182 lines); hunks: -0,0 +1,182; symbols: MockQuantizedLinearMethod, apply, MockFp8Config, __init__，涉及 `MockQuantizedLinearMethod, apply, MockFp8Config`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +149/-62 (211 lines); hunks: -36,6 +36,7; -49,6 +50,7; symbols: __init__, Glm5NextLinearAttention, _can_fuse_proj
+  - `test/registered/unit/models/test_glm5_next_bfg_fusion.py` added +182/-0 (182 lines); hunks: -0,0 +1,182; symbols: MockQuantizedLinearMethod, apply, MockFp8Config, __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -36,6 +36,7 @@
++    LinearBase,
+@@ -49,6 +50,7 @@
++from sglang.srt.layers.quantization.unquant import UnquantizedLinearMethod
+@@ -99,7 +101,13 @@
+-from sglang.srt.runtime_context import get_forward, get_mm, get_parallel, get_spec
++from sglang.srt.runtime_context import (
+diff -- test/registered/unit/models/test_glm5_next_bfg_fusion.py
+@@ -0,0 +1,182 @@
++import unittest
++from types import SimpleNamespace
++from unittest.mock import patch
++import torch
++import torch.nn.functional as F
++from sglang.srt.layers.quantization.unquant import UnquantizedLinearMethod
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +149/-62
+  - tests: `test/registered/unit/models/test_glm5_next_bfg_fusion.py` added +182/-0
+- 验证与风险: diff 自带测试面 `test/registered/kernel/attention/test_kda_gate_beta_cumsum.py`, `test/registered/unit/layers/test_mamba2_track_ssm_indices.py`, `test/registered/unit/layers/test_mamba_prefill_track_metadata.py`, `test/registered/unit/models/test_glm5_next_bfg_fusion.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #39200 - [Perf] Fuse the glm5_next mHC attn->MLP boundary
+
+- 链接: https://github.com/sgl-project/sglang/pull/39200
+- 状态/时间: merged / 2026-09-20
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`；关联提交 `2fa6b94e3440`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+162/-3，可读 patch 256 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +61/-1 (62 lines); hunks: -75,6 +75,10; -117,6 +121,15; symbols: swiglu_clamped, __init__, _hc_pre, hc_ffn_pre，涉及 `swiglu_clamped, __init__, _hc_pre`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +61/-1 (62 lines); hunks: -75,6 +75,10; -117,6 +121,15; symbols: swiglu_clamped, __init__, _hc_pre, hc_ffn_pre
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -75,6 +75,10 @@
++from sglang.srt.models.deepseek_common.amd.deepseek_v4_fused_mhc import (
++    apply_mhc_post_pre_boundary,
++    is_cross_layer_mhc_fusion_enabled,
++)
+@@ -117,6 +121,15 @@
++# Matches DeepSeek-V4's _MHC_POST_MULT_VALUE; the fused and unfused boundaries
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +61/-1
+- 验证与风险: diff 自带测试面 `test/registered/kernels/ops/layernorm/test_mhc_kernels.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40570 - [AMD] Enable HiCache for GLM-5.2 MI355X throughput recipe
+
+- 链接: https://github.com/sgl-project/sglang/pull/40570
+- 状态/时间: merged / 2026-09-21
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `66f19f5c468f`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+5/-3，可读 patch 36 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +4/-2 (6 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -1011,7 +1011,7 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +4/-2 (6 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\; -1011,7 +1011,7 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -97,7 +97,7 @@ sgl-eval run aime25 \\
+-    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916",
++    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260920",
+@@ -1011,7 +1011,7 @@ sgl-eval run aime25 \\
+-    // newer image (v0.5.19, see dockerImages["mi355x|mxfp4"]) than the FP8/BF16
++    // newer image (v0.5.20, see dockerImages["mi355x|mxfp4"]) than the FP8/BF16
+@@ -1075,6 +1075,8 @@ sgl-eval run aime25 \\
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.19-rocm720-mi35x-20260916`. Choose **Lo
++- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260920`. Choose **Lo
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +4/-2; `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`, `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #38546 - [AMD] [GLM-5.3-Flash Day 0] Enable FP8 and Quark MXFP4 MoE on gfx950
+
+- 链接: https://github.com/sgl-project/sglang/pull/38546
+- 状态/时间: merged / 2026-09-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`, `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py`；关联提交 `b44e2486824e`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 8 个文件，+756/-15，可读 patch 994 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +17/-3 (20 lines); hunks: -1233,11 +1233,13 @@ def forward(; -1570,6 +1572,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: forward, Glm5NextForConditionalGeneration, load_weights, maybe_map_fp8_block_scale_name，涉及 `forward, Glm5NextForConditionalGeneration, load_weights`；`test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` added +397/-0 (397 lines); hunks: -0,0 +1,397; symbols: TestGLM53FlashQuarkMoE, setUpClass, _make_mxfp4_bank, _quantize_fp8_weight，涉及 `TestGLM53FlashQuarkMoE, setUpClass, _make_mxfp4_bank`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +17/-3 (20 lines); hunks: -1233,11 +1233,13 @@ def forward(; -1570,6 +1572,14 @@ def load_weights(self, weights: Iterable[Tuple[str, torch...; symbols: forward, Glm5NextForConditionalGeneration, load_weights, maybe_map_fp8_block_scale_name
+  - `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` added +397/-0 (397 lines); hunks: -0,0 +1,397; symbols: TestGLM53FlashQuarkMoE, setUpClass, _make_mxfp4_bank, _quantize_fp8_weight
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -1233,11 +1233,13 @@ def forward(
+-            "model.language_model.": "model.",
+-        }
++        },
++        orig_to_new_prefix={
++            "model.language_model.": "model.",
++        },
+diff -- test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py
+@@ -0,0 +1,397 @@
++"""Isolated gfx950 numerical tests for GLM-5.3-Flash Quark MoE."""
++import unittest
++from types import SimpleNamespace
++import torch
++import torch.nn.functional as F
++from aiter.ops.flydsl.moe_common import GateMode
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +17/-3
+  - tests: `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` added +397/-0
+- 验证与风险: diff 自带测试面 `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py`, `test/registered/unit/layers/quantization/test_fp8_moe_runner_ownership.py`, `test/registered/unit/layers/quantization/test_quark_config.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40497 - [Docs] GLM-5.3/5.3-Flash cookbooks: enable reasoning/tool-call parsers by default via auto
+
+- 链接: https://github.com/sgl-project/sglang/pull/40497
+- 状态/时间: merged / 2026-09-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3.jsx`；关联提交 `a0781f271462`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+83/-74，可读 patch 409 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +38/-56 (94 lines); hunks: -119,6 +119,32 @@ export const config = {; -174,15 +200,16 @@ sgl-eval run gsm8k \\；`docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +36/-9 (45 lines); hunks: -96,15 +96,45 @@ sgl-eval run aime25 \\; -162,8 +192,8 @@ sgl-eval run aime25 \\；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +5/-5 (10 lines); hunks: -10,10 +10,10 @@ tag: NEW; -104,7 +104,7 @@ The **Speculative** card in the Playground changes the algor...；`docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` modified +4/-4 (8 lines); hunks: -103,7 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";; -117,7 +117,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +38/-56 (94 lines); hunks: -119,6 +119,32 @@ export const config = {; -174,15 +200,16 @@ sgl-eval run gsm8k \\
+  - `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +36/-9 (45 lines); hunks: -96,15 +96,45 @@ sgl-eval run aime25 \\; -162,8 +192,8 @@ sgl-eval run aime25 \\
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +5/-5 (10 lines); hunks: -10,10 +10,10 @@ tag: NEW; -104,7 +104,7 @@ The **Speculative** card in the Playground changes the algor...
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` modified +4/-4 (8 lines); hunks: -103,7 +103,7 @@ import { Playground } from "/src/snippets/_playground.jsx";; -117,7 +117,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -119,6 +119,32 @@ export const config = {
++    // Parser flags live in one overlay dim so every generated command gets
++    // them without per-cell duplication; the Parsers card toggles derive
++    // on/off from the composed flags. `auto` needs the GLM-5.3 template
++    // detection (v0.5.20+).
++    {
++      id: "parsers",
+diff -- docs/src/snippets/configs/zai-org/glm-5.3.jsx
+@@ -96,15 +96,45 @@ sgl-eval run aime25 \\
+-    mi355x: "lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi35x-20260618",
+-    mi325x: "lmsysorg/sglang-rocm:v0.5.13.post1-rocm700-mi30x-20260616",
+-    mi300x: "lmsysorg/sglang-rocm:v0.5.13.post1-rocm700-mi30x-20260616",
++    // >= v0.5.20 so `--*-parser auto` detects GLM-5.3 (#38297); the rocm700
++    // line stopped at v0.5.19, so mi30x moves to the rocm720 build.
++    mi355x: "lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260920",
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -10,10 +10,10 @@ tag: NEW
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +38/-56; `docs/src/snippets/configs/zai-org/glm-5.3.jsx` modified +36/-9; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +5/-5; `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx` modified +4/-4
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/cookbook/autoregressive/GLM/GLM-5.3.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39779 - [AMD] [GLM-5.3-Flash Day 0] Load the MXFP4 MTP draft layer
+
+- 链接: https://github.com/sgl-project/sglang/pull/39779
+- 状态/时间: merged / 2026-09-22
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next_nextn.py`, `test/registered/unit/models/test_glm5_next_modelopt.py`；关联提交 `c19dc43cc732`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+147/-4，可读 patch 193 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/unit/models/test_glm5_next_modelopt.py` modified +18/-0 (18 lines); hunks: -5,6 +5,7; -99,6 +100,23 @@ def test_radixark_uniform_fp4_shared_experts_keep_fusion(self):; symbols: test_radixark_uniform_fp4_shared_experts_keep_fusion, test_nextn_mapper_routes_checkpoint_names_to_runtime_modules，涉及 `test_radixark_uniform_fp4_shared_experts_keep_fusion, test_nextn_mapper_routes_checkpoint_names_to_runtime_modules`；`python/sglang/srt/models/glm5_next_nextn.py` modified +12/-4 (16 lines); hunks: -25,10 +25,18 @@ class Glm5NextForConditionalGenerationNextN(DeepseekV3ForCau...; symbols: Glm5NextForConditionalGenerationNextN, get_hf_to_sglang_mapper, _resolve_nextn_quant_config，涉及 `Glm5NextForConditionalGenerationNextN, get_hf_to_sglang_mapper, _resolve_nextn_quant_config`。
+- 代码 diff 细节:
+  - `test/registered/unit/models/test_glm5_next_modelopt.py` modified +18/-0 (18 lines); hunks: -5,6 +5,7; -99,6 +100,23 @@ def test_radixark_uniform_fp4_shared_experts_keep_fusion(self):; symbols: test_radixark_uniform_fp4_shared_experts_keep_fusion, test_nextn_mapper_routes_checkpoint_names_to_runtime_modules
+  - `python/sglang/srt/models/glm5_next_nextn.py` modified +12/-4 (16 lines); hunks: -25,10 +25,18 @@ class Glm5NextForConditionalGenerationNextN(DeepseekV3ForCau...; symbols: Glm5NextForConditionalGenerationNextN, get_hf_to_sglang_mapper, _resolve_nextn_quant_config
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/models/test_glm5_next_modelopt.py
+@@ -5,6 +5,7 @@
++from sglang.srt.models.glm5_next_nextn import Glm5NextForConditionalGenerationNextN
+@@ -99,6 +100,23 @@ def test_radixark_uniform_fp4_shared_experts_keep_fusion(self):
++    def test_nextn_mapper_routes_checkpoint_names_to_runtime_modules(self):
++        """Draft quant lookups miss unless checkpoint names reach NextN module paths."""
++        mapper = Glm5NextForConditionalGenerationNextN.get_hf_to_sglang_mapper(
++            self._hf_config()
+diff -- python/sglang/srt/models/glm5_next_nextn.py
+@@ -25,10 +25,18 @@ class Glm5NextForConditionalGenerationNextN(DeepseekV3ForCausalLMNextN):
+-        return WeightsMapper(
+-            orig_to_new_substr={
+-                f"model.layers.{text_config.num_hidden_layers}": "model.decoder",
+-            },
++        n = text_config.num_hidden_layers
++        # lookups arrive as checkpoint and normalized names, so every rule has both forms
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/unit/models/test_glm5_next_modelopt.py` modified +18/-0
+  - runtime: `python/sglang/srt/models/glm5_next_nextn.py` modified +12/-4
+- 验证与风险: diff 自带测试面 `test/registered/unit/layers/quantization/test_quark_config.py`, `test/registered/unit/models/test_glm5_next_modelopt.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #40466 - [deepep_v2] support GLM-5.3-Flash (Glm5NextForConditionalGeneration)
+
+- 链接: https://github.com/sgl-project/sglang/pull/40466
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`；关联提交 `28be39f72e7d`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+6/-1，可读 patch 21 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +5/-1 (6 lines); hunks: -1093,7 +1093,11 @@ def __init__(; symbols: __init__，涉及 `__init__`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +5/-1 (6 lines); hunks: -1093,7 +1093,11 @@ def __init__(; symbols: __init__
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -1093,7 +1093,11 @@ def __init__(
+-        if get_moe_a2a_backend().is_deepep() or get_moe_a2a_backend().is_mooncake():
++        if (
++            get_moe_a2a_backend().is_deepep()
++            or get_moe_a2a_backend().is_mooncake()
++            or get_moe_a2a_backend().is_deepep_v2()
++        ):
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +5/-1
+- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/configs/moe_model_registry.py`, `python/sglang/srt/models/glm5_next.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+
+### PR #40862 - [CI] Update GLM-5.3-Flash H200/B200 test args
+
+- 链接: https://github.com/sgl-project/sglang/pull/40862
+- 状态/时间: merged / 2026-09-23
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/e2e/models/test_glm53_flash_b200.py`, `test/registered/e2e/models/test_glm53_flash_h200.py`；关联提交 `86cb4a0f9796`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 2 个文件，+8/-18，可读 patch 97 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/e2e/models/test_glm53_flash_b200.py` modified +5/-10 (15 lines); hunks: -1,7 +1,7; -29,20 +29,18; symbols: TestGLM53FlashB200LowLatency, TestGLM53FlashB200HighThroughput，涉及 `TestGLM53FlashB200LowLatency, TestGLM53FlashB200HighThroughput`；`test/registered/e2e/models/test_glm53_flash_h200.py` modified +3/-8 (11 lines); hunks: -1,6 +1,6; -28,8 +28,6; symbols: TestGLM53FlashH200LowLatency, TestGLM53FlashH200HighThroughput，涉及 `TestGLM53FlashH200LowLatency, TestGLM53FlashH200HighThroughput`。
+- 代码 diff 细节:
+  - `test/registered/e2e/models/test_glm53_flash_b200.py` modified +5/-10 (15 lines); hunks: -1,7 +1,7; -29,20 +29,18; symbols: TestGLM53FlashB200LowLatency, TestGLM53FlashB200HighThroughput
+  - `test/registered/e2e/models/test_glm53_flash_h200.py` modified +3/-8 (11 lines); hunks: -1,6 +1,6; -28,8 +28,6; symbols: TestGLM53FlashH200LowLatency, TestGLM53FlashH200HighThroughput
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/e2e/models/test_glm53_flash_b200.py
+@@ -1,7 +1,7 @@
+-Runs the Low Latency, DFlash2, and High Throughput TP4/EP4 recipes on four
+-B200 GPUs. All recipes must retain GSM8K accuracy; the Low Latency recipe also
++Runs the Low Latency, DFlash2, and High Throughput TP4 recipes on four B200
++GPUs. All recipes must retain GSM8K accuracy; the Low Latency recipe also
+@@ -29,20 +29,18 @@
+-    "--ep-size",
+diff -- test/registered/e2e/models/test_glm53_flash_h200.py
+@@ -1,6 +1,6 @@
+-Runs the Low Latency and High Throughput TP8/EP8 recipes on eight H200 GPUs.
++Runs the Low Latency and High Throughput TP8 recipes on eight H200 GPUs.
+@@ -28,8 +28,6 @@
+-    "--ep-size",
+-    "8",
+@@ -39,9 +37,9 @@
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/e2e/models/test_glm53_flash_b200.py` modified +5/-10; `test/registered/e2e/models/test_glm53_flash_h200.py` modified +3/-8
+- 验证与风险: diff 自带测试面 `test/registered/e2e/models/test_glm53_flash_b200.py`, `test/registered/e2e/models/test_glm53_flash_h200.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #39816 - Refactor the Cute-DSL AR fusion to support DeepseekV2 archs (GLM-5.3, etc.)
+
+- 链接: https://github.com/sgl-project/sglang/pull/39816
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py`；关联提交 `3177d10ca6f7`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 20 个文件，+1327/-855，可读 patch 2658 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` modified +2/-0 (2 lines); hunks: -28,6 +28,8 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP，涉及 `TestGLM52NVFP4TPMTP`；`python/sglang/srt/layers/moe/cutedsl_ar_fusion.py` added +478/-0 (478 lines); hunks: -0,0 +1,478; symbols: _fused_norm_gamma, _is_supported_forward_mode, _resolve_max_m, MoeFinalizeHandoff，涉及 `_fused_norm_gamma, _is_supported_forward_mode, _resolve_max_m`；`python/sglang/srt/layers/flashinfer_mnnvl_cutedsl.py` modified +298/-149 (447 lines); hunks: -3,9 +3,7; -20,8 +18,7; symbols: _import_kernel_backend, _ht_shard_split, _ht_reduction_warp_order, _ht_shard_major_is_legal，涉及 `_import_kernel_backend, _ht_shard_split, _ht_reduction_warp_order`；`python/sglang/srt/layers/moe/qwen35_flashinfer_fusion.py` removed +0/-350 (350 lines); hunks: -1,350 +0,0; symbols: is_supported_forward_mode, resolve_max_m, Qwen35MoeFinalizeHandoff, from_flashinfer，涉及 `is_supported_forward_mode, resolve_max_m, Qwen35MoeFinalizeHandoff`。
+- 代码 diff 细节:
+  - `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` modified +2/-0 (2 lines); hunks: -28,6 +28,8 @@ class TestGLM52NVFP4TPMTP(; symbols: TestGLM52NVFP4TPMTP
+  - `python/sglang/srt/layers/moe/cutedsl_ar_fusion.py` added +478/-0 (478 lines); hunks: -0,0 +1,478; symbols: _fused_norm_gamma, _is_supported_forward_mode, _resolve_max_m, MoeFinalizeHandoff
+  - `python/sglang/srt/layers/flashinfer_mnnvl_cutedsl.py` modified +298/-149 (447 lines); hunks: -3,9 +3,7; -20,8 +18,7; symbols: _import_kernel_backend, _ht_shard_split, _ht_reduction_warp_order, _ht_shard_major_is_legal
+  - `python/sglang/srt/layers/moe/qwen35_flashinfer_fusion.py` removed +0/-350 (350 lines); hunks: -1,350 +0,0; symbols: is_supported_forward_mode, resolve_max_m, Qwen35MoeFinalizeHandoff, from_flashinfer
+  - `python/sglang/srt/models/qwen3_5.py` modified +28/-90 (118 lines); hunks: -47,6 +47,7; -172,10 +173,7 @@ def _disable_shared_experts_fusion() -> bool:; symbols: _disable_shared_experts_fusion, _maybe_enable_silu_fp4_quant_fusion, _use_mnnvl_cutedsl_fusion, _layer_communicator_class
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py
+@@ -28,6 +28,8 @@ class TestGLM52NVFP4TPMTP(
++        "--flashinfer-allreduce-fusion-backend",
++        "cutedsl",
+diff -- python/sglang/srt/layers/moe/cutedsl_ar_fusion.py
+@@ -0,0 +1,478 @@
++"""FlashInfer MNNVL CuTe DSL AllReduce fusion, shared across architectures.
++Two patterns share one workspace, both consumed at the next layer's input
++RMSNorm: AR + residual + RMSNorm, and the same with the MoE finalize and the
++shared-expert add folded in when the runner hands back a MoeFinalizeHandoff.
++"""
++from __future__ import annotations
+diff -- python/sglang/srt/layers/flashinfer_mnnvl_cutedsl.py
+@@ -3,9 +3,7 @@
+-import threading
+-from dataclasses import dataclass, replace
+-from functools import lru_cache
++from dataclasses import replace
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py` modified +2/-0
+  - runtime: `python/sglang/srt/layers/moe/cutedsl_ar_fusion.py` added +478/-0; `python/sglang/srt/layers/flashinfer_mnnvl_cutedsl.py` modified +298/-149; `python/sglang/srt/layers/moe/qwen35_flashinfer_fusion.py` removed +0/-350; `python/sglang/srt/models/qwen3_5.py` modified +28/-90; `python/sglang/srt/models/deepseek_v2.py` modified +66/-5; `python/sglang/srt/layers/communicator.py` modified +32/-3
+- 验证与风险: diff 自带测试面 `test/registered/e2e/models/test_dsa_glm52_nvfp4_tp_mtp.py`, `test/registered/unit/layers/moe/test_cutedsl_ar_fusion.py`, `test/registered/unit/layers/moe/test_qwen35_flashinfer_fusion.py`, `test/registered/unit/layers/test_communicator_ffn_exit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41109 - [AMD] GLM-5.2 MI355X MXFP4: bump image to 20260923 daily
+
+- 链接: https://github.com/sgl-project/sglang/pull/41109
+- 状态/时间: merged / 2026-09-24
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `6a14b801417a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +1/-1 (2 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +1/-1 (2 lines); hunks: -97,7 +97,7 @@ sgl-eval run aime25 \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -97,7 +97,7 @@ sgl-eval run aime25 \\
+-    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260920",
++    "mi355x|mxfp4": "lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260923",
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #41207 - [CI] Move GLM-5.2 layer-split test to extra-b-test-8-gpu-b300
+
+- 链接: https://github.com/sgl-project/sglang/pull/41207
+- 状态/时间: merged / 2026-09-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py`；关联提交 `3fc7a669bfe3`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7。
+- 代码 diff 细节:
+  - `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py` modified +1/-1 (2 lines); hunks: -20,7 +20,7
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py
+@@ -20,7 +20,7 @@
+-register_cuda_ci(est_time=898, stage="base-c", runner_config="8-gpu-b300")
++register_cuda_ci(est_time=898, stage="extra-b", runner_config="8-gpu-b300")
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py` modified +1/-1
+- 验证与风险: diff 自带测试面 `test/registered/e2e/models/test_dsa_glm52_pd_mtp_cp_layersplit.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41198 - [Refactor] Move Step-3.5, GLM5-Next, Dots3, MiniMax-M3 and Qwen3.5 onto ffn_exit
+
+- 链接: https://github.com/sgl-project/sglang/pull/41198
+- 状态/时间: merged / 2026-09-25
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`；关联提交 `b7f6d04a9af1`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 6 个文件，+50/-219，可读 patch 402 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +4/-29 (33 lines); hunks: -28,7 +28,6; -109,7 +108,6; symbols: forward，涉及 `forward`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +4/-29 (33 lines); hunks: -28,7 +28,6; -109,7 +108,6; symbols: forward
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -28,7 +28,6 @@
+-    UnreducedOutput,
+@@ -109,7 +108,6 @@
+-    get_forward,
+@@ -953,16 +951,6 @@ def forward(
+-        should_allreduce_fusion = (
+-            self.layer_communicator.should_fuse_mlp_allreduce_with_next_layer(
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +4/-29
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_step3p5_dense_reduce_scatter.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #36903 - [AMD] Add GLM-5.3-Flash MI35x nightly test
+
+- 链接: https://github.com/sgl-project/sglang/pull/36903
+- 状态/时间: merged / 2026-09-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py`；关联提交 `25de80780a9e`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+178/-25，可读 patch 256 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py` added +165/-0 (165 lines); hunks: -0,0 +1,165; symbols: TestGLM53FlashEvalMI35x, test_glm_53_flash，涉及 `TestGLM53FlashEvalMI35x, test_glm_53_flash`。
+- 代码 diff 细节:
+  - `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py` added +165/-0 (165 lines); hunks: -0,0 +1,165; symbols: TestGLM53FlashEvalMI35x, test_glm_53_flash
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py
+@@ -0,0 +1,165 @@
++"""MI35x GLM-5.3-Flash GSM8K Accuracy Evaluation Test (8-GPU)
++Tests zai-org/GLM-5.3-Flash on MI35x (gfx950) with the AMD FP8 recipe from the
++GLM-5.3-Flash cookbook refresh (#36712): TP8 + EP8, BF16 KV cache, TileLang DSA
++prefill+decode, Triton linear attention, AITER MoE runner, SGLANG_USE_AITER=1,
++full decode graphs at batch sizes 1 and 32.
++GLM-5.3-Flash is the first GLM checkpoint whose 45 text layers mix three
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py` added +165/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi35x/test_glm53_flash_eval_mi35x.py`, `test/run_suite.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41161 - [AMD] [GLM5] Fuse shared expert into AITER MoE on gfx950
+
+- 链接: https://github.com/sgl-project/sglang/pull/41161
+- 状态/时间: merged / 2026-09-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`, `test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py`；关联提交 `fa443412c558`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+556/-14，可读 patch 645 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `python/sglang/srt/models/glm5_next.py` modified +70/-9 (79 lines); hunks: -53,6 +53,7; -1338,6 +1339,8 @@ def shared_experts_fusion_disable_reason(cls, hf_config, q...; symbols: shared_experts_fusion_disable_reason, determine_num_fused_shared_experts，涉及 `shared_experts_fusion_disable_reason, determine_num_fused_shared_experts`；`test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py` added +265/-0 (265 lines); hunks: -0,0 +1,265; symbols: TestGlm53SharedExpertFusion, _quantize_weight, _make_weights, _fmoe，涉及 `TestGlm53SharedExpertFusion, _quantize_weight, _make_weights`。
+- 代码 diff 细节:
+  - `python/sglang/srt/models/glm5_next.py` modified +70/-9 (79 lines); hunks: -53,6 +53,7; -1338,6 +1339,8 @@ def shared_experts_fusion_disable_reason(cls, hf_config, q...; symbols: shared_experts_fusion_disable_reason, determine_num_fused_shared_experts
+  - `test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py` added +265/-0 (265 lines); hunks: -0,0 +1,265; symbols: TestGlm53SharedExpertFusion, _quantize_weight, _make_weights, _fmoe
+- 关键代码摘录:
+
+```diff
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -53,6 +53,7 @@
++from sglang.srt.layers.quantization.utils import is_layer_skipped
+@@ -1338,6 +1339,8 @@ def shared_experts_fusion_disable_reason(cls, hf_config, quant_config):
++        if getattr(text_config, "n_shared_experts", None) != 1:
++            return "Shared experts fusion requires exactly one shared expert."
+@@ -1349,20 +1352,78 @@ def shared_experts_fusion_disable_reason(cls, hf_config, quant_config):
+-        if not _is_cuda:
+diff -- test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py
+@@ -0,0 +1,265 @@
++"""gfx950 component checks for GLM-5.3 shared-expert AITER fusion."""
++import unittest
++import aiter
++import torch
++import torch.nn.functional as F
++from aiter import dtypes, pertoken_quant
+```
+
+- 提取文件（未人工审阅）:
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +70/-9
+  - tests: `test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py` added +265/-0
+- 验证与风险: diff 自带测试面 `test/registered/kernels/ops/moe/test_glm53_shared_expert_fusion.py`, `test/registered/unit/layers/moe/test_fused_shared_expert_scaling.py`, `test/registered/unit/models/test_shared_experts_fusion_gates.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41597 - [Docs][AMD] Update GLM-5.2 MI355X daily image
+
+- 链接: https://github.com/sgl-project/sglang/pull/41597
+- 状态/时间: merged / 2026-09-28
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；关联提交 `26d7539799ec`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260920`. Choose **Lo
++- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260924`. Choose **Lo
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #41464 - [AMD] Fix GLM-5.3 quark MoE MI35x test runner config
+
+- 链接: https://github.com/sgl-project/sglang/pull/41464
+- 状态/时间: merged / 2026-09-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py`；关联提交 `05817a40c98a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+2/-0，可读 patch 10 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` modified +2/-0 (2 lines); hunks: -49,7 +49,9 @@ def setUpClass(cls):; symbols: setUpClass，涉及 `setUpClass`。
+- 代码 diff 细节:
+  - `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` modified +2/-0 (2 lines); hunks: -49,7 +49,9 @@ def setUpClass(cls):; symbols: setUpClass
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py
+@@ -49,7 +49,9 @@ def setUpClass(cls):
++                is_gated=True,
++                gemm1_beta=None,
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py` modified +2/-0
+- 验证与风险: diff 自带测试面 `test/registered/e2e/moe/test_glm53_flash_quark_moe_mi35x.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41602 - [AMD] Add GLM-5.3 MI30x and MI35x nightly accuracy tests
+
+- 链接: https://github.com/sgl-project/sglang/pull/41602
+- 状态/时间: merged / 2026-09-29
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py`, `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py`；关联提交 `5828cd49276a`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 4 个文件，+329/-67，可读 patch 489 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: of, TestGLM53EvalMI35x, test_glm_53，涉及 `of, TestGLM53EvalMI35x, test_glm_53`；`test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py` added +142/-0 (142 lines); hunks: -0,0 +1,142; symbols: TestGLM53EvalMI30x, test_glm_53，涉及 `TestGLM53EvalMI30x, test_glm_53`。
+- 代码 diff 细节:
+  - `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py` added +151/-0 (151 lines); hunks: -0,0 +1,151; symbols: of, TestGLM53EvalMI35x, test_glm_53
+  - `test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py` added +142/-0 (142 lines); hunks: -0,0 +1,142; symbols: TestGLM53EvalMI30x, test_glm_53
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py
+@@ -0,0 +1,151 @@
++"""MI35x GLM-5.3 GSM8K Accuracy Evaluation Test (8-GPU)
++Tests zai-org/GLM-5.3 (FP8) on MI35x (gfx950) with the GLM-5.3 cookbook's
++MI355X / FP8 / low-latency / single-node cell: TP8, DSA tilelang prefill+decode,
++131072 chunked prefill, 0.80 static memory fraction, and a 20-minute watchdog
++for weight loading. No MTP: the cookbook disables speculative decoding on AMD.
++The day-0 dashboard (https://rocm.github.io/sglang-ci/day0/) lists MI355X FP8 as
+diff -- test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py
+@@ -0,0 +1,142 @@
++"""MI30x GLM-5.3 GSM8K Accuracy Evaluation Test (8-GPU)
++Tests zai-org/GLM-5.3 (FP8) on MI30x (gfx942) with the GLM-5.3 cookbook's
++MI300X / FP8 / low-latency / single-node cell: TP8, DSA tilelang prefill+decode,
++131072 chunked prefill, 0.80 static memory fraction, and a 20-minute watchdog
++for weight loading. The MI325X cell uses the same flags. Same eval and
++threshold as the gfx950 gate in test_glm53_eval_mi35x.py.
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py` added +151/-0; `test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py` added +142/-0
+- 验证与风险: diff 自带测试面 `test/registered/amd/accuracy/mi30x/test_glm53_eval_mi30x.py`, `test/registered/amd/accuracy/mi35x/test_glm53_eval_mi35x.py`, `test/run_suite.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #41135 - [AMD][DI][CI] Leave the GLM-5.2 MTP decode room to load its Triton kernels
+
+- 链接: https://github.com/sgl-project/sglang/pull/41135
+- 状态/时间: merged / 2026-09-30
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml`；关联提交 `3b537e96e2e6`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+10/-0，可读 patch 17 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` modified +10/-0 (10 lines); hunks: -51,6 +51,16 @@ runtime:。
+- 代码 diff 细节:
+  - `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` modified +10/-0 (10 lines); hunks: -51,6 +51,16 @@ runtime:
+- 关键代码摘录:
+
+```diff
+diff -- scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml
+@@ -51,6 +51,16 @@ runtime:
++  # MTP captures three graphs where the non-MTP sibling captures one: target
++  # verify 6.53 GB, draft decode 7.71 GB, draft extend 1.76 GB. At the same
++  # 0.90 that leaves 11.46 GB free after init against the sibling's 25.07 GB.
++  # Concurrency 256 spends the rest, and the DSA metadata kernels, which Triton
++  # first loads onto the device mid-serving, have nothing left to load into.
++  # The module load fails as hipErrorLaunchOutOfResources and ROCr aborts the
+```
+
+- 提取文件（未人工审阅）:
+  - other: `scripts/ci/slurm/recipes/mi355x-fp4/glm52/1k1k/1p1d-mtp.yaml` modified +10/-0
+- 验证与风险: 未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。
+
+### PR #41986 - [Docs] Add NVIDIA NVFP4 checkpoint to GLM-5.3-Flash cookbook
+
+- 链接: https://github.com/sgl-project/sglang/pull/41986
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；关联提交 `40e1bb0f3667`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 3 个文件，+258/-227，可读 patch 648 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +227/-66 (293 lines); hunks: -19,7 +19,13 @@ export const config = {; -150,6 +156,7 @@ export const config = {；`docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +30/-160 (190 lines); hunks: -210,166 +210,6 @@ export const benchmarks = [; -509,12 +349,42 @@ export const benchmarks = [；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +1/-1 (2 lines); hunks: -71,7 +71,7 @@ GLM-5.3-Flash is a natively multimodal Mixture-of-Experts mode...。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +227/-66 (293 lines); hunks: -19,7 +19,13 @@ export const config = {; -150,6 +156,7 @@ export const config = {
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +30/-160 (190 lines); hunks: -210,166 +210,6 @@ export const benchmarks = [; -509,12 +349,42 @@ export const benchmarks = [
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +1/-1 (2 lines); hunks: -71,7 +71,7 @@ GLM-5.3-Flash is a natively multimodal Mixture-of-Experts mode...
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -19,7 +19,13 @@ export const config = {
+-          label: "NVFP4",
++          label: "NVFP4 (RDXA)",
++          disabled: (s) => !["gb300", "gb200", "b200", "b300"].includes(s.hw),
++          disableReason: "The NVFP4 W4A4 kernels are Blackwell-only; Hopper cannot serve this checkpoint.",
++        },
++        {
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx
+@@ -210,166 +210,6 @@ export const benchmarks = [
+-  {
+-    match: { hw: "gb300", strategy: "low-latency", quant: "nvfp4", kvDsaPair: "bf16-tilelang" },
+-    sglang_version: "fe236ea6c3",
+-    latencyPercentile: "Mean",
+-    speed: [
+-      {
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx
+@@ -71,7 +71,7 @@ GLM-5.3-Flash is a natively multimodal Mixture-of-Experts model built around a h
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +227/-66; `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx` modified +30/-160; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash-benchmarks.jsx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #39273 - [AMD] [GLM-5.3-Flash] Enable FP8 and MXFP4 serving on gfx950
+
+- 链接: https://github.com/sgl-project/sglang/pull/39273
+- 状态/时间: merged / 2026-10-01
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx`, `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx`, `python/sglang/srt/models/glm5_next.py`, `test/registered/unit/models/test_glm5_next_modelopt.py`；关联提交 `f17f7705a5a6`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 34 个文件，+1045/-115，可读 patch 1966 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +159/-7 (166 lines); hunks: -1,7 +1,7; -17,6 +17,12 @@ export const config = {；`test/registered/unit/models/test_glm5_next_modelopt.py` modified +43/-2 (45 lines); hunks: -1,6 +1,8; -10,7 +12,7; symbols: test_nextn_mapper_routes_checkpoint_names_to_runtime_modules, TestGlm5NextNextNScaleLoading, _load, _param，涉及 `test_nextn_mapper_routes_checkpoint_names_to_runtime_modules, TestGlm5NextNextNScaleLoading, _load`；`python/sglang/srt/models/glm5_next.py` modified +9/-3 (12 lines); hunks: -25,6 +25,7; -317,11 +318,14 @@ def __init__(; symbols: __init__, load_weights, maybe_map_fp8_block_scale_name，涉及 `__init__, load_weights, maybe_map_fp8_block_scale_name`；`docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +13/-11 (24 lines); hunks: -1,6 +1,6; -16,7 +16,9 @@ Use an SGLang build that includes GLM-5.3-Flash support (v0.5....。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +159/-7 (166 lines); hunks: -1,7 +1,7; -17,6 +17,12 @@ export const config = {
+  - `test/registered/unit/models/test_glm5_next_modelopt.py` modified +43/-2 (45 lines); hunks: -1,6 +1,8; -10,7 +12,7; symbols: test_nextn_mapper_routes_checkpoint_names_to_runtime_modules, TestGlm5NextNextNScaleLoading, _load, _param
+  - `python/sglang/srt/models/glm5_next.py` modified +9/-3 (12 lines); hunks: -25,6 +25,7; -317,11 +318,14 @@ def __init__(; symbols: __init__, load_weights, maybe_map_fp8_block_scale_name
+  - `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +13/-11 (24 lines); hunks: -1,6 +1,6; -16,7 +16,9 @@ Use an SGLang build that includes GLM-5.3-Flash support (v0.5....
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx
+@@ -1,7 +1,7 @@
+-  supportedHardware: ["gb300", "h100", "h200", "b200", "b300", "gb200"],
++  supportedHardware: ["gb300", "h100", "h200", "b200", "b300", "gb200", "mi355x"],
+@@ -17,6 +17,12 @@ export const config = {
++        {
++          id: "mxfp4",
++          label: "MXFP4",
+diff -- test/registered/unit/models/test_glm5_next_modelopt.py
+@@ -1,6 +1,8 @@
+-from unittest.mock import patch
++from unittest.mock import Mock, patch
++import torch
+@@ -10,7 +12,7 @@
+-register_cpu_ci(est_time=5, suite="base-a-test-cpu")
++register_cpu_ci(est_time=6, suite="base-a-test-cpu")
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -25,6 +25,7 @@
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.3-flash.jsx` modified +159/-7; `docs/cookbook/autoregressive/GLM/GLM-5.3-Flash.mdx` modified +13/-11
+  - tests: `test/registered/unit/models/test_glm5_next_modelopt.py` modified +43/-2
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +9/-3
+- 验证与风险: diff 自带测试面 `test/registered/kernels/ops/attention/test_fused_kda_conv_recurrent_verify.py`, `test/registered/kernels/ops/attention/test_kpool_topk_transform_fused.py`, `test/registered/unit/entrypoints/openai/test_serving_chat.py`, `test/registered/unit/layers/attention/test_dsa_mqa_logits_chunking.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
+
+### PR #42109 - [Docs] GLM-5.2 GB300 NVFP4: add env vars from InferenceX AgentX recipe
+
+- 链接: https://github.com/sgl-project/sglang/pull/42109
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；关联提交 `8acd36b56bfa`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+41/-7，可读 patch 78 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +41/-7 (48 lines); hunks: -817,28 +817,55 @@ sgl-eval run aime25 \\; -860,7 +887,14 @@ sgl-eval run aime25 \\。
+- 代码 diff 细节:
+  - `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +41/-7 (48 lines); hunks: -817,28 +817,55 @@ sgl-eval run aime25 \\; -860,7 +887,14 @@ sgl-eval run aime25 \\
+- 关键代码摘录:
+
+```diff
+diff -- docs/src/snippets/configs/zai-org/glm-5.2.jsx
+@@ -817,28 +817,55 @@ sgl-eval run aime25 \\
+-      env: [],
++      env: [
++        "SGLANG_DISABLE_TP_MEMORY_INBALANCE_CHECK=1",
++        "SGLANG_ENABLE_THINKING=1",
++        "SGLANG_ENABLE_UNIFIED_RADIX_TREE=1",
++        "SGLANG_HICACHE_DEBUG_LOG=1",
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/src/snippets/configs/zai-org/glm-5.2.jsx` modified +41/-7
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/src/snippets/configs/zai-org/glm-5.2.jsx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #42278 - [Docs][AMD] Update GLM-5.2 MI355X daily image to 20260930
+
+- 链接: https://github.com/sgl-project/sglang/pull/42278
+- 状态/时间: merged / 2026-10-02
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；关联提交 `cbe070b6bfce`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 1 个文件，+1/-1，可读 patch 9 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";。
+- 代码 diff 细节:
+  - `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1 (2 lines); hunks: -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+- 关键代码摘录:
+
+```diff
+diff -- docs/cookbook/autoregressive/GLM/GLM-5.2.mdx
+@@ -124,7 +124,7 @@ import { Playground } from "/src/snippets/_playground.jsx";
+-- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260924`. Choose **Lo
++- **MTP / EAGLE speculative decoding on AMD.** Five-step MTP is validated for `amd/GLM-5.2-MXFP4` on MI355X with `lmsysorg/sglang-rocm:v0.5.20-rocm720-mi35x-20260930`. Choose **Lo
+```
+
+- 提取文件（未人工审阅）:
+  - docs: `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx` modified +1/-1
+- 验证与风险: 该 PR 主要落在文档/示例 `docs/cookbook/autoregressive/GLM/GLM-5.2.mdx`；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。
+
+### PR #41870 - [AMD] GLM-5.3-Flash: fuse shared expert and KDA projections on Quark MXFP4
+
+- 链接: https://github.com/sgl-project/sglang/pull/41870
+- 状态/时间: merged / 2026-10-03
+- 反查来源: `git log --name-only -- <model-files>` 反查到 `python/sglang/srt/models/glm5_next.py`, `test/registered/unit/models/test_glm5_next_bfg_fusion.py`；关联提交 `af1bef3eaf72`
+- 提取的 diff 范围（不是人工审计）: GitHub Pull Request files API 返回 5 个文件，+245/-7，可读 patch 353 行；API patch 可能被截断或缺失，用作优化证据前须人工阅读完整 diff。
+- 动机: 待人工核验；标题和文件清单仅供发现 PR，不构成已核验的动机。
+- 实现变更清单（机器提取）: `test/registered/unit/models/test_glm5_next_bfg_fusion.py` modified +65/-0 (65 lines); hunks: -5,6 +5,7; -30,6 +31,8 @@ class MockFp8Config:; symbols: MockFp8Config, __init__, get_name, get_quant_method，涉及 `MockFp8Config, __init__, get_name`；`python/sglang/srt/models/glm5_next.py` modified +51/-7 (58 lines); hunks: -40,7 +40,6; -54,7 +53,6; symbols: _can_fuse_proj, shared_experts_fusion_disable_reason, _quark_mxfp4_shared_fusion_disable_reason，涉及 `_can_fuse_proj, shared_experts_fusion_disable_reason, _quark_mxfp4_shared_fusion_disable_reason`。
+- 代码 diff 细节:
+  - `test/registered/unit/models/test_glm5_next_bfg_fusion.py` modified +65/-0 (65 lines); hunks: -5,6 +5,7; -30,6 +31,8 @@ class MockFp8Config:; symbols: MockFp8Config, __init__, get_name, get_quant_method
+  - `python/sglang/srt/models/glm5_next.py` modified +51/-7 (58 lines); hunks: -40,7 +40,6; -54,7 +53,6; symbols: _can_fuse_proj, shared_experts_fusion_disable_reason, _quark_mxfp4_shared_fusion_disable_reason
+- 关键代码摘录:
+
+```diff
+diff -- test/registered/unit/models/test_glm5_next_bfg_fusion.py
+@@ -5,6 +5,7 @@
++from sglang.srt.layers.quantization.base_config import QuantizationConfig
+@@ -30,6 +31,8 @@ class MockFp8Config:
++    is_linear_unquantized = QuantizationConfig.is_linear_unquantized
+@@ -44,6 +47,35 @@ def get_quant_method(self, layer, prefix):
++def quark_mxfp4_config(excluded):
++    """A Quark MXFP4 export that keeps `excluded` in BF16, named as the HF
+diff -- python/sglang/srt/models/glm5_next.py
+@@ -40,7 +40,6 @@
+-    LinearBase,
+@@ -54,7 +53,6 @@
+-from sglang.srt.layers.quantization.unquant import UnquantizedLinearMethod
+@@ -359,10 +357,10 @@ def _can_fuse_proj(
++            "quark",
+-        probe = LinearBase(1, 1)
+```
+
+- 提取文件（未人工审阅）:
+  - tests: `test/registered/unit/models/test_glm5_next_bfg_fusion.py` modified +65/-0
+  - runtime: `python/sglang/srt/models/glm5_next.py` modified +51/-7
+- 验证与风险: diff 自带测试面 `test/registered/unit/models/test_glm5_next_bfg_fusion.py`, `test/registered/unit/models/test_shared_experts_fusion_gates.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
 ## 补漏结论
 

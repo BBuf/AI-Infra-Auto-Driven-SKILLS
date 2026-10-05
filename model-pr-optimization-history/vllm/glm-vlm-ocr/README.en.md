@@ -1,21 +1,21 @@
-# vllm GLM VLM/OCR Model PR Optimization History
+# vLLM GLM VLM/OCR Model PR Optimization History
 
 ## Implementation File Coverage
 
 | File | Git-traced PRs |
 | --- | --- |
 | `tests/models/multimodal/processing/test_glm4_1v.py` | [#48729](https://github.com/vllm-project/vllm/pull/48729) |
-| `vllm/model_executor/models/glm4_1v.py` | [#21678](https://github.com/vllm-project/vllm/pull/21678), [#22751](https://github.com/vllm-project/vllm/pull/22751), [#33005](https://github.com/vllm-project/vllm/pull/33005), [#34483](https://github.com/vllm-project/vllm/pull/34483), [#37962](https://github.com/vllm-project/vllm/pull/37962), [#47155](https://github.com/vllm-project/vllm/pull/47155), [#48729](https://github.com/vllm-project/vllm/pull/48729) |
+| `vllm/model_executor/models/glm4_1v.py` | [#21678](https://github.com/vllm-project/vllm/pull/21678), [#22751](https://github.com/vllm-project/vllm/pull/22751), [#33005](https://github.com/vllm-project/vllm/pull/33005), [#34483](https://github.com/vllm-project/vllm/pull/34483), [#37962](https://github.com/vllm-project/vllm/pull/37962), [#47155](https://github.com/vllm-project/vllm/pull/47155), [#48729](https://github.com/vllm-project/vllm/pull/48729), [#55389](https://github.com/vllm-project/vllm/pull/55389) |
 | `vllm/model_executor/models/glm4v.py` | no direct PR-number commit |
-| `vllm/model_executor/models/glm_ocr.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005), [#33350](https://github.com/vllm-project/vllm/pull/33350), [#37962](https://github.com/vllm-project/vllm/pull/37962) |
-| `vllm/model_executor/models/glm_ocr_mtp.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005) |
+| `vllm/model_executor/models/glm_ocr.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005), [#33350](https://github.com/vllm-project/vllm/pull/33350), [#37962](https://github.com/vllm-project/vllm/pull/37962), [#55389](https://github.com/vllm-project/vllm/pull/55389) |
+| `vllm/model_executor/models/glm_ocr_mtp.py` | [#33005](https://github.com/vllm-project/vllm/pull/33005), [#56447](https://github.com/vllm-project/vllm/pull/56447) |
 | `vllm/transformers_utils/processors/glm4v.py` | no direct PR-number commit |
 
 ## PR Coverage Summary
 
-- Git-traced PRs: 8
+- Git-traced PRs: 10
 - Extra PRs preserved from existing docs: 10
-- Total PRs in this document: 18
+- Total PRs in this document: 20
 - File trace command: `git log --name-only -- <model-files>`
 - Diff audit source: GitHub Pull Request files API
 
@@ -41,6 +41,8 @@
 | 2026-06-16 | [#43586](https://github.com/vllm-project/vllm/pull/43586) | merged | [MM][Perf][CG] Support dual-path ViT full CUDA graph for DeepSeek-OCR | `vllm/model_executor/models/deepseek_ocr.py`, `docs/design/cuda_graphs_multimodal.md`, `tests/models/multimodal/generation/test_vit_cudagraph.py` |
 | 2026-07-03 | [#47155](https://github.com/vllm-project/vllm/pull/47155) | merged | [GLM4V] Avoid GLM4V processor init during startup metadata reads | `vllm/model_executor/models/glm4_1v.py` |
 | 2026-07-17 | [#48729](https://github.com/vllm-project/vllm/pull/48729) | merged | [Bugfix][GLM4V] Fix video dummy profiling and memory usage | `vllm/model_executor/models/glm4_1v.py`, `tests/models/multimodal/processing/test_glm4_1v.py` |
+| 2026-09-11 | [#56447](https://github.com/vllm-project/vllm/pull/56447) | merged | [Bugfix] Fix GLM-OCR MTP position masking during CUDA graph capture | `vllm/model_executor/models/glm_ocr_mtp.py` |
+| 2026-09-30 | [#55389](https://github.com/vllm-project/vllm/pull/55389) | merged | [Model] Extend device-side mm normalization to GLM4V/GLM5Next | `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py` |
 
 ## Per-PR Diff Audit Cards
 
@@ -689,6 +691,66 @@ diff -- tests/models/multimodal/processing/test_glm4_1v.py
   - runtime: `vllm/model_executor/models/glm4_1v.py` modified +20/-49
   - tests: `tests/models/multimodal/processing/test_glm4_1v.py` modified +52/-0
 - Risk and verification: The diff ships test coverage in `tests/models/multimodal/processing/test_glm4_1v.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
+
+### PR #56447 - [Bugfix] Fix GLM-OCR MTP position masking during CUDA graph capture
+
+- Link: https://github.com/vllm-project/vllm/pull/56447
+- Status/date: merged / 2026-09-11
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm_ocr_mtp.py`; associated commits `89dbb2644552`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 1 files, +2/-1, 10 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/glm_ocr_mtp.py` modified +2/-1 (3 lines); hunks: -86,7 +86,8 @@ def forward(; symbols: forward, touching `forward`.
+- Code diff details:
+  - `vllm/model_executor/models/glm_ocr_mtp.py` modified +2/-1 (3 lines); hunks: -86,7 +86,8 @@ def forward(; symbols: forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm_ocr_mtp.py
+@@ -86,7 +86,8 @@ def forward(
+-        inputs_embeds[positions[0] == 0] = 0
++        token_positions = positions[0] if positions.ndim == 2 else positions
++        inputs_embeds.masked_fill_((token_positions == 0).unsqueeze(-1), 0)
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/glm_ocr_mtp.py` modified +2/-1
+- Risk and verification: Runtime changes concentrate in `vllm/model_executor/models/glm_ocr_mtp.py`; regression risk is weight loading, parallel sharding, attention/MoE backend selection, and parser output.
+
+### PR #55389 - [Model] Extend device-side mm normalization to GLM4V/GLM5Next
+
+- Link: https://github.com/vllm-project/vllm/pull/55389
+- Status/date: merged / 2026-09-30
+- Trace source: `git log --name-only -- <model-files>` found it through `vllm/model_executor/models/glm4_1v.py`, `vllm/model_executor/models/glm_ocr.py`; associated commits `0a30bc3f9ac3`
+- Extracted diff scope (not a manual audit): GitHub Pull Request files API returned 7 files, +114/-10, 279 readable patch lines; API patches may be truncated or absent; inspect the full diff before using this entry as optimization evidence.
+- Motivation: Manual review pending; the PR title and file inventory are discovery evidence, not an inferred rationale.
+- Key implementation inventory (machine-extracted): `vllm/model_executor/models/glm4_1v.py` modified +16/-7 (23 lines); hunks: -61,6 +61,10; -616,6 +620,7 @@ def __init__(; symbols: __init__, forward, Glm4vForConditionalGeneration, get_placeholder_str, touching `__init__, forward, Glm4vForConditionalGeneration`; `vllm/model_executor/models/glm_ocr.py` modified +12/-2 (14 lines); hunks: -48,6 +48,7; -254,9 +255,17 @@ def __init__(; symbols: __init__, forward, touching `__init__, forward`.
+- Code diff details:
+  - `vllm/model_executor/models/glm4_1v.py` modified +16/-7 (23 lines); hunks: -61,6 +61,10; -616,6 +620,7 @@ def __init__(; symbols: __init__, forward, Glm4vForConditionalGeneration, get_placeholder_str
+  - `vllm/model_executor/models/glm_ocr.py` modified +12/-2 (14 lines); hunks: -48,6 +48,7; -254,9 +255,17 @@ def __init__(; symbols: __init__, forward
+- Key code excerpts:
+
+```diff
+diff -- vllm/model_executor/models/glm4_1v.py
+@@ -61,6 +61,10 @@
++from vllm.model_executor.layers.fusion.mm_input_norm import (
++    IdentityInputNorm,
++    build_mm_input_norm,
++)
+@@ -616,6 +620,7 @@ def __init__(
++        input_norm: nn.Module | None = None,
+diff -- vllm/model_executor/models/glm_ocr.py
+@@ -48,6 +48,7 @@
++from vllm.model_executor.layers.fusion.mm_input_norm import build_mm_input_norm
+@@ -254,9 +255,17 @@ def __init__(
++        input_norm: nn.Module | None = None,
+-        super().__init__(text_config, vision_config, norm_eps, quant_config, prefix)
++        super().__init__(
++            text_config,
+```
+
+- Extracted files (not manually reviewed):
+  - runtime: `vllm/model_executor/models/glm4_1v.py` modified +16/-7; `vllm/model_executor/models/glm_ocr.py` modified +12/-2
+- Risk and verification: The diff ships test coverage in `tests/models/multimodal/generation_ppl_test/test_glm.py`, `tests/models/multimodal/processing/test_glm5next.py`; future changes in this area should rerun those tests plus a minimal launch or accuracy smoke.
 
 ## Gap-Closure Notes
 
