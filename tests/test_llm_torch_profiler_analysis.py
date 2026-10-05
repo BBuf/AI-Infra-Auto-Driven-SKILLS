@@ -124,6 +124,38 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                     common.detect_framework_from_url("http://server"), expected
                 )
 
+    def test_staged_capture_returns_only_this_runs_labeled_copies(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory(prefix="old-prefill-") as tmp:
+            root = Path(tmp).resolve()
+            (root / "old-rank-0.trace.json").write_text('{"traceEvents": []}')
+            fixed = root / "worker-rank-0.trace.json"
+            rounds = iter(["prefill-new", "decode-new"])
+
+            def post(url, payload=None, **kwargs):
+                if url.endswith("/stop_profile"):
+                    fixed.write_text(json.dumps({"traceEvents": [{"name": next(rounds)}]}))
+
+            with (
+                mock.patch.object(common, "post_json", side_effect=post),
+                mock.patch.object(common, "discover_openai_model", return_value="model"),
+                mock.patch.object(common, "send_probe_requests"),
+                mock.patch.object(common.time, "sleep"),
+            ):
+                captured = common.run_profiler(
+                    "http://server", str(root), 5, False, False, None,
+                    1, "x", 1, 0, framework="trtllm", warmup_steps=0,
+                )
+            self.assertNotEqual(captured, root)
+            selected, _ = common.discover_trace_targets(captured, all_traces=False)
+            self.assertEqual([common.parse_stage(p) for p in selected], ["extend", "decode"])
+            self.assertEqual(
+                [json.loads(p.read_text())["traceEvents"][0]["name"] for p in selected],
+                ["prefill-new", "decode-new"],
+            )
+            self.assertEqual(len(common.discover_trace_files(captured, recursive=True)), 2)
+            self.assertTrue(fixed.exists())
+
     def test_trtllm_rank_selection_prefers_rank_zero(self):
         common = sys.modules["profile_common"]
         with tempfile.TemporaryDirectory() as tmp:

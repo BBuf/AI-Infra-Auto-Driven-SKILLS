@@ -11,14 +11,14 @@ actual model, framework revision, phase, device/rank and parallelism before
 choosing a fast path. Existing traces need no GPU or framework installation.
 The Python analyzers use the standard library.
 
-Read [source contracts](../../docs/upstream-source-contracts.md) for the
-dated source inspections and version-sensitive profiler APIs. For DSV4.1,
-PDL, shared experts, WO-A, mHC or DSPARK, read
-[the kernel optimization lessons](references/dsv41-kernel-optimization.md).
-For DeepGEMM candidate indexing, FlashMLA KV formats or DeepSelect/top-k, read
-[the integration evidence](references/dsv41-upstream-kernels.md); for single-pass
-mHC, read [the fusion eligibility matrix](references/dsv41-mhc-fusions.md).
-Source checks and old model captures are not fresh GPU validation.
+Read [source contracts](../../docs/upstream-source-contracts.md) for dated
+source inspections and version-sensitive profiler APIs. Apply the general
+[dispatch and numerical principles](references/heuristics.md#establish-dispatch-and-numerical-contracts)
+to every model. The [fusion catalog](references/fuse-overlap-catalog.md)
+contains concrete operator families, eligibility examples and storage contracts;
+the [overlap catalog](references/overlap-catalog.md) covers scheduling.
+Consult the model-history knowledge base when detailed PR evidence is needed.
+Source checks and historical captures are not fresh GPU validation.
 
 ## Choose the evidence
 
@@ -175,8 +175,8 @@ or already active in a different framework.
 Load only relevant references:
 
 - [source-map.md](references/source-map.md): immutable profiler and worker paths.
-- [dsv41-kernel-optimization.md](references/dsv41-kernel-optimization.md): PDL,
-  WO-A/RoPE/quant, mHC/AR, shared-expert split-K, metadata and accuracy traps.
+- [heuristics.md](references/heuristics.md): attribution and overlap labels,
+  dispatch, numerical contracts, validation and their limitations.
 - [vllm-torch-compile-fusions.md](references/vllm-torch-compile-fusions.md):
   current pass registration, platform gates and source patterns.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
@@ -184,7 +184,6 @@ Load only relevant references:
   recheck a PR's current state and target revision before borrowing code.
   The overlap catalog also covers GPU idle gaps, scheduler overlap, phase
   graphs, metadata glue graphs, replay streams, PDL and collective dispatch.
-- [heuristics.md](references/heuristics.md): heuristic labels and limitations.
 
 Return the trace/report path, framework and available model/server arguments;
 the kernel, overlap-opportunity and fusion-pattern tables; the main exposed

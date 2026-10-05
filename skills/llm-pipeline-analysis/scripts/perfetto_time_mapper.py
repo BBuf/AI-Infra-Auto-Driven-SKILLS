@@ -100,9 +100,9 @@ def main():
     profile = configure_anchor_profile(profile, anchor_kernel, args.blocks_per_layer)
     compress_ratios = normalize_compress_ratios(config, args.num_layers)
     num_hash_layers = config.get("num_hash_layers", 0)
-    num_layers = args.num_layers or config.get(
-        "num_hidden_layers", profile.default_num_layers
-    )
+    num_layers = args.num_layers or config.get("num_hidden_layers")
+    if not num_layers or num_layers < 1:
+        raise ValueError("Verified layer count required: pass --num-layers or --config")
     anchor_indices = checked_anchor_indices(
         gpu, anchor_kernel, num_layers, profile.blocks_per_layer, args.anchor_offset
     )

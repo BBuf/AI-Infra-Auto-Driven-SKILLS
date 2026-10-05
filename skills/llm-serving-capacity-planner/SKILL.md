@@ -13,7 +13,7 @@ pool, CUDA graph, framework overhead, and token-capacity lines, then estimates
 concurrent requests for common token lengths.
 
 For DeepSeek-V4.1, read the
-[KV layout and page-allocation contract](../llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md#current-dispatch-and-kv-storage-contract)
+[KV layout and page-allocation contract](../llm-torch-profiler-analysis/references/fuse-overlap-catalog.md#paged-kv-storage-contract)
 before using 528 B/288 B in an estimate. These are per-stored-token payload and
 scale sizes, not allocation after page padding or total model KV bytes. Verify
 actual pool layout, compression ratios and sharing from the pinned source and logs.
@@ -129,7 +129,7 @@ headroom at the cost of KV capacity. Do not infer 0.88 when it is absent.
 
 ### KV Head Replication
 
-When `num_key_value_heads < tp_size`, KV cache is **replicated** across all TP ranks rather than split. For example, models with `kv_heads=1, tp=8` means each of the 8 cards stores a full copy of the KV cache — 8x the per-card KV memory compared to a split scenario.
+For standard GQA/MHA, each rank stores `max(1, num_key_value_heads // tp_size)` KV heads. When TP exceeds the head count, each head is replicated across a subgroup of ranks, not the whole head set on every rank. For `kv_heads=4, tp=8`, each rank stores one head; for `kv_heads=1, tp=8`, all eight ranks store that single head. MLA stores a replicated latent plus RoPE key instead. The theoretical calculation assumes all configured layers reside on the rank; use rank-local layer counts for pipeline parallelism.
 
 ### SWA (Sliding Window Attention) Compression
 

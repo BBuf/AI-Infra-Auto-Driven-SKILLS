@@ -53,9 +53,9 @@ This is the first check for wrong-output or wrong-weight problems.
 
 Use for runtime shape:
 
-- serialized `server_args`
+- flattened resolved startup fields and the original `launch_command`
 - scheduler info
-- per-DP `internal_states`
+- per-DP `internal_states`; `memory_usage.graph` maps capture phases to GiB
 - SGLang version
 
 This is usually the single best live snapshot.

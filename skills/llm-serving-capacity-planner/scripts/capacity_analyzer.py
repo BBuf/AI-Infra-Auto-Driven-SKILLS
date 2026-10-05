@@ -502,6 +502,9 @@ class ParsedLog:
     final_info: Optional[FinalInfo] = None
     weight_allocations: Dict[int, float] = field(default_factory=dict)
     kv_allocations: Dict[int, float] = field(default_factory=dict)
+    mamba_allocations: Dict[int, float] = field(default_factory=dict)
+    post_capture_allocations: Dict[int, float] = field(default_factory=dict)
+    kv_va_ranks: set = field(default_factory=set)
     framework: str = "unknown"  # "sglang" or "vllm"
     vllm: VllmMemoryInfo = field(default_factory=VllmMemoryInfo)
 
@@ -531,21 +534,31 @@ def parse_log(text: str) -> ParsedLog:
             result.server_args = parse_server_args(line)
 
         rank = _tp_rank(line)
+        if "KV Cache VA upper bound." in line:
+            result.kv_va_ranks.add(rank)
         if "Load weight end." in line:
             m = re.search(r"mem usage=([\d.]+) GB", line)
             if m:
-                result.weight_allocations[rank] = float(m[1])
-        if "KV Cache is allocated." in line or "Mamba Cache is allocated." in line:
-            sizes = re.findall(
-                r"(?:KV|K|V|conv_state|ssm_state) size: ([\d.]+) GB", line
-            )
+                result.weight_allocations[rank] = result.weight_allocations.get(
+                    rank, 0
+                ) + float(m[1])
+        if "KV Cache is allocated." in line:
+            sizes = re.findall(r"(?:KV|K|V) size: ([\d.]+)\s*GB", line)
             result.kv_allocations[rank] = result.kv_allocations.get(rank, 0) + sum(
                 map(float, sizes)
             )
+        if "Mamba Cache is allocated." in line:
+            sizes = re.findall(
+                r"(?:conv_state|ssm_state|intermediate_ssm_state_cache|intermediate_conv_window_cache) size: ([\d.]+)\s*GB",
+                line,
+            )
+            result.mamba_allocations[rank] = result.mamba_allocations.get(
+                rank, 0
+            ) + sum(map(float, sizes))
         if "Post-capture KV sizing:" in line:
             m = re.search(r"KV size: ([\d.]+) GB", line)
             if m:
-                result.kv_allocations[rank] = float(m[1])
+                result.post_capture_allocations[rank] = float(m[1])
 
         # Load weight begin
         ck = parse_load_weight_begin(line)
@@ -682,11 +695,9 @@ def calc_kv_bytes_per_token(
 
     # Standard GQA/MHA:
     # per_token = 2 * L * kv_heads * head_dim * dtype_bytes / tp_size
-    # But when kv_heads < tp_size, KV is replicated, so no TP division for KV
-    if mc.num_key_value_heads >= tp_size:
-        kv_heads_per_gpu = mc.num_key_value_heads / tp_size
-    else:
-        kv_heads_per_gpu = mc.num_key_value_heads  # replicated
+    # Replicate individual KV heads when TP exceeds the number of heads.
+    # Each rank stores one head, not the whole set of KV heads.
+    kv_heads_per_gpu = max(1, mc.num_key_value_heads // tp_size)
 
     per_token = 2 * L * kv_heads_per_gpu * mc.head_dim * kv_dtype_bytes
     return per_token
@@ -920,14 +931,29 @@ def decompose_memory(
             f"reported mem_usage from Capture cuda graph end (rank {cg_info.rank})"
         )
 
-    if target_rank in parsed.kv_allocations:
-        bd.kv_pool_gib = parsed.kv_allocations[target_rank]
+    if (
+        target_rank in parsed.kv_allocations
+        or target_rank in parsed.mamba_allocations
+        or target_rank in parsed.post_capture_allocations
+    ):
+        bd.kv_pool_gib = parsed.kv_allocations.get(
+            target_rank, 0
+        ) + parsed.mamba_allocations.get(target_rank, 0)
+        if target_rank in parsed.post_capture_allocations:
+            # Main emits a VA upper bound for the target, not an allocation.
+            # Any regular allocation lines alongside that belong to independent
+            # draft pools and must survive the target-only final resize.
+            if target_rank not in parsed.kv_va_ranks:
+                bd.kv_pool_gib = parsed.mamba_allocations.get(target_rank, 0)
+            bd.kv_pool_gib += parsed.post_capture_allocations[target_rank]
         bd.derivation["kv_pool"] = (
             "sum of logged pool allocations (post-capture replacement when present)"
         )
     if target_rank in parsed.weight_allocations:
         bd.model_weights_gib = parsed.weight_allocations[target_rank]
-        bd.derivation["model_weights"] = "Load weight end mem usage"
+        bd.derivation["model_weights"] = (
+            "sum of Load weight end mem usage for this rank"
+        )
     rank_graphs = [g for g in parsed.cuda_graphs if g.rank == target_rank]
     if rank_graphs:
         bd.cuda_graph_gib = sum(g.mem_usage_gb for g in rank_graphs)
@@ -1250,7 +1276,7 @@ def format_kv_pool_detail(
         if mc.num_key_value_heads < tp_size:
             replication = tp_size // mc.num_key_value_heads
             lines.append(
-                f"  Replication factor: {replication}x (kv_heads < tp_size, KV replicated across all TP ranks)"
+                f"  Replication factor: {replication}x (each KV head replicated across a subgroup of TP ranks)"
             )
         else:
             lines.append(f"  KV split across TP ranks (kv_heads >= tp_size)")
@@ -1264,9 +1290,14 @@ def format_kv_pool_detail(
             lines.append(
                 f"  Theoretical per-token KV: {per_token:.0f} bytes ({per_token / 1024:.2f} KB)"
             )
-            lines.append(
-                f"    = 2 x {mc.num_hidden_layers} layers x kv_heads_per_gpu x {mc.head_dim} head_dim x {kv_bytes} bytes"
-            )
+            if mc.attention_type == "mla":
+                lines.append(
+                    f"    = {mc.num_hidden_layers} layers x ({mc.kv_lora_rank} latent + {mc.qk_rope_head_dim} RoPE key) x {kv_bytes} bytes"
+                )
+            else:
+                lines.append(
+                    f"    = 2 x {mc.num_hidden_layers} layers x kv_heads_per_gpu x {mc.head_dim} head_dim x {kv_bytes} bytes"
+                )
 
     lines.append("")
     return "\n".join(lines)

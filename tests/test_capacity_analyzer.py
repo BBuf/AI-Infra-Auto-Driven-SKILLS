@@ -651,3 +651,45 @@ def test_vllm_info_memory_total_and_explicit_kv_budget():
     assert bd.kv_pool_gib == 49
     explicit = parse_log("vllm Initial free memory 75.0 GiB, reserved 40.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling")
     assert explicit.vllm.available_kv_cache_gib == 40
+
+
+def test_partial_kv_head_replication_uses_one_head_per_rank():
+    # Both upstream ModelConfig.get_num_kv_heads use max(1, heads // TP).
+    mc = ModelConfig(num_hidden_layers=32, num_key_value_heads=4, head_dim=128)
+    assert calc_kv_bytes_per_token(mc, 8, 2) == 2 * 32 * 128 * 2
+
+
+def test_mamba_physical_allocations_survive_post_capture_kv_replacement():
+    # Exact main Mamba emitter has no space before GB and includes intermediate
+    # speculative buffers. Post-capture resizes KV only, not these state buffers.
+    parsed = parse_log('''server_args={'tp_size': 1}
+[TP0] Load weight end. elapsed=1.00 s, mem usage=10.00 GB.
+[TP0] Load weight end. elapsed=1.00 s, mem usage=2.00 GB.
+[TP0] Mamba Cache is allocated. max_mamba_cache_size: 512, conv_state size: 0.20GB, ssm_state size: 0.50GB intermediate_ssm_state_cache size: 0.10GB intermediate_conv_window_cache size: 0.05GB
+[TP0] KV Cache is allocated. dtype: torch.bfloat16, #tokens: 10000, K size: 3.00 GB, V size: 3.00 GB
+[TP0] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 10000, KV size: 4.00 GB, avail mem=50.00 GB
+''')
+    bd = decompose_memory(parsed, 80)
+    assert abs(bd.kv_pool_gib - 4.85) < 1e-8
+    assert bd.model_weights_gib == 12
+
+
+def test_mla_report_formula_matches_latent_storage():
+    from capacity_analyzer import MemoryBreakdown, ParsedLog, format_kv_pool_detail
+    mc = ModelConfig(num_hidden_layers=61, kv_lora_rank=512, qk_rope_head_dim=64, attention_type='mla')
+    report = format_kv_pool_detail(ParsedLog(), MemoryBreakdown(), mc, 'bf16', 8)
+    assert '70272 bytes' in report
+    assert '(512 latent + 64 RoPE key)' in report
+    assert '= 2 x 61 layers' not in report
+
+
+def test_post_capture_target_va_bound_preserves_independent_draft_pool():
+    # is_post_capture_kv_active excludes draft workers; only the target emits
+    # VA upper bound. Its backed-byte summary does not include draft allocations.
+    parsed = parse_log('''server_args={'tp_size': 1, 'speculative_algorithm': 'EAGLE'}
+[TP0] KV Cache VA upper bound. dtype: torch.bfloat16, #tokens: 10000, K size: 20.00 GB, V size: 20.00 GB
+[TP0] KV Cache is allocated. dtype: torch.bfloat16, #tokens: 10000, K size: 1.00 GB, V size: 1.00 GB
+[TP0] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 10000, KV size: 30.00 GB, avail mem=40.00 GB
+[TP0] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 28.00 GB, avail mem=42.00 GB
+''')
+    assert decompose_memory(parsed, 80).kv_pool_gib == 30

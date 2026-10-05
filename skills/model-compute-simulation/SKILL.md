@@ -42,13 +42,17 @@ can issue six target-verify rows with DSPARK block size 5. Do not substitute
 acceptance length for the number of rows computed. Account for TP-sharded
 shared-expert shapes separately from routed expert assignments and EP.
 Do not divide an unverified model template by TP/EP and call it measured FLOPs.
+The simulator applies uniform TP division outside routed experts and uniform
+EP division inside routed experts. This is a what-if approximation: replicated
+routers, norms, latent projections and backend-dependent shared-expert
+ownership require a run-specific adjustment before interpreting MFU.
 The pinned V4.1 entry is a static target-model template; DSPARK draft, vision,
 Engram/PLE memory traffic and backend dispatch require separate evidence.
 
 Kernel-duration sums include overlap and possibly PDL dependency waits. Use
 wall-clock time for a whole-pass MFU denominator, and measured GPU SKU/dtype
 peaks rather than assuming every FP8 operation doubles useful FLOPs. Follow the
-[DSV4.1 source and profiling lessons](../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+[dispatch and timing principles](../llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts)
 when assigning kernel names to attention, shared experts, routing or mHC.
 
 ## Workflow
@@ -135,7 +139,7 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
   --gpu b200 --dtype bf16 \
-  --kernel-flow @/tmp/layer3_detail.json
+  --measured-ms 100 --kernel-flow @/tmp/layer3_detail.json
 ```
 
 The `--kernel-flow` parameter accepts a JSON string or `@file` path. It produces
@@ -176,7 +180,7 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
   --gpu b200 --dtype bf16 \
-  --kernel-detail @/tmp/layer3_detail.json
+  --measured-ms 100 --kernel-detail @/tmp/layer3_detail.json
 ```
 
 #### Method C: `--kernel-ms` (category-level approximation)
@@ -188,7 +192,7 @@ python3 skills/model-compute-simulation/scripts/model_compute_simulator.py "Qwen
   --batch-size 1 --seq-len 8192 \
   --tp 8 --dp 1 --ep 8 \
   --gpu b200 --dtype bf16 \
-  --kernel-ms '{
+  --measured-ms 100 --kernel-ms '{
     "mla": 4.922, "moe": 1.644, "allreduce": 0.769,
     "hadamard": 0.348, "mhc": 1.388, "gemm_fp8": 1.692,
     "gemm_bf16": 0.125, "rmsnorm": 0.227, "quant": 0.311,
@@ -203,7 +207,10 @@ distribution across entire categories, which is less precise than `--kernel-deta
 because generic GEMM categories (gemm_fp8, gemm_bf16) span multiple operator categories.
 
 Choose only one of `--per-layer-ms`, `--kernel-ms`, `--kernel-detail`, or
-`--kernel-flow`. All measured durations must be positive.
+`--kernel-flow`. All measured durations must be positive. The three kernel
+inputs also require `--measured-ms` from whole-pass wall-clock timing; the
+100 ms in these examples is a placeholder to replace with the measurement.
+Kernel-duration sums cannot establish elapsed time when streams overlap.
 
 Output includes:
 - Model architecture summary (layers, hidden_size, attention_type, MoE config)

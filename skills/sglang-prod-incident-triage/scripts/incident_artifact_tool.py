@@ -296,6 +296,13 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
     internal_states = server_info.get("internal_states") or []
     runtime_state = internal_states[0] if internal_states else {}
     memory_usage = runtime_state.get("memory_usage") or load0.get("memory") or {}
+    graph_usage = coalesce(memory_usage.get("graph"), memory_usage.get("graph_gb"))
+    graph_by_phase = graph_usage if isinstance(graph_usage, dict) else {}
+    graph_gb = (
+        sum(graph_by_phase.values()) if isinstance(graph_usage, dict) else graph_usage
+    )
+    running_reqs = sum_loads("num_running_reqs")
+    waiting_reqs = sum_loads("num_waiting_reqs")
 
     ttft_avg = safe_div(
         metric_sum(metrics, "sglang:time_to_first_token_seconds_sum"),
@@ -363,19 +370,22 @@ def build_bundle_summary(bundle_dir: Path) -> Dict[str, Any]:
             "kv_cache_gb": coalesce(
                 memory_usage.get("kvcache"), memory_usage.get("kv_cache_gb")
             ),
-            "graph_gb": coalesce(
-                memory_usage.get("graph"), memory_usage.get("graph_gb")
-            ),
+            "graph_gb": graph_gb,
+            "graph_by_phase_gb": graph_by_phase,
             "token_capacity": memory_usage.get("token_capacity"),
         },
         "point_in_time_load": {
-            "running_reqs": sum_loads("num_running_reqs"),
-            "waiting_reqs": sum_loads("num_waiting_reqs"),
-            "total_reqs": sum_loads("num_total_reqs"),
+            "running_reqs": running_reqs,
+            "waiting_reqs": waiting_reqs,
+            "total_reqs": (
+                running_reqs + waiting_reqs
+                if running_reqs is not None and waiting_reqs is not None
+                else None
+            ),
             "token_usage": max_loads("token_usage"),
             "avg_throughput": sum_loads("gen_throughput"),
             "avg_utilization": max_loads("utilization"),
-            "cache_hit_rate": load0.get("cache_hit_rate"),
+            "cache_hit_rate": load0.get("cache_hit_rate") if len(loads) == 1 else None,
             "per_rank": [
                 {
                     key: row.get(key)

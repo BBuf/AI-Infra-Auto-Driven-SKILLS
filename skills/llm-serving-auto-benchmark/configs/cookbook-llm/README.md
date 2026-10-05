@@ -36,7 +36,7 @@ With captured help files, add `--help-dir <artifact-help-dir>` to check the conc
 ## 2026-10-05 source refresh
 
 The directory now contains 51 configs. Nine added recipes copy frozen-head
-verified SGLang cells: GLM-5.3-Flash (B200 FP8), GLM-5.3 (B300 BF16,
+SGLang cells: GLM-5.3-Flash (B200 FP8; source verification in progress), GLM-5.3 (B300 BF16,
 non-speculative), Qwen3.8-Flash-Next (H200 FP8), Hy4-preview (B200 MXFP8),
 Granite4.2 3B (H200), K2-Horizon 0.9B (H200, pinned model revision),
 MiniCPM5 2B (H200), Ling3 Flash VL (H200 BF16; text-only workload), and
@@ -53,3 +53,5 @@ flags. FA3 is excluded from that Blackwell search. Ling3's context env is
 rendered in its server command. Model-specific image requirements are recorded
 in `source.required_image` for new recipes and in the runbook for older ones.
 No GPU runs were performed for this refresh.
+
+The GLM-5.3-Flash B200 template follows a published cell whose `verificationStatus` predicate overrides its `verified: true` boolean: the default selection is **in progress**, and other overlays can be unverified. Its enabled template exposes available source flags; it does not claim completed upstream or local GPU qualification.

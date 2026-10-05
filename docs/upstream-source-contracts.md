@@ -14,25 +14,26 @@ FlashInfer/CUDA/Triton versions for every run. Later commits may change dispatch
 | tensorrt-llm | `main` | [`bb367fc8c1ad`](https://github.com/NVIDIA/TensorRT-LLM/commit/bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60) |
 | tokenspeed | `main` | [`6fa10840d5c3`](https://github.com/lightseekorg/tokenspeed/commit/6fa10840d5c3c23065f60428ad264fba60fa04ae) |
 
-## DSV4.1 kernel addendum: 2026-09-22
+## Fusion and storage evidence
 
-This scoped update inspects SGLang main
-[`771c9d782d9e`](https://github.com/sgl-project/sglang/commit/771c9d782d9ecf0324e70b7f5a08c32644d652c5).
-It does not redate the other framework snapshots or profiler APIs above.
+Apply the [general dispatch and numerical principles](../skills/llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts)
+across models. The fusion catalog carries caller eligibility and format
+examples; detailed model PR reviews remain in the model-history dossiers with
+their original review dates.
 
-- [Five integration PR dossiers](../skills/llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md)
+- [Five integration PR dossiers](../model-pr-optimization-history/sglang/deepseek-v4/README.en.md#reviewed-kernel-integrations-2026-09-22)
   cover DeepGEMM sparse candidate logits, DSA top-k v2, dual raw/page output,
   the DeepSelect BF16 consumer and FlashMLA FP8/FP4 KV layouts. Full diffs and
   current callers were inspected separately; obsolete opt-in flags are identified.
 - New-format support is not the default: main still declares
   `SGLANG_DSV4_KV_LAYOUT=v4`. FP8 528 B and FP4 288 B count payload plus scales
   per stored token before page padding; they are not whole-model KV capacity.
-- [mHC fusion eligibility](../skills/llm-torch-profiler-analysis/references/dsv41-mhc-fusions.md)
+- [mHC fusion eligibility](../skills/llm-torch-profiler-analysis/references/fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)
   records exact row ranges, backend/parallelism guards, BF16 boundaries and
   which epilogues include RMSNorm or quantization.
 - #39704 and #39957 are now merged into main; #39941 was folded into #39704.
-  The [profiling lessons](../skills/llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
-  retain historical experiment context while updating their implementation status.
+  The [model history](../model-pr-optimization-history/sglang/deepseek-v4/README.en.md#historical-profiling-and-optimization-evidence)
+  retains historical experiment context and distinguishes inspected revisions.
 
 ## Profiler control and output
 
@@ -105,7 +106,7 @@ new conclusions. For an open PR also record head/base and diff scope. A merged
 PR can be absent from another branch, or superseded by a later fix. Historical
 model dossiers and GPU smoke tables retain their original dates; updating this
 page does not re-audit all their PRs or rerun their models. Use
-[DSV4.1 profiling lessons](../skills/llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
-for the September kernel work and
+[general dispatch principles](../skills/llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts)
+for interpretation and
 [benchmark validation](../skills/llm-serving-auto-benchmark/references/paired-validation.md)
 for performance/accuracy experiments.

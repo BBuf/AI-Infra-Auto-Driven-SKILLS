@@ -5,7 +5,7 @@ or producing a Pareto curve. A deployment search and a code-only A/B answer
 different questions; keep them separate. See the
 [source contracts](../../../docs/upstream-source-contracts.md) for current
 framework/branch differences and the
-[DSV4.1 cases](../../llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)
+[general analysis principles](../../llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts)
 for dispatch and numerical pitfalls.
 
 ## Freeze what is being compared

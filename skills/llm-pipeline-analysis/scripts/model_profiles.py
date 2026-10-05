@@ -323,6 +323,7 @@ def normalize_model_config(raw: dict) -> dict:
             or config.get("hybrid_override_pattern")
             or []
         )
+    has_total_shared_width = "shared_expert_intermediate_size" in config
     aliases = {
         "num_experts": ("n_routed_experts", "num_local_experts", "moe_num_experts"),
         "num_experts_per_tok": (
@@ -352,6 +353,25 @@ def normalize_model_config(raw: dict) -> dict:
         config["shared_expert_intermediate_size"] = config.get(
             "moe_intermediate_size", 0
         ) * (config.get("n_shared_experts") or 0)
+    linear_cfg = config.get("linear_attn_config") or {}
+    for target, source in (
+        ("kda_num_heads", "num_heads"),
+        ("kda_head_dim", "head_dim"),
+        ("kda_short_conv_kernel_size", "short_conv_kernel_size"),
+    ):
+        if source in linear_cfg:
+            config.setdefault(target, linear_cfg[source])
+    if "kda_layers" in linear_cfg:
+        if config.get("model_type") == "kimi_linear":
+            config.setdefault("kda_layers_1_indexed", linear_cfg["kda_layers"])
+        else:
+            config.setdefault("kda_layers", linear_cfg["kda_layers"])
+    # HF Nemotron's explicit shared width is per expert; canonical index
+    # entries already carry the total width and must not be multiplied again.
+    if not has_total_shared_width and "moe_shared_expert_intermediate_size" in config:
+        config["shared_expert_intermediate_size"] = config[
+            "moe_shared_expert_intermediate_size"
+        ] * (config.get("num_shared_experts") or 0)
     config["moe"] = bool(config.get("moe") or (config.get("num_experts") or 0) > 0)
     config["mhc"] = bool(
         config.get("mhc") or config.get("hc_mult") or config.get("hc_count")
