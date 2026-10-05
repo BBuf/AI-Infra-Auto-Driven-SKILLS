@@ -169,9 +169,9 @@ remains unknown rather than being assigned to a fabricated category.
 - Weight end: `Load weight end. elapsed=X s, type=<Cls>, avail mem=X GB, mem usage=X GB.`
 - DSV4: `DSV4 memory calculation: unified=..., bytes_per_full_token=..., available_bytes=... GB, c128_state_fixed=... GB, c2_state_fixed=... GB, swa_fixed=... GB, swa_ring_fixed=... GB, c4_state_fixed=... GB, full_token=N`. Extract fields by name.
 - KV pools: `[label] KV Cache is allocated. dtype: <dt>, #tokens: N, K size: X GB, V size: Y GB`, or `KV size: X GB`. Sum pools once per rank. `KV Cache VA upper bound` is not an allocation.
-- Recurrent pools: `Mamba Cache is allocated. ... conv_state size: X GB, ssm_state size: Y GB`.
+- Recurrent pools: `Mamba Cache is allocated. ... conv_state size: XGB, ssm_state size: YGB`; speculative variants also log intermediate SSM and physical conv-window buffers. Keep recurrent allocations separate from KV resizing.
 - Graph capture: `Capture target|draft decode|verify|prefill CUDA graph end. elapsed=X s, mem usage=X GB, avail mem=X GB.` Sum phase/role captures per rank.
-- Opt-in `SGLANG_ENABLE_POST_CAPTURE_KV_SIZING=1`: final `Post-capture KV sizing: KV cache allocated. ... KV size: X GB, avail mem=X GB` replaces the prior KV estimate. `Memory pool end` precedes final resizing.
+- Opt-in `SGLANG_ENABLE_POST_CAPTURE_KV_SIZING=1`: final `Post-capture KV sizing: KV cache allocated. ... KV size: X GB, avail mem=X GB` replaces the target KV estimate. A current target logs a VA upper bound before capture; regular allocation lines alongside it can belong to independent draft pools and must be retained. Draft workers do not run post-capture sizing. `Memory pool end` precedes final resizing.
 - Final limits accept `chunked_prefill_size=-1` and `available_cpu_mem` on CPU.
 - Prefix tags are optional, e.g. `[time]` on one GPU or `[time DP0 PP0 ATTN_CP0 MOE_DP0 TP0 EP0]`. Extract TP independently of tag order.
 

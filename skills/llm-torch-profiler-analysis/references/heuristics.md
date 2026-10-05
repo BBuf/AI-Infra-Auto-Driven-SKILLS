@@ -2,6 +2,54 @@
 
 This analyzer is intentionally conservative.
 
+## Establish dispatch and numerical contracts
+
+Apply these principles to every model and backend. Use the
+[fusion catalog](fuse-overlap-catalog.md) for concrete source examples and the
+[overlap catalog](overlap-catalog.md) for scheduling precedents.
+
+1. Record checkpoint, framework and kernel-package revisions; target versus
+   draft; actual kernel rows, graph padding, phase, TP/EP/DP and dtype/layout.
+   Request concurrency is not kernel M during speculative verification.
+   `TP-0` identifies a rank, not the world size. Compare matching conditions.
+2. Prove the caller selected the candidate in each intended phase and rank.
+   Kernel existence, a default-on flag or an isolated microbenchmark does not
+   establish serving dispatch. Short eager traces supply call-site evidence;
+   warmed graph traces supply runtime timing. Match signatures and shapes.
+3. Follow both sides of a proposed fusion. Shared and routed experts can have
+   different activation, quantization and output contracts. Preserve clamp
+   order, BF16 rounding points, scale rounding/swizzle, padding, strides and
+   consumer format. Returning quantized output can still materialize BF16 too.
+4. Separate logical selection, page transformation and expert routing.
+   Attention token top-k is not MoE top-k. Check valid lengths, `-1` padding,
+   ties, signed zeros, nonfinite inputs and capture-buffer lifetime. Slot
+   permutation and a different tied selection set are different questions.
+5. Treat PDL as dependency scheduling. Consumer duration can include the
+   in-kernel wait and resource contention. Inspect the launch flag and GDC
+   operations; compare PDL on/off at fixed warp count before sweeping warps.
+   A bimodal duration or tighter stream gaps alone cannot identify its cause.
+6. Evaluate split-K, extra streams and larger epilogues at the layer join.
+   More CTAs may compete with statistics or experts; fewer launches may leave
+   the same exposed dependency. Rotate weights or reproduce cache state in
+   microbenchmarks, then measure all-rank joins and unprofiled serving repeats.
+7. Preserve intermediate floating-point semantics when folding RoPE, norms,
+   residual mixes and quantization. Equivalent algebra can round differently
+   before FMA or BF16 conversion. Test the original rounding contract, integer
+   indices and graph replay, then use the
+   [paired validation protocol](../../llm-serving-auto-benchmark/references/paired-validation.md).
+   Task accuracy cannot validate an unused kernel; nonsignificance is not
+   evidence of equivalence. Attribute a score change only after an ablation.
+8. Revalidate layer anchors after fusion or speculation changes launch counts.
+   Generic names such as `_combine` need caller evidence. Synthetic display
+   lanes preserve timestamps and do not represent runtime stream changes.
+   Use [layer tracking](../../torch-profiler-layer-track/SKILL.md) with a verified
+   layer count and repeated boundary pattern.
+
+KV capacity needs the same producer/consumer discipline: inspect payload and
+scale bytes, padded page strides, compression ratios, source-layer sharing and
+auxiliary state. The catalog's [paged format contract](fuse-overlap-catalog.md#paged-kv-storage-contract)
+shows why bytes per stored token alone cannot determine whole-model capacity.
+
 ## What Comes From Which Trace
 
 ### Mapping trace

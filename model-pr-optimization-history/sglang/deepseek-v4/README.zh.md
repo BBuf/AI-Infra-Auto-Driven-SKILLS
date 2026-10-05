@@ -2,7 +2,7 @@
 
 ## DSV4.1 kernel 集成补充，核对日期 2026-09-22
 
-[五个逐 PR 人工审阅的 dossier](../../../skills/llm-torch-profiler-analysis/references/dsv41-upstream-kernels.md)
+[五个逐 PR 人工审阅的 dossier](README.en.md#reviewed-kernel-integrations-2026-09-22)
 补充了本页较早 V4 历史之外的九月 DSV4.1 工作，包含动机、实现片段、审阅文件和验证边界：
 
 - **#38829**：DSA top-k v2 长上下文 cluster 调度、NaN padding。
@@ -12,8 +12,8 @@
 - **#39305**：由 DeepSelect 改写的精确 BF16 consumer top-k，融合 page transform；属于 attention token 选择，不是 MoE expert router。
 
 原始 PR 与 main `771c9d782d9e` 的当前调用条件分别核对。另见
-[mHC 融合范围](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-fusions.md)及
-[PDL、shared expert、WO-A 优化经验](../../../skills/llm-torch-profiler-analysis/references/dsv41-kernel-optimization.md)，
+[mHC 融合范围](../../../skills/llm-torch-profiler-analysis/references/fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)及
+[PDL、shared expert、WO-A 优化经验](../../../skills/llm-torch-profiler-analysis/references/heuristics.md#establish-dispatch-and-numerical-contracts)，
 其中更新了 batch/阶段限制和 #39704、#39957 的 main 合入状态。本次为源码审阅，没有新增 GPU 性能或任务精度测量。
 
 ## 模型实现文件覆盖

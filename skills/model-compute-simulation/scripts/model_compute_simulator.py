@@ -157,14 +157,6 @@ def load_json_argument(value: str) -> dict:
     return json.loads(value)
 
 
-def measured_ms_from_kernel_detail(detail: dict, num_layers: int) -> float:
-    """Convert one measured layer's kernel duration into full-model latency."""
-    layer_us = float(detail.get("metadata", {}).get("total_dur_us", 0))
-    if layer_us <= 0:
-        raise ValueError("kernel detail metadata.total_dur_us must be positive")
-    return layer_us / 1000.0 * num_layers
-
-
 def resolve_model(name: str, config_index: dict) -> Optional[dict]:
     key = name.lower().strip().replace(" ", "-")
     key = ALIAS_MAP.get(key, key)
@@ -276,6 +268,7 @@ def build_layer_ops(cfg, B, S, tp, ep, compress_ratio=0, layer_idx=0, context_le
     if lt and len(lt) not in (n, n + cfg.get("num_nextn_predict_layers", 0)):
         raise ValueError("layer_types length mismatch")
     typ = lt[layer_idx] if lt else ""
+    profile = profile_name(cfg)
     family = cfg.get("attention_type") or "gqa"
     if not cfg.get("attention_type"):
         profile = profile_name(cfg)
@@ -421,11 +414,15 @@ def build_layer_ops(cfg, B, S, tp, ep, compress_ratio=0, layer_idx=0, context_le
         kv_src = ratio in (4, 128) or layer_idx in cfg.get("kv_source_layer_ids", [])
         idx_src = ratio == 4 or layer_idx in cfg.get("index_source_layer_ids", [])
         if ratio and kv_src:
-            # KV compressor: content + gate projections, each H -> head_dim.
-            proj("compressor_proj", H, 2 * dh)
+            # C4 overlaps two compression windows; V41 ratio 1 has no gate.
+            coeff = 4 if ratio == 4 else 1 if ratio == 1 else 2
+            proj("compressor_proj", H, coeff * dh)
         if idx_src:
             ih, idim = cfg.get("index_n_heads", 32), cfg.get("index_head_dim", 128)
             proj("indexer_proj", qr or H, ih * idim)
+            proj("indexer_weights_proj", H, ih)
+            if ratio == 4:
+                proj("indexer_compressor_proj", H, 4 * idim)
             if ratio == 4:
                 add(
                     "hadamard",
@@ -477,11 +474,28 @@ def build_layer_ops(cfg, B, S, tp, ep, compress_ratio=0, layer_idx=0, context_le
         kd = cfg.get("linear_key_head_dim", cfg.get("kda_head_dim", 128))
         vd = cfg.get("linear_value_head_dim", kd)
         key, value = kh * kd, vh * vd
-        proj("linear_in_proj_qkvz", H, 2 * key + 2 * value)
-        proj("linear_in_proj_ba", H, value if attn == "kda" else 2 * vh)
+        if attn == "kda":
+            # K3 has a full-rank output gate; GLM5-next/Kimi Linear use
+            # two low-rank gates. Beta is head-wise, not value-channel-wise.
+            linear_cfg = cfg.get("linear_attn_config") or {}
+            full_gate = linear_cfg.get("use_full_rank_gate", profile == "kimi_k3")
+            proj(
+                "linear_in_proj_qkvz", H, 2 * key + value + (value if full_gate else 0)
+            )
+            proj("linear_in_proj_ba", H, vh + kd)
+            proj("linear_forget_gate_up", kd, value)
+            if not full_gate:
+                proj("linear_output_gate_down", H, kd)
+                proj("linear_output_gate_up", kd, value)
+        else:
+            proj("linear_in_proj_qkvz", H, 2 * key + 2 * value)
+            proj("linear_in_proj_ba", H, 2 * vh)
         conv = cfg.get(
             "linear_conv_kernel_dim",
-            cfg.get("kda_conv_kernel_dim", cfg.get("conv_kernel", 4)),
+            cfg.get(
+                "kda_short_conv_kernel_size",
+                cfg.get("kda_conv_kernel_dim", cfg.get("conv_kernel", 4)),
+            ),
         )
         add(
             "linear_conv1d",
@@ -608,7 +622,13 @@ def build_layer_ops(cfg, B, S, tp, ep, compress_ratio=0, layer_idx=0, context_le
                 proj("routed_latent_up", latent, H, "moe")
             shared = cfg.get("shared_expert_intermediate_size", 0)
             if cfg.get("num_shared_experts", 0) and shared:
-                add("shared_experts_swiglu", 6 * T * H * shared, H, H, "moe")
+                add(
+                    "shared_experts_relu2" if relu2 else "shared_experts_swiglu",
+                    (4 if relu2 else 6) * T * H * shared,
+                    H,
+                    H,
+                    "moe",
+                )
             if cfg.get("parallel_dense_mlp"):
                 add("ffn_swiglu", 6 * T * H * cfg["intermediate_size"], H, H, "ffn")
         else:
@@ -711,12 +731,14 @@ def simulate(
         layers.append(lr)
 
     # Final norm/HC head and attention-residual output are pass-level work.
-    epilogue = 6 * B * H
+    epilogue = 6 * B * S * H
     hc = cfg.get("hc_mult", cfg.get("hc_count", 0))
     if hc:
-        epilogue += 2 * B * hc * H * hc + 2 * B * hc * H
+        epilogue += 2 * B * S * hc * H * hc + 2 * B * S * hc * H
     if cfg.get("attn_res_block_size"):
-        epilogue += 4 * B * min(8, 2 + 2 * n_layers // cfg["attn_res_block_size"]) * H
+        epilogue += (
+            4 * B * S * min(8, 2 + 2 * n_layers // cfg["attn_res_block_size"]) * H
+        )
     total_flops = embed_flops + total_layer_flops + epilogue
 
     # Model architecture summary
@@ -930,7 +952,7 @@ def map_kernel_ms_to_ops(kernel_ms: dict, ops: list, tp: int, ep: int) -> list:
 
 # Kernel categories that internally use fp8 compute even when --dtype bf16 is specified.
 # For these kernels, the MFU denominator should use fp8 peak FLOPS (2x bf16).
-FP8_INTERNAL_KERNEL_CATEGORIES = {"moe", "gemm_fp8"}
+FP8_INTERNAL_KERNEL_CATEGORIES = {"gemm_fp8"}
 
 KERNEL_DETAIL_DIRECT_MAP = {
     # Fused kernels: directly map to specific operator groups
@@ -1230,6 +1252,9 @@ def format_text(result: SimResult, skip_compute_flow: bool = False) -> str:
     if result.embed_flops > 0:
         lines.append(f"  LM head:               {fmt_flops(result.embed_flops)}")
     lines.append(f"  Pass epilogue:         {fmt_flops(result.epilogue_flops)}")
+    lines.append(
+        "  Parallelism: uniform TP/EP estimate; replicated/backend-specific ownership is not modeled"
+    )
     layer_total = result.total_flops - result.embed_flops - result.epilogue_flops
     lines.append(f"  Transformer layers:    {fmt_flops(layer_total)}")
 
@@ -1632,6 +1657,10 @@ def format_json(result: SimResult) -> str:
         "per_op_mfu": result.per_op_mfu if result.per_op_mfu else [],
         "kernel_flow": result.kernel_flow,
         "model_arch": result.model_arch,
+        "compute_assumptions": [
+            "Architecture template; sparse/linear/SSM scalar work is estimated",
+            "Uniform TP/EP division; replicated and backend-specific operator ownership is not modeled",
+        ],
     }
     return json.dumps(data, indent=2)
 
@@ -1775,21 +1804,30 @@ def main():
     try:
         if args.kernel_flow is not None:
             kernel_flow_detail = load_json_argument(args.kernel_flow)
-            measured_ms = measured_ms_from_kernel_detail(kernel_flow_detail, n_layers)
+            if measured_ms is None:
+                raise ValueError(
+                    "--kernel-flow requires --measured-ms wall-clock latency; kernel-duration sums are not elapsed time"
+                )
         elif args.kernel_detail is not None:
             kernel_detail = load_json_argument(args.kernel_detail)
-            measured_ms = measured_ms_from_kernel_detail(kernel_detail, n_layers)
+            if measured_ms is None:
+                raise ValueError(
+                    "--kernel-detail requires --measured-ms wall-clock latency; kernel-duration sums are not elapsed time"
+                )
         elif args.kernel_ms is not None:
             kernel_ms = json.loads(args.kernel_ms)
             layer_measured = sum(float(value) for value in kernel_ms.values())
             if layer_measured <= 0:
                 raise ValueError("--kernel-ms durations must sum to a positive value")
-            measured_ms = layer_measured * n_layers
+            if measured_ms is None:
+                raise ValueError(
+                    "--kernel-ms requires --measured-ms wall-clock latency; kernel-duration sums are not elapsed time"
+                )
         elif args.per_layer_ms is not None:
             if args.per_layer_ms <= 0:
                 raise ValueError("--per-layer-ms must be positive")
             measured_ms = args.per_layer_ms * n_layers
-        elif measured_ms is not None and measured_ms <= 0:
+        if measured_ms is not None and measured_ms <= 0:
             raise ValueError("--measured-ms must be positive")
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         parser.error(str(exc))

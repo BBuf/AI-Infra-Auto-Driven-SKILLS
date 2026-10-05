@@ -422,7 +422,7 @@ def main():
         "--num-layers",
         type=int,
         default=None,
-        help="Override number of layers (default: auto-detect)",
+        help="Verified layer count (required unless supplied by model config)",
     )
     ap.add_argument("--blocks-per-layer", type=int, default=None)
     ap.add_argument("--anchor-offset", type=int, default=0)
@@ -452,12 +452,9 @@ def main():
         e.get("ts", float("inf")) for e in events if e.get("ts") is not None
     )
 
-    if args.num_layers:
-        num_layers = args.num_layers
-    else:
-        num_layers = config.get("num_hidden_layers", None) or detect_num_layers(
-            anchor_indices, gpu, profile.blocks_per_layer, profile.default_num_layers
-        )
+    num_layers = args.num_layers or config.get("num_hidden_layers")
+    if not num_layers or num_layers < 1:
+        raise ValueError("Verified layer count required: pass --num-layers or --config")
 
     anchor_indices = checked_anchor_indices(
         gpu, anchor_kernel, num_layers, profile.blocks_per_layer, args.anchor_offset

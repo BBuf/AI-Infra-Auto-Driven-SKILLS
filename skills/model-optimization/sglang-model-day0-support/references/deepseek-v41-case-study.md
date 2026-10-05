@@ -19,7 +19,7 @@ The monolithic branch was split into a linear stack, merged 2026-09-15–18:
 
 | Capability | Extraction PR | Evidence rule |
 |---|---|---|
-| Standalone kernels and wrappers | [#39646](https://github.com/sgl-project/sglang/pull/39646) | Byte-identical files to snapshot `01d34d7b`, AST-identical Python functions, unchanged parity tests. |
+| Standalone kernels and wrappers | [#39646](https://github.com/sgl-project/sglang/pull/39646) | PR reports byte-identical extracted files against `01d34d7b`; AST equivalence includes explicitly declared helper relocations, name substitutions and excluded runtime statements. Preserve the carried parity tests. |
 | Top-k | [#39648](https://github.com/sgl-project/sglang/pull/39648) | Preserve ordering, ties and dtype contracts. |
 | Compression, KV I/O and metadata | [#39652](https://github.com/sgl-project/sglang/pull/39652) | Verify page ownership and eager/graph metadata parity. |
 | Communication | [#39653](https://github.com/sgl-project/sglang/pull/39653) | Preserve logical collective ownership. |

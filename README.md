@@ -8,7 +8,7 @@ history across SGLang, vLLM, TensorRT-LLM, and TokenSpeed.**
 
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Skills](https://img.shields.io/badge/skills-11-2f80ed?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/skills-10-2f80ed?style=flat-square)](#skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-118-2ea44f?style=flat-square)](#model-pr-history)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
@@ -33,7 +33,6 @@ live in [`sglang-diffusion-optimization-flows/`](sglang-diffusion-optimization-f
 | [`model-compute-simulation`](skills/model-compute-simulation/) | Estimate operator shapes, FLOPs, and MFU for a serving shape, or map kernels back to operators. |
 | [`sglang-model-day0-support`](skills/model-optimization/sglang-model-day0-support/) | Turn a new model architecture into an SGLang Day-0 PR DAG, validation matrix, and release lock. |
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | Review an SGLang PR the way maintainers do, grounded in the full human review corpus. |
-| [`vllm-sota-humanize-loop`](skills/vllm-sota-humanize-loop/) | Run one Humanize RLCR loop that benchmarks, profiles, patches vLLM, and revalidates until it matches the best framework. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | Turn queue growth, timeouts, wrong outputs, crashes, or stalls into a replay and the next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | Return original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion families. |
 
@@ -96,8 +95,6 @@ ln -sfn "$PWD/model-pr-optimization-history" "$SKILL_DIR/model-pr-history-knowle
 
 ## Related Projects
 
-- **[Humanize](https://github.com/PolyArch/humanize)** provides the RLCR loop
-  used by `vllm-sota-humanize-loop`.
 - **[KDA-Pilot](https://github.com/BBuf/KDA-Pilot)** hosts standalone kernel
   loops, kernel knowledge, and NCU workflows.
 

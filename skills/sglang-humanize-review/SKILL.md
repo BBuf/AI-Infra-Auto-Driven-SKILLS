@@ -1,6 +1,6 @@
 ---
 name: sglang-humanize-review
-description: "Perform SGLang code review in the style of human maintainers by consulting the full non-agent PR review episode corpus from project start through 2026-07-27, including inline review threads, top-level PR comments, review submissions, original multilingual text, and multi-round discussions. Use when reviewing SGLang PRs, diffs, patches, or local changes for correctness, tests, performance, GPU/runtime risks, API compatibility, and maintainability."
+description: "Perform SGLang code review in the style of human maintainers by consulting the public PR review episode corpus from project start through 2026-07-27, including inline review threads, top-level PR comments, review submissions, original multilingual text, and multi-round discussions. Use when reviewing SGLang PRs, diffs, patches, or local changes for correctness, tests, performance, GPU/runtime risks, API compatibility, and maintainability."
 ---
 
 # SGLang Humanize Review

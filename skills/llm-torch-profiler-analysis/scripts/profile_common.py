@@ -470,17 +470,11 @@ def resolve_framework(
 
 
 def parse_stage(path: Path) -> str:
-    parts = [part.lower() for part in path.parts[-6:]]
-    name = " ".join(parts)
-    segment_path = "/" + "/".join(parts) + "/"
-    if any(marker in name for marker in ("-extend", "-prefill", "_extend", "_prefill")):
-        return "extend"
-    if any(f"/{segment}/" in segment_path for segment in ("extend", "prefill")):
-        return "extend"
-    if any(marker in name for marker in ("-decode", "_decode")):
-        return "decode"
-    if "/decode/" in segment_path:
-        return "decode"
+    # The file or nearest stage directory wins over a label in an ancestor.
+    for part in reversed(path.parts[-6:]):
+        match = re.search(r"(?:^|[-_])(extend|prefill|decode)(?=[._-]|$)", part, re.I)
+        if match:
+            return "decode" if match[1].lower() == "decode" else "extend"
     return "all"
 
 
@@ -935,6 +929,7 @@ def run_remote_profiler(
     probe_delay: float,
     profile_prefix: Optional[str] = None,
     stage: Optional[str] = None,
+    capture_root: Optional[Path] = None,
 ) -> Path:
     framework = canonicalize_framework(framework)
     output_path = ensure_remote_profiler_output_path(output_dir, framework)
@@ -993,7 +988,7 @@ def run_remote_profiler(
         # Isolate this capture without moving files out from under the server.
         # A fixed output filename can be overwritten on every capture.
         new_traces = changed_trace_files(output_path, before_traces)
-        capture_dir = output_path / f"capture-{time.time_ns()}"
+        capture_dir = capture_root or output_path / f"capture-{time.time_ns()}"
         if stage:
             capture_dir = capture_dir / stage
         capture_dir.mkdir(parents=True)
@@ -1217,6 +1212,9 @@ def run_profiler(
             profile_prefix=profile_prefix,
         )
     output_root = ensure_remote_profiler_output_path(output_dir, resolved_framework)
+    if output_root.suffix in {".json", ".gz"}:
+        raise ValueError("Staged live capture requires a directory --output-dir.")
+    capture_root = output_root / f"capture-{time.time_ns()}"
     for stage in stages:
         prompt, max_new_tokens = workload_probe(
             stage,
@@ -1240,8 +1238,11 @@ def run_profiler(
             probe_delay=probe_delay,
             profile_prefix=profile_prefix,
             stage=stage,
+            capture_root=capture_root,
         )
-    return output_root
+    # Only analyze this invocation's labeled copies, not server originals or
+    # earlier captures left in the shared output directory.
+    return capture_root
 
 
 def select_heaviest_pid(

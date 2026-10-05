@@ -7,9 +7,12 @@ source:
     vllm: 0c16eee3f1ff777298cc894c3eeb85f3880c6d6a
     tensorrt_llm: bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60
     tokenspeed: 6fa10840d5c3c23065f60428ad264fba60fa04ae
-  translation: Copies one verified single-node NVIDIA cookbook cell at the recorded
-    SGLang head. Non-speculative baseline; other frameworks require matching image
-    and workload verification. VLM workloads here exercise text only.
+  upstream_verification_status: in-progress
+  translation: Copies the single-node B200 FP8 high-throughput cell at the recorded
+    SGLang head. The upstream verificationStatus predicate overrides verified=true
+    to in-progress for default bcg=off and hicache=off; no completed validation is
+    claimed. Non-speculative, text-only benchmark template; run accuracy and speed
+    validation before qualifying this lane.
 model:
   name: zai-org/GLM-5.3-Flash
   tokenizer: zai-org/GLM-5.3-Flash
@@ -58,7 +61,7 @@ search:
 frameworks:
   sglang:
     enabled: true
-    support_status: verified_at_recorded_head
+    support_status: source_recipe_in_progress
     server_command: sglang serve
     config_source: sglang_glm_5.3_flash_public_recipe
     base_server_flags:

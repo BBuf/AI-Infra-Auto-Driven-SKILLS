@@ -54,3 +54,20 @@ def test_dump_resolved_config_fallback(tmp_path):
     result = MODULE.summarize_dump_file(dump, 10, 40)
     assert 'public/model' in result
     assert 'Config updates:' in result
+
+
+def test_current_phase_graph_schema_formats_without_crashing(tmp_path):
+    # /server_info memory_usage.graph is phase→GiB on current main.
+    (tmp_path / 'server_info.json').write_text(json.dumps({'internal_states': [
+        {'memory_usage': {'weight': 10, 'kvcache': 20, 'graph': {'prefill': .5, 'decode': 1, 'draft_decode': .25}}}
+    ]}))
+    (tmp_path / 'loads_all.json').write_text(json.dumps({'loads': [
+        {'dp_rank': 0, 'num_running_reqs': 3, 'num_waiting_reqs': 2, 'cache_hit_rate': .9},
+        {'dp_rank': 1, 'num_running_reqs': 7, 'num_waiting_reqs': 5, 'cache_hit_rate': .1},
+    ]}))
+    result = MODULE.build_bundle_summary(tmp_path)
+    assert result['capacity']['graph_gb'] == 1.75
+    assert result['capacity']['graph_by_phase_gb']['draft_decode'] == .25
+    assert result['point_in_time_load']['total_reqs'] == 17
+    assert result['point_in_time_load']['cache_hit_rate'] is None
+    assert 'graph_gb=1.750' in MODULE.render_bundle_text(result)

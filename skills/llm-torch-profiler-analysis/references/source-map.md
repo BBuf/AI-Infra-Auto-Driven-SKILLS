@@ -11,8 +11,9 @@ Read the installed source before changing a deployment.
 | TensorRT-LLM | [request schema](https://github.com/NVIDIA/TensorRT-LLM/blob/bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60/tensorrt_llm/serve/openai_protocol.py); [HTTP routes](https://github.com/NVIDIA/TensorRT-LLM/blob/bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60/tensorrt_llm/serve/openai_server.py); [profiling manager](https://github.com/NVIDIA/TensorRT-LLM/blob/bb367fc8c1adf6e2c28c88cb1a8b46e1742a9d60/tensorrt_llm/_torch/pyexecutor/profiling.py) |
 | TokenSpeed | [control routes](https://github.com/lightseekorg/tokenspeed/blob/6fa10840d5c3c23065f60428ad264fba60fa04ae/python/tokenspeed/runtime/entrypoints/control_server.py); [profile lifecycle](https://github.com/lightseekorg/tokenspeed/blob/6fa10840d5c3c23065f60428ad264fba60fa04ae/python/tokenspeed/runtime/engine/request_handler.py) |
 
-DSV4.1 kernel-to-model mapping and PR scope are in
-[dsv41-kernel-optimization.md](dsv41-kernel-optimization.md). Older `sgl_kernel`
+Kernel attribution follows the
+[general dispatch principles](heuristics.md#establish-dispatch-and-numerical-contracts)
+and source families in [the fusion catalog](fuse-overlap-catalog.md). Older `sgl_kernel`
 Python frames remain useful evidence, but current bindings are under
 `python/sglang/kernels/aot/python/sgl_kernel`; JIT and Triton implementations are
 under `python/sglang/kernels/jit` and `python/sglang/kernels/ops` respectively.

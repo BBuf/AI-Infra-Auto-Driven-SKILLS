@@ -636,6 +636,8 @@ class TestMeasuredComputeFlow(unittest.TestCase):
                 "b200",
                 "--kernel-flow",
                 json.dumps(kernel_flow),
+                "--measured-ms",
+                "10",
                 "--format",
                 "json",
             ],
@@ -647,7 +649,7 @@ class TestMeasuredComputeFlow(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual(
             payload["measured_ms"],
-            2.0 * config["num_hidden_layers"],
+            10.0,
         )
         self.assertIsNotNone(payload["mfu_pct"])
         self.assertEqual(payload["kernel_flow"]["metadata"]["total_dur_us"], 2000)
@@ -830,3 +832,80 @@ def test_compute_skill_is_independently_installable(tmp_path):
     specs = json.loads(GPU_SPECS.read_text())
     assert specs['h20']['bf16_tflops'] is None
     assert specs['h20']['hbm_gb'] is None
+
+
+def test_kda_gates_match_full_and_low_rank_source_linears():
+    sim = load_simulator()
+    base = {'num_hidden_layers': 1, 'hidden_size': 64, 'num_attention_heads': 4,
+            'attention_type': 'hybrid_kda_mla', 'model_type': 'kimi_linear',
+            'linear_attn_config': {'num_heads': 4, 'head_dim': 8, 'kda_layers': [1],
+                                 'short_conv_kernel_size': 3, 'use_full_rank_gate': True}}
+    ops = {o.name: o.flops for o in sim.build_layer_ops(base, 2, 3, 1, 1)}
+    assert ops['linear_in_proj_qkvz'] == 2 * 6 * 64 * (4 * 32)
+    assert ops['linear_in_proj_ba'] == 2 * 6 * 64 * (4 + 8)
+    assert ops['linear_forget_gate_up'] == 2 * 6 * 8 * 32
+    assert ops['linear_conv1d'] == 2 * 6 * 3 * 32 * 3
+    assert 'linear_output_gate_down' not in ops
+    base['linear_attn_config']['use_full_rank_gate'] = False
+    ops = {o.name: o.flops for o in sim.build_layer_ops(base, 2, 3, 1, 1)}
+    assert ops['linear_in_proj_qkvz'] == 2 * 6 * 64 * (3 * 32)
+    assert ops['linear_output_gate_down'] == 2 * 6 * 64 * 8
+    assert ops['linear_output_gate_up'] == 2 * 6 * 8 * 32
+
+
+def test_nemotron_shared_relu2_and_hf_shared_width():
+    sim = load_simulator()
+    cfg = json.loads(CONFIG_INDEX.read_text())['nemotron-3-super-120b-a12b']
+    ops = {o.name: o.flops for o in sim.build_layer_ops(cfg, 2, 3, 1, 1, layer_idx=1)}
+    assert ops['shared_experts_relu2'] == 4 * 6 * 4096 * 5376
+    assert 'shared_experts_swiglu' not in ops
+    raw = {'model_type': 'nemotron_h', 'n_shared_experts': 2,
+           'moe_shared_expert_intermediate_size': 100}
+    assert sim.normalize_model_config(raw)['shared_expert_intermediate_size'] == 200
+    assert load_profiles().normalize_model_config(raw)['shared_expert_intermediate_size'] == 200
+    assert sim.normalize_model_config(cfg)['shared_expert_intermediate_size'] == 5376
+
+
+def test_compressor_overlap_and_indexer_projection_work():
+    sim = load_simulator()
+    cfg = json.loads(CONFIG_INDEX.read_text())['deepseek-v4-flash']
+    c4 = {o.name: o.flops for o in sim.build_layer_ops(cfg, 1, 3, 1, 1, compress_ratio=4)}
+    c128 = {o.name: o.flops for o in sim.build_layer_ops(cfg, 1, 3, 1, 1, compress_ratio=128)}
+    assert c4['compressor_proj'] == 2 * 3 * cfg['hidden_size'] * 4 * cfg['head_dim']
+    assert c128['compressor_proj'] == 2 * 3 * cfg['hidden_size'] * 2 * cfg['head_dim']
+    assert c4['indexer_compressor_proj'] == 2 * 3 * cfg['hidden_size'] * 4 * cfg['index_head_dim']
+    assert c4['indexer_weights_proj'] == 2 * 3 * cfg['hidden_size'] * cfg['index_n_heads']
+
+
+def test_final_norm_covers_all_tokens_before_selected_logits():
+    sim = load_simulator()
+    cfg = {'num_hidden_layers': 1, 'hidden_size': 64, 'num_attention_heads': 4,
+           'attention_type': 'gqa', 'vocab_size': 100}
+    last = sim.simulate(cfg, 'dense', 2, 3, 1, 1, 1, 'b200', 'bf16')
+    all_rows = sim.simulate(cfg, 'dense', 2, 3, 1, 1, 1, 'b200', 'bf16', all_token_logits=True)
+    assert last.epilogue_flops == all_rows.epilogue_flops == 6 * 2 * 3 * 64
+    assert all_rows.embed_flops == 3 * last.embed_flops
+    assert 'moe' not in sim.FP8_INTERNAL_KERNEL_CATEGORIES
+
+
+def test_pipeline_tools_refuse_unknown_layer_count(tmp_path):
+    trace = tmp_path / 'trace.json'
+    trace.write_text(json.dumps({'traceEvents': [
+        {'name': 'fused_add_rms_norm', 'cat': 'kernel', 'ph': 'X',
+         'ts': i * 10, 'dur': 2, 'pid': 1, 'tid': 1} for i in range(4)
+    ]}))
+    for script in ('layer_timeline_analyzer.py', 'layer_kernel_breakdown.py', 'perfetto_time_mapper.py'):
+        extra = ['--fwd-pass', '0', '--layer', '0'] if script == 'layer_kernel_breakdown.py' else []
+        result = subprocess.run([sys.executable, str(SCRIPT_DIR / script), '--trace', str(trace),
+                                 '--anchor-kernel', 'fused_add_rms_norm', *extra], capture_output=True, text=True)
+        assert result.returncode != 0
+        assert 'Verified layer count required' in result.stderr, (script, result.stderr)
+
+
+def test_kernel_duration_sum_does_not_become_wall_clock():
+    result = subprocess.run([sys.executable, str(SIM_SCRIPT_DIR / "model_compute_simulator.py"),
+                             "deepseek-v3", "--gpu", "b200", "--kernel-flow",
+                             json.dumps({"metadata": {"total_dur_us": 2000}}), "--format", "json"],
+                            capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "wall-clock latency" in result.stderr
