@@ -43,7 +43,7 @@ Previous release: [v0.1.0](release-notes/v0.1.0.md).
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | Review an SGLang PR the way maintainers do, grounded in the full human review corpus. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | Turn queue growth, timeouts, wrong outputs, crashes, or stalls into a replay and the next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | Return original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion families. |
-| [`sglang-explainer-video`](skills/sglang-explainer-video/) | Turn an SGLang PR number or a technical article into a 1–3 min Chinese explainer video with edge-tts narration, word-synced bilingual captions, and the unified SGLang cover, rendered with HyperFrames. |
+| [`sglang-explainer-video`](skills/sglang-explainer-video/) | Turn an SGLang PR number or a technical article into a Chinese explainer video that fully explains its algorithms and code (length follows the material), with edge-tts narration, word-synced bilingual captions, and the unified SGLang cover, rendered with HyperFrames. |
 
 ## Model PR History
 

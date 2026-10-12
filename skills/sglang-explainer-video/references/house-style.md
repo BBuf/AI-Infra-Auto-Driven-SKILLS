@@ -10,7 +10,9 @@ Every rule here came from a correction on a delivered video. Apply all of them b
   token, attention, metadata, output buffer, fallback, bit-exact, micro benchmark, profile, launch, step, CFG,
   GEMM, quant, epilogue, branch, review, PR. Everyday words stay Chinese: 吞吐, 耗时, 并发, 端到端.
 - Write numbers as digits (15%, 3.79 ms); the TTS reads them correctly and captions show them verbatim.
-- Budget: ≲ 60 汉字 per frame (~11 s at Yunyang +0%), whole film ≤ 3 min. Measure after TTS and trim.
+- **Completeness over brevity.** No time limit: the film is as long as it takes to explain every algorithm
+  and code detail of the PR / article so a viewer can follow it. Pace per frame, not per film: one idea per
+  frame, ≲ 60 汉字 (~11 s at Yunyang +0%); split a frame that runs long instead of trimming content.
 - Numbers and claims only from the PR / article. Keep the source's own caveats when they matter
   (e.g. "未在新 branch 上重测", "数据来自不同模型和硬件，不能相加").
 - **Never state PR status** — no "还在 review 中", "OPEN", "未合并", "in review" in narration or on screen.
@@ -86,7 +88,7 @@ destination: desktop
 aspect: 1920x1080
 language: zh
 audience: developers
-length: <40–70s for a focused PR, ≤ 180s for an article>
+length: <estimate = frames in understanding.md coverage × ~10 s; informational only, never a cap>
 angle: <fix-explainer | feature-reveal | refactor-walkthrough | changelog | article-explainer>
 narration: yes
 ---
