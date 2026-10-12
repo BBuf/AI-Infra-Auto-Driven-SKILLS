@@ -12,12 +12,15 @@ This skill drives HyperFrames' **pr-to-video** workflow (heygen-com/hyperframes,
 style and several fixes that make it work for Chinese. Read `references/house-style.md` before writing any
 script — it holds the rules the user already corrected once (terms, captions, cover, credits, PR status).
 
-## 0. One-time setup (per machine)
+## 0. Setup (start of every session)
 
 ```bash
-bash <this-skill>/scripts/setup_env.sh      # ~2 min; idempotent
+bash <this-skill>/scripts/setup_env.sh      # first run ~2 min; afterwards seconds (idempotent)
 source ~/.cache/sglang-explainer-video/env.sh
 ```
+
+Re-run it at the start of each session: `env.sh` records this skill's install path (`$SEV_SKILL`,
+`$HF_MEDIA_ENGINE`), so it must point at the copy you are using now.
 
 It needs Node ≥ 22 (`brew install node@22`), `ffmpeg`/`ffprobe`, git, curl and Chrome. It creates a venv
 (edge-tts, fonttools), a pinned HyperFrames checkout with `patches/hyperframes-captions-cjk-bilingual.patch`
