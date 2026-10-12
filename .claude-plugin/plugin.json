@@ -1,7 +1,7 @@
 {
   "name": "ai-infra-auto-driven-skills",
-  "version": "0.8.0",
-  "description": "Agent-ready playbooks for LLM serving benchmarks, SGLang model Day-0 support, capacity planning, profiling, code review, incidents, and PR-history dossiers.",
+  "version": "0.9.0",
+  "description": "Agent-ready playbooks for LLM serving benchmarks, SGLang model Day-0 support, capacity planning, profiling, code review, incidents, PR-history dossiers, and SGLang PR/article explainer videos.",
   "author": {
     "name": "BBuf",
     "url": "https://github.com/BBuf"

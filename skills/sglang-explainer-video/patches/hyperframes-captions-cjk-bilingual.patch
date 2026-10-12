@@ -1,0 +1,91 @@
+diff --git a/skills/pr-to-video/scripts/captions.mjs b/skills/pr-to-video/scripts/captions.mjs
+index e4abf3eec..a78c9d914 100644
+--- a/skills/pr-to-video/scripts/captions.mjs
++++ b/skills/pr-to-video/scripts/captions.mjs
+@@ -49,7 +49,20 @@ const r3 = (x) => Number(x.toFixed(3));
+ // ── grouping params ───────────────────────────────────────────────────────────
+ const SILENCE_GAP = 0.18; // s of silence between words → split
+ const TAIL_PAD = 0.12; // s the group lingers after its last word
+-const SENT_END = /[.?!,;:—]$/;
++const SENT_END = /[.?!,;:—。，；：！？]$/;
++// CJK narration has no spaces and short "words": group by characters, not word count.
++const CJK = /[\u3400-\u9fff]/;
++// Display width in Han-character units (Latin/ASCII ≈ half width).
++const CJK_MAX_WIDTH = 26;
++const cjkWidth = (t) => [...t].reduce((n, ch) => n + (ch.charCodeAt(0) < 128 ? 0.55 : 1), 0);
++const LATIN_EDGE = /[A-Za-z0-9%]/;
++const CJK_PUNCT_END = /[，。、；：！？）」』]$/;
++const joinWords = (ws) =>
++  ws.reduce((acc, w, i) => {
++    if (i === 0) return w.text;
++    const spaced = (LATIN_EDGE.test(acc.slice(-1)) || LATIN_EDGE.test(w.text[0])) && !CJK_PUNCT_END.test(acc);
++    return acc + (spaced ? " " : "") + w.text;
++  }, "");
+ const DENSITY_WINDOW = 1.0; // s window for words/sec density
+ function wordCap(density) {
+   return density > 3.5 ? 2 : density > 2.5 ? 3 : 4;
+@@ -109,6 +122,7 @@ function runBuild(argv) {
+     }
+   }
+   words.sort((a, b) => a.start - b.start);
++  const cjkFrames = new Set(words.filter((w) => CJK.test(w.text)).map((w) => w.frame));
+   if (words.length === 0) skip("no usable words");
+
+   // density at i = words whose start falls within [w.start, w.start + WINDOW).
+@@ -127,11 +141,25 @@ function runBuild(argv) {
+     const w = words[i];
+     const prev = cur && cur.words[cur.words.length - 1];
+     const crossFrame = cur && w.frame !== cur.frame;
+-    const gap = prev && w.start - prev.end > SILENCE_GAP;
+-    const full = cur && cur.words.length >= cur.cap;
++    // an enumeration pause (after 、) is not a phrase boundary in CJK narration
++    const gap = prev && w.start - prev.end > SILENCE_GAP && !(cur.cjk && /、$/.test(prev.text));
++    const full =
++      cur &&
++      (cur.cjk
++        ? cjkWidth(joinWords(cur.words) + w.text) > CJK_MAX_WIDTH
++        : cur.words.length >= cur.cap);
+     if (!cur || crossFrame || gap || full) {
++      // CJK group overflow: break after the last 、 instead of mid-phrase
++      let carry = [];
++      if (cur && full && !crossFrame && !gap && cur.cjk) {
++        let k = -1;
++        cur.words.forEach((x, xi) => {
++          if (/、$/.test(x.text)) k = xi;
++        });
++        if (k >= 0 && k < cur.words.length - 1) carry = cur.words.splice(k + 1);
++      }
+       if (cur) groups.push(cur);
+-      cur = { frame: w.frame, cap: wordCap(densityAt(i)), words: [] };
++      cur = { frame: w.frame, cap: wordCap(densityAt(i)), cjk: cjkFrames.has(w.frame), words: carry };
+     }
+     cur.words.push(w);
+     if (SENT_END.test(w.text)) {
+@@ -153,7 +181,7 @@ function runBuild(argv) {
+       frame: g.frame,
+       start: r3(first.start),
+       end,
+-      text: g.words.map((w) => w.text).join(" "),
++      text: joinWords(g.words),
+       words: g.words.map((w, wi) => ({
+         id: `caption-word-${gi}-${wi}`,
+         text: w.text,
+@@ -163,6 +191,18 @@ function runBuild(argv) {
+     };
+   });
+
++  // optional second-language line: caption-translations.json maps a group's text → its translation
++  const translationsPath = join(hyperframesDir, "caption-translations.json");
++  if (existsSync(translationsPath)) {
++    const tr = JSON.parse(readFileSync(translationsPath, "utf8"));
++    const missing = [];
++    for (const g of finalized) {
++      if (tr[g.text]) g.en = tr[g.text];
++      else missing.push(g.text);
++    }
++    if (missing.length) console.warn(`  ⚠ captions: no translation for ${missing.length} group(s): ${missing.join(" | ")}`);
++  }
++
+   // ── write caption_groups.json ──
+   mkdirSync(dirname(outPath), { recursive: true });
+   writeFileSync(
