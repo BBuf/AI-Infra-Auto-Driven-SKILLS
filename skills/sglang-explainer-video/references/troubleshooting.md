@@ -24,4 +24,5 @@
 | Studio preview tiny / can't verify glyphs | Browser pane resolution | verify on contact sheets of the rendered MP4 (`qa_sheet.sh`) |
 | ✱ / ✓ / ✗ show as tofu or a fallback face | not in EB Garamond / Inter / JetBrains Mono / Noto SC | draw them as inline SVG (workers do this), or accept the system symbol fallback on the render host |
 | Bilibili cover: 4:3 crop cuts the badge, or 16:9 crop cuts logo/badge | Bilibili keeps one image and crops it to 4:3 + centred 16:9; per-ratio uploads don't stick | upload the 1440×1080 cover from `make_cover.py --png-bili` with 「双比例同步改动」 on |
+| `assemble-index` warns the total lands N% over the brief's expectation | the brief's `length` is only an estimate | expected when the material needs it — update `length:` in BRIEF/STORYBOARD; never trim content to hit it |
 | `code-typing` block missing in the project | `hf add` was skipped or ran outside `$P` | run `(cd $P && hf add code-typing)` before packets, or let the worker inline an adapted typing engine |
