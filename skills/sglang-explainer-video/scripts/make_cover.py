@@ -1,13 +1,15 @@
 """The unified SGLang explainer cover ("A · brand orange"): video frame + still PNG.
 
 Writes ``compositions/frames/00-cover.html`` (a HyperFrames frame: template root first,
-seek-safe GSAP entrances) and renders the same layout, fully revealed, to a still PNG.
+seek-safe GSAP entrances) and renders the same layout, fully revealed, to a still PNG
+(``--png``, 1920x1080) and to the 1440x1080 Bilibili cover (``--png-bili``).
 
     python make_cover.py --project DIR --series "SGLang PR 讲解" --badge "#43238" \
         --title-zh "mixed chunk 下，decode tail 该走哪个 kernel？" \
         --title-en "Route BF16 mixed-batch decode tails through decode attention" \
         --meta "trtllm_mha_backend.py · +63 / −9 · @zcnrex" \
-        --duration 7.46 --cue-title 2.6 --cue-meta 5.2 --png DIR/cover.png
+        --duration 7.46 --cue-title 2.6 --cue-meta 5.2 --png DIR/cover.png \
+        --png-bili DIR/cover_bili.png
 
 Design (fixed for every video): full-bleed SGLang orange #D55816; the SGL wordmark on a peach
 #FADDCD card with a rust #A5300F border; the logo's node-graph motif, oversized and faint, at
@@ -43,38 +45,45 @@ def graph_svg(w, h, sw=14):
 </svg>"""
 
 
-def badge_size(text):
-    return int(min(190, 900 / (0.62 * max(len(text), 1))))
+def badge_size(text, cap=190):
+    return int(min(cap, 900 / (0.62 * max(len(text), 1))))
 
 
-def cover_markup(a, logo_src, caption_safe=False):
+def cover_markup(a, logo_src, caption_safe=False, width=1920):
     """(css, body) shared by the frame and the still. Element ids are prefixed 'cv-'.
 
     caption_safe (the video frame): the meta line and badge sit above the bottom ~17% caption
     band and the English title narrows so it never meets the badge; the still keeps the layout.
+    width=1440 (the Bilibili cover): Bilibili takes ONE image and crops it to 4:3 (home feed) and
+    16:9 (centred 1440x810 band, personal space). This layout keeps every element inside
+    y 135..945, so the full 4:3 image and its 16:9 band both show the logo, title and badge whole.
     """
     meta_top, badge_bottom, en_width = (
         (800, 216, 960) if caption_safe else (930, 96, 1180)
     )
     size = badge_size(a.badge)
+    logo_top, series_top, rule_top, title_top, en_top = 88, 300, 420, 478, 660
+    if width < 1920:
+        logo_top, series_top, rule_top, title_top, en_top = 165, 325, 452, 490, 662
+        meta_top, badge_bottom, size = 770, 160, badge_size(a.badge, cap=110)
     trail = ", ".join(
         f"{k * size * 0.035:.1f}px 0 0 rgba(165,48,15,{op})"
         for k, op in enumerate((0.55, 0.35, 0.18), start=1)
     )
     css = f"""
-  .cv-bg {{ position:absolute; left:0; top:0; width:1920px; height:1080px; background:{ORANGE}; }}
+  .cv-bg {{ position:absolute; left:0; top:0; width:{width}px; height:1080px; background:{ORANGE}; }}
   .cv-graph {{ position:absolute; right:-120px; top:40px; opacity:0.22; }}
-  .cv-logo {{ position:absolute; left:96px; top:88px; background:{PEACH}; border:5px solid {RUST};
+  .cv-logo {{ position:absolute; left:96px; top:{logo_top}px; background:{PEACH}; border:5px solid {RUST};
              border-radius:22px; padding:22px 34px; }}
   .cv-logo img {{ height:84px; display:block; }}
-  .cv-series {{ position:absolute; left:96px; top:300px; font-family:"Inter","Noto Sans SC",sans-serif;
+  .cv-series {{ position:absolute; left:96px; top:{series_top}px; font-family:"Inter","Noto Sans SC",sans-serif;
                font-size:76px; font-weight:900; color:#FFFFFF; letter-spacing:0.02em; white-space:nowrap; }}
-  .cv-rule {{ position:absolute; left:96px; top:420px; width:120px; height:10px; background:{PEACH};
+  .cv-rule {{ position:absolute; left:96px; top:{rule_top}px; width:120px; height:10px; background:{PEACH};
              border-radius:5px; transform-origin:0 50%; }}
-  .cv-title {{ position:absolute; left:96px; top:478px; width:1180px; font-family:"Inter","Noto Sans SC",sans-serif;
+  .cv-title {{ position:absolute; left:96px; top:{title_top}px; width:1180px; font-family:"Inter","Noto Sans SC",sans-serif;
               font-size:58px; font-weight:700; color:#FFFFFF; line-height:1.3;
               text-wrap:balance; word-break:keep-all; line-break:strict; }}
-  .cv-en {{ position:absolute; left:96px; top:660px; width:{en_width}px; font-family:"EB Garamond","Noto Serif SC",serif;
+  .cv-en {{ position:absolute; left:96px; top:{en_top}px; width:{en_width}px; font-family:"EB Garamond","Noto Serif SC",serif;
            font-size:40px; font-style:italic; color:{PEACH}; line-height:1.25; }}
   .cv-meta {{ position:absolute; left:96px; top:{meta_top}px; font-family:"JetBrains Mono","Noto Sans SC",monospace;
              font-size:28px; color:rgba(255,255,255,0.82); white-space:nowrap; }}
@@ -88,7 +97,7 @@ def cover_markup(a, logo_src, caption_safe=False):
       <div id="cv-graph" class="cv-graph">{graph_svg(900, 1000)}</div>
     </div>
     <div id="cv-stage" class="clip" data-start="0" data-duration="__DUR__" data-track-index="1"
-         style="position:absolute;left:0;top:0;width:1920px;height:1080px">
+         style="position:absolute;left:0;top:0;width:{width}px;height:1080px">
       <div id="cv-logo" class="cv-logo"><img src="{logo_src}" alt="SGLang"></div>
       <div id="cv-series" class="cv-series">{e(a.series)}</div>
       <div id="cv-rule" class="cv-rule"></div>
@@ -159,7 +168,7 @@ def write_frame(a):
     print("✓ cover frame →", out)
 
 
-def render_png(a):
+def render_png(a, png, width=1920):
     chrome = (
         os.environ.get("CHROME")
         or "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -172,7 +181,9 @@ def render_png(a):
         "fonts",
     )
     pf = os.path.join(os.path.abspath(a.project), "assets", "fonts")
-    css, body = cover_markup(a, "file://" + os.path.join(BRAND, "sglang-logo.png"))
+    css, body = cover_markup(
+        a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width
+    )
     faces = f"""
 @font-face{{font-family:"EB Garamond";font-weight:400;src:url("file://{pf}/EBGaramond-400.woff2");}}
 @font-face{{font-family:"Inter";font-weight:400;src:url("file://{pf}/Inter-400.woff2");}}
@@ -182,11 +193,11 @@ def render_png(a):
 @font-face{{font-family:"Noto Serif SC";font-weight:200 900;src:url("file://{ws_fonts}/NotoSerifSC.ttf");}}"""
     doc = (
         f'<!doctype html><html><head><meta charset="utf-8"><style>{faces}'
-        f"html,body{{margin:0;width:1920px;height:1080px;overflow:hidden}}{css}</style></head>"
+        f"html,body{{margin:0;width:{width}px;height:1080px;overflow:hidden}}{css}</style></head>"
         f"<body>{body.replace('__DUR__', '1')}</body></html>"
     )
     td = tempfile.mkdtemp(prefix="sev-cover-")
-    hp, png = os.path.join(td, "cover.html"), os.path.abspath(a.png)
+    hp, png = os.path.join(td, "cover.html"), os.path.abspath(png)
     with open(hp, "w") as f:
         f.write(doc)
     if os.path.exists(png):
@@ -200,7 +211,7 @@ def render_png(a):
             "--hide-scrollbars",
             "--force-device-scale-factor=1",
             "--allow-file-access-from-files",
-            "--window-size=1920,1080",
+            f"--window-size={width},1080",
             "--virtual-time-budget=3000",
             f"--user-data-dir={td}/ud",
             f"--screenshot={png}",
@@ -243,12 +254,18 @@ def main():
         "--cue-meta", type=float, help="voice time the meta line should land"
     )
     ap.add_argument("--png", help="also render the still cover here")
+    ap.add_argument(
+        "--png-bili",
+        help="also render the 1440x1080 Bilibili cover (safe for its 4:3 and 16:9 crops) here",
+    )
     ap.add_argument("--png-only", action="store_true")
     a = ap.parse_args()
     if not a.png_only:
         write_frame(a)
     if a.png:
-        render_png(a)
+        render_png(a, a.png)
+    if a.png_bili:
+        render_png(a, a.png_bili, width=1440)
 
 
 if __name__ == "__main__":

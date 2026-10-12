@@ -6,7 +6,7 @@ description: Turn an SGLang PR (number or URL) or a technical article (Markdown 
 # SGLang explainer video
 
 Input: `sglang PR <N>` (or a github.com/sgl-project/sglang/pull/N URL), or a Markdown article path.
-Output: `~/Desktop/SGLang_PR<N>_讲解_中英字幕.mp4` (article: `SGLang_<slug>_技术解读_中英字幕.mp4`) plus a still `…_封面.png`, rendered 1920×1080 with a 中文 narration and bilingual captions.
+Output: `~/Desktop/SGLang_PR<N>_讲解_中英字幕.mp4` (article: `SGLang_<slug>_技术解读_中英字幕.mp4`) plus a still `…_封面.png` and a Bilibili cover `…_封面_B站.png`, rendered 1920×1080 with a 中文 narration and bilingual captions.
 
 This skill drives HyperFrames' **pr-to-video** workflow (heygen-com/hyperframes, pinned) with a fixed house
 style and several fixes that make it work for Chinese. Read `references/house-style.md` before writing any
@@ -105,10 +105,12 @@ carry `- asset_candidates: assets/article/figN.png — …`.
 ```bash
 $SEV_PY -I $SEV_SKILL/scripts/make_cover.py --project $P --series "SGLang PR 讲解" --badge "#<N>" \
   --title-zh "<一句中文问题/主张>" --title-en "<PR title>" --meta "<file> · +A / −D · @<author>" \
-  --duration <frame-1 voice s> --cue-title <s> --cue-meta <s> --png $P/cover.png
+  --duration <frame-1 voice s> --cue-title <s> --cue-meta <s> --png $P/cover.png --png-bili $P/cover_bili.png
 ```
 
 Article: `--series "SGLang 技术解读" --badge "<one keyword>"`. The design is fixed (see house style §Cover).
+`--png-bili` renders the same design at 1440×1080 with every element inside the centred 16:9 band — the
+cover to upload to Bilibili, which crops one image to both 4:3 and 16:9 (house style §Cover).
 
 ## 7. Captions (bilingual)
 
@@ -160,6 +162,7 @@ re-check. Then copy to the Desktop:
 ```bash
 cp $P/renders/video.mp4 ~/Desktop/SGLang_PR<N>_讲解_中英字幕.mp4
 cp $P/cover.png ~/Desktop/SGLang_PR<N>_讲解_封面.png
+cp $P/cover_bili.png ~/Desktop/SGLang_PR<N>_讲解_封面_B站.png
 ```
 
 ## Changing narration after frames exist

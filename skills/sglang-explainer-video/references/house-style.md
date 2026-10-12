@@ -44,6 +44,11 @@ just before the crossfade; the still PNG keeps the full layout.
 - Badge bottom-right in the logo-"L" style (peach fill, rust outline, trailing rust stripes): `#<PR number>`
   for PRs, one short keyword for articles (e.g. `Diffusion`).
 - The cover is frame 1 of the video (with narration introducing the topic) and also exported as a still PNG.
+- **Bilibili cover** (`make_cover.py --png-bili`, reference `assets/brand/cover-example-bili.png`): Bilibili
+  keeps ONE cover image and crops it to 4:3 (home feed) and a centred 1440×810 16:9 band (personal space);
+  a separate image per ratio does not stick. The 1920×1080 still loses its right-hand badge in the 4:3
+  crop, so upload the 1440×1080 `_B站` cover, which keeps logo, title and badge inside y 135–945. Leave
+  「双比例同步改动」 on and check both saved crops.
 
 ## Visuals (body frames)
 
@@ -63,7 +68,7 @@ just before the crossfade; the still PNG keeps the full layout.
 ## Delivery
 
 - Final MP4 and the still cover go straight to `~/Desktop`
-  (`SGLang_PR<N>_讲解_中英字幕.mp4`, `SGLang_PR<N>_讲解_封面.png`).
+  (`SGLang_PR<N>_讲解_中英字幕.mp4`, `SGLang_PR<N>_讲解_封面.png`, `SGLang_PR<N>_讲解_封面_B站.png`).
 - Before delivering, review contact sheets of the **rendered MP4** frame by frame.
 
 ## Brief template (`BRIEF.md`)

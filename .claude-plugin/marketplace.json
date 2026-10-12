@@ -10,7 +10,7 @@
       "name": "ai-infra-auto-driven-skills",
       "source": "./",
       "description": "LLM serving benchmarks, SGLang model Day-0 support, profiling, code review, prod incident triage, PR-history dossiers, and SGLang explainer videos.",
-      "version": "0.9.0",
+      "version": "0.9.1",
       "category": "ai-infra",
       "tags": ["sglang", "day0", "vllm", "tensorrt-llm", "benchmarks", "profiler", "kernel", "moe", "llm-serving", "video"]
     }
