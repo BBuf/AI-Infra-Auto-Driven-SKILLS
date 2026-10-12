@@ -4,11 +4,12 @@
 
 **Agent-ready skills for LLM serving benchmarks, profiler triage, capacity
 planning, model Day-0 support, code review, incident triage, and model PR
-history across SGLang, vLLM, TensorRT-LLM, and TokenSpeed.**
+history across SGLang, vLLM, TensorRT-LLM, and TokenSpeed — plus SGLang PR
+and article explainer videos.**
 
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Skills](https://img.shields.io/badge/skills-10-2f80ed?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/skills-11-2f80ed?style=flat-square)](#skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-118-2ea44f?style=flat-square)](#model-pr-history)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
@@ -42,6 +43,7 @@ Previous release: [v0.1.0](release-notes/v0.1.0.md).
 | [`sglang-humanize-review`](skills/sglang-humanize-review/) | Review an SGLang PR the way maintainers do, grounded in the full human review corpus. |
 | [`sglang-prod-incident-triage`](skills/sglang-prod-incident-triage/) | Turn queue growth, timeouts, wrong outputs, crashes, or stalls into a replay and the next debug step. |
 | [`model-architecture-diagram`](skills/model-architecture-diagram/) | Return original public architecture diagrams for popular LLM, VLM, MoE, OCR, and diffusion families. |
+| [`sglang-explainer-video`](skills/sglang-explainer-video/) | Turn an SGLang PR number or a technical article into a 1–3 min Chinese explainer video with edge-tts narration, word-synced bilingual captions, and the unified SGLang cover, rendered with HyperFrames. |
 
 ## Model PR History
 
