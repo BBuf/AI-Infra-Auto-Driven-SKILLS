@@ -181,7 +181,9 @@ def render_png(a, png, width=1920):
         "fonts",
     )
     pf = os.path.join(os.path.abspath(a.project), "assets", "fonts")
-    css, body = cover_markup(a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width)
+    css, body = cover_markup(
+        a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width
+    )
     faces = f"""
 @font-face{{font-family:"EB Garamond";font-weight:400;src:url("file://{pf}/EBGaramond-400.woff2");}}
 @font-face{{font-family:"Inter";font-weight:400;src:url("file://{pf}/Inter-400.woff2");}}
