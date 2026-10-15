@@ -67,6 +67,26 @@ just before the crossfade; the still PNG keeps the full layout.
 - Only the PR author (name + @login + avatar) and the PR link. No reviewers, approvers, commit counts or status.
 - The name is on screen only — the narration does not read it.
 
+## Follow strip (last frame of every video)
+
+Every SGLang video ends with links that invite viewers to follow the project, as asked by the user.
+
+- The last frame shows the fixed strip from `assets/brand/follow-strip.html` (reference render:
+  `assets/brand/follow-strip-example.png`):
+  - 关注 SGLang
+  - GitHub `github.com/sgl-project/sglang`
+  - 博客 `sglang.io/blog`
+  - 文档 `docs.sglang.io`
+- Where it goes: on the author page in PR videos; on the summary / links frame in article videos.
+- Placement: a peach bar at y 792–872, just above the caption band. The frame's own content ends above y≈770.
+- Timing: the strip rises in by the start of the frame's last clause and stays until the end. The 2 s hold
+  after the last line keeps it readable.
+- Copy it verbatim:
+  - Do not restyle, translate or shorten the URLs.
+  - Do not narrate it.
+  - Do not add other channels (X, Discord, …) unless the user asks.
+- `check_frames.mjs` fails when the last frame lacks the strip or any of its three URLs.
+
 ## Delivery
 
 - Final MP4 and the still cover go straight to `~/Desktop`

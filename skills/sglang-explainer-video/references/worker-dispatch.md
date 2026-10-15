@@ -16,9 +16,14 @@ share a stage (same diagram before/after, two code frames) on the same worker.
   assets/article/figN.png — allowed: <img> inside a hairline card, object-fit: contain, never cropped or filtered.>
 - <Code frames: the <code-*> block is installed at compositions/<block>.html; fill it from the packet's
   ### Source excerpt and fit its timing to the Scene window (you may inline an adapted copy).>
+- <Worker holding the LAST frame only: frame <id> is the video's last frame. Paste the SGLang follow strip from
+  <absolute $SEV_SKILL>/assets/brand/follow-strip.html verbatim: its CSS goes into your <style>, its <div> inside #root.
+  It sits at y 792–872, so keep that frame's own content above y≈770. Reveal it by the start of the last
+  clause and keep it to the end. Never edit its text or URLs, and never narrate it.>
 - Read only: the role file, your packets, frame.md (SGLang brand remix: cream #FBF6F1 ground, peach cards
   #F9E6DB / #F2CFBE, ink #1F1410, accent #D55816 at most once per frame, navy = warm near-black code surface)
-  and the assets named above. Never open STORYBOARD.md, SCRIPT.md, capture/*, or other workers' frames.
+  and the assets named above (the last-frame worker also reads follow-strip.html). Never open STORYBOARD.md,
+  SCRIPT.md, capture/*, or other workers' frames.
 - HARD RULES (each one broke an earlier run):
   1. Frame contract: the FIRST element inside <template> is the composition root
      <div id="root" data-composition-id="<frame_id>" data-start="0" data-duration="<packet duration>"
