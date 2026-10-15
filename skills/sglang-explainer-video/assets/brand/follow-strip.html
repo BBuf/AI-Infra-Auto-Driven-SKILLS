@@ -1,0 +1,26 @@
+<!--
+  SGLang follow strip: required on the LAST frame of every SGLang video (house-style.md §Follow strip).
+
+  - Paste the CSS rules into the frame's own <style> (inside #root, frame contract) and the <div> inside
+    #root, after the frame's own content.
+  - Layout: the strip sits at y 792–872, just above the caption band. End the frame's own content
+    above y≈770.
+  - Timing: reveal it by the start of the frame's last clause and keep it on screen until the frame
+    ends. The last voice line has a 2 s hold, so it stays readable:
+      tl.fromTo("#fs-follow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, T);
+  - Text and URLs are fixed; do not edit, translate or narrate them. check_frames.mjs fails a last frame
+    without them.
+-->
+<style>
+#fs-follow{position:absolute;left:96px;top:792px;width:1728px;height:80px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:48px;padding:0 40px;background:#F9E6DB;border:1px solid rgba(31,20,16,0.12);border-radius:12px;white-space:nowrap;}
+#fs-follow-kicker{font-family:"Inter","Noto Sans SC",sans-serif;font-weight:700;font-size:30px;line-height:1;color:#1F1410;}
+.fs-follow-item{display:flex;align-items:baseline;gap:14px;}
+.fs-follow-lab{font-family:"Inter","Noto Sans SC",sans-serif;font-weight:700;font-size:24px;line-height:1;color:rgba(31,20,16,0.64);}
+.fs-follow-url{font-family:"JetBrains Mono","Noto Sans SC",monospace;font-weight:400;font-size:28px;line-height:1;color:#1F1410;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+</style>
+<div id="fs-follow">
+  <span id="fs-follow-kicker">关注 SGLang</span>
+  <span class="fs-follow-item"><span class="fs-follow-lab">GitHub</span><span class="fs-follow-url">github.com/sgl-project/sglang</span></span>
+  <span class="fs-follow-item"><span class="fs-follow-lab">博客</span><span class="fs-follow-url">sglang.io/blog</span></span>
+  <span class="fs-follow-item"><span class="fs-follow-lab">文档</span><span class="fs-follow-url">docs.sglang.io</span></span>
+</div>
