@@ -105,6 +105,9 @@ anything uncovered. Then apply the house style:
 - **Frame 1 is always the cover** `compositions/frames/00-cover.html` (built by `make_cover.py`, not a worker),
   `status: animated`. Frame N's file is `NN-<slug>.html` with `NN = N-1`.
 - PR videos end on the **author page** (name/@login/avatar on screen, never spoken; the PR link; no status).
+- **Every video's last frame carries the SGLang follow strip** (`assets/brand/follow-strip.html`: 关注 SGLang ·
+  GitHub · 博客 · 文档) at y 792–872, so plan that frame's content to end above y≈770. It is on screen only, not
+  narrated (house style §Follow strip).
 - Chinese narration, English technical terms, one idea per frame (≲ 60 汉字, ~11 s); as many frames as the
   material needs — no whole-film cap. Long films get section kickers (e.g. 「① 问题」「② 算法」「③ 代码」) so
   viewers keep their place.
