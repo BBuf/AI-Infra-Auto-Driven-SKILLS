@@ -204,6 +204,13 @@ cp $P/cover.png ~/Desktop/SGLang_PR<N>_讲解_封面.png
 cp $P/cover_bili.png ~/Desktop/SGLang_PR<N>_讲解_封面_B站.png
 ```
 
+## 10. Publish (only when the user asks)
+
+Follow `references/publishing.md`: the user picks each file in the native dialog, the agent fills the rest.
+Bilibili: 含AI生成内容 · 分区 人工智能 · ~8 tags · 1440×1080 B站 cover. 小红书: **always 标记 SGLang** via
+添加组件 → 标记地点或标记朋友 → 用户 → SGLang (official, orange SGL avatar) — never an @ in the body — plus topics
+#人工智能 #大模型 #SGLang and 笔记含AI合成内容.
+
 ## Changing narration after frames exist
 
 Edit `SCRIPT.md` (and the storyboard `voiceover`), re-run Step 4, then — instead of rebuilding frames —
@@ -221,3 +228,4 @@ re-assemble, re-render.
 - `references/house-style.md` — narration, term glossary, captions, cover, author page, brief template.
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.
 - `references/troubleshooting.md` — every failure seen so far and its fix.
+- `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @).
