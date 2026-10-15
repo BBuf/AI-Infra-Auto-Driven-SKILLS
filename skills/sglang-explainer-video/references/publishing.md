@@ -5,8 +5,10 @@ Both sites are driven in the in-app browser pane, where the user is already logg
 
 ## Hard rules (user-confirmed)
 
-- **小红书: every note @SGLang.** Put a real mention of the official account in the note body (see §小红书).
-  Never publish a 小红书 note without it.
+- **小红书: every note 标记 SGLang.** Tag the official SGLang account through 添加组件 → 标记地点或标记朋友, so
+  the note appears on SGLang's 标记墙 (see §小红书). Never publish a 小红书 note without the tag.
+- **小红书: never @SGLang in the body.** An @ is not a tag. Each @ only sends the account a notification, and it
+  does not put the note on the 标记墙.
 - Creation statement is always "AI-generated" on both sites: B站 创作声明 = 含AI生成内容, 小红书 内容类型声明 =
   笔记含AI合成内容. The description says 「中文讲解 + 中英双语字幕；配音为 AI 语音合成。」.
 - Never mention PR status (OPEN / in review) in titles or descriptions.
@@ -54,13 +56,7 @@ Copy the deliverables into one folder so the user always picks from the same pla
   - Same content as the Bilibili description.
   - No 「#」 directly before digits, because it opens the topic popup. Write 「PR 44051」.
   - Write links as plain text, e.g. 「PR：sgl-project/sglang PR 44051」, 「原文：SGLang Blog · <slug>」.
-- **@SGLang (required):**
-  - At the end of the body, type `@SGLang` and wait about 2 s.
-  - Check that the highlighted `.item.is-selected` is the account named exactly **SGLang**, with the orange SGL-logo
-    avatar. Look-alikes such as llllsglang or SGLang666 are wrong.
-  - Press Enter. The mention becomes `.tiptap-at`.
-  - Before publishing, confirm that the editor contains a `.tiptap-at` whose text is `@SGLang`.
-- **话题 (after the mention, 5–6 topics):**
+- **话题 (5–6 topics, at the end of the body):**
   - For each: type `#词` → wait 1.5 s → check `.item.is-selected` is the exact topic → Enter. The topic becomes
     `a.tiptap-topic`.
   - Always include #人工智能 #大模型 #SGLang.
@@ -70,5 +66,28 @@ Copy the deliverables into one folder so the user always picks from the same pla
   - Open 编辑封面 and compare it with `NN_<slug>_封面_B站.png`.
   - If it differs, click 清除已上传封面 → 上传, and the user picks the B站 cover. The editor sometimes opens by
     itself after the upload; typing into the body still works behind it.
+- **标记 SGLang (required), in 添加组件:**
+  - Click 标记地点或标记朋友. For a video it opens the tag editor on the timeline; click 「+ 添加标记」.
+  - In 选择标记 → 用户, pick **SGLang**:
+    - The official account has the orange SGL avatar and userId `657172690000000020031d3f`.
+    - It is usually first under 为你推荐. If it is not there, search 「SGLang」.
+    - Look-alikes such as llllsglang or SGLang666 are wrong.
+  - Confirm the inner dialog with 确定. A 「SGLang」 tag appears on the video at 00:00.
+  - Confirm the outer dialog with 确定. The card now reads 「已添加1个标记」.
+- **标记 gotchas:**
+  - The user list item and the dialog buttons need real mouse clicks; JS `.click()` on `.sign-item` does nothing.
+  - In a narrow pane the outer dialog's 确定 is off-screen. Click it through JS: the visible `button` whose text is
+    确定.
+  - A new marker gets a temporary timestamp id. An existing marker's `.marker-container` id is the userId.
 - **Publish:** 发布 → `/publish/success`. Check `/new/note-manager`; new notes show 审核中 for a few minutes.
+
+## Editing a published 小红书 note (e.g. adding the 标记 afterwards)
+
+- **Open:** in `/new/note-manager`, find the card by `.note-card__title`. The edit button is the
+  `.note-card__action-btn` just before `.note-card__action-btn--del`, and JS `.click()` works on it. This opens
+  `/publish/update`.
+- **Publish:** the 发布 button lives inside the `<xhs-publish-btn>` shadow DOM, so JS cannot reach it. Click it by
+  coordinates, using the centre of `xhs-publish-btn`'s rect × (screenshot width / innerWidth). Leave the viewport
+  unemulated here; an emulated size misaligned the coordinates.
+- **Result:** the page shows 「更新成功」 at `/publish/editSuccess`.
 - **Batch limit:** `browser_batch` takes at most 25 actions per call.

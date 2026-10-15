@@ -72,7 +72,8 @@ just before the crossfade; the still PNG keeps the full layout.
 - Final MP4 and the still cover go straight to `~/Desktop`
   (`SGLang_PR<N>_讲解_中英字幕.mp4`, `SGLang_PR<N>_讲解_封面.png`, `SGLang_PR<N>_讲解_封面_B站.png`).
 - Before delivering, review contact sheets of the **rendered MP4** frame by frame.
-- Publishing (only when asked) follows `publishing.md`; every 小红书 note must @SGLang (official account).
+- Publishing (only when asked) follows `publishing.md`; every 小红书 note must 标记 the official SGLang account
+  (添加组件 → 标记地点或标记朋友), never @ it in the body.
 
 ## Brief template (`BRIEF.md`)
 
