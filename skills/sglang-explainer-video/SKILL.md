@@ -41,7 +41,7 @@ Re-run it at the start of each session: `env.sh` records this skill's install pa
 `$HF_MEDIA_ENGINE`), so it must point at the copy you are using now.
 
 It needs Node ≥ 22 (`brew install node@22`), `ffmpeg`/`ffprobe`, git, curl and Chrome. It creates a venv
-(edge-tts, fonttools), a pinned HyperFrames checkout with `patches/hyperframes-captions-cjk-bilingual.patch`
+(edge-tts, fonttools, and mlx-whisper on Apple Silicon for `pron_check.py`), a pinned HyperFrames checkout with `patches/hyperframes-captions-cjk-bilingual.patch`
 applied, the Noto Sans/Serif SC fonts, and `env.sh` (`$SKILL_DIR` = pr-to-video, `hf` = pinned HyperFrames CLI wrapper,
 `$HF_MEDIA_ENGINE` = our edge-tts engine, `$SEV_SKILL`, `$SEV_PY`). Nothing is installed globally:
 always run the CLI as `hf …`, never `npx hyperframes init` without the env (init would install skills
@@ -111,19 +111,35 @@ anything uncovered. Then apply the house style:
 - Chinese narration, English technical terms, one idea per frame (≲ 60 汉字, ~11 s); as many frames as the
   material needs — no whole-film cap. Long films get section kickers (e.g. 「① 问题」「② 算法」「③ 代码」) so
   viewers keep their place.
-- `SCRIPT.md` voice line: `zh-CN-YunyangNeural (edge-tts)`. Numbers only from the PR/article.
+- `SCRIPT.md` voice line: `zh-CN-XiaoxiaoNeural (edge-tts)`. Numbers only from the PR/article.
+- **Every English word must be read right and in one breath** (`references/pronunciation.md`): no `_` reaches
+  the voice, CamelCase brand names are spaced, symbols (×, #, +%) are spoken as Chinese. Write the narration
+  normally — `pronunciation.json` rewrites only what the voice hears, captions keep the written form — then run
+  the check and fix every FAIL (lexicon entry or reword) before TTS:
+
+  ```bash
+  $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --script $P/SCRIPT.md --asr
+  ```
 
 ## 4. Narration (edge-tts, word timings)
 
 ```bash
 (cd $P && node $SKILL_DIR/scripts/audio.mjs --script ./SCRIPT.md --storyboard ./STORYBOARD.md --hyperframes . \
-   --out ./audio_meta.json --voice zh-CN-YunyangNeural \
+   --out ./audio_meta.json --voice zh-CN-XiaoxiaoNeural \
  && node $SKILL_DIR/scripts/audio.mjs sync-durations --audio-meta ./audio_meta.json --storyboard ./STORYBOARD.md \
  && cp audio_meta.json audio_meta.built.json)
 ```
 
 `HF_MEDIA_ENGINE` swaps HyperFrames' TTS for `scripts/edge_tts_engine.py`: per-word timestamps from WordBoundary,
-punctuation re-attached, split terms re-joined (FP32, FLUX.2, torch.equal), 2 s of silence after the last line.
+punctuation re-attached, split terms re-joined (FP32, FLUX.2, torch.equal), 2 s of silence after the last line;
+the voice reads the spoken forms from `pronounce.py` and the timings map back to the written tokens.
+Then check the recorded take — pauses inside a clause and every English term in context:
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/pron_check.py --meta $P/audio_meta.json --hyperframes $P --asr
+```
+
+A FAIL there means re-synthesize that line after a lexicon fix or a reword (subset re-TTS, see troubleshooting).
 A frame running long means it holds two ideas — split it; never drop content to shorten the film.
 Print the timings for Step 5:
 
@@ -229,6 +245,7 @@ re-assemble, re-render.
 ## References
 
 - `references/house-style.md` — narration, term glossary, captions, cover, author page, brief template.
+- `references/pronunciation.md` — English terms read right: spoken-form rules, lexicon, `pron_check.py`.
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.
 - `references/troubleshooting.md` — every failure seen so far and its fix.
 - `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @).

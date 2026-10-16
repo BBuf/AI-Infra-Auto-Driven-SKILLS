@@ -12,7 +12,7 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 - Write numbers as digits (15%, 3.79 ms); the TTS reads them correctly and captions show them verbatim.
 - **Completeness over brevity.** No time limit: the film is as long as it takes to explain every algorithm
   and code detail of the PR / article so a viewer can follow it. Pace per frame, not per film: one idea per
-  frame, ≲ 60 汉字 (~11 s at Yunyang +0%); split a frame that runs long instead of trimming content.
+  frame, ≲ 60 汉字 (~11 s at Xiaoxiao +0%); split a frame that runs long instead of trimming content.
 - Numbers and claims only from the PR / article. Keep the source's own caveats when they matter
   (e.g. "未在新 branch 上重测", "数据来自不同模型和硬件，不能相加").
 - **Never state PR status** — no "还在 review 中", "OPEN", "未合并", "in review" in narration or on screen.
@@ -21,8 +21,12 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 
 ## Voice
 
-- `zh-CN-YunyangNeural` (edge-tts, news-anchor male) at `+0%` — chosen by the user over Yunxi/Xiaoxiao/
-  Yunjian/Xiaoyi/Andrew/Ava after A/B samples. Only change it if the user asks.
+- `zh-CN-XiaoxiaoNeural` (edge-tts, warm female) at `+0%` — every video from 2026-10-16 on. Chosen by the
+  user from a 16-voice female audition (Qwen3-TTS VoiceDesign/CustomVoice on sglang-omni, edge
+  Xiaoyi/Seraphina/Emma/Ava) after a viewer asked for an "SGL girl" voice; it replaced Yunyang. Only change
+  it if the user asks.
+- **English terms are read right and fluently** — the user's explicit bar. Follow `pronunciation.md`; run
+  `pron_check.py --asr` before TTS and on the recorded take.
 
 ## Captions
 
@@ -119,5 +123,5 @@ narration: yes
 <what the video explains, for whom>
 
 ## Notes
-- House style: references/house-style.md (English terms, bilingual captions, Yunyang, cover A, no PR status).
+- House style: references/house-style.md (English terms read right, bilingual captions, Xiaoxiao voice, cover A, no PR status).
 ```

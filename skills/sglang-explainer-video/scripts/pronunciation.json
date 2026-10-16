@@ -1,0 +1,44 @@
+{
+  "_doc": "Spoken forms for zh-CN-XiaoxiaoNeural (see references/pronunciation.md). lexicon: whole-token respellings, case-sensitive. parts/acronyms: pieces of snake_case identifiers. patterns: [regex, replacement] applied first. approved: terms confirmed right as the voice reads them (by the user's ear, or by a second ASR when Whisper alone mishears) (pron_check reports them as OK, never respells them). Add an entry only after pron_check.py --asr shows the written form fails and the respelling passes.",
+  "patterns": [
+    ["#(\\d+)", "\\1"],
+    ["(\\d+)×(?=[A-Z])", "\\1卡"],
+    ["(\\d+(?:\\.\\d+)?)×", "\\1倍"],
+    ["\\+(\\d+(?:\\.\\d+)?)%", "提升\\1%"],
+    ["(?<![A-Za-z0-9_.)\\]])[-−–](\\d+(?:\\.\\d+)?)%", "降低\\1%"],
+    ["(?<![A-Za-z0-9_.)\\]])[-−–](\\d+(?:\\.\\d+)?)", "负\\1"]
+  ],
+  "lexicon": {
+    "FlashInfer": "Flash Infer",
+    "FlashAttention": "Flash Attention",
+    "FlashMLA": "Flash MLA",
+    "DeepSeek": "Deep Seek",
+    "TensorRT-LLM": "Tensor RT LLM",
+    "LoRA": "Lora",
+    "Miles": "mials",
+    "VAE": "V A E",
+    "DiT": "D I T",
+    "GEMM": "G E M M",
+    "V2": "V two",
+    "top-k": "top k",
+    "Top-K": "top k",
+    "top-K": "top k"
+  },
+  "parts": {
+    "sglang": "SGLang",
+    "flashmla": "Flash MLA",
+    "flashinfer": "Flash Infer",
+    "topk": "top k",
+    "moe": "MoE",
+    "gemm": "G E M M",
+    "attn": "attention",
+    "idx": "index",
+    "buf": "buffer",
+    "cfg": "config",
+    "vae": "V A E",
+    "dit": "D I T",
+    "v2": "V two"
+  },
+  "approved": ["SGLang", "MTP"],
+  "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda"]
+}
