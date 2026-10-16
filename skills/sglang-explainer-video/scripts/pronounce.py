@@ -22,7 +22,9 @@ import os
 import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-LEXICON_PATH = os.environ.get("SEV_PRON_LEXICON", os.path.join(HERE, "pronunciation.json"))
+LEXICON_PATH = os.environ.get(
+    "SEV_PRON_LEXICON", os.path.join(HERE, "pronunciation.json")
+)
 TOKEN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.\-+]*[A-Za-z0-9]|[A-Za-z]")
 HAN = re.compile(r"[\u4e00-\u9fff]")
 
@@ -74,7 +76,7 @@ def segments(text):
             pos = 0
             for m in rx.finditer(w):
                 if m.start() > pos:
-                    nxt.append((w[pos: m.start()],) * 2)
+                    nxt.append((w[pos : m.start()],) * 2)
                 nxt.append((m.group(0), m.expand(rep)))
                 pos = m.end()
             if pos < len(w):
@@ -90,7 +92,7 @@ def segments(text):
             sp = spoken_token(m.group(0))
             if sp != m.group(0):
                 if m.start() > pos:
-                    out.append((w[pos: m.start()],) * 2)
+                    out.append((w[pos : m.start()],) * 2)
                 out.append((m.group(0), sp))
                 pos = m.end()
         if pos < len(w):
@@ -114,8 +116,13 @@ def to_spoken(text):
         return chars[i][0] if 0 <= i < len(chars) else ""
 
     chars = [
-        (c, k) for i, (c, k) in enumerate(chars)
-        if not (c == " " and HAN.match(near(i - 1, -1) or "a") and HAN.match(near(i + 1, 1) or "a"))
+        (c, k)
+        for i, (c, k) in enumerate(chars)
+        if not (
+            c == " "
+            and HAN.match(near(i - 1, -1) or "a")
+            and HAN.match(near(i + 1, 1) or "a")
+        )
     ]
     spoken = "".join(c for c, _ in chars)
     spans = []

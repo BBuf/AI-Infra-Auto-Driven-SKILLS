@@ -213,7 +213,10 @@ def main():
                 }
             )
             said = "".join(f" · {w}→{spoken[a:b].strip()}" for a, b, w in spans)
-            print(f"  voice {lid}: {rel} ({dur}s, {len(words)} words){said}", file=sys.stderr)
+            print(
+                f"  voice {lid}: {rel} ({dur}s, {len(words)} words){said}",
+                file=sys.stderr,
+            )
 
     meta = {
         "tts_provider": "edge-tts" if "tts" in only else prev.get("tts_provider"),

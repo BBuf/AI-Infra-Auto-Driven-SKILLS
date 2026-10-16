@@ -28,7 +28,8 @@ import pronounce  # noqa: E402
 
 WHISPER = os.environ.get("SEV_WHISPER", "mlx-community/whisper-large-v3-turbo")
 CACHE = os.path.join(
-    os.environ.get("SEV_WS", os.path.expanduser("~/.cache/sglang-explainer-video")), "pron_cache.json"
+    os.environ.get("SEV_WS", os.path.expanduser("~/.cache/sglang-explainer-video")),
+    "pron_cache.json",
 )
 PUNCT = "，。、；：！？,.;:!?…—）)」』”’"
 PAUSE_S = 0.2
@@ -52,7 +53,11 @@ def script_lines(path):
 
 def terms(text):
     """English tokens worth checking: anything with a letter, in written form."""
-    return [m.group(0) for m in pronounce.TOKEN.finditer(text) if re.search(r"[A-Za-z]", m.group(0))]
+    return [
+        m.group(0)
+        for m in pronounce.TOKEN.finditer(text)
+        if re.search(r"[A-Za-z]", m.group(0))
+    ]
 
 
 class Asr:
@@ -60,12 +65,16 @@ class Asr:
         try:
             import mlx_whisper
         except ImportError:
-            sys.exit("✗ --asr needs mlx-whisper in this venv (Apple Silicon): re-run setup_env.sh")
+            sys.exit(
+                "✗ --asr needs mlx-whisper in this venv (Apple Silicon): re-run setup_env.sh"
+            )
         self.w = mlx_whisper
 
     def __call__(self, audio, prompt=None):
         kw = {"initial_prompt": prompt} if prompt else {}
-        return self.w.transcribe(audio, path_or_hf_repo=WHISPER, language="zh", **kw)["text"].strip()
+        return self.w.transcribe(audio, path_or_hf_repo=WHISPER, language="zh", **kw)[
+            "text"
+        ].strip()
 
 
 def heard(asr, written, audio, context):
@@ -87,7 +96,12 @@ def carrier(asr, voice, written, spoken):
 
 def respellings(t):
     """Candidate spoken forms to try when the written form fails."""
-    c = [re.sub(r"(?<=[a-z])(?=[A-Z])", " ", t), t.replace("-", " "), t.lower(), t.capitalize()]
+    c = [
+        re.sub(r"(?<=[a-z])(?=[A-Z])", " ", t),
+        t.replace("-", " "),
+        t.lower(),
+        t.capitalize(),
+    ]
     if t.isupper() and 2 <= len(t) <= 5:
         c.append(" ".join(t))
     return [x for i, x in enumerate(c) if x != t and x not in c[:i]]
@@ -118,7 +132,7 @@ def check_terms(lines, voice, asr):
                 for cand in respellings(sp):
                     cv, ct = carrier(asr, voice, w, cand)
                     if cv == "OK":
-                        line += f"\n       try lexicon \"{w}\": \"{cand}\"  (heard: {ct})"
+                        line += f'\n       try lexicon "{w}": "{cand}"  (heard: {ct})'
                         break
                 else:
                     line += "\n       no respelling passed — listen, or reword the line"
@@ -130,19 +144,29 @@ def check_meta(meta_path, hf, asr):
     voices = json.load(open(meta_path))["voices"]
     issues = 0
     for v in voices:
-        ws, lid = v["words"], v.get("frame", v.get("id"))  # audio_meta: frame; engine meta: id
+        ws, lid = v["words"], v.get(
+            "frame", v.get("id")
+        )  # audio_meta: frame; engine meta: id
         for a, b in zip(ws, ws[1:]):
             gap = b["start"] - a["end"]
             if gap > PAUSE_S and a["text"][-1] not in PUNCT:
                 issues += 1
-                print(f"  PAUSE line {lid}: {gap:.2f}s between “{a['text']}” and “{b['text']}”")
+                print(
+                    f"  PAUSE line {lid}: {gap:.2f}s between “{a['text']}” and “{b['text']}”"
+                )
         if asr:
-            text = " ".join(w["text"] for w in ws)  # spaces keep adjacent terms apart (fused top-k)
+            text = " ".join(
+                w["text"] for w in ws
+            )  # spaces keep adjacent terms apart (fused top-k)
             wav = os.path.join(hf, v["path"])
             t, tb, out = asr(wav), None, []
             for w in dict.fromkeys(terms(text)):
-                if w not in pronounce.data().get("approved", []) and norm(w) not in norm(t):
-                    tb = tb or asr(wav, prompt=pronounce.to_spoken(text.replace(" ", ""))[0])
+                if w not in pronounce.data().get("approved", []) and norm(
+                    w
+                ) not in norm(t):
+                    tb = tb or asr(
+                        wav, prompt=pronounce.to_spoken(text.replace(" ", ""))[0]
+                    )
                     verdict = "OK~" if norm(w) in norm(tb) else "FAIL"
                     issues += verdict == "FAIL"
                     out.append(f"{verdict} {w}")
@@ -165,19 +189,28 @@ def audit(voice, asr):
             note = "written form passes in the carrier now: check it in a real sentence before dropping the entry"
         else:
             note = ""
-        print(f"  {v_sp:<4} {w} → {sp:<24} heard: {t_sp:<28} (as written: {v_w}) {note}", flush=True)
+        print(
+            f"  {v_sp:<4} {w} → {sp:<24} heard: {t_sp:<28} (as written: {v_w}) {note}",
+            flush=True,
+        )
     return bad
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--script", help="SCRIPT.md (before TTS)")
-    ap.add_argument("--text", action="append", default=[], help="ad-hoc narration line(s)")
+    ap.add_argument(
+        "--text", action="append", default=[], help="ad-hoc narration line(s)"
+    )
     ap.add_argument("--meta", help="audio_meta.json (after TTS)")
     ap.add_argument("--hyperframes", default=".")
     ap.add_argument("--voice", default=E.DEFAULT_VOICE)
     ap.add_argument("--asr", action="store_true")
-    ap.add_argument("--audit", action="store_true", help="re-measure every lexicon entry (implies --asr)")
+    ap.add_argument(
+        "--audit",
+        action="store_true",
+        help="re-measure every lexicon entry (implies --asr)",
+    )
     a = ap.parse_args()
     asr = Asr() if (a.asr or a.audit) else None
 
@@ -188,7 +221,9 @@ def main():
         for lid, text in lines:
             ch = pronounce.changes(text)
             if ch:
-                print(f"  line {lid}: " + " · ".join(f"{w} → {s.strip()}" for w, s in ch))
+                print(
+                    f"  line {lid}: " + " · ".join(f"{w} → {s.strip()}" for w, s in ch)
+                )
         if asr:
             print(f"· terms ({a.voice}, carrier sentence):")
             bad += check_terms(lines, a.voice, asr)
@@ -196,7 +231,10 @@ def main():
         print(f"· lexicon audit ({a.voice}):")
         bad += audit(a.voice, asr)
     if a.meta:
-        print("· recorded lines (pauses inside clauses" + (", terms in context):" if asr else "):"))
+        print(
+            "· recorded lines (pauses inside clauses"
+            + (", terms in context):" if asr else "):")
+        )
         bad += check_meta(a.meta, a.hyperframes, asr)
     print(f"{'✓' if not bad else '✗'} pron_check: {bad} issue(s)")
 
