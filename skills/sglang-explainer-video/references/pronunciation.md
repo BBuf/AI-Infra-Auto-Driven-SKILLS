@@ -25,8 +25,11 @@ voice changes.
    SGLang DSA fuse top k). A part that is not a word the voice knows needs a `parts` entry.
 2. **CamelCase brand names that run words together get spaces:** FlashInfer → Flash Infer, DeepSeek → Deep Seek,
    TensorRT-LLM → Tensor RT LLM. Unspaced, the voice blurs them ("Flesh and Fur", "Deep Seat").
-3. **All-caps words that are English words stay all-caps** (PAGED, EXTEND, DECODE). Xiaoxiao reads them as
-   words, and lower-case `ragged` came out worse. Acronyms are spelled by the voice anyway (DSA, KV, MTP).
+3. **All-caps words that are English words mostly stay all-caps** (PAGED, EXTEND, DECODE): Xiaoxiao reads them
+   as words. Exceptions picked by the user's ear have lexicon entries (RAGGED → Ragged, EAGLE → Eagle).
+   Acronyms are spelled by the voice anyway (DSA, KV, MTP).
+   **A hyphen between two letters becomes a space** in the spoken form (bit-exact → bit exact, top-k → top k):
+   the hyphen blurs the second word. Lexicon lookups also fall back to case-insensitive (flashinfer).
 4. **Acronyms a listener says as letters but the voice says as a word get spaced letters:** VAE → V A E
    (otherwise just "V"), DiT → D I T ("Date"), GEMM → G E M M.
 5. **Symbols:** `×` after a number is 倍 (3.7× → 3.7倍, 8×B300 → 8卡B300); `#42565` drops the `#` (otherwise 井号);
@@ -47,6 +50,16 @@ voice changes.
 | --- | --- | --- |
 | top-k | top k | Talk K in a sentence (the carrier alone passes) → **TopK** |
 | -1 | 负1 | 一 (minus dropped) → **负一** |
+| bit-exact (any letter-letter hyphen) | bit exact | BPZ → **BitExact** |
+| 8GB (any number + GB/MB/TB/KB) | 8 G B | 8G → **8GB** |
+| SANA | Sana | Sun Eye → **Sanai** |
+| epilogue / launch | eppy log / lawnch | Apple Log / Lounge → **epilog / Launch** |
+| denoise | 去噪 (Chinese: no spelling passes) | Denice / Denis → **去噪** |
+| DeepSelect | Deep Select | DickSelect (in a sentence) → **Deep Select** |
+| hmax2 / ctas (identifier part) | h max 2 / CTAs | max2 / Tasked → **Hmax2 / CTS** |
+| **Qwen** (also inside Qwen3-8B, Qwen-Image) | Kwen (`patterns`) | **user's ear, 2026-10-17** (Whisper writes QA3 for every spelling) |
+| **EAGLE** | Eagle | **user's ear, 2026-10-17** |
+| **RAGGED** | Ragged | **user's ear, 2026-10-17** |
 | FlashInfer | Flash Infer | Flesh and Fur → **Flash Infer** |
 | DeepSeek | Deep Seek | Deep Seat → **Deep Seek** |
 | TensorRT-LLM | Tensor RT LLM | Tensorite TileLam → **Tensor RTLLM** |
@@ -63,10 +76,13 @@ torch.compile, vLLM, NVIDIA, Blackwell, Hopper, RoPE, RMSNorm, softmax, Mamba, U
 compared the voice's own reading with SG Laang / SG Lahng / SG Leng / S G Lang and kept the original
 (2026-10-16). Whisper writes it as SGLine / SGLAM; that is an ASR artifact, so ignore it.
 **MTP** is approved too: Qwen3-ASR transcribes Xiaoxiao's MTP correctly, while Whisper writes MPP for every
-spelling, even Em Tee Pee.
+spelling, even Em Tee Pee. Also approved: **Kimi** (user's ear), **PR** (letters, R as 阿尔, the usual Chinese
+reading), **dB** (read 分贝).
 
-Still **OK~** with no respelling that passes; listen on the render: EAGLE ("Ego"), RAGGED ("Reddit"),
-Kimi ("Timmy"). If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
+Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
+worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sentences).
+In-context checks of long lines are noisy: re-probe a FAIL in a short sentence before changing the lexicon. In
+the 13-video re-voice, most FAILs read right in the short sentence. If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
 screen only.
 
 The free Edge endpoint rejects inline SSML (`<phoneme>`, `<sub>`, `<lang>`, even `<break>` → NoAudioReceived),

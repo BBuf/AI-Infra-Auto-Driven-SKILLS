@@ -247,9 +247,28 @@ Edit `SCRIPT.md` (and the storyboard `voiceover`), re-run Step 4, then — inste
 $SEV_PY -I $SEV_SKILL/scripts/retime_frames.py --project $P --ref-meta $P/audio_meta.built.json
 ```
 
-re-maps each frame's timeline onto the new take (piecewise-linear, anchors = matched clause starts). Re-make
-the cover (`make_cover.py`) with the new frame-1 cues, retranslate changed caption groups, re-subset fonts,
-re-assemble, re-render.
+re-maps each frame's timeline onto the new take (piecewise-linear, anchors = matched clause starts). Frames are
+found through STORYBOARD.md `- src:` (so `19b-*.html` works). `--chain` handles a project whose built take was
+lost by an earlier retime: the new anchors are composed through each frame's existing WARP. Re-make the cover
+(`make_cover.py`) with the new frame-1 cues — or let retime warp `00-cover` too when the cover is custom.
+Then retranslate changed caption groups, re-subset fonts, re-assemble, and re-render.
+
+**Re-voicing a finished video** (new voice, same frames) is one command per project:
+
+```bash
+bash $SEV_SKILL/scripts/revoice.sh $P            # VOICE=zh-CN-XiaoxiaoNeural by default
+```
+
+It runs these steps:
+1. Back up the old state once to `revoice_backup/`.
+2. Synthesize the new take, through the pronunciation layer.
+3. Restore the frames, then retime them.
+4. Run the pause check, captions, font subset, assemble, lint and check.
+5. Render `renders/video_revoiced.mp4`. The old `renders/video.mp4` is never touched.
+
+`revoice.sh $P tts` stops after the take. Use it to run `pron_check --meta --asr` across many projects, fix the
+lexicon, and only then render. A batch of 13 published videos (132 min) took about 30 min of TTS plus about
+2× real time to render.
 
 ## References
 

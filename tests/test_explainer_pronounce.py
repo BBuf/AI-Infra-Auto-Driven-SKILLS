@@ -25,7 +25,8 @@ def test_lexicon_and_patterns():
     assert spoken("VAE 与 DiT 的 GEMM") == "V A E 与 D I T 的 G E M M"
     assert spoken("8×B300 上提速 3.7×，见 #42565。") == "8卡B300 上提速 3.7倍，见 42565。"
     assert spoken("吞吐 +5%，延迟 −12%") == "吞吐提升5%，延迟降低12%"
-    assert spoken("fused top-k 的 top-K") == "fused top k 的 top k"
+    assert spoken("fused top-k 的 top-K、bit-exact") == "fused top k 的 top K、bit exact"
+    assert spoken("flashinfer 和 8GB") == "Flash Infer 和 8 G B"
     assert spoken("种子 5、1、-1，越界的 −2") == "种子 5、1、负1，越界的负2"
     assert spoken("1-3 步、GLM-5.3、x-1") == "1-3 步、GLM-5.3、x-1"
 
@@ -58,3 +59,10 @@ def test_map_back_cuts_a_word_that_straddles_a_span_edge():
     assert [w["text"] for w in out] == ["查完", "再", "改", "回", "-1"]
     assert (out[3]["start"], out[3]["end"]) == (0.8, 1.0)
     assert (out[4]["start"], out[4]["end"]) == (1.0, 1.5)
+
+
+def test_user_picked_brand_readings():
+    # chosen by ear on 2026-10-17: Qwen → Kwen (also inside Qwen3-8B), EAGLE → Eagle, RAGGED → Ragged
+    assert spoken("Qwen3-8B 和 Qwen-Image") == "Kwen3-8B 和 Kwen-Image"
+    assert spoken("EAGLE 三步，RAGGED 下标") == "Eagle 三步，Ragged 下标"
+    assert spoken("Kimi K3 的 DeepSelect") == "Kimi K3 的 Deep Select"

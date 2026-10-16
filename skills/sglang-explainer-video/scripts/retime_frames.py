@@ -5,12 +5,14 @@ not bit-identical, so word timings drift by a few hundred ms). Each frame's time
 to the take it was built against; this wraps it in an outer timeline driven through a
 piecewise-linear map whose anchors are clause starts matched across the two takes.
 
-    python retime_frames.py --project DIR --ref-meta audio_meta.built.json [--frames 02-hook=2 ...]
+    python retime_frames.py --project DIR --ref-meta audio_meta.built.json [--chain] [--frames 02-hook=2 ...]
 
 ``--ref-meta`` is a copy of audio_meta.json from when the frames were built (keep one!).
-``--frames`` maps frame file id → storyboard frame number; default: every frames/NN-*.html
-whose leading NN+1 equals its storyboard frame (cover = 00 → frame 1).
-Re-running is safe: an existing WARP array is replaced.
+``--frames`` maps frame file id → storyboard frame number; default: the STORYBOARD.md `- src:` of
+each `## Frame N` (so 19b-*.html works), else frames/NN-*.html as frame NN+1 (cover = 00 → frame 1).
+Re-running is safe: an existing WARP array is replaced — correct when --ref-meta is the take the
+frames were built against. ``--chain``: --ref-meta is the take of an EARLIER re-time instead (the
+built take is lost); the new anchors are composed through the frame's existing WARP.
 """
 
 import argparse
@@ -79,18 +81,45 @@ WRAP = """
 {ind}window.__timelines[{key}] = outer;"""
 
 
+def interp(warp, t):
+    """Piecewise-linear [voiceTime, cueTime] lookup, clamped at both ends."""
+    if t <= warp[0][0]:
+        return warp[0][1]
+    for (a0, b0), (a1, b1) in zip(warp, warp[1:]):
+        if t <= a1:
+            return b0 + (t - a0) / (a1 - a0) * (b1 - b0) if a1 > a0 else b1
+    return warp[-1][1]
+
+
+def storyboard_frames(proj):
+    """{frame file id: storyboard frame number} from STORYBOARD.md `## Frame N` + `- src:`."""
+    out, n = {}, None
+    path = os.path.join(proj, "STORYBOARD.md")
+    if not os.path.exists(path):
+        return out
+    for ln in open(path, encoding="utf-8"):
+        m = re.match(r"## Frame (\d+)", ln)
+        if m:
+            n = m.group(1)
+        m = re.match(r"- src: compositions/frames/(\S+)\.html", ln)
+        if m and n:
+            out[m.group(1)] = n
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True)
     ap.add_argument("--ref-meta", required=True)
     ap.add_argument("--frames", nargs="*", default=[])
+    ap.add_argument("--chain", action="store_true")
     a = ap.parse_args()
     proj = os.path.abspath(a.project)
     with open(a.ref_meta) as f:
         ref = {v["frame"]: v for v in json.load(f)["voices"]}
     with open(os.path.join(proj, "audio_meta.json")) as f:
         cur = {v["frame"]: v for v in json.load(f)["voices"]}
-    mapping = dict(kv.split("=") for kv in a.frames)
+    mapping = dict(kv.split("=") for kv in a.frames) or storyboard_frames(proj)
     if not mapping:
         for p in sorted(
             glob.glob(os.path.join(proj, "compositions", "frames", "[0-9][0-9]-*.html"))
@@ -105,6 +134,10 @@ def main():
         p = os.path.join(proj, "compositions", "frames", f"{fid}.html")
         with open(p) as f:
             s = f.read()
+        old = re.search(r"var WARP = (\[\[.*?\]\]);", s)
+        if a.chain and old:
+            prev = json.loads(old.group(1))
+            warp = [[n_t, round(interp(prev, o_t), 3)] for n_t, o_t in warp]
         if "var WARP = " in s:
             s = re.sub(
                 r"var WARP = \[\[.*?\]\];",
@@ -113,7 +146,7 @@ def main():
                 count=1,
             )
         else:
-            m = re.search(r"\n([ \t]*)window\.__timelines\[([^\]]+)\] = tl;", s)
+            m = re.search(r"\n([ \t]*)window\.__timelines\[([^\]]+)\]\s*=\s*tl;", s)
             if not m:
                 print(f"skip {fid}: no `window.__timelines[...] = tl;` registration")
                 continue

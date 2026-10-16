@@ -9,7 +9,9 @@ edge-tts is rewritten so the voice reads English terms correctly and without bre
 Rules, in order (data in pronunciation.json, measured on zh-CN-XiaoxiaoNeural):
 1. patterns   — regex rewrites for symbols the voice misreads (8×B300 → 8 卡 B300, 3.7× → 3.7 倍,
                 #42565 → 42565, +5% → 提升 5%).
-2. lexicon    — whole-token respellings (FlashInfer → Flash Infer, VAE → V A E, LoRA → Lora).
+2. lexicon    — whole-token respellings (FlashInfer → Flash Infer, VAE → V A E, LoRA → Lora); exact case
+                 first, then case-insensitive (flashinfer). A hyphen between two letters becomes a space
+                 (bit-exact → bit exact, top-k → top k).
 3. identifiers — snake_case / SCREAMING_CASE never reach the voice with "_" (it says 下划线):
                  split on "_", map each part through `parts`, upper-case known acronyms and parts with
                  digits, lower-case the rest (SGLANG_DSA_FUSE_TOPK → SGLang DSA fuse top k).
@@ -59,8 +61,15 @@ def spoken_token(tok):
     lex = data()["lexicon"]
     if tok in lex:
         return lex[tok]
+    low = {k.lower(): v for k, v in lex.items()}
+    if tok.lower() in low:  # flashinfer / FLASHINFER read like FlashInfer
+        return low[tok.lower()]
     if "_" in tok:
         return identifier(tok)
+    if re.search(
+        r"[A-Za-z]-[A-Za-z]", tok
+    ):  # bit-exact, top-k: the hyphen blurs the second word
+        return re.sub(r"(?<=[A-Za-z])-(?=[A-Za-z])", " ", tok)
     return tok
 
 

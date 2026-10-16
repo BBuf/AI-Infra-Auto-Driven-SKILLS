@@ -161,9 +161,16 @@ def check_meta(meta_path, hf, asr):
             wav = os.path.join(hf, v["path"])
             t, tb, out = asr(wav), None, []
             for w in dict.fromkeys(terms(text)):
-                if w not in pronounce.data().get("approved", []) and norm(
-                    w
-                ) not in norm(t):
+                sp = pronounce.spoken_token(w)
+                # denoise → 去噪: the transcript holds the Chinese the voice said
+                said_han = re.search(r"[一-鿿]", sp) and sp.replace(
+                    " ", ""
+                ) in t.replace(" ", "")
+                if (
+                    w not in pronounce.data().get("approved", [])
+                    and norm(w) not in norm(t)
+                    and not said_han
+                ):
                     tb = tb or asr(
                         wav, prompt=pronounce.to_spoken(text.replace(" ", ""))[0]
                     )
