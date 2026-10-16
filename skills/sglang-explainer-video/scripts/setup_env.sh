@@ -48,6 +48,13 @@ fi
 PY="${PYTHON:-python3}"
 [ -x "$WS/venv/bin/python" ] || "$PY" -m venv "$WS/venv"
 "$WS/venv/bin/pip" install -q "edge-tts>=7.2" fonttools brotli pillow
+# mlx-whisper for pron_check.py (English terms read right). Apple Silicon only; elsewhere pron_check runs
+# without --asr. The large-v3-turbo weights (~1.6 GB) download on first use.
+if [ "$(uname -s)/$(uname -m)" = "Darwin/arm64" ]; then
+  "$WS/venv/bin/python" -c "import mlx_whisper" 2>/dev/null || "$WS/venv/bin/pip" install -q mlx-whisper
+else
+  echo "⚠ not Apple Silicon — pron_check.py --asr unavailable (rewrites + pause check still run)" >&2
+fi
 
 # 5. HyperFrames (pinned) — the pr-to-video skill + scripts this workflow drives — plus our CJK/bilingual
 #    caption patch. Cloned into the workspace instead of `npx hyperframes skills` so nothing global changes.
