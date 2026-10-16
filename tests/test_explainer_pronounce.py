@@ -47,3 +47,14 @@ def test_map_back_restores_written_tokens_with_span_timing():
     out = P.map_back(s, spans, words)
     assert [w["text"] for w in out] == ["用", "flashmla_sparse_q8", "做", "prefill"]
     assert (out[1]["start"], out[1]["end"]) == (1.0, 5.5)
+
+
+def test_map_back_cuts_a_word_that_straddles_a_span_edge():
+    # edge-tts tokenizes "改回负1" as 改 | 回负 | 1: "负" belongs to the rewritten "-1"
+    s, spans = P.to_spoken("查完再改回 -1；")
+    words = [{"text": t, "start": a, "end": b} for t, a, b in
+             [("查完", 0.0, 0.4), ("再", 0.4, 0.6), ("改", 0.6, 0.8), ("回负", 0.8, 1.2), ("1", 1.2, 1.5)]]
+    out = P.map_back(s, spans, words)
+    assert [w["text"] for w in out] == ["查完", "再", "改", "回", "-1"]
+    assert (out[3]["start"], out[3]["end"]) == (0.8, 1.0)
+    assert (out[4]["start"], out[4]["end"]) == (1.0, 1.5)

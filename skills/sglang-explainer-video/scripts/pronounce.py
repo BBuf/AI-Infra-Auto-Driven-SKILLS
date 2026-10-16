@@ -126,7 +126,11 @@ def to_spoken(text):
 
 
 def map_back(spoken, spans, words):
-    """Collapse the WordBoundary words that fall inside a rewritten span into its written token."""
+    """Collapse the WordBoundary words that fall inside a rewritten span into its written token.
+
+    edge-tts segments Chinese on its own, so a word can straddle a span edge ("改回负1" → 改 | 回负 | 1);
+    such a word is cut at the edge and its time shared out by characters.
+    """
     out, pos, cur = [], 0, None
     for w in words:
         i = spoken.find(w["text"], pos)
@@ -134,16 +138,21 @@ def map_back(spoken, spans, words):
             out.append(dict(w))
             cur = None
             continue
-        pos = i + len(w["text"])
-        span = next((sp for sp in spans if sp[0] <= i < sp[1]), None)
-        if span is None:
-            out.append(dict(w))
-            cur = None
-        elif span is cur:
-            out[-1]["end"] = w["end"]
-        else:
-            out.append({**w, "text": span[2]})
-            cur = span
+        j = pos = i + len(w["text"])
+        cuts = sorted({i, j} | {e for sp in spans for e in sp[:2] if i < e < j})
+        dur = w["end"] - w["start"]
+        for a, b in zip(cuts, cuts[1:]):
+            t0 = round(w["start"] + dur * (a - i) / (j - i), 3)
+            t1 = round(w["start"] + dur * (b - i) / (j - i), 3)
+            span = next((sp for sp in spans if sp[0] <= a < sp[1]), None)
+            if span is None:
+                out.append({**w, "text": spoken[a:b], "start": t0, "end": t1})
+                cur = None
+            elif span is cur:
+                out[-1]["end"] = t1
+            else:
+                out.append({**w, "text": span[2], "start": t0, "end": t1})
+                cur = span
     return out
 
 
