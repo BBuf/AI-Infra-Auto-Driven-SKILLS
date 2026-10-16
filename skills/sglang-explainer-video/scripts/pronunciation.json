@@ -2,6 +2,8 @@
   "_doc": "Spoken forms for zh-CN-XiaoxiaoNeural (see references/pronunciation.md). lexicon: whole-token respellings, case-sensitive. parts/acronyms: pieces of snake_case identifiers. patterns: [regex, replacement] applied first. approved: terms confirmed right as the voice reads them (by the user's ear, or by a second ASR when Whisper alone mishears) (pron_check reports them as OK, never respells them). Add an entry only after pron_check.py --asr shows the written form fails and the respelling passes.",
   "patterns": [
     ["#(\\d+)", "\\1"],
+    ["(?<![A-Za-z])Qwen(?![a-z])", "Kwen"],
+    ["(\\d+(?:\\.\\d+)?) ?([GMTK])B\\b", "\\1 \\2 B"],
     ["(\\d+)×(?=[A-Z])", "\\1卡"],
     ["(\\d+(?:\\.\\d+)?)×", "\\1倍"],
     ["\\+(\\d+(?:\\.\\d+)?)%", "提升\\1%"],
@@ -20,9 +22,14 @@
     "DiT": "D I T",
     "GEMM": "G E M M",
     "V2": "V two",
-    "top-k": "top k",
-    "Top-K": "top k",
-    "top-K": "top k"
+    "SANA": "Sana",
+    "epilogue": "eppy log",
+    "launch": "lawnch",
+    "denoise": "去噪",
+    "DeepSelect": "Deep Select",
+    "hmax2": "h max 2",
+    "EAGLE": "Eagle",
+    "RAGGED": "Ragged"
   },
   "parts": {
     "sglang": "SGLang",
@@ -37,8 +44,9 @@
     "cfg": "config",
     "vae": "V A E",
     "dit": "D I T",
-    "v2": "V two"
+    "v2": "V two",
+    "ctas": "CTAs"
   },
-  "approved": ["SGLang", "MTP"],
-  "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda"]
+  "approved": ["SGLang", "MTP", "PR", "dB", "Kimi"],
+  "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"]
 }

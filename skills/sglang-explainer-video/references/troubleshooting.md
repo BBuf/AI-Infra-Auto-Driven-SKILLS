@@ -19,6 +19,8 @@
 | Captions: spaces between every Chinese word | captions.mjs joined words with `" "` | the CJK patch (`patches/…`) joins without spaces and keeps one gap at Latin seams |
 | Captions: `FP 32`, `FLUX. / 2`, `torch. / equal` | edge-tts splits terms; `.` ended the group | engine `merge_split_terms` re-joins ASCII terms with no whitespace (or only `._-/`) between them |
 | Captions flash 1-word groups in enumerations | TTS pauses after 、 triggered the silence split | patch: 、 is not a split, an overflow breaks after the last 、 |
+| `retime_frames.py` skips a frame / maps the wrong frame | registration written `=tl;` without spaces; extra frames like `19b-*.html` | fixed: the regex allows any spacing and frames map through STORYBOARD.md `- src:` |
+| Re-voicing a project that was retimed before scrambles its cues | its WARP maps an intermediate take, and the built take is gone | `retime_frames.py --chain` (revoice.sh does it when `audio_meta.built.json` is missing) |
 | Re-running TTS shifts everything by 0.1–1 s | edge-tts takes are not bit-identical | keep `audio_meta.built.json`; `retime_frames.py` re-maps frames to the new take |
 | Closing frame feels rushed | last line ends abruptly | engine pads the last line with `EDGE_TTS_PAD_LAST` (2 s) |
 | `check` contrast warning on separators | `·` separators too faint during a crossfade | darken to `rgb(137,134,128)` |
