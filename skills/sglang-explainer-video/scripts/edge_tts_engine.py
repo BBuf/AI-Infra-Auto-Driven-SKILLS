@@ -7,10 +7,13 @@ Same CLI surface as ``media-use/audio/scripts/audio.mjs``::
 Writes the engine's neutral meta: ``voices[{id, path, duration_s, words[{id, text, start, end}]}]``.
 Word timings come from edge-tts WordBoundary events (no Whisper pass); the punctuation that
 follows each word in the script is re-attached so the caption grouper can split clauses.
+The voice reads the spoken form from ``pronounce.py`` (FlashInfer → Flash Infer, snake_case without
+下划线, 8×B300 → 8 卡 B300); word timings are mapped back to the written tokens, so captions keep
+the script's spelling. ``EDGE_TTS_PRONOUNCE=0`` sends the script text unchanged.
 BGM / SFX are not provided: ``bgm`` stays null and ``sfx`` stays empty.
 
 Env:
-    EDGE_TTS_VOICE      default zh-CN-YunyangNeural (overridden by the request's ``voice``)
+    EDGE_TTS_VOICE      default zh-CN-XiaoxiaoNeural (overridden by the request's ``voice``)
     EDGE_TTS_RATE       default +0%
     EDGE_TTS_PAD_LAST   seconds of silence appended to the LAST line (closing hold), default 2.0
     EDGE_TTS_LEGACY_HOST=1  keep edge-tts' own synthesis host (skip the 403 workaround)
@@ -28,6 +31,10 @@ import edge_tts
 import edge_tts.communicate as _comm
 from edge_tts.constants import TRUSTED_CLIENT_TOKEN
 
+# pronounce.py sits next to this file; `python -I` (the .mjs shim) leaves the script dir off sys.path.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import pronounce  # noqa: E402
+
 if os.environ.get("EDGE_TTS_LEGACY_HOST") != "1":
     # rany2/edge-tts#491: since Oct 2026 speech.platform.bing.com answers the synthesis
     # WebSocket with 403; Edge 155 synthesizes through api.msedgeservices.com with the
@@ -37,7 +44,8 @@ if os.environ.get("EDGE_TTS_LEGACY_HOST") != "1":
         f"?Ocp-Apim-Subscription-Key={TRUSTED_CLIENT_TOKEN}"
     )
 
-DEFAULT_VOICE = os.environ.get("EDGE_TTS_VOICE", "zh-CN-YunyangNeural")
+DEFAULT_VOICE = os.environ.get("EDGE_TTS_VOICE", "zh-CN-XiaoxiaoNeural")
+PRONOUNCE = os.environ.get("EDGE_TTS_PRONOUNCE", "1") != "0"
 PUNCT = set("，。、；：！？,.;:!?…—）)」』”’")
 
 
@@ -166,9 +174,12 @@ def main():
             text = str(line["text"]).strip()
             lid = str(line["id"])
             rel = f"assets/voice/{lid}.wav"
+            spoken, spans = pronounce.to_spoken(text) if PRONOUNCE else (text, [])
             with tempfile.TemporaryDirectory() as td:
                 mp3 = os.path.join(td, "line.mp3")
-                words = asyncio.run(synth(text, voice, rate, mp3))
+                words = pronounce.map_back(
+                    spoken, spans, asyncio.run(synth(spoken, voice, rate, mp3))
+                )
                 af = (
                     ["-af", f"apad=pad_dur={pad_last}"]
                     if (k == len(lines) - 1 and pad_last > 0)
@@ -201,7 +212,11 @@ def main():
                     "words": [{"id": f"w{i}", **w} for i, w in enumerate(words)],
                 }
             )
-            print(f"  voice {lid}: {rel} ({dur}s, {len(words)} words)", file=sys.stderr)
+            said = "".join(f" · {w}→{spoken[a:b].strip()}" for a, b, w in spans)
+            print(
+                f"  voice {lid}: {rel} ({dur}s, {len(words)} words){said}",
+                file=sys.stderr,
+            )
 
     meta = {
         "tts_provider": "edge-tts" if "tts" in only else prev.get("tts_provider"),
