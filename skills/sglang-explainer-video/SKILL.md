@@ -140,6 +140,13 @@ $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --meta $P/audio_meta.json --hyperfra
 ```
 
 A FAIL there means re-synthesize that line after a lexicon fix or a reword (subset re-TTS, see troubleshooting).
+
+**Keep the pronunciation lexicon growing.** Every term this video exposed as misread goes back into the skill
+before delivery. That includes `pron_check` FAILs, OK~ terms that sound wrong, and anything the user flags
+in review. Each fix lands in `scripts/pronunciation.json` (patterns / parts / lexicon / approved), with its
+evidence row in `references/pronunciation.md` and a test case when the rule is new. Ship these as a PR to
+the skill repo. The skill only stays reliable if each video leaves it a little better; see
+`references/pronunciation.md` §The lexicon is a living file.
 A frame running long means it holds two ideas — split it; never drop content to shorten the film.
 Print the timings for Step 5:
 
@@ -215,7 +222,9 @@ bash $SEV_SKILL/scripts/qa_sheet.sh $P/renders/video.mp4 $P/qa 2.5
 
 Read **every** sheet of the rendered MP4 (not Studio snapshots): 乱码, wrong characters, untranslated or
 mistranslated terms, captions out of sync, content under the caption band, stray status lines. Fix, re-render,
-re-check. Then copy to the Desktop:
+re-check. Before delivering, make sure this video's pronunciation fixes are in the skill (§4 "Keep the
+pronunciation lexicon growing"). The same applies after the user's review: a word they say was misread becomes
+a lexicon entry plus a skill PR, not a one-off edit in the project. Then copy to the Desktop:
 
 ```bash
 cp $P/renders/video.mp4 ~/Desktop/SGLang_PR<N>_讲解_中英字幕.mp4

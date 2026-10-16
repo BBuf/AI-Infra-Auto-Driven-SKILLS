@@ -4,6 +4,8 @@
     $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --script $P/SCRIPT.md --asr
     # after TTS: pauses inside clauses + every line transcribed in context
     $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --meta $P/audio_meta.json --hyperframes $P --asr
+    # lexicon health: every respelling still passes, and is still needed (voice / Edge updates)
+    $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --audit
 
 A term is OK when an unbiased Whisper pass writes it back (case/spaces ignored), OK~ when only a pass
 primed with the term does (plausible; listen once), FAIL when neither does — then add a respelling to
@@ -149,6 +151,24 @@ def check_meta(meta_path, hf, asr):
     return issues
 
 
+def audit(voice, asr):
+    """Re-measure every lexicon entry: the spoken form must pass, and the written form should still fail
+    (if it now passes, the voice improved and the entry can go)."""
+    bad = 0
+    for w, sp in pronounce.data()["lexicon"].items():
+        v_sp, t_sp = carrier(asr, voice, w, sp)
+        v_w, _ = carrier(asr, voice, w, w)
+        if v_sp == "FAIL":
+            bad += 1
+            note = "respelling no longer passes: re-probe this term"
+        elif v_w == "OK":
+            note = "written form passes in the carrier now: check it in a real sentence before dropping the entry"
+        else:
+            note = ""
+        print(f"  {v_sp:<4} {w} → {sp:<24} heard: {t_sp:<28} (as written: {v_w}) {note}", flush=True)
+    return bad
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--script", help="SCRIPT.md (before TTS)")
@@ -157,8 +177,9 @@ def main():
     ap.add_argument("--hyperframes", default=".")
     ap.add_argument("--voice", default=E.DEFAULT_VOICE)
     ap.add_argument("--asr", action="store_true")
+    ap.add_argument("--audit", action="store_true", help="re-measure every lexicon entry (implies --asr)")
     a = ap.parse_args()
-    asr = Asr() if a.asr else None
+    asr = Asr() if (a.asr or a.audit) else None
 
     lines = (script_lines(a.script) if a.script else []) + [("text", t) for t in a.text]
     bad = 0
@@ -171,6 +192,9 @@ def main():
         if asr:
             print(f"· terms ({a.voice}, carrier sentence):")
             bad += check_terms(lines, a.voice, asr)
+    if a.audit:
+        print(f"· lexicon audit ({a.voice}):")
+        bad += audit(a.voice, asr)
     if a.meta:
         print("· recorded lines (pauses inside clauses" + (", terms in context):" if asr else "):"))
         bad += check_meta(a.meta, a.hyperframes, asr)

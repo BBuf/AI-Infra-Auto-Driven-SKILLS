@@ -27,6 +27,9 @@ Every rule here came from a correction on a delivered video. Apply all of them b
   it if the user asks.
 - **English terms are read right and fluently** — the user's explicit bar. Follow `pronunciation.md`; run
   `pron_check.py --asr` before TTS and on the recorded take.
+- **The pronunciation lexicon keeps learning** (user, 2026-10-16). Each new video that hits a misread word
+  updates `pronunciation.json` and `pronunciation.md`, and ships them to the skill repo, so the skill keeps
+  working on its own over time.
 
 ## Captions
 

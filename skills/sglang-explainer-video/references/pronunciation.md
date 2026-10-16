@@ -45,7 +45,7 @@ voice changes.
 
 | Written | Spoken (lexicon) | Whisper heard the written form as |
 | --- | --- | --- |
-| top-k | top k | Talk K (in a sentence) → **TopK** |
+| top-k | top k | Talk K in a sentence (the carrier alone passes) → **TopK** |
 | -1 | 负1 | 一 (minus dropped) → **负一** |
 | FlashInfer | Flash Infer | Flesh and Fur → **Flash Infer** |
 | DeepSeek | Deep Seek | Deep Seat → **Deep Seek** |
@@ -71,6 +71,41 @@ screen only.
 
 The free Edge endpoint rejects inline SSML (`<phoneme>`, `<sub>`, `<lang>`, even `<break>` → NoAudioReceived),
 so respelling is the only lever.
+
+## The lexicon is a living file — every video teaches it something
+
+This file and `scripts/pronunciation.json` are **never finished**. Every new video is also a pronunciation
+run. Fold any term that was misread into the skill, so the next video gets it right the first time. That
+covers terms found by `pron_check` (FAIL, or an OK~ that sounded wrong) and terms the user flags in review
+("这个词读错了", "这里停顿了"). This is a required step of every video, not an optional cleanup
+(SKILL.md §4 and §9).
+
+For each misread term, before the video is delivered:
+
+1. **Find the fix.**
+   - Use `pron_check.py --text "<the real line>" --asr`, plus a sentence-context probe if the carrier
+     passes but the line fails (top-k did).
+   - When ASR can't decide, make a short A/B for the user's ear (see below).
+2. **Write it into `pronunciation.json`, in the most general form that is still correct:**
+   - a `patterns` rule for a class of symbols (`×`, `#`, negative numbers);
+   - a `parts` entry for a word inside identifiers;
+   - a `lexicon` entry for one token;
+   - `approved` when the voice's own reading is right and only Whisper mishears it.
+3. **Record the evidence.** Add a row to the "Measured" table above: written → spoken, what was heard before
+   and after, and the date or video. If the rule changes how text is cut, add a case to
+   `tests/test_explainer_pronounce.py`.
+4. **Re-run, then ship the change upstream.**
+   - Re-run `pron_check` on the video, then `uvx pytest tests/test_explainer_pronounce.py`.
+   - Open a PR to the skill repo with the entries; one small PR per video is fine.
+   - The video's own fix stays in the project only until that PR merges.
+
+Keep it healthy:
+
+- **Run `pron_check.py --audit`** when the voice changes, when edge-tts or the Edge endpoint changes, or
+  every few videos. Every respelling must still pass.
+- **Drop an entry only after its written form also reads right in a real sentence.** A pass in the
+  carrier alone is not enough.
+- **Never delete measurements from the table.** Mark a superseded row instead.
 
 ## Adding an entry
 
