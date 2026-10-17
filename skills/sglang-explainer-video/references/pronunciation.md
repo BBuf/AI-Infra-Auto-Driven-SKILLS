@@ -81,6 +81,17 @@ reading), **dB** (read 分贝).
 
 Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
 worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sentences).
+**FAIL with no passing respelling → reword the narration, keep the term on screen** (measured 2026-10-17, video
+「改一行，为什么能快几倍？」):
+
+| Written | Whisper heard | Narration says instead |
+| --- | --- | --- |
+| dstate (Mamba2 state dim) | State | 状态维度 |
+| ncu | 看 | Nsight Compute (passes: N-Sight Compute) |
+| swizzle | Swizo | 交错排列的内存布局 |
+
+Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
+
 In-context checks of long lines are noisy: re-probe a FAIL in a short sentence before changing the lexicon. In
 the 13-video re-voice, most FAILs read right in the short sentence. If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
 screen only.
