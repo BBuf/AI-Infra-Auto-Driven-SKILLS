@@ -96,6 +96,12 @@ worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sen
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
+**Chinese polyphones across a word boundary** (user's ear, DeepSeek V4.1 video 2026-10-18): 「生成长距离」 was read
+「生成 zhǎng 距离」 because the voice segmented the bigram 「成长」 (chéng zhǎng) across the word boundary. `pron_check` cannot
+catch this: Whisper writes 长 for either reading. Before TTS, scan the narration for a polyphone (长 / 行 / 重 / 还 / 得 /
+了 / 差 / 便 …) whose neighbour forms a different word (成长, 生长, 银行, 重复 …) and reword so the bigram never forms,
+e.g. 「40 层里只有 4 层在生成长距离 KV」 → 「40 层里，长距离 KV 只由 4 层生成」.
+
 In-context checks of long lines are noisy: re-probe a FAIL in a short sentence before changing the lexicon. In
 the 13-video re-voice, most FAILs read right in the short sentence. If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
 screen only.
