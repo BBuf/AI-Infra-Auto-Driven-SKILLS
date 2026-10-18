@@ -66,7 +66,7 @@ voice changes.
 | LoRA | Lora | Lauren → **Laura** |
 | Miles | mials | Mouse → **Miles** |
 | AIME (AIME25, AIME 2025) | Aime | M → **AIM** (short sentence; in a long line Whisper still writes M — read as "aim", the usual reading) |
-| GiB / KiB (binary units) | G I B / K I B | GIG / TB → **G IB / KIB** (a capital I matters: a lowercase "i" still comes back as GIG) |
+| GiB / KiB (binary units) | G B / K B | **user's ear, 2026-10-18**: say them like GB / KB, not letter by letter (G I B was rejected). Whisper hears GB / KB, so `pron_check` reports KiB as a FAIL against the written form; that is expected |
 | **MoE** (also DeepSeekMoE, MegaMoE, fused_moe) | M O E (lexicon + `parts`) | **user's ear, 2026-10-18**: the voice said "Mo" (the English name *Moe*). Spelled letters come back as MOE |
 | VAE / DiT / GEMM | V A E / D I T / G E M M | V / Date / (dropped) → **VAE / DIT / GEMM** |
 | DRAFT_EXTEND_V2 | draft extend V two | Draft下划线Extend下划线V2 → **Draft Extend V2** |
