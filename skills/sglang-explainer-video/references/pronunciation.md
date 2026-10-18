@@ -66,6 +66,7 @@ voice changes.
 | LoRA | Lora | Lauren → **Laura** |
 | Miles | mials | Mouse → **Miles** |
 | AIME (AIME25, AIME 2025) | Aime | M → **AIM** (short sentence; in a long line Whisper still writes M — read as "aim", the usual reading) |
+| GiB / KiB (binary units) | G I B / K I B | GIG / TB → **G IB / KIB** (a capital I matters: a lowercase "i" still comes back as GIG) |
 | VAE / DiT / GEMM | V A E / D I T / G E M M | V / Date / (dropped) → **VAE / DIT / GEMM** |
 | DRAFT_EXTEND_V2 | draft extend V two | Draft下划线Extend下划线V2 → **Draft Extend V2** |
 
@@ -91,6 +92,7 @@ worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sen
 | ncu | 看 | Nsight Compute (passes: N-Sight Compute) |
 | swizzle | Swizo | 交错排列的内存布局 |
 | scatter (Beam video, 2026-10-17) | Statter | 「先 gather，算完再分发回去」 |
+| key (indexer key, DSV4.1 video 2026-10-18) | T (in every carrier, also 索引 key) | 索引键 / 读键的带宽 |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
