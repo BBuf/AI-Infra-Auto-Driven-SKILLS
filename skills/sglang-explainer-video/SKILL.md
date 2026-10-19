@@ -120,6 +120,11 @@ anything uncovered. Then apply the house style:
   ```bash
   $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --script $P/SCRIPT.md --asr
   ```
+- **Chinese polyphones must take the intended reading.** 行 meaning "row / line" is respelled to 航 automatically
+  (the voice read 一行 as yì xíng in 42 % of past lines). For any other polyphone the user flags, measure it
+  with `scripts/poly_probe.py`. Edge picks the reading per request, so it synthesizes several takes and
+  compares each one acoustically with unambiguous homophones. Add a `patterns` rule when the spoken form
+  still misreads. See `references/pronunciation.md` for the details.
 
 ## 4. Narration (edge-tts, word timings)
 
@@ -273,7 +278,8 @@ lexicon, and only then render. A batch of 13 published videos (132 min) took abo
 ## References
 
 - `references/house-style.md` — narration, term glossary, captions, cover, author page, brief template.
-- `references/pronunciation.md` — English terms read right: spoken-form rules, lexicon, `pron_check.py`.
+- `references/pronunciation.md` — English terms and Chinese polyphones read right: spoken-form rules, lexicon,
+  `pron_check.py`, `poly_probe.py`.
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.
 - `references/troubleshooting.md` — every failure seen so far and its fix.
 - `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @).
