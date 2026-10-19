@@ -17,6 +17,8 @@ voice changes.
   - **FAIL**: neither pass gets it. The tool then tries respellings and prints the first that passes.
 
   Verdicts are cached per voice and spoken form in `$SEV_WS/pron_cache.json`.
+  The carrier reads the term's full spoken form, `patterns` included (24GB → 24 G B), so a pattern-handled
+  term is no longer reported as a FAIL because Whisper heard the raw token (it used to print `24GB … heard 24G`).
 - `scripts/poly_probe.py` handles what Whisper can't hear: the reading of a Chinese polyphone (行 háng vs xíng).
   It synthesizes several takes and compares each one with unambiguous homophones of each reading (DTW over
   log-mel). It reports the misread rate as written and after the rewrite. See §Chinese polyphones.
@@ -70,6 +72,10 @@ voice changes.
 | Miles | mials | Mouse → **Miles** |
 | AIME (AIME25, AIME 2025) | Aime | M → **AIM** (short sentence; in a long line Whisper still writes M — read as "aim", the usual reading) |
 | GiB / KiB (binary units) | G B / K B | **user's ear, 2026-10-18**: say them like GB / KB, not letter by letter (G I B was rejected). Whisper hears GB / KB, so `pron_check` reports KiB as a FAIL against the written form; that is expected |
+| checkpoint | check point | ChatPoint (every carrier, also lower/capitalised) → **checkpoint** (24GB video, 2026-10-19) |
+| OOM | O O M | Om (read as a word) → **OOM** |
+| comfy-kitchen (the comfy_kitchen INT8 library) | Comfy Kitchen | Tichen for a bare kitchen / Kitchen → **Comfy Kitchen**. In narration write the pair "Comfy Kitchen"; the bare word alone still fails |
+| fa (the FlashAttention backend name) | F A | In context the voice said "fa" as a syllable (Whisper: Fall / 发 / 法 / Ford; the carrier's "FAR" was a false OK) → **FA** |
 | **MoE** (also DeepSeekMoE, MegaMoE, fused_moe) | M O E (lexicon + `parts`) | **user's ear, 2026-10-18**: the voice said "Mo" (the English name *Moe*). Spelled letters come back as MOE |
 | VAE / DiT / GEMM | V A E / D I T / G E M M | V / Date / (dropped) → **VAE / DIT / GEMM** |
 | DRAFT_EXTEND_V2 | draft extend V two | Draft下划线Extend下划线V2 → **Draft Extend V2** |
@@ -97,6 +103,8 @@ worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sen
 | swizzle | Swizo | 交错排列的内存布局 |
 | scatter (Beam video, 2026-10-17) | Statter | 「先 gather，算完再分发回去」 |
 | key (indexer key, DSV4.1 video 2026-10-18) | T (in every carrier, also 索引 key) | 索引键 / 读键的带宽 |
+| int mm (torch._int_mm, 24GB video 2026-10-19) | MBM | PyTorch 自带的 INT8 矩阵乘接口 (torch._int_mm stays on screen) |
+| INT32 (accumulator) | 印32 (OK~ in every spelling) | 32 位整数累加 |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
@@ -130,7 +138,9 @@ Left alone (the voice must say xíng): 行 followed by 为 动 驶 走 人 李 �
 每行使用, 每行进行, 一行程序 get 航. `tests/test_explainer_pronounce.py` pins both lists.
 
 Not covered on purpose, because both readings are common: 这行 / 那行 (那行吧 = xíng), 此行, 同行, 单行, 上行 / 下行, 各行.
-Write 这一行 / 同一行 / 那一行 instead and the rule applies. One false positive remains: 一行三人 (a party of three)
+Write 这一行 / 同一行 / 那一行 instead and the rule applies. The guard words also bite the writer: 「按行动态量化」
+puts 行 before 动, so the rule leaves it (行动 = xíng dòng) and the voice may read it that way. Write 「逐行做动态量化」
+(24GB video, 2026-10-19). One false positive remains: 一行三人 (a party of three)
 becomes yì háng. It is very rare in technical narration; reword it if it ever appears.
 
 **Measuring a polyphone** (any character, e.g. 长 常/肠 vs 掌/涨, 重 众/仲 vs 虫/崇):

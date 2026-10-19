@@ -48,5 +48,23 @@ share a stage (same diagram before/after, two code frames) on the same worker.
   Reply with one line per file: path + one-sentence summary.
 ```
 
+Append these lessons to every dispatch, after the template above. Each one cost a fix and a re-render in an
+earlier film. The project's `dispatch.py` keeps the full list.
+
+- No whole-frame camera drift: never tween scale/x/y on a frame-wide wrapper (no slow push-in). Workers kept
+  adding `fromTo('#fNN-cam', {scale:1}, {scale:1.01x})`; grep for `-cam` after a wave.
+- On SVG elements, give `transformOrigin` on **both** sides of a `fromTo`. Set only on the "to" side, it trips
+  GSAP's smoothOrigin and shifted an axis by 480px (24GB video).
+- Real video clips: `<video class="clip" muted playsinline data-media-start="0" data-track-index="N">`. When the
+  clip is shorter than the frame, chain copies back to back (each `data-duration` ≤ the clip length, the last one
+  trimmed to the frame end). `data-start` inside a frame is frame-local; `hf lint`'s
+  `nested_media_start_basis_ambiguous` warning on chained copies is expected.
+- `check_frames.mjs` treats the highest-numbered frame on disk as the last frame, so mid-run it reports "missing
+  follow strip" on whatever frame is newest. Tell workers to ignore it unless they hold the real last frame.
+- Excerpt line ranges come from the orchestrator. If a Scene line names a code line that is not in the packet's
+  excerpt, the worker should report it, not paraphrase. The fix is upstream: correct the range in `frames.py`
+  and regenerate the packet. In the 24GB video, a range was off by one and dropped the `copy_` line the narration
+  was about.
+
 Retry (once per frame): SendMessage to the same worker with the exact validator/lint finding and the
 check command; ask it to change only what the finding names.

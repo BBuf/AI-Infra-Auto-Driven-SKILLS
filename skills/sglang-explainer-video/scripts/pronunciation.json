@@ -38,7 +38,11 @@
     "DeepSelect": "Deep Select",
     "hmax2": "h max 2",
     "EAGLE": "Eagle",
-    "RAGGED": "Ragged"
+    "RAGGED": "Ragged",
+    "checkpoint": "check point",
+    "OOM": "O O M",
+    "comfy-kitchen": "Comfy Kitchen",
+    "fa": "F A"
   },
   "parts": {
     "sglang": "SGLang",

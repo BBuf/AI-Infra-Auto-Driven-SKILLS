@@ -116,7 +116,8 @@ def check_terms(lines, voice, asr):
             if w in seen:
                 continue
             seen.add(w)
-            sp = pronounce.spoken_token(w)
+            # patterns too (24GB -> 24 G B), so the carrier hears what the engine will send
+            sp = pronounce.to_spoken(w)[0]
             if w in pronounce.data().get("approved", []):
                 print(f"  OK   {w:<44} (approved by ear)")
                 continue
