@@ -17,6 +17,9 @@ voice changes.
   - **FAIL**: neither pass gets it. The tool then tries respellings and prints the first that passes.
 
   Verdicts are cached per voice and spoken form in `$SEV_WS/pron_cache.json`.
+- `scripts/poly_probe.py` handles what Whisper can't hear: the reading of a Chinese polyphone (行 háng vs xíng).
+  It synthesizes several takes and compares each one with unambiguous homophones of each reading (DTW over
+  log-mel). It reports the misread rate as written and after the rewrite. See §Chinese polyphones.
 
 ## Rules for writing narration
 
@@ -99,11 +102,47 @@ Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), 
 
 **Chinese polyphones across a word boundary** (user's ear, DeepSeek V4.1 video 2026-10-18): 「生成长距离」 was read
 「生成 zhǎng 距离」 because the voice segmented the bigram 「成长」 (chéng zhǎng) across the word boundary. `pron_check` cannot
-catch this: Whisper writes 长 for either reading. Before TTS, scan the narration for a polyphone (长 / 行 / 重 / 还 / 得 /
+catch this: Whisper writes 长 for either reading (use `poly_probe.py`, below). Before TTS, scan the narration for a polyphone (长 / 行 / 重 / 还 / 得 /
 了 / 差 / 便 …) whose neighbour forms a different word (成长, 生长, 银行, 重复 …) and reword so the bigram never forms,
 e.g. 「40 层里只有 4 层在生成长距离 KV」 → 「40 层里，长距离 KV 只由 4 层生成」.
 Same review: 「decoder 侧重放」 was read cè**zhòng** fàng (侧重 = emphasis) → 「decoder 侧的重放」. Also prefer the dictionary
 word over a clipped one: 「重算」 is not a common word and may get zhòng, so write 「重新算」.
+
+**行 meaning "row / line" is respelled automatically** (user's ear, 2026-10-19: 「一行」 was sometimes read yì
+**xíng**, as in 一行人). Measured with `scripts/poly_probe.py` (takes vs 航/杭 and 型/形 homophones; 11/11 control
+words such as 银行/行业/进行/行为/一行人 judged right):
+
+- **Edge picks the reading per request.** The same sentence, synthesized again, can flip. 「就是这一行在表里的位置」
+  came out xíng in 1 of 5 takes in one run and 3 of 6 in the next. A clean listen of one take proves nothing.
+- Across 74 「一行」 lines from 13 past videos, 31 (42 %) were read xíng. 「每行」: 4 of 28; 「整行」: 2 of 3; 「长行」: 1 of 1.
+- Five lines × 6 takes: **13/30 takes wrong as written, 0/30 after the rule.** 「退回一个 CTA 一行」 was wrong in 6 of 6 takes.
+
+The `patterns` in pronunciation.json send 航 (only ever háng) to the voice; captions keep 行:
+
+| Written | Spoken | Rule |
+| --- | --- | --- |
+| 一行 · 这一行 · 每一行 · 一行的上下文 | 一航 … | 行 after 一, except after 唯一/统一/万一 |
+| 一行行 | 一航航 | so 航行 (háng xíng) never forms |
+| 每行 · 整行 · 几行 · 两行 · 多行 · 长行 · 短行 · 逐行 · 按行 · 六行 · 七万八千零八十行 · 第 3 行 | …航 | 行 after a numeral, digit or row quantifier |
+
+Left alone (the voice must say xíng): 行 followed by 为 动 驶 走 人 李 星 政 者 销 军 刑 径 凶 踪 囊 装, by 使 (not 使用),
+进 (not 进行), 程 (not 程序), 得通 or 不通. So 统一行为, 唯一行得通, 万一行不通, 一行人, 每行驶 keep 行, while
+每行使用, 每行进行, 一行程序 get 航. `tests/test_explainer_pronounce.py` pins both lists.
+
+Not covered on purpose, because both readings are common: 这行 / 那行 (那行吧 = xíng), 此行, 同行, 单行, 上行 / 下行, 各行.
+Write 这一行 / 同一行 / 那一行 instead and the rule applies. One false positive remains: 一行三人 (a party of three)
+becomes yì háng. It is very rare in technical narration; reword it if it ever appears.
+
+**Measuring a polyphone** (any character, e.g. 长 常/肠 vs 掌/涨, 重 众/仲 vs 虫/崇):
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/poly_probe.py --text "就是这一行在表里的位置。" --at 这一行 --char 行 --want 航,杭 --avoid 型,形
+#   as written (这一行在): wrong 2/6
+#   as spoken (这一航在): wrong 0/6
+```
+
+It reports the share of takes that used the avoided reading, as written and after pronunciation.json. It exits
+non-zero while the spoken form still misreads. A rule is done when the spoken form is 0/N.
 
 In-context checks of long lines are noisy: re-probe a FAIL in a short sentence before changing the lexicon. In
 the 13-video re-voice, most FAILs read right in the short sentence. If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
