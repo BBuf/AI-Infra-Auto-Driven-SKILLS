@@ -92,3 +92,11 @@ def test_map_back_keeps_written_hang():
     words = [{"text": t, "start": a, "end": b} for t, a, b in [("改", 0.0, 0.2), ("一航", 0.2, 0.6), ("代码", 0.6, 1.0)]]
     out = P.map_back(s, spans, words)
     assert "".join(w["text"] for w in out) == "改一行代码"
+
+
+def test_terms_from_the_24gb_video():
+    # measured 2026-10-19: checkpoint -> ChatPoint, OOM -> Om, bare kitchen -> Tichen, fa said as a syllable
+    assert spoken("直接映射 checkpoint 文件") == "直接映射 check point 文件"
+    assert spoken("第一个请求就会 OOM。") == "第一个请求就会 O O M。"
+    assert spoken("comfy-kitchen 的 int8_linear") == "Comfy Kitchen 的 INT8 linear"
+    assert spoken("默认仍然是精确的 fa，") == "默认仍然是精确的 F A，"
