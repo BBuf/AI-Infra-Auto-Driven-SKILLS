@@ -1,12 +1,20 @@
 """Put the SGLang brand on a HyperFrames project (run after Step 1 ingest, before frames).
 
-    python apply_brand.py --project DIR
+    python apply_brand.py --project DIR [--theme sglang-orange|kimi-dark]
 
+Theme sglang-orange (default):
 1. merges the SGLang palette into capture/extracted/tokens.json (keeps title/description);
 2. runs pr-to-video's build-frame.mjs, which remixes the code-editorial preset onto those
    colors (coral → SGLang orange, navy code surface → warm dark brown, cream ground kept light);
-3. replaces .hyperframes/caption-skin.html with the CJK + bilingual caption skin;
-4. copies the SGLang logos into assets/sglang/.
+3. replaces .hyperframes/caption-skin.html with the CJK + bilingual caption skin.
+
+Theme kimi-dark (house-style.md §Themes):
+1. writes assets/themes/kimi-dark/frame.md as the project's frame.md (no preset remix);
+2. installs that theme's dark caption skin and stages the JetBrains Mono faces it uses.
+
+Both themes then copy the theme's SGLang follow strip to assets/brand/follow-strip.html (the
+last-frame worker pastes it from there), copy the SGLang logos into assets/sglang/, and record
+the theme in .hyperframes/theme for make_cover.py.
 """
 
 import argparse
@@ -18,6 +26,7 @@ import subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(os.path.dirname(HERE), "assets")
+THEMES = ("sglang-orange", "kimi-dark")
 BRAND_COLORS = [
     {"hex": "#1F1410", "role": "ink"},
     {"hex": "#FBF6F1", "role": "canvas"},
@@ -29,11 +38,7 @@ BRAND_COLORS = [
 FRAME_OVERRIDES = {"tile": "#F9E6DB", "tile-strong": "#F2CFBE"}
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--project", required=True)
-    a = ap.parse_args()
-    proj = os.path.abspath(a.project)
+def apply_orange(proj):
     tok_path = os.path.join(proj, "capture", "extracted", "tokens.json")
     os.makedirs(os.path.dirname(tok_path), exist_ok=True)
     tokens = {}
@@ -72,13 +77,47 @@ def main():
         os.path.join(ASSETS, "caption-skin.html"),
         os.path.join(proj, ".hyperframes", "caption-skin.html"),
     )
+    return os.path.join(ASSETS, "brand", "follow-strip.html")
+
+
+def apply_kimi_dark(proj):
+    theme = os.path.join(ASSETS, "themes", "kimi-dark")
+    shutil.copy(os.path.join(theme, "frame.md"), os.path.join(proj, "frame.md"))
+    os.makedirs(os.path.join(proj, ".hyperframes"), exist_ok=True)
+    shutil.copy(
+        os.path.join(theme, "caption-skin.html"),
+        os.path.join(proj, ".hyperframes", "caption-skin.html"),
+    )
+    # The theme uses Noto Sans SC (subset later by subset_fonts.py) plus JetBrains Mono, which the
+    # code-editorial preset ships as licensed local WOFF2 files.
+    fonts = os.path.join(
+        os.environ["SKILL_DIR"], "..", "hyperframes-creative", "frame-presets", "code-editorial", "fonts"
+    )
+    os.makedirs(os.path.join(proj, "assets", "fonts"), exist_ok=True)
+    for n in ("JetBrainsMono-400.woff2", "JetBrainsMono-700.woff2"):
+        shutil.copy(os.path.join(fonts, n), os.path.join(proj, "assets", "fonts", n))
+    return os.path.join(theme, "follow-strip.html")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--project", required=True)
+    ap.add_argument("--theme", choices=THEMES, default="sglang-orange")
+    a = ap.parse_args()
+    proj = os.path.abspath(a.project)
+    strip = apply_kimi_dark(proj) if a.theme == "kimi-dark" else apply_orange(proj)
+    os.makedirs(os.path.join(proj, "assets", "brand"), exist_ok=True)
+    shutil.copy(strip, os.path.join(proj, "assets", "brand", "follow-strip.html"))
     os.makedirs(os.path.join(proj, "assets", "sglang"), exist_ok=True)
     for n in ("sglang-logo.png", "sglang-logo-square.png"):
         shutil.copy(
             os.path.join(ASSETS, "brand", n), os.path.join(proj, "assets", "sglang", n)
         )
+    with open(os.path.join(proj, ".hyperframes", "theme"), "w") as f:
+        f.write(a.theme + "\n")
     print(
-        "✓ SGLang brand applied (frame.md remixed, CJK/bilingual caption skin, logos)"
+        f"✓ SGLang brand applied · theme {a.theme} (frame.md, CJK/bilingual caption skin, "
+        "follow strip → assets/brand/, logos)"
     )
 
 

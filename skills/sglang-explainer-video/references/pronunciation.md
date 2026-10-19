@@ -79,6 +79,10 @@ voice changes.
 | **MoE** (also DeepSeekMoE, MegaMoE, fused_moe) | M O E (lexicon + `parts`) | **user's ear, 2026-10-18**: the voice said "Mo" (the English name *Moe*). Spelled letters come back as MOE |
 | VAE / DiT / GEMM | V A E / D I T / G E M M | V / Date / (dropped) → **VAE / DIT / GEMM** |
 | DRAFT_EXTEND_V2 | draft extend V two | Draft下划线Extend下划线V2 → **Draft Extend V2** |
+| **MLA** (Multi-head Latent Attention) | M L A | MBA in every recorded line. A/B on 「这 24 层 MLA 完全不加位置编码」: bare form heard MBA 3/3, spaced form heard MLA 3/3 → the voice blurs the L (K3 video, 2026-10-19) |
+| SiTU (Sigmoid Tanh Unit) | S I T U | C2 / SITU → **SITU** |
+| tanh | tan h | 10 → **TangentH / 10H** (OK~; Edge reads "tan" as tangent — accepted) |
+| kimi_k3.py | Kimi K3 点 P Y | Timmy K3PY → spelled file name |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -105,6 +109,10 @@ worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sen
 | key (indexer key, DSV4.1 video 2026-10-18) | T (in every carrier, also 索引 key) | 索引键 / 读键的带宽 |
 | int mm (torch._int_mm, 24GB video 2026-10-19) | MBM | PyTorch 自带的 INT8 矩阵乘接口 (torch._int_mm stays on screen) |
 | INT32 (accumulator) | 印32 (OK~ in every spelling) | 32 位整数累加 |
+| key (as in 128 个 key 通道, K3 video 2026-10-19) | T (again) | k 的 128 个通道 |
+| e (as in e 的负 80 次方) | 一 | 累积衰减的对数最多到负 80 (keep e<sup>−80</sup> on screen) |
+| tok/s | Talk | 每秒 N 个 token |
+| copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
