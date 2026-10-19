@@ -1,6 +1,6 @@
 ---
 name: sglang-explainer-video
-description: Turn an SGLang PR (number or URL) or a technical article (Markdown path) into a Chinese explainer video that fully explains every algorithm and code change (length follows the material, no time cap) — natural edge-tts narration, word-synced bilingual 中文/English captions, the unified orange "SGLang PR 讲解 / SGLang 技术解读" cover, SGLang-brand visuals — built on HyperFrames' pr-to-video pipeline and delivered to ~/Desktop. Use when the user sends an sgl-project/sglang PR number or link, or an article file, and asks for a video (做个视频, 讲解视频, PR 视频, 文章转视频).
+description: Turn an SGLang PR (number or URL) or a technical article (Markdown path) into a Chinese explainer video that fully explains every algorithm and code change (length follows the material, no time cap) — natural edge-tts narration, word-synced bilingual 中文/English captions, the orange "SGLang PR 讲解 / SGLang 技术解读" cover and SGLang-brand visuals by default (or the kimi-dark theme) — built on HyperFrames' pr-to-video pipeline and delivered to ~/Desktop. Use when the user sends an sgl-project/sglang PR number or link, or an article file, and asks for a video (做个视频, 讲解视频, PR 视频, 文章转视频).
 ---
 
 # SGLang explainer video
@@ -88,10 +88,12 @@ Then write `$P/capture/understanding.md`: the problem; the algorithm step by ste
 (`file:function` → what changed and why); the numbers with their conditions (hardware, model, workload);
 the caveats the author states. This is the coverage checklist for Step 3.
 
-Then put the SGLang brand on the project (frame.md remix, CJK/bilingual caption skin, logos):
+Then put the SGLang brand on the project (frame.md, CJK/bilingual caption skin, follow strip, logos). The theme is
+`sglang-orange` unless the video is about a Kimi / Moonshot model or the user asks for a different look; then use
+`--theme kimi-dark` (`references/house-style.md` §Themes):
 
 ```bash
-$SEV_PY -I $SEV_SKILL/scripts/apply_brand.py --project $P
+$SEV_PY -I $SEV_SKILL/scripts/apply_brand.py --project $P [--theme kimi-dark]
 ```
 
 ## 3. Story + script
@@ -105,7 +107,7 @@ anything uncovered. Then apply the house style:
 - **Frame 1 is always the cover** `compositions/frames/00-cover.html` (built by `make_cover.py`, not a worker),
   `status: animated`. Frame N's file is `NN-<slug>.html` with `NN = N-1`.
 - PR videos end on the **author page** (name/@login/avatar on screen, never spoken; the PR link; no status).
-- **Every video's last frame carries the SGLang follow strip** (`assets/brand/follow-strip.html`: 关注 SGLang ·
+- **Every video's last frame carries the SGLang follow strip** (the project's `assets/brand/follow-strip.html`: 关注 SGLang ·
   GitHub · 博客 · 文档) at y 792–872, so plan that frame's content to end above y≈770. It is on screen only, not
   narrated (house style §Follow strip).
 - Chinese narration, English technical terms, one idea per frame (≲ 60 汉字, ~11 s); as many frames as the
@@ -176,7 +178,10 @@ $SEV_PY -I $SEV_SKILL/scripts/make_cover.py --project $P --series "SGLang PR 讲
   --duration <frame-1 voice s> --cue-title <s> --cue-meta <s> --png $P/cover.png --png-bili $P/cover_bili.png
 ```
 
-Article: `--series "SGLang 技术解读" --badge "<one keyword>"`. The design is fixed (see house style §Cover).
+Article: `--series "SGLang 技术解读" --badge "<one keyword>"`. The design is fixed per theme (house style §Cover,
+§Themes). A kimi-dark project takes `--title-zh <short title> --subtitle <one line> --title-en <mono line>
+--stats "<num>=<label>;…" [--visual <right-column .svg>]` instead of `--badge/--meta`; the theme is read from
+`.hyperframes/theme`.
 `--png-bili` renders the same design at 1440×1080 with every element inside the centred 16:9 band — the
 cover to upload to Bilibili, which crops one image to both 4:3 and 16:9 (house style §Cover).
 
