@@ -103,10 +103,16 @@ def main():
         except Exception:
             pass
     used = set()
-    for p in glob.glob(os.path.join(proj, "compositions", "**", "*.html"), recursive=True):
+    for p in glob.glob(
+        os.path.join(proj, "compositions", "**", "*.html"), recursive=True
+    ):
         with open(p, encoding="utf-8") as f:
             used |= {c for c in f.read() if ord(c) > 0x7E}
-    uncovered = sorted(c for c in used if ord(c) not in covered and ord(c) <= 0x2E80 and not c.isspace())
+    uncovered = sorted(
+        c
+        for c in used
+        if ord(c) not in covered and ord(c) <= 0x2E80 and not c.isspace()
+    )
     if uncovered:
         print(
             "⚠ no bundled font has a glyph for: "

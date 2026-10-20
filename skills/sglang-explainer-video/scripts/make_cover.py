@@ -273,14 +273,39 @@ def dark_markup(a, logo_src, caption_safe=False, width=1920):
     """(css, body) for the kimi-dark cover. #121212 ground, SGL logo chip + series pill, a 150px
     Noto Sans SC title, a subtitle, a mono English line, light-weight stat numbers and an optional
     right-hand SVG visual (--visual). caption_safe keeps everything above the caption band (the
-    video frame); width=1440 lays everything inside y 135..945 for the Bilibili / 小红书 crops."""
+    video frame); width=1440 lays everything inside y 135..945 for the Bilibili / 小红书 crops.
+    """
     if width >= 1920:
-        L, brand_top, title_top, title_fs, sub_top, sub_fs, en_top, en_fs, st_top, n_fs, l_fs, pad = (
-            120, 100, 268, 150, 456, 58, 560, 27, 700, 76, 26, 44)
+        (
+            L,
+            brand_top,
+            title_top,
+            title_fs,
+            sub_top,
+            sub_fs,
+            en_top,
+            en_fs,
+            st_top,
+            n_fs,
+            l_fs,
+            pad,
+        ) = (120, 100, 268, 150, 456, 58, 560, 27, 700, 76, 26, 44)
         vis = (1180, 56, 660, 810) if caption_safe else (1170, 96, 700, 900)
     else:
-        L, brand_top, title_top, title_fs, sub_top, sub_fs, en_top, en_fs, st_top, n_fs, l_fs, pad = (
-            84, 150, 286, 118, 438, 46, 522, 21, 640, 60, 22, 30)
+        (
+            L,
+            brand_top,
+            title_top,
+            title_fs,
+            sub_top,
+            sub_fs,
+            en_top,
+            en_fs,
+            st_top,
+            n_fs,
+            l_fs,
+            pad,
+        ) = (84, 150, 286, 118, 438, 46, 522, 21, 640, 60, 22, 30)
         vis = (862, 150, 588, 756)
     if caption_safe:
         st_top = min(st_top, 690)
@@ -374,7 +399,9 @@ def write_frame_dark(a):
 def render_png_dark(a, png, width=1920):
     ws_fonts = _ws_fonts()
     pf = os.path.join(os.path.abspath(a.project), "assets", "fonts")
-    css, body = dark_markup(a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width)
+    css, body = dark_markup(
+        a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width
+    )
     faces = f"""
 @font-face{{font-family:"JetBrains Mono";font-weight:400;src:url("file://{pf}/JetBrainsMono-400.woff2");}}
 @font-face{{font-family:"Noto Sans SC";font-weight:100 900;src:url("file://{ws_fonts}/NotoSansSC.ttf");}}"""
@@ -404,17 +431,21 @@ def main():
     ap.add_argument("--meta", help="sglang-orange: the mono meta line")
     ap.add_argument("--subtitle", help="kimi-dark: one line under the title")
     ap.add_argument(
-        "--stats", help='kimi-dark: "2.8T=参数;16 / 896=每个 token 激活的专家;1M=上下文"'
+        "--stats",
+        help='kimi-dark: "2.8T=参数;16 / 896=每个 token 激活的专家;1M=上下文"',
     )
     ap.add_argument(
-        "--visual", help="kimi-dark: an .svg file drawn in the right-hand column (scaled to fit)"
+        "--visual",
+        help="kimi-dark: an .svg file drawn in the right-hand column (scaled to fit)",
     )
     ap.add_argument(
         "--duration", type=float, required=True, help="frame 1 voice length (s)"
     )
     ap.add_argument("--cue-title", type=float, help="voice time the title should land")
     ap.add_argument(
-        "--cue-meta", type=float, help="voice time the meta line (kimi-dark: the stats) should land"
+        "--cue-meta",
+        type=float,
+        help="voice time the meta line (kimi-dark: the stats) should land",
     )
     ap.add_argument("--png", help="also render the still cover here")
     ap.add_argument(
