@@ -91,7 +91,12 @@ def apply_kimi_dark(proj):
     # The theme uses Noto Sans SC (subset later by subset_fonts.py) plus JetBrains Mono, which the
     # code-editorial preset ships as licensed local WOFF2 files.
     fonts = os.path.join(
-        os.environ["SKILL_DIR"], "..", "hyperframes-creative", "frame-presets", "code-editorial", "fonts"
+        os.environ["SKILL_DIR"],
+        "..",
+        "hyperframes-creative",
+        "frame-presets",
+        "code-editorial",
+        "fonts",
     )
     os.makedirs(os.path.join(proj, "assets", "fonts"), exist_ok=True)
     for n in ("JetBrainsMono-400.woff2", "JetBrainsMono-700.woff2"):
