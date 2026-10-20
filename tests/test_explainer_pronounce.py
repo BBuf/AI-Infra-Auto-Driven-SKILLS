@@ -100,3 +100,12 @@ def test_terms_from_the_24gb_video():
     assert spoken("第一个请求就会 OOM。") == "第一个请求就会 O O M。"
     assert spoken("comfy-kitchen 的 int8_linear") == "Comfy Kitchen 的 INT8 linear"
     assert spoken("默认仍然是精确的 fa，") == "默认仍然是精确的 F A，"
+
+
+def test_terms_from_the_k3_video():
+    # measured 2026-10-19: bare MLA heard as MBA 3/3 (spaced 3/3 right), SiTU -> C2, kimi_k3.py -> Timmy K3PY
+    assert spoken("24 层 MLA 的 KV") == "24 层 M L A 的 KV"
+    assert spoken("Gated MLA 的输出门") == "Gated M L A 的输出门"
+    assert spoken("激活函数 SiTU 的上界") == "激活函数 S I T U 的上界"
+    assert spoken("4 乘 tanh 再乘 sigmoid") == "4 乘 tan h 再乘 sigmoid"
+    assert spoken("模型在 kimi_k3.py 里") == "模型在 Kimi K3 点 P Y 里"
