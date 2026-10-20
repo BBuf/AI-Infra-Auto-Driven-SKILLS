@@ -46,7 +46,17 @@
     "SiTU": "S I T U",
     "tanh": "tan h",
     "kimi_k3.py": "Kimi K3 点 P Y",
-    "MLA": "M L A"
+    "MLA": "M L A",
+    "DeepInfer": "Deep Infer",
+    "deepseek-recipe": "Deep Seek recipe",
+    "DeepEP": "Deep E P",
+    "DeepGEMM": "Deep G E M M",
+    "CANN": "C A N N",
+    "CED": "C E D",
+    "xgrammar": "X grammar",
+    "README": "read me",
+    "TileKernels": "Tile Kernels",
+    "SamplingParams": "Sampling Params"
   },
   "parts": {
     "sglang": "SGLang",
@@ -62,7 +72,8 @@
     "vae": "V A E",
     "dit": "D I T",
     "v2": "V two",
-    "ctas": "CTAs"
+    "ctas": "CTAs",
+    "deepinfer": "Deep Infer"
   },
   "approved": ["SGLang", "MTP", "PR", "dB", "Kimi"],
   "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"]

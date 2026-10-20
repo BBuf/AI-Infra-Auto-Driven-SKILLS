@@ -77,6 +77,16 @@ Every video uses one theme, picked once at Step 2 (`apply_brand.py --theme`) and
 `make_cover.py` from `.hyperframes/theme`. The default stays **sglang-orange** (cover A + the code-editorial
 remix above).
 
+**Subject is not SGLang's own work → no SGLang branding at all** (user, 2026-10-20, DeepSeek DeepInfer video:
+「这个视频和 sglang 没有任何关系，不要出现 sglang 和对应风格」). Decide this at Step 2, before any narration or cover:
+- no "SGLang 技术解读" in the opening line, no SGLang logo / series label / orange / follow strip, and no SGLang
+  mentions in narration or on screen;
+- build a project-local theme from the subject's own site instead: read its CSS variables in the browser, write
+  `frame.md` and `.hyperframes/caption-skin.html` by hand (as kimi-dark does), and render the cover with a project
+  script (the DeepInfer video's `work/make_cover_ds.py`: deepseek.com's sky-blue wash, glass cards, DM Sans);
+- never draw the subject's official logo; label the cover 「技术解读」 so it cannot pass as an official video;
+- `check_frames.mjs` then reports the missing follow strip on the last frame — expected, ignore it.
+
 **kimi-dark** (added 2026-10 for the Kimi K3 video, after the user said the 19 orange covers had become 审美疲劳):
 - When to use it: a video about a Moonshot / Kimi model, or when the user asks for a different look. Don't
   switch silently for an ordinary SGLang PR video.
