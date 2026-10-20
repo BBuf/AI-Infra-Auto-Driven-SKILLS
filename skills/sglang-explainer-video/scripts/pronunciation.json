@@ -42,7 +42,11 @@
     "checkpoint": "check point",
     "OOM": "O O M",
     "comfy-kitchen": "Comfy Kitchen",
-    "fa": "F A"
+    "fa": "F A",
+    "SiTU": "S I T U",
+    "tanh": "tan h",
+    "kimi_k3.py": "Kimi K3 点 P Y",
+    "MLA": "M L A"
   },
   "parts": {
     "sglang": "SGLang",

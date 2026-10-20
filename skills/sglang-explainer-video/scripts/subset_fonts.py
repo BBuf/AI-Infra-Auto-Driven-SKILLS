@@ -93,6 +93,32 @@ def main():
         )
         ok &= not missing
     os.unlink(text_file)
+    # Non-CJK symbols (super/subscripts, math, arrows) fall through to a system face — or a box — when
+    # no bundled font has them. Warn about every used character that no font in assets/fonts covers
+    # (K3 video: ᵀ ₁ ⁻ ⁸ ⋮ were missing from Noto Sans SC and rendered as boxes).
+    covered = set()
+    for fp in glob.glob(os.path.join(out_dir, "*.woff2")):
+        try:
+            covered |= set(TTFont(fp).getBestCmap())
+        except Exception:
+            pass
+    used = set()
+    for p in glob.glob(
+        os.path.join(proj, "compositions", "**", "*.html"), recursive=True
+    ):
+        with open(p, encoding="utf-8") as f:
+            used |= {c for c in f.read() if ord(c) > 0x7E}
+    uncovered = sorted(
+        c
+        for c in used
+        if ord(c) not in covered and ord(c) <= 0x2E80 and not c.isspace()
+    )
+    if uncovered:
+        print(
+            "⚠ no bundled font has a glyph for: "
+            + " ".join(f"{c}(U+{ord(c):04X})" for c in uncovered)
+            + " — use <sup>/<sub> or inline SVG instead (worker-dispatch.md lessons)"
+        )
     sys.exit(0 if ok else 1)
 
 

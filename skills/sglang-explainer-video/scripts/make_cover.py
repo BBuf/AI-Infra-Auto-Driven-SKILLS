@@ -1,4 +1,5 @@
-"""The unified SGLang explainer cover ("A · brand orange"): video frame + still PNG.
+"""The SGLang explainer cover: video frame + still PNG. Theme sglang-orange ("A · brand orange", below)
+or kimi-dark (dark_markup(); house-style.md §Themes), read from .hyperframes/theme or --theme.
 
 Writes ``compositions/frames/00-cover.html`` (a HyperFrames frame: template root first,
 seek-safe GSAP entrances) and renders the same layout, fully revealed, to a still PNG
@@ -168,34 +169,27 @@ def write_frame(a):
     print("✓ cover frame →", out)
 
 
-def render_png(a, png, width=1920):
+def _chrome():
     chrome = (
         os.environ.get("CHROME")
         or "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     )
-    if not os.path.exists(chrome):
-        print("⚠ no Chrome — skipped cover.png (set CHROME)")
-        return
-    ws_fonts = os.path.join(
+    return chrome if os.path.exists(chrome) else None
+
+
+def _ws_fonts():
+    return os.path.join(
         os.environ.get("SEV_WS", os.path.expanduser("~/.cache/sglang-explainer-video")),
         "fonts",
     )
-    pf = os.path.join(os.path.abspath(a.project), "assets", "fonts")
-    css, body = cover_markup(
-        a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width
-    )
-    faces = f"""
-@font-face{{font-family:"EB Garamond";font-weight:400;src:url("file://{pf}/EBGaramond-400.woff2");}}
-@font-face{{font-family:"Inter";font-weight:400;src:url("file://{pf}/Inter-400.woff2");}}
-@font-face{{font-family:"Inter";font-weight:700;src:url("file://{pf}/Inter-700.woff2");}}
-@font-face{{font-family:"JetBrains Mono";font-weight:400;src:url("file://{pf}/JetBrainsMono-400.woff2");}}
-@font-face{{font-family:"Noto Sans SC";font-weight:100 900;src:url("file://{ws_fonts}/NotoSansSC.ttf");}}
-@font-face{{font-family:"Noto Serif SC";font-weight:200 900;src:url("file://{ws_fonts}/NotoSerifSC.ttf");}}"""
-    doc = (
-        f'<!doctype html><html><head><meta charset="utf-8"><style>{faces}'
-        f"html,body{{margin:0;width:{width}px;height:1080px;overflow:hidden}}{css}</style></head>"
-        f"<body>{body.replace('__DUR__', '1')}</body></html>"
-    )
+
+
+def _shoot(doc, png, width):
+    """Screenshot a standalone HTML document (width x 1080) to png with headless Chrome."""
+    chrome = _chrome()
+    if not chrome:
+        print("⚠ no Chrome — skipped cover.png (set CHROME)")
+        return
     td = tempfile.mkdtemp(prefix="sev-cover-")
     hp, png = os.path.join(td, "cover.html"), os.path.abspath(png)
     with open(hp, "w") as f:
@@ -229,29 +223,229 @@ def render_png(a, png, width=1920):
                 break
             last = size
         time.sleep(0.5)
-    os.killpg(proc.pid, signal.SIGKILL)
+    try:
+        os.killpg(proc.pid, signal.SIGKILL)
+    except (ProcessLookupError, PermissionError):  # Chrome already gone / sandboxed
+        proc.kill()
     shutil.rmtree(td, ignore_errors=True)
     print("✓ cover png →", png if os.path.exists(png) else "(failed)")
+
+
+def render_png(a, png, width=1920):
+    ws_fonts = _ws_fonts()
+    pf = os.path.join(os.path.abspath(a.project), "assets", "fonts")
+    css, body = cover_markup(
+        a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width
+    )
+    faces = f"""
+@font-face{{font-family:"EB Garamond";font-weight:400;src:url("file://{pf}/EBGaramond-400.woff2");}}
+@font-face{{font-family:"Inter";font-weight:400;src:url("file://{pf}/Inter-400.woff2");}}
+@font-face{{font-family:"Inter";font-weight:700;src:url("file://{pf}/Inter-700.woff2");}}
+@font-face{{font-family:"JetBrains Mono";font-weight:400;src:url("file://{pf}/JetBrainsMono-400.woff2");}}
+@font-face{{font-family:"Noto Sans SC";font-weight:100 900;src:url("file://{ws_fonts}/NotoSansSC.ttf");}}
+@font-face{{font-family:"Noto Serif SC";font-weight:200 900;src:url("file://{ws_fonts}/NotoSerifSC.ttf");}}"""
+    doc = (
+        f'<!doctype html><html><head><meta charset="utf-8"><style>{faces}'
+        f"html,body{{margin:0;width:{width}px;height:1080px;overflow:hidden}}{css}</style></head>"
+        f"<body>{body.replace('__DUR__', '1')}</body></html>"
+    )
+    _shoot(doc, png, width)
+
+
+# ---- theme kimi-dark (house-style.md §Themes) ----------------------------------------------
+
+DARK_FACES_FRAME = """
+      @font-face{font-family:"Noto Sans SC";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/NotoSansSC-Subset.woff2") format("woff2");}
+      @font-face{font-family:"JetBrains Mono";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");}"""
+
+
+def parse_stats(spec):
+    """'2.8T=参数;16 / 896=每个 token 激活的专家' -> [('2.8T', '参数'), ...]"""
+    out = []
+    for item in (spec or "").split(";"):
+        if "=" in item:
+            n, l = item.split("=", 1)
+            out.append((n.strip(), l.strip()))
+    return out
+
+
+def dark_markup(a, logo_src, caption_safe=False, width=1920):
+    """(css, body) for the kimi-dark cover. #121212 ground, SGL logo chip + series pill, a 150px
+    Noto Sans SC title, a subtitle, a mono English line, light-weight stat numbers and an optional
+    right-hand SVG visual (--visual). caption_safe keeps everything above the caption band (the
+    video frame); width=1440 lays everything inside y 135..945 for the Bilibili / 小红书 crops.
+    """
+    if width >= 1920:
+        (
+            L,
+            brand_top,
+            title_top,
+            title_fs,
+            sub_top,
+            sub_fs,
+            en_top,
+            en_fs,
+            st_top,
+            n_fs,
+            l_fs,
+            pad,
+        ) = (120, 100, 268, 150, 456, 58, 560, 27, 700, 76, 26, 44)
+        vis = (1180, 56, 660, 810) if caption_safe else (1170, 96, 700, 900)
+    else:
+        (
+            L,
+            brand_top,
+            title_top,
+            title_fs,
+            sub_top,
+            sub_fs,
+            en_top,
+            en_fs,
+            st_top,
+            n_fs,
+            l_fs,
+            pad,
+        ) = (84, 150, 286, 118, 438, 46, 522, 21, 640, 60, 22, 30)
+        vis = (862, 150, 588, 756)
+    if caption_safe:
+        st_top = min(st_top, 690)
+    css = f"""
+  .cv-bg {{ position:absolute; left:0; top:0; width:{width}px; height:1080px; background:#121212; }}
+  .cv-brand {{ position:absolute; left:{L}px; top:{brand_top}px; display:flex; align-items:center; gap:18px; }}
+  .cv-logo {{ background:#ECEAE5; border-radius:14px; padding:10px 18px; display:flex; }}
+  .cv-logo img {{ height:42px; display:block; }}
+  .cv-series {{ display:flex; align-items:center; gap:12px; height:62px; padding:0 26px; border:1px solid rgba(255,255,255,.10);
+               background:#1B1B1B; border-radius:999px; font-family:"Noto Sans SC",sans-serif; font-size:30px; font-weight:450; color:#D6D6D6; white-space:nowrap; }}
+  .cv-dot {{ width:10px; height:10px; border-radius:50%; background:#1A88FF; display:block; }}
+  .cv-title {{ position:absolute; left:{L}px; top:{title_top}px; font-family:"Noto Sans SC",sans-serif; font-size:{title_fs}px;
+              font-weight:500; color:#EDEDED; letter-spacing:-.01em; line-height:1.05; white-space:nowrap; }}
+  .cv-sub {{ position:absolute; left:{L + 4}px; top:{sub_top}px; font-family:"Noto Sans SC",sans-serif; font-size:{sub_fs}px;
+            font-weight:400; color:rgba(255,255,255,.68); white-space:nowrap; }}
+  .cv-en {{ position:absolute; left:{L + 6}px; top:{en_top}px; font-family:"JetBrains Mono","Noto Sans SC",monospace; font-size:{en_fs}px;
+           color:rgba(255,255,255,.42); white-space:nowrap; font-variant-ligatures:none; }}
+  .cv-stats {{ position:absolute; left:{L + 6}px; top:{st_top}px; display:flex; font-family:"Noto Sans SC",sans-serif; }}
+  .cv-stat {{ padding:0 {pad}px; border-left:1px solid rgba(255,255,255,.10); }}
+  .cv-stat:first-child {{ padding-left:0; border-left:0; }}
+  .cv-n {{ font-size:{n_fs}px; font-weight:300; color:#EDEDED; line-height:1; letter-spacing:-.01em; white-space:nowrap; }}
+  .cv-l {{ margin-top:12px; font-size:{l_fs}px; color:rgba(255,255,255,.42); white-space:nowrap; }}
+  .cv-vis {{ position:absolute; left:{vis[0]}px; top:{vis[1]}px; width:{vis[2]}px; height:{vis[3]}px; }}
+  .cv-vis svg {{ width:100%; height:100%; display:block; }}"""
+    e = html.escape
+    stats = "".join(
+        f'<div class="cv-stat"><div class="cv-n">{e(n)}</div><div class="cv-l">{e(l)}</div></div>'
+        for n, l in parse_stats(a.stats)
+    )
+    visual = ""
+    if a.visual:
+        with open(a.visual, encoding="utf-8") as f:
+            visual = f.read()
+    body = f"""
+    <div id="cv-bg" class="clip cv-bg" data-start="0" data-duration="__DUR__" data-track-index="0"></div>
+    <div id="cv-stage" class="clip" data-start="0" data-duration="__DUR__" data-track-index="1"
+         style="position:absolute;left:0;top:0;width:{width}px;height:1080px">
+      <div id="cv-brand" class="cv-brand"><div class="cv-logo"><img src="{logo_src}" alt="SGLang"></div><div class="cv-series"><i class="cv-dot"></i>{e(a.series)}</div></div>
+      <div id="cv-title" class="cv-title">{e(a.title_zh)}</div>
+      <div id="cv-sub" class="cv-sub">{e(a.subtitle or "")}</div>
+      <div id="cv-en" class="cv-en">{e(a.title_en)}</div>
+      <div id="cv-stats" class="cv-stats">{stats}</div>
+      <div id="cv-vis" class="cv-vis">{visual}</div>
+    </div>"""
+    return css, body
+
+
+def write_frame_dark(a):
+    css, body = dark_markup(a, "assets/sglang/sglang-logo.png", caption_safe=True)
+    total = round(a.duration + 0.5, 3)
+    body = body.replace("__DUR__", str(total))
+    t_title = a.cue_title if a.cue_title is not None else 1.0
+    t_meta = a.cue_meta if a.cue_meta is not None else t_title + 1.6
+    frame = f"""<template>
+  <div id="root" data-composition-id="00-cover" data-start="0" data-duration="{total}" data-width="1920" data-height="1080">
+    <style>{DARK_FACES_FRAME}
+      #root {{ position:relative; width:1920px; height:1080px; overflow:hidden; container-type:size; background:#121212; }}{css}
+    </style>
+{body}
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+      (function () {{
+        var q = function (s) {{ return document.querySelector(s); }};
+        window.__timelines = window.__timelines || {{}};
+        var tl = gsap.timeline({{ paused: true }});
+        tl.fromTo(q("#cv-brand"), {{ opacity: 0, y: -14 }}, {{ opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }}, 0.1);
+        tl.fromTo(q("#cv-vis"), {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }}, 0.2);
+        tl.fromTo(q("#cv-title"), {{ opacity: 0, y: 22 }}, {{ opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }}, {t_title});
+        tl.fromTo(q("#cv-sub"), {{ opacity: 0, y: 14 }}, {{ opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }}, {round(t_title + 0.4, 3)});
+        tl.fromTo(q("#cv-en"), {{ opacity: 0, y: 10 }}, {{ opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }}, {round(t_title + 0.8, 3)});
+        tl.fromTo(q("#cv-stats"), {{ opacity: 0, y: 12 }}, {{ opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }}, {t_meta});
+        tl.set({{}}, {{}}, {total});
+        window.__timelines["00-cover"] = tl;
+      }})();
+    </script>
+  </div>
+</template>
+"""
+    os.makedirs(os.path.join(a.project, "compositions", "frames"), exist_ok=True)
+    os.makedirs(os.path.join(a.project, "assets", "sglang"), exist_ok=True)
+    shutil.copy(
+        os.path.join(BRAND, "sglang-logo.png"),
+        os.path.join(a.project, "assets", "sglang", "sglang-logo.png"),
+    )
+    out = os.path.join(a.project, "compositions", "frames", "00-cover.html")
+    with open(out, "w") as f:
+        f.write(frame)
+    print("✓ cover frame (kimi-dark) →", out)
+
+
+def render_png_dark(a, png, width=1920):
+    ws_fonts = _ws_fonts()
+    pf = os.path.join(os.path.abspath(a.project), "assets", "fonts")
+    css, body = dark_markup(
+        a, "file://" + os.path.join(BRAND, "sglang-logo.png"), width=width
+    )
+    faces = f"""
+@font-face{{font-family:"JetBrains Mono";font-weight:400;src:url("file://{pf}/JetBrainsMono-400.woff2");}}
+@font-face{{font-family:"Noto Sans SC";font-weight:100 900;src:url("file://{ws_fonts}/NotoSansSC.ttf");}}"""
+    doc = (
+        f'<!doctype html><html><head><meta charset="utf-8"><style>{faces}'
+        f"html,body{{margin:0;width:{width}px;height:1080px;overflow:hidden;background:#121212}}{css}</style></head>"
+        f"<body>{body.replace('__DUR__', '1')}</body></html>"
+    )
+    _shoot(doc, png, width)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True)
+    ap.add_argument(
+        "--theme",
+        choices=("sglang-orange", "kimi-dark"),
+        help="default: the theme apply_brand.py recorded in .hyperframes/theme, else sglang-orange",
+    )
     ap.add_argument("--series", default="SGLang PR 讲解")
     ap.add_argument(
         "--badge",
-        required=True,
-        help='"#43238" for a PR, a short keyword for an article',
+        help='sglang-orange: "#43238" for a PR, a short keyword for an article',
     )
     ap.add_argument("--title-zh", required=True)
     ap.add_argument("--title-en", required=True)
-    ap.add_argument("--meta", required=True)
+    ap.add_argument("--meta", help="sglang-orange: the mono meta line")
+    ap.add_argument("--subtitle", help="kimi-dark: one line under the title")
+    ap.add_argument(
+        "--stats",
+        help='kimi-dark: "2.8T=参数;16 / 896=每个 token 激活的专家;1M=上下文"',
+    )
+    ap.add_argument(
+        "--visual",
+        help="kimi-dark: an .svg file drawn in the right-hand column (scaled to fit)",
+    )
     ap.add_argument(
         "--duration", type=float, required=True, help="frame 1 voice length (s)"
     )
     ap.add_argument("--cue-title", type=float, help="voice time the title should land")
     ap.add_argument(
-        "--cue-meta", type=float, help="voice time the meta line should land"
+        "--cue-meta",
+        type=float,
+        help="voice time the meta line (kimi-dark: the stats) should land",
     )
     ap.add_argument("--png", help="also render the still cover here")
     ap.add_argument(
@@ -260,12 +454,21 @@ def main():
     )
     ap.add_argument("--png-only", action="store_true")
     a = ap.parse_args()
+    if not a.theme:
+        tf = os.path.join(a.project, ".hyperframes", "theme")
+        a.theme = open(tf).read().strip() if os.path.exists(tf) else "sglang-orange"
+    if a.theme == "kimi-dark":
+        write, render = write_frame_dark, render_png_dark
+    else:
+        if not (a.badge and a.meta):
+            ap.error("sglang-orange needs --badge and --meta")
+        write, render = write_frame, render_png
     if not a.png_only:
-        write_frame(a)
+        write(a)
     if a.png:
-        render_png(a, a.png)
+        render(a, a.png)
     if a.png_bili:
-        render_png(a, a.png_bili, width=1440)
+        render(a, a.png_bili, width=1440)
 
 
 if __name__ == "__main__":

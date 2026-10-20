@@ -39,9 +39,9 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 - Groups are clauses (split at ，。；：！？, max ~26 Han-width); never split after 、 or inside a term.
 - Translation: natural English for an engineer, same facts, keep the English terms as-is.
 
-## Cover (fixed: design "A · brand orange")
+## Cover (theme sglang-orange: design "A · brand orange")
 
-`scripts/make_cover.py` renders it; never redesign it per video. Reference renders:
+`scripts/make_cover.py` renders it; never redesign it per video (pick a theme instead, §Themes). Reference renders:
 `assets/brand/cover-example-pr.png` (PR) and `assets/brand/cover-example-article.png` (article).
 In the video frame the meta line and badge sit above the caption band and the text dissolves
 just before the crossfade; the still PNG keeps the full layout.
@@ -63,13 +63,36 @@ just before the crossfade; the still PNG keeps the full layout.
 
 ## Visuals (body frames)
 
-- frame.md = code-editorial remixed onto the SGLang brand by `apply_brand.py`: cream `#FBF6F1` ground,
+- Theme sglang-orange (default): frame.md = code-editorial remixed onto the SGLang brand by `apply_brand.py`: cream `#FBF6F1` ground,
   peach cards `#F9E6DB` / `#F2CFBE`, ink `#1F1410`, accent SGLang orange `#D55816` at most once per frame,
   warm near-black code surface.
 - Fonts: EB Garamond / Inter / JetBrains Mono + **bundled** Noto Serif SC / Noto Sans SC subsets only.
   Never `local()`, PingFang, Songti, Hiragino — they garble in HyperFrames Studio.
 - Prefer real material: code hunks from the diff, the article's own figures (contain, never cropped).
 - Bottom ~17 % is the caption band.
+
+## Themes
+
+Every video uses one theme, picked once at Step 2 (`apply_brand.py --theme`) and read again by
+`make_cover.py` from `.hyperframes/theme`. The default stays **sglang-orange** (cover A + the code-editorial
+remix above).
+
+**kimi-dark** (added 2026-10 for the Kimi K3 video, after the user said the 19 orange covers had become 审美疲劳):
+- When to use it: a video about a Moonshot / Kimi model, or when the user asks for a different look. Don't
+  switch silently for an ordinary SGLang PR video.
+- Look: aligned with kimi.com and Kimi's research blog. Flat `#121212` ground, `#1B1B1B` panels with white-alpha
+  hairlines, Noto Sans SC at 330 / 450 / 300, JetBrains Mono for code, one Kimi-blue `#1A88FF` accent per frame.
+- Diagram palette: a muted semantic palette sampled from Moonshot's official architecture figure (blue, green,
+  slate, brick, grey, rose). The Video direction fixes what each colour means for the video.
+- Files: `assets/themes/kimi-dark/{frame.md, caption-skin.html, follow-strip.html}`.
+- Cover: `make_cover.py --theme kimi-dark --title-zh <short title> --subtitle <one line> --title-en <mono line>
+  --stats "2.8T=参数;16 / 896=每个 token 激活的专家" [--visual right.svg]`.
+  - Layout: SGL logo chip plus the series pill, a 150 px title, light stat numbers, and an optional right-hand
+    SVG. The K3 video drew its own redraw of the official block diagram.
+  - Never put the subject's logo on the cover. It is an SGLang video, not an official Kimi one. The SGLang logo
+    chip and series pill stay.
+  - The 1440×1080 `_B站` still keeps every element inside y 135–945, the same rule as the orange cover.
+- An official figure that matches the theme (dark background) can be shown as-is. Credit it with 「图源：…」.
 
 ## Author page (PR videos)
 
@@ -80,14 +103,14 @@ just before the crossfade; the still PNG keeps the full layout.
 
 Every SGLang video ends with links that invite viewers to follow the project, as asked by the user.
 
-- The last frame shows the fixed strip from `assets/brand/follow-strip.html` (reference render:
-  `assets/brand/follow-strip-example.png`):
+- The last frame shows the fixed strip that `apply_brand.py` copies to the project's `assets/brand/follow-strip.html`
+  (the theme's colours; reference render of the orange one: `assets/brand/follow-strip-example.png`):
   - 关注 SGLang
   - GitHub `github.com/sgl-project/sglang`
   - 博客 `sglang.io/blog`
   - 文档 `docs.sglang.io`
 - Where it goes: on the author page in PR videos; on the summary / links frame in article videos.
-- Placement: a peach bar at y 792–872, just above the caption band. The frame's own content ends above y≈770.
+- Placement: a bar at y 792–872 (peach in sglang-orange, #1B1B1B in kimi-dark), just above the caption band. The frame's own content ends above y≈770.
 - Timing: the strip rises in by the start of the frame's last clause and stays until the end. The 2 s hold
   after the last line keeps it readable.
 - Copy it verbatim:
