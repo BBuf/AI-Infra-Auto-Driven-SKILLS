@@ -83,6 +83,14 @@ voice changes.
 | SiTU (Sigmoid Tanh Unit) | S I T U | C2 / SITU → **SITU** |
 | tanh | tan h | 10 → **TangentH / 10H** (OK~; Edge reads "tan" as tangent — accepted) |
 | kimi_k3.py | Kimi K3 点 P Y | Timmy K3PY → spelled file name |
+| DeepInfer (also inside DEEPINFER_* env names via `parts`) | Deep Infer | Deeping Fur → **DeepInfer** (DeepInfer video, 2026-10-20) |
+| deepseek-recipe | Deep Seek recipe | Deep Seed Recipe → **deepseek recipe** |
+| DeepEP | Deep E P | DPP, also for "Deep EP" → **Deep EP** |
+| DeepGEMM | Deep G E M M | Deep G1 Mbam → **DeepGEMM** |
+| CANN (Huawei Ascend toolkit) | C A N N | 看 → **CANN** |
+| CED (Causal Encoder-Decoder) | C E D | Set → **CED** |
+| xgrammar | X grammar | Squadmire → **X grammar** |
+| TileKernels · SamplingParams | Tile Kernels · Sampling Params | CamelCase rule 2 (Telkernos / samplingperms → OK) |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -96,7 +104,7 @@ spelling, even Em Tee Pee. Also approved: **Kimi** (user's ear), **PR** (letters
 reading), **dB** (read 分贝).
 
 Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
-worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sentences).
+worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whisper: Remi → REME), TopK ("Talk K"), FLUX.2 (fine in most sentences).
 **FAIL with no passing respelling → reword the narration, keep the term on screen** (measured 2026-10-17, video
 「改一行，为什么能快几倍？」):
 
@@ -113,6 +121,11 @@ worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sen
 | e (as in e 的负 80 次方) | 一 | 累积衰减的对数最多到负 80 (keep e<sup>−80</sup> on screen) |
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
+| pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
+| asc (the Ascend op backend dir) | VSC | 昇腾版 |
+| thinking (模式) | finting | 思考模式 |
+| prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
+| R1 (as in V3 和 R1) | 21 / 二 | drop it or say DeepSeek V3 |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
@@ -123,6 +136,10 @@ catch this: Whisper writes 长 for either reading (use `poly_probe.py`, below). 
 e.g. 「40 层里只有 4 层在生成长距离 KV」 → 「40 层里，长距离 KV 只由 4 层生成」.
 Same review: 「decoder 侧重放」 was read cè**zhòng** fàng (侧重 = emphasis) → 「decoder 侧的重放」. Also prefer the dictionary
 word over a clipped one: 「重算」 is not a common word and may get zhòng, so write 「重新算」.
+Measured in the DeepInfer video (2026-10-20, `poly_probe.py`, 6 takes each): 「就只重算」 was zhòng in 4/6 takes, while
+「就只重新计算」 and 「，只重建」 were 0/6. Do not respell 重算 → 崇算 in `patterns`: it fixes 重算 (0/6), but a 重建 later in
+the same clause then flips (「重算段只重建」 4/6, 6/6 after the respelling). Reword the narration instead: 重算 → 重新计算,
+重算段 → 回放段, 重建 → 重新生成, 重启 → 重新拉起.
 
 **行 meaning "row / line" is respelled automatically** (user's ear, 2026-10-19: 「一行」 was sometimes read yì
 **xíng**, as in 一行人). Measured with `scripts/poly_probe.py` (takes vs 航/杭 and 型/形 homophones; 11/11 control
