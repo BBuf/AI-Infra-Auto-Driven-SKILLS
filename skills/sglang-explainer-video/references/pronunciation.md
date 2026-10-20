@@ -136,6 +136,10 @@ catch this: Whisper writes 长 for either reading (use `poly_probe.py`, below). 
 e.g. 「40 层里只有 4 层在生成长距离 KV」 → 「40 层里，长距离 KV 只由 4 层生成」.
 Same review: 「decoder 侧重放」 was read cè**zhòng** fàng (侧重 = emphasis) → 「decoder 侧的重放」. Also prefer the dictionary
 word over a clipped one: 「重算」 is not a common word and may get zhòng, so write 「重新算」.
+Measured in the DeepInfer video (2026-10-20, `poly_probe.py`, 6 takes each): 「就只重算」 was zhòng in 4/6 takes, while
+「就只重新计算」 and 「，只重建」 were 0/6. Do not respell 重算 → 崇算 in `patterns`: it fixes 重算 (0/6), but a 重建 later in
+the same clause then flips (「重算段只重建」 4/6, 6/6 after the respelling). Reword the narration instead: 重算 → 重新计算,
+重算段 → 回放段, 重建 → 重新生成, 重启 → 重新拉起.
 
 **行 meaning "row / line" is respelled automatically** (user's ear, 2026-10-19: 「一行」 was sometimes read yì
 **xíng**, as in 一行人). Measured with `scripts/poly_probe.py` (takes vs 航/杭 and 型/形 homophones; 11/11 control
