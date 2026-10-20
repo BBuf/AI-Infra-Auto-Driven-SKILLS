@@ -83,6 +83,14 @@ voice changes.
 | SiTU (Sigmoid Tanh Unit) | S I T U | C2 / SITU → **SITU** |
 | tanh | tan h | 10 → **TangentH / 10H** (OK~; Edge reads "tan" as tangent — accepted) |
 | kimi_k3.py | Kimi K3 点 P Y | Timmy K3PY → spelled file name |
+| DeepInfer (also inside DEEPINFER_* env names via `parts`) | Deep Infer | Deeping Fur → **DeepInfer** (DeepInfer video, 2026-10-20) |
+| deepseek-recipe | Deep Seek recipe | Deep Seed Recipe → **deepseek recipe** |
+| DeepEP | Deep E P | DPP, also for "Deep EP" → **Deep EP** |
+| DeepGEMM | Deep G E M M | Deep G1 Mbam → **DeepGEMM** |
+| CANN (Huawei Ascend toolkit) | C A N N | 看 → **CANN** |
+| CED (Causal Encoder-Decoder) | C E D | Set → **CED** |
+| xgrammar | X grammar | Squadmire → **X grammar** |
+| TileKernels · SamplingParams | Tile Kernels · Sampling Params | CamelCase rule 2 (Telkernos / samplingperms → OK) |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -96,7 +104,7 @@ spelling, even Em Tee Pee. Also approved: **Kimi** (user's ear), **PR** (letters
 reading), **dB** (read 分贝).
 
 Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
-worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sentences).
+worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whisper: Remi → REME), TopK ("Talk K"), FLUX.2 (fine in most sentences).
 **FAIL with no passing respelling → reword the narration, keep the term on screen** (measured 2026-10-17, video
 「改一行，为什么能快几倍？」):
 
@@ -113,6 +121,11 @@ worse), Lean ("Lin"), README ("Remi"), TopK ("Talk K"), FLUX.2 (fine in most sen
 | e (as in e 的负 80 次方) | 一 | 累积衰减的对数最多到负 80 (keep e<sup>−80</sup> on screen) |
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
+| pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
+| asc (the Ascend op backend dir) | VSC | 昇腾版 |
+| thinking (模式) | finting | 思考模式 |
+| prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
+| R1 (as in V3 和 R1) | 21 / 二 | drop it or say DeepSeek V3 |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
