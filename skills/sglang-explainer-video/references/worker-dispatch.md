@@ -86,6 +86,17 @@ earlier film. The project's `dispatch.py` keeps the full list.
   paths, commands) sets `font-variant-ligatures:none; font-feature-settings:"liga" 0,"calt" 0`.
 - kimi-dark: tell workers the theme override for `_role.md` (template above); without it they follow the role
   file's cream/coral wording.
+- Highlights and state labels follow the voice: when the narration leaves the accent (green/coral) code line,
+  that highlight fades; a state label such as 「第 1 轮」 fades or switches when the picture moves to the next
+  state. The first cut of the GPU 2-CTA video left the accent on a line the voice had left, and a stale round
+  label contradicted the drawing.
+- No inferred mechanism: a worker that cannot find a step in its packet leaves it out instead of drawing it "by
+  analogy" (a worker added a staging buffer that no source stated). Ask workers to list every block they added
+  in their reply, and check each one against the research notes.
+- Kickers drift across waves (font, letter-spacing, bold vs. thin circled numbers). After the last wave, crop the
+  kicker band from every frame of the render into one montage and normalise the outliers. When you script it,
+  take the kicker element by balanced tags, never "up to the next closing tag" (that rewrote a roadmap's large
+  circled numbers once).
 
 Retry (once per frame): SendMessage to the same worker with the exact validator/lint finding and the
 check command; ask it to change only what the finding names.
