@@ -48,6 +48,12 @@ voice changes.
 9. **No space between two Han characters.** The voice pauses about 0.3 s there; `pronounce.py` drops such spaces
    in the spoken text. Spaces between Han and Latin (`这期 SGLang PR 讲解`) are fine and keep captions readable.
    `pron_check.py --meta` reports any pause > 0.2 s that is not at punctuation.
+10. **A comma between two numbers is read as a thousands separator.** In `间距是 2，257 会舍入成 256`, Edge returned
+    `2，257` as one word and read it as 两千二百五十七 (3/3 takes; 2-CTA video, flagged by the user). A pattern now
+    adds a space after a full-width `，` or `、` between digits (`2， 257`), which splits it into 2 / 257 with a
+    0.35 s pause. Captions still show `2，257`. Older projects had the same merge (`4 乘 128，512`, `12、12、8个`).
+11. **调 meaning "tune" is read diào when it stands alone.** `可以调 block 大小` came out as diào in 6/6 takes
+    (poly_probe). Write a compound, such as 调整 (0/6 wrong), 调优 or 调参. 调用 and 调度 are diào and need nothing.
 
 ## Measured on zh-CN-XiaoxiaoNeural (Oct 2026)
 
