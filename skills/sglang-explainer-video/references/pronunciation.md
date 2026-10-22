@@ -77,7 +77,7 @@ voice changes.
 | LoRA | Lora | Lauren → **Laura** |
 | Miles | mials | Mouse → **Miles** |
 | AIME (AIME25, AIME 2025) | Aime | M → **AIM** (short sentence; in a long line Whisper still writes M — read as "aim", the usual reading) |
-| GiB / KiB / MiB (binary units) | G B / K B / M B | **user's ear, 2026-10-18**: say them like GB / KB, not letter by letter (G I B was rejected). Whisper hears GB / KB, so `pron_check` reports KiB as a FAIL against the written form; that is expected (MiB → M B added in the 2-CTA video, 2026-10-21, same FAIL) |
+| GiB / KiB / MiB (binary units) | G B / K B / M B | **user's ear, 2026-10-18**: say them like GB / KB, not letter by letter (G I B was rejected). Whisper hears GB / KB, so `pron_check` reports KiB as a FAIL against the written form; that is expected (MiB → M B added in the 2-CTA video, 2026-10-21, same FAIL; TiB → T B added in the KV cache video, 2026-10-22, Whisper writes TB) |
 | checkpoint | check point | ChatPoint (every carrier, also lower/capitalised) → **checkpoint** (24GB video, 2026-10-19) |
 | OOM | O O M | Om (read as a word) → **OOM** |
 | DSMEM | D S MEM | SMAM → **D S MEM** (2-CTA video, 2026-10-21) |
@@ -139,6 +139,8 @@ worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whispe
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
 | R1 (as in V3 和 R1) | 21 / 二 | drop it or say DeepSeek V3 |
 | thread (thread block / thread block cluster, 2-CTA video 2026-10-21) | Fred (capitalised Thread: still Fred) | 线程块 / 线程块集群 (the English stays on screen) |
+| key (attention key, KV cache video 2026-10-22) | T | say K 和 V (letters read fine); keep query / key / value on screen |
+| tree (radix tree) | Country | 前缀树 in the narration; RadixAttention / HiRadixTree on screen |
 | phase (mbarrier / pipeline phase) | Face (also capitalised) | 相位 |
 | baseline | Bassline | 基线 |
 | wrapper (launch wrapper) | rapper | 包装函数 |
