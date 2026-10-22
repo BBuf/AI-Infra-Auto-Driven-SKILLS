@@ -31,7 +31,7 @@ index e4abf3eec..4ae5dc2a3 100644
    words.sort((a, b) => a.start - b.start);
 +  const cjkFrames = new Set(words.filter((w) => CJK.test(w.text)).map((w) => w.frame));
    if (words.length === 0) skip("no usable words");
- 
+
    // density at i = words whose start falls within [w.start, w.start + WINDOW).
 @@ -127,11 +142,26 @@ function runBuild(argv) {
      const w = words[i];
@@ -75,7 +75,7 @@ index e4abf3eec..4ae5dc2a3 100644
 @@ -163,6 +193,18 @@ function runBuild(argv) {
      };
    });
- 
+
 +  // optional second-language line: caption-translations.json maps a group's text → its translation
 +  const translationsPath = join(hyperframesDir, "caption-translations.json");
 +  if (existsSync(translationsPath)) {
