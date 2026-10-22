@@ -8,9 +8,11 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 - **Technical nouns stay English** — never translate them:
   kernel (never 内核), batch / mixed batch / mixed chunk (never 混批), prefill, decode, decode tail, prefix,
   token, attention, metadata, output buffer, fallback, bit-exact, micro benchmark, profile, launch, step, CFG,
-  GEMM, quant, epilogue, branch, review, PR. Everyday words stay Chinese: 吞吐, 耗时, 并发, 端到端.
+  GEMM, quant, epilogue, branch, review, PR, warmup (never 暖机: flagged on screen in the 2-CTA video,
+  2026-10-22). Everyday words stay Chinese: 吞吐, 耗时, 并发, 端到端.
   Grep the narration **and the on-screen Scene strings** for Chinese renderings before TTS — 预填 (→ prefill),
-  前缀 (→ prefix), 每批 / 批次 (→ batch), 内核, 混批 — the user flagged 预填 on a title (DeepSeek V4.1 video, 2026-10-18).
+  前缀 (→ prefix), 每批 / 批次 (→ batch), 暖机 (→ warmup), 内核, 混批 — the user flagged 预填 on a title (DeepSeek V4.1
+  video, 2026-10-18).
 - Write numbers as digits (15%, 3.79 ms); the TTS reads them correctly and captions show them verbatim.
 - **Completeness over brevity.** No time limit: the film is as long as it takes to explain every algorithm
   and code detail of the PR / article so a viewer can follow it. Pace per frame, not per film: one idea per

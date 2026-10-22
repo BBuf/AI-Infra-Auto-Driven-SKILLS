@@ -2,6 +2,7 @@
   "_doc": "Spoken forms for zh-CN-XiaoxiaoNeural (see references/pronunciation.md). lexicon: whole-token respellings, case-sensitive. parts/acronyms: pieces of snake_case identifiers. patterns: [regex, replacement] applied first. approved: terms confirmed right as the voice reads them (by the user's ear, or by a second ASR when Whisper alone mishears) (pron_check reports them as OK, never respells them). Add an entry only after pron_check.py --asr shows the written form fails and the respelling passes.",
   "patterns": [
     ["#(\\d+)", "\\1"],
+    ["(?<=\\d)([，、])(?=\\d)", "\\1 "],
     ["(?<![A-Za-z])Qwen(?![a-z])", "Kwen"],
     ["(\\d+(?:\\.\\d+)?) ?([GMTK])B\\b", "\\1 \\2 B"],
     ["(\\d+)×(?=[A-Z])", "\\1卡"],
