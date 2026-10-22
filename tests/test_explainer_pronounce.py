@@ -27,7 +27,7 @@ def test_lexicon_and_patterns():
     assert spoken("吞吐 +5%，延迟 −12%") == "吞吐提升5%，延迟降低12%"
     assert spoken("fused top-k 的 top-K、bit-exact") == "fused top k 的 top K、bit exact"
     assert spoken("flashinfer 和 8GB") == "Flash Infer 和 8 G B"
-    assert spoken("种子 5、1、-1，越界的 −2") == "种子 5、1、负1，越界的负2"
+    assert spoken("种子 5、1、-1，越界的 −2") == "种子 5、 1、负1，越界的负2"
     assert spoken("1-3 步、GLM-5.3、x-1") == "1-3 步、GLM-5.3、x-1"
 
 
@@ -109,3 +109,10 @@ def test_terms_from_the_k3_video():
     assert spoken("激活函数 SiTU 的上界") == "激活函数 S I T U 的上界"
     assert spoken("4 乘 tanh 再乘 sigmoid") == "4 乘 tan h 再乘 sigmoid"
     assert spoken("模型在 kimi_k3.py 里") == "模型在 Kimi K3 点 P Y 里"
+
+
+def test_comma_between_numbers_is_not_a_thousands_separator():
+    # measured 2026-10-22: Edge returned "2，257" as one word, read 两千二百五十七 3/3; "2， 257" splits it
+    assert spoken("间距是 2，257 会舍入成 256。") == "间距是 2， 257 会舍入成 256。"
+    assert spoken("M 取 1、16、256；") == "M 取 1、 16、 256；"
+    assert spoken("间距是二，257") == "间距是二，257"
