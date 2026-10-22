@@ -170,7 +170,7 @@
         var t = String(w.text);
         var prev = i > 0 ? String(group.words[i - 1].text) : "";
         var afterCjkPunct = /[，。、；：！？）」』]$/.test(prev);
-        if (i > 0 && !afterCjkPunct && (/^[A-Za-z0-9]/.test(t) || /[A-Za-z0-9%]$/.test(prev)))
+        if (i > 0 && !afterCjkPunct && !/::$/.test(prev) && (/^[A-Za-z0-9]/.test(t) || /[A-Za-z0-9%]$/.test(prev)))
           span.style.marginLeft = "0.28em";
         line.appendChild(span);
       });

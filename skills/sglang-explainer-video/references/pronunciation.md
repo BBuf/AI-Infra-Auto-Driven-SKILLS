@@ -71,9 +71,15 @@ voice changes.
 | LoRA | Lora | Lauren → **Laura** |
 | Miles | mials | Mouse → **Miles** |
 | AIME (AIME25, AIME 2025) | Aime | M → **AIM** (short sentence; in a long line Whisper still writes M — read as "aim", the usual reading) |
-| GiB / KiB (binary units) | G B / K B | **user's ear, 2026-10-18**: say them like GB / KB, not letter by letter (G I B was rejected). Whisper hears GB / KB, so `pron_check` reports KiB as a FAIL against the written form; that is expected |
+| GiB / KiB / MiB (binary units) | G B / K B / M B | **user's ear, 2026-10-18**: say them like GB / KB, not letter by letter (G I B was rejected). Whisper hears GB / KB, so `pron_check` reports KiB as a FAIL against the written form; that is expected (MiB → M B added in the 2-CTA video, 2026-10-21, same FAIL) |
 | checkpoint | check point | ChatPoint (every carrier, also lower/capitalised) → **checkpoint** (24GB video, 2026-10-19) |
 | OOM | O O M | Om (read as a word) → **OOM** |
+| DSMEM | D S MEM | SMAM → **D S MEM** (2-CTA video, 2026-10-21) |
+| tcgen05 | T C Gen 05 | 看05 / K-05 班班杯 → **T C Gen 05**. Do not say the dotted forms (tcgen05.mma / .commit / .ld / .wait / .dealloc): write 「tcgen05 的 MMA / commit / load / wait / dealloc 指令」 and keep the PTX on screen |
+| mbarrier | M barrier | Barrier (the m is dropped) → **M barrier** |
+| ptxas | P T X A S | Sys → **P T X A S** |
+| ncu | N C U | 看 → **N C U** (supersedes the Nsight Compute reword below) |
+| PipelineUmmaAsync | Pipeline U MMA Async | PipelineNum Async → **Pipeline U MMA Async** |
 | comfy-kitchen (the comfy_kitchen INT8 library) | Comfy Kitchen | Tichen for a bare kitchen / Kitchen → **Comfy Kitchen**. In narration write the pair "Comfy Kitchen"; the bare word alone still fails |
 | fa (the FlashAttention backend name) | F A | In context the voice said "fa" as a syllable (Whisper: Fall / 发 / 法 / Ford; the carrier's "FAR" was a false OK) → **FA** |
 | **MoE** (also DeepSeekMoE, MegaMoE, fused_moe) | M O E (lexicon + `parts`) | **user's ear, 2026-10-18**: the voice said "Mo" (the English name *Moe*). Spelled letters come back as MOE |
@@ -111,7 +117,7 @@ worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whispe
 | Written | Whisper heard | Narration says instead |
 | --- | --- | --- |
 | dstate (Mamba2 state dim) | State | 状态维度 |
-| ncu | 看 | Nsight Compute (passes: N-Sight Compute) |
+| ncu | 看 | Nsight Compute (passes: N-Sight Compute) — superseded 2026-10-21: the lexicon spelling N C U passes |
 | swizzle | Swizo | 交错排列的内存布局 |
 | scatter (Beam video, 2026-10-17) | Statter | 「先 gather，算完再分发回去」 |
 | key (indexer key, DSV4.1 video 2026-10-18) | T (in every carrier, also 索引 key) | 索引键 / 读键的带宽 |
@@ -126,6 +132,13 @@ worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whispe
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
 | R1 (as in V3 和 R1) | 21 / 二 | drop it or say DeepSeek V3 |
+| thread (thread block / thread block cluster, 2-CTA video 2026-10-21) | Fred (capitalised Thread: still Fred) | 线程块 / 线程块集群 (the English stays on screen) |
+| phase (mbarrier / pipeline phase) | Face (also capitalised) | 相位 |
+| baseline | Bassline | 基线 |
+| wrapper (launch wrapper) | rapper | 包装函数 |
+| traits (CUTLASS 2SM traits) | Trades | 配置 |
+| subtile | Sato | 子块 |
+| j (a loop index read alone) | (nothing heard) | 下标 / 下标小于 N |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
