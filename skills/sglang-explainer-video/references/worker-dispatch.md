@@ -2,7 +2,7 @@
 
 Paste this into every worker prompt (Agent tool, background), after the line
 `ROLE FILE: $P/.hyperframes/frame-packets/_role.md` and an instruction to read the role first.
-Fill the `<…>` slots. At most three workers; balance packets by count and size; keep frames that
+Fill the `<…>` slots. At most five workers; balance packets by count and size; keep frames that
 share a stage (same diagram before/after, two code frames) on the same worker.
 
 ```text
@@ -97,6 +97,30 @@ earlier film. The project's `dispatch.py` keeps the full list.
   kicker band from every frame of the render into one montage and normalise the outliers. When you script it,
   take the kicker element by balanced tags, never "up to the next closing tag" (that rewrote a roadmap's large
   circled numbers once).
+
+- Kicker and title POSITION drifts too, not just style (DSV4.1 + K3 sharing video, 2026-10-23): 20 dispatches
+  produced 13 different anchors (left 80–120 px, title top 96–134 px), and every crossfade between batches
+  showed the same kicker twice, offset. Give the exact coordinates in the dispatch context (orange theme:
+  kicker `left:96px; top:52px`, title `left:96px; top:96px`) or normalise after the last wave with a script
+  that rewrites only `left`/`top` inside the `#fNN-kicker` / `#fNN-title` rule; moving up never collides with
+  content below.
+- SVG line draw-ons: `pathLength="1000"` and tween `strokeDashoffset` 1000 → 0. GSAP rounds px values, so a
+  1 → 0 dashoffset tween jumps instead of drawing.
+- `scaleX`/`scaleY` reveals of chips and bars: set `transformOrigin` in the CSS **and** in the frame's start
+  `tl.set`. When it fell back to centre, a row of 1/8-width chips rendered ~84 px right of its slots and the
+  last chip sat outside its card.
+- `hf lint` `gsap_repeated_fromto_without_baseline` is a real bug, not noise: the last-authored `fromTo` "from"
+  values become the resting state on seek, which left gather pieces floating outside their cards in the
+  render. Fix with one `tl.set` baseline at 0 and `tl.to` steps only.
+- Animated counters and the data they count must follow the mechanism's order (data lands, then the counter
+  climbs, then the read). A barrier frame that ran the counter to 8 before the buffers filled read as the
+  opposite of the kernel.
+- Check every code line a Scene line names against the excerpt range **before** dispatch: three Scene lines in
+  one film asked to highlight lines that sat just outside the excerpt (`LaunchKernel(…)`, a test's int64 lines,
+  a call's argument lines). Workers rightly refused to invent them, so the fix cost a hand edit per frame.
+- Five parallel workers × ≤5 packets ran fine on this Mac (≈12–17 min per dispatch, 97 frames in ≈80 min).
+  QA scaled the same way: four read-only QA agents, each pulling full-resolution end-state and mid-frame stills
+  for ~24 frames with ffmpeg, found 14 minor issues in ≈8 min, including the two above that lint missed.
 
 Retry (once per frame): SendMessage to the same worker with the exact validator/lint finding and the
 check command; ask it to change only what the finding names.

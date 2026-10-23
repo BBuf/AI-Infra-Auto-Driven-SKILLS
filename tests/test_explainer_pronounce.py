@@ -116,3 +116,12 @@ def test_comma_between_numbers_is_not_a_thousands_separator():
     assert spoken("间距是 2，257 会舍入成 256。") == "间距是 2， 257 会舍入成 256。"
     assert spoken("M 取 1、16、256；") == "M 取 1、 16、 256；"
     assert spoken("间距是二，257") == "间距是二，257"
+
+
+def test_terms_from_the_dsv41_k3_sharing_video():
+    # PR 42929 + 45126 video (2026-10-23): all-caps DSPARK is heard as "Spark";
+    # DSpark passes. 行 after a K/M/G count ("262K 行") is line-sense too.
+    assert spoken("4 张 B200、DSPARK、单请求") == "4 张 B200、DSpark、单请求"
+    assert spoken("262K 行从 0.381 毫秒降到 0.089 毫秒；16K行太小") == "262K 航从 0.381 毫秒降到 0.089 毫秒；16K航太小"
+    assert spoken("2M 行的数据") == "2M 航的数据"
+    assert "航" not in spoken("SGLang 的 K 行为")
