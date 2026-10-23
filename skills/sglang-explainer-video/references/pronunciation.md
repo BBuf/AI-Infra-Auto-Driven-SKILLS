@@ -103,6 +103,7 @@ voice changes.
 | CED (Causal Encoder-Decoder) | C E D | Set → **CED** |
 | xgrammar | X grammar | Squadmire → **X grammar** |
 | TileKernels · SamplingParams | Tile Kernels · Sampling Params | CamelCase rule 2 (Telkernos / samplingperms → OK) |
+| DSPARK (speculative algorithm flag value, DSV4.1 + K3 sharing video 2026-10-23) | DSpark | Spark (the all-caps D is dropped) → **D Spark** |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -147,8 +148,17 @@ worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whispe
 | traits (CUTLASS 2SM traits) | Trades | 配置 |
 | subtile | Sato | 子块 |
 | j (a loop index read alone) | (nothing heard) | 下标 / 下标小于 N |
+| key (dequant memo key, DSV4.1 + K3 sharing video 2026-10-23) | T (fourth video in a row) | 缓存键 / 索引键 (key stays on screen) |
+| SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
+| atol (as in atol 等于 0) | A套 | 误差容忍为 0 |
+| supports weight row mapping (function name read as words) | with Role Mapping | 一个专门的检查函数 |
+| topk (bare, as in 绕过原来的 topk) | Talk | 原来的 top-k 选择 (top-k → top k passes) |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
+
+**行 after a K/M/G count** (DSV4.1 + K3 sharing video, 2026-10-23): 「262K 行」「16K 行」 got no 航 respelling because the
+line-sense rule only looked behind for a digit. The rule now also accepts `\d[KMG]` and `\d[KMG] ` before 行; 「K 行为」 without a
+digit is untouched (test `test_terms_from_the_dsv41_k3_sharing_video`).
 
 **Chinese polyphones across a word boundary** (user's ear, DeepSeek V4.1 video 2026-10-18): 「生成长距离」 was read
 「生成 zhǎng 距离」 because the voice segmented the bigram 「成长」 (chéng zhǎng) across the word boundary. `pron_check` cannot
