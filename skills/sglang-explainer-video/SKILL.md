@@ -195,14 +195,14 @@ cover to upload to Bilibili, which crops one image to both 4:3 and 16:9 (house s
 Translate **every** group's `text` into `$P/caption-translations.json` (`{"<中文 group text>": "<English>"}`),
 then rebuild; the build warns `no translation for N group(s)` until all are covered.
 
-## 8. Frames (≤ 3 parallel workers)
+## 8. Frames (≤ 5 parallel workers)
 
 ```bash
 (cd $P && for b in <code-* blocks named in STORYBOARD>; do hf add "$b"; done)
 node $SKILL_DIR/scripts/frame-packets.mjs --project "$P" --storyboard "$P/STORYBOARD.md"
 ```
 
-Dispatch at most three background workers (Agent tool) at a time, each with the role file path, its packet paths and
+Dispatch at most five background workers (Agent tool) at a time (five ran fine on an M4 Mac, 2026-10-23), each with the role file path, its packet paths and
 the dispatch context from `references/worker-dispatch.md` **verbatim** (it carries the hard rules that broke
 earlier runs). A packet over 48 KB means the blueprint + cited rules are too big: drop one cited rule or use
 `blueprint: compose`. Mark frames `animated` as workers return. A long film (many frames) goes in waves: give each worker
