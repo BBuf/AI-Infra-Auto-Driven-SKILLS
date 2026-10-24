@@ -175,6 +175,11 @@ Measured in the DeepInfer video (2026-10-20, `poly_probe.py`, 6 takes each): 「
 the same clause then flips (「重算段只重建」 4/6, 6/6 after the respelling). Reword the narration instead: 重算 → 重新计算,
 重算段 → 回放段, 重建 → 重新生成, 重启 → 重新拉起.
 
+**长 in 长上下文 and 擅长 is respelled to 常** (user's ear, model-release video 2026-10-24: 「长上下文推理」 was heard
+as zhǎng). Measured with `poly_probe.py` (6 takes, 常/肠 vs 掌/涨): 「RL 框架、长上下文推理」 4/6 wrong as written, 「它尤其擅长参数化建模」
+4/6 and 6/6 wrong; 0/6 for both after the `patterns` rules 长(?=上下文) → 常 and (?<=擅)长 → 常. Already right as written
+(0/6): 不随上下文变长, 长程能力, 长程任务, 长篇讲解.
+
 **行 meaning "row / line" is respelled automatically** (user's ear, 2026-10-19: 「一行」 was sometimes read yì
 **xíng**, as in 一行人). Measured with `scripts/poly_probe.py` (takes vs 航/杭 and 型/形 homophones; 11/11 control
 words such as 银行/行业/进行/行为/一行人 judged right):
