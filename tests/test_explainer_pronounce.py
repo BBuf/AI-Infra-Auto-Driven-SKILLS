@@ -125,3 +125,12 @@ def test_terms_from_the_dsv41_k3_sharing_video():
     assert spoken("262K 行从 0.381 毫秒降到 0.089 毫秒；16K行太小") == "262K 航从 0.381 毫秒降到 0.089 毫秒；16K航太小"
     assert spoken("2M 行的数据") == "2M 航的数据"
     assert "航" not in spoken("SGLang 的 K 行为")
+
+
+def test_terms_from_the_model_release_video():
+    # Model-release video (2026-10-24): 长上下文 and 擅长 were zhǎng in 4/6 takes;
+    # 常 (only ever cháng) fixes both (0/6). 变长 / 长程 / 长篇 were already right.
+    assert spoken("RL 框架、长上下文推理") == "RL 框架、常上下文推理"
+    assert spoken("它尤其擅长参数化建模") == "它尤其擅常参数化建模"
+    assert spoken("不随上下文变长，长程任务，长篇讲解") == "不随上下文变长，长程任务，长篇讲解"
+    assert "S W E" in spoken("SWE Marathon 51.7") and "Browse Comp" in spoken("BrowseComp 92.1")
