@@ -107,6 +107,7 @@ voice changes.
 | SWE (SWE Marathon, SWE-bench) | S W E | SWIT → **SWE** (model-release video, 2026-10-24) |
 | BrowseComp | Browse Comp | BraceComp → **BrowsComp** (OK~, closer) |
 | rid (request ID, PR 37909 video 2026-10-24) | R I D | read / Reed in 10 of 11 lines (the voice says "reed") → **RID** |
+| MegaAttention (DeepSeek Mega kernel, DeepInfer promo 2026-10-25) | Mega Attention | MegaTension (fused) → **Mega** + **Attention** |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
