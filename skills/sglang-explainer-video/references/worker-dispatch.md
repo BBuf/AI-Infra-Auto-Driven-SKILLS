@@ -45,6 +45,9 @@ share a stage (same diagram before/after, two code frames) on the same worker.
      Never invent figures; never show PR status (OPEN / in review).
   5. Primary content stays above y≈896 (bottom ~17% = bilingual caption band).
   6. Timeline length = the packet's duration; reveal each element at the second its Scene line names.
+  7. Kicker and title sit at fixed anchors for the whole film: <div id="f<NN>-kicker"> with
+     position:absolute; left:96px; top:60px; line-height:36px, and <div id="f<NN>-title"> with
+     position:absolute; left:96px; top:108px; line-height:80px; margin:0 (no wrapper div around them).
 - Self-check before finishing (allowed; not the hyperframes CLI):
   source ~/.cache/sglang-explainer-video/env.sh && node $SEV_SKILL/scripts/check_frames.mjs <PROJECT_DIR>
   — your files must print OK.
@@ -100,10 +103,13 @@ earlier film. The project's `dispatch.py` keeps the full list.
 
 - Kicker and title POSITION drifts too, not just style (DSV4.1 + K3 sharing video, 2026-10-23): 20 dispatches
   produced 13 different anchors (left 80–120 px, title top 96–134 px), and every crossfade between batches
-  showed the same kicker twice, offset. Give the exact coordinates in the dispatch context (orange theme:
-  kicker `left:96px; top:52px`, title `left:96px; top:96px`) or normalise after the last wave with a script
-  that rewrites only `left`/`top` inside the `#fNN-kicker` / `#fNN-title` rule; moving up never collides with
-  content below.
+  showed the same kicker twice, offset. HARD RULE 7 above now pins the anchors in every dispatch. It recurred
+  in the PR 37909 video (2026-10-24) because the dispatch was copied from an older project without the rule
+  (12 dispatches → 6 anchors, left 80–120 px). To normalise after the fact, inject
+  `<style data-norm="header">#fNN-kicker{left:96px !important;top:60px !important;line-height:36px !important}
+  #fNN-title{left:96px !important;top:108px !important;line-height:80px !important;margin:0 !important}</style>`
+  right after each frame's root `<div id="root" …>` (for a frame that wraps both in an absolute `#fNN-head`,
+  pin the wrapper instead and give the title `margin-top:12px`). The override wins over every worker style.
 - SVG line draw-ons: `pathLength="1000"` and tween `strokeDashoffset` 1000 → 0. GSAP rounds px values, so a
   1 → 0 dashoffset tween jumps instead of drawing.
 - `scaleX`/`scaleY` reveals of chips and bars: set `transformOrigin` in the CSS **and** in the frame's start

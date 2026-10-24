@@ -106,6 +106,7 @@ voice changes.
 | DSPARK (speculative algorithm flag value, DSV4.1 + K3 sharing video 2026-10-23) | DSpark | Spark (the all-caps D is dropped) → **D Spark** |
 | SWE (SWE Marathon, SWE-bench) | S W E | SWIT → **SWE** (model-release video, 2026-10-24) |
 | BrowseComp | Browse Comp | BraceComp → **BrowsComp** (OK~, closer) |
+| rid (request ID, PR 37909 video 2026-10-24) | R I D | read / Reed in 10 of 11 lines (the voice says "reed") → **RID** |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -156,6 +157,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | atol (as in atol 等于 0) | A套 | 误差容忍为 0 |
 | supports weight row mapping (function name read as words) | with Role Mapping | 一个专门的检查函数 |
 | topk (bare, as in 绕过原来的 topk) | Talk | 原来的 top-k 选择 (top-k → top k passes) |
+| Gloo (PyTorch CPU collective backend, PR 37909 video 2026-10-24) | 格尔 / 歌 (glue, Glue, Gluu, Glooo, G loo all fail) | CPU 上的通信组 / 这个后端 (Gloo and gloo::EnforceNotMet stay on screen) |
+| MIN (as in 取 MIN, all_reduce op) | main (min: main too; minimum passes) | 取最小值 (MIN / ReduceOp.MIN stay on screen); MAX reads fine |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
