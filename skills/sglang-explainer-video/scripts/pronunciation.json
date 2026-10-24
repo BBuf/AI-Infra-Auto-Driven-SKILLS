@@ -19,6 +19,8 @@
     "FlashAttention": "Flash Attention",
     "FlashMLA": "Flash MLA",
     "DeepSeek": "Deep Seek",
+    "SWE": "S W E",
+    "BrowseComp": "Browse Comp",
     "TensorRT-LLM": "Tensor RT LLM",
     "LoRA": "Lora",
     "Miles": "mials",

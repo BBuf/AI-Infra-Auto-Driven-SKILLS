@@ -104,6 +104,8 @@ voice changes.
 | xgrammar | X grammar | Squadmire → **X grammar** |
 | TileKernels · SamplingParams | Tile Kernels · Sampling Params | CamelCase rule 2 (Telkernos / samplingperms → OK) |
 | DSPARK (speculative algorithm flag value, DSV4.1 + K3 sharing video 2026-10-23) | DSpark | Spark (the all-caps D is dropped) → **D Spark** |
+| SWE (SWE Marathon, SWE-bench) | S W E | SWIT → **SWE** (model-release video, 2026-10-24) |
+| BrowseComp | Browse Comp | BraceComp → **BrowsComp** (OK~, closer) |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -117,7 +119,7 @@ spelling, even Em Tee Pee. Also approved: **Kimi** (user's ear), **PR** (letters
 reading), **dB** (read 分贝).
 
 Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
-worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whisper: Remi → REME), TopK ("Talk K"), FLUX.2 (fine in most sentences).
+worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whisper: Remi → REME), TopK ("Talk K"), FLUX.2 (fine in most sentences).
 **FAIL with no passing respelling → reword the narration, keep the term on screen** (measured 2026-10-17, video
 「改一行，为什么能快几倍？」):
 
@@ -150,6 +152,7 @@ worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whispe
 | j (a loop index read alone) | (nothing heard) | 下标 / 下标小于 N |
 | key (dequant memo key, DSV4.1 + K3 sharing video 2026-10-23) | T (fourth video in a row) | 缓存键 / 索引键 (key stays on screen) |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
+| Three.js (also respelled Three J S) | Free.js / FreeJS | 网页 3D 场景 / 在浏览器里漫游的 3D 房子 (Three.js stays on screen) |
 | atol (as in atol 等于 0) | A套 | 误差容忍为 0 |
 | supports weight row mapping (function name read as words) | with Role Mapping | 一个专门的检查函数 |
 | topk (bare, as in 绕过原来的 topk) | Talk | 原来的 top-k 选择 (top-k → top k passes) |
