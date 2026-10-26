@@ -108,6 +108,8 @@ voice changes.
 | BrowseComp | Browse Comp | BraceComp → **BrowsComp** (OK~, closer) |
 | rid (request ID, PR 37909 video 2026-10-24) | R I D | read / Reed in 10 of 11 lines (the voice says "reed") → **RID** |
 | MegaAttention (DeepSeek Mega kernel, DeepInfer promo 2026-10-25) | Mega Attention | MegaTension (fused) → **Mega** + **Attention** |
+| expm1 (softmax-fix paper video 2026-10-26) | exp m 1 | X1 (the letters run together) → **EXP M 1** |
+| epsilon (Adam ε, softmax-fix paper video 2026-10-26) | ep-silon | Excelon (OK~, a /ks/ where the p-s belongs) → **EP Silent**, closer to ep-si-lon |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
