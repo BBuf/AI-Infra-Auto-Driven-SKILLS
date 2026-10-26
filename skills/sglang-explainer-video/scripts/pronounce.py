@@ -27,7 +27,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LEXICON_PATH = os.environ.get(
     "SEV_PRON_LEXICON", os.path.join(HERE, "pronunciation.json")
 )
-TOKEN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.\-+]*[A-Za-z0-9]|[A-Za-z]")
+# leading / trailing "_" belong to the identifier (_commit_x, __init__): left outside, the voice reads 下划线
+TOKEN = re.compile(r"_*[A-Za-z0-9][A-Za-z0-9_.\-+]*[A-Za-z0-9]_*|_*[A-Za-z]_*")
 HAN = re.compile(r"[\u4e00-\u9fff]")
 
 _data = None

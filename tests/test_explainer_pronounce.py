@@ -134,3 +134,13 @@ def test_terms_from_the_model_release_video():
     assert spoken("它尤其擅长参数化建模") == "它尤其擅常参数化建模"
     assert spoken("不随上下文变长，长程任务，长篇讲解") == "不随上下文变长，长程任务，长篇讲解"
     assert "S W E" in spoken("SWE Marathon 51.7") and "Browse Comp" in spoken("BrowseComp 92.1")
+
+
+def test_leading_and_trailing_underscores_stay_with_the_identifier():
+    # PR 28185 video (2026-10-27): TOKEN started at a letter, so the "_" of a private
+    # method stayed in the text and the voice read 「下划线 commit int8 checkpoint」.
+    assert spoken("入口，_commit_int8_checkpoint：先申请") == "入口，commit INT8 checkpoint：先申请"
+    assert spoken("池子在 _init_mamba_pool 里创建") == "池子在 init mamba pool 里创建"
+    assert spoken("__init__ 和 x_y") == "init 和 x y"
+    _, spans = P.to_spoken("新增的 _free_mamba_value，开了")
+    assert [w for *_, w in spans] == ["_free_mamba_value"]
