@@ -25,6 +25,8 @@
     "BrowseComp": "Browse Comp",
     "rid": "R I D",
     "MegaAttention": "Mega Attention",
+    "expm1": "exp m 1",
+    "epsilon": "ep-silon",
     "TensorRT-LLM": "Tensor RT LLM",
     "LoRA": "Lora",
     "Miles": "mials",
