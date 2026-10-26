@@ -63,7 +63,7 @@ index e4abf3eec..4ae5dc2a3 100644
      }
      cur.words.push(w);
      if (SENT_END.test(w.text)) {
-@@ -153,7 +183,7 @@ function runBuild(argv) {
+@@ -153,10 +183,10 @@ function runBuild(argv) {
        frame: g.frame,
        start: r3(first.start),
        end,
@@ -71,7 +71,11 @@ index e4abf3eec..4ae5dc2a3 100644
 +      text: joinWords(g.words),
        words: g.words.map((w, wi) => ({
          id: `caption-word-${gi}-${wi}`,
-         text: w.text,
+-        text: w.text,
++        text: w.text.replace(/%(?=[。，；：！？])/g, "%\u2009"), // 0.7%。 reads as ‰ in the serif caption
+         start: r3(w.start),
+         end: r3(w.end),
+       })),
 @@ -163,6 +193,18 @@ function runBuild(argv) {
      };
    });
