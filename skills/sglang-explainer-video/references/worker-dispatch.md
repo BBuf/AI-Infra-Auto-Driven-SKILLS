@@ -85,6 +85,10 @@ earlier film. The project's `dispatch.py` keeps the full list.
   no ✗. Workers must write super/subscripts as `<sup>`/`<sub>` (k<sup>T</sup>, e<sup>−80</sup>, β<sub>1</sub>) even
   where the packet writes the Unicode form, and draw ✓ ✗ ⋮ as inline SVG; ¹ ² ³ ⁴ are fine. `subset_fonts.py` now
   warns about any used character no bundled font covers (K3 video: caught after two waves; one caption had ᵀ).
+- Minus and times signs stay in the surrounding font: Inter, JetBrains Mono and EB Garamond all carry − (U+2212)
+  and × (U+00D7). Wrapping them in a "Noto Sans SC" span (the old advice) changes the line box and drops a negative
+  number 3–4 px below its row (PR 28185 video: −0.05 / −20 / −127 sat low in tables and on a number line). Only
+  glyphs the Latin faces lack (→ ≈ ≤ ⁄ ∝ ⊂) need the Noto span.
 - Ligatures: JetBrains Mono turns `==` `!=` `->` `>=` into ligature glyphs. Every mono element (code, kickers,
   paths, commands) sets `font-variant-ligatures:none; font-feature-settings:"liga" 0,"calt" 0`.
 - kimi-dark: tell workers the theme override for `_role.md` (template above); without it they follow the role
