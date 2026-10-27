@@ -112,6 +112,8 @@ voice changes.
 | MegaAttention (DeepSeek Mega kernel, DeepInfer promo 2026-10-25) | Mega Attention | MegaTension (fused) → **Mega** + **Attention** |
 | expm1 (softmax-fix paper video 2026-10-26) | exp m 1 | X1 (the letters run together) → **EXP M 1** |
 | epsilon (Adam ε, softmax-fix paper video 2026-10-26) | ep-silon | Excelon (OK~, a /ks/ where the p-s belongs) → **EP Silent**, closer to ep-si-lon |
+| ack / ACK (and the `ack` part of identifiers) | A C K | at / act / App for every word spelling (PD security blog video, 2026-10-27) → **A C K** |
+| ABORT_ACK | Abort A-C-K | AborT CK: the spelled A runs into abort's final t → **Aboard ACK** (OK~; abort/aboard is Whisper's near-homophone) |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -122,7 +124,7 @@ compared the voice's own reading with SG Laang / SG Lahng / SG Leng / S G Lang a
 (2026-10-16). Whisper writes it as SGLine / SGLAM; that is an ASR artifact, so ignore it.
 **MTP** is approved too: Qwen3-ASR transcribes Xiaoxiao's MTP correctly, while Whisper writes MPP for every
 spelling, even Em Tee Pee. Also approved: **Kimi** (user's ear), **PR** (letters, R as 阿尔, the usual Chinese
-reading), **dB** (read 分贝).
+reading), **dB** (read 分贝), and **WRITE** (RDMA WRITE: Whisper writes the homophone "Right").
 
 Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
 worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whisper: Remi → REME), TopK ("Talk K"), FLUX.2 (fine in most sentences).
@@ -142,6 +144,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | e (as in e 的负 80 次方) | 一 | 累积衰减的对数最多到负 80 (keep e<sup>−80</sup> on screen) |
 | config (model config, PR 28185 video 2026-10-27) | 看Fake (config / Config / con fig / kon fig all fail; configuration passes) | 模型配置 (config.json stays on screen) |
 | flush (flush cache, same video) | Flash (in context) | 整个 radix 树被清空时 (flush stays on screen) |
+| 1M (as in 128K 到 1M token, PD security blog video 2026-10-27) | EM | 100 万 (keep 1M on screen) |
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
 | pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
