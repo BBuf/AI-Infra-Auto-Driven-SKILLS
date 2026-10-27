@@ -27,7 +27,9 @@ voice changes.
 
 1. **Never put `_` in front of the voice.** snake_case and SCREAMING_CASE are read as 下划线. Writing them in
    the narration is fine: the identifier rule splits them and maps known parts (SGLANG_DSA_FUSE_TOPK →
-   SGLang DSA fuse top k). A part that is not a word the voice knows needs a `parts` entry.
+   SGLang DSA fuse top k). A part that is not a word the voice knows needs a `parts` entry. Leading and trailing
+   underscores belong to the identifier (`_commit_int8_checkpoint`, `__init__`): before 2026-10-27 the token
+   started at the first letter, so the voice said 「下划线 commit int8 checkpoint」 (PR 28185 video).
 2. **CamelCase brand names that run words together get spaces:** FlashInfer → Flash Infer, DeepSeek → Deep Seek,
    TensorRT-LLM → Tensor RT LLM. Unspaced, the voice blurs them ("Flesh and Fur", "Deep Seat").
 3. **All-caps words that are English words mostly stay all-caps** (PAGED, EXTEND, DECODE): Xiaoxiao reads them
@@ -138,6 +140,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | INT32 (accumulator) | 印32 (OK~ in every spelling) | 32 位整数累加 |
 | key (as in 128 个 key 通道, K3 video 2026-10-19) | T (again) | k 的 128 个通道 |
 | e (as in e 的负 80 次方) | 一 | 累积衰减的对数最多到负 80 (keep e<sup>−80</sup> on screen) |
+| config (model config, PR 28185 video 2026-10-27) | 看Fake (config / Config / con fig / kon fig all fail; configuration passes) | 模型配置 (config.json stays on screen) |
+| flush (flush cache, same video) | Flash (in context) | 整个 radix 树被清空时 (flush stays on screen) |
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
 | pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
