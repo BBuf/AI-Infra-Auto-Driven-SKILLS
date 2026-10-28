@@ -146,6 +146,20 @@ def test_leading_and_trailing_underscores_stay_with_the_identifier():
     assert [w for *_, w in spans] == ["_free_mamba_value"]
 
 
+def test_reduplicated_row_before_rengong():
+    # Claude Code review video (2026-10-28, user review): 「一行一行人工 review」 was read yī háng yī xíng.
+    # The 行人 (pedestrian) exception fired on 行人工; poly_probe: 6/6 wrong as written, 0/6 after the fix.
+    assert spoken("再像以前那样一行一行人工 review") == "再像以前那样一航一航人工 review"
+    assert spoken("这一行人工写的") == "这一航人工写的"
+    assert spoken("一行人在走路") == "一行人在走路"
+
+
+def test_queue_is_letter_q():
+    # Claude Code review video (2026-10-28): "queue" in a carrier came back as 「Continue」;
+    # the letter Q reads the same word and passes. merge stays as written.
+    assert spoken("第六关是 merge queue：") == "第六关是 merge Q："
+
+
 def test_ack_is_spelled():
     # PD security blog video (2026-10-27): ack / ACK were heard as at / act / App;
     # spelled A C K passes. ABORT_ACK needs a hyphenated spelling so the A does not
