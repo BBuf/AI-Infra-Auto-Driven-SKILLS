@@ -144,3 +144,12 @@ def test_leading_and_trailing_underscores_stay_with_the_identifier():
     assert spoken("__init__ 和 x_y") == "init 和 x y"
     _, spans = P.to_spoken("新增的 _free_mamba_value，开了")
     assert [w for *_, w in spans] == ["_free_mamba_value"]
+
+
+def test_ack_is_spelled():
+    # PD security blog video (2026-10-27): ack / ACK were heard as at / act / App;
+    # spelled A C K passes. ABORT_ACK needs a hyphenated spelling so the A does not
+    # run into abort's final t.
+    assert spoken("等所有 rank 的 ack 到齐") == "等所有 rank 的 A C K 到齐"
+    assert spoken("回一个 ABORT_ACK。") == "回一个 Abort A-C-K。"
+    assert spoken("单边 RDMA WRITE") == "单边 RDMA WRITE"
