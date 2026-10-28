@@ -115,6 +115,7 @@ voice changes.
 | ack / ACK (and the `ack` part of identifiers) | A C K | at / act / App for every word spelling (PD security blog video, 2026-10-27) → **A C K** |
 | ABORT_ACK | Abort A-C-K | AborT CK: the spelled A runs into abort's final t → **Aboard ACK** (OK~; abort/aboard is Whisper's near-homophone) |
 | queue (merge queue, Claude Code review video 2026-10-28) | Q | 「接下来Continue」 in the carrier: the voice garbles the vowel run → **Q**; English-mode ASR writes "merge queue" |
+| 一行一行人工 (行 = line, Claude Code review video 2026-10-28, user review) | 一航一航人工 | The 行人 (pedestrian) exception fired on 行人工, so the second 行 stayed xíng (poly_probe 6/6 wrong) → exception is now 人(?!工), plus a 一行一行 → 一航一航 rule (0/6 wrong) |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
