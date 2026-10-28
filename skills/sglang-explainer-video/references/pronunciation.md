@@ -56,6 +56,9 @@ voice changes.
     0.35 s pause. Captions still show `2，257`. Older projects had the same merge (`4 乘 128，512`, `12、12、8个`).
 11. **调 meaning "tune" is read diào when it stands alone.** `可以调 block 大小` came out as diào in 6/6 takes
     (poly_probe). Write a compound, such as 调整 (0/6 wrong), 调优 or 调参. 调用 and 调度 are diào and need nothing.
+12. **「问题出在 X」 can split as 问题 / 出 / 在 X.** In the Claude Code review video, Edge stretched 出 to 0.34 s and paused
+    0.1 s before 在, so the user heard 出 and 在 apart (2026-10-28 review). WordBoundary shows it: 出 and 在 come back as
+    separate words with a gap. Reword (「问题的根源是 X」) instead of re-synthesizing; a retake keeps the same split.
 
 ## Measured on zh-CN-XiaoxiaoNeural (Oct 2026)
 
