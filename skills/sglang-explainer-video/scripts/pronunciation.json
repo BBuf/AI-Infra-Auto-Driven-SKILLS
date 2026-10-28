@@ -17,6 +17,9 @@
     ["(?:(?<=[每整几两多逐按长短二三四五六七八九十百千万亿])|(?<=\\d)|(?<=\\d )|(?<=\\d[KMG])|(?<=\\d[KMG] ))行(?!为|动|驶|走|人|李|星|政|者|销|军|刑|径|凶|踪|囊|装|使(?!用)|进(?!行)|程(?!序)|得通|不通)", "航"]
   ],
   "lexicon": {
+    "ack": "A C K",
+    "ACK": "A C K",
+    "ABORT_ACK": "Abort A-C-K",
     "FlashInfer": "Flash Infer",
     "FlashAttention": "Flash Attention",
     "FlashMLA": "Flash MLA",
@@ -82,6 +85,7 @@
     "DSPARK": "DSpark"
   },
   "parts": {
+    "ack": "A C K",
     "sglang": "SGLang",
     "flashmla": "Flash MLA",
     "flashinfer": "Flash Infer",
@@ -98,6 +102,6 @@
     "ctas": "CTAs",
     "deepinfer": "Deep Infer"
   },
-  "approved": ["SGLang", "MTP", "PR", "dB", "Kimi"],
+  "approved": ["SGLang", "MTP", "PR", "dB", "Kimi", "WRITE"],
   "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"]
 }

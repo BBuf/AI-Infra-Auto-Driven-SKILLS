@@ -89,6 +89,9 @@ earlier film. The project's `dispatch.py` keeps the full list.
   and × (U+00D7). Wrapping them in a "Noto Sans SC" span (the old advice) changes the line box and drops a negative
   number 3–4 px below its row (PR 28185 video: −0.05 / −20 / −127 sat low in tables and on a number line). Only
   glyphs the Latin faces lack (→ ≈ ≤ ⁄ ∝ ⊂) need the Noto span.
+- Shared scratch folders collide: two workers in one wave both wrote `snap.mjs` / `harness.html` into the same
+  `scratchpad/prev/` (PD security blog video). Tell each worker to keep preview helpers in its own subfolder
+  (`scratchpad/<video>-wNN/`).
 - Ligatures: JetBrains Mono turns `==` `!=` `->` `>=` into ligature glyphs. Every mono element (code, kickers,
   paths, commands) sets `font-variant-ligatures:none; font-feature-settings:"liga" 0,"calt" 0`.
 - kimi-dark: tell workers the theme override for `_role.md` (template above); without it they follow the role

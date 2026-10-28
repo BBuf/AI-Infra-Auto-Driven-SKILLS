@@ -14,7 +14,7 @@ index e4abf3eec..4ae5dc2a3 100644
 +// Display width in Han-character units (Latin/ASCII ≈ half width).
 +const CJK_MAX_WIDTH = 26;
 +const cjkWidth = (t) => [...t].reduce((n, ch) => n + (ch.charCodeAt(0) < 128 ? 0.55 : 1), 0);
-+const LATIN_EDGE = /[A-Za-z0-9%_]/; // "_" too: 新增的 _free_mamba_value keeps its space
++const LATIN_EDGE = /[A-Za-z0-9%_+]/; // "_" and "+" too: 新增的 _free_mamba_value, C++ 调用 keep their space
 +const CJK_PUNCT_END = /[，。、；：！？）」』]$/;
 +const joinWords = (ws) =>
 +  ws.reduce((acc, w, i) => {
