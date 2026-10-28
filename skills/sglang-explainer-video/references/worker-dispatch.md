@@ -135,5 +135,19 @@ earlier film. The project's `dispatch.py` keeps the full list.
   QA scaled the same way: four read-only QA agents, each pulling full-resolution end-state and mid-frame stills
   for ~24 frames with ffmpeg, found 14 minor issues in ≈8 min, including the two above that lint missed.
 
+- Every frame carries the kicker and title, even when its Scene lines never mention them (Claude Code review video,
+  2026-10-28). One worker read the Scene lines literally and left both off four frames. Put the rule in every
+  dispatch: kicker text is the section in the packet's narrativeRole, the title is the packet's `## Frame N —` text,
+  and all other content sits below y≈200.
+- A diagram that continues across consecutive frames goes to ONE worker. Example: a table whose first row fills in
+  frame 30 and whose other rows fill in frame 31. The same video split them, and the second worker invented its own
+  header and geometry, so the crossfade jumped. If they must be split, let the second worker read the first frame
+  and match it pixel for pixel.
+- An element that recurs across sections needs an exact CSS spec in the Video direction, not a description. In the
+  same video the 「N / 7」 gate badge came back at 22, 26, 34 and 48 px from four workers. Give box size, font, weight,
+  size, border and position.
+- Scene-line coordinates for boxes on a real figure are estimates. Tell workers to measure the figure and trust the
+  pixels. One worker found that my "Daily eval run" box pointed at the wrong node and corrected it.
+
 Retry (once per frame): SendMessage to the same worker with the exact validator/lint finding and the
 check command; ask it to change only what the finding names.

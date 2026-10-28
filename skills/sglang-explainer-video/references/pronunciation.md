@@ -56,6 +56,9 @@ voice changes.
     0.35 s pause. Captions still show `2，257`. Older projects had the same merge (`4 乘 128，512`, `12、12、8个`).
 11. **调 meaning "tune" is read diào when it stands alone.** `可以调 block 大小` came out as diào in 6/6 takes
     (poly_probe). Write a compound, such as 调整 (0/6 wrong), 调优 or 调参. 调用 and 调度 are diào and need nothing.
+12. **「问题出在 X」 can split as 问题 / 出 / 在 X.** In the Claude Code review video, Edge stretched 出 to 0.34 s and paused
+    0.1 s before 在, so the user heard 出 and 在 apart (2026-10-28 review). WordBoundary shows it: 出 and 在 come back as
+    separate words with a gap. Reword (「问题的根源是 X」) instead of re-synthesizing; a retake keeps the same split.
 
 ## Measured on zh-CN-XiaoxiaoNeural (Oct 2026)
 
@@ -114,6 +117,8 @@ voice changes.
 | epsilon (Adam ε, softmax-fix paper video 2026-10-26) | ep-silon | Excelon (OK~, a /ks/ where the p-s belongs) → **EP Silent**, closer to ep-si-lon |
 | ack / ACK (and the `ack` part of identifiers) | A C K | at / act / App for every word spelling (PD security blog video, 2026-10-27) → **A C K** |
 | ABORT_ACK | Abort A-C-K | AborT CK: the spelled A runs into abort's final t → **Aboard ACK** (OK~; abort/aboard is Whisper's near-homophone) |
+| queue (merge queue, Claude Code review video 2026-10-28) | Q | 「接下来Continue」 in the carrier: the voice garbles the vowel run → **Q**; English-mode ASR writes "merge queue" |
+| 一行一行人工 (行 = line, Claude Code review video 2026-10-28, user review) | 一航一航人工 | The 行人 (pedestrian) exception fired on 行人工, so the second 行 stayed xíng (poly_probe 6/6 wrong) → exception is now 人(?!工), plus a 一行一行 → 一航一航 rule (0/6 wrong) |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -145,6 +150,11 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | config (model config, PR 28185 video 2026-10-27) | 看Fake (config / Config / con fig / kon fig all fail; configuration passes) | 模型配置 (config.json stays on screen) |
 | flush (flush cache, same video) | Flash (in context) | 整个 radix 树被清空时 (flush stays on screen) |
 | 1M (as in 128K 到 1M token, PD security blog video 2026-10-27) | EM | 100 万 (keep 1M on screen) |
+| diff (Claude Code review video, 2026-10-28) | Dev / Dave's (diff, Diff, dif all fail) | 改动 / 这次的改动 (diff stays on screen) |
+| skill (same video) | Scale (skill, Skill, skil all fail) | 技能 (skill stays on screen) |
+| nit / Nit (same video) | Net (knit → Net, nitpick → Netpeak) | 小毛病 (the Nit tag stays on screen) |
+| on-call (same video) | Encore (oncall too) | 值班 / 每周轮换的值班 |
+| clone (git clone, same video) | Clan | 克隆 |
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
 | pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
