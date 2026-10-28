@@ -146,6 +146,12 @@ def test_leading_and_trailing_underscores_stay_with_the_identifier():
     assert [w for *_, w in spans] == ["_free_mamba_value"]
 
 
+def test_queue_is_letter_q():
+    # Claude Code review video (2026-10-28): "queue" in a carrier came back as 「Continue」;
+    # the letter Q reads the same word and passes. merge stays as written.
+    assert spoken("第六关是 merge queue：") == "第六关是 merge Q："
+
+
 def test_ack_is_spelled():
     # PD security blog video (2026-10-27): ack / ACK were heard as at / act / App;
     # spelled A C K passes. ABORT_ACK needs a hyphenated spelling so the A does not

@@ -20,6 +20,7 @@
     "ack": "A C K",
     "ACK": "A C K",
     "ABORT_ACK": "Abort A-C-K",
+    "queue": "Q",
     "FlashInfer": "Flash Infer",
     "FlashAttention": "Flash Attention",
     "FlashMLA": "Flash MLA",
