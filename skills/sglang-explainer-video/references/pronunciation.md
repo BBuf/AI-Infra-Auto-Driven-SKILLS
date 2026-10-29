@@ -158,6 +158,13 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
 | pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
+| an English tagline read as a sentence ("The agent flow system for token maxxing", Humanize 2 video 2026-10-29) | The → 的, maxxing → Maxim | say it in Chinese (它给自己的定位是一句英文标语，大意是…); the English stays on screen |
+| pytest (same video) | Ptest | 跑一遍测试 |
+| done (as a field name, same video) | 单 | 做完没有 / 做完了 (the done field stays on screen) |
+| resume (--resume, same video) | rezoom (the verb reading, but no respelling passed) | 再接着跑 (--resume stays on screen) |
+| chasoid (flame_chasoid, same video) | Chaseo at | don't speak it: 一组变体 flow (flame_chasoid stays on screen) |
+| epoch (epoch N: distilled tree, same video) | iPad | 压成一个提交 / 第几轮打扫 |
+| tree (distilled tree, same video) | 接下来Country in the carrier | 蒸馏过的仓库 / 那棵树 |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
