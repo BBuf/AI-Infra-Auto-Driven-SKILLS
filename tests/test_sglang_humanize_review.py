@@ -202,3 +202,59 @@ def test_user_type_machine_accounts_are_excluded_from_future_collection():
     for login in ("sglang-bot", "sglang-npu-bot", "amd-bot", "metamergebot", "diffray-bot"):
         assert module.is_agent_user({"login": login, "type": "User"})
     assert not module.is_agent_user({"login": "human-reviewer", "type": "User"})
+
+
+SUPPLEMENT = SKILL_ROOT / "references" / "bbuf-recent-review-corpus.jsonl.gz"
+REQUIRED_REFERENCES = (
+    "references/maintainer-standards.md",
+    "references/refactor-conventions.md",
+    "references/bbuf-review-patterns.md",
+    "references/bbuf-recent-review-corpus.jsonl.gz",
+)
+
+
+def test_supplement_corpus_matches_schema_and_holds_maintainer_reviews() -> None:
+    with gzip.open(SUPPLEMENT, "rt", encoding="utf-8") as handle:
+        rows = [json.loads(line) for line in handle]
+
+    assert rows
+    for row in rows:
+        assert row["schema_version"] == 2
+        assert row["row_type"] in {
+            "inline_review_thread",
+            "pr_conversation",
+            "review_submission",
+        }
+        assert "BBuf" in {comment["author"]["login"] for comment in row["comments"]}
+        text = json.dumps(row, ensure_ascii=False)
+        assert "Agent-assisted pre-review" not in text
+        assert "Automated pre-review" not in text
+
+
+def test_summarizer_sweeps_the_supplement_corpus() -> None:
+    args = argparse.Namespace(
+        corpus=SUPPLEMENT,
+        path=[],
+        query=["test"],
+        category=[],
+        kind="",
+        reviewer="BBuf",
+        batch_size=100,
+        top=3,
+        include_agent_reviewers=False,
+        excerpt_chars=200,
+        format="digest",
+    )
+    result = SUMMARIZER.sweep_corpus(args)
+
+    assert result.matched_count > 0
+    assert len(result.top_matches) == 3
+
+
+def test_skill_requires_maintainer_standards_and_its_references_exist() -> None:
+    skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+    assert "## Required Reading" in skill
+    for reference in REQUIRED_REFERENCES:
+        assert reference in skill
+        assert (SKILL_ROOT / reference).exists()

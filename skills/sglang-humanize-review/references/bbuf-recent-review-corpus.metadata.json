@@ -1,0 +1,474 @@
+{
+  "agent_reviewer_comment_count": 0,
+  "bbuf_comments_kept_by_kind": {
+    "inline": 285,
+    "pr_conversation": 116,
+    "review_submission": 125
+  },
+  "bbuf_comments_overlapping_previous_corpus_window": 0,
+  "code_languages": [
+    [
+      "python",
+      252
+    ],
+    [
+      "review",
+      107
+    ],
+    [
+      "conversation",
+      86
+    ],
+    [
+      "cuda",
+      17
+    ],
+    [
+      "cpp",
+      2
+    ],
+    [
+      "markdown",
+      1
+    ],
+    [
+      "mdx",
+      1
+    ]
+  ],
+  "collected_through": "2026-10-30T10:25:16+00:00",
+  "collection_policy": {
+    "agent_login_patterns": [
+      "-bot$",
+      "^metamergebot$",
+      "^sglang-bot$",
+      "^diffray",
+      "\\[bot\\]$",
+      "^dependabot",
+      "^renovate",
+      "^github-actions",
+      "^pre-commit-ci",
+      "^copilot",
+      "^claude",
+      "^codex",
+      "^cursor",
+      "^devin",
+      "^sweep",
+      "^greptile",
+      "^openhands",
+      "^aider",
+      "^codeium",
+      "^qodo",
+      "^coderabbit"
+    ],
+    "agent_reviewers_included": false,
+    "candidate_selection": "GitHub search `repo:sgl-project/sglang is:pr commenter:BBuf -author:BBuf` and `reviewed-by:BBuf`, split by month windows of `updated:` from 2026-07-27, union of results.",
+    "comment_text_policy": "Original comment bodies are preserved as UTF-8 in their original language; no translation.",
+    "confidentiality": "PRs whose title/body/branch mention restricted model or project names, internal hosts, private links or secrets are dropped entirely; inline threads with any such mention are dropped whole; conversation/review comments with any such mention are dropped individually.",
+    "dropped": "bot/coding-agent accounts; empty bodies; comments with the 'Agent-assisted pre-review' / 'Automated pre-review' footer; pure slash commands (/tag-and-rerun-ci, /rerun-test, /rerun-failed-ci, /run-*, ...); bare approvals such as 'LGTM', 'Thanks!', 'Good job'.",
+    "episode_requirement": "Every row contains at least one kept BBuf comment created at or after 2026-07-27T00:00Z.",
+    "inline_review_comments": "Whole inline thread (all human comments, any date) kept for context when it holds a kept BBuf comment in the window; grouped by in_reply_to_id.",
+    "pr_conversation_comments": "Human PR conversation comments created in the window, grouped per PR; row kept only when BBuf has a kept comment.",
+    "review_submissions": "Human review submissions with a non-empty body created in the window, grouped per PR; row kept only when BBuf has a kept submission."
+  },
+  "comment_count": 900,
+  "comment_language_hints": [
+    [
+      "en_or_ascii",
+      775
+    ],
+    [
+      "non_ascii_other",
+      122
+    ],
+    [
+      "zh_or_cjk",
+      3
+    ]
+  ],
+  "comment_stats": {
+    "bbuf_comments_kept": 526,
+    "bbuf_dropped_automation_pre_review": 13,
+    "bbuf_dropped_bare_approval": 16,
+    "bbuf_dropped_empty": 334,
+    "bbuf_dropped_slash_command": 66,
+    "bbuf_events_in_window": 1051,
+    "context_dropped_agent_user": 216,
+    "context_dropped_automation_pre_review": 1,
+    "context_dropped_bare_approval": 8,
+    "context_dropped_empty": 446,
+    "context_dropped_slash_command": 251,
+    "inline_threads_without_kept_bbuf": 1,
+    "pr_conversation_rows_without_bbuf": 109,
+    "review_submission_rows_without_bbuf": 19,
+    "dropped_confidential_total": 112
+  },
+  "corpus_role": "supplement",
+  "events_by_kind": [
+    [
+      "inline_review_comment",
+      491
+    ],
+    [
+      "pr_conversation",
+      277
+    ],
+    [
+      "review_submission",
+      132
+    ]
+  ],
+  "generated_at": "2026-10-30T10:25:16+00:00",
+  "human_reviewer_comment_count": 900,
+  "max_comments_per_thread": 16,
+  "pull_request_stats": {
+    "candidate_prs_from_search": 373,
+    "prs_dropped_confidential": 48,
+    "prs_scanned": 373,
+    "prs_with_kept_episode": 204
+  },
+  "repo": "sgl-project/sglang",
+  "review_states": [
+    [
+      "APPROVED",
+      66
+    ],
+    [
+      "COMMENTED",
+      53
+    ],
+    [
+      "CHANGES_REQUESTED",
+      13
+    ]
+  ],
+  "reviewer_focus": "BBuf",
+  "schema_version": 2,
+  "source_years": [
+    2026,
+    2026
+  ],
+  "supplements": "references/sglang-review-corpus.jsonl.gz (collected_through 2026-07-27T15:49:55+00:00)",
+  "thread_count": 466,
+  "threads_by_pr_year": {
+    "2026": 466
+  },
+  "threads_by_type": [
+    [
+      "inline_review_thread",
+      273
+    ],
+    [
+      "review_submission",
+      107
+    ],
+    [
+      "pr_conversation",
+      86
+    ]
+  ],
+  "top_categories": [
+    [
+      "tests-ci",
+      325
+    ],
+    [
+      "models-quant",
+      294
+    ],
+    [
+      "gpu-kernel",
+      258
+    ],
+    [
+      "correctness",
+      253
+    ],
+    [
+      "memory-cache",
+      176
+    ],
+    [
+      "performance",
+      167
+    ],
+    [
+      "api-compat",
+      112
+    ],
+    [
+      "docs-examples",
+      95
+    ],
+    [
+      "style-maintainability",
+      89
+    ],
+    [
+      "build-deps",
+      69
+    ],
+    [
+      "distributed-concurrency",
+      67
+    ],
+    [
+      "observability",
+      53
+    ],
+    [
+      "general-review",
+      4
+    ]
+  ],
+  "top_human_reviewers": [
+    [
+      "BBuf",
+      527
+    ],
+    [
+      "OnePunchMonk",
+      32
+    ],
+    [
+      "leonardHONG",
+      21
+    ],
+    [
+      "ITerydh",
+      20
+    ],
+    [
+      "N3mezis",
+      20
+    ],
+    [
+      "mickqian",
+      15
+    ],
+    [
+      "DarkSharpness",
+      12
+    ],
+    [
+      "alex0dd",
+      11
+    ],
+    [
+      "jlqibm",
+      11
+    ],
+    [
+      "yuan-luo",
+      10
+    ],
+    [
+      "OrangeRedeng",
+      9
+    ],
+    [
+      "triple-mu",
+      9
+    ],
+    [
+      "cognaiger9",
+      9
+    ],
+    [
+      "siliangchen-amd",
+      9
+    ],
+    [
+      "alexnails",
+      8
+    ],
+    [
+      "IPostYellow",
+      8
+    ],
+    [
+      "Jzz1943",
+      8
+    ],
+    [
+      "DevashishLal-CB",
+      6
+    ],
+    [
+      "DefTruth",
+      6
+    ],
+    [
+      "guzekai01",
+      5
+    ],
+    [
+      "zyzshishui",
+      5
+    ],
+    [
+      "forrestl111",
+      5
+    ],
+    [
+      "ChefWu551",
+      5
+    ],
+    [
+      "kevin-mii",
+      5
+    ],
+    [
+      "yuhanchan",
+      5
+    ],
+    [
+      "yiakwy-xpu-ml-framework-team",
+      5
+    ],
+    [
+      "Monishver11",
+      5
+    ],
+    [
+      "nvpohanh",
+      4
+    ],
+    [
+      "vijay-kodamalla",
+      4
+    ],
+    [
+      "drproduck",
+      4
+    ]
+  ],
+  "top_paths": [
+    [
+      "<conversation>",
+      193
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/pipelines_core/lora/pipeline.py",
+      5
+    ],
+    [
+      "python/sglang/kernels/ops/moe/ep_moe_kernels.py",
+      4
+    ],
+    [
+      "python/sglang/srt/layers/quantization/humming.py",
+      3
+    ],
+    [
+      "python/sglang/kernels/ops/attention/flash_attention_v4.py",
+      3
+    ],
+    [
+      "python/sglang/srt/layers/quantization/fp8_utils.py",
+      3
+    ],
+    [
+      "python/sglang/srt/environ.py",
+      3
+    ],
+    [
+      "test/registered/kernels/benchmark/moe/bench_fp8_per_token_to_per_tensor_quant.py",
+      3
+    ],
+    [
+      "python/sglang/kernels/ops/diffusion/layout/nearest_upsample_nhwc_triton.py",
+      3
+    ],
+    [
+      "test/registered/unit/spec/test_oot_dflash_hooks.py",
+      3
+    ],
+    [
+      "python/sglang/kernels/jit/csrc/deepseek_v4/topk_v2.cuh",
+      3
+    ],
+    [
+      "python/sglang/kernels/jit/csrc/deepseek_v4/c2.cuh",
+      3
+    ],
+    [
+      "python/sglang/srt/layers/moe/paged_experts/method.py",
+      3
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/pipelines/diffusers_pipeline.py",
+      3
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/pipelines_core/stages/model_specific_stages/glm_image.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/managers/gpu_worker.py",
+      2
+    ],
+    [
+      "python/sglang/srt/layers/moe/moe_runner/triton_utils/fused_moe.py",
+      2
+    ],
+    [
+      "python/sglang/kernels/jit/utils/arch.py",
+      2
+    ],
+    [
+      "test/manual/layers/test_layernorm.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/pipelines_core/stages/model_specific_stages/boogu_image.py",
+      2
+    ],
+    [
+      "test/registered/kernels/ops/attention/test_flash_attention_4.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/distributed/device_communicators/pynccl.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/layers/attention/backends/subblock_sparse_attn.py",
+      2
+    ],
+    [
+      "python/sglang/kernels/jit/utils/compile/cache.py",
+      2
+    ],
+    [
+      "python/sglang/kernels/ops/quantization/fp8_kernel.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/pipelines_core/stages/model_specific_stages/minimax_h3/stages/denoising.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/models/dits/longcat_image.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/cache/teacache_calibrate.py",
+      2
+    ],
+    [
+      "python/sglang/multimodal_gen/runtime/models/dits/minimax_h3.py",
+      2
+    ],
+    [
+      "python/sglang/srt/arg_groups/speculative_hook.py",
+      2
+    ]
+  ],
+  "window": {
+    "end": "2026-10-30T10:25:16+00:00",
+    "label": "2026-07-27..2026-10-30",
+    "start": "2026-07-27T00:00:00Z"
+  },
+  "confidentiality_filter_hits_total": 71
+}
