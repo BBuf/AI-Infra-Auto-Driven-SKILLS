@@ -167,3 +167,14 @@ def test_ack_is_spelled():
     assert spoken("等所有 rank 的 ack 到齐") == "等所有 rank 的 A C K 到齐"
     assert spoken("回一个 ABORT_ACK。") == "回一个 Abort A-C-K。"
     assert spoken("单边 RDMA WRITE") == "单边 RDMA WRITE"
+
+
+def test_version_two_after_a_product_name_is_er():
+    # Edge reads "Humanize 2 把关系" as 两把 (the classifier pulls 2 to 两); a version number is 二
+    assert spoken("Humanize 2 把关系倒了过来") == "Humanize 二把关系倒了过来"
+    assert spoken("这就是 Humanize 2 里的 Flame Chase。") == "这就是 Humanize 二里的 Flame Chase。"
+    assert spoken("下一步是 Humanize 2，把 flow") == "下一步是 Humanize 二，把 flow"
+    # counts, acronyms and decimals keep their digit
+    assert spoken("agent 2 个") == "agent 2 个"
+    assert spoken("GPU 2 个") == "GPU 2 个"
+    assert spoken("Humanize 2.5") == "Humanize 2.5"

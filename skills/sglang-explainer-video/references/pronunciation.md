@@ -165,6 +165,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | chasoid (flame_chasoid, same video) | Chaseo at | don't speak it: 一组变体 flow (flame_chasoid stays on screen) |
 | epoch (epoch N: distilled tree, same video) | iPad | 压成一个提交 / 第几轮打扫 |
 | tree (distilled tree, same video) | 接下来Country in the carrier | 蒸馏过的仓库 / 那棵树 |
+| 2 as a version number (Humanize 2 把关系 / Humanize 2 把整个, same video, user review) | 两把 (the following 把 is taken as a classifier, so 2 → 两) | pattern: a capitalised name + space + 2 → 二 (Humanize 二, Llama 二); counts after lowercase words or acronyms (agent 2 个, GPU 2 个) and decimals keep their digit; Whisper writes the fixed take back as "Humanize 2" |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
