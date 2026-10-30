@@ -184,3 +184,8 @@ def test_cli_is_spelled_as_letters():
     # the user asked for C L I (Humanize 2 video review, 2026-10-30)
     assert spoken("审查要靠另一个 Codex CLI。") == "审查要靠另一个 Codex C L I。"
     assert spoken("而且每个 CLI 都能用") == "而且每个 C L I 都能用"
+
+
+def test_callback_huidiao():
+    # 回调 (callback) must be huí diào; Edge read it tiáo in 2/6 takes (Humanize 2 video review, 2026-10-30)
+    assert spoken("变成了一个 Python 回调：") == "变成了一个 Python 回掉："
