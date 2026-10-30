@@ -151,3 +151,14 @@ earlier film. The project's `dispatch.py` keeps the full list.
 
 Retry (once per frame): SendMessage to the same worker with the exact validator/lint finding and the
 check command; ask it to change only what the finding names.
+- Size a real image to the card's INNER width (Humanize 2 video, 2026-10-29): three frames gave a 12 px-padded card
+  the image's full width under `box-sizing:border-box`, so each figure stuck out of its card by ~13 px. Tell workers:
+  img width = card width − 2 × padding − 2 × border; or widen the card. Crop web-figure footnotes such as "Hover, tap
+  or use the arrow keys…" off the PNG before handing it to workers (crop the bottom only, so pointer-box coordinates
+  measured from the top stay valid).
+- A terminal / code body with a fixed `height` and `overflow:hidden` clips its last line (same video: the key line of a
+  three-line prompt was cut for the whole frame). Size bodies from the line count, or leave the height auto.
+- Never `pkill -f <generic script name>` in a worker: two workers named their preview script `shot.mjs` and one killed
+  the other's run. Stop only the PIDs you started.
+- Don't put the same sentence in the title slot and again right under it: when a frame's Scene shows a tagline that
+  equals the frame title, let the title carry it.
