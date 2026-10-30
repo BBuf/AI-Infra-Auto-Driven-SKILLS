@@ -178,3 +178,9 @@ def test_version_two_after_a_product_name_is_er():
     assert spoken("agent 2 个") == "agent 2 个"
     assert spoken("GPU 2 个") == "GPU 2 个"
     assert spoken("Humanize 2.5") == "Humanize 2.5"
+
+
+def test_cli_is_spelled_as_letters():
+    # the user asked for C L I (Humanize 2 video review, 2026-10-30)
+    assert spoken("审查要靠另一个 Codex CLI。") == "审查要靠另一个 Codex C L I。"
+    assert spoken("而且每个 CLI 都能用") == "而且每个 C L I 都能用"
