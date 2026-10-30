@@ -1,6 +1,6 @@
 ---
 name: sglang-humanize-review
-description: "Perform SGLang code review in the style of human maintainers by consulting the public PR review episode corpus from project start through 2026-07-27, including inline review threads, top-level PR comments, review submissions, original multilingual text, and multi-round discussions. Use when reviewing SGLang PRs, diffs, patches, or local changes for correctness, tests, performance, GPU/runtime risks, API compatibility, and maintainability."
+description: "Perform SGLang code review in the style of human maintainers by consulting the public PR review episode corpus from project start through 2026-07-27, a supplement of maintainer BBuf's reviews through 2026-10-30, and the maintainer standards distilled from his refactor/cleanup PRs (code layout, test policy, flags, evidence bar, comment style). Use when reviewing SGLang PRs, diffs, patches, or local changes for correctness, tests, performance, GPU/runtime risks, API compatibility, and maintainability."
 ---
 
 # SGLang Humanize Review
@@ -46,6 +46,27 @@ first for coverage, counts, top paths, and category distribution. Do not paste
 the raw gzip corpus into context; go through the helper scripts, which read it
 in memory-bounded segments and return a digest.
 
+## Required Reading
+
+Before any review, read
+[references/maintainer-standards.md](references/maintainer-standards.md) in
+full. It is the current review bar of SGLang maintainer BBuf (as of
+2026-10-30): review order, scope, code placement after the kernels/tests
+refactors, the no-new-flags rule, test policy, the evidence a PR description
+must carry, the merge bar, and how review comments are written. Where it
+disagrees with an older corpus precedent, it wins.
+
+Read these when the diff touches the matching area:
+
+- [references/refactor-conventions.md](references/refactor-conventions.md):
+  the enforceable layout rules from the refactor/cleanup PRs (kernels
+  namespace and groups, `KernelSpec`, `BaseFusedOp`, gates vs launchers, MoE
+  router, diffusion facade and fusion tiers, test layout and CI lanes, env vars,
+  dead code), each with what to look for in a diff and the guard test that
+  fails.
+- [references/bbuf-review-patterns.md](references/bbuf-review-patterns.md):
+  his recurring concerns since 2026-07-27 with example comments, and his tone.
+
 ## Corpus Tools
 
 There are two tools. **For an actual PR review, the exhaustive sweep below is
@@ -68,7 +89,18 @@ python3 skills/sglang-humanize-review/scripts/summarize_sglang_review_corpus.py 
 ```
 
 It reports `Scanned N threads ... matched M threads across K PRs` so coverage is
-explicit. Read the aggregate and the top-ranked threads, then write a short
+explicit.
+
+Then sweep the maintainer's recent reviews with the same paths and keywords.
+`references/bbuf-recent-review-corpus.jsonl.gz` holds BBuf's review episodes on
+other authors' PRs from 2026-07-27 to 2026-10-30 (same schema), so it reflects
+the current bar after the main corpus cutoff:
+
+```bash
+python3 skills/sglang-humanize-review/scripts/summarize_sglang_review_corpus.py \
+  --corpus skills/sglang-humanize-review/references/bbuf-recent-review-corpus.jsonl.gz \
+  --path python/sglang/srt/speculative --query eagle --query test --top 15
+``` Read the aggregate and the top-ranked threads, then write a short
 synthesis of the recurring historical review opinions before reviewing. Use
 `--format jsonl` to stream all matched threads when you need to read every one.
 
@@ -118,7 +150,10 @@ python3 skills/sglang-humanize-review/scripts/collect_sglang_review_corpus.py \
    - Identify changed SGLang subsystems: server args, scheduler, memory/cache,
      model runner, attention backend, quantization, kernels, OpenAI API,
      metrics, docs, or tests.
-2. Read `references/corpus-summary.md`.
+2. Read `references/maintainer-standards.md` (mandatory), then
+   `references/corpus-summary.md`. If the diff adds or moves kernels, tests,
+   fused ops, MoE routing, diffusion ops, env vars or flags, also read the
+   matching section of `references/refactor-conventions.md`.
    - Note top review surfaces and categories that overlap with the diff.
    - Check episode coverage. Inline evidence is best for file-local findings;
      PR conversation evidence is best for design, benchmarks, repros, and
@@ -135,6 +170,9 @@ python3 skills/sglang-humanize-review/scripts/collect_sglang_review_corpus.py \
      `dp`, `eagle`, `fp8`, `benchmark`, `pytest`). It scans all threads in
      memory-bounded segments and aggregates every relevant match, not the first
      N.
+   - Run the same sweep on `references/bbuf-recent-review-corpus.jsonl.gz`
+     (`--corpus`) and fold its matches into the synthesis; on a conflict, the
+     recent episodes and `maintainer-standards.md` take precedence.
    - Confirm coverage from its `Scanned N ... matched M across K PRs` line. If
      `matched` is 0, widen paths/keywords and rerun; if it is very large, read
      the aggregate plus the top-ranked threads and, when needed, stream the
@@ -173,6 +211,10 @@ python3 skills/sglang-humanize-review/scripts/collect_sglang_review_corpus.py \
      flow correct. Do not invent functions or call edges that are not in the
      diff or the files it touches.
 6. Produce a code-review response.
+   - Check the diff against `maintainer-standards.md` in its order: scope,
+     placement, flags/env vars, tests (does each test reach the changed path,
+     is it worth keeping), evidence in the description, CI coverage. For an
+     AI-generated PR, structure and tests come before logic.
    - Lead with concrete findings ordered by severity.
    - Include file and line references from the reviewed diff.
    - Explain the failure mode, not just the preferred style.
@@ -295,6 +337,12 @@ Mirror human SGLang review habits:
 - Do not invent a corpus precedent; query the corpus when using it as evidence.
 - Use corpus examples for reviewer instincts and risk surfaces, not as a
   replacement for reading the current diff.
+- Write GitHub comments the way the maintainer does (see
+  `maintainer-standards.md` §8): English, inline at the exact line, the concrete
+  failure first, then a short ask, often as a question; `[P1]`/`[P2]`/
+  `Non-blocking:` tags; no AI flavor, headings or filler; a one-line review body;
+  approvals give the reason in one sentence plus any one-line TODO and the CI to
+  wait for; always say what was not validated.
 - Keep multilingual comments intact. If a relevant thread is Chinese or another
   language, use it as-is for evidence and answer in the user's language unless
   the user asks otherwise.
@@ -341,6 +389,13 @@ include its historical owner:
 | `python/sglang/srt/arg_groups/**` | `python/sglang/srt/server_args.py` |
 | `python/sglang/kernels/**` | `python/sglang/jit_kernel/`, `sgl-kernel/` |
 | `.agents/skills/**` | `.claude/skills/` |
+| `python/sglang/kernels/ops/**` | `python/sglang/srt/layers/`, `triton_ops` |
+| `test/registered/**` | `test/srt/`, `test/registered/kernel/`, `test/registered/jit/` |
+
+The main corpus stops at 2026-07-27. `references/bbuf-recent-review-corpus.jsonl.gz`
+extends it for one reviewer (BBuf) through 2026-10-30; PRs about unreleased
+models and private projects were left out of it. Reviews after 2026-10-30 must
+still be read live from GitHub.
 
 The collector has no incremental/resume mode and overwrites all three output
 files. `--end-year` defaults to 2025: pass 2026 explicitly for a future full
