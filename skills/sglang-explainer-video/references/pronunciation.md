@@ -158,6 +158,16 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | tok/s | Talk | 每秒 N 个 token |
 | copy on write | on → 嗯 | 写时复制 (the English stays on screen) |
 | pybind11 (DeepInfer video, 2026-10-20) | PBind11 | 绑定到 Python |
+| an English tagline read as a sentence ("The agent flow system for token maxxing", Humanize 2 video 2026-10-29) | The → 的, maxxing → Maxim | say it in Chinese (它给自己的定位是一句英文标语，大意是…); the English stays on screen |
+| pytest (same video) | Ptest | 跑一遍测试 |
+| done (as a field name, same video) | 单 | 做完没有 / 做完了 (the done field stays on screen) |
+| resume (--resume, same video) | rezoom (the verb reading, but no respelling passed) | 再接着跑 (--resume stays on screen) |
+| chasoid (flame_chasoid, same video) | Chaseo at | don't speak it: 一组变体 flow (flame_chasoid stays on screen) |
+| epoch (epoch N: distilled tree, same video) | iPad | 压成一个提交 / 第几轮打扫 |
+| tree (distilled tree, same video) | 接下来Country in the carrier | 蒸馏过的仓库 / 那棵树 |
+| 2 as a version number (Humanize 2 把关系 / Humanize 2 把整个, same video, user review) | 两把 (the following 把 is taken as a classifier, so 2 → 两) | pattern: a capitalised name + space + 2 → 二 (Humanize 二, Llama 二); counts after lowercase words or acronyms (agent 2 个, GPU 2 个) and decimals keep their digit; Whisper writes the fixed take back as "Humanize 2" |
+| CLI (Humanize 2 video, user review 2026-10-30) | read as a word | lexicon → C L I (the user wants the three letters); ASR then writes it back as CLI |
+| 回调 (callback, same video, user review) | huí tiáo in 2/6 takes (poly_probe, want 掉/钓/吊 vs avoid 条/调皮) | pattern 回调 → 回掉: 0/6 wrong; pick reference homophones with the same tone as each reading, or the probe's margins blur |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
