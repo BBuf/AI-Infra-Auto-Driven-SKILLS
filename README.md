@@ -24,10 +24,11 @@ live in [`sglang-diffusion-optimization-flows/`](sglang-diffusion-optimization-f
 
 ## Releases
 
-**[v0.1.5](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/v0.1.5)**
-— [Release notes (中文)](release-notes/v0.1.5.md), covering model Day-0 support,
-profiler layer guides, 118 bilingual model histories, and the October source audit.
-Previous release: [v0.1.0](release-notes/v0.1.0.md).
+**[v0.1.6](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/releases/tag/v0.1.6)**
+— [Release notes (中文)](release-notes/v0.1.6.md), covering the new explainer-video skill
+and the maintainer review standards in `sglang-humanize-review`, which the companion
+[SGLang Review Inbox](https://github.com/BBuf/sglang-review-inbox) runs every review with.
+Previous releases: [v0.1.5](release-notes/v0.1.5.md), [v0.1.0](release-notes/v0.1.0.md).
 
 ## Skills
 
