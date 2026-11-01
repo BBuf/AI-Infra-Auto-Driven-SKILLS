@@ -196,3 +196,9 @@ def test_only_after_a_number_is_not_read_as_a_classifier():
     assert spoken("一共 1136 项，乘 24 只要 27264 个 CTA。") == "一共 1136 项，乘 24，只要 27264 个 CTA。"
     assert spoken("8 卡只要 2 分钟，还是只有 11 个") == "8 卡只要 2 分钟，还是只有 11 个"
     assert spoken("3 只猫") == "3 只猫"
+
+
+def test_row_after_duoshao_and_wave_respelling():
+    # 「切多少行」 was read xíng in 2-3 of 6 takes; 少 now counts as a row quantifier.
+    assert spoken("每块切多少行，由预算决定。") == "每块切多少航，由预算决定。"
+    assert spoken("一共是 38 个 wave，waves 变少") == "一共是 38 个 WAVE，waves 变少"
