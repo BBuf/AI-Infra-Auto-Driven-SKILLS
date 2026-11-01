@@ -119,6 +119,7 @@ voice changes.
 | ABORT_ACK | Abort A-C-K | AborT CK: the spelled A runs into abort's final t → **Aboard ACK** (OK~; abort/aboard is Whisper's near-homophone) |
 | queue (merge queue, Claude Code review video 2026-10-28) | Q | 「接下来Continue」 in the carrier: the voice garbles the vowel run → **Q**; English-mode ASR writes "merge queue" |
 | capture (CUDA graph capture, PR 43570 + 47387 video 2026-11-01) | Capture | Catcher in the carrier → **Capture**; in the take 「CUDA graph 照样能 capture 和 replay」 came back as capture |
+| wave (SM wave, PR 47684 video 2026-11-01) | WAVE | Web in the carrier (OK~; Wave → Weil, waive → Weil FAIL) → **Wave**; plural waves already reads right |
 | 24 只要 (a number right before 只要/只有/只需…, same video, user review) | 24，只要 | Edge takes 只 as a classifier after a number: 二十四只（zhī）要, 6/6 takes (poly_probe, want 纸/指 vs avoid 知/织) → pattern `(?<=\d) ?只(?=[要有需用是剩占能会在])` → 「，只」: 0/6. Also write the comma in the narration, or the caption splits at the spoken pause into a group with no punctuation |
 | 一行一行人工 (行 = line, Claude Code review video 2026-10-28, user review) | 一航一航人工 | The 行人 (pedestrian) exception fired on 行人工, so the second 行 stayed xíng (poly_probe 6/6 wrong) → exception is now 人(?!工), plus a 一行一行 → 一航一航 rule (0/6 wrong) |
 
@@ -231,6 +232,7 @@ The `patterns` in pronunciation.json send 航 (only ever háng) to the voice; ca
 | 一行 · 这一行 · 每一行 · 一行的上下文 | 一航 … | 行 after 一, except after 唯一/统一/万一 |
 | 一行行 | 一航航 | so 航行 (háng xíng) never forms |
 | 每行 · 整行 · 几行 · 两行 · 多行 · 长行 · 短行 · 逐行 · 按行 · 六行 · 七万八千零八十行 · 第 3 行 | …航 | 行 after a numeral, digit or row quantifier |
+| 多少行 · 切多少行 (PR 47684 video) | …航 | 少 added to the quantifier list: 「每块切多少行」 was xíng in 2/6 and 3/6 takes as written (poly_probe), 0/6 respelled |
 
 Left alone (the voice must say xíng): 行 followed by 为 动 驶 走 人 李 星 政 者 销 军 刑 径 凶 踪 囊 装, by 使 (not 使用),
 进 (not 进行), 程 (not 程序), 得通 or 不通. So 统一行为, 唯一行得通, 万一行不通, 一行人, 每行驶 keep 行, while
