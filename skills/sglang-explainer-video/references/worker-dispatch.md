@@ -162,3 +162,9 @@ check command; ask it to change only what the finding names.
   the other's run. Stop only the PIDs you started.
 - Don't put the same sentence in the title slot and again right under it: when a frame's Scene shows a tagline that
   equals the frame title, let the title carry it.
+- A code-panel title bar laid out with `display:flex` drops the space between `·` and a function-name `<span>`
+  (PR 43570 + 47387 video, 2026-11-01: 「gdn_backend.py ·_init_prefill_conv_block_table」). Write `·&nbsp;<span>`.
+- Step counters must stay true at every step. A Scene line asked for 「128 × 1009」 →「129,152」→「≈ 310 万」 after
+  「128 × 1009 × 24 =」, so the screen showed a false equation for 1.2 s. Give only values of the whole expression
+  (「3,099,648」→「≈ 310 万」), or jump straight to the result.
+- No bundled face has ⌈ ⌉ (or ⋮): write a ceiling as 「8065 ÷ 8，向上取整 = 1009」 in Scene lines, never ⌈…⌉.
