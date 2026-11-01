@@ -189,3 +189,10 @@ def test_cli_is_spelled_as_letters():
 def test_callback_huidiao():
     # 回调 (callback) must be huí diào; Edge read it tiáo in 2/6 takes (Humanize 2 video review, 2026-10-30)
     assert spoken("变成了一个 Python 回调：") == "变成了一个 Python 回掉："
+
+
+def test_only_after_a_number_is_not_read_as_a_classifier():
+    # 「24 只要」 was read 二十四只（zhī）要 in 6/6 takes; a pause before 只 gives zhǐ (0/6).
+    assert spoken("一共 1136 项，乘 24 只要 27264 个 CTA。") == "一共 1136 项，乘 24，只要 27264 个 CTA。"
+    assert spoken("8 卡只要 2 分钟，还是只有 11 个") == "8 卡只要 2 分钟，还是只有 11 个"
+    assert spoken("3 只猫") == "3 只猫"
