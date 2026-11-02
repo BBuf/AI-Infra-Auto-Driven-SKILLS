@@ -9,7 +9,7 @@ and article explainer videos.**
 
 [![GitHub stars](https://img.shields.io/github/stars/BBuf/AI-Infra-Auto-Driven-SKILLS?style=social)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/BBuf/AI-Infra-Auto-Driven-SKILLS?style=flat-square)](https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS/commits/main)
-[![Skills](https://img.shields.io/badge/skills-11-2f80ed?style=flat-square)](#skills)
+[![Skills](https://img.shields.io/badge/skills-10-2f80ed?style=flat-square)](#skills)
 [![PR histories](https://img.shields.io/badge/pr_histories-118-2ea44f?style=flat-square)](#model-pr-history)
 [![KDA-Pilot](https://img.shields.io/badge/sibling-KDA--Pilot-ff7b72?style=flat-square)](https://github.com/BBuf/KDA-Pilot)
 
