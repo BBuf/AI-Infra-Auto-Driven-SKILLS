@@ -202,3 +202,11 @@ def test_row_after_duoshao_and_wave_respelling():
     # 「切多少行」 was read xíng in 2-3 of 6 takes; 少 now counts as a row quantifier.
     assert spoken("每块切多少行，由预算决定。") == "每块切多少航，由预算决定。"
     assert spoken("一共是 38 个 wave，waves 变少") == "一共是 38 个 WAVE，waves 变少"
+
+
+def test_scientific_notation_is_read_as_powers_of_ten():
+    # pron_check --asr FAILed 「NaN 换成负 1e30」 (PR 47641 video); 「10 的 30 次方」 passed.
+    assert spoken("NaN 换成负 1e30，排到最后") == "NaN 换成负 10 的 30 次方，排到最后"
+    assert spoken("相对误差 1.5e-6 以内") == "相对误差 1.5 乘 10 的负 6 次方以内"
+    assert spoken("容差 1e-5") == "容差 10 的负 5 次方"
+    assert spoken("常量 1e30f 不变") == "常量 1e30f 不变"
