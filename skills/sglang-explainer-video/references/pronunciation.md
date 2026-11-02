@@ -314,3 +314,22 @@ short A/B of the candidate spellings in one sentence and let the user pick by ea
 1. Run `pron_check.py --text "<line>" --asr`. A FAIL prints `try lexicon "X": "..."` when a respelling passes.
 2. Add it to `lexicon` (whole token, case-sensitive) or `parts` (inside identifiers, lower-case key).
 3. Re-run `pron_check`. Commit the entry with the before/after Whisper text in the table above.
+
+## Word segmentation (seg_check.py)
+
+The voice segments each line itself, and where it cuts changes the rhythm and sometimes the reading. In the three
+kernel PR videos (2026-11-02) the user asked that every line follow Chinese reading. `seg_check.py` flags:
+
+| Written | Voice tokens | Fix |
+| --- | --- | --- |
+| 值相同时下标小的赢 | 时下 \| 标 (100 ms pause; 时下 = "nowadays") | 值相同的时候，下标小的赢 |
+| 下标取反放在低 32 位 | 标取 \| 反放 (88 ms) | 下标按位取反，放在低 32 位 |
+| temperature 在 kernel 里直接取 | 里直 \| 接取 | temperature 直接在 kernel 里读取 |
+| 得到一个新张量 | 新张 \| 量 | 得到一个新的张量 |
+| 把 log2e 和 1 除以 T 合成 | 除 100 ms 以 | 把 log2e 和 T 的倒数合成 |
+| 就藏在读数和计算后面 | 在读 \| 数 (在读 = "studying") | 就被读数据和计算掩盖掉了 |
+| 在编译期生成好 | 期生 \| 成 | 在编译的时候就生成好 |
+| 还能省一次加法依赖 | 加法依 \| 赖 | 还能少做一次加法 |
+| token 组尽量少 | 组尽量 \| 少 | token 组，尽量少 |
+
+Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
