@@ -171,6 +171,10 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | 2 as a version number (Humanize 2 把关系 / Humanize 2 把整个, same video, user review) | 两把 (the following 把 is taken as a classifier, so 2 → 两) | pattern: a capitalised name + space + 2 → 二 (Humanize 二, Llama 二); counts after lowercase words or acronyms (agent 2 个, GPU 2 个) and decimals keep their digit; Whisper writes the fixed take back as "Humanize 2" |
 | CLI (Humanize 2 video, user review 2026-10-30) | read as a word | lexicon → C L I (the user wants the three letters); ASR then writes it back as CLI |
 | 回调 (callback, same video, user review) | huí tiáo in 2/6 takes (poly_probe, want 掉/钓/吊 vs avoid 条/调皮) | pattern 回调 → 回掉: 0/6 wrong; pick reference homophones with the same tone as each reading, or the probe's margins blur |
+| 权重 (weights, three kernel PR videos, user review 2026-11-02) | quán chóng (user's ear; poly_probe 0/6 in two carriers, so the misread is take-dependent) | pattern 权重 → 权众: 0/6 |
+| 行宽 (row width, same review) | xíng kuān (user's ear; poly_probe 3/6 then 1/6) | pattern 行宽 → 航宽 (not after 执/运/进/并 …): 0/6 |
+| 拆行 / 的行， (row at a clause end, same videos) | xíng in 2–4/6 and 3–5/6 | patterns 拆行 → 拆航, 的行[，。；、] → 的航: 0/6 |
+| 行和地址 / 第 row 行 (same videos) | xíng 6/6 and 4/6 | reword: 每一行的宽度或地址 / 编号为 row 的这一行 (the 一行 rule then gives háng, 0/6) |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
