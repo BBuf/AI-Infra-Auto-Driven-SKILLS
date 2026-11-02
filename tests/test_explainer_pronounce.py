@@ -221,3 +221,10 @@ def test_quanzhong_and_row_compounds():
     assert spoken("小 batch 拆行，再合并。") == "小 batch 拆航，再合并。"
     assert spoken("执行宽松的策略，多线程并行编译") == "执行宽松的策略，多线程并行编译"
     assert spoken("一样重。重叠、去重") == "一样重。重叠、去重"
+
+
+def test_row_count_and_row_number_read_hang():
+    # 「行数不同」 at a clause start stayed 行 (xíng risk); 行数 / 行号 / 行首 / 行尾 now read háng.
+    assert spoken("放几个数？行数不同，答案也不同。") == "放几个数？航数不同，答案也不同。"
+    assert spoken("行号和行尾") == "航号和航尾"
+    assert spoken("执行数、运行数据、进行首次") == "执行数、运行数据、进行首次"
