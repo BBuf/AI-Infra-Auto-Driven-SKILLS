@@ -185,6 +185,10 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | subtile | Sato | 子块 |
 | j (a loop index read alone) | (nothing heard) | 下标 / 下标小于 N |
 | key (dequant memo key, DSV4.1 + K3 sharing video 2026-10-23) | T (fourth video in a row) | 缓存键 / 索引键 (key stays on screen) |
+| key (u32 sort key, MoE router video PR 47641, 2026-11-02) | P / T in 9 of 11 lines (fifth video in a row) | 键 / 整数键 (key stays on screen) |
+| topk inside a function name (fused topk, biased grouped topk, topk softmax pack; same video) | Talk | top k (the identifier stays on screen) |
+| 1e30 (as in NaN 换成负 1e30, same video) | 负1乘以10的30次方: Edge expands it itself, so the token never appears and pron_check FAILs; the 「1 乘以」 also sounds clumsy | `patterns`: 1eN → 10 的 N 次方, 1e-N → 10 的负 N 次方, x.ye-N → x.y 乘 10 的负 N 次方 |
+| SIMT (tiny GEMM video PR 47683) | SIMP for SIMT, S I M T and S-I-M-T alike (OK~) | no respelling: Whisper merges the letters; keep SIMT |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
 | Three.js (also respelled Three J S) | Free.js / FreeJS | 网页 3D 场景 / 在浏览器里漫游的 3D 房子 (Three.js stays on screen) |
 | atol (as in atol 等于 0) | A套 | 误差容忍为 0 |

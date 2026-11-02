@@ -168,3 +168,15 @@ check command; ask it to change only what the finding names.
   「128 × 1009 × 24 =」, so the screen showed a false equation for 1.2 s. Give only values of the whole expression
   (「3,099,648」→「≈ 310 万」), or jump straight to the result.
 - No bundled face has ⌈ ⌉ (or ⋮): write a ceiling as 「8065 ÷ 8，向上取整 = 1009」 in Scene lines, never ⌈…⌉.
+- Hook frames put their number cards on screen at t≈0.3 s (PR 47683 video, 2026-11-02): the Scene line revealed the
+  batch = 16 card at the voice cue (5 s in), so QA saw a title and a thin chip over an empty canvas for 5 s. Write hook
+  Scene 1 as 「t=0.2 s 两张数字卡的外框和卡头出现」 and switch only the numbers at their cues.
+- A highlight box behind code text with `z-index:-1` needs a stacking context on its parent (`isolation:isolate`, or
+  `position:relative; z-index:0`), else it paints under the panel background (hf lint `negative_z_index`).
+- A bit string (`hits = 0b00100100`) reads high bit on the left; when the same bits are drawn as cells, draw j = 7 … 0
+  left to right, or the cleared bit shows on the mirrored cell (PR 47641 video: `hits &= hits - 1` hatched the 3rd cell
+  from the left while the string cleared the 6th character).
+- Give every worker one code-panel title-bar style (path in cream, function name teal #5DB8A6, no window dots); five
+  workers produced three styles in one film and QA flagged each switch.
+- Long films: write each worker's dispatch to `work/dispatch/<id>.txt` and give the Agent a two-line prompt pointing at
+  that file. Three ~11 min films (127 frames, 26 dispatches) kept the orchestrator's context small this way.
