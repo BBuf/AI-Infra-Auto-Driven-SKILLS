@@ -171,6 +171,10 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | 2 as a version number (Humanize 2 把关系 / Humanize 2 把整个, same video, user review) | 两把 (the following 把 is taken as a classifier, so 2 → 两) | pattern: a capitalised name + space + 2 → 二 (Humanize 二, Llama 二); counts after lowercase words or acronyms (agent 2 个, GPU 2 个) and decimals keep their digit; Whisper writes the fixed take back as "Humanize 2" |
 | CLI (Humanize 2 video, user review 2026-10-30) | read as a word | lexicon → C L I (the user wants the three letters); ASR then writes it back as CLI |
 | 回调 (callback, same video, user review) | huí tiáo in 2/6 takes (poly_probe, want 掉/钓/吊 vs avoid 条/调皮) | pattern 回调 → 回掉: 0/6 wrong; pick reference homophones with the same tone as each reading, or the probe's margins blur |
+| 权重 (weights, three kernel PR videos, user review 2026-11-02) | quán chóng (user's ear; poly_probe 0/6 in two carriers, so the misread is take-dependent) | pattern 权重 → 权众: 0/6 |
+| 行宽 (row width, same review) | xíng kuān (user's ear; poly_probe 3/6 then 1/6) | pattern 行宽 → 航宽 (not after 执/运/进/并 …): 0/6 |
+| 拆行 / 的行， (row at a clause end, same videos) | xíng in 2–4/6 and 3–5/6 | patterns 拆行 → 拆航, 的行[，。；、] → 的航: 0/6 |
+| 行和地址 / 第 row 行 (same videos) | xíng 6/6 and 4/6 | reword: 每一行的宽度或地址 / 编号为 row 的这一行 (the 一行 rule then gives háng, 0/6) |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
@@ -185,6 +189,10 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | subtile | Sato | 子块 |
 | j (a loop index read alone) | (nothing heard) | 下标 / 下标小于 N |
 | key (dequant memo key, DSV4.1 + K3 sharing video 2026-10-23) | T (fourth video in a row) | 缓存键 / 索引键 (key stays on screen) |
+| key (u32 sort key, MoE router video PR 47641, 2026-11-02) | P / T in 9 of 11 lines (fifth video in a row) | 键 / 整数键 (key stays on screen) |
+| topk inside a function name (fused topk, biased grouped topk, topk softmax pack; same video) | Talk | top k (the identifier stays on screen) |
+| 1e30 (as in NaN 换成负 1e30, same video) | 负1乘以10的30次方: Edge expands it itself, so the token never appears and pron_check FAILs; the 「1 乘以」 also sounds clumsy | `patterns`: 1eN → 10 的 N 次方, 1e-N → 10 的负 N 次方, x.ye-N → x.y 乘 10 的负 N 次方 |
+| SIMT (tiny GEMM video PR 47683) | SIMP for SIMT, S I M T and S-I-M-T alike (OK~) | no respelling: Whisper merges the letters; keep SIMT |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
 | Three.js (also respelled Three J S) | Free.js / FreeJS | 网页 3D 场景 / 在浏览器里漫游的 3D 房子 (Three.js stays on screen) |
 | atol (as in atol 等于 0) | A套 | 误差容忍为 0 |
@@ -306,3 +314,22 @@ short A/B of the candidate spellings in one sentence and let the user pick by ea
 1. Run `pron_check.py --text "<line>" --asr`. A FAIL prints `try lexicon "X": "..."` when a respelling passes.
 2. Add it to `lexicon` (whole token, case-sensitive) or `parts` (inside identifiers, lower-case key).
 3. Re-run `pron_check`. Commit the entry with the before/after Whisper text in the table above.
+
+## Word segmentation (seg_check.py)
+
+The voice segments each line itself, and where it cuts changes the rhythm and sometimes the reading. In the three
+kernel PR videos (2026-11-02) the user asked that every line follow Chinese reading. `seg_check.py` flags:
+
+| Written | Voice tokens | Fix |
+| --- | --- | --- |
+| 值相同时下标小的赢 | 时下 \| 标 (100 ms pause; 时下 = "nowadays") | 值相同的时候，下标小的赢 |
+| 下标取反放在低 32 位 | 标取 \| 反放 (88 ms) | 下标按位取反，放在低 32 位 |
+| temperature 在 kernel 里直接取 | 里直 \| 接取 | temperature 直接在 kernel 里读取 |
+| 得到一个新张量 | 新张 \| 量 | 得到一个新的张量 |
+| 把 log2e 和 1 除以 T 合成 | 除 100 ms 以 | 把 log2e 和 T 的倒数合成 |
+| 就藏在读数和计算后面 | 在读 \| 数 (在读 = "studying") | 就被读数据和计算掩盖掉了 |
+| 在编译期生成好 | 期生 \| 成 | 在编译的时候就生成好 |
+| 还能省一次加法依赖 | 加法依 \| 赖 | 还能少做一次加法 |
+| token 组尽量少 | 组尽量 \| 少 | token 组，尽量少 |
+
+Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.

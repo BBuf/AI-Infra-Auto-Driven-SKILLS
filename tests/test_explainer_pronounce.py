@@ -202,3 +202,29 @@ def test_row_after_duoshao_and_wave_respelling():
     # 「切多少行」 was read xíng in 2-3 of 6 takes; 少 now counts as a row quantifier.
     assert spoken("每块切多少行，由预算决定。") == "每块切多少航，由预算决定。"
     assert spoken("一共是 38 个 wave，waves 变少") == "一共是 38 个 WAVE，waves 变少"
+
+
+def test_scientific_notation_is_read_as_powers_of_ten():
+    # pron_check --asr FAILed 「NaN 换成负 1e30」 (PR 47641 video); 「10 的 30 次方」 passed.
+    assert spoken("NaN 换成负 1e30，排到最后") == "NaN 换成负 10 的 30 次方，排到最后"
+    assert spoken("相对误差 1.5e-6 以内") == "相对误差 1.5 乘 10 的负 6 次方以内"
+    assert spoken("容差 1e-5") == "容差 10 的负 5 次方"
+    assert spoken("常量 1e30f 不变") == "常量 1e30f 不变"
+
+
+def test_quanzhong_and_row_compounds():
+    # User review (kernel PR videos, 2026-11-02): 权重 heard as quán chóng; 行宽 as xíng kuān.
+    # poly_probe as written: 行宽 3/6, 的行， 3/6, 拆行 2/6 wrong.
+    assert spoken("但权重用不带 bias 的分数。") == "但权众用不带 bias 的分数。"
+    assert spoken("行宽还要补到 2 的幂。") == "航宽还要补到 2 的幂。"
+    assert spoken("padding 的行，直接返回。") == "padding 的航，直接返回。"
+    assert spoken("小 batch 拆行，再合并。") == "小 batch 拆航，再合并。"
+    assert spoken("执行宽松的策略，多线程并行编译") == "执行宽松的策略，多线程并行编译"
+    assert spoken("一样重。重叠、去重") == "一样重。重叠、去重"
+
+
+def test_row_count_and_row_number_read_hang():
+    # 「行数不同」 at a clause start stayed 行 (xíng risk); 行数 / 行号 / 行首 / 行尾 now read háng.
+    assert spoken("放几个数？行数不同，答案也不同。") == "放几个数？航数不同，答案也不同。"
+    assert spoken("行号和行尾") == "航号和航尾"
+    assert spoken("执行数、运行数据、进行首次") == "执行数、运行数据、进行首次"

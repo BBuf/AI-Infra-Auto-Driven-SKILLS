@@ -146,6 +146,15 @@ Then check the recorded take — pauses inside a clause and every English term i
 $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --meta $P/audio_meta.json --hyperframes $P --asr
 ```
 
+Then check where the voice cut the Chinese: `seg_check.py` compares Edge's word tokens with a Chinese
+segmentation and flags a token that straddles a word (值相同时下标 → 「时下|标」, 下标取反 → 「标取|反放」) or a pause
+inside a word (1 除以 T → 「除 | 以」). Reword each hit (a comma, 的, or a different phrasing), re-synthesize the line,
+and run it again until it prints ✓:
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/seg_check.py --meta $P/audio_meta.json
+```
+
 A FAIL there means re-synthesize that line after a lexicon fix or a reword (subset re-TTS, see troubleshooting).
 
 **Keep the pronunciation lexicon growing.** Every term this video exposed as misread goes back into the skill
