@@ -277,6 +277,12 @@ that the respelled form scores 0. A rule lands only when the as-written rate is 
 syntheses (the whole line, or just the word's window cut by WordBoundary timings) failed its own controls: a 垒加 take
 was judged wrong. So a published video cannot be graded this way; only the misread rate per request can.
 
+**Tone-only polyphones cannot be probed.** The probe compares log-mel frames, which carry little pitch, so it tells
+行 háng from xíng but not 只 zhǐ from zhī: the control 「它只能存」 (always zhǐ) scored 12/12 wrong against 指,纸 vs 之,织
+(PR 28185 re-check, 2026-11-03). For 只 after a number, read the WordBoundary tokens instead (`seg_check` reports
+them as `classifier`): the misread take in the PR 43570 video had '24 只' | '要', and takes that read right keep
+只 with its verb ('int8' | '只能', 'fp8' | '只有').
+
 In-context checks of long lines are noisy: re-probe a FAIL in a short sentence before changing the lexicon. In
 the 13-video re-voice, most FAILs read right in the short sentence. If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
 screen only.
@@ -345,6 +351,8 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 在编译期生成好 | 期生 \| 成 | 在编译的时候就生成好 |
 | 还能省一次加法依赖 | 加法依 \| 赖 | 还能少做一次加法 |
 | token 组尽量少 | 组尽量 \| 少 | token 组，尽量少 |
+| 乘 24 只要 27264 个 (PR 43570 video) | 24只 \| 要 (`classifier`: 只 read zhī) | 乘 24，只要 27264 个 |
+| 用一棵 radix 树记下算过的 prefix (PR 28185 video) | 树记 \| 下算 (heard 数据下) | 用一棵 radix 树，把算过的 prefix 记下来 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 
@@ -361,12 +369,28 @@ places where a digit and the character next to it form another number:
 | B200 上开 PDL 时耗时是原来的 0.73 | PDL10号时 | B200 上开 PDL，耗时是原来的 0.73 |
 | batch 是 1 的时候 | batch 11 的时候 (2 of 3 lines; shì yī vs shí yī) | batch 只有 1 的时候 |
 | batch 为 1、163840 的词表 (PR 47512 video) | batch 唯一 (wéi yī is exactly 唯一) | batch 等于 1 / 只有 1 个请求 |
+| 块比一个 wave 大时，整除再乘回去 (PR 47684 re-check) | 大十 | 块比一个 wave 大的时候 |
+| 缓存容量接近时：原来的单池 (PR 28185 re-check) | 接近十 | 缓存容量差不多的时候 |
+| SM 数只查一次 (PR 47684 re-check) | SM 数之差一次 (只 heard as zhī after 数) | SM 的数量查一次就缓存起来 |
+| 别让最后一波半空着。 (PR 47684 re-check) | 半空整 (a sentence-final 着 drawn out) | 别让最后一波空着一半。 |
 
-Rule for the narration: a single digit right after 是 or 为, or a 2 right before 时, makes another word; write
-只有 / 等于 / 的时候 instead. `line_asr` also prints noise (homophones such as 旧/就, numbers, a letter heard as Chinese
+Rule for the narration: a single digit right after 是 or 为 makes another word, and so does a 时 that closes a
+clause after any word (L2 时, 大时, 接近时 all come out as 十); write 只有 / 等于 / 的时候 instead. `line_asr` also prints noise (homophones such as 旧/就, numbers, a letter heard as Chinese
 such as y → 外) and cannot hear polyphones (Whisper writes 行 for both readings): read each hit, and use
 `poly_probe.py` for polyphones.
 
 ```bash
 $SEV_PY -I $SEV_SKILL/scripts/line_asr.py --script $P/SCRIPT.md --meta $P/audio_meta.json [--lines 5,41]
 ```
+
+**Telling a misreading from Whisper noise** (re-check of six published videos, 2026-11-03). Edge returns nearly the
+same audio for the same text, so a hit that repeats in fresh takes proves nothing on its own: the voice and Whisper
+both repeat. Judge by the sound instead:
+- A homophone that makes another word in context (时 / 十, 数只 / 之) is real: reword it and check that the reword
+  transcribes clean.
+- An extra or swallowed syllable: compare the token's duration with the same word elsewhere. 「吞吐涨了」 was heard
+  「吞吐涂涨了」 in every take, but the 吞吐 token was 0.55 s, the same as in lines Whisper heard right (0.53 s), so
+  no syllable was added. 「wave 越少」 heard 「位越少」 had a 0.25 s wave token like the others.
+- Tone sandhi and Whisper's preference for common words: 「因果卷积」 heard 英国 (果 before 卷 is guó anyway; only
+  yīn / yīng differ), 「四舍五入」 heard 四手 (the same idiom elsewhere in the take was heard right), 块数 heard 快速.
+  None of these was changed.

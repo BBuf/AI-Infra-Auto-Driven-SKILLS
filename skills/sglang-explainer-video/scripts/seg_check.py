@@ -1,12 +1,14 @@
 """Where does the recorded voice cut a Chinese sentence in the wrong place?
 
-Edge's WordBoundary tokens show how the voice segmented each line. Two kinds of mismatch with how a
+Edge's WordBoundary tokens show how the voice segmented each line. Three kinds of mismatch with how a
 Chinese reader parses the sentence (jieba) are audible:
 
-  straddle  a voice token crosses a word boundary on one side and cuts a word on the other, e.g.
-            值相同时下标 → '时下'|'标' (read as 时下 "nowadays"), 下标取反放在 → '标取'|'反放',
-            在 kernel 里直接取 → '里直'|'接取', 得到一个新张量 → '新张'|'量'
-  pause     a pause of ≥ --gap seconds inside one word, e.g. 1 除以 T → '除' 100 ms '以'
+  straddle    a voice token crosses a word boundary on one side and cuts a word on the other, e.g.
+              值相同时下标 → '时下'|'标' (read as 时下 "nowadays"), 下标取反放在 → '标取'|'反放',
+              在 kernel 里直接取 → '里直'|'接取', 得到一个新张量 → '新张'|'量'
+  pause       a pause of ≥ --gap seconds inside one word, e.g. 1 除以 T → '除' 100 ms '以'
+  classifier  a number and 只 in one token: the voice took 只 as a measure word (zhī), e.g.
+              乘 24 只要 → '24只'|'要' (heard 二十四只 | 要); a right take keeps 只 with its verb (只要, 只有)
 
 Fix each hit in the narration (a comma, 的, or a reword), re-synthesize that line, and run the check
 again. Number + 个 tokens (7168个) and per-character splits without a pause are normal and not reported.
@@ -28,6 +30,8 @@ except ImportError:  # pragma: no cover
 
 CJK = re.compile(r"[\u4e00-\u9fff]")
 TRAIL = re.compile(r"[，。：；、？！）（「」\s]+$")
+# '24只' as one token: 只 became a measure word (zhī) instead of starting 只要 / 只有.
+CLASSIFIER = re.compile(r"\d只$")
 # Domain words jieba would otherwise split, so a token boundary inside them is not a false alarm.
 WORDS = [
     "下标",
@@ -97,6 +101,15 @@ def check(meta, gap_min):
                             text[max(0, a - 8) : b + 6],
                         )
                     )
+            if CLASSIFIER.search(core) and k + 1 < len(toks):
+                hits.append(
+                    (
+                        v["frame"],
+                        "classifier",
+                        f"{t!r}|{toks[k + 1]!r} (只 read as a measure word)",
+                        text[max(0, a - 8) : b + 6],
+                    )
+                )
             if k + 1 < len(toks):
                 cut, gap = starts[k + 1], words[k + 1]["start"] - words[k]["end"]
                 if gap >= gap_min:
@@ -127,7 +140,7 @@ def main():
     a = ap.parse_args()
     hits = check(json.load(open(a.meta, encoding="utf-8")), a.gap)
     for frame, kind, what, ctx in hits:
-        print(f"  line {frame}: {kind:8} {what}   …{ctx}…")
+        print(f"  line {frame}: {kind:10} {what}   …{ctx}…")
     print(
         f"{'✓' if not hits else '✗'} seg_check: {len(hits)} place(s) where the voice cuts a word"
     )

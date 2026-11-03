@@ -171,6 +171,31 @@ const t = document.body.innerText, ed = document.querySelector('.tiptap.ProseMir
 - The first card shows the title and a duration that matches the local file (小红书 rounds down, so 760.7 s
   shows 12:40), with 审核中.
 
+## Replacing the video of a published post (a re-voiced or re-rendered cut)
+
+Both sites keep the post (BV id or note, plays, likes, comments) when only the video changes. Copy the new render
+to `~/Desktop/小红书上传/NN_<slug>_vN.mp4`: a new name lets you see on the page which file was taken. Run
+`publish_check.py --video … --render …` on it first.
+
+- **The file dialog opens only while this session is on screen with the Browser pane shown**
+  (`mcp__ccd_view__show_pane` with `preview`). One upload started while the pane was hidden crawled at 0.1 MB/s
+  and froze at 100%. Reloading the edit page and starting again finished in about 12 s.
+- **B站:**
+  1. Open `frame?type=edit&version=new&bvid=<BV>` and click 更换视频, then 确定.
+  2. Pick the file and wait for `NN_<slug>_vN 上传完成`.
+  3. Run check 2, then click 立即投稿.
+  - Cover, 简介, tags and 合集 stay.
+  - Check 3: `parts` shows the new file name, and after transcoding the new duration.
+- **小红书:**
+  1. Open `/publish/update?id=<noteId>&noteType=video` and click 重新上传.
+  2. Pick the file and wait for its name and 检测为高清视频.
+  3. Re-add the 标记 (§标记). The cover stays; the 标记 is dropped.
+  4. Click 发布 → 更新成功. Reopen `/publish/update` and check 「已添加1个标记」.
+  - In a narrow pane both 确定 buttons of the 标记 dialogs are off-screen, and a JS `.click()` on the inner one
+    closes the editor without saving the tag. Emulate 1440×1000 and click them for real. When the screenshot
+    shows the whole page, coordinate clicks land; when the page is drawn in a corner, clear the emulation and set
+    it again.
+
 ## Editing a published 小红书 note (e.g. adding the 标记 afterwards)
 
 - **Open:** in `/new/note-manager`, find the card by `.note-card__title`. The edit button is the

@@ -147,8 +147,8 @@ $SEV_PY -I $SEV_SKILL/scripts/pron_check.py --meta $P/audio_meta.json --hyperfra
 ```
 
 Then check where the voice cut the Chinese: `seg_check.py` compares Edge's word tokens with a Chinese
-segmentation and flags a token that straddles a word (值相同时下标 → 「时下|标」, 下标取反 → 「标取|反放」) or a pause
-inside a word (1 除以 T → 「除 | 以」). Reword each hit (a comma, 的, or a different phrasing), re-synthesize the line,
+segmentation and flags a token that straddles a word (值相同时下标 → 「时下|标」, 下标取反 → 「标取|反放」), a pause
+inside a word (1 除以 T → 「除 | 以」), or a number fused with 只 (乘 24 只要 → 「24只|要」, read as a measure word). Reword each hit (a comma, 的, or a different phrasing), re-synthesize the line,
 and run it again until it prints ✓:
 
 ```bash
@@ -156,9 +156,9 @@ $SEV_PY -I $SEV_SKILL/scripts/seg_check.py --meta $P/audio_meta.json
 ```
 
 Then listen to the Chinese: `line_asr.py` transcribes every line and diffs it with the narration in pinyin. It catches
-a digit that merges with its neighbour into another number (「L2 时」 heard as 二十, 「batch 是 1」 as 11, 「batch 为 1」
-as 唯一). Reword those (的话 / 的时候 / 只有 1), re-synthesize the line, and read the remaining hits; homophone noise is
-expected:
+a digit or a clause-final 时 that merges into another number (「L2 时」 heard as 二十, 「大时」 as 大十, 「batch 是 1」 as
+11, 「batch 为 1」 as 唯一). Reword those (的话 / 的时候 / 只有 1), re-synthesize the line, and read the remaining hits;
+homophone noise is expected, and a hit that repeats in a fresh take is not proof (pronunciation.md, §Listening to whole lines):
 
 ```bash
 $SEV_PY -I $SEV_SKILL/scripts/line_asr.py --script $P/SCRIPT.md --meta $P/audio_meta.json
@@ -276,6 +276,9 @@ Every publish runs the five checks in `references/publishing.md` §Checks:
 
 The publish is done only when all five pass. Tell the user what each one showed.
 
+Fixing a published video (a re-voiced line, a re-render) replaces the file in place on both sites; the post, its
+plays and its comments stay. Follow §Replacing the video of a published post: 小红书 drops the 标记 on every swap.
+
 ## Changing narration after frames exist
 
 Edit `SCRIPT.md` (and the storyboard `voiceover`), re-run Step 4, then — instead of rebuilding frames —
@@ -315,4 +318,5 @@ lexicon, and only then render. A batch of 13 published videos (132 min) took abo
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.
 - `references/troubleshooting.md` — every failure seen so far and its fix.
 - `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @), and the
-  checks every publish must pass (`publish_check.py` plus what each site stored).
+  checks every publish must pass (`publish_check.py` plus what each site stored), and replacing the video of a
+  published post.
