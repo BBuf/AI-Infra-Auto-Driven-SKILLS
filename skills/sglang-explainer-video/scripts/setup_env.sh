@@ -47,7 +47,7 @@ fi
 # 4. Python venv: edge-tts (narration + word boundaries), fonttools (CJK subsetting), pillow.
 PY="${PYTHON:-python3}"
 [ -x "$WS/venv/bin/python" ] || "$PY" -m venv "$WS/venv"
-"$WS/venv/bin/pip" install -q "edge-tts>=7.2" fonttools brotli pillow jieba
+"$WS/venv/bin/pip" install -q "edge-tts>=7.2" fonttools brotli pillow jieba pypinyin
 # mlx-whisper for pron_check.py (English terms read right). Apple Silicon only; elsewhere pron_check runs
 # without --asr. The large-v3-turbo weights (~1.6 GB) download on first use.
 if [ "$(uname -s)/$(uname -m)" = "Darwin/arm64" ]; then
