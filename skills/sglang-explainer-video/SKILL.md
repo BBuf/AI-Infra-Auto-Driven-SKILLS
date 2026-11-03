@@ -267,6 +267,15 @@ Bilibili: 含AI生成内容 · 分区 人工智能 · ~8 tags · 1440×1080 B站
 添加组件 → 标记地点或标记朋友 → 用户 → SGLang (official, orange SGL avatar) — never an @ in the body — plus topics
 #人工智能 #大模型 #SGLang and 笔记含AI合成内容.
 
+Every publish runs the five checks in `references/publishing.md` §Checks:
+1. `publish_check.py` on the files and texts before anything is uploaded.
+2. The B站 form before 立即投稿.
+3. The stored B站 archive (简介, tags, 分区, duration, cover, 合集) after submit.
+4. The 小红书 form before 发布 (topics, 标记, AI 声明, the cover actually used).
+5. The 小红书 note list after 发布.
+
+The publish is done only when all five pass. Tell the user what each one showed.
+
 ## Changing narration after frames exist
 
 Edit `SCRIPT.md` (and the storyboard `voiceover`), re-run Step 4, then — instead of rebuilding frames —
@@ -305,4 +314,5 @@ lexicon, and only then render. A batch of 13 published videos (132 min) took abo
   `pron_check.py`, `poly_probe.py`.
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.
 - `references/troubleshooting.md` — every failure seen so far and its fix.
-- `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @).
+- `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @), and the
+  checks every publish must pass (`publish_check.py` plus what each site stored).
