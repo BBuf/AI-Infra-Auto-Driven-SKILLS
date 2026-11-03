@@ -22,6 +22,13 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 - **Never state PR status** — no "还在 review 中", "OPEN", "未合并", "in review" in narration or on screen.
   PRs usually get merged; the video should not date itself.
 - Closing line for PR videos: `以上就是这个 PR 的全部改动。`
+- **Write it to be heard, not read** (user, tiny GEMM video 2026-11-03: 「AI 味很重」). The v4 script opened almost
+  every line with a 「X：Y」 reveal (先看数字：/ 关键在这段循环：/ 例外有三类：/ 求和分两步：) and stacked 「；」 clauses.
+  - Start with the point as a plain sentence: 先看效果。/ 慢就慢在这段循环。/ 当然也有例外。/ 求和分两步。 Keep a colon for
+    the rare real list, not one per line.
+  - Spoken forms: 「…的时候」 rather than 「…时」 after a number, 跟 / 也就 / 这样一来 / 毕竟, short sentences mixed with longer ones.
+  - The roadmap frame is a plan (我们先弄清楚…，然后看…，最后看…), not a numbered table of contents.
+  - The last line before the closing line gives one plain takeaway (切换点交给代价模型来算，不靠拍脑袋), no slogan.
 
 ## Voice
 

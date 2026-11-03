@@ -78,6 +78,7 @@ voice changes.
 | **RAGGED** | Ragged | **user's ear, 2026-10-17** |
 | FlashInfer | Flash Infer | Flesh and Fur → **Flash Infer** |
 | DeepSeek | Deep Seek | Deep Seat → **Deep Seek** |
+| mma (lowercase, tensor core 的 mma 指令; tiny GEMM video 2026-11-03) | MMA | 安班杯, also spelled M M A → **M&A / MMV** (OK~) |
 | TensorRT-LLM | Tensor RT LLM | Tensorite TileLam → **Tensor RTLLM** |
 | LoRA | Lora | Lauren → **Laura** |
 | Miles | mials | Mouse → **Miles** |
@@ -175,6 +176,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | 行宽 (row width, same review) | xíng kuān (user's ear; poly_probe 3/6 then 1/6) | pattern 行宽 → 航宽 (not after 执/运/进/并 …): 0/6 |
 | 拆行 / 的行， (row at a clause end, same videos) | xíng in 2–4/6 and 3–5/6 | patterns 拆行 → 拆航, 的行[，。；、] → 的航: 0/6 |
 | 行和地址 / 第 row 行 (same videos) | xíng 6/6 and 4/6 | reword: 每一行的宽度或地址 / 编号为 row 的这一行 (the 一行 rule then gives háng, 0/6) |
+| 累加 (tiny GEMM video re-voice, user review 2026-11-03) | lèi jiā in 6/6 takes (poly_probe; controls 积累 0/6, 累计 0/6, 太累 6/6 lèi) | pattern 累加 → 垒加: 0/6 |
+| 藏在 (就藏在读数据和计算后面, same re-voice) | zàng in 3/6, then 4/12 | reword: 就被读数据和计算掩盖掉了 (also a seg_check cut, below) |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
 | prev_step_state · seq_seed · ZOS · YoCo (identifiers / code names) | previous step state · 6C · GOS · Yuko | 上一步的状态 · 随机种子 · zero-overhead scheduling · YOCO (identifiers stay on screen) |
@@ -193,6 +196,9 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | topk inside a function name (fused topk, biased grouped topk, topk softmax pack; same video) | Talk | top k (the identifier stays on screen) |
 | 1e30 (as in NaN 换成负 1e30, same video) | 负1乘以10的30次方: Edge expands it itself, so the token never appears and pron_check FAILs; the 「1 乘以」 also sounds clumsy | `patterns`: 1eN → 10 的 N 次方, 1e-N → 10 的负 N 次方, x.ye-N → x.y 乘 10 的负 N 次方 |
 | SIMT (tiny GEMM video PR 47683) | SIMP for SIMT, S I M T and S-I-M-T alike (OK~) | no respelling: Whisper merges the letters; keep SIMT |
+| N_TILE / tile (K × (4 + N_TILE) / 128, same video) | NTAO for N tile, N Tile, N-tile and NTile; tile alone Tao or 他 | 每个 CTA 的行数 (N_TILE stays in the on-screen formula) |
+| r (第 r 份写进第 r 个 CTA, same video) | 二: the letter sounds like 第二份 | 第几份就写进第几个 CTA |
+| wave in a sentence (一个 wave 放得下几行 CTA, same video) | WIM in one take (the carrier passes as Wave) | GPU 一轮能同时放下几行 CTA (wave stays in the kicker) |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
 | Three.js (also respelled Three J S) | Free.js / FreeJS | 网页 3D 场景 / 在浏览器里漫游的 3D 房子 (Three.js stays on screen) |
 | atol (as in atol 等于 0) | A套 | 误差容忍为 0 |
@@ -262,6 +268,14 @@ $SEV_PY -I $SEV_SKILL/scripts/poly_probe.py --text "就是这一行在表里的�
 
 It reports the share of takes that used the avoided reading, as written and after pronunciation.json. It exits
 non-zero while the spoken form still misreads. A rule is done when the spoken form is 0/N.
+
+**The probe has a noise floor of up to about 1/3 in some sentences.** Re-checking the PR 47641 and 47512 videos
+(2026-11-03): 「数一数」 scored 4/6, then 0/6 and 0/12; 「连续弹出」 3/6, then 0/12; 「按步长读」 2/6, and its respelling
+「按步常读」 — 常 has a single reading — still scored 4/12. Before adding a rule, re-run with `--takes 12` and check
+that the respelled form scores 0. A rule lands only when the as-written rate is high and repeats (累加: 6/6, with
+积累 / 累计 / 太累 as controls) and the spoken form is 0/N. Comparing a take that is already in a video with fresh
+syntheses (the whole line, or just the word's window cut by WordBoundary timings) failed its own controls: a 垒加 take
+was judged wrong. So a published video cannot be graded this way; only the misread rate per request can.
 
 In-context checks of long lines are noisy: re-probe a FAIL in a short sentence before changing the lexicon. In
 the 13-video re-voice, most FAILs read right in the short sentence. If one sounds wrong, reword the line, e.g. "EAGLE 投机解码" → "投机解码（EAGLE）" on
@@ -333,3 +347,26 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | token 组尽量少 | 组尽量 \| 少 | token 组，尽量少 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
+
+## Listening to whole lines (line_asr.py)
+
+`pron_check` only follows English terms, and `seg_check` only looks at where the voice cuts. `line_asr.py`
+transcribes every recorded line with Whisper and diffs it against the narration in pinyin, so it hears the
+Chinese as well. In the tiny GEMM re-voice (2026-11-03, the user found the take 「读音不对、AI 味重」), it caught
+places where a digit and the character next to it form another number:
+
+| Written | Heard | Fix |
+| --- | --- | --- |
+| 清空 L2 时是 0.88 | L20 是 (L2 时 is èr shí, the same sound as 二十) | 清空 L2 的话是 0.88 |
+| B200 上开 PDL 时耗时是原来的 0.73 | PDL10号时 | B200 上开 PDL，耗时是原来的 0.73 |
+| batch 是 1 的时候 | batch 11 的时候 (2 of 3 lines; shì yī vs shí yī) | batch 只有 1 的时候 |
+| batch 为 1、163840 的词表 (PR 47512 video) | batch 唯一 (wéi yī is exactly 唯一) | batch 等于 1 / 只有 1 个请求 |
+
+Rule for the narration: a single digit right after 是 or 为, or a 2 right before 时, makes another word; write
+只有 / 等于 / 的时候 instead. `line_asr` also prints noise (homophones such as 旧/就, numbers, a letter heard as Chinese
+such as y → 外) and cannot hear polyphones (Whisper writes 行 for both readings): read each hit, and use
+`poly_probe.py` for polyphones.
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/line_asr.py --script $P/SCRIPT.md --meta $P/audio_meta.json [--lines 5,41]
+```

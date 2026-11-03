@@ -155,6 +155,15 @@ and run it again until it prints ✓:
 $SEV_PY -I $SEV_SKILL/scripts/seg_check.py --meta $P/audio_meta.json
 ```
 
+Then listen to the Chinese: `line_asr.py` transcribes every line and diffs it with the narration in pinyin. It catches
+a digit that merges with its neighbour into another number (「L2 时」 heard as 二十, 「batch 是 1」 as 11, 「batch 为 1」
+as 唯一). Reword those (的话 / 的时候 / 只有 1), re-synthesize the line, and read the remaining hits; homophone noise is
+expected:
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/line_asr.py --script $P/SCRIPT.md --meta $P/audio_meta.json
+```
+
 A FAIL there means re-synthesize that line after a lexicon fix or a reword (subset re-TTS, see troubleshooting).
 
 **Keep the pronunciation lexicon growing.** Every term this video exposed as misread goes back into the skill

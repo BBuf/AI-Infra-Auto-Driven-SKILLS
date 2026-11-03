@@ -228,3 +228,12 @@ def test_row_count_and_row_number_read_hang():
     assert spoken("放几个数？行数不同，答案也不同。") == "放几个数？航数不同，答案也不同。"
     assert spoken("行号和行尾") == "航号和航尾"
     assert spoken("执行数、运行数据、进行首次") == "执行数、运行数据、进行首次"
+
+
+def test_leijia_and_lowercase_mma():
+    # 累加 was lèi jiā in 6/6 takes (poly_probe; controls 积累 / 累计 0/6, 太累 6/6 lèi); 垒加 0/6.
+    # Lowercase mma was heard 安班杯 in the carrier; MMA reads as letters (tiny GEMM video, 2026-11-03).
+    assert spoken("tensor core 内部累加会截断精度") == "tensor core 内部垒加会截断精度"
+    assert spoken("经验需要慢慢积累，累计 3 次") == "经验需要慢慢积累，累计 3 次"
+    assert spoken("tensor core 的 mma 指令") == "tensor core 的 MMA 指令"
+    assert spoken("mma.sync 指令") == "mma.sync 指令"
