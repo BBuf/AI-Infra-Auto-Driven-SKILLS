@@ -1,6 +1,6 @@
 ---
 name: sglang-explainer-video
-description: Turn an SGLang PR (number or URL) or a technical article (Markdown path) into a Chinese explainer video that explains what the change does, why it works and what it buys in one video under 10 minutes (no code walkthrough) — natural edge-tts narration, word-synced bilingual 中文/English captions, the orange "SGLang PR 讲解 / SGLang 技术解读" cover and SGLang-brand visuals by default (or the kimi-dark theme) — built on HyperFrames' pr-to-video pipeline and delivered to ~/Desktop. Use when the user sends an sgl-project/sglang PR number or link, or an article file, and asks for a video (做个视频, 讲解视频, PR 视频, 文章转视频).
+description: Turn an SGLang PR (number or URL) or a technical article (Markdown path) into a Chinese explainer video that fully explains every algorithm and code change (length follows the material, no time cap) — natural edge-tts narration, word-synced bilingual 中文/English captions, the orange "SGLang PR 讲解 / SGLang 技术解读" cover and SGLang-brand visuals by default (or the kimi-dark theme) — built on HyperFrames' pr-to-video pipeline and delivered to ~/Desktop. Use when the user sends an sgl-project/sglang PR number or link, or an article file, and asks for a video (做个视频, 讲解视频, PR 视频, 文章转视频).
 ---
 
 # SGLang explainer video
@@ -12,22 +12,23 @@ This skill drives HyperFrames' **pr-to-video** workflow (heygen-com/hyperframes,
 style and several fixes that make it work for Chinese. Read `references/house-style.md` before writing any
 script — it holds the rules the user already corrected once (terms, captions, cover, credits, PR status).
 
-## Core principle: one video, under 10 minutes, the idea before the code
+## Core principle: understand it fully, explain all of it
 
-The video exists so a viewer who has not read the PR / article **understands what the change does, why it works
-and what it buys**, in **one video of at most 10 minutes** (user, Paged Experts video, 2026-11-04: a 21-minute
-cut was 「压力太大，一般人看个3分钟视频就不想看了」; splitting it into three episodes was rejected too:
-「只最终交付一个视频，10分钟内讲完」, no code walkthrough, no follow-up PRs).
+The video exists so a viewer who has not read the PR / article **understands every algorithm and every
+meaningful code change** in it. That decides everything else:
 
-- **One video, ≤ 10 min, no episodes.** Estimate the length before TTS (CJK + 1.6×ASCII-word + 1.5×punct at
-  ≈4.69 units/s, then +15 % for term-heavy lines) and cut at the script stage, not after rendering.
+- **No target length.** Length follows the material: a one-line docs PR may need ~1 min; a multi-file kernel
+  or scheduler PR, or a long article, may need 5–10+ min. Never cut a mechanism, code path, edge case, number
+  or caveat to make the film shorter — add frames instead. Keep each frame to one idea (≲ 60 汉字, ~11 s) so
+  visuals keep up; the *number* of frames is unbounded.
 - **Understand before you script.** Read all of the source (Step 2) and write `capture/understanding.md`
-  first, so every claim is right; then choose what to show.
-- **Keep:** the hook number, the problem, the core idea, one small worked example of the mechanism, the key
-  trade-off or cost, results with their conditions, limits, and how to turn it on.
-- **Cut:** code panels and line-by-line diff walks, review back-and-forth, internal kernel details beyond a
-  one-frame intuition, test inventories, and follow-up PRs (mention them in one line at most).
-- Keep each frame to one idea (≲ 60 汉字, ~11 s) so visuals keep up.
+  first; every item in it must map to at least one frame.
+- **Code is the spine, not a footnote.** Open with the value (what the change fixes / speeds up), then walk
+  through the algorithm and every changed code path in a sensible order, with a worked example where it helps.
+  This overrides pr-to-video's `story-design.md` where it says otherwise (its "Whole-film target ≤ ~3 min",
+  "feature 2–4 real diff hunks", "implementation is the footnote"): feature **every hunk that carries logic**
+  (group pure renames / formatting / test boilerplate into one frame), split long hunks across frames
+  (≤ 12 lines each), and explain why each change is needed, not just what it is.
 
 ## 0. Setup (start of every session)
 
@@ -99,9 +100,9 @@ $SEV_PY -I $SEV_SKILL/scripts/apply_brand.py --project $P [--theme kimi-dark]
 
 Follow `$SKILL_DIR/SKILL.md` Step 3 and its `references/story-design.md` (PR: fix-explainer / feature-reveal /
 refactor-walkthrough; article: a value-first explainer — hook → landscape → method → every evidence beat the
-article makes → lessons → summary), **with the Core principle above setting the length (≤ 10 min) and what to
-show (no code walkthrough)**. Before moving on, check the storyboard against `capture/understanding.md`: the
-idea, one worked example, the trade-offs, results and limits must all be there. Then apply the house style:
+article makes → lessons → summary), **with the Core principle above overriding its length and hunk limits**.
+Before moving on, tick every item of `capture/understanding.md` against the storyboard; add frames for
+anything uncovered. Then apply the house style:
 
 - **Frame 1 is always the cover** `compositions/frames/00-cover.html` (built by `make_cover.py`, not a worker),
   `status: animated`. Frame N's file is `NN-<slug>.html` with `NN = N-1`.
@@ -109,8 +110,9 @@ idea, one worked example, the trade-offs, results and limits must all be there. 
 - **Every video's last frame carries the SGLang follow strip** (the project's `assets/brand/follow-strip.html`: 关注 SGLang ·
   GitHub · 博客 · 文档) at y 792–872, so plan that frame's content to end above y≈770. It is on screen only, not
   narrated (house style §Follow strip).
-- Chinese narration, English technical terms, one idea per frame (≲ 60 汉字, ~11 s); the whole film stays
-  under 10 minutes (Core principle). Section kickers (e.g. 「① 问题」「② 思路」「③ 效果」) keep viewers oriented.
+- Chinese narration, English technical terms, one idea per frame (≲ 60 汉字, ~11 s); as many frames as the
+  material needs — no whole-film cap. Long films get section kickers (e.g. 「① 问题」「② 算法」「③ 代码」) so
+  viewers keep their place.
 - `SCRIPT.md` voice line: `zh-CN-XiaoxiaoNeural (edge-tts)`. Numbers only from the PR/article.
 - **Every English word must be read right and in one breath** (`references/pronunciation.md`): no `_` reaches
   the voice, CamelCase brand names are spaced, symbols (×, #, +%) are spoken as Chinese. Write the narration
