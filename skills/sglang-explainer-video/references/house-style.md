@@ -70,6 +70,14 @@ just before the crossfade; the still PNG keeps the full layout.
   crop, so upload the 1440×1080 `_B站` cover, which keeps logo, title and badge inside y 135–945. Leave
   「双比例同步改动」 on and check both saved crops.
 
+**A designed cover on request** (user, Paged Experts video, 2026-11-04: 「封面需要强调下消费级显卡…封面图做得有设计感一些，不要强求用 sglang 风格的封面」).
+When the user asks for it, an SGLang video may replace cover A with a project-local design. The Paged Experts video's
+`work/make_cover_pe.py` wrote the animated `00-cover.html` and both stills from one markup: a graphite ground with a
+faint grid, one accent colour, the hook words the audience searches for as the largest line (消费级显卡), a line-art
+illustration of the mechanism (GPU card, slot strip, PCIe lane, RAM stick), and a small 「SGLang PR 讲解 · #N」 tag so
+the 小红书 标记 still fits. The 1440×1080 still keeps everything inside y 135–945; the frame keeps content above y 880
+and fades its text before the crossfade. The body frames keep the theme.
+
 ## Visuals (body frames)
 
 - Theme sglang-orange (default): frame.md = code-editorial remixed onto the SGLang brand by `apply_brand.py`: cream `#FBF6F1` ground,

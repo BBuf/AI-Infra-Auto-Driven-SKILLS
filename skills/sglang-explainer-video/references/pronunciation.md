@@ -353,6 +353,10 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | token 组尽量少 | 组尽量 \| 少 | token 组，尽量少 |
 | 乘 24 只要 27264 个 (PR 43570 video) | 24只 \| 要 (`classifier`: 只 read zhī) | 乘 24，只要 27264 个 |
 | 用一棵 radix 树记下算过的 prefix (PR 28185 video) | 树记 \| 下算 (heard 数据下) | 用一棵 radix 树，把算过的 prefix 记下来 |
+| 内存放不下整个程序 (Paged Experts video, 2026-11-04) | 内 \| 存放 | 内存装不下整个程序 |
+| 上下文限到 16384 (Paged Experts) | 上下 \| 文限 | context length 设成 16384 |
+| 才单独列出来不搬 (Paged Experts) | 单 \| 独列 \| 出来 | 才另外列出来，不去搬它 |
+| 全部拿来放专家 (Paged Experts) | 拿 \| 来放 | 全部用来放专家 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 
@@ -373,9 +377,14 @@ places where a digit and the character next to it form another number:
 | 缓存容量接近时：原来的单池 (PR 28185 re-check) | 接近十 | 缓存容量差不多的时候 |
 | SM 数只查一次 (PR 47684 re-check) | SM 数之差一次 (只 heard as zhī after 数) | SM 的数量查一次就缓存起来 |
 | 别让最后一波半空着。 (PR 47684 re-check) | 半空整 (a sentence-final 着 drawn out) | 别让最后一波空着一半。 |
+| K 是 63 / K 是 86 / K 是 92 (Paged Experts video, 2026-11-04) | K163 / K186 / K192 (是 after a letter fuses into the number) | K 等于 63 |
+| 加载专家 e 的时候，写进内存里专家 e 的那一份 (Paged Experts) | 专家一 (a lone lowercase letter is read as a Chinese number) | 加载某个专家的时候，写进内存里属于它的那一份 |
+| 算完再散回 merged (Paged Experts) | 算回 | 算完再放回 merged 里原来的位置 |
 
-Rule for the narration: a single digit right after 是 or 为 makes another word, and so does a 时 that closes a
-clause after any word (L2 时, 大时, 接近时 all come out as 十); write 只有 / 等于 / 的时候 instead. `line_asr` also prints noise (homophones such as 旧/就, numbers, a letter heard as Chinese
+Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
+number does: K 是 63 → K163), and so does a 时 that closes a
+clause after any word (L2 时, 大时, 接近时 all come out as 十); write 只有 / 等于 / 的时候 instead. Keep
+single-letter code variables (e, s, i) out of the narration; name the thing instead (某个专家, 分到的槽位). `line_asr` also prints noise (homophones such as 旧/就, numbers, a letter heard as Chinese
 such as y → 外) and cannot hear polyphones (Whisper writes 行 for both readings): read each hit, and use
 `poly_probe.py` for polyphones.
 
