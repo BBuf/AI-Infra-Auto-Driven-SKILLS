@@ -14,9 +14,9 @@ Every rule here came from a correction on a delivered video. Apply all of them b
   前缀 (→ prefix), 每批 / 批次 (→ batch), 暖机 (→ warmup), 内核, 混批 — the user flagged 预填 on a title (DeepSeek V4.1
   video, 2026-10-18).
 - Write numbers as digits (15%, 3.79 ms); the TTS reads them correctly and captions show them verbatim.
-- **Completeness over brevity.** No time limit: the film is as long as it takes to explain every algorithm
-  and code detail of the PR / article so a viewer can follow it. Pace per frame, not per film: one idea per
-  frame, ≲ 60 汉字 (~11 s at Xiaoxiao +0%); split a frame that runs long instead of trimming content.
+- **One video, under 10 minutes** (user, 2026-11-04, replacing the old 「no time limit」 rule). Explain the idea,
+  one worked example, the trade-offs, results and limits; no code panels, no follow-up PRs, no episode splits.
+  One idea per frame, ≲ 60 汉字 (~11 s at Xiaoxiao +0%).
 - Numbers and claims only from the PR / article. Keep the source's own caveats when they matter
   (e.g. "未在新 branch 上重测", "数据来自不同模型和硬件，不能相加").
 - **Never state PR status** — no "还在 review 中", "OPEN", "未合并", "in review" in narration or on screen.
