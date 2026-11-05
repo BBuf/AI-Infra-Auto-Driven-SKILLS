@@ -213,7 +213,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | spill (in the recorded take, same video) | Steel / Spear | 寄存器溢出 / 溢出 |
 | 1.96 GHz (same video) | 1.96千MHz | 每秒 19.6 亿个周期 (keep ≈ 1.96 GHz on screen) |
 | r (RMSNorm's 1/rms, rmsnorm video PR 47503) | 二 (again) | 这个倒数 / 乘倒数的结果 (r stays in the on-screen formulas) |
-| RMSNorm / rmsnorm (same video, user review 2026-11-05: 「有些单词也没有连起来读」) | 而MSNorm in the take (「每一层有两处，而MSNorm」: the R becomes 而 after a pause); rmsnorm → Rim Snorm (OK~) | lexicon → RMS Norm / RMS norm; also don't put it after a clause that ends on a count (两处 RMSNorm → RMSNorm 有两处) |
+| RMSNorm / rmsnorm (same video, user review 2026-11-05: 「有些单词也没有连起来读」) | Whisper wrote 「每一层有两处，而MSNorm」 for the take (a pause, then the R); rmsnorm → Rim Snorm (OK~) | lexicon → RMS Norm / RMS norm; also don't put it after a clause that ends on a count (两处 RMSNorm → RMSNorm 有两处). The re-voiced line still came back as 而MSNorm once in a whole-soundtrack transcription, but the line alone and the word alone transcribe as RMSNorm, and its R onset sits with the RMS references (+4.5, same as three other RMSNorm lines; 而 references far off). That one is Whisper's context, not the voice |
 | PR 47683 (a PR number inside a line, both videos) | 476、83 / P2476、83 in 2 of 3 takes: Edge reads it as a number and breaks it | pattern (?<=PR )(\d{4,6}) → digits in Chinese (fn:digits_zh): PR 四七六八三, no break in 3/3 |
 | fma.rn.f32.bf16 (in a sentence, both videos) | FMA、RNF32、BF16 — read in three pieces | 混合精度的乘加指令 (the PTX name stays on screen); the bare name read alone is fine, inside a line it isn't |
 | div.full (A 乘以 B 的近似倒数, 和 div.full 一样, PR 48380 video) | DIV 4 in 3/3 takes | 和完整精度的除法一样 |
@@ -315,6 +315,12 @@ Calibrated 2026-11-05 on 32 control takes with a known reading (16 航, 16 型):
 same line and a correct 一航 passed. The PR 48380 video, as delivered, had two háng 行 read xíng (字节行 −4.99,
 行距 −0.22); after the rules and a re-take, 0 of 47 across both videos, smallest margin +0.77. A margin under
 about 1.5 prints as `close`: run it again.
+
+WordBoundary starts lead the audible onset by about 0.08–0.1 s (a word after a comma starts in the silence). For a
+window shorter than a syllable or two, such as the first 0.4 s of a term to tell R from 而, start it at the energy
+onset (first 10 ms frame above −30 dB after the boundary), in the take and in every reference. Cut at the boundary,
+the RMSNorm take above scored −1.14 (而); cut at the onset, +4.46. hang_take's ±0.3 s windows around the character
+were not affected.
 
 ```bash
 $SEV_PY -I $SEV_SKILL/scripts/hang_take.py --script $P/SCRIPT.md --meta $P/audio_meta.json [--lines 24,35]
