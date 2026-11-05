@@ -102,6 +102,8 @@
     line-height: 1.3;
     letter-spacing: 0;
     color: color-mix(in srgb, var(--cap-ink, #141413) 66%, var(--cap-canvas, #faf9f5));
+    /* Inter's calt turns the x in bf16x2 / f16x2 into a multiplication sign */
+    font-feature-settings: "calt" 0;
   }
 
   /* upcoming — faint warm ink, no underline */

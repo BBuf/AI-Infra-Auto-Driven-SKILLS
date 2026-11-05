@@ -198,6 +198,24 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | SIMT (tiny GEMM video PR 47683) | SIMP for SIMT, S I M T and S-I-M-T alike (OK~) | no respelling: Whisper merges the letters; keep SIMT |
 | N_TILE / tile (K × (4 + N_TILE) / 128, same video) | NTAO for N tile, N Tile, N-tile and NTile; tile alone Tao or 他 | 每个 CTA 的行数 (N_TILE stays in the on-screen formula) |
 | r (第 r 份写进第 r 个 CTA, same video) | 二: the letter sounds like 第二份 | 第几份就写进第几个 CTA |
+| FFMA (CUDA perf guide video PR 48380, 2026-11-05) | FFMV | lexicon → F F M A (passes: FFMA) |
+| LDG (same video) | Large (LDG.128 → Large 128) | lexicon → L D G; for LDG.128 / LDG.E.256 say 128 bit 的 LDG / 256 位的 LDG |
+| FMA alone (same video) | FMV (no respelling passed) | 乘加 / 乘加合并 / 混合精度乘加 (FMA, fma.rn.f32.bf16 stay on screen; the full PTX name reads fine) |
+| lg throttle / mio throttle (same video) | Frooto | LSU 的队列塞满 / LSU 和 MIO 的队列满了 (lg_throttle stays on screen) |
+| occupancy (occupancy API, same video) | Ultipancy | 占用率 / CUDA 的 max active clusters 接口 |
+| ctarank (%cluster_ctarank, same video) | Turank | 专用寄存器 (%cluster_ctarank on screen) |
+| parallel compile (parallel_compile, same video and rmsnorm video PR 47503) | 看PAL | 并行编译 (parallel_compile on screen) |
+| spill (in the recorded take, same video) | Steel / Spear | 寄存器溢出 / 溢出 |
+| 1.96 GHz (same video) | 1.96千MHz | 每秒 19.6 亿个周期 (keep ≈ 1.96 GHz on screen) |
+| r (RMSNorm's 1/rms, rmsnorm video PR 47503) | 二 (again) | 这个倒数 / 乘倒数的结果 (r stays in the on-screen formulas) |
+| ulp (same video) | 奥布 | 一格 / 最小刻度 / 数格子 (ulp stays on screen) |
+| griddepcontrol wait (same video) | Grid App Control | PDL 的等待指令 / 等待指令 wait |
+| if constexpr (same video) | F / Constax Bear | 所有分支都在编译期决定 |
+| threads per row / rows per CTA (same video) | FREDS / Rose | 每行线程数 / 每个 CTA 的行数 (threads_per_row, rows_per_cta on screen) |
+| in bound (in_bound, same video) | 另一部分 | 越界判断 |
+| IEEE (same video) | HEE | 浮点标准 |
+| e4m3 (FP8 e4m3, same video) | 一4M3 (the lone e again) | 这种 FP8 / 输出的 FP8 (e4m3 stays on screen) |
+| NaN (same video) | 9 | 无效的值 |
 | wave in a sentence (一个 wave 放得下几行 CTA, same video) | WIM in one take (the carrier passes as Wave) | GPU 一轮能同时放下几行 CTA (wave stays in the kicker) |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
 | Three.js (also respelled Three J S) | Free.js / FreeJS | 网页 3D 场景 / 在浏览器里漫游的 3D 房子 (Three.js stays on screen) |
@@ -380,6 +398,11 @@ places where a digit and the character next to it form another number:
 | K 是 63 / K 是 86 / K 是 92 (Paged Experts video, 2026-11-04) | K163 / K186 / K192 (是 after a letter fuses into the number) | K 等于 63 |
 | 加载专家 e 的时候，写进内存里专家 e 的那一份 (Paged Experts) | 专家一 (a lone lowercase letter is read as a Chinese number) | 加载某个专家的时候，写进内存里属于它的那一份 |
 | 算完再散回 merged (Paged Experts) | 算回 | 算完再放回 merged 里原来的位置 |
+| 持续负载下的降频 (CUDA perf guide video PR 48380, 2026-11-05) | 详频 (降 read xiáng) | 持续负载下 GPU 时钟变慢 |
+| 把 32 字节加载降成两条 LD.E.128 (rmsnorm video PR 47503) | 详成 (降 read xiáng again) | 拆成两条 |
+| 判据是数格子 (same video) | 竖格子 (数 read shù, not shǔ) | 判据是看差了几格 |
+| 也要有测量撑着 (PR 48380 video) | 成长 (撑着 blurred into 成长) | 也要拿测量结果来证明 |
+| D 是 4096 时 / 输出 FP8 时 (PR 47503 video) | 第四 4096 时 / FP80 (是 after a letter, 时 after a digit) | D 等于 4096 的时候 / 输出 FP8 的时候 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a
