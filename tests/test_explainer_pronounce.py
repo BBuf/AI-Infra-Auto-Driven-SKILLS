@@ -237,3 +237,16 @@ def test_leijia_and_lowercase_mma():
     assert spoken("经验需要慢慢积累，累计 3 次") == "经验需要慢慢积累，累计 3 次"
     assert spoken("tensor core 的 mma 指令") == "tensor core 的 MMA 指令"
     assert spoken("mma.sync 指令") == "mma.sync 指令"
+
+
+def test_row_pitch_byte_line_and_pr_numbers():
+    # 行距 / N 字节行 were read xíng in the PR 48380 video; PR 47683 broke into 476、83 in 2 of 3 takes
+    assert spoken("每个 lane 读自己的一行时，行距取 16 字节") == "每个 lane 读自己的一航时，航距取 16 字节"
+    assert spoken("LDG 请求的 128 字节行，超过 L1") == "L D G 请求的 128 字节航，超过 L1"
+    assert spoken("我们讲过的 PR 47683，切换点") == "我们讲过的 PR 四七六八三，切换点"
+    assert spoken("执行 运行 并行 就行") == "执行运行并行就行"
+
+
+def test_rmsnorm_is_spelled_out():
+    assert spoken("同一位作者的 rmsnorm PR 47503") == "同一位作者的 RMS norm PR 四七五零三"
+    assert spoken("RMSNorm 对一行向量做两件事") == "RMS Norm 对一航向量做两件事"

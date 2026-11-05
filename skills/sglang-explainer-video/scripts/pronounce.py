@@ -8,7 +8,8 @@ edge-tts is rewritten so the voice reads English terms correctly and without bre
 
 Rules, in order (data in pronunciation.json, measured on zh-CN-XiaoxiaoNeural):
 1. patterns   — regex rewrites for symbols the voice misreads (8×B300 → 8 卡 B300, 3.7× → 3.7 倍,
-                #42565 → 42565, +5% → 提升 5%).
+                #42565 → 42565, +5% → 提升 5%). A replacement "fn:<name>" calls FUNCS[name] on the match
+                (PR 47683 → PR 四七六八三).
 2. lexicon    — whole-token respellings (FlashInfer → Flash Infer, VAE → V A E, LoRA → Lora); exact case
                  first, then case-insensitive (flashinfer). A hyphen between two letters becomes a space
                  (bit-exact → bit exact, top-k → top k).
@@ -32,6 +33,13 @@ TOKEN = re.compile(r"_*[A-Za-z0-9][A-Za-z0-9_.\-+]*[A-Za-z0-9]_*|_*[A-Za-z]_*")
 HAN = re.compile(r"[\u4e00-\u9fff]")
 
 _data = None
+
+ZH_DIGITS = "零一二三四五六七八九"
+# replacements a regex can't express; a pattern's replacement "fn:<name>" calls one of these on the match
+FUNCS = {
+    # a PR number read digit by digit: Edge reads 47683 as a number and broke it (476、83) in 2 of 3 takes
+    "digits_zh": lambda m: "".join(ZH_DIGITS[int(c)] for c in m.group(1)),
+}
 
 
 def data():
@@ -87,7 +95,12 @@ def segments(text):
             for m in rx.finditer(w):
                 if m.start() > pos:
                     nxt.append((w[pos : m.start()],) * 2)
-                nxt.append((m.group(0), m.expand(rep)))
+                nxt.append(
+                    (
+                        m.group(0),
+                        FUNCS[rep[3:]](m) if rep.startswith("fn:") else m.expand(rep),
+                    )
+                )
                 pos = m.end()
             if pos < len(w):
                 nxt.append((w[pos:],) * 2)
