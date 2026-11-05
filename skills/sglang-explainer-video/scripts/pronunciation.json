@@ -31,6 +31,8 @@
   "lexicon": {
     "ack": "A C K",
     "ACK": "A C K",
+    "FFMA": "F F M A",
+    "LDG": "L D G",
     "ABORT_ACK": "Abort A-C-K",
     "queue": "Q",
     "capture": "Capture",
