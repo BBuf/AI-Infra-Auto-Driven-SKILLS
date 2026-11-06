@@ -164,6 +164,15 @@ homophone noise is expected, and a hit that repeats in a fresh take is not proof
 $SEV_PY -I $SEV_SKILL/scripts/line_asr.py --script $P/SCRIPT.md --meta $P/audio_meta.json
 ```
 
+Then listen to every 行 in the take: the respelling lowers the misread rate, but Edge still picks the reading per
+request, and Whisper writes 行 for either reading. `hang_take.py` compares each 行 in the take with fresh takes
+that say 航 or 型 there and flags the ones that took the wrong reading (128 字节行 and 行距 were read xíng in the
+PR 48380 video as delivered). Re-synthesize every WRONG line and run it again until it prints ✓:
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/hang_take.py --script $P/SCRIPT.md --meta $P/audio_meta.json
+```
+
 A FAIL there means re-synthesize that line after a lexicon fix or a reword (subset re-TTS, see troubleshooting).
 
 **Keep the pronunciation lexicon growing.** Every term this video exposed as misread goes back into the skill
@@ -314,7 +323,7 @@ lexicon, and only then render. A batch of 13 published videos (132 min) took abo
 
 - `references/house-style.md` — narration, term glossary, captions, cover, author page, brief template.
 - `references/pronunciation.md` — English terms and Chinese polyphones read right: spoken-form rules, lexicon,
-  `pron_check.py`, `poly_probe.py`.
+  `pron_check.py`, `poly_probe.py`, `hang_take.py`.
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.
 - `references/troubleshooting.md` — every failure seen so far and its fix.
 - `references/publishing.md` — publishing to Bilibili and 小红书 (always 标记 SGLang on 小红书, never @), and the

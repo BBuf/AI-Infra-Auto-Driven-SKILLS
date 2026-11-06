@@ -22,6 +22,9 @@ voice changes.
 - `scripts/poly_probe.py` handles what Whisper can't hear: the reading of a Chinese polyphone (行 háng vs xíng).
   It synthesizes several takes and compares each one with unambiguous homophones of each reading (DTW over
   log-mel). It reports the misread rate as written and after the rewrite. See §Chinese polyphones.
+- `scripts/hang_take.py` listens to the take the video actually uses: every 行 in it, in both directions (a 行
+  meant háng read xíng, and a 执行 / 并行 read háng). The respelling lowers the misread rate per request, but it
+  doesn't make a given take right, so run it on every recorded take and re-synthesize the WRONG lines.
 
 ## Rules for writing narration
 
@@ -126,7 +129,7 @@ voice changes.
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
-torch.compile, vLLM, NVIDIA, Blackwell, Hopper, RoPE, RMSNorm, softmax, Mamba, Ulysses, GLM-5.3, W4AFP8.
+torch.compile, vLLM, NVIDIA, Blackwell, Hopper, RoPE, softmax, Mamba, Ulysses, GLM-5.3, W4AFP8.
 
 **Approved by ear** (`approved` in pronunciation.json — never respelled, reported OK): **SGLang**. The user
 compared the voice's own reading with SG Laang / SG Lahng / SG Leng / S G Lang and kept the original
@@ -174,6 +177,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | 回调 (callback, same video, user review) | huí tiáo in 2/6 takes (poly_probe, want 掉/钓/吊 vs avoid 条/调皮) | pattern 回调 → 回掉: 0/6 wrong; pick reference homophones with the same tone as each reading, or the probe's margins blur |
 | 权重 (weights, three kernel PR videos, user review 2026-11-02) | quán chóng (user's ear; poly_probe 0/6 in two carriers, so the misread is take-dependent) | pattern 权重 → 权众: 0/6 |
 | 行宽 (row width, same review) | xíng kuān (user's ear; poly_probe 3/6 then 1/6) | pattern 行宽 → 航宽 (not after 执/运/进/并 …): 0/6 |
+| 行距 (row pitch, CUDA perf guide video PR 48380, user review 2026-11-05) | xíng in the delivered take (hang_take margin −0.22) | 距 added to the 行宽 lookahead → 航距; hang_take +1.7 to +5.8 on the new take |
+| 字节行 (128 字节行 = a 128-byte cache line, same video) | xíng in the delivered take (hang_take margin −4.99) | pattern (?<=字节)行 → 航 |
 | 拆行 / 的行， (row at a clause end, same videos) | xíng in 2–4/6 and 3–5/6 | patterns 拆行 → 拆航, 的行[，。；、] → 的航: 0/6 |
 | 行和地址 / 第 row 行 (same videos) | xíng 6/6 and 4/6 | reword: 每一行的宽度或地址 / 编号为 row 的这一行 (the 一行 rule then gives háng, 0/6) |
 | 累加 (tiny GEMM video re-voice, user review 2026-11-03) | lèi jiā in 6/6 takes (poly_probe; controls 积累 0/6, 累计 0/6, 太累 6/6 lèi) | pattern 累加 → 垒加: 0/6 |
@@ -208,6 +213,11 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | spill (in the recorded take, same video) | Steel / Spear | 寄存器溢出 / 溢出 |
 | 1.96 GHz (same video) | 1.96千MHz | 每秒 19.6 亿个周期 (keep ≈ 1.96 GHz on screen) |
 | r (RMSNorm's 1/rms, rmsnorm video PR 47503) | 二 (again) | 这个倒数 / 乘倒数的结果 (r stays in the on-screen formulas) |
+| RMSNorm / rmsnorm (same video, user review 2026-11-05: 「有些单词也没有连起来读」) | Whisper wrote 「每一层有两处，而MSNorm」 for the take (a pause, then the R); rmsnorm → Rim Snorm (OK~) | lexicon → RMS Norm / RMS norm; also don't put it after a clause that ends on a count (两处 RMSNorm → RMSNorm 有两处). The re-voiced line still came back as 而MSNorm once in a whole-soundtrack transcription, but the line alone and the word alone transcribe as RMSNorm, and its R onset sits with the RMS references (+4.5, same as three other RMSNorm lines; 而 references far off). That one is Whisper's context, not the voice |
+| PR 47683 (a PR number inside a line, both videos) | 476、83 / P2476、83 in 2 of 3 takes: Edge reads it as a number and breaks it | pattern (?<=PR )(\d{4,6}) → digits in Chinese (fn:digits_zh): PR 四七六八三, no break in 3/3 |
+| fma.rn.f32.bf16 (in a sentence, both videos) | FMA、RNF32、BF16 — read in three pieces | 混合精度的乘加指令 (the PTX name stays on screen); the bare name read alone is fine, inside a line it isn't |
+| div.full (A 乘以 B 的近似倒数, 和 div.full 一样, PR 48380 video) | DIV 4 in 3/3 takes | 和完整精度的除法一样 |
+| L1 carveout (same video) | LE car vault in the line (carveout alone in the carrier is OK) | 给 L1 和 shared memory 挑一个合适的划分 |
 | ulp (same video) | 奥布 | 一格 / 最小刻度 / 数格子 (ulp stays on screen) |
 | griddepcontrol wait (same video) | Grid App Control | PDL 的等待指令 / 等待指令 wait |
 | if constexpr (same video) | F / Constax Bear | 所有分支都在编译期决定 |
@@ -293,7 +303,30 @@ non-zero while the spoken form still misreads. A rule is done when the spoken fo
 that the respelled form scores 0. A rule lands only when the as-written rate is high and repeats (累加: 6/6, with
 积累 / 累计 / 太累 as controls) and the spoken form is 0/N. Comparing a take that is already in a video with fresh
 syntheses (the whole line, or just the word's window cut by WordBoundary timings) failed its own controls: a 垒加 take
-was judged wrong. So a published video cannot be graded this way; only the misread rate per request can.
+was judged wrong. 垒 lěi and 累 lèi differ only in tone, which log-mel barely carries (see below), so a 累加 take
+cannot be graded. 行 can: háng and xíng differ in both initial and final.
+
+**Grading the recorded take for 行** (`scripts/hang_take.py`). For each 行 it centres a 0.6 s window on the
+character (time estimated from the take's WordBoundary words, indices counted without punctuation, which the
+words don't carry), and compares it with fresh takes of the same line that say 航/杭 or 型/形 at that spot. Word
+windows were noisy, because Edge groups the characters differently per take, so a verdict flipped between runs.
+Calibrated 2026-11-05 on 32 control takes with a known reading (16 航, 16 型): 32/32 right at ±0.25, ±0.35 and
+±0.5 s. A take synthesized with 型 in a háng spot and one with 航 in 并行 were both reported WRONG; the 执行 in the
+same line and a correct 一航 passed. The PR 48380 video, as delivered, had two háng 行 read xíng (字节行 −4.99,
+行距 −0.22); after the rules and a re-take, 0 of 47 across both videos, smallest margin +0.77. A margin under
+about 1.5 prints as `close`: run it again.
+
+WordBoundary starts lead the audible onset by about 0.08–0.1 s (a word after a comma starts in the silence). For a
+window shorter than a syllable or two, such as the first 0.4 s of a term to tell R from 而, start it at the energy
+onset (first 10 ms frame above −30 dB after the boundary), in the take and in every reference. Cut at the boundary,
+the RMSNorm take above scored −1.14 (而); cut at the onset, +4.46. hang_take's ±0.3 s windows around the character
+were not affected.
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/hang_take.py --script $P/SCRIPT.md --meta $P/audio_meta.json [--lines 24,35]
+#   L24  háng  WRONG  margin -4.99  …128 字节行，超过…
+#   ✗ hang_take: 1 of 15 行 take the wrong reading
+```
 
 **Tone-only polyphones cannot be probed.** The probe compares log-mel frames, which carry little pitch, so it tells
 行 háng from xíng but not 只 zhǐ from zhī: the control 「它只能存」 (always zhǐ) scored 12/12 wrong against 指,纸 vs 之,织
