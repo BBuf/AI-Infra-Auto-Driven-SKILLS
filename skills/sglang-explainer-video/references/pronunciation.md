@@ -182,6 +182,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | 拆行 / 的行， (row at a clause end, same videos) | xíng in 2–4/6 and 3–5/6 | patterns 拆行 → 拆航, 的行[，。；、] → 的航: 0/6 |
 | 行和地址 / 第 row 行 (same videos) | xíng 6/6 and 4/6 | reword: 每一行的宽度或地址 / 编号为 row 的这一行 (the 一行 rule then gives háng, 0/6) |
 | 累加 (tiny GEMM video re-voice, user review 2026-11-03) | lèi jiā in 6/6 takes (poly_probe; controls 积累 0/6, 累计 0/6, 太累 6/6 lèi) | pattern 累加 → 垒加: 0/6 |
+| 乘 before a Latin letter (64 乘 N, TP 乘 PP, PP4 乘 PCP2; DCP explainer video 2026-11-06, line_asr heard 剩) | shèng in 7/12 and 5/12 takes (poly_probe, want 成/承 vs avoid 剩/圣); 5 乘 64 (before a digit) 0/6 | pattern 乘(?= ?[A-Za-z]) → 成: 0/12 in both carriers |
 | 藏在 (就藏在读数据和计算后面, same re-voice) | zàng in 3/6, then 4/12 | reword: 就被读数据和计算掩盖掉了 (also a seg_check cut, below) |
 | asc (the Ascend op backend dir) | VSC | 昇腾版 |
 | thinking (模式) | finting | 思考模式 |
@@ -204,6 +205,14 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | N_TILE / tile (K × (4 + N_TILE) / 128, same video) | NTAO for N tile, N Tile, N-tile and NTile; tile alone Tao or 他 | 每个 CTA 的行数 (N_TILE stays in the on-screen formula) |
 | r (第 r 份写进第 r 个 CTA, same video) | 二: the letter sounds like 第二份 | 第几份就写进第几个 CTA |
 | FFMA (CUDA perf guide video PR 48380, 2026-11-05) | FFMV | lexicon → F F M A (passes: FFMA) |
+| DFLASH (speculative algorithm, DCP explainer video 2026-11-06) | Flash (the D is dropped) | lexicon → DFlash: heard D-Flash 2/2 |
+| EP2 (expert parallel 2, same video) | EPR | lexicon → EP 2: heard EP2 2/2 |
+| fi_a2a (--dcp-comm-backend value, same video) | FiA to A | lexicon → F I A2A: heard FIA2A 2/2 |
+| cutedsl_mla (attention backend, same video) | Cutasol MLA | lexicon → cute DSL MLA: heard CuteDSL MLA 2/2 |
+| 1P1D (same video) | EPED; the respelling one P one D came back as 万P万D in a carrier | reword: 一台做 prefill，一台做 decode |
+| V 预投影 (V pre-projection, same video) | Vu 投影 / Vu 头影 in 4 lines: the letter V runs into 预 | reword: V 的预投影 |
+| a number before 时 or 是 (TP8 时 → TP80, 组是 8 张卡 → 18 张卡, DCP 是 2 的幂 → DCP12; same video, line_asr) | the digit merges with the next syllable | reword: 的时候 / 有 8 张卡 / 取 2、4、8 这样的值 |
+| single letters in formulas (e 的 s 次方, N r / Z r / o r, 第 j 张卡; same video) | 一 / 二 / 机 / 欧 / dropped | reword: 取指数, 本卡分子 / 本卡分母, 那张卡 (the symbols stay on screen) |
 | LDG (same video) | Large (LDG.128 → Large 128) | lexicon → L D G; for LDG.128 / LDG.E.256 say 128 bit 的 LDG / 256 位的 LDG |
 | FMA alone (same video) | FMV (no respelling passed) | 乘加 / 乘加合并 / 混合精度乘加 (FMA, fma.rn.f32.bf16 stay on screen; the full PTX name reads fine) |
 | lg throttle / mio throttle (same video) | Frooto | LSU 的队列塞满 / LSU 和 MIO 的队列满了 (lg_throttle stays on screen) |
