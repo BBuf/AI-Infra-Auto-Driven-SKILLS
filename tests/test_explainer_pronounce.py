@@ -107,7 +107,8 @@ def test_terms_from_the_k3_video():
     assert spoken("24 层 MLA 的 KV") == "24 层 M L A 的 KV"
     assert spoken("Gated MLA 的输出门") == "Gated M L A 的输出门"
     assert spoken("激活函数 SiTU 的上界") == "激活函数 S I T U 的上界"
-    assert spoken("4 乘 tanh 再乘 sigmoid") == "4 乘 tan h 再乘 sigmoid"
+    # 乘 before a Latin word is respelled 成 (it was read shèng; see test_cheng_before_latin_and_dcp_terms)
+    assert spoken("4 乘 tanh 再乘 sigmoid") == "4 成 tan h 再成 sigmoid"
     assert spoken("模型在 kimi_k3.py 里") == "模型在 Kimi K3 点 P Y 里"
 
 
@@ -250,3 +251,14 @@ def test_row_pitch_byte_line_and_pr_numbers():
 def test_rmsnorm_is_spelled_out():
     assert spoken("同一位作者的 rmsnorm PR 47503") == "同一位作者的 RMS norm PR 四七五零三"
     assert spoken("RMSNorm 对一行向量做两件事") == "RMS Norm 对一航向量做两件事"
+
+
+def test_cheng_before_latin_and_dcp_terms():
+    # 乘 before a Latin letter was read shèng (7/12, 5/12); before a digit it stays 乘
+    assert spoken("覆盖 64 乘 N 个位置") == "覆盖 64 成 N 个位置"
+    assert spoken("等于 TP 乘 PP") == "等于 TP 成 PP"
+    assert spoken("5 乘 64") == "5 乘 64"
+    assert spoken("乘以 v") == "乘以 v"
+    assert spoken("投机解码用 DFLASH") == "投机解码用 DFlash"
+    assert spoken("后端选 fi_a2a，MoE 是 EP2") == "后端选 F I A2A，M O E 是 EP 2"
+    assert spoken("草稿用 cutedsl_mla") == "草稿用 cute DSL MLA"
