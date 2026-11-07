@@ -131,5 +131,15 @@
     "deepinfer": "Deep Infer"
   },
   "approved": ["SGLang", "MTP", "PR", "dB", "Kimi", "WRITE"],
-  "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"]
+  "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"],
+  "tones": {
+    "_doc": "Tone-only polyphones that tone_take.py grades in the recorded take (respelling cannot fix them: no common single-reading homophone, and Edge rejects SSML). readings: tone -> pinyin. default: the tone meant unless the character sits inside one of words[tone]. controls: single-reading characters of each tone, same final where possible, swapped in to build same-line references. Add a character only after tone_take.py --calibrate judges its controls right in >= 90 % of cases.",
+    "切": {
+      "readings": {"1": "qiē", "4": "qiè"},
+      "default": 1,
+      "words": {"4": ["一切", "切实", "密切", "亲切", "迫切", "切记", "切忌", "确切", "急切", "真切", "恳切", "贴切", "殷切", "切身", "切合", "切中", "切题", "切齿", "关切", "心切", "热切", "悲切", "凄切"]},
+      "controls": {"1": ["接", "揭", "歇", "包", "通"], "4": ["借", "谢", "窃", "卸", "报"]},
+      "reword": "keep 切 right before its result or object (切开 / 切成 / 切到 / 按 token 切开); a clause-final 切 after 不 (也不切它) came out qiè: write 也不把它切开 or 也不拆分它"
+    }
+  }
 }

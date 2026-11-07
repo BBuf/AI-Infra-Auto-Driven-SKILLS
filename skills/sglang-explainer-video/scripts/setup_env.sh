@@ -3,6 +3,7 @@
 #
 #   bash setup_env.sh            # workspace defaults to ~/.cache/sglang-explainer-video
 #   SGLANG_VIDEO_HOME=/path bash setup_env.sh
+#   bash setup_env.sh --with-tone  # also the MFA + Praat env for tone_take.py (setup_tone.sh)
 #
 # Installs nothing globally: a Python venv, a pinned HyperFrames checkout (skills + scripts),
 # and the Noto SC fonts all live in the workspace. Needs Node >= 22, ffmpeg/ffprobe, git, curl,
@@ -97,4 +98,9 @@ export SEV_PY="$WS/venv/bin/python"
 export CHROME="$CHROME_BIN"
 EOF
 PATH="$NODE_BIN:$PATH" npx -y "hyperframes@$HF_CLI_VERSION" --version >/dev/null
+
+# 9. Optional: the tone env for tone_take.py (MFA + Praat, ~1.5 GB). Opt in with --with-tone.
+if [ "${1:-}" = "--with-tone" ]; then
+  SEV_WS="$WS" bash "$SKILL_ROOT/scripts/setup_tone.sh"
+fi
 echo "✓ ready — run: source $WS/env.sh"
