@@ -337,8 +337,8 @@ $SEV_PY -I $SEV_SKILL/scripts/hang_take.py --script $P/SCRIPT.md --meta $P/audio
 #   ✗ hang_take: 1 of 15 行 take the wrong reading
 ```
 
-**Tone-only polyphones cannot be probed.** The probe compares log-mel frames, which carry little pitch, so it tells
-行 háng from xíng but not 只 zhǐ from zhī: the control 「它只能存」 (always zhǐ) scored 12/12 wrong against 指,纸 vs 之,织
+**Tone-only polyphones cannot be probed** with poly_probe (use `tone_take.py`, §Tone-only polyphones below). The
+probe compares log-mel frames, which carry little pitch, so it tells 行 háng from xíng but not 只 zhǐ from zhī: the control 「它只能存」 (always zhǐ) scored 12/12 wrong against 指,纸 vs 之,织
 (PR 28185 re-check, 2026-11-03). For 只 after a number, read the WordBoundary tokens instead (`seg_check` reports
 them as `classifier`): the misread take in the PR 43570 video had '24 只' | '要', and takes that read right keep
 只 with its verb ('int8' | '只能', 'fp8' | '只有').
@@ -349,6 +349,56 @@ screen only.
 
 The free Edge endpoint rejects inline SSML (`<phoneme>`, `<sub>`, `<lang>`, even `<break>` → NoAudioReceived),
 so respelling is the only lever.
+
+## Tone-only polyphones (tone_take.py)
+
+Some polyphones differ only in tone: 切 qiē (cut) / qiè (一切, 密切). Three things make them hard:
+- Respelling cannot fix them. No common character reads qiē alone (苆 is the only one), and the free Edge
+  endpoint rejects SSML.
+- A retake cannot fix them either. Edge returns the same audio for the same text: eight takes of one sentence
+  had pitch slopes within 0.5 st of each other.
+- poly_probe, hang_take and Whisper are deaf to tone.
+
+`tone_take.py` measures pitch instead. It needs the tone env once (`bash $SEV_SKILL/scripts/setup_tone.sh`: MFA 3.4.3
+from conda-forge, praat-parselmouth, and the mandarin_mfa v3.0.0 models, about 1.5 GB). For each character listed
+under `tones` in pronunciation.json, it does three things:
+- It synthesizes the line with the character swapped for single-reading controls of each tone.
+- It force-aligns the take and the controls with MFA.
+- It compares the Praat pitch slope over the character's vowel and coda with the slopes of the controls.
+
+What was measured while building it (2026-11-07, 12 sentences from the DCP explainer video):
+
+| Method | Controls judged right |
+| --- | --- |
+| MFA alone: the target word gets only its tone-1 and tone-4 pronunciations and the aligner picks one | 58/108 (chance: the GMM features carry no pitch, though the phones are tone-marked, e˥ / e˥˩) |
+| Pitch slope in a window placed with Edge's word boundaries | contradictory: the window often lands on the neighbour (不 in 也不切它 falls too) |
+| MFA-aligned vowel, Praat slope, one fixed threshold (−1.75 st) | 84 % (79 % leave-one-sentence-out) |
+| MFA-aligned vowel only, compared with the same sentence's controls | 85 %; nasal finals (通/痛) hide the fall in ŋ |
+| MFA-aligned vowel + coda, same-sentence controls (what tone_take does), 接/揭/歇/包/通 vs 借/谢/窃/卸/报 | **116/120 (97 %)** leave-one-out; with 些 as a tone-1 control it was 89/96, so 些 was dropped |
+
+The four misses were tone-1 controls judged tone 4, with margins of 0.2 to 3.1 st, so a WRONG under 1 st is printed
+as weak: listen before rewording. On the DCP video's takes, it flagged:
+- 「DCP 也不切它」 as qiè (margin +7.6 st). Earlier, three independent measurements had agreed.
+- 「轮流切到各张卡」 in one line as a weak WRONG (+0.7). The same phrase in another line read qiē.
+
+Every 切 right before its object or result (切开, 切成, 切片, 切到, 切出) read qiē. Reword a clause-final 切: 也不切它 →
+也不把它切开 / 也不拆分它.
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/tone_take.py --script $P/SCRIPT.md --meta $P/audio_meta.json [--lines 5] [--chars 切]
+#   L5   切  want qiē  heard qiè  WRONG  margin +7.6 st  …DCP 也不切它。…
+#   ✗ tone_take: 1 of 8 tone-only polyphones took the wrong tone
+```
+
+**Adding a character.**
+1. Give its `readings`, the `default` tone, the `words` that take the other tone, and `controls`: at least two
+   single-reading characters per tone, with the same final where possible.
+2. Run `tone_take.py --calibrate <char> "sentence" …` on 8 to 12 sentences that use it the way the narration does.
+3. Add it only if the controls are judged right in at least 90 % of cases. Drop any control that keeps getting
+   misjudged; 些 was one.
+
+The slope feature separates a level tone from a falling one (1 vs 4) best. Calibrate a 3-vs-1 pair such as 只 before
+trusting it.
 
 ## The lexicon is a living file — every video teaches it something
 
