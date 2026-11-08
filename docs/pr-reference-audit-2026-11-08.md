@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 30 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 31 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -163,6 +163,13 @@ five-file KPool row-split diff, including all discussion and current callers.
 The former is merged but retains full-width logits; the latter was closed
 without merge. Benchmark regression comments and unverified accuracy-waiver
 requests remain qualified rather than being reported as a clean test result.
+
+The [TokenSpeed selected-slot attention review](../skills/llm-torch-profiler-analysis/references/tokenspeed-dsa-source-review.md)
+covers #1780's complete 967-line diff, body, all comments/reviews and current
+provider/facade/runtime paths. It replaces the stale open-proposal entry with
+merged tensor-core tiles, residual scoring and split-LSE semantics. Current
+KVP record output and numerical-policy admission are distinguished from the
+original change; early H20 measurements are not final-rebase validation.
 
 The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
 covers the complete #1606/#1607/#1889 diffs and all discussion, with fresh

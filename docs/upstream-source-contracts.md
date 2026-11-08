@@ -126,6 +126,16 @@ plans. The KPool prefill TP row-split proposal is closed without merge; current
 GLM-5.3-Flash still passes full query rows through that runtime call. Its long
 prefill results and small-batch gather regressions remain branch evidence.
 
+The [TokenSpeed selected-slot attention review](../skills/llm-torch-profiler-analysis/references/tokenspeed-dsa-source-review.md)
+traces merged #1780 through current portable dispatch. Gathered latent tiles
+feed both QK and PV; BF16 residuals preserve score precision, while FP32 split
+partials are merged with base-2 weights and public LSE remains natural-log.
+Split count follows grid geometry rather than phase names. This provider
+does not advertise batch invariance or sorted-slot order, and ignores physical
+KV lengths: selection must already encode causal validity. Current KVP record
+output is a separate, gated evolution of the unsplit dense core. Historical
+H20 results predate the final stride-preserving rebase and need that qualifier.
+
 The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
 reconciles merged routing, sampling and attention changes. BF16 precomputed
 MoE routing still rounds weights to BF16 before passing the unpacked tuple;

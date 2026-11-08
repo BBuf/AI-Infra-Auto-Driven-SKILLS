@@ -224,6 +224,9 @@ Load only relevant references:
 - [tokenspeed-indexer-source-review.md](references/tokenspeed-indexer-source-review.md):
   Hopper cleaner/selection bounds, portable DCP empty-tile skipping and the
   closed KPool row-partition proposal. Distinguish traffic, scratch and gathers.
+- [tokenspeed-dsa-source-review.md](references/tokenspeed-dsa-source-review.md):
+  merged selected-slot tensor-core attention, residual scoring, split/LSE
+  semantics and current KVP callers. Check slot order and actual provider.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters. Check rounding, shape, mode and the actual caller.
