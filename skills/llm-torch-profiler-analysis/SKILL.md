@@ -333,10 +333,12 @@ Load only relevant references:
 - [flashinfer-moe-finalize-shared-prefetch-review.md](references/flashinfer-moe-finalize-shared-prefetch-review.md):
   #8697 adds TP4 shared-expert L2 hints before routing and non-coherent vector
   reads at the original shared-addition position for T≥1536. Distinguish
-  cache prefetch from an early converted-value load. Its 56 complete device
-  files match current bytes; seven later bodies remain separate. Final CI
-  passes 26 CPU tests but skips all six GPU nodes. The 32 reported timing
-  measurements cover only sixteen distinct changed shapes.
+  cache prefetch from an early converted-value load. #8864 extends it to
+  TP8/K8 T≥768 except FP16 ordinary output, and TP2/K4/shared T>1280.
+  All 63 complete device files and the selector match current bytes. Their
+  final CI passes 26/29 CPU tests but skips all six GPU nodes; mixed-rank GPU
+  execution remains uncovered. Distinguish repeated timing measurements
+  from distinct shapes, and retain the original exchange/rounding contracts.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish

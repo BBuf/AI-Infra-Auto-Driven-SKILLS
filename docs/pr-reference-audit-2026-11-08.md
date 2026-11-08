@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Thirty-one additional PRs cited by the new review cards bring the
-TSV to **6,965 objects**; all 72 PRs manually reviewed in this refresh have
+6,934 objects. Thirty-two additional PRs cited by the new review cards bring the
+TSV to **6,966 objects**; all 73 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -521,6 +521,18 @@ shapes and a second set of measurements of those same shapes. The total is
 now 72 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM and
 25 FlashInfer. Only #8697's head/base check is fresh in this increment;
 prior per-entry timestamps remain. The ledger has 6,965 objects.
+
+The same shared-expert review completes #8864's eleven-file diff and all
+discussion. Seven explicit whole-file inverse transformations account for
+the new TP2/TP8 programs; 56 retained bodies are unchanged. All 63 current
+device files, binding, loader and both tests match the reviewed head.
+Sixteen original CPU cases pass locally; final-head CI/JUnit show 29 CPU
+passes and six GPU skips. Preserve the omitted TP8 FP16 slot, TP2's earlier
+small-token branch, missing mixed-rank GPU coverage and distinction between
+28 measurements and 22 shapes. The total is now 73 manually reviewed PRs:
+27 SGLang, 11 TokenSpeed, nine vLLM and 26 FlashInfer. Only #8864's metadata
+check is fresh in this increment; previous timestamps remain. The ledger
+has 6,966 objects.
 
 ## Local validation of this increment
 

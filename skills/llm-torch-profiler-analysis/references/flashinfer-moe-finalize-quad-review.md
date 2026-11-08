@@ -176,7 +176,8 @@ these operator results do not establish serving throughput or accuracy.
 All 52 historical head kernel files are byte-identical to their counterparts
 at the current pin, closing the intervening generated-source comparison for
 those programs. The quad table, T142 constant and selection branch also
-match exactly. Eleven additional current device bodies remain outside this
-review. When profiling quad finalize, record the selected program, actual
+match exactly. The eleven additional current device bodies are covered by
+the [shared-expert prefetch review](flashinfer-moe-finalize-shared-prefetch-review.md).
+When profiling quad finalize, record the selected program, actual
 cluster capacity, inverse-index distribution and output profile; verify
 compiled load placement before attributing time to the proposed prefetch.

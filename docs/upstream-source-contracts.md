@@ -371,11 +371,20 @@ covers four of those bodies in #8697. TP4 shared-expert T≥1536 selects
 `_tsds`: one thread in eight issues an L2 hint before routing, after PDL wait;
 the actual non-coherent vector load and shared addition keep their original
 position. The two-shot protocol and dtype rounding remain unchanged. All 56
-historical device files match current bytes; seven later TP2/TP8 bodies
-remain separate. CPU tests cover mixed shared-presence selectors, while
+historical device files match current bytes. CPU tests cover mixed shared-presence selectors, while
 final-head CI passes 26 CPU cases and skips all six multi-GPU nodes. The
 reported 32 changed measurements repeat sixteen shapes, all at T2048;
 retain that limitation when using the roughly 3% kernel timing result.
+
+The same review covers #8864's remaining seven bodies: TP8/K8/shared T≥768
+uses `_tsds` except FP16 ordinary output; TP2/K4/shared T>1280 uses `_lts`.
+The omitted TP8 slot falls back to `_tsd`; TP2 retains its one-shot pipeline.
+All 63 current device files, binding, loader and CPU/GPU tests now match the
+reviewed source. The launcher uses small-token limit 64; an arbitrary larger
+direct-FFI override can still intercept TP2 before large-token selection.
+Final-head CI passes 29 CPU tests and skips six GPU nodes. Mixed-rank tests
+remain selector-only. The fourteen published changed rows and fourteen extra
+reported measurements cover 22 distinct shapes, with no new serving result.
 
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
