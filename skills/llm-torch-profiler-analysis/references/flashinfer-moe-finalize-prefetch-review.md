@@ -5,6 +5,11 @@ of #7905/#8073/#8139/#8321, following the [two-shot/deferred lineage](flashinfer
 Current comparisons use `31c146b16789f112e9b9861bd79247d4701e437a`.
 No GPU execution, SASS comparison, sanitizer or benchmark was run here.
 
+The subsequent [TP2 quad-route review](flashinfer-moe-finalize-quad-review.md)
+reconciles the regeneration of all 48 programs here and four new programs
+against the current pin. Its 52 full device files match current bytes;
+eleven additional current device bodies remain outside that review.
+
 ## PR #7905 — retain packed operands and lower the TP4 crossover
 
 - Link/title: [perf(cake_moe_finalize_allreduce_fusion): issue the residual and norm weight ahead of the one-shot poll](https://github.com/flashinfer-ai/flashinfer/pull/7905).
@@ -292,8 +297,8 @@ between one-shot and two-shot protocols.
 
 The current pin retains the exact inspected class term, small-branch
 predicate, T71 cap and earlier T72/T56 tests. The early two-shot successor
-is reviewed below; other later variants and the changed current device
-bodies still require separate review.
+is reviewed below; the later regeneration is reconciled in the linked
+TP2 quad-route review.
 
 ### Tests and measured coverage
 
@@ -341,7 +346,7 @@ and selected program before attributing the gain to a new kernel body.
 
 ## PR #8321 — issue first-token routing indices before the current/clear words
 
-- Link: [FlashInfer #8321](https://github.com/flashinfer-ai/flashinfer/pull/8321).
+- Link/title: [perf(cake_moe_finalize_allreduce_fusion): two-shot early programs for batches of up to 128 tokens at world sizes 4 and 8](https://github.com/flashinfer-ai/flashinfer/pull/8321).
 - State: merged 2026-11-02 at 12:47:48 UTC; head
   `54b33fede8cfd63baba6d513d884e7266abcd3c1`, API base
   `3d4c266d9499be1005969e089aad851466717e11`, actual merge-base

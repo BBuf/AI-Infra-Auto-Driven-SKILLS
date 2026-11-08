@@ -324,6 +324,12 @@ Load only relevant references:
   first four route indices are hoisted, after PDL wait and before epoch/clear
   loads. Separate its 64 published changed rows from the 320-shape aggregate.
   All four final-head runs have AOT results only.
+- [flashinfer-moe-finalize-quad-review.md](references/flashinfer-moe-finalize-quad-review.md):
+  #8503's TP2 four-route gathering through T142, early shared-expert read with
+  unchanged addition order, and occupancy-capped launch. Preserve the NVFP4
+  negative-route extra reads and identity-only input coverage. Ten original
+  CPU cases pass; final CI has AOT results only. The 52 inspected complete
+  device bodies match current bytes; eleven later bodies remain separate.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish

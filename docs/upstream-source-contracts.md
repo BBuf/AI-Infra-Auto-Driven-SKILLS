@@ -355,6 +355,17 @@ The 64 published changed timing rows are a subset of the reported 320-shape
 cohort; the other 256 rows and smaller-limit fallbacks lack individual data.
 Current early dispatch matches, while all 48 later whole bodies differ.
 
+The [TP2 quad-route review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-quad-review.md)
+reconciles that subsequent regeneration in #8503: all 48 retained bodies and
+four new quad bodies match current bytes. Quad selects eligible TP2 batches
+through T142 after the small/large branches; actual cluster capacity still
+caps the launch. Shared-expert values are read early but added at the original
+position. Both NVFP4 dtype variants still read clamped row-zero data for
+negative routes and skip their contribution. Preserve the identity-only GPU
+inputs, AOT-only final CI and one B300/two B200 regressions in the broader
+176-shape cohort. Only 32 changed timing rows are published individually.
+Eleven additional current device bodies remain outside that review.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source

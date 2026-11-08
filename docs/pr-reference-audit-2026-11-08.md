@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty-nine additional PRs cited by the new review cards bring the
-TSV to **6,963 objects**; all 70 PRs manually reviewed in this refresh have
+6,934 objects. Thirty additional PRs cited by the new review cards bring the
+TSV to **6,964 objects**; all 71 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -497,6 +497,18 @@ Final-head CI contains six AOT builds and no targeted numerical test job.
 The total is now 70 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM
 and 23 FlashInfer. Only #8321's head/base check is fresh in this increment;
 all previous per-entry timestamps remain. The ledger has 6,963 objects.
+
+The [TP2 quad-route review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-quad-review.md)
+completes #8503's 56-file diff, all discussion and commit message. Explicit
+transformations account for 48 regenerated bodies; complete region comparisons
+cover all four new bodies. All 52 match current device-file bytes. Ten original
+CPU cases pass, including 80 quad-policy assertions. The review preserves
+actual capacity limits, NVFP4 negative-route reads, identity-only test inputs,
+the distinction between 32 published and 176 reported changed timing shapes,
+one B300/two B200 regressions and AOT-only final-head CI. The total is now 71
+manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM and 24 FlashInfer.
+Only #8503's head/base check is fresh in this increment; prior per-entry check
+timestamps remain. The ledger has 6,964 objects.
 
 ## Local validation of this increment
 
