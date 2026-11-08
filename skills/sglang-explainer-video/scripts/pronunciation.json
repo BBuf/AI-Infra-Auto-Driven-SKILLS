@@ -110,7 +110,9 @@
     "README": "read me",
     "TileKernels": "Tile Kernels",
     "SamplingParams": "Sampling Params",
-    "DSPARK": "DSpark"
+    "DSPARK": "DSpark",
+    "SLA": "S L A",
+    "Day-0": "Day zero"
   },
   "parts": {
     "ack": "A C K",
