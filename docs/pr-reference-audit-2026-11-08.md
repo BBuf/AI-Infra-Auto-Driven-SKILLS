@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 38 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 40 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -218,9 +218,16 @@ The same review covers the complete #49142 MLA default and #54851 DSA capture
 binding proposals and all discussion. The first lacks the successor's hoisted
 layer-name guard; its small H100 serving report is qualified. The second's
 metadata-free capture mechanism is distinguished from current MRV2 metadata
-construction, separate indexer slots and HiSparse/PCP ownership. Three remaining
-neighboring catalog PRs received fresh metadata checks only; their full source
-review remains pending and is not included in the count.
+construction, separate indexer slots and HiSparse/PCP ownership.
+
+The [CUDA RoPE/cache review](../skills/llm-torch-profiler-analysis/references/vllm-rope-cache-kernel-review.md)
+covers all six files of #57271 and five files of #58798, including tests,
+benchmark code and all discussion. It distinguishes full rotary from MiMo
+partial rotary, short-slot handling, intermediate rounding and fresh-Q/cache
+ownership. Current MiMo's padded checkpoint chunks require adapting the old
+proposal's plain QKV split. B200/SM80 reports retain their actual reference,
+A/A controls, overlay limitations and corrected discussion claims. Neighboring
+#52363 still has only a metadata check and is not included in the manual count.
 
 ## Local validation of this increment
 

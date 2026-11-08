@@ -237,6 +237,10 @@ Load only relevant references:
   RoPE/cache splitting and custom-op ordering, superseded/open configuration
   fixes, retained Q quantization and layout/range guards; MLA defaults and DSA
   capture bindings. Check actual matches, metadata and persistent slot ownership.
+- [vllm-rope-cache-kernel-review.md](references/vllm-rope-cache-kernel-review.md):
+  open CUDA GQA and MiMo DiffKV proposals. Check rotary extent, short slot maps,
+  intermediate rounding and current chunked-QKV layout before porting; keep
+  controlled attention timings separate from service performance.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check

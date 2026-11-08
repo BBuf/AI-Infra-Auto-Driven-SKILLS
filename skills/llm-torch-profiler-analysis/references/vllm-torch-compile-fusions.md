@@ -95,6 +95,13 @@ at 128/256; it leaves that bound unchanged. Its Qwen3 QK-norm and Kimi MLA
 pattern-match reports have no corresponding performance measurements. A
 remaining Q-quant kernel is expected in the quantized-query patterns above.
 
+The [CUDA kernel proposal review](vllm-rope-cache-kernel-review.md) separates
+#57271's ordinary full-width GQA writer from #58798's model-selected MiMo
+partial-RoPE/value-scaling/DiffKV path. Both remain open. The former needs
+short-slot and FP8 intermediate-rounding checks; the latter's old plain-QKV
+split does not cover current MiMo's padded checkpoint-chunk layout. A
+registered fusion or historical benchmark is not current-model admission.
+
 The old `enable_sp` and `fuse_gemm_comms` fields and their sequence-parallel /
 collective pass files have been removed. Do not suggest those switches to a
 current server. [Runtime MoE sequence parallelism](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/config/parallel.py)

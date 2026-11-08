@@ -120,6 +120,15 @@ for PIECEWISE; `for_capture=False` is not proof of an empty forward context.
 Check the captured cache/slot addresses and current independent indexer,
 HiSparse and PCP ownership before diagnosing stale writes or porting the patch.
 
+The [CUDA RoPE/cache reviews](../skills/llm-torch-profiler-analysis/references/vllm-rope-cache-kernel-review.md)
+distinguish open #57271's full-width equal-head GQA writer from open #58798's
+partial-RoPE, V-scaling and unequal-width MiMo DiffKV path. Check short slot
+maps and the FP32-to-cache versus intermediate-BF16 rounding boundary before
+accepting the ordinary FP8 variant. Current MiMo can retain padded checkpoint
+chunks in QKV projection output; the proposed plain split needs adaptation or
+an explicit layout gate. Historical B200/SM80 attention timings do not validate
+that later mainline layout or establish service throughput.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported
