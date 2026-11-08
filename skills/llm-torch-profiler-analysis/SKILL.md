@@ -207,6 +207,9 @@ Load only relevant references:
 - [dsv41-open-pr-review.md](references/dsv41-open-pr-review.md): reviewed mHC,
   KV-scale and Hopper indexer proposals, actual gates, branch-specific flags
   and validation gaps. Tile budgets bound score tensors, not whole-model peaks.
+- [dsv41-trtllm-source-review.md](references/dsv41-trtllm-source-review.md):
+  merged sparse-attention integration, breakable prefill and public persistent
+  counter API. Distinguish fused KV storage from the remaining Q conversion.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

@@ -22,9 +22,36 @@ again using `issueOrPullRequest`:
 | Issue | 14 | Some were incorrectly promoted to PR links by the history generator; others are valid shorthand issue references inside source excerpts. |
 | Unavailable | 1 | vLLM #50704: PR/issue API lookup failed, but the mainline commit exists. |
 
-Bare `#N` references require repository and object-type resolution separately.
-That sweep and the full open-PR source review remain in progress; the TSV above
-covers the initial explicit/qualified census only.
+## Bare references and open-PR path coverage
+
+The supplemental sweep resolved 17,536 bare-reference occurrences into 6,585
+repository/number pairs using their framework directory, section, same-line
+source paths and explicit dependency names. Conflicting cross-framework
+contexts were reviewed separately; inclusive ranges were expanded. HTML
+numeric entities and a pronunciation example were excluded. Repeated numbers
+in different repositories remain distinct.
+
+This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
+18 closed without merge, 12 open) and 23 issues. The historical union contains
+6,934 objects. Fifteen additional PRs cited by the new review cards bring the
+TSV to **6,949 objects**; all 17 PRs manually reviewed in this refresh were
+queried again and their heads still match the reviewed diffs. The initial table
+above describes the initial census, not this expanded union. Issue references
+inside quoted titles, code comments and RFC
+discussions are valid context; they must not become implementation PRs.
+FlashInfer #5678 in the training-kernel catalog is now explicitly identified
+as a feature issue rather than mainline implementation evidence.
+
+All open-list pages and changed-path pages were collected for the same
+November 8 snapshot: SGLang 5,582, vLLM 7,224, FlashInfer 913, TensorRT-LLM
+1,277 and TokenSpeed 105, totaling **15,101 open PRs**. Each listed PR has a
+path inventory. For five diffs beyond GitHub's file-list limit, paths came
+from the recorded merge-base/head Git diff: SGLang #41663/#41672, vLLM #54955,
+FlashInfer #3034 and TensorRT-LLM #13322. Rename-disabled inventories retain
+both old and new paths; their path counts need not equal GitHub's changed-file
+counts. GitHub and local rename detection also differ for the two SGLang
+diffs. These inventories establish discovery coverage, **not code-review
+coverage**. Relevance screening and full open-PR source review remain ongoing.
 
 ## Corrections supported by this audit
 
@@ -83,6 +110,14 @@ They record all changed files, exact revisions, implementation excerpts,
 current callers, discussion and test limitations. The four Hopper ports have
 experimental-branch measurements but no reported GPU validation of the ports;
 their flags must not be advertised as mainline capabilities.
+
+[Three complete merged TRT-LLM attention reviews](../skills/llm-torch-profiler-analysis/references/dsv41-trtllm-source-review.md)
+cover uniform-FP8 KV storage, decoder bounded replay with breakable prefill,
+and the public persistent-counter API. Current source still retains Q's
+separate BF16-to-FP8 conversion. The catalog no longer labels that integration
+as open or attributes the pending #36652 rewrite to main. A duplicated
+619-line dispatch/control section in the overlap catalog now links to its
+canonical counterpart, preserving the section anchor.
 
 ## Local validation of this increment
 

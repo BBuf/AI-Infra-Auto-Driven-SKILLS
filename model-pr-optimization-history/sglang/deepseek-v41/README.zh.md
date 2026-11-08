@@ -5,6 +5,11 @@
 K tile 复用和选择/写回融合。卡片记录完整 diff 覆盖，并区分实验分支性能数据和
 尚待验证的上游移植。下方历史文件覆盖表与卡片保留原有审计范围。
 
+[已合并 TRT-LLM attention 审阅](../../../skills/llm-torch-profiler-analysis/references/dsv41-trtllm-source-review.md)
+覆盖 #41603、#44326、#48467：uniform-FP8 存储、支持 breakable prefill 的
+decoder bounded replay，以及按 query 行数分配的持久 counter。当前 main 的
+实现与 #36652 尚未合并的后端重构分别说明。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

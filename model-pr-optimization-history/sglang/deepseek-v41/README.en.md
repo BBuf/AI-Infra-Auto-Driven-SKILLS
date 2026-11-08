@@ -6,6 +6,11 @@ K reuse and selection/writeback. The cards record complete diff coverage and
 separate experimental-branch measurements from pending upstream validation.
 The historical file coverage and cards below retain their original scope.
 
+The [merged TRT-LLM attention review](../../../skills/llm-torch-profiler-analysis/references/dsv41-trtllm-source-review.md)
+covers #41603, #44326 and #48467: uniform-FP8 storage, decoder bounded replay
+with breakable prefill, and persistent query-row-sized counters. It separates
+current mainline behavior from the pending backend rewrite in #36652.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

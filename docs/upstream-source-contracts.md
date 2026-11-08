@@ -81,6 +81,14 @@ different ref or dispatch. The [paged KV contract](../skills/llm-torch-profiler-
 retains its October source audit: 528 B/288 B include payload/scales per stored
 token before page padding, not whole-model KV capacity.
 
+The [TRT-LLM sparse-attention review](../skills/llm-torch-profiler-analysis/references/dsv41-trtllm-source-review.md)
+traces three merged changes through current callers: uniform-FP8 KV stores,
+decoder bounded replay with breakable prefill, and explicit persistent counters
+through FlashInfer's public API. KV norm/RoPE/store is fused; Q still preserves
+BF16 intermediate rounding before a separate FP8 conversion. Counter capacity
+is bounded by query rows, including speculative rows, rather than requests.
+Encoder bounded replay remains unsupported on this pinned mainline backend.
+
 [Detailed step annotations](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/model_executor/step_span_utils.py)
 carry context/generation sums of query lengths, KV lengths, squared query
 lengths and query×KV lengths. Verify/Draft widths come from speculative shape,
