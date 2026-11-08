@@ -24,8 +24,14 @@ already pins [sgl-deep-gemm 0.2.6](https://github.com/sgl-project/sglang/blob/c2
 and does not contain this proposed adapter file. Current DSA still resolves
 the legacy `fp8_mqa_logits` / `fp8_paged_mqa_logits` functions. Current V4.1
 [index-logits dispatch](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/attention/dsv4/index_logits.py)
-uses the modern interface for BF16 SM100 weights/logits, but retains the
-legacy call shape for FP32 overrides and other architectures.
+admits the modern interface for BF16 SM100 weights/logits, but paged calls
+also require varlen metadata with `indices`. Current
+[metadata admission](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/layers/attention/dsv4/metadata.py)
+requires the varlen flag, a non-JIT schedule, at least 96 total query rows,
+and at most 29,039 rows in a chunk. Below that minimum, or without those
+indices, even BF16 paged output uses the legacy call shape. FP32 overrides
+and other architectures also retain legacy calls. Output dtype alone does
+not identify which scheduler or kernel ran.
 
 The independently inspected DeepGEMM `dev`
 [`909f68c19cc23c6afd9cc039c0493b00586b66b2`](https://github.com/sgl-project/DeepGEMM/blob/909f68c19cc23c6afd9cc039c0493b00586b66b2/deep_gemm/__init__.py)
