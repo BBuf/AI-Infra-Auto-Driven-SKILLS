@@ -233,6 +233,15 @@ engine checks and paired benchmark. It retains the above-threshold copy
 regressions, near-equal E2E result and the pre-refactor dates of earlier
 hardware validation and approval.
 
+A separate metadata-only reconciliation refreshed 78 stale PR status/head
+mentions across 45 fusion-catalog rows after another API check. Closed PRs
+are no longer described as active proposals, and merged PRs record the actual
+merge date. Original heads/dates remain attached to historical implementation
+notes and measurements; these rows explicitly await final-source review.
+The snapshot also refreshes base/merge revisions and change counts. This adds
+**zero** to the 41 complete manual reviews. An unrelated personal-memory
+instruction was removed from the public catalog.
+
 ## Local validation of this increment
 
 `pytest -q`: 273 passed, one optional test skipped, 241 subtests passed.
