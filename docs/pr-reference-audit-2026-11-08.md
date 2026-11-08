@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 18 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 21 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -125,6 +125,15 @@ tables, direct top-k writeback, draft metadata capture, FP8 producer epilogues
 and PDL dependencies from the current mainline. The card preserves revision,
 hardware and acceptance-mode limits on performance reports, including a
 profile-only improvement that has not been measured end to end.
+
+[Three earlier Hopper indexer reviews](../skills/llm-torch-profiler-analysis/references/dsv41-hopper-indexer-review.md)
+cover the closed-unmerged #40160 grouped-WGMMA prototype and pending #42365
+dense prefill fusion / #40860 compact candidate scoring. The catalog now records
+their current states and separates the current 1 GiB prefill budget and fused
+32-head epilogue from older benchmark baselines. Current paged decode initializes
+only the live score prefix; compact scoring instead scans all compact columns
+and restores logical positions before slot mapping. All three full diffs and
+discussions were read and their heads/bases rechecked; no GPU results were rerun.
 
 ## Local validation of this increment
 

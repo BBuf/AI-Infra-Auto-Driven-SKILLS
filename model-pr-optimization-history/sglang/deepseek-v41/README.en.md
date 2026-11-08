@@ -11,6 +11,11 @@ covers #41603, #44326 and #48467: uniform-FP8 storage, decoder bounded replay
 with breakable prefill, and persistent query-row-sized counters. It separates
 current mainline behavior from the pending backend rewrite in #36652.
 
+The [Hopper indexer review](../../../skills/llm-torch-profiler-analysis/references/dsv41-hopper-indexer-review.md)
+compares current visible-tile scheduling and fused head reduction with pending
+#42365/#40860, and records #40160 as closed without merge. It preserves the
+different head-count, scratch-budget, compact-coordinate and validation contracts.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

@@ -10,6 +10,11 @@ K tile 复用和选择/写回融合。卡片记录完整 diff 覆盖，并区分
 decoder bounded replay，以及按 query 行数分配的持久 counter。当前 main 的
 实现与 #36652 尚未合并的后端重构分别说明。
 
+[Hopper indexer 审阅](../../../skills/llm-torch-profiler-analysis/references/dsv41-hopper-indexer-review.md)
+对照当前按有效 tile 调度、融合 head reduction 的实现与待合并的 #42365/#40860，
+并将 #40160 更正为关闭未合并。三者的 head 数、临时显存预算、compact 坐标和验证
+范围各不相同，不能直接互换。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

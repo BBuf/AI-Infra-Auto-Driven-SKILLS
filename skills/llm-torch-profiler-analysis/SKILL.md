@@ -211,6 +211,10 @@ Load only relevant references:
   merged sparse-attention integration, breakable prefill and public persistent
   counter API, plus the pending per-token/metadata rewrite. Distinguish main's
   remaining Q conversion from the proposal's fused output and PDL gates.
+- [dsv41-hopper-indexer-review.md](references/dsv41-hopper-indexer-review.md):
+  current visible-tile scheduling and fused head reduction, pending dense/compact
+  scoring proposals, and the closed grouped-WGMMA prototype. Preserve logical
+  versus compact scan lengths, numerical order and current prefill interfaces.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.
