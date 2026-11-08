@@ -327,6 +327,15 @@ Retain 62/59 changed-shape regressions on B300/B200, mostly TP8, and separate
 the reported T72 aggregate from the 720-row table. The revised test mirror
 reuses existing T71/72 cases; final-head CI again has no targeted GPU results.
 
+The same review covers #8073's twelve small-token input-prefetch programs.
+Route/shared-expert reads remain after PDL wait and precede the epoch/clear
+reads; the buffer-size word is still read earlier. Publication and reduction
+bases use local copies of the same control values, not newly sampled epochs.
+Full-file transformations preserve the remaining arithmetic and protocol.
+Retain twelve/two changed-shape B300/B200 regressions, all TP8, and distinguish
+the external rank-min timings from the unchanged rank-max harness. The final
+green CI again has AOT builds but no targeted numerical test jobs.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source

@@ -1,7 +1,7 @@
-# FlashInfer indexed finalize: packed operands across the one-shot poll
+# FlashInfer indexed finalize: packed operands and first-token prefetch
 
 Reviewed on 2026-11-09 (Asia/Shanghai). This is a historical source review
-of #7905, following the [two-shot/deferred lineage](flashinfer-moe-finalize-two-shot-review.md).
+of #7905/#8073, following the [two-shot/deferred lineage](flashinfer-moe-finalize-two-shot-review.md).
 Current comparisons use `31c146b16789f112e9b9861bd79247d4701e437a`.
 No GPU execution, SASS comparison, sanitizer or benchmark was run here.
 
@@ -127,3 +127,113 @@ one of the 40 whole device files differs from this PR head. Later load and
 scheduling edits need their own review. For profiling, identify the selected
 program and shape, preserve small-batch regressions, and verify instruction
 placement/register pressure before attributing a latency change to prefetch.
+
+## PR #8073 — prefetch first-token inputs after the dependency wait
+
+- Link/title: [perf(cake_moe_finalize_allreduce_fusion): issue the first token's route indices ahead of the control words](https://github.com/flashinfer-ai/flashinfer/pull/8073).
+- State: merged 2026-10-31 at 04:14:28 UTC; head
+  `50f1872d213a2b3dd9cdfd01e30f47a97afc80ba`, API base
+  `e7ee9232eb2f6a1ec23312e29b3a9383c7feef36`, actual merge-base
+  `36ec6101e76d34f364d7dee51a90e7660ac780a7`, merge
+  `795601c070aa78d8eb280398cff3ef154ecb84b7`.
+- Coverage: full 9,766-line diff fetched; all unique changes reviewed across
+  twelve files, +4,002/-2,394. Complete-file comparisons explicitly reverse
+  the inspected prefetch, shared-input selection and address-base edits in
+  every variant, then prove equality to its base under bijective temporary
+  renaming. Assembly strings, member fields, constants and operation order
+  remain exact. Both dtype-specific unpacking blocks were read separately.
+  All 40 base bodies match #7905; 28 head bodies are byte-identical. All body
+  prose, structured checks of 720 timing rows, two issue comments, one empty
+  approval, no inline comments and the single commit message are covered.
+- Reviewed files: all twelve
+  `cake_trtllm_moe_finalize_{bfloat16,float16}_ws{2,4,8}_o{110,111}_small_kernel.cu`
+  files under `csrc/cake_moe_finalize_allreduce_fusion`. Binding, loader,
+  public APIs, three test files, benchmark and timing helpers are unchanged.
+- Motivation: shorten the small-token startup dependency chain by fetching
+  route indices and optional shared-expert input before deriving communication
+  addresses. The registry, dispatch and arithmetic contract are preserved.
+
+### Input readiness and control-word lifetime
+
+The [BF16 TP2 body](https://github.com/flashinfer-ai/flashinfer/blob/50f1872d213a2b3dd9cdfd01e30f47a97afc80ba/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws2_o110_small_kernel.cu)
+still reads `control_0[3]`, the buffer-size word, **before** the existing
+`griddepcontrol.wait`. Immediately after that wait, the new block begins:
+
+```diff
++    int first_token = cluster_id;
++    int first_thread = cta_rank * 224 + tid;
++    int first_index[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
++    unsigned int first_shared[4] = {0};
++    if (first_token < tokens) {
+```
+
+With a valid first token, it reads up to eight route indices, each guarded
+by `top_k > slot`; a shared expert additionally supplies one packed 16-byte
+load per thread at `first_token * 7168 + first_thread * 8`. An empty volatile
+assembly statement consumes all twelve words before the source reads
+`control_0[2]` (current epoch) and `control_0[4]` (clear extent). Thus “before
+the control words” refers to these later reads, not every control field.
+The empty assembly is an operand dependency, not a hardware barrier or a
+SASS-level scheduling measurement. Input reads remain after the PDL wait.
+
+The publish loop uses the cached values only when `token == token_begin`;
+subsequent tokens retain their ordinary loads. `token_begin == first_token`
+and `cluster_thread == first_thread`. Shared data stays packed until the
+selection and is then unpacked: BF16 retains the shift/mask conversion, while
+the [FP16 body](https://github.com/flashinfer-ai/flashinfer/blob/50f1872d213a2b3dd9cdfd01e30f47a97afc80ba/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_float16_ws2_o110_small_kernel.cu)
+retains two half-to-float conversions. Negative route indices still suppress
+the corresponding expert read and contribution. Positive row bounds remain
+the caller's contract. Cached indices/shared words are reset after publication;
+later tokens do not consume those reset values.
+
+Peer pointers now hold raw workspace bases. At publication, local copies
+`publish_current_word` and `publish_bytes_word` pass through empty `+r`
+assembly before calculating `(current_word % 3) * (bytes_word / 2)`. The
+volatile peer stores add that base to their existing slot. After publication,
+equivalent `late_*` copies form the reduction base and dirty-buffer base
+`((current_word + 2) % 3) * stride` used for clearing. These are copies of
+the **same already-read words**, not fresh samples of mutable control memory.
+The bot walkthrough's wording about sampling at each operation point is
+therefore too strong. Entry accounting, epoch advancement, clear extent,
+route/rank rounding, RMS exchange, residual/norm operands and output epilogues
+retain their prior operations. No changed control ownership or additional
+synchronization is established by this scheduling rewrite.
+
+### Actual test and timing evidence
+
+There are no changed tests. The requested final-head
+[run 41161568588](https://github.com/flashinfer-ai/flashinfer/actions/runs/41161568588)
+contains ten jobs, including six successful AOT build/import jobs, and no
+targeted numerical job. Setup checked merge `9d47ead59` of the exact head
+into the API base. H100 PR tests were disabled for runner capacity; all five
+A10G shards and the T4 scope were empty. The summary found no JUnit artifacts.
+The earlier final-head run failed unauthorized-status reporting before setup.
+The discussion contains the author's three-file test request and an empty
+maintainer approval, without an additional numerical or sanitizer report.
+
+The 720 unique table shapes match #7905. The same external CUDA 13.4 protocol
+reports rank-min CUPTI times and median paired previous/new ratios from
+interleaved runs. T1/2/4/8/16 supply the 480 changed-program shapes; the other
+240 use unchanged bodies. Larger small-token boundary shapes are absent.
+
+| Cohort | B300 geometric mean / range | B200 geometric mean / range |
+|---|---|---|
+| All 720 | 1.012 / 0.989–1.053 | 1.012 / 0.988–1.071 |
+| Changed 480 | 1.018 / 0.989–1.053 | 1.019 / 0.995–1.071 |
+| Unchanged 240 | 1.000 / 0.989–1.015 | 1.000 / 0.988–1.009 |
+| TP2 small, 160 | 1.020 / 1.000–1.047 | 1.023 / 1.003–1.071 |
+| TP4 small, 160 | 1.022 / 1.003–1.053 | 1.021 / 1.007–1.039 |
+| TP8 small, 160 | 1.011 / 0.989–1.031 | 1.012 / 0.995–1.033 |
+
+All twelve B300 and two B200 changed-program ratios below one are TP8.
+The B300 minimum is T8/FP16/K8/PDL-off/ordinary output/shared expert;
+the B200 minimum is T2/BF16/K8/PDL-off/NVFP4/shared expert. Unchanged rows
+also fluctuate: 112 B300 and 92 B200 ratios fall below one. Preserve these
+controls and individual regressions alongside the geometric means.
+
+The committed rank-max TRT/Cake/TRT harness remains different from this
+external experiment. No end-to-end or model-accuracy improvement is proved.
+Every one of the 40 whole historical device files differs at the current pin;
+the source transformation proof covers this PR, not later generated bodies.
+When profiling a small-token finalize, verify the selected revision, input
+readiness and actual compiled load placement before applying this technique.

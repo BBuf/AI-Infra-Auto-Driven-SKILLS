@@ -314,9 +314,11 @@ Load only relevant references:
   require separate evidence.
 - [flashinfer-moe-finalize-prefetch-review.md](references/flashinfer-moe-finalize-prefetch-review.md):
   #7905's packed residual/norm-weight operands across one-shot polling and
-  TP4 T72 crossover. Preserve TP8 small-batch regressions and distinguish the
-  separate T72 aggregate from the 720-row table. A compiler dependency does
-  not prove instruction placement or lower register pressure.
+  TP4 T72 crossover; #8073's first-token prefetch after PDL wait. Distinguish
+  buffer-size versus epoch reads and deferred address calculations from fresh
+  control loads. Preserve TP8 regressions and separate the T72 aggregate from
+  the 720-row tables. Compiler dependencies do not prove instruction placement
+  or lower register pressure; both final-head runs have AOT results only.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish
