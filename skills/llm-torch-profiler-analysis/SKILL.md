@@ -329,7 +329,14 @@ Load only relevant references:
   unchanged addition order, and occupancy-capped launch. Preserve the NVFP4
   negative-route extra reads and identity-only input coverage. Ten original
   CPU cases pass; final CI has AOT results only. The 52 inspected complete
-  device bodies match current bytes; eleven later bodies remain separate.
+  device bodies match current bytes.
+- [flashinfer-moe-finalize-shared-prefetch-review.md](references/flashinfer-moe-finalize-shared-prefetch-review.md):
+  #8697 adds TP4 shared-expert L2 hints before routing and non-coherent vector
+  reads at the original shared-addition position for T≥1536. Distinguish
+  cache prefetch from an early converted-value load. Its 56 complete device
+  files match current bytes; seven later bodies remain separate. Final CI
+  passes 26 CPU tests but skips all six GPU nodes. The 32 reported timing
+  measurements cover only sixteen distinct changed shapes.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish

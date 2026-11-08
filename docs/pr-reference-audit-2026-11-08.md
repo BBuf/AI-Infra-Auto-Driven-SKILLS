@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Thirty additional PRs cited by the new review cards bring the
-TSV to **6,964 objects**; all 71 PRs manually reviewed in this refresh have
+6,934 objects. Thirty-one additional PRs cited by the new review cards bring the
+TSV to **6,965 objects**; all 72 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -509,6 +509,18 @@ one B300/two B200 regressions and AOT-only final-head CI. The total is now 71
 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM and 24 FlashInfer.
 Only #8503's head/base check is fresh in this increment; prior per-entry check
 timestamps remain. The ledger has 6,964 objects.
+
+The [shared-expert prefetch review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-shared-prefetch-review.md)
+completes #8697's eight-file diff and discussion. Full-file inverse
+transformations cover four new TP4 programs; all 52 retained bodies are
+unchanged, and all 56 match current bytes. Thirteen original CPU cases pass
+locally. Final-head CI and JUnit establish 26 CPU passes and six skipped GPU
+nodes, with no numerical execution. The card preserves mixed-rank selector
+coverage, the original shared-addition order, sixteen published changed
+shapes and a second set of measurements of those same shapes. The total is
+now 72 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM and
+25 FlashInfer. Only #8697's head/base check is fresh in this increment;
+prior per-entry timestamps remain. The ledger has 6,965 objects.
 
 ## Local validation of this increment
 

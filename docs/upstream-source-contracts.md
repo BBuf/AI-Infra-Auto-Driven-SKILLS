@@ -366,6 +366,17 @@ inputs, AOT-only final CI and one B300/two B200 regressions in the broader
 176-shape cohort. Only 32 changed timing rows are published individually.
 Eleven additional current device bodies remain outside that review.
 
+The [shared-expert prefetch review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-shared-prefetch-review.md)
+covers four of those bodies in #8697. TP4 shared-expert T≥1536 selects
+`_tsds`: one thread in eight issues an L2 hint before routing, after PDL wait;
+the actual non-coherent vector load and shared addition keep their original
+position. The two-shot protocol and dtype rounding remain unchanged. All 56
+historical device files match current bytes; seven later TP2/TP8 bodies
+remain separate. CPU tests cover mixed shared-presence selectors, while
+final-head CI passes 26 CPU cases and skips all six multi-GPU nodes. The
+reported 32 changed measurements repeat sixteen shapes, all at T2048;
+retain that limitation when using the roughly 3% kernel timing result.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source
