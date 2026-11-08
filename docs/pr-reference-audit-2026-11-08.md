@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 29 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 30 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -173,6 +173,11 @@ has moved; the counter owner can now grow during tree binding, and generic
 attention wrappers do not inherit the runtime leaf's reuse. Historical
 FlashInfer 0.6.18 attention measurements are not validation of the current
 0.7.3 dependency.
+The same review covers #1931's full 436-line diff and all review replies,
+including removed redundant tests, current `gemm.mv` registration and Beam's
+new FP32-weight caller. Historical “no model caller” and old file/API names
+are no longer used as current guidance; final-rebase GPU coverage remains
+qualified because the reports do not consistently identify a tested SHA.
 
 ## Local validation of this increment
 

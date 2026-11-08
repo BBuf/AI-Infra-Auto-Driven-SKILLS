@@ -136,6 +136,11 @@ MHA leaf reuses completion counters across calls and KV-pool rebinds, with
 tree-binding growth and an oversize fallback. Generic registered wrappers
 still omit the buffer. Attribute removed fills to the actual caller, and keep
 historical wheel-specific microbenchmarks separate from current serving results.
+The FP32 row-CTA projection has moved from `decode_gemv` to `gemm.mv`, with
+N≤1024, M≤16 and separate single-/multi-row K limits. Beam now calls this
+dtype-aware path directly; ordinary FP32 `gemm.mm` is not redirected through
+the BF16-only MV shortcut. Preserve the four-element BF16 load cap and disabled
+FMA contraction when reasoning about equality to explicit FP32 widening.
 
 - SGLang kernel roots are `python/sglang/kernels/{aot,jit,ops}`. The current
   [dependency pin](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/pyproject.toml) uses FlashInfer 0.7.3 (cu13).

@@ -1,6 +1,6 @@
-# TokenSpeed routing, sampling and attention launch overhead
+# TokenSpeed projection, routing, sampling and attention overhead
 
-Inspected on 2026-11-08. All three full diffs, PR bodies and available comments
+Inspected on 2026-11-08. All four full diffs, PR bodies and available comments
 and reviews were read. Fresh API checks matched each head/base below. Current
 callers and implementations were checked at TokenSpeed
 `7b21034e72bb45d1edef3d3b5483b50b58c4c492`, with FlashInfer API contracts at
@@ -236,3 +236,97 @@ Current source:
 [FlashInfer size/resolver contract](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/utils.py),
 [decode argument and resolver](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/decode.py),
 [context argument and resolver](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/prefill.py).
+
+## PR #1931 — FP32 row-CTA projections for small batches
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/1931
+- State: merged 2026-10-13; head `1c1fa389a47f2337f5512d198924d4754cc088e5`,
+  base `379fa00864256a7846f2292d8737e6a74d8c809a`,
+  merge `0f8ed626130e881a32bba57e1560268b6483355d`. Fresh head/base check matched.
+- Coverage: all 436 diff lines, three files, +371/-2; four issue comments,
+  five reviews and four inline comments, including the rebase/test-scope replies.
+- Reviewed files: `tokenspeed-kernel/python/tokenspeed_kernel/ops/gemm/triton_gemv.py`,
+  `tokenspeed-kernel/test/ops/gemm/test_decode_gemv.py`,
+  `test/runtime/test_dispatch_autotune.py`.
+- Motivation: small FP32-weight projections paid for Torch's GEMM/split-K
+  reduction and, with BF16 activations, a widening copy. The Torch path also
+  followed global matmul-precision settings instead of guaranteeing FP32 products.
+
+One CTA handles one `[N,K]` weight row and reuses it across all `M` activation
+rows. Products and accumulation are FP32, with `enable_fp_fusion=False`.
+Single-row calls use one power-of-two reduction block, capped at 65536 columns;
+multi-row calls use at most 512-column blocks with rows padded to a power of
+two. Up to eight padded rows unroll the K loop; 16 use the loop to avoid
+register pressure. Both preserve the product-add order. BF16 inputs widen
+exactly in the load, and this constraint preserves the FP32-call reduction
+layout instead of letting wider BF16 vector loads change it:
+
+```diff
++    xv = tl.load(
++        tl.max_contiguous(x_ptr + rows[:, None] * K + offs[None, :], [1, 4]),
++        mask=row_mask[:, None] & col_mask[None, :],
++        other=0.0,
++    ).to(tl.float32)
+```
+
+The registry admits NVIDIA, FP32 weights with FP32 or BF16 activations,
+1–16 rows, at most 1024 output columns, K divisible by four, and K≤65536 for
+one row or K≤7680 otherwise. Those are measured performance limits, separate
+from direct-call correctness. The body gives an excluded M=8/N=256/K=8192
+case with spills: 92.9 microseconds versus Torch's 16.1. Do not extrapolate
+the in-range improvement to wider projections. NVIDIA registration has no
+Blackwell-only architecture gate, but the report measures GB200 only.
+
+### Current API and actual model caller
+
+The historical `ops/gemm/triton_gemv.py` file and `decode_gemv` public entry
+are gone. Current implementation is `_triton/gemv.py`, registered by
+`ops/gemm/triton.py` under **`gemm.mv`**, with the same row-CTA shape limits.
+`ops/gemm/__init__.py::mv` checks output dtype/shape/device, uses Torch for
+noncontiguous inputs or outputs, and selects by dtype, architecture, shape and
+presence of a pre-split weight. The small FP32-weight path does not use the
+BF16 FlashInfer joint-tuning branch. Beyond 16 rows, BF16 activations may use
+BF16x3 or a CUDA-core provider where separately admitted; comparing that
+mixed call against a differently selected FP32 call does not promise equal bits.
+
+The original body's statement that no in-tree model used the new dtype path
+is historical. Current `BeamRouter` keeps an FP32 weight and directly calls
+`mv(hidden_states, weight, weight_split=...)`; its admitted small BF16 batches
+can use this row-CTA leaf. Ordinary `UnquantizedLinearMethod` calls `gemm.mm`,
+whose `_use_mv` shortcut requires BF16/BF16. An arbitrary FP32 linear/router
+therefore does not automatically acquire this kernel. Also distinguish the
+separate `triton_router_gemv.py` family: it consumes row-major `[K,N]` weights
+and has its own split-K/reduction design. Similar profiler names are not the
+same algorithm or numerical contract.
+
+Tests cover dtype/shape selection boundaries, FP64-reference tolerances
+(`rtol=2e-5`, `atol=2e-4`), exact BF16-versus-explicit-widening results when the
+same provider runs, zero/odd/wide direct calls, changed-input graph replay and
+Torch's `high` precision setting. The review moved launch-configuration checks
+to the kernel test and removed duplicate dispatch/widening tests already
+covered by the prerequisite implementation; the final diff does not contain
+the proposed fake CUDA operand helper. Retain tests for reduction order,
+graph refresh and fallback boundaries when simplifying this area.
+
+The body reports a GB200/Torch 2.13/Triton 3.8 microbenchmark before the final
+rebase. For FP32 M=2/N=256/K=7168, warm/cold times are 17.37/17.94→3.42/7.01
+microseconds. Cold measurements put a 512 MiB memset before each call and
+subtract a memset-only graph. A 1756-shape warm sweep reports no in-range
+regression but 45 regressions among 246 out-of-range shapes. These are kernel
+measurements, not Beam model or service results.
+
+Reported GPU tests cover 292 passes and 11 AMD-only skips against 211
+passes on the baseline, with and without `NVIDIA_TF32_OVERRIDE=0`. Separate
+registry suites retain six failures on both branches; runtime dispatch tests
+retain 42 existing failures. The body describes a tested pre-final-rebase head;
+the later reply refers to rebased counts, but neither supplies a precise tested
+SHA for every result. The final-head AMD bot reports 513 within budget and one
+inconclusive case; it does not validate the NVIDIA-only row-CTA kernel. These
+reports are not a clean final-head GPU certification by this refresh.
+
+Current source:
+[row-CTA implementation](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/gemm/_triton/gemv.py),
+[registration and shape limits](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/gemm/triton.py),
+[public MV/MM dispatch](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/gemm/__init__.py),
+[Beam router](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/models/beam.py),
+[ordinary unquantized linear](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/layers/dense/unquant.py).

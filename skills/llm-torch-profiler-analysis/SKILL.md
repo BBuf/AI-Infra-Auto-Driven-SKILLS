@@ -225,8 +225,8 @@ Load only relevant references:
   Hopper cleaner/selection bounds, portable DCP empty-tile skipping and the
   closed KPool row-partition proposal. Distinguish traffic, scratch and gathers.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
-  unpacked BF16 MoE routes, selective sampling reductions and owner-local MHA
-  counters. Check rounding, acceptance mode and the actual attention caller.
+  FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
+  owner-local MHA counters. Check rounding, shape, mode and the actual caller.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.
