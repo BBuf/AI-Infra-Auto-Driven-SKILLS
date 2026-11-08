@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Twenty-six additional PRs cited by the new review cards bring the
-TSV to **6,961 objects**; all 68 PRs manually reviewed in this refresh have
+TSV to **6,962 objects**; all 69 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -474,6 +474,16 @@ Final-head CI has six AOT jobs and no targeted numerical jobs. The total is now
 68 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM and 21 FlashInfer.
 Only #8073's head/base check is fresh in this increment; prior timestamps are
 retained. The ledger contains 6,961 objects.
+
+The prefetch/dispatch review completes #8139's 44-file diff, all discussion
+and its single commit. Full-file comparisons isolate unused-macro removal and
+temporary renaming in all forty device bodies from the actual TP4 class-gate
+change. The new CPU functions pass 9,480 branch combinations locally; this
+does not establish occupancy or full-selector behavior. Sixteen changed timing
+rows are separated from 720 unchanged controls, and final-head CI again has
+only AOT results. The total is now 69 manually reviewed PRs: 27 SGLang,
+11 TokenSpeed, nine vLLM and 22 FlashInfer. Only #8139's head/base check is
+fresh in this increment; earlier timestamps remain. The ledger has 6,962 objects.
 
 ## Local validation of this increment
 

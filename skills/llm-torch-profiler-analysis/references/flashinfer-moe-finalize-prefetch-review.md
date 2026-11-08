@@ -1,7 +1,7 @@
-# FlashInfer indexed finalize: packed operands and first-token prefetch
+# FlashInfer indexed finalize: small-token prefetch and dispatch
 
 Reviewed on 2026-11-09 (Asia/Shanghai). This is a historical source review
-of #7905/#8073, following the [two-shot/deferred lineage](flashinfer-moe-finalize-two-shot-review.md).
+of #7905/#8073/#8139, following the [two-shot/deferred lineage](flashinfer-moe-finalize-two-shot-review.md).
 Current comparisons use `31c146b16789f112e9b9861bd79247d4701e437a`.
 No GPU execution, SASS comparison, sanitizer or benchmark was run here.
 
@@ -237,3 +237,103 @@ Every one of the 40 whole historical device files differs at the current pin;
 the source transformation proof covers this PR, not later generated bodies.
 When profiling a small-token finalize, verify the selected revision, input
 readiness and actual compiled load placement before applying this technique.
+
+## PR #8139 — admit TP4/K4 without a shared expert to the T71 extension
+
+- Link/title: [perf(cake_moe_finalize_allreduce_fusion): extend the small-token program to top_k 4 without a shared expert at world size 4](https://github.com/flashinfer-ai/flashinfer/pull/8139).
+- State: merged 2026-10-31 at 21:43:40 UTC; head
+  `c6f10f726c6b63b476324d8d001f98192dd9ef20`, API base
+  `5086eb9db8be53c5b7bd331bfe810843034ce4fe`, actual merge-base
+  `78420faf3092e2b9f617551e214e3eddd7dfec91`, merge
+  `58ece34ea74ad39f9d641443fa14be28e5c7dabb`.
+- Coverage: full 6,809-line diff fetched; all unique changes reviewed across
+  44 files, +1,386/-1,344. All 40 base bodies match #8073. Full-file comparisons
+  show twenty bodies only delete the unused `NUM_MAIN_STAGES` definition;
+  twenty also bijectively rename local temporaries, including loop indices
+  and unpacked buffers. All other bytes, constants, assembly strings and
+  operation order are preserved. All body prose, 16 changed-shape rows and
+  structured checks of 720 control rows, two issue comments, two reviews,
+  no inline comments and the single commit message are covered.
+- Reviewed files: the host binding, all forty device files,
+  `flashinfer/jit/cake_moe_finalize_comm.py`, the GPU test's program mirror and
+  `tests/cpu/comm/test_cake_moe_finalize_dispatch.py`.
+- Motivation: use the existing small-token implementation for one more TP4
+  routing class when a whole token's four-CTA cluster can reside on the GPU.
+  The 40-program registry and kernel arithmetic remain unchanged; the
+  regeneration is not forty new kernel optimizations. The commit's claim of
+  unchanged compiled code was not independently checked with nvcc or SASS.
+
+### Dispatch and the capacity condition
+
+The [binding](https://github.com/flashinfer-ai/flashinfer/blob/c6f10f726c6b63b476324d8d001f98192dd9ef20/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_allreduce_fusion_binding.cu)
+changes the class term to:
+
+```diff
++  const bool small_token_extended =
++      world_size == 4 || (world_size == 2 && (top_k != 4 || v_has_shared_expert != 0));
+```
+
+With the default `small_token_max=64`, the new class is TP4/K4/no-shared at
+T65–71. A smaller configured limit expands the affected range to
+`small_token_max + 1` through 71. In both cases the extension additionally
+requires `tokens <= cluster_capacity(small_token)`: the minimum of the
+per-SM residency-derived capacity and `cudaOccupancyMaxActiveClusters`.
+Insufficient capacity retains the persistent fallback. The ordinary
+`tokens <= small_token_max` branch is separate from this extension check.
+
+Two-shot selection remains first: TP4 switches at T72 and TP8 at T56,
+including when a custom small-token limit would otherwise admit them.
+TP2's K4/no-shared exclusion and TP8's lack of an extension do not change.
+The release-note suggestion of newly extended TP2 support is therefore
+misleading. Small and persistent programs share the one-shot protocol,
+so their device-local capacity decision may differ between ranks without
+changing the exchange format. This does not relax cross-rank agreement
+between one-shot and two-shot protocols.
+
+The current pin retains the exact inspected class term, small-branch
+predicate, T71 cap and earlier T72/T56 tests. Later two-shot variants and
+all forty changed current device bodies still require separate review.
+
+### Tests and measured coverage
+
+The new [CPU test](https://github.com/flashinfer-ai/flashinfer/blob/c6f10f726c6b63b476324d8d001f98192dd9ef20/tests/cpu/comm/test_cake_moe_finalize_dispatch.py)
+extracts the binding's class and small-branch expressions, translates their
+logical operators and checks limits 16/64, all three world sizes, K4/K8,
+shared/no-shared, five capacities and T1–79. Executing those two unchanged
+test functions from their AST, with only the source-directory provider
+substituted, passes 9,480 branch combinations locally. This checks predicate
+logic, not actual occupancy or the earlier two-shot branch. Comparing old
+and new expressions changes only TP4/K4/no-shared within the admitted range.
+
+The GPU test updates `_expected_program` but adds no token values or new
+numerical cases. Its mirror omits the real occupancy query; the existing
+kernel-name assertion is conditional on PDL/weight-bias and capacity-related
+device/shape checks. The public APIs, unified MoE test, benchmark and timer
+are byte-identical to #8073. No new graph-replay, model-accuracy or compiled
+identity result is supplied by this diff.
+
+Final-head [run 41230991164](https://github.com/flashinfer-ai/flashinfer/actions/runs/41230991164)
+enumerates ten jobs and six successful AOT builds, with no targeted CPU or
+GPU test job. Setup checked merge `1c44dcf0f` of the exact head into the API
+base; H100 was disabled, all A10G/T4 targeted scopes were empty, and the
+summary found no JUnit artifacts. Two earlier final-head runs failed
+unauthorized-status reporting before setup. The empty maintainer approval
+and CODEOWNERS-gap bot attestation add no numerical validation result.
+
+The external CUDA 13.4 rank-min CUPTI experiment measures sixteen changed
+shapes: TP4/K4/no-shared, T65 or T71, both dtypes, PDL settings and output
+profiles. It reports sufficient grid capacity at both measured token counts.
+Median paired ratios are distinct from ratios of the displayed median times.
+
+| Cohort | B300 geometric mean / range | B200 geometric mean / range |
+|---|---|---|
+| Changed 16 | 1.018 / 1.004–1.031 | 1.021 / 1.002–1.033 |
+| Unchanged standard 720 | 1.000 / 0.977–1.023 | 1.001 / 0.978–1.027 |
+
+No changed row is below one. The 720 control rows have the same inventory as
+#8073 and run unchanged programs, with 338 B300 and 271 B200 ratios below one.
+T66–70, the range exposed by a smaller configured limit, and capacity-limited
+devices have no separate timing rows. Keep these limits and the unchanged
+rank-max committed harness distinct from the sixteen-shape dispatch result.
+For a profile at this boundary, verify class, token count, resident capacity
+and selected program before attributing the gain to a new kernel body.

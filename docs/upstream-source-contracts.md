@@ -336,6 +336,15 @@ Retain twelve/two changed-shape B300/B200 regressions, all TP8, and distinguish
 the external rank-min timings from the unchanged rank-max harness. The final
 green CI again has AOT builds but no targeted numerical test jobs.
 
+The review also traces #8139's TP4/K4/no-shared extension: with the default
+limit, T65–71 selects the small program only when resident-cluster capacity
+holds every token. T72 still takes the earlier two-shot branch; TP2/TP8 rules
+do not change. All forty regenerated bodies differ only by unused-macro
+removal and bijective temporary renaming. The new CPU predicate checks pass
+locally, but neither those checks nor the final AOT-only CI prove GPU occupancy
+or numerical execution. The sixteen measured changed shapes are T65/T71;
+the standard 720-row matrix exercises unchanged programs.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source

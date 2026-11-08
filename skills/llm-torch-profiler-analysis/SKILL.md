@@ -318,7 +318,9 @@ Load only relevant references:
   buffer-size versus epoch reads and deferred address calculations from fresh
   control loads. Preserve TP8 regressions and separate the T72 aggregate from
   the 720-row tables. Compiler dependencies do not prove instruction placement
-  or lower register pressure; both final-head runs have AOT results only.
+  or lower register pressure. #8139 extends TP4/K4/no-shared to T71 only within
+  resident-cluster capacity; distinguish its sixteen measured shapes from the
+  unchanged standard matrix. All three final-head runs have AOT results only.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish
