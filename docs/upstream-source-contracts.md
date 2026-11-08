@@ -310,6 +310,15 @@ all finite communicated values but expose the `0xFFFF` NaN collision, so the
 body's bitwise claim needs a domain qualification. Its 72 changed timing rows
 are separated from 648 unchanged rows, and final-head CI again has AOT only.
 
+The same review covers #7813's eight deferred programs and six existing
+two-shot load changes. Keep one token's activation-rounded residual sum in
+thread-owned shared carry until its RMS wait and normalized/quantized stores
+finish; drain the last token explicitly. The historical TP4 T88 threshold is
+now T72. Its timing table omits the newly admitted threshold ranges, retains
+two changed-program B300 regressions, and reports operator timing only.
+Final-head CI again ran AOT only. All 40 historical device files differ from
+the current pin; the data-lifetime review does not certify later bodies.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source

@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty-four additional PRs cited by the new review cards bring the
-TSV to **6,958 objects**; all 65 PRs manually reviewed in this refresh have
+6,934 objects. Twenty-five additional PRs cited by the new review cards bring the
+TSV to **6,959 objects**; all 66 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -441,6 +441,18 @@ and no requested unit-test results. The total is now 65 manually reviewed
 PRs: 27 SGLang, 11 TokenSpeed, nine vLLM and 18 FlashInfer. Only the new
 head/base check is fresh in this increment; prior timestamps are retained.
 The ledger has 6,958 objects.
+
+The two-shot review also completes #7813's 44 files, all discussion and two
+commits, plus all 720 timing rows. Whole-file comparisons prove 26 programs
+change only temporary identifiers; the remaining six existing programs and
+eight new deferred programs retain explicit load, dtype and quantization
+differences. The review traces shared carry ownership and final-token drain,
+the moved dispatch gates, negative-route row-zero loads and file rendezvous.
+It preserves two changed-program B300 regressions and unmeasured threshold
+ranges. Final-head CI has six AOT jobs and no targeted numerical results.
+The total is now 66 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine
+vLLM and 19 FlashInfer. Only #7813's head/base check is fresh in this increment;
+earlier timestamps are retained. The ledger contains 6,959 objects.
 
 ## Local validation of this increment
 

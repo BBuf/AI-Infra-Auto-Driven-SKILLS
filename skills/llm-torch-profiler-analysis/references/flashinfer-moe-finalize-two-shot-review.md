@@ -1,7 +1,7 @@
-# FlashInfer indexed finalize: two-shot exchange and TP2 own partials
+# FlashInfer indexed finalize: two-shot exchange and deferred RMS
 
 Reviewed on 2026-11-09 (Asia/Shanghai). This card covers historical
-FlashInfer #7511 and #7650; current comparisons use
+FlashInfer #7511, #7650 and #7813; current comparisons use
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU run, sanitizer,
 benchmark or SASS comparison was performed in this audit.
 
@@ -303,3 +303,174 @@ therefore does not use #7511's separate sign-mask word. This narrow comparison
 does not certify every later program body. When diagnosing readiness or
 transferring an optimization, inspect the selected revision's actual encoding,
 poll predicate, decode point and cleanup span together.
+
+## PR #7813 — defer RMS completion while later tokens communicate
+
+- Link/title: [perf(cake_moe_finalize_allreduce_fusion): deferred two-shot programs, earlier two-shot switch at world sizes 4 and 8](https://github.com/flashinfer-ai/flashinfer/pull/7813).
+- State: merged 2026-10-29 at 06:00:19 UTC; head
+  `45b256f36fa7e728154fff22acf912bc27e0e7fe`, API base
+  `4117c6aac8f9c560efbfddad0f649d0ccbef9003`, actual merge-base
+  `c2f8204b458f9a94a328cbebacc537b62b55839a`, merge
+  `9f39329cf25af1d132f2bfdf027104559dcf85aa`.
+- Coverage: full 38,347-line diff fetched, 44 files, +16,748/-5,655;
+  all unique source changes reviewed, with whole-file comparisons for generated
+  variants. All body prose, all 720 timing rows through structured checks,
+  both issue comments, both reviews, no inline comments and both commit
+  messages are covered. The API base is not the diff's merge-base.
+- Reviewed files: binding plus all 40 device programs under
+  `csrc/cake_moe_finalize_allreduce_fusion`, the JIT registry, distributed
+  `test_cake_moe_finalize_allreduce.py` and CPU
+  `test_cake_moe_finalize_dispatch.py`. All 36 base files match #7650.
+- Motivation: overlap a token's RMS completion with later communication,
+  reduce selected route/residual load overhead, and lower the two-shot
+  crossover while preserving compatible messages and numerical ordering.
+
+### Dispatch changes and load contracts
+
+The [binding](https://github.com/flashinfer-ai/flashinfer/blob/45b256f36fa7e728154fff22acf912bc27e0e7fe/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_allreduce_fusion_binding.cu)
+adds eight deferred programs: TP4/TP8 × FP16/BF16 × ordinary/NVFP4 output,
+bringing the per-architecture total to 40. Two-shot selection now precedes
+the small-token checks:
+
+| Condition | Historical #7813 selection |
+|---|---|
+| TP4 T>=88; TP8 T>=56 | Two-shot, before checking `small_token_max` |
+| TP4 T>=1536; TP8 T>=768 | Deferred two-shot, subject to the exception below |
+| TP8 K4, no shared expert, ordinary output | Ordinary two-shot even above the deferred threshold |
+| TP8 above `small_token_max`, if not selected earlier | Two-shot |
+| Other shapes | Retain small/extended-small and TP2 large/persistent rules |
+
+The exact exclusion is:
+
+```diff
++  const bool defer_excluded =
++      world_size == 8 && top_k == 4 && v_has_shared_expert == 0 && !quantize;
+```
+
+Every rank must agree on one-shot versus two-shot. Ordinary and deferred
+two-shot use the same workspace/message layout, so their choice may differ
+across ranks. Preserve the compatible-protocol distinction when changing
+shape or local-occupancy gates.
+
+Of the 32 existing programs, 26 are exactly reproduced by bijective temporary
+identifier renaming, preserving every other byte, including assembly strings,
+constants and statement order. These are the 24 one-shot programs and two
+TP4 ordinary-output two-shot programs. The body additionally reports identical
+SM100a/SM103a compiled code; this audit did not reproduce that SASS comparison.
+The remaining six whole-file differences, after explicit renames, are:
+
+- TP4 NVFP4 two-shot: predicated route loads.
+- TP8 ordinary-output two-shot: packed read-only residual load before gather
+  polling, followed by unpacking after the poll.
+- TP8 NVFP4 two-shot: both changes.
+
+In the [predicated gather](https://github.com/flashinfer-ai/flashinfer/blob/45b256f36fa7e728154fff22acf912bc27e0e7fe/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws4_o111_ts_kernel.cu),
+`ld.global.nc.v4.u32` reads expert data and `ld.global.nc.u16` reads its scale.
+The predicate checks the top-k slot, not whether the route index is negative.
+Negative indices are clamped to row zero for loading; the subsequent
+`route_index_q* >= 0` guards still suppress their arithmetic contributions.
+The binding requires at least one expert row. Thus a skipped route can still
+cause a valid row-zero read; do not equate predication with skipping all
+negative-route memory traffic. The first slot uses `top_k_opaque` through an
+empty inline assembly operand. Rounding after each contribution and rank
+addition is retained. Positive index bounds are not newly checked.
+
+All eight deferred programs use the packed residual load; their four NVFP4
+variants also use the predicated gather. This is a memory-access/scheduling
+change, not permission to remove an intermediate activation-type round trip.
+
+### One pending token, explicit drain
+
+The [TP4 deferred body](https://github.com/flashinfer-ai/flashinfer/blob/45b256f36fa7e728154fff22acf912bc27e0e7fe/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws4_o110_tsd_kernel.cu)
+retains the `local_tokens + 2` loop, owner reduction and broadcast. At step
+`m`, it publishes token `m`, reduces/broadcasts `m-1`, finishes `m-3` when
+present, then gathers `m-2`, adds residual and submits that token's RMS work.
+These token numbers are local sequence positions mapped through
+`token_begin + index * token_stride`.
+
+After residual addition and activation rounding, it writes `residual_out`
+immediately and keeps the same values in shared memory as FP32. Each of 224
+threads owns eight floats, split into two 16-byte banks at offsets 256 and
+`256 + 3584`: 7,168 carry bytes plus the 256-byte RMS area, within the already
+allocated 7,424 bytes per CTA. There is one pending-token carry buffer, not
+a two-token carry ring. The host's inherited comment saying other programs
+use only 256 bytes is stale for these new deferred programs.
+
+The deferred completion reads norm weights, waits on the pending token's
+cluster mbarrier, reloads that thread's carry, sums the four CTA RMS slots in
+the same order, and writes normalized output. It advances `access` and RMS
+parity only after consumption. It finishes the old carry before the same
+thread overwrites it with the next token. The last pending token is explicitly
+drained after the loop when `local_tokens > 0`; the zero-token cluster wait
+and dirty-workspace tail cleanup remain. Grid size still uses the selected
+program's active-cluster capacity, five-CTA/SM cap and four-CTA clusters;
+deferred device launch bounds remain `(224,4)`.
+
+The [TP8 deferred body](https://github.com/flashinfer-ai/flashinfer/blob/45b256f36fa7e728154fff22acf912bc27e0e7fe/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws8_o110_tsd_kernel.cu)
+preserves TP8's two groups of four rank additions. Both complete ordinary-output
+deferred diffs were inspected. The quantized bodies match them after the
+reviewed predicated-load replacement, two epilogue insertions and bijective
+temporary renaming. Both epilogues retain the existing rounded-norm →
+16-element maximum → E4M3 scale → E2M1 payload sequence. Their scale rows use
+`deferred_token` in the loop and `last_token` in the drain, not the token being
+published. Whole-file FP16 comparisons apply the explicit conversion
+primitives and omit BF16's escape helpers/calls; they do not erase the
+protocol difference. BF16 retains #7650's finite-value/NaN qualification.
+
+### Tests, actual CI and measured cohorts
+
+The [distributed test](https://github.com/flashinfer-ai/flashinfer/blob/45b256f36fa7e728154fff22acf912bc27e0e7fe/tests/comm/test_cake_moe_finalize_allreduce.py)
+adds T87/88 and T1535/1536 for TP4, and T55/56 and T767/768 for TP8.
+The existing T1/64/65/71/72/128 and TP2 large-boundary cases remain. The
+cross-product still includes both dtypes, K4/K8, shared expert on/off,
+both output profiles, weight bias 0/1 and PDL on/off. Workspace reuse crosses
+program choices. Kernel-name assertions remain conditional on PDL off,
+weight bias zero and the existing SM-count/expected-program conditions;
+numerical assertions are not replaced by this name check.
+
+Tests use sequential nonnegative route indices and tolerant residual/norm
+comparisons (`atol=rtol=0.01`); decoded NVFP4 uses `atol=1, rtol=0.1`.
+They do not establish byte identity, negative-route traffic, adversarial NaN
+behavior, mixed ordinary/deferred ranks, graph replay or model accuracy.
+The CPU test adds deferred-table membership/uniqueness, without executing
+C++ dispatch. The second commit replaces probe-and-close TCP port selection
+with a per-test `tmp_path` file rendezvous, addressing the startup port race.
+
+Final-head [run 40819187288](https://github.com/flashinfer-ai/flashinfer/actions/runs/40819187288)
+has ten jobs, including six successful AOT build/import jobs and **no targeted
+CPU/GPU test jobs**. Setup checked merge `1fed70fa5` of the exact head into
+the API base, disabled H100 PR testing because of runner capacity, and found
+no applicable A10G/T4 scope. The summary found no JUnit artifacts. Earlier
+runs 40818914497/40818888043 failed at unauthorized-status reporting with
+setup skipped; they are not numerical failures. The bot approval is a
+CODEOWNERS-gap attestation, not a test report or code review.
+
+All 720 unique timing rows retain #7650's shape inventory. The external
+experiment uses CUDA 13.4, interleaved old/new Cake runs, rank-min CUPTI times
+and the median of paired speedup ratios. The committed benchmark, timer,
+unified tests and public APIs are unchanged from #7650; its rank-max
+TRT/Cake/TRT harness is not this external protocol.
+
+| Rows | B300 geometric mean / range | B200 geometric mean / range |
+|---|---|---|
+| All 720 | 1.013 / 0.981–1.209 | 1.013 / 0.982–1.213 |
+| Changed/new program, 128 | 1.073 / 0.994–1.209 | 1.078 / 1.001–1.213 |
+| Unchanged program, 592 | 1.000 / 0.981–1.029 | 1.000 / 0.982–1.015 |
+| TP8 T2048 shapes excluded from deferred, 4 | 1.000 / 0.994–1.005 | 1.007 / 1.001–1.012 |
+
+The only changed-program B300 regressions are TP8/T2048/K4/no shared
+expert/ordinary output: FP16 with PDL off is 0.994x, BF16 with PDL on is
+0.999x. Both remain ordinary two-shot. Deferred TP8 T2048 NVFP4 means are
+1.144x/1.154x; its ordinary-output means are 1.088x/1.097x. The maxima are
+TP8/T2048/FP16/K8/NVFP4/shared expert, PDL on for B300 and off for B200.
+There are no measurements in the newly admitted TP4 T88–95 or TP8 T56–64
+ranges, nor at the deferred boundaries. Preserve these omissions and the
+270/281 below-one unchanged-program rows; a table-wide mean is not a serving
+speedup or validation of each dispatch threshold.
+
+At the pinned current source, all 40 device paths exist but every whole file
+differs. Current TP4 two-shot starts at 72, not 88, and the selector has
+additional early/shared-specialized programs. TP8's 56 and deferred
+1536/768 thresholds and exclusion remain in the inspected binding. Use
+this historical review for data-lifetime and validation constraints; it does
+not certify every subsequent generated body or current performance.
