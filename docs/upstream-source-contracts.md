@@ -251,6 +251,18 @@ excluding graph-private allocations and allocator overhead. H100 final-head CI
 passes 70 cases including the capture test; the canary test retains old tensor
 references, so it is not an independent reproduction of freed-storage reuse.
 
+The [indexed MoE finalize review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-source-review.md)
+completes merged #4875, including all generated device/binding variants.
+Its permuted rows, Int32 inverse map and activation-dtype route scales differ
+from the reduction API. Preserve rounding before residual/RMSNorm and FP4
+quantization, and do not read unwritten scale padding. Current code uses one
+module per architecture, C++ shape/occupancy dispatch and byte-sized quant
+buffers rather than the original manifest/16-bit-container requirements.
+Final-head H100 CI passes seven CPU cases and skips 43 GPU cases across the
+three relevant files. Historical B200/B300 timing mixes protocols/cohorts;
+the committed harness lacks the external v4 per-iteration host rendezvous.
+Current two-shot/deferred successor device programs require their own review.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported

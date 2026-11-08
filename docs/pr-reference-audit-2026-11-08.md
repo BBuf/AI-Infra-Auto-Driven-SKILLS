@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 55 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 56 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -348,8 +348,17 @@ kernel bodies compared byte-for-byte with the reviewed #4730 bodies, all
 discussion, and the unchanged union source tree. It qualifies the external
 paired timing protocol and verifies 69 CPU passes with six distributed skips
 from H100 final-head CI. The original graph helper ends before cache growth;
-#5894 repairs the lifetime gap. All 55 reviewed heads/bases still match after
-fresh API checks.
+#5894 repairs the lifetime gap. The completed manual-review count was 55.
+
+The [indexed MoE finalize review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-source-review.md)
+completes #4875: all 81 files, twelve unique device bodies plus identical
+architecture copies, all binding differences, manifest validation, tests,
+benchmark and discussion. It corrects the merge date and stale CI failure
+note, verifies seven CPU passes/43 skips from the final-head H100 log, and
+separates the external timing protocols/cohorts from the committed harness.
+Current loader/binding/API comparisons retain the new byte-buffer contract
+and shape/occupancy gates without claiming all successor kernels reviewed.
+All 56 reviewed heads/bases still match after fresh API checks.
 
 ## Local validation of this increment
 

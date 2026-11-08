@@ -285,6 +285,11 @@ Load only relevant references:
   regime and total schedule speedup from the extra output store.
   The #5894 ownership fix bounds retained scratch per device/dtype cache;
   its replay canary test still holds incidental references to the old storage.
+- [flashinfer-moe-finalize-source-review.md](references/flashinfer-moe-finalize-source-review.md):
+  merged #4875's indexed producer contract, intermediate rounding and FP4
+  scale layout, plus current byte-buffer validation and C++ shape dispatch.
+  Distinguish rank-wise timing statistics, cache/rank-arrival controls and
+  selected historical cohorts. Green H100 CI skips the Blackwell collective.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

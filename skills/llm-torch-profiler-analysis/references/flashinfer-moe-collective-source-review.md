@@ -4,7 +4,8 @@ Reviewed on 2026-11-09 (Asia/Shanghai). Historical code is pinned to the
 final PR head below; current dispatch comparisons use FlashInfer
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU experiment was run for
 this review. The public reduction API consumes dense expert-major rows;
-the separate MoE-finalize API consumes a different producer contract.
+the separate [MoE-finalize API](flashinfer-moe-finalize-source-review.md)
+consumes a different producer contract.
 
 ## PR #4730 — Source-built Blackwell MoE all-reduce
 
