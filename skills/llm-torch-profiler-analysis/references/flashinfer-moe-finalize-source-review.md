@@ -239,8 +239,8 @@ These current selector/launch facts do **not** constitute a complete review
 of all 63 successor device programs or their originating PRs. In particular,
 the historical one-shot kernel review cannot validate current two-shot,
 deferred or shared-prefetch numerical/protocol equivalence. Those source
-lineages, including #5870, remain separately reviewable. The #5852 host-side
-consolidation is reviewed below. Current unified Cake dispatch still requires a TRT-LLM workspace;
+lineages remain separately reviewable. The #5852 host consolidation and
+#5870 template are reviewed below. Current unified Cake dispatch still requires a TRT-LLM workspace;
 the MNNVL CuTe-DSL finalize and FP8-finalize routes are distinct providers.
 The unified Cake route also supplies routed scaling as `None`/one, so a
 direct benchmark with 2.5 is not automatically representative of it.
@@ -405,5 +405,129 @@ deduplication; do not classify every removed check or test as redundant.
 
 Current source retains this single-binding and byte-buffer design, but adds
 the 63-program selector and different launch resources described above.
-Those later device schedules, including #5870's lineage, still require their
-own source review before borrowing performance or equivalence claims.
+Those later device schedules still require their own source review before
+borrowing performance or equivalence claims. The intermediate template
+consolidation is reviewed next.
+
+## PR #5870 — regenerate the twelve kernels as one templated source
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/5870
+- Title: `refactor(cake_moe_finalize_allreduce_fusion): regenerate the 12 kernels as one templated source`
+- State: merged **2026-10-04**, head
+  `cefb12a93f997b4e6e218a81e66cea53ee39d679`, API base
+  `1cad38165e5fe9d3007a07f79b3d5a2d73d6fce4`, actual merge-base
+  `883825a20f9b9ff92f64101168ed4c324642121c`, merge
+  `613d12e08d3230f79e5d9e57a676164508525486`.
+- Coverage: full 9,251-line diff, all fourteen files, +679/-8,480;
+  body, all twenty issue comments, one approval, no inline comments and
+  both commits. The twelve deleted device sources are byte-identical to
+  the already reviewed #4875/#5852 files. The complete new **675-line**
+  template and loader diff were read, including the second commit's poll
+  rewrite. The body's 672-line count describes the earlier revision.
+- Reviewed files: `csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_kernels.cu`,
+  every deleted `sm_100a/*_device.cu`, and
+  `flashinfer/jit/cake_moe_finalize_comm.py`. Binding, benchmark, three
+  relevant test files and timing helper are byte-identical to #5852.
+  Current source registration was checked separately.
+- Motivation: remove the remaining device-source duplication while retaining
+  the shared indexed-finalize API, kernel symbols, launch geometry and
+  numerical protocol. No new dtype, world-size or quantization capability
+  is introduced, despite the bot release notes presenting them as features.
+
+### Template parameters and compiler-sensitive polling
+
+The [new source](https://github.com/flashinfer-ai/flashinfer/blob/cefb12a93f997b4e6e218a81e66cea53ee39d679/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_kernels.cu)
+has `finalize_body<T, WS, QUANT>`, dtype traits for BF16/FP16 conversion and
+packed arithmetic, unrolled peer operations, and a compile-time FP4 epilogue.
+Twelve wrappers preserve the old `extern "C"` symbols and 224-thread,
+four-CTA-cluster declarations. The loader now compiles this translation unit
+and the unchanged binding rather than twelve device units plus the binding.
+
+The reviewed body retains per-contribution/per-addition rounding, canonical
+positive-zero publication, negative-zero sentinel polling, ascending rank
+reduction, rounded residual/norm and the FP4 scale layout described for #4875.
+It also retains the entry-counter protocol, prior-phase cleaning and PDL
+ordering; consolidation does not add recovery or concurrent-workspace safety.
+
+The first revision used an unrolled loop and `pending |=` sentinel chain.
+The second commit expands the peer loads and uses a logical fold expression
+to reproduce the original compiler instruction selection:
+
+```diff
++template <typename F, size_t... _i> __device__ __forceinline__ void poll_expand(F&& f, std::index_sequence<_i...>) {
++    (f(std::integral_constant<int, static_cast<int>(_i)>{}), ...);
++}
+```
+
+`poll_any_0` examines both 16-bit halves of every loaded word through a
+C++17 `||` fold over `4 * WS` words. This is a concrete example where
+equivalent source-level loop logic did not initially preserve SASS across
+nvcc versions. The final-head
+[gate report](https://github.com/flashinfer-ai/flashinfer/pull/5870#issuecomment-5935798950)
+claims all 24 dtype/world/profile/architecture combinations match their
+respective baselines under both nvcc 13.4 and 13.0. Instruction counts differ
+between those compilers; equality is within each compiler/build comparison.
+The report also corrects whole-library disassembly: extract each embedded
+cubin before comparing, because ELF header lines can be attributed to the
+preceding symbol when the object count changes from thirteen to two.
+These SASS comparisons were not rerun locally.
+
+### Keep rank arrival and unsuccessful benchmark gates visible
+
+The unchanged harness inherits #5852's timer-fallback and missing-raw-sample
+limitations. External reports name main `883825a2` and final head `cefb12a9`,
+TP2, the default 128 shapes, alternating tree order and a warmup run. Their
+rank-min and control-normalized estimators are additional analysis, not the
+committed harness's iteration-wise rank-max median.
+
+Initial four-round B300 results have rank-max geometric mean **0.893**
+(minimum 0.617; 92/128 rows below 0.98), while rank-min is 1.001 and
+TRT-LLM-normalized is 0.981. The author observes 13 versus 19–23 microsecond
+rank medians affecting both providers. Rank-min helps investigate arrival
+skew but discards the waiting rank's residence; it cannot replace rank-max
+as the same latency metric or establish end-to-end parity.
+
+The B200 A/A control itself has 22/128 rank-max rows below 0.98, minimum
+0.880 and geometric mean 0.999. This shows substantial measurement variation;
+it does not prove every A/B regression is noise. Follow-up rounds pool
+multiple node cohorts. The
+[final 22-round report](https://github.com/flashinfer-ai/flashinfer/pull/5870#issuecomment-5947768323)
+still has two rank-max rows below 0.98, table minimum **0.970** and geometric
+mean 0.999; control-normalized has three failures, minimum 0.965. Rank-min
+has none, minimum 0.988. Its prose describes the two rank-max rows as
+0.977–0.980, which does not reconcile with the table minimum. Preserve that
+inconsistency rather than choosing the more favorable value. One run lost
+its log; the author reports its JSON survives and supplies a 21-run summary.
+The raw artifacts named in comments are not committed in this diff.
+
+The author ultimately calls the remaining roughly 0.3-microsecond waiting-rank
+difference persistent. Reported identical binaries do not erase process
+placement, launch skew, clock state or changed build/loading effects. The
+TP4 harness reportedly hangs at full GPU utilization on both baseline and
+candidate; no TP4 performance result is supplied. Keep that as an unresolved
+reported baseline-and-candidate failure, not a TP2-validated TP4 result.
+
+### Test evidence and current applicability
+
+No tests change in this PR. Author-reported B200/B300 runs exercise the
+existing standalone dtype/world-size cases and two selected unified cases;
+the underlying numerical, graph and invalid-input coverage remains #4875's.
+The [final-head GitHub run](https://github.com/flashinfer-ai/flashinfer/actions/runs/36898390021)
+passes six AOT jobs and the
+[H100 targeted job](https://github.com/flashinfer-ai/flashinfer/actions/runs/36898390021/job/110491265369).
+The log checks out `e3a70ba`, merging `cefb12a9` into API base `1cad3816`,
+and records **six CPU passes/43 GPU skips** across the three relevant files.
+An earlier failed run stops at authorization before test setup.
+
+Discussion first reports internal pipeline 70939847 at 13/29 passed, with
+baseline-attributed failures and unresolved infrastructure/results, then
+pipeline 71161328 at 29/29. The later bot success is reported evidence; it
+does not supply independently inspected per-test Blackwell logs here or
+justify treating every earlier failure as proved unrelated.
+
+At the current pin `cake_moe_finalize_kernels.cu` has been removed. The
+current [module registry](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/jit/cake_moe_finalize_comm.py)
+compiles separate program sources, with the shape/occupancy selection above.
+Some symbols remain, so a familiar profiler name does not establish that it
+executes this historical template. Record the source revision and selected
+program before reusing its equivalence or timing conclusions.

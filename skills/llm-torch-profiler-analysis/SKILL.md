@@ -293,6 +293,8 @@ Load only relevant references:
   The #5852 consolidation preserves device bytes but changes output-buffer
   validation and benchmark evidence. Check the public payload guard and
   actual timer; `enable_cupti` alone does not exclude CUDA-event fallback.
+  The #5870 template review qualifies compiler-specific SASS equivalence,
+  rank-min versus rank-max timing and the retired template source path.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

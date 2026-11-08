@@ -268,6 +268,11 @@ the Lamport payload cap. Its trimmed benchmark can fall back to CUDA events
 despite reporting CUPTI enabled and no longer preserves raw timing samples.
 Retain the individual warmed-run regressions and the incomplete TP4 timing;
 six CPU passes/43 skips in H100 CI do not verify Blackwell execution.
+The #5870 template consolidation retains the numerical/protocol contracts
+and fixes compiler-sensitive poll expansion. Its reported SASS identity is
+within each nvcc version. A/A spread and rank-min analysis do not erase the
+remaining rank-max regressions or TP4 hang; the historical template file has
+since been removed from current source registration.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

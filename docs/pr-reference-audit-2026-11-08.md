@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 57 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 58 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -367,9 +367,17 @@ byte-sized quant outputs, missing internal payload guard and the public API
 guard that remains. A CPU-only reproduction confirms the trimmed harness's
 CUPTI-to-event fallback, and final-head H100 logs establish six CPU passes
 with 43 GPU skips. Warmed-run regressions and unfinished TP4 timing remain
-visible. The manual-review count is 57: 27 SGLang, 11 TokenSpeed, nine vLLM
-and ten FlashInfer PRs. All 57 reviewed heads/bases still match after fresh
-API checks. The metadata-only ledger remains at 6,951 objects.
+visible. The completed manual-review count was 57.
+
+The same card completes #5870: fourteen changed files, the full 675-line
+final template, byte-identical deleted predecessors and all discussion.
+It distinguishes compiler-specific poll/SASS equivalence from source
+deduplication, keeps the rank-max regressions and contradictory final table
+minimum, and records the reported TP4 hang. Current code no longer registers
+that template file. H100 final-head CI confirms six CPU passes/43 GPU skips.
+The manual-review count is 58: 27 SGLang, 11 TokenSpeed, nine vLLM and eleven
+FlashInfer PRs. All 58 reviewed heads/bases still match after fresh API checks.
+The metadata-only ledger remains at 6,951 objects.
 
 ## Local validation of this increment
 
