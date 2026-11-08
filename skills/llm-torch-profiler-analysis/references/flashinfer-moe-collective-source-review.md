@@ -237,3 +237,89 @@ Immutable source anchors:
 - Current [public API](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/comm/trtllm_ar.py),
   [selector and scratch lifetime](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/jit/cake_trtllm_moe_allreduce_union.py)
   and [launcher](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/csrc/cake_trtllm_moe_allreduce_union/cake_trtllm_moe_allreduce_union_launcher.cu).
+
+## PR #5894 — Retain scratch addresses used by captured graphs
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/5894
+- State: merged on 2026-10-01; head
+  `2afcd7d7157f6c45586ffafb673a38386f433f3a`, base/merge-base
+  `08776e742cf9b07154b36695947a7b6e11c3c29a`, merge
+  `0c101ac509fa4a8b2ab8acdf1528c22432deb4fa`.
+- Coverage: the full 137-line, two-file diff, +78/-8; body, all four issue
+  comments, one approving review, no inline comments and the sole commit.
+  Files are `flashinfer/jit/cake_trtllm_moe_allreduce_union.py` and
+  `tests/comm/test_cake_moe_allreduce_union.py`. The current helper is
+  source-identical to this PR head; the current caller/launcher were also read.
+- Motivation: after a graph records an existing scratch allocation's address,
+  an eager call needing more rows used to replace the cache's only ownership
+  reference. Later replay could write into storage reused by an unrelated tensor.
+  This follows the scratch-output path introduced earlier; it changes no
+  kernel, launcher, output numerics or route-selection rule.
+
+The trigger is `backend="cake"` with `moe_allreduce_out=None`, an already
+large-enough cache at capture, then a larger eager request. If capture itself
+needs a fresh allocation, that allocation belongs to its graph pool and is
+not installed in the process cache. These two paths have different owners.
+
+The patch keeps replaced tensors in a process-lifetime list and grows capacity
+geometrically. Exact changed lines:
+
+```diff
++        capacity = token_num if cached is None else max(token_num, 2 * cached.shape[0])
++        fresh = torch.empty((capacity, HIDDEN_DIM), dtype=dtype, device=device)
+         if device.type == "cuda" and torch.cuda.is_current_stream_capturing():
+-            return fresh
++            return fresh[:token_num]
++        if cached is not None:
++            _retired_scratch_allreduce_outputs.append(cached)
+         _scratch_allreduce_outputs[key] = cached = fresh
+```
+
+Views still expose only the requested rows. For each `(device, dtype)` cache,
+every replacement at least doubles capacity, so the sum of retired capacities
+is less than the live capacity. Live plus retired payload is consequently less
+than twice the live tensor's bytes. For example, a live 2048-by-7168 BF16 sink
+holds 28 MiB; that cache's live and retired payload together stays below
+56 MiB. This bound excludes graph-private allocations, allocator overhead and
+other device/dtype caches. It is not a bound on total communication workspace
+or GPU memory. A smaller subsequent request does not shrink the cache, and
+destroying a graph does not reclaim this process-lifetime retirement list.
+
+The CPU test checks a four-row allocation, a two-row view, growth to capacity
+eight for a five-row request, reuse at eight rows, retirement and dtype
+separation. The GPU test captures a fill of a cached two-row view, exercises
+a larger graph-private allocation without changing the cache, then eagerly
+grows the cache and replays while checking a separate canary stays zero.
+It also explicitly asserts that the recorded pointer is in the retired list.
+
+That GPU test has an important limit: its `warm` and `captured` variables still
+hold the old storage through growth and replay. The canary check therefore
+does not independently recreate allocator reuse after dropping the last owner.
+The retirement-list assertion checks the new ownership rule, while the GPU
+operations check capture/replay compatibility. Neither is a negative-control
+reproduction of the original corruption. A stronger reproduction must release
+incidental tensor/view references before growth and establish actual address
+reuse on the broken path; the existing test does not do that. It also fills
+the scratch directly rather than invoking a multi-GPU all-reduce kernel.
+
+The author's B200 report says 70 cases passed on the stated base plus this
+change. Independently inspected final-head
+[CI run 36930534914](https://github.com/flashinfer-ai/flashinfer/actions/runs/36930534914)
+also passes: the [H100 log](https://github.com/flashinfer-ai/flashinfer/actions/runs/36930534914/job/110598554104)
+checks out the merge of `2afcd7d7157f` into the recorded base and reports
+**70 passed, zero skipped**, including the new capture test, under CUDA 12.9.
+This test can run on H100 because it exercises tensor/graph lifetime without
+launching the SM100/103 collective. The 70 cases are not 70 distributed
+numerical validations. Six AOT import jobs pass separately. The discussion's
+GitLab bot message only announces a running pipeline; the inspected GitHub
+logs provide the completion evidence.
+
+For profiling and capacity analysis, attribute these allocations to the
+optional-output sink, separate from KV pools. Verify the deployed route and
+cache growth history before diagnosing a leak or estimating reclaimable bytes.
+Do not clear the cache/retired list as an OOM workaround while captured graphs
+can still reference it. The PR contains no new latency/throughput benchmark;
+its shared performance banner is not evidence of a speedup from this fix.
+
+Immutable [helper and caller](https://github.com/flashinfer-ai/flashinfer/blob/2afcd7d7157f6c45586ffafb673a38386f433f3a/flashinfer/jit/cake_trtllm_moe_allreduce_union.py)
+and [tests](https://github.com/flashinfer-ai/flashinfer/blob/2afcd7d7157f6c45586ffafb673a38386f433f3a/tests/comm/test_cake_moe_allreduce_union.py).

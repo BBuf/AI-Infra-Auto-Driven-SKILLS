@@ -240,6 +240,11 @@ H100/T4/A10G CI passes twelve CPU contracts and skips all six distributed
 cases; the author's native B200/B300 reports remain separate. Runtime bytes
 match the measured candidate, while source-inventory tests were subsequently
 corrected. The historical 1.12x operator ratio is not a current serving result.
+The same review covers #5894's graph-address retention fix: live plus retired
+scratch payload is below twice the live capacity per device/dtype cache,
+excluding graph-private allocations and allocator overhead. H100 final-head CI
+passes 70 cases including the capture test; the canary test retains old tensor
+references, so it is not an independent reproduction of freed-storage reuse.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

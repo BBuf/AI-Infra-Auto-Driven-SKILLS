@@ -131,6 +131,13 @@ The default is auto-resolved from the hardware and configuration. Read the
 resolved value from `server_args={...}`. A lower value increases runtime
 headroom at the cost of KV capacity. Do not infer 0.88 when it is absent.
 
+For deployments actually using FlashInfer's Cake MoE all-reduce with an omitted
+all-reduce output, account separately for its live and retired scratch sinks.
+They grow geometrically and retain addresses used by CUDA graphs; they are not
+KV cache or necessarily reclaimable when a request ends. Startup KV logs alone
+cannot identify this allocation history. See the
+[scratch lifetime review](../llm-torch-profiler-analysis/references/flashinfer-moe-collective-source-review.md#pr-5894--retain-scratch-addresses-used-by-captured-graphs).
+
 ### KV Head Replication
 
 For standard GQA/MHA, each rank stores `max(1, num_key_value_heads // tp_size)` KV heads. When TP exceeds the head count, each head is replicated across a subgroup of ranks, not the whole head set on every rank. For `kv_heads=4, tp=8`, each rank stores one head; for `kv_heads=1, tp=8`, all eight ranks store that single head. MLA stores a replicated latent plus RoPE key instead. The theoretical calculation assumes all configured layers reside on the rank; use rank-local layer counts for pipeline parallelism.
