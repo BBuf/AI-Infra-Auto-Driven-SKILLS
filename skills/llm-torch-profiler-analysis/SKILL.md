@@ -233,6 +233,9 @@ Load only relevant references:
 - [vllm-routing-source-review.md](references/vllm-routing-source-review.md):
   merged softmax/sigmoid gating PDL, current SM90 and row-stride admission,
   producer cutovers and historical serving/accuracy limits. Residence includes waits.
+- [vllm-compiler-source-review.md](references/vllm-compiler-source-review.md):
+  RoPE/cache splitting and custom-op ordering, superseded/open configuration
+  fixes, retained Q quantization and layout/range guards. Check actual matches.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check

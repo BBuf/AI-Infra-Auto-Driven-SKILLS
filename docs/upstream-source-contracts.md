@@ -105,6 +105,16 @@ the bundled simulator does not automatically ingest them.
 
 ## Compiler and dependency dispatch
 
+The [vLLM compiler review](../skills/llm-torch-profiler-analysis/references/vllm-compiler-source-review.md)
+distinguishes current splitting/custom-op ordering from closed #57349 and its
+open successor #57900. Ordinary/QK RoPE-cache flags can be disabled after
+default resolution; an MLA flag can survive while its cache op is split out.
+Matched FP8 Q quantization remains a separate operation after the fused
+RoPE/cache writer. Current QK/MRoPE registration also changes V-cache layout
+and validates head dimensions and K consumers. The pending fix's MI355X
+measurements include 128/256-token regressions within the unchanged default
+256-token range; pattern matches on other models are not measured speedups.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported

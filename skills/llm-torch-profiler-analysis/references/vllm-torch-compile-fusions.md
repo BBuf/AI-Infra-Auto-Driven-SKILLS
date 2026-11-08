@@ -34,7 +34,7 @@ vLLM registers these passes from
 | `fuse_attn_quant` | `AttnQuantFusionPass` | attention output followed by FP8 / NVFP4 quant |
 | `fuse_attn_quant` | `MLAAttnQuantFusionPass` | MLA attention output followed by FP8 / NVFP4 / FP8 group quant |
 | `enable_qk_norm_rope_fusion` | `QKNormRoPEFusionPass` | Q/K RMSNorm plus RoPE on packed QKV tensors |
-| `fuse_qk_norm_rope_kvcache` | `QkNormRopeKvCacheFusionPass` | supported ROCm attention layers fuse Q/K RMSNorm, RoPE, unified KV-cache update, and optional query quantization |
+| `fuse_qk_norm_rope_kvcache` | `QkNormRopeKvCacheFusionPass` | supported ROCm attention layers fuse Q/K RMSNorm, RoPE/MRoPE and unified KV-cache update; matched query quantization remains separate |
 | Transformers backend + any norm/padding/AR fusion | `AddRMSNormFusionPass`, `RMSNormReshapeFusionPass` | canonicalizes residual add and reorders output reshapes around AR+RMS matching; #54461 covers rsqrt forms |
 | `eliminate_noops` (default True) | `NoOpEliminationPass` | removes no-op graph nodes before fusion matching |
 | RoPE/QK fusion prerequisites | `SplitCoalescingPass`, `ScatterSplitReplacementPass` | canonicalizes split/slice and functionalized scatter layouts; runs before the relevant fusion |
@@ -52,7 +52,7 @@ vLLM registers these passes from
 | `fusion/rocm_aiter_fusion.py` | `AddAiterRMSNormPadPattern` | AITER fused-add-RMSNorm output padded before the next op | AITER add-RMSNorm-pad op |
 | `fusion/rocm_aiter_fusion.py` | `MLADualRMSNormPattern` | MLA Q branch and KV branch each run RMSNorm | `torch.ops.vllm.fused_mla_dual_rms_norm` backed by AITER fused QK RMSNorm |
 | `fusion/qk_norm_rope_fusion.py` | `QkNormRopePattern` | Q/K RMSNorm, split/getitem reshapes, then RoPE | `_C.fused_qk_norm_rope` |
-| `fusion/qk_norm_rope_kvcache_fusion.py` | `QkNormRopeKvCachePattern` | Q/K RMSNorm and RoPE flow directly into unified KV-cache update, optionally with FP8 query quantization | `vllm.fused_qk_norm_rope_and_unified_kv_cache_update` |
+| `fusion/qk_norm_rope_kvcache_fusion.py` | `QkNormRopeKvCachePattern` | Q/K RMSNorm and RoPE flow directly into unified KV-cache update, optionally with FP8 query quantization | `vllm.fused_qk_norm_rope_and_unified_kv_cache_update`, followed by the original Q-quant form when matched |
 | `fusion/rope_kvcache_fusion.py` | `RopeReshapeKVCachePattern` | RoPE output followed by reshape/cache update | `vllm.fused_rope_and_unified_kv_cache_update` |
 | `fusion/mla_rope_kvcache_cat_fusion.py` | `MLARoPEKVCacheCatPattern` | MLA RoPE on `q_pe` and `k_pe` flows into `unified_mla_kv_cache_update` | `vllm.fused_rope_unified_mla_kv_cache_update`, backed by `concat_and_cache_mla_rope_fused` |
 | `fusion/attn_quant_fusion.py` | `AttnFp8StaticQuantPattern`, `AttnNvfp4QuantPattern` | attention output followed by FP8 static quant or NVFP4 quant | backend attention op with fused output quant when supported |
@@ -60,11 +60,11 @@ vLLM registers these passes from
 | `fusion/add_rms_fusion.py` | `RMSNormReshapePattern`, `FusedAddRMSNormReshapePattern` | residual add, norm and output reshapes in Transformers-backend models | canonical residual-add RMSNorm and reshape movement ahead of norms; before/after AR+norm respectively |
 | `fusion/allreduce_rms_fusion.py` | `AllReduceGemmaRMSNormPattern`, `AllReduceFusedAddGemmaRMSNormPattern`, `AiterAllreduceFusedRMSNormPattern`, `AiterAllreduceFusedAddRMSNormPattern`, `AiterAllreduceFusedAddRMSNormOutputOnlyPattern`, `AiterAllreduceFusedRMSNormGroupQuantFP8Pattern`, `AiterAllreduceFusedAddRMSNormGroupQuantFP8Pattern`, `AiterAllreduceFusedAddRMSNormGroupQuantWithIndexerPattern` | all-reduce followed by Gemma (1+w) norm or ROCm residual norm/FP8 group quant/indexer fan-out | FlashInfer AR+Gemma norm or AITER AR+RMSNorm (+group quant and BF16 indexer fan-out) |
 | `fusion/attn_quant_fusion.py` | `RocmAttnFp8StaticQuantPattern` | ROCm AITER attention output then static FP8 quant | AITER attention with quantized output |
-| `fusion/qk_norm_rope_kvcache_fusion.py` | `QkNormMRopeKvCachePattern` | MRoPE plus QK norm, optional Q quant and unified KV update on ROCm | fused_qk_norm_mrope_and_unified_kv_cache_update |
+| `fusion/qk_norm_rope_kvcache_fusion.py` | `QkNormMRopeKvCachePattern` | MRoPE plus QK norm, optional Q quant and unified KV update on ROCm | `fused_qk_norm_mrope_and_unified_kv_cache_update`, followed by separate Q quant when matched; raw K view must have no other observable consumer |
 | `fusion/rocm_aiter_fusion.py` | `DoubleAiterRMSFp8GroupQuantPattern`, `DoubleAiterRMSFp8GroupQuantViewPattern`, `AiterRMSNormGatedFp8GroupQuantPattern`, `MLADualRMSPerTokenQuantPattern` | double/gated RMSNorm plus group FP8 quant, or MLA dual Q/KV norms plus per-token quant | AITER double/gated norm-quant and dual MLA norm-quant custom ops; inspect gfx950/provider guards |
 | `fusion/add_rms_fusion.py` | `AddRMSNormPattern` | residual add directly before RMSNorm in Transformers backend | `vllm.ir.ops.fused_add_rms_norm` canonical form |
 | `fusion/rms_quant_fusion.py` | `RMSNormQuantPattern`, `FusedAddRMSNormNvfp4QuantPattern` | residual-add RMSNorm followed by NVFP4 quant | `flashinfer_fused_add_rms_norm_nvfp4_quant` (#51925 merged 2026-09-08); base pattern dispatches by quant key |
-| `fusion/rope_kvcache_fusion.py` | `RopeStaticQQuantKVCachePattern` | RoPE plus static FP8 Q quant feeding KV update | `fused_rope_and_unified_kv_cache_update` with Q quant |
+| `fusion/rope_kvcache_fusion.py` | `RopeStaticQQuantKVCachePattern` | RoPE plus static FP8 Q quant feeding KV update | `fused_rope_and_unified_kv_cache_update` followed by separate `_C.static_scaled_fp8_quant` |
 
 Base matcher classes such as `BasePattern` (allreduce),
 `ActivationQuantPattern`, `RMSNormQuantPattern` and `AiterRMSNormQuantPattern`
@@ -78,6 +78,22 @@ O2/O3 add eligible AR+norm, RoPE/cache, combined QK-norm/cache and MLA cache
 fusion. **Attention-output quant is now enabled for quantized models at
 O2/O3**, subject to backend and graph-splitting checks. It is no longer always
 opt-in. The generic QK-norm/RoPE flag remains false in these level defaults.
+
+For RoPE/cache, inspect the resolved configuration and graph, not only the
+optimization-level table. In the normal default Dynamo split, current main
+disables explicit ordinary/QK cache fusion and extracts both cache-update ops.
+An explicit MLA flag can survive while its required op is outside the graph.
+Custom rotary registration also precedes optimization-level resolution, so the
+ordinary/QK default resolvers can remain false even with partition opt-ins.
+The [complete compiler review](vllm-compiler-source-review.md) explains this
+ordering and the proposed fix: #57349 is closed without merge and superseded
+by still-open #57900. Neither is current-main behavior at this pinned SHA.
+
+Ordinary and combined QK cache fusion use a default compile-range upper bound
+of 256 tokens. The #57900 MI355X report improves 1–64-token latency but regresses
+at 128/256; it leaves that bound unchanged. Its Qwen3 QK-norm and Kimi MLA
+pattern-match reports have no corresponding performance measurements. A
+remaining Q-quant kernel is expected in the quantized-query patterns above.
 
 The old `enable_sp` and `fuse_gemm_comms` fields and their sequence-parallel /
 collective pass files have been removed. Do not suggest those switches to a

@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 34 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 36 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -206,6 +206,16 @@ show the later host SM90 gate, row-stride fallback and shape-specific producer
 cutovers. The catalog separates this merged change from #45120, now closed
 without merge, and still-open #43190. The latter two received fresh metadata
 checks only and are not added to the manual-review count.
+
+The [vLLM compiler review](../skills/llm-torch-profiler-analysis/references/vllm-compiler-source-review.md)
+covers the complete four-file #57349 and five-file #57900 diffs and all
+discussion. #57349 is closed without merge and folded into still-open #57900.
+Current config ordering, splitting tests, all three cache-fusion files and
+backend layout methods establish why flags can fail to produce a match and
+why matched Q quantization remains a separate operator. The cards preserve
+128/256-token regressions, pre-rebase measurements and nonidentical outputs.
+Five neighboring RoPE/cache catalog PRs received fresh metadata checks only;
+their full source review remains pending and is not included in the count.
 
 ## Local validation of this increment
 
