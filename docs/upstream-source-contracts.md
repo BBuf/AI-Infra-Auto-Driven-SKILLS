@@ -208,6 +208,14 @@ numerical coverage. The historical page-1024 `w20 + u2` missing-build error
 was reproduced from the pure selector; current main separates that rule and
 has later twenty-warp programs. Check the selected stage and actual grid,
 including clearing CTAs retained when tail writes are disabled in #6008.
+The full HY3 #4890 review retains its open status and November 3 suggestion
+to move the large-batch schedule into CAKE. Its explicit uniform-one-token
+promise, SM100-only FP8 dynamic-Q/norm2/64Q8KV/B>=256 fast path and unwritten
+empty-request flags differ from current CAKE's contract. The 59-case author
+report includes a meaningful delayed-producer stream check and exact
+fast/general equality, but no graph-replay test. Static comparator rounding
+and side effects differ; historical operator ratios do not establish a current
+CAKE or serving advantage. Trace tags do not prove the fast branch executed.
 
 The [SGLang MoE collective review](../skills/llm-torch-profiler-analysis/references/sglang-moe-collective-source-review.md)
 separates closed #39214 from current CuTe-DSL boundary fusion. The proposal

@@ -1,7 +1,7 @@
 # FlashInfer QK RMSNorm, RoPE and paged append
 
 Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405, #5952,
-#5956 and #6008 diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
+#5956, #6008 and #4890 diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU experiment was run.
 
 ## PR #5405 — Experimental packed-QKV fusion
@@ -479,6 +479,167 @@ verify the separate “byte-identical builds” claim. These historical results
 do not establish current-policy or serving-level gains. Profile the selected
 symbol and clear-grid work for the actual shape, then validate its numerical
 and cache-ownership contract before treating the change as a reusable gain.
+
+## PR #4890 — HY3 uniform-decode scheduling
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/4890
+- Title: `feat(rope): add HY3 fused QK RMSNorm/RoPE KV-store`.
+- State: open, currently unmergeable; head
+  `7f12c326b3774554599f34920c54b72b64a5c1f7`, API base
+  `21ec84517587c22f2d6fc622dbe8ad47a478b272`, actual diff merge base
+  `71d31b5a23a3c0394edb36330dec1ce2a0def365`.
+- Coverage: complete 2,792-line, eleven-file diff, +2,663/-0; body, two issue
+  comments, one review and the sole commit; no inline comments. The bot's
+  skipped-review comment counts 393 base-to-head files, while the PR's actual
+  merge-base diff and changed-file API agree on eleven. That bot inventory
+  is not the patch scope or a code review.
+- Reviewed runtime: `include/flashinfer/rope_norm_store_kv_hy3.cuh`,
+  `csrc/{rope_hy3,flashinfer_rope_hy3_binding}.cu`,
+  `flashinfer/{rope,__init__,aot}.py` and `flashinfer/jit/rope_hy3.py`.
+  Reviewed validation: `benchmarks/bench_rope_hy3.py`,
+  `tests/attention/test_rope.py`, `flashinfer/trace/templates/rope.py` and
+  `tests/trace/example.py`; also the actual timing helper and FFI check macros.
+- Motivation: expose the packed HY3 QKV contract as an opt-in API and optimize
+  its large uniform decode batches by eliminating segment lookup and separate
+  tail-clearing CTAs. The header retains Tencent's MIT provenance and source
+  commit `1cd332980ed46bd0172091c1c35d55338fcae47a`.
+
+The public function `qk_rmsnorm_rope_append_paged_kv_cache_hy3` accepts
+contiguous BF16 packed QKV, head pairs 8/1 or 64/8, D=128, FP32 full NeoX
+cos/sin and norm weights, and contiguous NHD BF16 or E4M3 caches. Epsilon
+is fixed at `1e-6`; policies 0/1/2 select no norm, RoPE-before-norm or
+norm-before-RoPE. Its custom op declares all Q/scale/flag/K/V/cache mutations,
+has a fake implementation and uses cached JIT/optional-argument placeholders.
+AOT adds the module to the ordinary build list. The patch adds an explicit
+API; it does not wire a SGLang/vLLM model to it.
+
+The general kernel launches `(ceil(T/4) + B, Hkv)` CTAs of 128 threads, with
+9 KiB dynamic shared memory for four rows of eight Q heads plus one K head.
+Each warp owns one token/KV-head group, processes its eight Q heads in turn,
+then K and V. Q/K are staged with vector loads; a parallel scan of indptr
+segments assigns rows to requests. Norm/rotation remain FP32 until the final
+store, with full-warp XOR reductions. V uses vector BF16 or packed FP8 stores.
+The extra B CTAs per KV head clear each request's last-page tail even when
+optional K/V outputs redirect the token writes away from the cache.
+
+The Python flag `uniform_one_token_decode=True` is an explicit caller promise
+that `q_indptr == arange(B + 1)`, not a device-data check. Python additionally
+checks exact SM100. The C++ dispatcher selects only the measured specialization:
+
+```diff
++  // ragged or CUDA-graph-padded batches, so this remains an explicit flag.
++  const bool use_sm100_fast_path = enable_sm100_uniform_decode && !is_prefill && is_fp8 &&
++                                   quant_policy == 1 && norm_policy == 2 && num_q_heads == 64 &&
++                                   num_kv_heads == 8 && batch_size >= 256 && num_rows == batch_size;
+```
+
+That specialization has grid `(ceil(T/4), Hkv)`, directly uses row as request,
+keeps rotary coefficients in registers, and clears the owned request/head
+tail after its token writes. Eight lanes cover one 128-byte FP8 row, so a warp
+clears four tail rows per iteration. The reduced CTA count and omitted lookup
+are the optimization; arithmetic remains the same. BF16, static Q, other norm
+policies, smaller batches, 8/1 heads, prefill and non-SM100 use the general
+path even if the flag is true. Matching T and B alone is insufficient for a
+ragged or padded batch. The launch is ordinary current-stream CUDA; it has no
+PDL handshake.
+
+Dynamic FP8 Q uses `max(max_abs, 1e-6) / fp8_upper_bound` and reciprocal
+multiplication. Decode scales are `[T, Hq]`; prefill scales are
+`[B, Hq, round_up(max_sequence_length, 128)]`. Only live entries are written.
+Static Q uses a scalar inverse scale; K/V use reciprocal dequantization scales.
+BF16 and static-Q calls return `None` for inapplicable scales. K and V output
+redirects are independently optional and still leave tail-clearing side effects.
+
+The FFI validates positive B/T/page size, contiguous same-device tensors,
+shapes/dtypes and scalar-policy compatibility. It does **not** validate device
+indptr contents, per-request length versus the prefill scale allocation,
+sequence/rotary/page bounds or scale values. FP8 flags are set to zero by the
+first valid row of each request. An empty request has no such write, and
+new flags are allocated with `torch.empty`; they are not a complete metadata
+verdict or an inter-kernel completion signal. Negative positions return early.
+Callers must establish these preconditions, including safe writable cache-page
+ownership, before replay. The uniform scheduling promise cannot repair invalid
+metadata.
+
+### Test and benchmark coverage
+
+The 59 source cases comprise 54 combinations of two head layouts, three
+prefill/decode/MTP modes, three norm policies and three cache/quant policies;
+one multipage reversed-page-table/redirected-output case; two output-dtype
+rejections; one delayed-producer non-default-stream test; and one SM100
+B=256 fast/general parity test. The stream test warms JIT first and places a
+delayed QKV copy before the operator, so it meaningfully detects an accidental
+default-stream launch. The fast-path test compares Q, scales, flags and full
+caches with `torch.equal` and checks caller-buffer identity.
+
+The 54 ordinary cases use small B=3 and a float reference. BF16 Q/K permit
+0.08 absolute error, FP8 Q permits 1.0 and dequantized caches permit 0.5;
+dynamic scales permit `rtol=2e-4, atol=1e-7`. Cache-tail checks inherit those
+tolerances, except the fast/general parity comparison. There are no empty
+request, malformed-indptr, undersized prefill-scale, CUDA Graph replay or
+attention-consumer tests. The author reports 59 passes on B200 and four trace
+passes/three skips. These are attributed results, not GPU reruns here.
+
+The new trace template only describes the uniform 64/8 dynamic-FP8 norm2
+case and has no numerical reference. Its dispatcher filters logical policies
+and redirects, but does not check SM100 or B>=256. A matching trace-template
+name/tag therefore does not establish that the C++ fast branch was selected.
+The example suppresses exceptions; successful execution of the example script
+alone does not prove this operator ran.
+
+The benchmark fixes 64/8, D128, page64 and B256/512, preallocates outputs and
+prepares separate contiguous Q/K/V outside timing. Its static comparator is
+two BF16 RMSNorm calls followed by the existing FP8 RoPE/append API, with PDL
+disabled. The BF16 intermediate introduces rounding absent from HY3's FP32
+chain. The harness compares Q and written K at `rtol=0.2, atol=0.5`, V exactly,
+and does not require identical full-cache/flag side effects: the composition
+does not clear tails or write flags. Those omitted operations reduce the
+baseline's work, but the comparison still is not an equivalent numerical
+contract.
+
+Dynamic fast/general arms do check Q, scales, flags and full-cache equality
+before timing. They run in fixed provider order, using unchanged inputs and
+cache locations, 20 warmups and 100 samples, and print median/p20/p80. The
+reported B200 fallback uses CUDA events without graphs; the helper flushes
+L2 before each timed interval, and intervals can include inter-launch gaps.
+No randomized paired order, raw-sample archive or confidence interval is
+provided. Historical static ratios are 1.183×/1.135×; dynamic scheduling ratios
+are 1.115×/1.128× for B256/512. They are operator comparisons, with allocation,
+input splitting, metadata and JIT excluded, not serving throughput or current
+CAKE performance.
+
+Final-head [PR Test](https://github.com/flashinfer-ai/flashinfer/actions/runs/33583869655)
+has skipped setup/test jobs. Its [summary log](https://github.com/flashinfer-ai/flashinfer/actions/runs/33583869655/job/100103866762)
+names head `7f12c326b377` and reports pending CI authorization. The red result
+is not a failed GPU numerical test. The documentation bot separately reports
+the new public API missing from `docs/api/*.rst`.
+
+### Relationship to current CAKE
+
+On November 3, the [maintainer review](https://github.com/flashinfer-ai/flashinfer/pull/4890#pullrequestreview-5756710557)
+suggests closing this proposal in favor of merged #5952/#5956 and transferring
+the large-batch schedule to CAKE FP8. It reports an approximately 1.4× advantage
+at B512, without an attached exact comparison build/protocol. Treat that as a
+maintainer observation, not a reproduced benchmark or evidence that the
+schedule was merged. The PR remains open; its HY3 entry point/header are
+absent from frozen main.
+
+The current CAKE modules below cover the same broad packed-QKV work, but
+are not drop-in aliases. FP8 requires paired K/V redirects, returns three
+tensors, validates indptr in-kernel and writes every request's status,
+including empty requests. BF16 permits optional clearing and configurable
+epsilon. Their later shape/PDL policies differ from HY3's explicit uniform
+flag. Transfer a schedule only after matching these interfaces, output and
+metadata obligations; the old statement that no existing API covers dynamic
+Q scales/tail flags is no longer current.
+
+Immutable proposal sources: [kernel](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/include/flashinfer/rope_norm_store_kv_hy3.cuh),
+[FFI admission/dispatch](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/csrc/rope_hy3.cu),
+[Python API](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/flashinfer/rope.py),
+[tests](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/tests/attention/test_rope.py),
+[benchmark](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/benchmarks/bench_rope_hy3.py),
+[timing helper](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/flashinfer/testing/utils.py)
+and [trace dispatch](https://github.com/flashinfer-ai/flashinfer/blob/7f12c326b3774554599f34920c54b72b64a5c1f7/flashinfer/trace/templates/rope.py).
 
 ## What is available at the frozen mainline
 

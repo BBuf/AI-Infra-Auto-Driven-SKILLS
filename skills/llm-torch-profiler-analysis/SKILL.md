@@ -265,7 +265,7 @@ Load only relevant references:
   rounding, shape, mode and the actual caller.
 - [flashinfer-qknorm-rope-append-source-review.md](references/flashinfer-qknorm-rope-append-source-review.md):
   closed experimental #5405, merged BF16/FP8 #5952/#5956, BF16 shape dispatch
-  #6008 and current CAKE APIs.
+  #6008, open HY3 #4890 and current CAKE APIs.
   Check packed layout, scale padding, cache/output ownership and PDL metadata
   readiness. Historical graph/eager timings and unchanged-input replay tests
   do not establish current-policy performance or changing-metadata correctness.
@@ -273,6 +273,9 @@ Load only relevant references:
   behavior; its large latency ratios are report-only comparisons.
   CPU selector checks do not prove numerical coverage of every generated
   program. Record the chosen stage, clear-grid work and actual GPU test shapes.
+  HY3's direct row schedule requires an explicit uniform-one-token promise;
+  its uninitialized empty-request flags differ from current CAKE validation.
+  A trace template's architecture tag alone does not prove fast-path dispatch.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

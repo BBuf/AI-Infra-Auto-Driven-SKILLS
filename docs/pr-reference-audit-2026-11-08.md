@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 51 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 52 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -314,7 +314,17 @@ different speculative shared-load ordering. The card retains the author's
 passing tolerant payload checks and failed per-question score-equality result;
 final-head CI stopped at draft gating, with tests skipped. No performance
 gain is inferred from correctness-campaign durations or dependency API exports.
-All 51 manually reviewed heads/bases were rechecked and still match.
+The completed manual-review count was 51.
+
+The HY3 #4890 card completes its eleven-file diff, two issue comments and
+one review. It reconciles the bot's overbroad base-to-head file inventory with
+the actual merge-base diff, records uniform-request admission and unwritten
+empty-request status, and distinguishes meaningful stream/parity tests from
+missing replay coverage. It qualifies the static comparator's rounding and
+side effects and the maintainer's later CAKE performance observation. Final-head
+CI awaited authorization; the PR remains open despite the suggestion to close
+it in favor of the merged API. All 52 reviewed heads/bases still match after
+fresh API checks.
 
 ## Local validation of this increment
 
