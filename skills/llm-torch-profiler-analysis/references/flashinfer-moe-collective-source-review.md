@@ -238,6 +238,102 @@ Immutable source anchors:
   [selector and scratch lifetime](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/jit/cake_trtllm_moe_allreduce_union.py)
   and [launcher](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/csrc/cake_trtllm_moe_allreduce_union/cake_trtllm_moe_allreduce_union_launcher.cu).
 
+## PR #5856 — Consolidate calls without an all-reduce output
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/5856
+- State: merged on 2026-10-01; head
+  `8e42ce03a009d29a7b6d00a54b7ed6873c7bf8e5`, base/merge-base
+  `122037aaa23f068578e8a741586de22f42abf27b`, merge
+  `08776e742cf9b07154b36695947a7b6e11c3c29a`.
+- Coverage: all nine changed files, 6,875 diff lines, +158/-6,458; body,
+  nine issue comments, four reviews, three inline comments and the sole commit.
+  The deleted 5,978-line CUDA file contains twelve complete kernel bodies,
+  each byte-identical to a body already reviewed in #4730. All remaining
+  preprocessor/header differences, the deleted 226-line launcher and 79-line
+  loader, and every Python/test/config change were read. The distributed
+  worker and current union selector/caller were also read.
+- Files: `.pre-commit-config.yaml`; the two deleted `.cu` files under
+  `csrc/cake_trtllm_moe_allreduce_fusion/`; deleted
+  `flashinfer/jit/cake_trtllm_moe_allreduce.py`; public API
+  `flashinfer/comm/trtllm_ar.py`; union loader; API, distributed and union
+  tests under `tests/comm/`. The final diff does not delete a test file,
+  despite the body's statement about deleting the structure test.
+
+Previously, an omitted `moe_allreduce_out` selected the isolated no-store
+bundle. Its six generic programs cover FP16/BF16 and TP2/4/8; six single-token
+programs are compiled only for SM103. Its launcher uses four 224-thread CTAs
+per cluster, an SM-bounded persistent grid, 256 bytes of shared memory and
+the current CUDA stream. The refactor removes this separate loader and dispatch
+branch. After the existing public validation, every Cake call reaches the
+union; `route_applies` no longer depends on output presence. SM100/103, TP2/4/8,
+hidden 7168, dtype/layout and quantization restrictions remain.
+
+The union itself already always stores its all-reduce result. Its entire
+`csrc/cake_trtllm_moe_allreduce_union/` tree is identical before and after
+this PR; the new Python caller supplies the missing sink:
+
+```diff
++    if moe_allreduce_out is None:
++        moe_allreduce_out = scratch_allreduce_output(
++            moe_reduction_active_experts_token_input.device,
++            moe_reduction_active_experts_token_input.dtype,
++            int(token_num),
++        )
+```
+
+That sink adds one `[T, 7168]` 16-bit output per rank: 14 KiB per token,
+or 28 MiB at T=2048. The initial helper caches one allocation per device/dtype,
+returns a smaller view when possible, and replaces it on growth. A fresh
+allocation made during capture is returned without entering that cache.
+This distinction left the warmed-cache graph-address bug fixed in #5894 below;
+the original commit's general claim of capture safety was too broad. Current
+main retains the unified route and uses the repaired lifetime rule.
+
+The body reports 30 rows on each of eight-GPU B200 and B300 nodes with CUDA
+13.1, comparing the old no-store bundle against union plus scratch. Reported
+geometric means of **union/legacy latency** are 0.638 and 0.643 respectively;
+the B300 TP8/BF16/T1 row regresses from 11.01 to 11.25 microseconds. These
+compare different kernel schedules, so they do not isolate the added store's
+cost. They also do not measure current union rules or model serving.
+
+The reported protocol uses three blocks with alternating arm order, ten
+warm-ups and thirty timed iterations per block, separate workspaces, and the
+median of per-iteration maximum rank times from CUPTI. It disables the
+per-rank L2 flush because its memset/host synchronization can skew arrivals
+at Lamport polling; the body records an outlier under the flush-enabled
+protocol. Preserve that cache/arrival regime when comparing the numbers.
+For a new measurement, inspect rank arrival skew as well as kernel duration
+and report the cache regime explicitly. No paired benchmark harness or raw
+samples are added in the nine-file diff. The final rebase's entire non-config
+diff is byte-identical to `09c6797f11493cf846ad0737b1067c426d31da21`, supporting
+the author's code-identity statement, not independently reproducing its timing.
+
+CPU tests check forwarding to the union, rejection before dispatch and scratch
+reuse/growth/dtype separation. The six distributed test parameters are
+TP2/4/8 times FP16/BF16; each runs many internal cases. Missing-output cases
+now include T=1, 64 and 2048 with eight experts, PDL on/off and eager/graph
+execution. The graph helper warms the same shape and destroys its local graph
+before the next shape grows the cache, so this matrix does not test a surviving
+old graph after growth. Residual/norm checks use the existing tolerance;
+there is no exposed all-reduce tensor to compare in missing-output cases.
+
+The author's B200/B300 report claims 69 CPU and six distributed passes per
+architecture with `TORCH_SYMMMEM=NVSHMEM`. Inspected final-head
+[CI run 36915429078](https://github.com/flashinfer-ai/flashinfer/actions/runs/36915429078)
+is narrower: the [H100 log](https://github.com/flashinfer-ai/flashinfer/actions/runs/36915429078/job/110548297908)
+checks out the final-head merge and reports **69 passed, six skipped**, with
+all distributed cases skipped under CUDA 12.9. Six AOT jobs also pass. An
+earlier GitLab bot report has 19/29 executed jobs passing and unresolved
+GB300 jobs without reports; the later bot announcement only says running.
+Do not turn either the H100 green result or that announcement into verified
+Blackwell distributed coverage. The review's scratch-lifetime finding was
+addressed in the separate #5894 fix, not in this refactor's final head.
+
+Immutable [dispatch](https://github.com/flashinfer-ai/flashinfer/blob/8e42ce03a009d29a7b6d00a54b7ed6873c7bf8e5/flashinfer/comm/trtllm_ar.py),
+[scratch and selection](https://github.com/flashinfer-ai/flashinfer/blob/8e42ce03a009d29a7b6d00a54b7ed6873c7bf8e5/flashinfer/jit/cake_trtllm_moe_allreduce_union.py),
+[distributed tests](https://github.com/flashinfer-ai/flashinfer/blob/8e42ce03a009d29a7b6d00a54b7ed6873c7bf8e5/tests/comm/test_cake_moe_allreduce_distributed.py)
+and [deleted kernel source at the base](https://github.com/flashinfer-ai/flashinfer/blob/122037aaa23f068578e8a741586de22f42abf27b/csrc/cake_trtllm_moe_allreduce_fusion/cake_trtllm_moe_allreduce_fusion_kernels.cu).
+
 ## PR #5894 — Retain scratch addresses used by captured graphs
 
 - Link: https://github.com/flashinfer-ai/flashinfer/pull/5894

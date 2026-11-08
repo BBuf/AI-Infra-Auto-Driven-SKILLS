@@ -240,6 +240,11 @@ H100/T4/A10G CI passes twelve CPU contracts and skips all six distributed
 cases; the author's native B200/B300 reports remain separate. Runtime bytes
 match the measured candidate, while source-inventory tests were subsequently
 corrected. The historical 1.12x operator ratio is not a current serving result.
+The #5856 consolidation routes omitted outputs into that sink and removes
+the legacy bundle; its paired timings compare different schedules, with L2
+flush disabled to limit rank arrival skew. H100 CI passes 69 CPU cases and
+skips all six distributed parameters. The old graph test ends before cache
+growth and therefore did not cover the surviving-graph lifetime problem.
 The same review covers #5894's graph-address retention fix: live plus retired
 scratch payload is below twice the live capacity per device/dtype cache,
 excluding graph-private allocations and allocator overhead. H100 final-head CI

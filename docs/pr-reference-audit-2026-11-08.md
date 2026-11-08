@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 54 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 55 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -340,8 +340,16 @@ The same card completes #5894's two-file scratch-retention fix and all
 discussion. Its helper remains unchanged at the current pin. The review
 derives the geometric retained-memory bound and identifies the graph test's
 incidental strong references, while verifying 70 passing H100 CI cases from
-the final-head merge. No collective performance gain is inferred. All 54
-reviewed heads/bases still match after fresh API checks.
+the final-head merge. No collective performance gain is inferred. The completed
+manual-review count was 54.
+
+The same card completes #5856: all nine changed files, the twelve deleted
+kernel bodies compared byte-for-byte with the reviewed #4730 bodies, all
+discussion, and the unchanged union source tree. It qualifies the external
+paired timing protocol and verifies 69 CPU passes with six distributed skips
+from H100 final-head CI. The original graph helper ends before cache growth;
+#5894 repairs the lifetime gap. All 55 reviewed heads/bases still match after
+fresh API checks.
 
 ## Local validation of this increment
 

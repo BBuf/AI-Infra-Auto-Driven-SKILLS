@@ -281,6 +281,8 @@ Load only relevant references:
   ownership and architecture-specific schedules. Current union dispatch and
   optional-output scratch differ from the original kernels. Include layout
   conversion costs; distinguish CPU contract passes from skipped GPU cases.
+  The #5856 consolidation review also separates rank arrival skew, cache
+  regime and total schedule speedup from the extra output store.
   The #5894 ownership fix bounds retained scratch per device/dtype cache;
   its replay canary test still holds incidental references to the old storage.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
