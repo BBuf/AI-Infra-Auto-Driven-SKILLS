@@ -137,7 +137,7 @@ The [BF16 backend](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789
 and [FP8 backend](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/flashinfer/cake_fused_qk_rope_fp8_append_backend/__init__.py)
 retain packed BF16 input, D=128, 8/1 or 64/8 heads and contiguous NHD storage,
 with exact capability targets SM90/100/103. BF16 adds configurable epsilon
-and `clear_last_page`; optional K/V outputs remain independent redirects.
+and `clear_unused_last_page_rows`; optional K/V outputs remain independent redirects.
 FP8 requires both K/V outputs or neither, retains fixed epsilon, and allocates
 uninitialized status storage rather than issuing the old Python zero-fill.
 Preallocate outputs when comparing capture/launch overhead.
