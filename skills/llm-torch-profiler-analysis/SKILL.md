@@ -306,10 +306,10 @@ Load only relevant references:
   H100 CPU passes and six GPU skips do not validate the large Blackwell path;
   current two-shot gates replace the historical token thresholds.
 - [flashinfer-moe-finalize-two-shot-review.md](references/flashinfer-moe-finalize-two-shot-review.md):
-  #7511's owner reduction, BF16 negative-zero sideband and TP2 own-partial
-  ring. Preserve rank-compatible protocol selection and inspect actual
-  boundary-test coverage; its green final-head CI ran only AOT build/import
-  jobs. Current successor bodies and thresholds require separate evidence.
+  #7511's owner reduction/TP2 own-partial ring and #7650's replacement of
+  the BF16 sign mask with an in-band escape value. Preserve protocol agreement,
+  finite-value/NaN qualifications and actual boundary-test coverage. Both green
+  final-head runs have AOT jobs only; successor bodies require separate evidence.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish

@@ -303,7 +303,12 @@ weight-bias and device conditions. Final-head CI ran six AOT build/import
 jobs, with no targeted CPU/GPU test jobs or JUnit artifacts; green status
 does not validate the new numerical paths. Keep the external 0.977x rows
 and 3.422x/3.468x operator maxima distinct from serving claims. All 32
-historical device files differ at the current pin.
+historical device files differ at the current pin. The same review covers
+#7650's in-band BF16 negative-zero escape: current corresponding helpers
+retain it, replacing the separate mask. Exhaustive CPU mapping checks preserve
+all finite communicated values but expose the `0xFFFF` NaN collision, so the
+body's bitwise claim needs a domain qualification. Its 72 changed timing rows
+are separated from 648 unchanged rows, and final-head CI again has AOT only.
 
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain

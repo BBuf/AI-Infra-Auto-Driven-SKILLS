@@ -1,7 +1,7 @@
 # FlashInfer indexed finalize: two-shot exchange and TP2 own partials
 
 Reviewed on 2026-11-09 (Asia/Shanghai). This card covers historical
-FlashInfer #7511; current comparisons use
+FlashInfer #7511 and #7650; current comparisons use
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU run, sanitizer,
 benchmark or SASS comparison was performed in this audit.
 
@@ -204,3 +204,102 @@ with early/deferred variants and different shape gates documented in the
 Use #7511 for protocol history, then inspect the actual selected successor
 body before transferring its numerical or performance claims. Later device
 lineage reviews remain outstanding.
+
+## PR #7650 — encode BF16 negative zero inside the gathered vector
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/7650
+- State: merged 2026-10-28; head
+  `b05dd17f6491e243cf2f6416d2720202b96ff10a`, API base and merge-base
+  `03ebbc6a3cc43668aa260588d3592988376ae824`, merge
+  `1173475aef8facc7b7200c6020c859213651423d`.
+- Coverage: all four changed files, 626 diff lines, +136/-176; complete
+  body prose, structured checks of all 720 timing rows, two issue comments,
+  one empty approval, no inline comments and the sole commit message.
+  Every base body matches #7511. The inspected encode/broadcast/poll/decode
+  changes reproduce each complete head file exactly, including the four/eight
+  per-peer mask-store removals and final clear-length change.
+- Reviewed files: BF16 `ws4_o110_ts`, `ws4_o111_ts`, `ws8_o110_ts` and
+  `ws8_o111_ts` device files. The other 28 programs, host binding, loader,
+  public API, two relevant tests, benchmark and timing helpers are byte-identical
+  to the reviewed #7511 versions.
+- Motivation: remove the four-byte mask word accompanying each sixteen-byte
+  second-stage vector, its per-peer store and its readiness load/check.
+  Historical admission remains BF16 TP4 from T96 and TP8 above T64.
+
+### The escape value is part of the wire format
+
+The [BF16 TP4 kernel](https://github.com/flashinfer-ai/flashinfer/blob/b05dd17f6491e243cf2f6416d2720202b96ff10a/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws4_o110_ts_kernel.cu)
+adds an encoder and decoder. The encoder applies this to both halfwords:
+
+```diff
++    lo = ((lo == 32768) ? 65535 : lo);
++    hi = ((hi == 32768) ? 65535 : hi);
+```
+
+Thus a reduced BF16 `-0` travels as `0xFFFF`; the receiver still polls each
+halfword against `0x8000`, then maps `0xFFFF` back to `0x8000` before BF16
+unpacking and residual addition. Raw integer load/store operations preserve
+the escape bits in transit. Removing the sideband reduces the used phase
+span from 16,128 to 14,336 halfwords per token, and the cleanup control word
+changes accordingly. It does not resize the public workspace or change the
+one-shot capacity guard. The 20-to-16-byte change describes an individual
+second-stage payload plus mask, not a 20% end-to-end traffic reduction.
+
+An exhaustive CPU check of the two halfword mapping functions covers all
+65,536 values: the encoded stream never contains the empty sentinel, and
+all finite communicated values, including signed zero, round-trip exactly.
+However, `0xFFFF` is itself a BF16 NaN bit pattern and decodes to negative
+zero. The mapping is therefore not a bijection over arbitrary BF16 payloads.
+This is a property of the helper, not a GPU reproduction of that NaN reaching
+the gather through the preceding arithmetic. Preserve this qualification
+instead of repeating unrestricted bitwise identity; finite model inputs also
+do not by themselves prove that every intermediate reduction stays finite.
+
+No arithmetic tree, route ordering, quantization epilogue, ownership mapping,
+pipeline schedule or FP16 program changes in this PR. All four changed
+programs retain the same protocol transformation. The unchanged distributed
+tests use tolerant numerical checks and bounded random inputs; no new
+negative-zero/NaN or byte-equality test establishes the body's full claim.
+
+### Validation and timing scope
+
+The complete ten-job list for the green
+[final-head run](https://github.com/flashinfer-ai/flashinfer/actions/runs/40613179825)
+again contains six successful AOT jobs and no requested CPU/GPU unit-test
+jobs. [Setup](https://github.com/flashinfer-ai/flashinfer/actions/runs/40613179825/job/122569444981)
+checks out `ecd85dd32` (`b05dd17f` into `03ebbc6a`): H100 is disabled and
+the A10G/T4 target intersections are empty. The
+[summary](https://github.com/flashinfer-ai/flashinfer/actions/runs/40613179825/job/122654667440)
+reports no JUnit artifacts. Earlier run `40613095897` fails at the
+unauthorized-PR reporting step with test setup skipped; that is not numerical
+evidence. The discussion requests tests but records no separate hardware
+result. No GPU run was performed for this review.
+
+The body retains the external CUDA 13.4 CUPTI paired, interleaved rank-min
+protocol. Separating shapes by the actual unchanged dispatch gates gives
+72 changed-program rows and 648 unchanged-program rows:
+
+| Cohort | B300 geomean / range | B200 geomean / range |
+|---|---|---|
+| All 720 | 1.004 / 0.977–1.162 | 1.004 / 0.980–1.150 |
+| Changed 72 | 1.038 / 1.014–1.162 | 1.036 / 1.013–1.150 |
+| Unchanged 648 | 1.000 / 0.977–1.020 | 1.001 / 0.980–1.020 |
+
+The changed TP4 T128/T2048 means are 1.034/1.026 on B300 and
+1.033/1.027 on B200. Changed TP8 T128/T512/T2048 means are
+1.023/1.052/1.061 and 1.022/1.053/1.053. Both maxima occur at
+TP8/T2048/BF16/K4/PDL-on/ordinary output/no shared expert. All changed
+rows exceed one, but 281 B300 and 249 B200 unchanged rows are below one.
+Retain that variation rather than treating unchanged rows as measured speedups
+from this code edit. The 720-row shape inventory still omits the dispatch
+boundaries and some large-token cohorts. The unchanged rank-max TRT/Cake/TRT
+harness does not reproduce this external experiment; no serving gain follows.
+
+At the current pin, all four corresponding files differ as a whole, but both
+escape helpers remain text-identical, are still called, and the mask is absent;
+the clear length remains 14,336 halfwords/token. The
+[current TP4 body](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws4_o110_ts_kernel.cu)
+therefore does not use #7511's separate sign-mask word. This narrow comparison
+does not certify every later program body. When diagnosing readiness or
+transferring an optimization, inspect the selected revision's actual encoding,
+poll predicate, decode point and cleanup span together.
