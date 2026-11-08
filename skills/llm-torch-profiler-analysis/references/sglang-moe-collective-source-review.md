@@ -140,8 +140,9 @@ it is not a graceful-exit result. Diagnostic and GSM8K elapsed times include
 different cleanup/recovery conditions and are explicitly not performance
 comparisons. The diff has no new benchmark harness or serving-speed result.
 Dependency [FlashInfer #4730](https://github.com/flashinfer-ai/flashinfer/pull/4730)
-is merged, but its full historical source review is separate and is not counted
-here; its kernel timing claims cannot substitute for SGLang path measurements.
+is merged and has a separate
+[complete source review](flashinfer-moe-collective-source-review.md).
+Its kernel timing claims cannot substitute for SGLang path measurements.
 
 Final-head [base CI](https://github.com/sgl-project/sglang/actions/runs/34761390303)
 failed at [PR gating](https://github.com/sgl-project/sglang/actions/runs/34761390303/job/103734822999):

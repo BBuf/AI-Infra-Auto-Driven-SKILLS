@@ -276,6 +276,11 @@ Load only relevant references:
   HY3's direct row schedule requires an explicit uniform-one-token promise;
   its uninitialized empty-request flags differ from current CAKE validation.
   A trace template's architecture tag alone does not prove fast-path dispatch.
+- [flashinfer-moe-collective-source-review.md](references/flashinfer-moe-collective-source-review.md):
+  merged #4730's expert-major input, low-precision rounding, Lamport phase
+  ownership and architecture-specific schedules. Current union dispatch and
+  optional-output scratch differ from the original kernels. Include layout
+  conversion costs; distinguish CPU contract passes from skipped GPU cases.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

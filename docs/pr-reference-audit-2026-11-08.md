@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 52 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 53 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -323,8 +323,18 @@ empty-request status, and distinguishes meaningful stream/parity tests from
 missing replay coverage. It qualifies the static comparator's rounding and
 side effects and the maintainer's later CAKE performance observation. Final-head
 CI awaited authorization; the PR remains open despite the suggestion to close
-it in favor of the merged API. All 52 reviewed heads/bases still match after
-fresh API checks.
+it in favor of the merged API. The completed manual-review count was 52.
+
+The [FlashInfer MoE collective review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-collective-source-review.md)
+completes #4730's ten-file diff and all discussion, comparing all 28 generated
+entrypoints and the current union selector/launcher. It documents expert-major
+layout, per-addition rounding, Lamport entry-counter ownership and optional
+output scratch retention. Candidate/final runtime bytes match; the source
+inventory test was repaired separately. Fresh final-head CI is green but each
+H100/T4/A10G shard passes twelve CPU cases and skips six distributed cases.
+That narrower run does not resolve earlier all-communication failures or
+independently validate the external Blackwell timing reports. All 53 reviewed
+heads/bases still match after fresh API checks.
 
 ## Local validation of this increment
 

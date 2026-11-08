@@ -229,6 +229,18 @@ deterministic-mode exception is not current behavior. Reported TP8 payload
 checks pass tolerance while the per-question score-equality criterion fails;
 neither model-output parity nor serving speedup is established.
 
+The [FlashInfer MoE collective review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-collective-source-review.md)
+fully reviews merged #4730, including all 28 original generated programs.
+Its reduction API requires dense expert-major rows and preserves activation
+rounding after each contribution/addition. The Lamport entry counter is not a
+generic output-completion event. Current union selection also depends on expert
+count, PDL and token ranges, and a missing all-reduce output now writes to
+graph-stable scratch rather than selecting a no-store kernel. Final-head
+H100/T4/A10G CI passes twelve CPU contracts and skips all six distributed
+cases; the author's native B200/B300 reports remain separate. Runtime bytes
+match the measured candidate, while source-inventory tests were subsequently
+corrected. The historical 1.12x operator ratio is not a current serving result.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported
