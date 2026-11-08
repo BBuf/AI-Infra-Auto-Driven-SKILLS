@@ -12,6 +12,12 @@ The later [five-family source consolidation](flashinfer-comm-source-consolidatio
 reviews #7054's removal of unused finalize loader exports alongside union
 source folding; it does not add a finalize performance optimization.
 
+The [token-scheduling review](flashinfer-moe-finalize-schedule-review.md)
+continues with #7392's 32 generated programs, resident-cluster limit,
+TP2 lookahead, large-token pipeline and ordered RMS exchange. It distinguishes
+the historical T64 threshold from current two-shot selection and records the
+missing large-path numerical coverage in the committed tests.
+
 ## PR #4875 — feat(cake_comm): add Cake MoE finalize all-reduce backend
 
 - Link: https://github.com/flashinfer-ai/flashinfer/pull/4875
@@ -793,6 +799,7 @@ TP2 quad/large and TP4/TP8 two-shot programs using token count, K, shared
 expert and quantization. In particular, a historical TP2 decision against
 unconditional quad gathering does not mean the current selector never uses
 it. Read the selected program before applying that historical conclusion.
-All successor device bodies and their intermediate PRs are not yet covered
-by this review. Preserve the per-shape fallback, source revision, rank timing
+The #7392 successor is covered in the linked token-scheduling review;
+later device bodies and intermediate PRs remain pending. Preserve the
+per-shape fallback, source revision, rank timing
 estimator and resource bounds when turning these precedents into a new edit.

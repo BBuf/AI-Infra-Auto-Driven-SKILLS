@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty-one additional PRs cited by the new review cards bring the
-TSV to **6,955 objects**; all 62 PRs manually reviewed in this refresh were
+6,934 objects. Twenty-two additional PRs cited by the new review cards bring the
+TSV to **6,956 objects**; all 63 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -403,6 +403,20 @@ are distinguished from the historical three-variant/48-library portfolios.
 The manual-review total is now 62: 27 SGLang, 11 TokenSpeed, nine vLLM and
 15 FlashInfer PRs. The new head/base check matches; earlier entries retain
 their individual check timestamps. The ledger now contains 6,955 objects.
+
+The [indexed finalize scheduling review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-schedule-review.md)
+completes #7392's 38 changed files using canonical device bodies, every
+schedule/world-size difference and full-file dtype/quantization comparisons.
+It includes all discussion, five commits and structured checks of the 720
+timing rows. Preserve the literal occupancy-dependent large-path gate, the
+complete RMS synchronization protocol and per-route rounding. The committed
+tests miss large-token programs on ordinary B200/B300 devices; final-head
+H100 CI records nine CPU passes and six GPU skips. Earlier authorization-gated
+failures are separate. Twelve historical device paths are retired at the
+current pin and all twenty remaining files differ.
+The total is now 63 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine
+vLLM and 16 FlashInfer. The new head/base check matches its reviewed diff;
+earlier entries retain their check timestamps. The ledger has 6,956 objects.
 
 ## Local validation of this increment
 

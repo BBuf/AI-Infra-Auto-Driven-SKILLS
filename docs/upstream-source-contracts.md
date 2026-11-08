@@ -283,6 +283,17 @@ template. Keep external rank-min timing, missing completed Blackwell CI and
 reported large-token timeouts separate from the six CPU passes/43 GPU skips
 verified for each final-head H100 run.
 
+The [#7392 scheduling review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-schedule-review.md)
+traces all 32 generated programs, TP2 lookahead, small-token oct gathering,
+the TP4/TP8 publish/clean/consume pipeline and mbarrier RMS exchange. The
+active-cluster query bounds the grid separately from block occupancy. Its
+historical large gate is literally `T > 2*C`, not a guarantee of three tokens
+on every cluster. The committed T<=128 tests miss the large paths on normal
+B200/B300 devices; final-head H100 CI passes nine CPU tests and skips six GPU
+tests. The external 720-row rank-min table retains three 0.997x B300 rows.
+Current two-shot/deferred selection has different gates: twelve historical
+source paths are gone and all twenty surviving files have changed.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source

@@ -299,6 +299,12 @@ Load only relevant references:
   local polling and TP4-only residual prefetch, including rejected variants.
   Apply current per-program cluster-capacity and shape gates before reusing
   those historical timing or TP2/TP8 conclusions.
+- [flashinfer-moe-finalize-schedule-review.md](references/flashinfer-moe-finalize-schedule-review.md):
+  #7392's small-token gather, TP2 lookahead, large-token pipeline and ordered
+  RMS exchange. Bound the grid by active clusters, preserve phase/parity and
+  consumed-row quantization, and verify actual dispatch coverage. Its nine
+  H100 CPU passes and six GPU skips do not validate the large Blackwell path;
+  current two-shot gates replace the historical token thresholds.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish
