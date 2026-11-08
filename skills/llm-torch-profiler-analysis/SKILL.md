@@ -299,6 +299,12 @@ Load only relevant references:
   local polling and TP4-only residual prefetch, including rejected variants.
   Apply current per-program cluster-capacity and shape gates before reusing
   those historical timing or TP2/TP8 conclusions.
+- [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
+  merged #7054's five-family source consolidation, compile-definition scope,
+  preserved launch-bound variants and Ulysses header-integrity gap. Distinguish
+  manifest verification from Ninja dependency tracking; this cleanup supplies
+  no new performance measurement. Current norm-combine uses six programs and
+  token/SM-dependent dispatch, replacing the historical three-band selector.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

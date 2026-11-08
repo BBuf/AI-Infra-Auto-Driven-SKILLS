@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty additional PRs cited by the new review cards bring the
-TSV to **6,954 objects**; all 61 PRs manually reviewed in this refresh were
+6,934 objects. Twenty-one additional PRs cited by the new review cards bring the
+TSV to **6,955 objects**; all 62 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -385,10 +385,24 @@ review preserves rejected TP2/TP8 variants, different timing cohorts and
 large-token timeouts. Each final-head H100 log confirms six CPU passes and
 43 GPU skips; internal pipeline start announcements are not completed test
 evidence. Current cluster-capacity and shape dispatch are distinguished from
-the retired template. The manual-review count is 61: 27 SGLang, 11 TokenSpeed,
+the retired template. The manual-review count at that increment was 61: 27 SGLang, 11 TokenSpeed,
 nine vLLM and fourteen FlashInfer PRs. The three newly reviewed heads/bases
 match their latest API checks; the previous 58 checks retain their recorded
 timestamps. The metadata ledger contains 6,954 objects.
+
+The [five-family communication consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
+completes #7054: all unique edits, full-file clone/preprocessor comparisons,
+body, discussion and five commits. It records the actual scope of shared
+compile definitions, preserves launch-bound variants and separates unchanged
+source from a fresh algorithm audit. Local CPU checks reproduce the Ulysses
+header digest gap with a listed-source negative control; Ninja dependency
+tracking is a separate mechanism. Final-head H100 CI has 215 passes/196 skips,
+not Blackwell distributed validation. No benchmark was reported for this
+cleanup. Current norm-combine dispatch and the 96-library Ulysses manifest
+are distinguished from the historical three-variant/48-library portfolios.
+The manual-review total is now 62: 27 SGLang, 11 TokenSpeed, nine vLLM and
+15 FlashInfer PRs. The new head/base check matches; earlier entries retain
+their individual check timestamps. The ledger now contains 6,955 objects.
 
 ## Local validation of this increment
 

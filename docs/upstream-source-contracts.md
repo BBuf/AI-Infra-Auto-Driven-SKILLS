@@ -283,6 +283,17 @@ template. Keep external rank-min timing, missing completed Blackwell CI and
 reported large-token timeouts separate from the six CPU passes/43 GPU skips
 verified for each final-head H100 run.
 
+The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
+traces #7054 across five communication families. Shared source paths retain
+distinct launch bounds, pipeline depth and module compile definitions; source
+deduplication is not performance evidence. Ulysses's included header is outside
+the manifest digest check at both the PR head and current pin, although the
+JIT path separately invokes Ninja with compiler-generated dependencies. The
+current norm-combine host has six programs: T=1, 2–3, 4–37, 38–479 and a
+T≥480 pipeline band whose early-load choice also depends on SM count. Its
+historical shared binding has been replaced. Preserve these revision and
+validation boundaries when mapping trace symbols to a proposed optimization.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported

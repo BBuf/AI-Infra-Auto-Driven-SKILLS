@@ -8,6 +8,10 @@ This API consumes permuted expert rows and an inverse index map. The
 consumes dense expert-major rows and FP32 scales; the two contracts are not
 interchangeable.
 
+The later [five-family source consolidation](flashinfer-comm-source-consolidation-review.md)
+reviews #7054's removal of unused finalize loader exports alongside union
+source folding; it does not add a finalize performance optimization.
+
 ## PR #4875 — feat(cake_comm): add Cake MoE finalize all-reduce backend
 
 - Link: https://github.com/flashinfer-ai/flashinfer/pull/4875
