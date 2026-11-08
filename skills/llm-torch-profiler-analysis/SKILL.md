@@ -200,6 +200,9 @@ current behavior from pending stage-counter, filename and teardown fixes.
 Load only relevant references:
 
 - [source-map.md](references/source-map.md): immutable profiler and worker paths.
+- [DeepGEMM migration review](references/sglang-deepgemm-migration-review.md):
+  legacy/modern MQA dispatch, score conversion costs, graph schedules and
+  index-cache format compatibility when interpreting DSA/V4.1 profiles.
 - [heuristics.md](references/heuristics.md): attribution and overlap labels,
   dispatch, numerical contracts, validation and their limitations.
 - [vllm-torch-compile-fusions.md](references/vllm-torch-compile-fusions.md):

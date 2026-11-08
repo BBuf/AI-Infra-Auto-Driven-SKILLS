@@ -1,7 +1,8 @@
 # DeepGEMM histogram producer for LiteTopK decode
 
 Reviewed on 2026-11-09 (Asia/Shanghai). This review covers the producer PR;
-the complete SGLang consumer and migration reviews remain in progress.
+the [SGLang migration review](sglang-deepgemm-migration-review.md) is complete,
+while the consumer reconciliation remains in progress.
 No GPU execution, sanitizer, SASS inspection or performance rerun was done here.
 
 ## PR #94 — optional histogram of stored BF16 logits

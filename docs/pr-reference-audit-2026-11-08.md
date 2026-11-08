@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Thirty-three additional PRs cited by the new review cards bring the
-TSV to **6,967 objects**; all 74 PRs manually reviewed in this refresh have
+6,934 objects. Thirty-four additional PRs cited by the new review cards bring the
+TSV to **6,968 objects**; all 75 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -545,7 +545,22 @@ SASS and performance results remain author-reported. Total: 74 manually
 reviewed PRs, comprising 27 SGLang, 11 TokenSpeed, nine vLLM, 26 FlashInfer
 and one DeepGEMM. Only #94's check is fresh in this increment; previous
 timestamps remain. The ledger has 6,967 objects. Full SGLang consumer and
-migration reviews are still in progress and add nothing to that count.
+migration reviews were still in progress at that increment and added nothing
+to that count.
+
+The [SGLang DeepGEMM migration review](../skills/llm-torch-profiler-analysis/references/sglang-deepgemm-migration-review.md)
+completes open #44350's 49-file, 3,985-line diff, all 23 commit messages and
+seven issue comments. It reconciles current main's 0.2.6 legacy/modern
+dispatch, prefix-only conversion versus allocation, request grouping and
+graph-owned schedule addresses. Source checks substantiate old-decoder and
+cache-format limitations while qualifying the reviewer's backend list.
+Exact-head base/extra/AMD logs show missing-label gates and skipped tests;
+historical B300/H200 results remain author-reported, including accuracy
+threshold misses and environment failures. The count is now 75: 28 SGLang,
+11 TokenSpeed, nine vLLM, 26 FlashInfer and one DeepGEMM. Only #44350's
+check is fresh in this increment; previous check timestamps remain. The
+ledger has 6,968 objects. The SGLang LiteTopK consumer diff has been read,
+but its current-source reconciliation is not yet counted as complete.
 
 ## Local validation of this increment
 

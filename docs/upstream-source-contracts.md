@@ -67,7 +67,21 @@ evaluating selector savings. Its graph test zeroes the histogram inside
 capture; the sanitizer path skips that graph section. Current `dev` still
 lacks the histogram argument and has a compatibility wrapper plus newer
 CC 10.7 chunk/ring and TMEM-base handling, which a rebase must preserve.
-The complete SGLang consumer/migration reviews remain pending.
+The complete SGLang consumer reconciliation remains pending.
+
+The [SGLang DeepGEMM migration review](../skills/llm-torch-profiler-analysis/references/sglang-deepgemm-migration-review.md)
+completes open #44350 at `3b172a83a636`. It distinguishes live-prefix FP32
+conversion from full-width allocation, compressed ragged columns from logical
+columns, and backend-specific schedule/grouping formats. Equally chunked
+CUDA Graph schedules/top-k plans require in-place copies. UE8M0 cache bytes
+need compatible PD peers and actual backend key isolation; a `model_name`
+tag alone does not cover HF3FS or FlexKV, and old decoders may reject even
+the new FP32 layout field. Current frozen main already pins DeepGEMM 0.2.6
+with separate legacy/modern callers; the open migration's 0.2.5.post2 pin
+and cache-format changes are not current deployment defaults. Its final-head
+CI is label-gated, while reported GPU/model measurements use earlier heads.
+Rebase LiteTopK comparisons onto prefix conversion and current BF16 V4.1
+dispatch before interpreting savings against the older whole-width copy.
 
 [deepseek_v4_mhc.py](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_mhc.py)
 owns current mHC kernel dispatch;
