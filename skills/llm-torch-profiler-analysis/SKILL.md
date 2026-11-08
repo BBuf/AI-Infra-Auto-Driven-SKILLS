@@ -228,6 +228,10 @@ Load only relevant references:
   fallback, serial scratch ownership and retained graph storage. Reconcile
   current DCP selection, legacy/varlen schedules and BF16 DeepSelect before
   transferring historical kernel gains; final-head runtime CI was skipped.
+- [sglang-chunk-topk-mapping-review.md](references/sglang-chunk-topk-mapping-review.md):
+  open legacy AOT gather-removal proposal versus current packed-v2 and
+  FlashInfer row mapping. Verify per-query mapping, extension ABI and actual
+  fallback dispatch; separate CI maintenance gates from kernel failures.
 - [dsv41-mhc-source-review.md](references/dsv41-mhc-source-review.md): merged
   mHC state/collective ownership refactor, deleted combine-only kernels, cache
   invalidation and current boundary transport. Check who still owes the sum.

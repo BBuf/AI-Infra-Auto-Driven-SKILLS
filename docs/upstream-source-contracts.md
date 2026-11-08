@@ -80,6 +80,17 @@ whole-width conversion and grouped scheduling, with within-pool losses;
 they are not current service measurements. Final-head runtime CI was skipped
 behind the `run-ci` label gate.
 
+The [DSA chunk mapping review](../skills/llm-torch-profiler-analysis/references/sglang-chunk-topk-mapping-review.md)
+completes open #39522 at `c46e07830454`. It avoids the legacy AOT chunk's
+wide-table gather by passing one request ID per query row, while retaining
+the original wide table, score matrix and earlier metadata construction.
+Current packed-v2 and FlashInfer routes already accept row mappings; profile
+the remaining fallback before recommending this patch. Packed-v2 uses a
+compact table and can mask score prefixes in place. The proposed AOT schema
+requires a matching rebuilt extension, and inherits the old bounded-bin
+selection rather than adding exact fallback. Its model scores lack an A/B
+baseline, and CI kernel jobs were skipped behind maintenance/label gates.
+
 The [SGLang DeepGEMM migration review](../skills/llm-torch-profiler-analysis/references/sglang-deepgemm-migration-review.md)
 completes open #44350 at `3b172a83a636`. It distinguishes live-prefix FP32
 conversion from full-width allocation, compressed ragged columns from logical

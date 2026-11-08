@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Thirty-four additional PRs cited by the new review cards bring the
-TSV to **6,968 objects**; all 76 PRs manually reviewed in this refresh have
+TSV to **6,968 objects**; all 77 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -571,10 +571,23 @@ and graph-retained storage. Current DCP merge/count semantics and modern
 versus legacy scheduling prevent a blind transplant. Historical B200
 results preserve within-pool regressions, truncated-model limits and the
 changed BF16/FP32 baselines. Exact-head base/extra/AMD checks are label-gated;
-runtime jobs are skipped. The count is now **76**: 29 SGLang, 11 TokenSpeed,
+runtime jobs are skipped. That increment reached **76**: 29 SGLang, 11 TokenSpeed,
 nine vLLM, 26 FlashInfer and one DeepGEMM. Only #40764's check is fresh in
 this increment; earlier per-entry timestamps remain. It was already in the
 ledger, which remains at **6,968 objects**.
+
+The [DSA chunk top-k mapping review](../skills/llm-torch-profiler-analysis/references/sglang-chunk-topk-mapping-review.md)
+completes open #39522's six-file, 267-line diff, one commit, body and one
+issue comment. The actual historical caller supplies per-query tensor IDs;
+request-level lists need expansion. Current packed-v2/FlashInfer mapping
+already removes some gathers, while the legacy AOT fallback retains one.
+The review records the extension ABI change, inherited threshold-bin limit,
+remaining metadata work and in-place current score masking. Base/extra CI
+was paused for maintenance; AMD lacked `run-ci`; kernel jobs were skipped.
+The author reports model scores without a matched control or reproducible
+timing. The count is now **77**: 30 SGLang, 11 TokenSpeed, nine vLLM,
+26 FlashInfer and one DeepGEMM. Only #39522's metadata is refreshed in this
+increment; previous timestamps and the **6,968-object** ledger are preserved.
 
 ## Local validation of this increment
 
