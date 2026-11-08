@@ -245,6 +245,16 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | topk (bare, as in 绕过原来的 topk) | Talk | 原来的 top-k 选择 (top-k → top k passes) |
 | Gloo (PyTorch CPU collective backend, PR 37909 video 2026-10-24) | 格尔 / 歌 (glue, Glue, Gluu, Glooo, G loo all fail) | CPU 上的通信组 / 这个后端 (Gloo and gloo::EnforceNotMet stay on screen) |
 | MIN (as in 取 MIN, all_reduce op) | main (min: main too; minimum passes) | 取最小值 (MIN / ReduceOp.MIN stay on screen); MAX reads fine |
+| wgmma (Hopper warpgroup MMA, PR 42855 video 2026-11-08) | Ugma / Ugman (wgmma and WGMMA alike) | lexicon → WG MMA: heard WGMMA in the carrier; in the take MMA is the usual OK~ (班贝 / M&A) |
+| warpgroup / warpgroups (same video) | workgroup (OK~) | lexicon → warp group(s): two words the voice knows; still heard workgroup, accepted |
+| cooperative (cooperative launch, same video) | Coopertive | lexicon → co operative: heard Cooperative; also reaches enable_cooperative through the identifier rule |
+| Gumbel (Gumbel-max sampling, same video) | Gumbo (Gumbel, Gumble) | lexicon → Gumbell (heard Gumbell); Gumbel-max → Gumbell max (OK~ Gunbel Max) |
+| Philox (Philox4x32 RNG, same video) | Felix (OK~) | lexicon → Fylox: heard Fylox |
+| dspark (part of SGLANG_DSPARK_* env names, same video) | SGLand Spark (the D is dropped, like DSPARK) | `parts` → DSpark |
+| γ (draft length, same video) | read as Gamma in 3/3 lines (Whisper: Gamma, once 干嘛) | keep γ in narration; captions show γ |
+| ex2 (ex2.approx, same video) | X2 | 硬件近似的指数 (ex2_approx_ftz stays on screen) |
+| issue_fill (ring refill helper, same video) | Essue Fail | 由最后读完的那个 warp 发起 (issue_fill stays on screen) |
+| 奇偶位 (mbarrier parity bit, same video) | line_asr heard 其偶位 (qí, not jī) in 2 clauses; seg_check also cut 奇 \| 偶位 | 那一位比特翻转 / 只看这一位; 按轮数的奇偶 → 这一轮用一套，下一轮用另一套 |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 
@@ -469,6 +479,11 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 上下文限到 16384 (Paged Experts) | 上下 \| 文限 | context length 设成 16384 |
 | 才单独列出来不搬 (Paged Experts) | 单 \| 独列 \| 出来 | 才另外列出来，不去搬它 |
 | 全部拿来放专家 (Paged Experts) | 拿 \| 来放 | 全部用来放专家 |
+| 偏置用 tensor core 上的 int32 点积精确算出来 (PR 42855 video) | 积精 \| 确算 | 偏置用 tensor core 做 int32 点积，结果是精确的 |
+| 端到端测试用 Qwen3-4B (same video) | 端到 \| 端测 \| 试用 (heard 端到端侧是用) | 端到端的测试，用的是 Qwen3-4B |
+| 直接读进片段寄存器 (same video) | 读 \| 进片 \| 段 | 直接读到片段寄存器里 |
+| 哪 7 块走流式，是在 H100 上实测挑的 (same video) | 走流 \| 式, 上实 \| 测 | 流式的 7 块，是根据 H100 上的实测挑出来的 |
+| 把 W2 分给所有 SM (same video) | 分 88 ms 给 | 把 W2 分配到所有 SM 上 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 
@@ -497,6 +512,11 @@ places where a digit and the character next to it form another number:
 | 判据是数格子 (same video) | 竖格子 (数 read shù, not shǔ) | 判据是看差了几格 |
 | 也要有测量撑着 (PR 48380 video) | 成长 (撑着 blurred into 成长) | 也要拿测量结果来证明 |
 | D 是 4096 时 / 输出 FP8 时 (PR 47503 video) | 第四 4096 时 / FP80 (是 after a letter, 时 after a digit) | D 等于 4096 的时候 / 输出 FP8 的时候 |
+| 原来的 walk 慢在哪 (PR 42855 video, 2026-11-08) | Walkman在哪 (walk 慢 runs together) | 原来的 walk 为什么慢 |
+| 避开 0 和 1，零概率的 token (same video) | 避开0和10概率 (1，零 merged into 10) | 避开了 0 和 1，概率为零的 token |
+| 一个记最大比较值，一个记计数 (same video) | 一个G最大比较值 (记 heard as a letter) | 一个存最大比较值，一个存计数 |
+| 读这一对数 / 每一对数 (same video) | seg_check: 这一 \| 对数, and 对数 is "logarithm" | 读这两个数 / 每个请求的这两个数 |
+| 64 行重新排序 (same video) | 64行中心排序 | 调整了每块 W2 里 64 行的顺序 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a

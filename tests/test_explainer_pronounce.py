@@ -268,3 +268,14 @@ def test_sla_and_day0_are_respelled():
     # SLA was heard as slot / SWAT, Day-0 as D-0 / 对零; the hyphen must not turn the 0 into 负0
     assert spoken("满足 SLA 的候选") == "满足 S L A 的候选"
     assert spoken("新模型的 Day-0 支持") == "新模型的 Day zero 支持"
+
+
+def test_dspark_markov_walk_terms():
+    # PR 42855 video (2026-11-08): wgmma was heard "Ugma", cooperative "Coopertive",
+    # Gumbel "Gumbo", Philox "Felix"; the respellings below transcribe back. The dspark
+    # part of an env name is read as DSpark (the all-caps D is otherwise dropped).
+    assert spoken("8 条 wgmma，4 个 warpgroup") == "8 条 WG MMA，4 个 warp group"
+    assert spoken("cooperative kernel 第一次") == "co operative kernel 第一次"
+    assert spoken("加一个 Gumbel 噪声，Gumbel-max 技巧") == "加一个 Gumbell 噪声，Gumbell max 技巧"
+    assert spoken("随机数来自 Philox。") == "随机数来自 Fylox。"
+    assert spoken("SGLANG_DSPARK_OPT_INT8_MARKOV_WALK") == "SGLang DSpark opt INT8 markov walk"
