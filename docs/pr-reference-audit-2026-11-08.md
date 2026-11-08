@@ -33,9 +33,9 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty-two additional PRs cited by the new review cards bring the
-TSV to **6,956 objects**; all 63 PRs manually reviewed in this refresh were
-queried again and their heads still match the reviewed diffs. The initial table
+6,934 objects. Twenty-three additional PRs cited by the new review cards bring the
+TSV to **6,957 objects**; all 64 PRs manually reviewed in this refresh have
+head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
 discussions are valid context; they must not become implementation PRs.
@@ -417,6 +417,20 @@ current pin and all twenty remaining files differ.
 The total is now 63 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine
 vLLM and 16 FlashInfer. The new head/base check matches its reviewed diff;
 earlier entries retain their check timestamps. The ledger has 6,956 objects.
+
+The [indexed finalize two-shot review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-two-shot-review.md)
+completes #7511's 41 changed files, all discussion and two commits, plus
+structured checks of all 720 timing rows. Full-file comparisons retain
+the four BF16/FP16 two-shot protocol differences instead of normalizing
+away the sign-mask sideband. The review covers TP2 own-partial storage,
+all historical dispatch boundaries and conditional kernel-name assertions.
+The complete final-head job list and setup/summary logs show six AOT jobs
+and no targeted CPU/GPU numerical jobs. All 32 head device paths still
+exist at the current pin, but every file has changed.
+The total is now 64 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine
+vLLM and 17 FlashInfer. The new head/base check matches; earlier check
+timestamps are preserved. The ledger contains 6,957 objects. The catalog
+entry now links these detailed reviews without repeating their full history.
 
 ## Local validation of this increment
 

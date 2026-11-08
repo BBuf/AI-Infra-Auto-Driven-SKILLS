@@ -200,8 +200,9 @@ test, with early-load forms through T128 and deferred forms from T1536/T768
 T71 is conditional on shape and cluster capacity. TP2 can select quad gather
 through T142 and large K4 programs above T512, or above T1280 with a shared
 expert. Thus the historical universal T64 cut and `T > 2*C` large gate are
-not a current dispatch recipe. Later two-shot/deferred bodies and their PRs
-still require separate complete reviews.
+not a current dispatch recipe. The [#7511 protocol review](flashinfer-moe-finalize-two-shot-review.md)
+covers the initial two-shot exchange and TP2 own-partial pipeline. Later
+successor/deferred bodies and their PRs still require separate complete reviews.
 
 For a new optimization, record the selected source revision, actual grid
 and resident-cluster limit; preserve rounding and the whole phase protocol;

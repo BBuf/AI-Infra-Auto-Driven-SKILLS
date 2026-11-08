@@ -294,6 +294,17 @@ tests. The external 720-row rank-min table retains three 0.997x B300 rows.
 Current two-shot/deferred selection has different gates: twelve historical
 source paths are gone and all twenty surviving files have changed.
 
+The [#7511 two-shot review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-two-shot-review.md)
+traces owner reduce-scatter/all-gather, the BF16 negative-zero sideband and
+TP2's shared-memory own-partial ring. Protocol selection must agree across
+ranks even when local capacity selects different compatible one-shot programs.
+Its expanded boundary tests inspect kernel names only under specified PDL,
+weight-bias and device conditions. Final-head CI ran six AOT build/import
+jobs, with no targeted CPU/GPU test jobs or JUnit artifacts; green status
+does not validate the new numerical paths. Keep the external 0.977x rows
+and 3.422x/3.468x operator maxima distinct from serving claims. All 32
+historical device files differ at the current pin.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source
