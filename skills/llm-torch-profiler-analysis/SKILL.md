@@ -229,7 +229,8 @@ Load only relevant references:
   semantics and current KVP callers. Check slot order and actual provider.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
-  owner-local MHA counters. Check rounding, shape, mode and the actual caller.
+  owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check
+  rounding, shape, mode and the actual caller.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

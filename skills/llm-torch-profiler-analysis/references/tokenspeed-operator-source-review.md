@@ -1,6 +1,6 @@
-# TokenSpeed projection, routing, sampling and attention overhead
+# TokenSpeed projection, MoE, sampling and attention paths
 
-Inspected on 2026-11-08. All four full diffs, PR bodies and available comments
+Inspected on 2026-11-08. All five full diffs, PR bodies and available comments
 and reviews were read. Fresh API checks matched each head/base below. Current
 callers and implementations were checked at TokenSpeed
 `7b21034e72bb45d1edef3d3b5483b50b58c4c492`, with FlashInfer API contracts at
@@ -330,3 +330,95 @@ Current source:
 [public MV/MM dispatch](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/gemm/__init__.py),
 [Beam router](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/models/beam.py),
 [ordinary unquantized linear](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/layers/dense/unquant.py).
+
+## PR #1741 — Closed gfx1250 persistent MoE decode proposal
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/1741
+- Original title: `[wip]perf(moe): add persistent moe gluon kernel for cdna5`.
+- State: closed without merge on 2026-10-13; head
+  `d2b86df4ce0c9f55b6f487836aaad23cf447a296`, base
+  `7111ee29905c2961b12ed1fbf6e1cc70daead79b`. The author closed it pending
+  other changes; the proposal is not a current open/draft recommendation.
+- Coverage: all 1546 diff lines, seven files, +1235/-58; eight issue comments,
+  four reviews and seven inline comments. Fresh API head/base matched.
+- Reviewed implementation: new
+  `tokenspeed-kernel-amd/python/tokenspeed_kernel_amd/ops/gfx1250/moe/mxfp4/persistent_decode.py`
+  and `tokenspeed-kernel/python/tokenspeed_kernel/ops/moe/gluon/mxfp4.py`.
+  Also read the AMD ops README, three AMD MoE test files
+  (`test_gluon_mxfp4_amd.py`, `test_gluon_mxfp4_contracts_gfx1250.py`,
+  `test_gluon_mxfp4_situ_gfx1250.py`) and `test_kernel_api_selection.py`.
+- Motivation: small routed batches can amortize down-projection scheduling
+  and descriptor setup by assigning multiple expert/output tiles to a fixed
+  workgroup grid. The gate/up projection and weighted top-k reduction remain
+  separate stages; this is not a persistent whole-MoE megakernel.
+
+The branch admits positive routed-row counts up to twice the expert count,
+and checks output width through the combine module's shared predicate:
+
+```diff
++    return (
++        0 < num_routed_rows
++        and num_routed_rows <= _GFX1250_PERSISTENT_MAX_AVERAGE_BPE * num_experts
++        and persistent_decode_mxfp_gfx1250.supports_output_width(output_width)
++    )
+```
+
+Production combine uses a 16×128×512 tile, eight wave32s, two TDM buffers
+and 12 workgroups per available CU. Its M-pinned loop keeps activation/expert
+base descriptors while updating output-column offsets; a flat-grid variant
+is also implemented. E4M3 activations and packed E2M1 weights with preshuffled
+E8M0 scales feed the common matrix pipeline. The epilogue adds expert bias,
+casts to BF16/FP16 and scatters routed rows to token/slot positions before
+the existing route-weight reduction. Invalid scatter IDs are mapped outside
+the descriptor bounds, and the output scatter completes before buffer reuse.
+
+The regular small-M gate/up path directly scales/casts its activation to
+E4M3, avoiding an intermediate BF16 rounding; the added reference test removes
+that extra rounding too. Standard apply requires `plan["activation"]` and
+forwards SwiGLU parameters; SiTU apply forwards its clamp parameters and output
+buffer. Unsupported output widths, including 2880, retain the regular path,
+whose decode gate allows up to 16 routed rows per expert. The width predicate
+follows the production block-N constant, so retuning it does not leave a
+separate hardcoded admission check behind.
+
+### Unresolved review and current implementation
+
+Earlier inline findings led to the width fallback, explicit plan activation,
+shared predicate, kernel/launcher naming and no-recompile sweep. The initially
+documented but absent microbenchmark was removed. One final-head finding is
+still reflected in the code: the public persistent launcher requires the
+activation name but silently defaults SwiGLU/SiTU tuning parameters. Those
+parameters affect results. Do not describe this branch as having resolved
+every numerical contract simply because its dispatch wrapper forwards them.
+
+At the frozen main SHA, `persistent_decode.py` is absent from the gfx1250
+MXFP4 tree. Registration moved from `ops/moe/gluon/mxfp4.py` to `ops/moe/gluon.py`;
+both relevant apply functions call the regular fused implementation, using
+the 16-rows-per-expert decode gate. There is no corresponding two-row persistent
+dispatch in those callers. Current standard SiLU/SwiGLU registration supports
+FP16/BF16 inputs and chooses internal FP8 only for explicit `"fp8"`; otherwise
+it uses dynamic MXFP4 activations. The separate BF16 SiTU registration retains
+FP8 internals and an intermediate-per-partition gate of 384. These later
+contracts must not be replaced with the proposal's all-A8W4 assumptions.
+
+### Validation limits
+
+Defined regressions cover dispatch boundaries, width fallback, activation
+forwarding/missing-plan rejection and shared output identity. The GPU test
+uses 1/4 tokens, hidden sizes 128/384, four experts and top-2 with expert bias,
+comparing against a direct-FP8 reference at `atol=rtol=2e-2`. Another warms
+batch sizes 1/8/9/16/32 and sweeps 2/3/7/15/17/24/31 under no-compilation
+guards for gate/up and persistent combine. Both explicitly skip without
+gfx1250; a green suite on another AMD architecture does not execute them.
+
+The body reports pre-commit success, not measured kernel speedup or model
+accuracy. The benchmark bot reports 333 within-budget cases for this head,
+while later CI-planning comments explicitly identify the missing gfx1250
+hardware numerical lane and the simulator's limited coverage. Those comments
+are plans, not execution results; workflow logs were not inspected here.
+This refresh ran no AMD kernel tests. A port needs matching hardware,
+explicit activation parameters, graph replay and model-level validation.
+
+Current source:
+[gfx1250 registration and apply callers](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/moe/gluon.py),
+[regular FP8/MXFP4 execution](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel-amd/python/tokenspeed_kernel_amd/ops/gfx1250/moe/mxfp4/fused.py).

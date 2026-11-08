@@ -151,6 +151,10 @@ N≤1024, M≤16 and separate single-/multi-row K limits. Beam now calls this
 dtype-aware path directly; ordinary FP32 `gemm.mm` is not redirected through
 the BF16-only MV shortcut. Preserve the four-element BF16 load cap and disabled
 FMA contraction when reasoning about equality to explicit FP32 widening.
+The closed gfx1250 persistent MoE proposal is not installed by those merged
+changes: current `ops/moe/gluon.py` still calls regular decode/prefill, with
+separate FP8 and dynamic-MXFP4 activation contracts. Its proposed two-routes-
+per-expert gate and unresolved public activation defaults remain branch facts.
 
 - SGLang kernel roots are `python/sglang/kernels/{aot,jit,ops}`. The current
   [dependency pin](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/pyproject.toml) uses FlashInfer 0.7.3 (cu13).

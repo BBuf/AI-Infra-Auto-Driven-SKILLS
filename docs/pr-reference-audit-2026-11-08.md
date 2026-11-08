@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 31 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 32 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -185,6 +185,10 @@ including removed redundant tests, current `gemm.mv` registration and Beam's
 new FP32-weight caller. Historical “no model caller” and old file/API names
 are no longer used as current guidance; final-rebase GPU coverage remains
 qualified because the reports do not consistently identify a tested SHA.
+It also covers #1741's full seven-file persistent gfx1250 MoE proposal and
+all discussion. Closed without merge, it is absent from the current regular
+apply callers. The card preserves the unresolved public-launcher activation
+parameter finding and separates architecture-skipped GPU tests from CI plans.
 
 ## Local validation of this increment
 
