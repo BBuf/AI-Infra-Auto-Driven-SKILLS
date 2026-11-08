@@ -262,3 +262,9 @@ def test_cheng_before_latin_and_dcp_terms():
     assert spoken("投机解码用 DFLASH") == "投机解码用 DFlash"
     assert spoken("后端选 fi_a2a，MoE 是 EP2") == "后端选 F I A2A，M O E 是 EP 2"
     assert spoken("草稿用 cutedsl_mla") == "草稿用 cute DSL MLA"
+
+
+def test_sla_and_day0_are_respelled():
+    # SLA was heard as slot / SWAT, Day-0 as D-0 / 对零; the hyphen must not turn the 0 into 负0
+    assert spoken("满足 SLA 的候选") == "满足 S L A 的候选"
+    assert spoken("新模型的 Day-0 支持") == "新模型的 Day zero 支持"

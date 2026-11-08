@@ -126,6 +126,8 @@ voice changes.
 | wave (SM wave, PR 47684 video 2026-11-01) | WAVE | Web in the carrier (OK~; Wave → Weil, waive → Weil FAIL) → **Wave**; plural waves already reads right |
 | 24 只要 (a number right before 只要/只有/只需…, same video, user review) | 24，只要 | Edge takes 只 as a classifier after a number: 二十四只（zhī）要, 6/6 takes (poly_probe, want 纸/指 vs avoid 知/织) → pattern `(?<=\d) ?只(?=[要有需用是剩占能会在])` → 「，只」: 0/6. Also write the comma in the narration, or the caption splits at the spoken pause into a group with no punctuation |
 | 一行一行人工 (行 = line, Claude Code review video 2026-10-28, user review) | 一航一航人工 | The 行人 (pedestrian) exception fired on 行人工, so the second 行 stayed xíng (poly_probe 6/6 wrong) → exception is now 人(?!工), plus a 一行一行 → 一航一航 rule (0/6 wrong) |
+| SLA (service-level agreement, 2026-11-08; unprimed Whisper on each line) | S L A | slot / SWAT in both lines tried (「通过 SLA 的候选」, 「满足 SLA 的候选」) → **SLA** in both |
+| Day-0 (Day-0 support, same date) | Day zero | D-0 / 对零 / Dailing; `Day 0` with a space fails too → **Day Zero**. Write the hyphen in the narration: `Day 0` is two tokens, so the lexicon entry never sees it. pron_check compares the transcript with the written form (`day0`), and Whisper writes `Day Zero` (`dayzero`), so `--meta` reports the respelled take as a FAIL. That is a false positive, like KiB above: listen once and move on |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -158,7 +160,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | flush (flush cache, same video) | Flash (in context) | 整个 radix 树被清空时 (flush stays on screen) |
 | 1M (as in 128K 到 1M token, PD security blog video 2026-10-27) | EM | 100 万 (keep 1M on screen) |
 | diff (Claude Code review video, 2026-10-28) | Dev / Dave's (diff, Diff, dif all fail) | 改动 / 这次的改动 (diff stays on screen) |
-| skill (same video) | Scale (skill, Skill, skil all fail) | 技能 (skill stays on screen) |
+| skill (same video; the singular re-measured 2026-11-08) | Scale (skill, Skill, skil all fail). 2026-11-08: speel / Speal / Scale / Steel depending on the sentence, and two takes of the same sentence came back different. The plural **skills** read right in all five sentences tried | the plural skills (这些 skills / 一组 skills), or reword (技能); the singular stays on screen |
 | nit / Nit (same video) | Net (knit → Net, nitpick → Netpeak) | 小毛病 (the Nit tag stays on screen) |
 | on-call (same video) | Encore (oncall too) | 值班 / 每周轮换的值班 |
 | clone (git clone, same video) | Clan | 克隆 |
