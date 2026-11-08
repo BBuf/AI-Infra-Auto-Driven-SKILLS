@@ -887,6 +887,15 @@ def start_remote_profiler(
         raise
 
 
+def validate_profile_label(value: Optional[str]) -> None:
+    # Several servers join the supplied label directly into a trace filename.
+    # Check both separators even when the client and server use different OSes.
+    if value and (value in {".", ".."} or any(c in value for c in "/\\\0")):
+        raise ValueError(
+            "Profile labels must be filenames, without path separators or NUL."
+        )
+
+
 def build_remote_profiler_start_payload(
     framework: str,
     output_path: Path,
@@ -984,6 +993,8 @@ def run_remote_profiler(
     capture_root: Optional[Path] = None,
     num_steps: Optional[int] = None,
 ) -> Path:
+    validate_profile_label(profile_prefix)
+    validate_profile_label(stage)
     framework = canonicalize_framework(framework)
     output_path = ensure_remote_profiler_output_path(output_dir, framework)
     if stage and output_path.is_file():
@@ -1078,6 +1089,9 @@ def run_sglang_profiler(
     probe_delay: float,
     start_step: Optional[int] = None,
 ) -> Path:
+    validate_profile_label(profile_prefix)
+    if num_steps is None or num_steps < 1:
+        raise ValueError("SGLang capture requires a positive num_steps.")
     if output_dir is None:
         output_dir = tempfile.mkdtemp(prefix="sglang-torch-profile-")
     output_root = Path(output_dir).resolve()
@@ -1119,19 +1133,23 @@ def run_sglang_profiler(
         pass
 
     if probe_plan.capture_requests > 0:
-        time.sleep(max(0.0, probe_delay))
-        send_probe_requests(
-            url=url,
-            prompt=probe_plan.prompt,
-            max_new_tokens=probe_plan.capture_max_new_tokens,
-            request_count=probe_plan.capture_requests,
-            framework="sglang",
-            sampling_seed_offset=probe_plan.warmup_requests,
-        )
         try:
-            stop_remote_profiler(url, "sglang")
-        except RuntimeError:
-            pass
+            time.sleep(max(0.0, probe_delay))
+            send_probe_requests(
+                url=url,
+                prompt=probe_plan.prompt,
+                max_new_tokens=probe_plan.capture_max_new_tokens,
+                request_count=probe_plan.capture_requests,
+                framework="sglang",
+                sampling_seed_offset=probe_plan.warmup_requests,
+            )
+        finally:
+            # A failed probe must not leave this invocation recording forever.
+            # Automatic step completion may already have stopped the profiler.
+            try:
+                stop_remote_profiler(url, "sglang")
+            except RuntimeError:
+                pass
 
     return wait_for_profiler_artifact(output_path, timeout_s=180.0)
 
@@ -1158,6 +1176,9 @@ def run_profiler(
     decode_output_len: int = DEFAULT_DECODE_OUTPUT_LEN,
     sglang_profile_v2: bool = False,
 ) -> Path:
+    validate_profile_label(profile_prefix)
+    if num_steps is None or num_steps < 1:
+        raise ValueError("Live capture requires a positive num_steps.")
     resolved_framework = resolve_framework(
         framework,
         url=url,

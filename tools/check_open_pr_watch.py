@@ -86,48 +86,52 @@ def run(cmd: list[str]) -> str:
     return proc.stdout
 
 
-def search_query(repo: str, term: str) -> str:
-    return f"repo:{repo} is:pr is:open {term}"
-
-
-def combined_search_query(repo: str, terms: list[str]) -> str:
-    rendered_terms = [f'"{term}"' if " " in term else term for term in terms]
-    return f"repo:{repo} is:pr is:open (" + " OR ".join(rendered_terms) + ")"
-
-
 def gh_search_open_prs(repo: str, _terms: list[str], per_page: int) -> list[dict[str, Any]]:
-    payload = run(
-        [
-            "gh",
-            "api",
-            f"/repos/{repo}/pulls?state=open&sort=updated&direction=desc&per_page={min(per_page, 100)}",
-        ]
+    pages = json.loads(
+        run(
+            [
+                "gh",
+                "api",
+                f"/repos/{repo}/pulls?state=open&sort=created&direction=asc&per_page={per_page}",
+                "--paginate",
+                "--slurp",
+            ]
+        )
     )
-    return json.loads(payload)
+    return [item for page in pages for item in page]
 
 
 def http_fetch_open_prs(repo: str, per_page: int) -> list[dict[str, Any]]:
-    query = parse.urlencode(
-        {
-            "state": "open",
-            "sort": "updated",
-            "direction": "desc",
-            "per_page": str(min(per_page, 100)),
-        }
-    )
-    url = f"https://api.github.com/repos/{repo}/pulls?{query}"
-    req = request.Request(
-        url,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "ai-infra-auto-driven-skills-open-pr-watch",
-        },
-    )
-    try:
-        with request.urlopen(req, timeout=30.0) as resp:
-            return json.loads(resp.read().decode("utf-8"))
-    except (OSError, error.HTTPError, json.JSONDecodeError) as exc:
-        raise RuntimeError(f"anonymous REST fallback failed for {repo}: {exc}") from exc
+    items: list[dict[str, Any]] = []
+    page = 1
+    while True:
+        query = parse.urlencode(
+            {
+                "state": "open",
+                "sort": "created",
+                "direction": "asc",
+                "per_page": str(per_page),
+                "page": str(page),
+            }
+        )
+        req = request.Request(
+            f"https://api.github.com/repos/{repo}/pulls?{query}",
+            headers={
+                "Accept": "application/vnd.github+json",
+                "User-Agent": "ai-infra-auto-driven-skills-open-pr-watch",
+            },
+        )
+        try:
+            with request.urlopen(req, timeout=30.0) as resp:
+                batch = json.loads(resp.read().decode("utf-8"))
+        except (OSError, error.HTTPError, json.JSONDecodeError) as exc:
+            raise RuntimeError(
+                f"anonymous REST fallback failed for {repo} at page {page}: {exc}"
+            ) from exc
+        items.extend(batch)
+        if len(batch) < per_page:
+            return items
+        page += 1
 
 
 def matched_terms_for_item(item: dict[str, Any], terms: list[str]) -> tuple[str, ...]:
@@ -145,12 +149,15 @@ def matched_terms_for_item(item: dict[str, Any], terms: list[str]) -> tuple[str,
 def collect_watch_items(
     repos: dict[str, str],
     terms: list[str],
-    per_term_limit: int = 50,
+    per_term_limit: int = 100,
 ) -> list[WatchItem]:
+    # Historical argument name retained for callers; it is a page size, never
+    # a cap on how many open PRs are examined.
+    if not 1 <= per_term_limit <= 100:
+        raise ValueError("page size must be between 1 and 100")
     by_key: dict[tuple[str, int], dict[str, Any]] = {}
     matched_terms: dict[tuple[str, int], set[str]] = {}
     failures: list[str] = []
-    succeeded = 0
     for repo in repos.values():
         try:
             repo_items = gh_search_open_prs(repo, terms, per_term_limit)
@@ -163,7 +170,6 @@ def collect_watch_items(
                 print(f"warning: skipped {message}", file=sys.stderr)
                 continue
             print(f"warning: used anonymous REST fallback for {repo}: {exc}", file=sys.stderr)
-        succeeded += 1
         for item in repo_items:
             terms_matched = matched_terms_for_item(item, terms)
             if not terms_matched:
@@ -184,8 +190,8 @@ def collect_watch_items(
         )
         for (repo, number), item in by_key.items()
     ]
-    if succeeded == 0 and repos:
-        raise RuntimeError("all open PR fetches failed: " + " | ".join(failures))
+    if failures:
+        raise RuntimeError("incomplete open PR inventory: " + " | ".join(failures))
     return sorted(watch_items, key=lambda item: (item.repo.lower(), item.number))
 
 
@@ -195,7 +201,9 @@ def render_markdown(items: list[WatchItem], *, generated_on: str) -> str:
         "",
         f"Generated: `{generated_on}`.",
         "",
-        "This report is a triage aid for skill updates. Read the linked PR diffs",
+        "All open-PR pages were fetched before title/body term filtering.",
+        "This is keyword discovery, not complete changed-file relevance or diff review.",
+        "Read the linked PR diffs",
         "before changing benchmark, profiler, or model-history guidance.",
         "",
     ]
@@ -241,10 +249,13 @@ def main() -> None:
     parser.add_argument("--repo", action="append", choices=sorted(DEFAULT_REPOS), help="framework repo key to query")
     parser.add_argument("--term", action="append", help="extra search term; defaults remain enabled")
     parser.add_argument(
-        "--per-term-limit",
+        "--page-size", "--per-term-limit",
+        dest="page_size",
         type=int,
-        default=50,
-        help="maximum search rows per repository; kept for CLI compatibility",
+        choices=range(1, 101),
+        metavar="1..100",
+        default=100,
+        help="REST page size; all pages are read (--per-term-limit is a legacy alias)",
     )
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
     parser.add_argument("--output", type=Path)
@@ -254,7 +265,7 @@ def main() -> None:
     repos = {key: DEFAULT_REPOS[key] for key in repo_keys}
     terms = DEFAULT_TERMS + (args.term or [])
     try:
-        items = collect_watch_items(repos, terms, args.per_term_limit)
+        items = collect_watch_items(repos, terms, args.page_size)
     except RuntimeError as exc:
         parser.exit(2, f"error: {exc}\n")
     text = render_json(items) if args.format == "json" else render_markdown(items, generated_on=date.today().isoformat())

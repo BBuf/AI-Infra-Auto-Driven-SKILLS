@@ -172,7 +172,9 @@ MEM and expert-load outputs require their own readers.
    warp configuration before attributing a bimodal duration to arithmetic.
 5. Consult source dispatch before proposing fusion. Existing routed-expert
    activation/quant does not establish shared-expert coverage. Match rounding,
-   clamp, scale/layout, padding and graph reuse contracts.
+   clamp, scale/layout, padding and graph reuse contracts. Check a quantization
+   oracle against an independent formula: a kernel and its reference can share
+   the same scale-floor error.
 6. Follow state ownership across fused boundaries: cached normalized rows,
    quantized values/scales and next coefficients can become invalid after a
    residual rewrite or row selection. V4.1 Engram/late-layer selection are
@@ -187,6 +189,12 @@ hints; inspect the concrete producer, consumer and backend. The script's three
 tables are observations and candidates, not proof that an optimization is safe
 or already active in a different framework.
 
+Capture labels must be filename components: the helper rejects path separators
+and NUL before contacting the server. Live capture requires positive `num_steps`.
+SGLang v1/v2 default to stacks on and shapes off; request shapes explicitly when
+needed. The [profiler PR review](references/profiler-open-pr-review.md) distinguishes
+current behavior from pending stage-counter, filename and teardown fixes.
+
 ## References and output
 
 Load only relevant references:
@@ -196,6 +204,9 @@ Load only relevant references:
   dispatch, numerical contracts, validation and their limitations.
 - [vllm-torch-compile-fusions.md](references/vllm-torch-compile-fusions.md):
   current pass registration, platform gates and source patterns.
+- [dsv41-open-pr-review.md](references/dsv41-open-pr-review.md): reviewed mHC,
+  KV-scale and Hopper indexer proposals, actual gates, branch-specific flags
+  and validation gaps. Tile budgets bound score tensors, not whole-model peaks.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

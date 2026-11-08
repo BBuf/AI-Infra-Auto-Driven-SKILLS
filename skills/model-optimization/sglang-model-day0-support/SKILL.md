@@ -74,6 +74,11 @@ A Day-0 kernel replacement must preserve residual rewrites, row selection,
 quantized-scale layout, graph-stream initialization and target/draft pool
 ownership. Include fallback/guard-negative cases in the validation matrix;
 a loaded model alone does not exercise the optimized path.
+Check quantization formulas independently of the optimized writer's reference,
+and test overlap-sensitive accuracy under actual concurrent execution. The
+[V4.1 open-PR review](../../llm-torch-profiler-analysis/references/dsv41-open-pr-review.md)
+shows both shared-oracle scale errors and experimental-to-upstream validation
+gaps; an experiment's flags and results do not validate a differently gated port.
 
 ### 3. Classify the work
 

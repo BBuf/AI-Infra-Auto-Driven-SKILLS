@@ -19,6 +19,12 @@ corpora retain their own capture dates; they do not certify today's dispatch
 or numerical defaults. For kernel replacements, verify that the real model
 executes the candidate before treating end-to-end tests as coverage.
 
+Consult [the reference audit](../docs/pr-reference-audit-2026-11-08.md) and its
+timestamped metadata snapshot for corrected PR/issue types and state changes.
+A closed issue is not a merged PR, and a PR number in a commit's subject may
+refer to an issue or an earlier change. Metadata refresh does not renew a diff
+review or a benchmark result.
+
 Generated entries labeled **not a manual audit** are PR discovery inventories.
 Read their full diffs and current callers before making optimization conclusions;
 API file counts and snippets do not establish complete diff coverage. Existing

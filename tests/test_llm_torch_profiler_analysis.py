@@ -210,6 +210,52 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 )
             capture.assert_not_called()
 
+    def test_capture_rejects_escaping_labels_before_contacting_server(self):
+        common = sys.modules["profile_common"]
+        plan = common.ProbePlan("x", 1, 0, 1, 0)
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(common.request, "urlopen") as control:
+            for label in ["../run", "/tmp/run", "a\\b", "a\0b", ".."]:
+                with self.subTest(label=label):
+                    for framework in ["sglang", "tokenspeed", "vllm"]:
+                        with self.assertRaisesRegex(ValueError, "Profile labels"):
+                            if framework == "sglang":
+                                common.run_sglang_profiler(
+                                    "http://server", tmp, 5, False, False, label, plan, 0,
+                                )
+                            else:
+                                common.run_remote_profiler(
+                                    "http://server", tmp, framework, plan, 0,
+                                    profile_prefix=label,
+                                )
+            control.assert_not_called()
+            self.assertEqual(list(Path(tmp).iterdir()), [])
+
+    def test_sglang_stage_capture_requires_positive_steps(self):
+        common = sys.modules["profile_common"]
+        with mock.patch.object(common.request, "urlopen") as control:
+            for steps in [None, 0, -1]:
+                with self.subTest(steps=steps), self.assertRaisesRegex(ValueError, "positive"):
+                    common.run_sglang_profiler(
+                        "http://server", None, steps, True, False, "run",
+                        common.ProbePlan("x", 1, 0, 1, 0), 0,
+                    )
+            control.assert_not_called()
+
+    def test_sglang_failed_probe_still_stops_capture(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(common, "try_get_json", return_value=None), \
+             mock.patch.object(common.request, "urlopen"), \
+             mock.patch.object(common, "send_probe_requests", side_effect=RuntimeError("probe failed")), \
+             mock.patch.object(common, "stop_remote_profiler") as stop:
+            with self.assertRaisesRegex(RuntimeError, "probe failed"):
+                common.run_sglang_profiler(
+                    "http://server", tmp, 5, False, False, "run",
+                    common.ProbePlan("x", 1, 1, 1, 0), 0,
+                )
+            stop.assert_called_once_with("http://server", "sglang")
+
     def test_sglang_rust_capture_uses_mergeable_profile_id(self):
         common = sys.modules["profile_common"]
         with tempfile.TemporaryDirectory() as tmp, mock.patch.object(

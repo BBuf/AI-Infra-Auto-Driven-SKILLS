@@ -1,5 +1,10 @@
 # SGLang DeepSeek V4.1 模型 PR 优化历史
 
+11 月 8 日补充：[六个逐份审阅的 open kernel PR](../../../skills/llm-torch-profiler-analysis/references/dsv41-open-pr-review.md)
+覆盖 mHC overlap、FP8 KV scale 下限，以及 Hopper indexer 的打分、临时显存预算、
+K tile 复用和选择/写回融合。卡片记录完整 diff 覆盖，并区分实验分支性能数据和
+尚待验证的上游移植。下方历史文件覆盖表与卡片保留原有审计范围。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

@@ -10,8 +10,11 @@
    blobless clone 放在 `../_worktrees/{sglang,vllm,trtllm,tokenspeed}-pr-history`
    （或用 `*_PR_HISTORY_ROOT` 环境变量指定），先 `--dry-run` 看每个模型的
    reuse/fetching 数，再按 `--framework`/`--model` 分批运行。已审计的 merged 卡片
-   与时间线行会原样复用，只为新 PR 或 open PR 调 GitHub API；`--refetch-existing`
-   才会重渲染旧卡片。标题与文件覆盖表之间的人工补充段会保留。
+   与时间线行会原样复用；新 PR、open PR 和 closed-unmerged PR 会重新查询。
+   open/closed/查询失败的缓存不跨运行复用；`--refetch-existing` 绕过磁盘缓存，
+   重新查询并渲染旧卡片。标题与文件覆盖表之间的人工补充段会保留。
+   Git 追溯只用外围 merge/squash PR 号，不把标题中的 issue 或被 revert 的编号
+   算作本次实现；API 拒绝的编号也不能出现在文件覆盖表中。
    生成器产出是明确标注的机器 diff 清单，不能自动成为人工审计卡；优化结论
    需阅读完整 diff 与当前调用方后手写补充。新增模型先补
    `MODEL_TITLES`、`FRAMEWORK_MODEL_ORDER`、`MODEL_FILTERS`、`SUBJECT_HINTS`。

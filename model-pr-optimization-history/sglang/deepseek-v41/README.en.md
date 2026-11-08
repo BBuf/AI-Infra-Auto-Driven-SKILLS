@@ -1,5 +1,11 @@
 # SGLang DeepSeek V4.1 Model PR Optimization History
 
+November 8 supplement: [six manually reviewed open kernel PRs](../../../skills/llm-torch-profiler-analysis/references/dsv41-open-pr-review.md)
+cover mHC overlap, FP8 KV scale floors and Hopper indexer scoring, tile budgets,
+K reuse and selection/writeback. The cards record complete diff coverage and
+separate experimental-branch measurements from pending upstream validation.
+The historical file coverage and cards below retain their original scope.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

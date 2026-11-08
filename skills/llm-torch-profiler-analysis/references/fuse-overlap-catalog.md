@@ -2183,11 +2183,11 @@ into `norm_rope.py`, `kv_norm_rope_store.py`, `fp4_indexer_rope.py` and other
 focused modules. Search current callers rather than assuming the old file
 still exists. Historical PR excerpts keep their original paths.
 
-### Paged KV storage contract
+### Paged KV storage contract — 2026-11-08
 
 Quantized cache changes span writer, pool, reader and prefill dequantization.
-The following SGLang DeepSeek-V4-family example is pinned to the October 5
-source head `b1bbd74f287f13ed1276b0403a01ebb55c597e93` (historical snapshot).
+The following SGLang DeepSeek-V4-family example is checked at
+`c24285bde97c3e6424cd5d8cb35788889034d8ea`.
 Other models and readers require their own payload/scale/alignment arithmetic.
 
 | Attention KV layout | Payload per stored token | Scales per token | Total before page padding | Page alignment |
@@ -2195,9 +2195,11 @@ Other models and readers require their own payload/scale/alignment arithmetic.
 | `V4` | 448 FP8 no-RoPE values + 64 BF16 RoPE values = 576 B | 7 UE8M0 scales + 1 padding byte = 8 B | 584 B | 576 B |
 | `V41` | All 512 values, including RoPE, in FP8 E4M3 = 512 B | 16 UE8M0 scales, one per 32 values = 16 B | 528 B | 512 B |
 | `V41_FP4` | All 512 E2M1 values, two per byte = 256 B | 32 E4M3 scales, one per 16 values = 32 B | 288 B | 256 B |
+| `V41_NEW` | Same encoding as V41 | Scales immediately follow each token's payload | 528 B | 528 B; no page padding |
+| `V41_FP4_NEW` | Same encoding as V41_FP4 | Scales immediately follow each token's payload | 288 B | 288 B; no page padding |
 
-A page stores **all payload rows, then all scale rows**, followed by alignment
-padding. It is not an array of interleaved 528-byte or 288-byte records:
+The three block-split layouts store **all payload rows, then all scale rows**,
+followed by alignment padding:
 
 ```text
 scale_region_offset = page_size * data_bytes
@@ -2205,23 +2207,35 @@ page_bytes = ceil(page_size * bytes_per_token / page_align) * page_align
 ```
 
 For a two-token page, V41 allocates 1536 B and V41_FP4 allocates 768 B. Capacity
+for V41_NEW is instead 1056 B and V41_FP4_NEW is 576 B: their row stride is
+the full token width and the scale offset is one payload width within each row.
+Encoding and arrangement must both match the reader; equal bytes per token
+do not make the split/interleaved pointers interchangeable. Capacity
 must additionally account for compression ratios, source-layer sharing,
 index-K pools and compression state. `tokens * 528` is not whole-model KV use.
-The [layout definition](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/attention/dsv4/kv_layout.py)
-and [pool selection](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py)
+The [layout definition](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/attention/dsv4/kv_layout.py)
+and [pool selection](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/mem_cache/deepseek_v4_memory_pool.py)
 are the authority for addressing and allocation.
 
 Current defaults remain `SGLANG_DSV4_KV_LAYOUT=v4` and
-`SGLANG_DSV4_COMPRESSED_KV_LAYOUT=auto`. On CUDA, selecting `v41` requires device capability major 10 (described as
-SM100/SM103 in the source). On HIP, it requires gfx950 with `aiter_sparse`
-attention. `auto` falls back to V4 when those device/backend checks fail.
+`SGLANG_DSV4_COMPRESSED_KV_LAYOUT=auto`. The `flashmla_mega` selector forces
+`v41` unless `v41_new` is explicitly chosen. On CUDA, selecting either requires
+device capability major 10 (SM100/SM103). On HIP, V41 requires gfx950 with
+`aiter_sparse`; `v41_new` is rejected. `auto` falls back to V4 when the applicable
+device/backend check fails. The TRT-LLM attention path uses separate uniform
+FP8 pools with external unit scale; it rejects packed V4.1 layout options.
 The pool selector does not probe the installed FlashMLA reader for 528-byte
 support; reader compatibility must be verified separately. The decode caller
-passes the layout through the cache view's last dimension (584/528/288 bytes). Under V41, compressed `auto` uses FP4 for ratios
+must carry both the view and its arrangement to a compatible reader. Under
+V41/V41_NEW, compressed `auto` uses the matching arrangement of FP4 for ratios
 1/2, whose latents already have the matching FP4 rounding contract, and FP8 for
 ratios 4/128. Forcing FP4 for all ratios changes that quantization contract.
 The main SWA cache remains FP8. HiSparse's V4-only transfer path and the
 separate unified-KV implementation must not inherit this format implicitly.
+
+The [V4.1 open-PR review](dsv41-open-pr-review.md) separates the pending FP8
+scale-floor correction from these shipped layouts, and distinguishes attention
+KV storage from the indexer's separate 64-byte E2M1 + 4-byte UE8M0 slot format.
 
 Trace the complete producer/consumer chain when changing a format:
 

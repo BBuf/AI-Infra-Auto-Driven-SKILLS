@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
@@ -23,19 +25,31 @@ class OpenPrWatchTest(unittest.TestCase):
     def setUp(self) -> None:
         self.mod = load_module()
 
-    def test_search_query_is_open_pr_repo_scoped(self) -> None:
-        query = self.mod.search_query("sgl-project/sglang", "Qwen3.5")
+    def test_gh_pagination_keeps_matches_from_later_pages(self) -> None:
+        pages = [
+            [{"number": 1, "title": "unrelated"}],
+            [{"number": 2, "title": "MoE fusion", "updated_at": "2026-11-08"}],
+        ]
+        with mock.patch.object(self.mod, "run", return_value=json.dumps(pages)) as run:
+            items = self.mod.collect_watch_items({"x": "owner/repo"}, ["MoE"], 1)
+        self.assertEqual([item.number for item in items], [2])
+        self.assertIn("--paginate", run.call_args.args[0])
 
-        self.assertIn("repo:sgl-project/sglang", query)
-        self.assertIn("is:pr", query)
-        self.assertIn("is:open", query)
-        self.assertIn("Qwen3.5", query)
+    def test_anonymous_fallback_reads_until_the_final_page(self) -> None:
+        first = mock.MagicMock()
+        first.__enter__.return_value.read.return_value = b'[{"number":1}]'
+        last = mock.MagicMock()
+        last.__enter__.return_value.read.return_value = b'[]'
+        with mock.patch.object(self.mod.request, "urlopen", side_effect=[first, last]) as fetch:
+            rows = self.mod.http_fetch_open_prs("owner/repo", 1)
+        self.assertEqual(rows, [{"number": 1}])
+        self.assertIn("page=2", fetch.call_args.args[0].full_url)
 
-    def test_default_terms_cover_current_model_families(self) -> None:
-        self.assertTrue(
-            {"MiniMax M3", "Kimi K3", "Inkling", "Unlimited OCR"}
-            <= set(self.mod.DEFAULT_TERMS)
-        )
+    def test_one_failed_repository_cannot_produce_a_complete_report(self) -> None:
+        with mock.patch.object(self.mod, "gh_search_open_prs", side_effect=[[], RuntimeError("offline")]), \
+             mock.patch.object(self.mod, "http_fetch_open_prs", side_effect=RuntimeError("offline")):
+            with self.assertRaisesRegex(RuntimeError, "incomplete open PR inventory"):
+                self.mod.collect_watch_items({"a": "a/repo", "b": "b/repo"}, ["MoE"])
 
     def test_new_terms_match_case_and_punctuation_once_per_pr(self) -> None:
         def fetch(repo: str, terms: list[str], per_page: int) -> list[dict]:
@@ -126,7 +140,7 @@ class OpenPrWatchTest(unittest.TestCase):
         self.mod.gh_search_open_prs = fail_gh
         self.mod.http_fetch_open_prs = fail_fallback
 
-        with self.assertRaisesRegex(RuntimeError, "all open PR fetches failed"):
+        with self.assertRaisesRegex(RuntimeError, "incomplete open PR inventory"):
             self.mod.collect_watch_items({"x": "owner/repo"}, ["Qwen3.5"], 10)
 
 

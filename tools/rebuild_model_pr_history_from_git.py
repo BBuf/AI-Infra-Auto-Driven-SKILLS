@@ -681,7 +681,14 @@ def gh_api(path: str, paginate: bool = False) -> Any:
 
 def load_cache() -> dict[str, Any]:
     if CACHE_PATH.exists():
-        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        cached = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        # Only merged diffs are stable between invocations. Closed PRs can be
+        # reopened, open heads can change, and inaccessible PRs can reappear.
+        return {"prs": {
+            key: entry for key, entry in cached.get("prs", {}).items()
+            if (entry.get("info") or {}).get("merged_at")
+            and not (entry.get("info") or {}).get("fetch_error")
+        }}
     return {"prs": {}}
 
 
@@ -765,7 +772,7 @@ def selected_files(framework: str, model: str, all_files: list[str]) -> list[str
     return sorted({path for path in files if path.startswith(wanted_roots) or "/" not in path})
 
 
-PR_RE = re.compile(r"(?:\(#|#)(\d{3,6})\)?")
+PR_RE = re.compile(r"\(#(\d+)\)\s*$|^Merge pull request #(\d+)\b")
 
 
 def trace_model_prs(framework: str, files: list[str]) -> dict[int, TraceInfo]:
@@ -781,6 +788,8 @@ def trace_model_prs(framework: str, files: list[str]) -> dict[int, TraceInfo]:
             [
                 "git",
                 "log",
+                "--first-parent",
+                "--diff-merges=first-parent",
                 "--date=short",
                 "--format=\x02%H\x01%ad\x01%s",
                 "--name-only",
@@ -795,12 +804,15 @@ def trace_model_prs(framework: str, files: list[str]) -> dict[int, TraceInfo]:
         def flush() -> None:
             if not commit or not subject:
                 return
-            pr_numbers = [int(m.group(1)) for m in PR_RE.finditer(subject)]
+            # A title can mention an issue, a reverted PR, or an upstream PR
+            # from another repo. Only the enclosing merge/squash identifies
+            # this repository's change; metadata validation still follows.
+            pr_numbers = [int(m.group(1) or m.group(2)) for m in PR_RE.finditer(subject)]
             if not pr_numbers:
                 return
             traced_files = [path for path in touched if path in selected]
             if not traced_files:
-                traced_files.extend(chunk)
+                return
             for number in pr_numbers:
                 info = merged[number]
                 info.files.update(traced_files)
@@ -905,7 +917,7 @@ def card_state(card_text: str) -> str:
     return match.group(1).strip() if match else "unknown"
 
 
-REUSABLE_STATES = {"merged", "closed", "closed-unmerged"}
+REUSABLE_STATES = {"merged"}
 
 
 def reusable_existing_numbers(
@@ -917,10 +929,10 @@ def reusable_existing_numbers(
 ) -> set[int]:
     """PRs whose audited card and timeline row can be kept without refetching.
 
-    A merged or closed PR diff is immutable, so a card that already exists in
+    A merged PR diff is immutable, so a card that already exists in
     both languages together with its timeline rows is carried forward verbatim.
     This keeps hand-reviewed cards intact and limits GitHub API use to new or
-    still-open PRs.
+    unmerged PRs. A closed PR can be reopened and must be checked again.
     """
     reusable: set[int] = set()
     for number in numbers:
@@ -1405,31 +1417,6 @@ def source_text_en(bundle: PRBundle) -> str:
     return "; ".join(parts) or "Preserved from existing docs; not directly traced from current implementation files"
 
 
-def motivation_zh(bundle: PRBundle, model_title: str) -> str:
-    title = pr_title(bundle)
-    files = top_files(bundle, 4)
-    names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "仅元数据 PR 卡片"
-    lower = " ".join([title, names]).lower()
-    if any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
-        category = "缺陷修复"
-    elif any(token in lower for token in ("perf", "opt", "fuse", "fp8", "fp4", "deepgemm", "deepep", "flash", "aiter", "cuda", "triton")):
-        category = "性能/后端优化"
-    elif any(token in lower for token in ("doc", "cookbook", "test", "ci", "benchmark")):
-        category = "文档/测试/CI"
-    elif any(token in lower for token in ("support", "add ", "introduce", "initial", "enable")):
-        category = "模型支持/运行时入口"
-    else:
-        category = "模型实现调整"
-    if files:
-        summary = f"覆盖「{title}」；主要实现面是 {names}。下方保留文件级证据、代码摘录和验证风险"
-    else:
-        summary = (
-            f"覆盖「{title}」；GitHub 文件列表为空，本卡保留 PR 元数据、缺失 patch 的状态和验证风险，不编造文件级证据"
-        )
-    body_part = f"；技术摘要: {summary}"
-    return f"标题「{title}」；模型线: {model_title}；类别: {category}；主要 diff: {names}{body_part}。"
-
-
 def implementation_zh(bundle: PRBundle) -> str:
     files = top_files(bundle, 5)
     if not files:
@@ -1461,35 +1448,6 @@ def validation_zh(bundle: PRBundle) -> str:
         names = ", ".join(f"`{p}`" for p in docs[:3])
         return f"该 PR 主要落在文档/示例 {names}；验证重点是文档命令仍能映射到当前 CLI 参数和模型仓库名。"
     return "未看到显式测试文件；下一次修改同一区域时需要补足模型加载、短文本生成和 parser/多模态输入的回归验证。"
-
-
-def motivation_en(bundle: PRBundle, model_title: str) -> str:
-    title = pr_title(bundle)
-    files = top_files(bundle, 4)
-    names = ", ".join(f"`{f.get('filename')}`" for f in files[:3]) or "metadata-only PR card"
-    lower = " ".join([title, names]).lower()
-    if any(token in lower for token in ("fix", "bug", "wrong", "error", "crash", "regression")):
-        category = "bug fix"
-    elif any(token in lower for token in ("perf", "opt", "fuse", "fp8", "fp4", "deepgemm", "deepep", "flash", "aiter", "cuda", "triton")):
-        category = "performance/backend optimization"
-    elif any(token in lower for token in ("doc", "cookbook", "test", "ci", "benchmark")):
-        category = "docs/tests/CI"
-    elif any(token in lower for token in ("support", "add ", "introduce", "initial", "enable")):
-        category = "model support/runtime entry"
-    else:
-        category = "model implementation change"
-    if files:
-        summary = (
-            f'Covers "{title}"; the main implementation surface is {names}. '
-            "File-level evidence, code excerpts, and validation risks are preserved below"
-        )
-    else:
-        summary = (
-            f'Covers "{title}"; GitHub returned an empty changed-file list, so this card records PR metadata, '
-            "the missing-patch state, and validation risks without inventing file evidence"
-        )
-    body_part = f"; technical summary: {summary}"
-    return f"Title: \"{title}\"; model line: {model_title}; category: {category}; main diff: {names}{body_part}."
 
 
 def implementation_en(bundle: PRBundle) -> str:
@@ -1597,15 +1555,6 @@ def card_en(bundle: PRBundle, model_title: str) -> str:
         - Risk and verification: {validation_en(bundle)}
         """
     )
-
-
-def coverage_table_zh(files: list[str], traces: dict[int, TraceInfo]) -> str:
-    rows = ["| 文件 | git 追溯到的 PR |", "| --- | --- |"]
-    for relpath in files:
-        nums = [num for num, trace in traces.items() if relpath in trace.files]
-        pr_text = ", ".join(f"[#{num}](https://github.com/{{repo}}/pull/{num})" for num in nums[:8])
-        rows.append(f"| `{relpath}` | {pr_text or '无直接 PR 号提交'} |")
-    return "\n".join(rows).replace("https://github.com/{repo}", "https://github.com/{repo}")
 
 
 def timeline_zh(
@@ -1874,7 +1823,7 @@ def rebuild(
     refetch_existing: bool = False,
 ) -> None:
     frameworks = frameworks or list(REPOS)
-    cache = load_cache()
+    cache = {"prs": {}} if refetch_existing else load_cache()
     all_files = {framework: git_files(framework) for framework in frameworks}
     update_indexes(dry_run=dry_run, frameworks=frameworks)
     for framework in frameworks:
@@ -1952,6 +1901,10 @@ def rebuild(
                 key=sort_key,
             )
             print(f"{framework}/{model}: fetched total={len(bundles)}", flush=True)
+            # Rejected issue numbers/unavailable entries without historical
+            # evidence must not reappear as PRs in the file-coverage table.
+            valid_numbers = {bundle.number for bundle in bundles}
+            traces = {number: trace for number, trace in traces.items() if number in valid_numbers}
             model_dir = HISTORY_ROOT / framework / model
             model_dir.mkdir(parents=True, exist_ok=True)
             (model_dir / "README.zh.md").write_text(
@@ -1983,7 +1936,6 @@ def rebuild(
                 encoding="utf-8",
             )
             save_cache(cache)
-    save_cache(cache)
 
 
 def main() -> None:

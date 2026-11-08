@@ -237,7 +237,7 @@
 | 2026-03-23 | [#20343](https://github.com/sgl-project/sglang/pull/20343) | merged | HiSparse for Sparse Attention | `python/sglang/srt/model_executor/model_runner_kv_cache_mixin.py`, `python/sglang/srt/model_executor/model_runner.py`, `python/sglang/srt/layers/attention/nsa_backend.py` |
 | 2026-03-23 | [#21192](https://github.com/sgl-project/sglang/pull/21192) | merged | Fix CP in-seq-split method for DeepSeek V32 and update related tests | `test/manual/nightly/test_deepseek_v32_perf.py`, `python/sglang/srt/server_args.py` |
 | 2026-03-23 | [#21179](https://github.com/sgl-project/sglang/pull/21179) | open | [Bug] Preserve DeepSeek-V3.2 tool-call markers in reasoning parsing | `test/registered/unit/parser/test_reasoning_parser.py`, `python/sglang/srt/parser/reasoning_parser.py` |
-| 2026-03-23 | [#21194](https://github.com/sgl-project/sglang/pull/21194) | open | [bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path | `python/sglang/srt/models/deepseek_v2.py` |
+| 2026-10-29 | [#21194](https://github.com/sgl-project/sglang/pull/21194) | merged | [Fix] [AMD] deepseek-v2/v3: Fix PPMissingLayer AttributeError in aiter_gfx95 code path | `python/sglang/srt/models/deepseek_v2.py` |
 | 2026-03-24 | [#19945](https://github.com/sgl-project/sglang/pull/19945) | merged | [AMD] Tilelang sparse fwd for dsv32 mi355/mi300 | `python/sglang/srt/layers/attention/nsa/tilelang_kernel.py` |
 | 2026-03-24 | [#20438](https://github.com/sgl-project/sglang/pull/20438) | merged | [Perf] Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2 | `python/sglang/srt/layers/attention/nsa/nsa_indexer.py` |
 | 2026-03-25 | [#16079](https://github.com/sgl-project/sglang/pull/16079) | closed | [Performance] Change sparse MLA and dense MHA switching threshold DSv3.2 | `python/sglang/srt/layers/attention/nsa_backend.py` |
@@ -5731,32 +5731,25 @@ diff -- python/sglang/srt/parser/reasoning_parser.py
   - runtime: `python/sglang/srt/parser/reasoning_parser.py` modified +73/-13
 - 验证与风险: diff 自带测试面 `test/registered/unit/parser/test_reasoning_parser.py`；如果继续改同一模型，优先复跑这些测试并补一个最小 launch/accuracy smoke。
 
-### PR #21194 - [bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path
+### PR #21194 - [Fix] [AMD] deepseek-v2/v3: Fix PPMissingLayer AttributeError in aiter_gfx95 code path
 
 - 链接: https://github.com/sgl-project/sglang/pull/21194
-- 状态/时间: open / 2026-03-23
-- 反查来源: 保留自原 history/skill 显式引用
-- 代码 diff 已读范围: GitHub Pull Request files API 返回 1 个文件，+4/-4，可读 patch 32 行；本卡优先审计模型相关文件和高变更量文件。
-- 动机: 标题「[bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path」；模型线: DeepSeek V3.2；类别: 缺陷修复；主要 diff: `python/sglang/srt/models/deepseek_v2.py`；技术摘要: 覆盖「[bugfix][AMD] Fix PPMissingLayer AttributeError for deepseek v2/v3 in aiter_gfx95 code path」；主要实现面是 `python/sglang/srt/models/deepseek_v2.py`。下方保留文件级证据、代码摘录和验证风险。
-- 实现要点: `python/sglang/srt/models/deepseek_v2.py` modified +4/-4 (8 lines); hunks: -1867,19 +1867,19 @@ def __init__(; -1904,7 +1904,7 @@ def __init__(; symbols: __init__，涉及 `__init__`。
-- 代码 diff 细节:
-  - `python/sglang/srt/models/deepseek_v2.py` modified +4/-4 (8 lines); hunks: -1867,19 +1867,19 @@ def __init__(; -1904,7 +1904,7 @@ def __init__(; symbols: __init__
+- 状态/时间: merged / 2026-10-29（UTC 04:16:58）
+- 本次复核: 2026-11-08；head `2059478e2152304d76cae2c1dd9b4fafbd51684a`，base `5ac32ada54371cf24525dfeeb814b3e432df6eb9`。
+- diff 覆盖: 已获取并阅读完整 diff，36 行、1 个文件、+4/-4；已读正文、7 条评论、4 份 review 和 2 条行内评论。
+- 动机: 不持有 embedding 或 decoder layer 的流水线 rank 使用 `PPMissingLayer`。gfx95 分配器的判断在排除不支持的 hidden width 前就读取 `embedding_dim`，因此 hidden size 为 6144 的 GLM-5.2 也可能在初始化时崩溃。
+- 实现要点: `DeepseekV2Model.__init__` 用 `getattr` 读取 embedding 宽度及两处 MoE 层扫描。没有 embedding 时跳过宽度为 7168 的专用分配器；占位 decoder 层不参与本地 MoE 计数，最终传给分配器的宽度也有默认值。修改影响共享的 DeepSeek-V2 派生运行路径，不限于本历史目录对应的 V3.2。
 - 关键代码摘录:
 
 ```diff
-diff -- python/sglang/srt/models/deepseek_v2.py
-@@ -1867,19 +1867,19 @@ def __init__(
 -            and self.embed_tokens.embedding_dim == 7168
 +            and getattr(self.embed_tokens, "embedding_dim", None) == 7168
 -                    if isinstance(self.layers[i].mlp, DeepseekV2MoE)
 +                    if isinstance(getattr(self.layers[i], "mlp", None), DeepseekV2MoE)
--                if isinstance(self.layers[i].mlp, DeepseekV2MoE):
-+                if isinstance(getattr(self.layers[i], "mlp", None), DeepseekV2MoE):
 ```
 
-- 已读文件:
-  - runtime: `python/sglang/srt/models/deepseek_v2.py` modified +4/-4
-- 验证与风险: runtime 路径改动集中在 `python/sglang/srt/models/deepseek_v2.py`；风险点是权重加载、并行切分、attention/MoE 后端和 parser 输出，需要至少做一次真实 checkpoint 或等价 mock smoke。
+- 已读文件: runtime `python/sglang/srt/models/deepseek_v2.py`；在 main `c24285bde97c3e6424cd5d8cb35788889034d8ea` 核对了完整构造函数，保护逻辑已存在。PR 没有新增测试或文档。
+- 验证与风险: 应覆盖 gfx950 上持有/不持有 embedding 的 PP rank，以及 6144/7168 两种宽度。评论报告了使用等效本地 `config.hidden_size` 修复的 GLM-5.2 TP1 × PP4 PD 实验；这些结果不能证明此 PR 在 7168 宽度下的完整分配器行为。返回了两份 approval，其中一份明确针对 gfx95。本次文档更新未重跑 GPU 验证。
 
 ### PR #19945 - [AMD] Tilelang sparse fwd for dsv32 mi355/mi300
 
