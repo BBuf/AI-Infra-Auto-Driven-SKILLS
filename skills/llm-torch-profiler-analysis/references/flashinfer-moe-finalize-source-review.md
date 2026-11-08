@@ -1,7 +1,7 @@
 # FlashInfer indexed MoE finalize and all-reduce
 
 Reviewed on 2026-11-09 (Asia/Shanghai). Historical source is pinned to the
-final PR head below; current comparisons use FlashInfer
+final PR heads below; current comparisons use FlashInfer
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU experiment was rerun.
 This API consumes permuted expert rows and an inverse index map. The
 [MoE reduction API](flashinfer-moe-collective-source-review.md) instead
@@ -239,8 +239,8 @@ These current selector/launch facts do **not** constitute a complete review
 of all 63 successor device programs or their originating PRs. In particular,
 the historical one-shot kernel review cannot validate current two-shot,
 deferred or shared-prefetch numerical/protocol equivalence. Those source
-lineages, including catalog references #5852/#5870, remain separately
-reviewable. Current unified Cake dispatch still requires a TRT-LLM workspace;
+lineages, including #5870, remain separately reviewable. The #5852 host-side
+consolidation is reviewed below. Current unified Cake dispatch still requires a TRT-LLM workspace;
 the MNNVL CuTe-DSL finalize and FP8-finalize routes are distinct providers.
 The unified Cake route also supplies routed scaling as `None`/one, so a
 direct benchmark with 2.5 is not automatically representative of it.
@@ -250,3 +250,160 @@ dtype conversions, route weights, shared-expert ownership and downstream
 quantized consumption in the measured boundary. Check numerical behavior
 and rank-arrival/cache regime before interpreting a shorter finalize symbol
 as a service improvement.
+
+## PR #5852 — consolidate MoE finalize bindings and source imports
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/5852
+- Title: `refactor(cake_moe_finalize_allreduce_fusion): drop the SM103 copy, fold the PDL/binding clones and replace the import manifest`
+- State: merged on **2026-10-01**, head
+  `e7e4a312d6517285ef6f085b51d35a9aae9d272b`, base/merge-base
+  `909aa7b4050ec598c65f9935eb9311ad92acc4a6`, merge
+  `6eb9eb41e4389a1204a283373a9619732f184929`.
+- Coverage: full 31,823-line diff, all 67 files, +544/-30,555, body,
+  ten issue comments, one review, no inline comments and all five commits.
+  The 61 deleted files are byte-identical to files reviewed for #4875:
+  48 bindings, twelve SM103 device copies and the manifest. All twelve
+  retained SM100 device files are also byte-identical across #4875, this
+  PR's base and its head. The old loader, benchmark and two standalone
+  test files match their reviewed #4875 versions; every change was read.
+- Reviewed files: all changed files under
+  `csrc/cake_moe_finalize_allreduce_fusion/`, the complete new 167-line
+  `flashinfer/jit/cake_moe_finalize_comm.py` and 270-line dispatch binding,
+  `flashinfer/comm/trtllm_ar.py`, both
+  `tests/comm/test_cake_moe_finalize_{allreduce,dispatch}.py` and the complete
+  401-line `benchmarks/comm/bench_cake_moe_finalize_allreduce.py`.
+  Supporting review includes `csrc/tvm_ffi_utils.h` validation macros,
+  `gen_jit_spec` flags, the CUPTI timing helper and current loader/API/binding.
+- Motivation: eliminate duplicated architecture/PDL bindings and manifest
+  interpretation around an unchanged indexed finalize algorithm. The shared
+  communication API retains its TRT-LLM default and explicit Cake opt-in.
+  This is a host implementation and packaging change across model callers.
+
+### One module, one validator and byte-sized outputs
+
+The [new loader](https://github.com/flashinfer-ai/flashinfer/blob/e7e4a312d6517285ef6f085b51d35a9aae9d272b/flashinfer/jit/cake_moe_finalize_comm.py)
+builds the twelve retained device translation units plus one binding into a
+cached module per architecture. SM103 compiles the SM100-directory sources
+with SM103 flags. Architecture and SM-count queries are cached per device;
+selection is a C++ `[dtype][world-size][quantized-output]` table. PDL becomes
+a runtime launch attribute. The 224-thread/four-CTA-cluster launch, 256-byte
+dynamic shared memory and `floor4(min(SM_count, 4*T))` grid remain unchanged
+at this historical head. Removing the loader's explicit fast-math flag does
+not disable fast math: `gen_jit_spec` still enables it by default.
+
+The [binding](https://github.com/flashinfer-ai/flashinfer/blob/e7e4a312d6517285ef6f085b51d35a9aae9d272b/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_allreduce_fusion_binding.cu)
+checks contiguous CUDA tensors on one device, activation dtype/shape,
+positive T and expert-row count, H7168, K4/8, TP2/4/8, rank, positive epsilon,
+weight bias zero/one and the exact Int64 workspace-table length. Optional
+shared/quant pointers can be null instead of cached placeholder tensors.
+FP4 and scale outputs remain paired, but their element dtype is unrestricted;
+capacity is checked in bytes. The new scale requirement is explicit:
+
+```diff
++    const int64_t padded_rows = (tokens + 127) / 128 * 128;
++    const int64_t padded_columns = (kHiddenDim / 16 + 3) / 4 * 4;
++    const int64_t scale_bytes = padded_rows * padded_columns;
++    TVM_FFI_CHECK(byte_size(scale_out.value()) >= scale_bytes, ValueError)
++        << "scale_out needs at least " << scale_bytes
++        << " bytes for the padded SWIZZLED_128x4 layout";
+```
+
+Packed FP4 still needs `T * 7168 / 2` bytes. The old 16-bit scale-container
+check demanded twice the physical scale bytes. Tests now use UInt8 packed
+FP4 and E4M3 scale storage; this corrects allocation admission without
+changing the device quantizer or initializing its unwritten padding.
+
+Validation is not entirely equivalent. The exported internal
+`run_cake_moe_finalize` helper loses the old Lamport maximum-payload check,
+and the new C++ binding does not restore it. It also narrows token count to
+Int32 without an explicit upper-bound check. The
+[public API](https://github.com/flashinfer-ai/flashinfer/blob/e7e4a312d6517285ef6f085b51d35a9aae9d272b/flashinfer/comm/trtllm_ar.py)
+still rejects `residual_in.numel() * element_size * world_size > MAX_COMM_SIZE`
+before calling Cake. This separation persists at the current pin: use the
+public boundary or enforce its payload limit when testing the lower-level
+helper. Neither version inspects actual capacities behind workspace pointers
+or positive inverse-index bounds; those remain caller contracts.
+
+The body reports 24 normalized SASS hashes equal before/after on B200 and
+B300. This audit verified source-byte identity, not a CUDA recompilation.
+The final diff leaves `.pre-commit-config.yaml` unchanged, despite an earlier
+bot walkthrough describing a narrower exclusion. The handwritten binding
+remains inside the generated directory's formatting exclusion.
+
+### Benchmark cleanup changes its evidence contract
+
+The [trimmed harness](https://github.com/flashinfer-ai/flashinfer/blob/e7e4a312d6517285ef6f085b51d35a9aae9d272b/benchmarks/comm/bench_cake_moe_finalize_allreduce.py)
+retains separate workspaces, TRT-LLM/Cake/TRT-LLM ordered legs, five warmups,
+twenty measured iterations, cold L2 and the median of iteration-wise rank
+maxima. It builds the entire Cake module before the measured legs. Sample
+counts are now checked on every rank after gathering, avoiding the previous
+single-rank early raise before that collective. CLI lists become
+space-separated `nargs="+"` values; old comma-separated commands need updating.
+
+Two removed checks/outputs matter to profiling:
+
+- The harness drops its explicit CUPTI >=13 check and only imports `cupti`.
+  The unchanged
+  [timing helper](https://github.com/flashinfer-ai/flashinfer/blob/e7e4a312d6517285ef6f085b51d35a9aae9d272b/flashinfer/testing/utils.py)
+  still falls back to CUDA events if the installed version is below 13 or
+  distribution metadata cannot be read. Thus the comment claiming no
+  fallback, and JSON `enable_cupti: true`, do not establish the timer used.
+  A CPU-only execution of the unmodified extracted helper with mocked
+  imports/metadata confirms both fallback branches; no GPU timings were run.
+- Raw per-rank samples and iteration-wise maxima, package/source identity
+  and schema/fallback metadata are removed from the report. Remaining
+  medians/minima cannot reconstruct dispersion, ordering or confidence
+  intervals. Preserve these inputs separately for a new comparison.
+
+Residual/norm pre/post checks remain; quantized output is allocated but not
+numerically checked by this harness. There is still no per-iteration
+post-flush rank rendezvous. CUPTI's GPU interval includes waiting for peer
+rank launches, so removing CPU work can shorten a collective's measured
+residence without changing its device instructions. The old first-use source
+hash is cached; do not describe it as a per-call 3.9 MB hashing cost.
+
+### Performance and validation limits
+
+The body reports TP2's 128-shape matrix on each architecture. B200's two-run
+per-shape median ratios have geometric mean 1.025, but its drift-normalized
+per-run geometric mean is 1.011, and an individual raw ratio falls to 0.962. B300's
+four-run per-shape median ratios have geometric mean 1.479 and minimum 0.816;
+four rows fall below 0.98. Restricting to the last two, separately warmed
+runs gives geometric mean 1.674 and minimum 1.008 for the **per-shape
+medians of those runs**; the drift-normalized per-run geometric mean is 1.355.
+
+The body's claim that all warmed runs are at least one conflicts with its
+own table: FP16/T128/K8/PDL0/profile110/no-shared has a warmed run at **0.826**,
+and FP16/T2048/K8/PDL1/profile110/shared has one at **0.961**. Keep these
+individual regressions even though their two-run medians exceed one.
+Alternating tree order and a TRT-LLM control expose drift; they do not prove
+that it cancels. The proposed slow-rank-launch explanation is compatible
+with the source, but the body supplies no CPU/launch timeline that isolates
+that causal contribution. Do not recast the 1.674 ratio as a device-algorithm
+or serving speedup.
+
+TP4 performance runs were terminated after more than fifty minutes on both
+nodes. TP2 does not validate TP4/8 timing or their distinct communication
+participants, even though host dispatch is shared. The separate body-reported
+B200/B300 correctness runs cover six standalone dtype/world-size cases and
+two unified cases per node; they were not rerun here.
+
+The final-head [PR Test run](https://github.com/flashinfer-ai/flashinfer/actions/runs/36826473502)
+passed. Its [H100 job](https://github.com/flashinfer-ai/flashinfer/actions/runs/36826473502/job/110253514626)
+checks out `f300495`, explicitly merging final head `e7e4a312` into base
+`909aa7b4`. The three relevant files yield **six CPU passes and 43 GPU skips**:
+five dispatch passes, one unified CPU pass/37 skips, and six standalone skips.
+This is not Blackwell execution evidence. Six AOT import/build jobs pass;
+the discussion's GitLab start announcements contain no final result.
+
+The dispatch cleanup removes the direct default-TRT-LLM forwarding test.
+The retained unified selector test mocks that direct API, so it does not
+replace the deleted boundary's coverage. The distributed test otherwise
+retains #4875's narrow numerical and graph coverage, with only output-buffer
+types/sizes changed. Treat deletion of duplicate bindings as verified
+deduplication; do not classify every removed check or test as redundant.
+
+Current source retains this single-binding and byte-buffer design, but adds
+the 63-program selector and different launch resources described above.
+Those later device schedules, including #5870's lineage, still require their
+own source review before borrowing performance or equivalence claims.

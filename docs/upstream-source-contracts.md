@@ -262,6 +262,12 @@ Final-head H100 CI passes seven CPU cases and skips 43 GPU cases across the
 three relevant files. Historical B200/B300 timing mixes protocols/cohorts;
 the committed harness lacks the external v4 per-iteration host rendezvous.
 Current two-shot/deferred successor device programs require their own review.
+The same review completes #5852's host consolidation: retained device files
+are unchanged, quant/scales use byte capacity, and only the public API keeps
+the Lamport payload cap. Its trimmed benchmark can fall back to CUDA events
+despite reporting CUPTI enabled and no longer preserves raw timing samples.
+Retain the individual warmed-run regressions and the incomplete TP4 timing;
+six CPU passes/43 skips in H100 CI do not verify Blackwell execution.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
