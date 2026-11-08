@@ -246,6 +246,13 @@ Load only relevant references:
   merged prefix commits and AMD saturation fix versus open ordinary FP8 stores.
   Preserve scale-kind rounding, physical-slot rules and source-copy costs;
   check the current unified MHA view separately before transferring a speedup.
+- [sglang-query-quantization-source-review.md](references/sglang-query-quantization-source-review.md):
+  closed FA3 query/RoPE proposal, native compile versus eager dispatch,
+  intermediate rounding and current Qwen3 norm/rotary producer bypasses.
+- [vllm-qknorm-rope-cache-source-review.md](references/vllm-qknorm-rope-cache-source-review.md):
+  open generic CUDA QK-norm/cache proposal, homogeneous-layer and range gates,
+  stacked partial-RoPE fix and fused-versus-eager numerical baselines. Keep
+  old-wheel dummy-weight reports separate from final-head GPU validation.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check

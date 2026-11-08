@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Sixteen additional PRs cited by the new review cards bring the
-TSV to **6,950 objects**; all 44 PRs manually reviewed in this refresh were
+6,934 objects. Seventeen additional PRs cited by the new review cards bring the
+TSV to **6,951 objects**; all 46 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -253,8 +253,19 @@ now include layout-copy cost, graph-level versus per-call cache flushing,
 unchanged caller copies and the actual head/configuration of serving reports.
 The final saturation-fix MI300 JIT jobs passed within a failed overall
 workflow; #31652's final-head PR gate failed and its GPU jobs were skipped.
-These three source reviews replace one previously historical catalog row and
-bring the completed manual-review count to 44.
+These three source reviews replace one previously historical catalog row.
+
+The [SGLang Q-quantization review](../skills/llm-torch-profiler-analysis/references/sglang-query-quantization-source-review.md)
+covers closed #35142's complete 12-file diff and discussion, separating
+native compiler visibility from eager RoPE/FP8 fusion. It records the missing
+intermediate rounding boundary and current Qwen3 producers that bypass the
+old rotary entry point. The [vLLM QK-norm/cache review](../skills/llm-torch-profiler-analysis/references/vllm-qknorm-rope-cache-source-review.md)
+covers open #57682's complete nine-file diff and all discussion, including
+its stacked shuffle fix, actual O2/O3 defaults, homogeneous-layer admission
+and compile-range gate. Source test counts, old-wheel dummy-weight benchmarks
+and missing final-head GPU validation remain separate. Current Step5 and Muse
+Spark model-specific paths are not conflated with the generic compiler pass.
+These two reviews bring the completed manual-review count to 46.
 
 ## Local validation of this increment
 

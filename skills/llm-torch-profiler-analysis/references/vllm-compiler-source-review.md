@@ -65,6 +65,12 @@ The pass manager runs split/scatter cleanup before the combined QK pass and
 ordinary RoPE/cache pass. Muse-specific registration has its own gates; these
 generic flags do not describe every model-specific prologue fusion.
 
+The separate [CUDA combined-kernel review](vllm-qknorm-rope-cache-source-review.md)
+covers open #57682's proposed FlashAttention hook, homogeneous-layer gate,
+stacked partial-RoPE fix and old-wheel validation limits. It remains absent
+from this pinned main; its direct 2,048-token compile test does not exercise
+the normal pass manager's 256-token range gate.
+
 ## PR #57349 — Honor explicit fusion requests with hoisted layer names
 
 - Link: https://github.com/vllm-project/vllm/pull/57349

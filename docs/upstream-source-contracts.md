@@ -123,6 +123,15 @@ copies in prefix-cluster timing, and distinguish graph-level L2 flushing from
 cold destination lines on every ordinary-store call. Historical microbenchmarks
 and small serial-serving reports do not establish current all-path speedups.
 
+The [SGLang Q-quantization review](../skills/llm-torch-profiler-analysis/references/sglang-query-quantization-source-review.md)
+tracks closed, unmerged #35142. Its compile path exposes a native Q cast to
+Inductor; its eager kernel stores FP32 rotation directly to FP8, omitting the
+separate CUDA path's BF16/FP16 rounding boundary. Current FA admission depends
+on the selected per-layer version and phase. Current Qwen3 can produce Q with
+its own fused norm/rotary kernels, bypassing the modified rotary entry point.
+Check that actual producer before attributing a remaining Q cast to a missing
+RoPE fusion; historical throughput reports do not validate a current port.
+
 ## Compiler and dependency dispatch
 
 The [vLLM compiler review](../skills/llm-torch-profiler-analysis/references/vllm-compiler-source-review.md)
@@ -152,6 +161,18 @@ The same review covers open #52363's manual Llama/FlashAttention path, which
 keeps CUDA opt-in and checks the token threshold inside the compiled custom
 op. Preserve its bypass/rotation contracts and the above-threshold Q/K-copy
 cost; earlier hardware reports and approval predate the final refactor.
+
+The [CUDA QK-norm/cache review](../skills/llm-torch-profiler-analysis/references/vllm-qknorm-rope-cache-source-review.md)
+covers open #57682's complete diff and stacked partial-RoPE shuffle fix. Its
+FlashAttention writer requires an unquantized decoder cache, equal supported
+head widths and no KV sharing/DCP; opaque layer names additionally require
+homogeneous eligible layers. Preserve compile-range and graph-visibility gates.
+Bitwise parity is against the already-fused QK-norm/RoPE baseline; the separate
+eager chain and Step5 kernel have different intermediate rounding. Current
+Step5 and Muse Spark use explicit model-specific paths, so the generic CUDA
+pass being unavailable does not establish a model-wide fusion gap. The reported
+H200 service results use an old-wheel overlay and dummy weights, with final-head
+GPU validation pending.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
