@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 48 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 49 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -283,8 +283,18 @@ separates the original head/architecture-only dispatch from current policies,
 records cache-tail ownership and empty-input limitations, and checks all 21
 test cases plus the benchmark and timing helper. The 17-shape committed
 harness, median-only output and fixed graph-before-eager ordering limit what
-the PR body's broader performance claims establish. #5956 and #6008 still
-have pending complete historical reviews. The completed manual count is 48.
+the PR body's broader performance claims establish. #5956 and #6008 were
+pending at that checkpoint. The completed manual count was 48.
+
+The #5956 review completes its 12-file FP8 diff and all 24 comments, 15
+reviews and 22 inline comments. It separates obsolete stacked-version
+replies from the standalone final source, checks every generated variant,
+and traces eight-lane reductions, fused validation and tail-write ownership.
+Final-head H100 CI logs confirm 51 tests passed on CUDA 12.9. The card
+corrects the tail-byte validation claim and distinguishes external paired
+performance reports from the committed fixed-order harness and its
+numerically different comparator. #6008 remains pending; the completed
+manual-review count is 49.
 
 ## Local validation of this increment
 

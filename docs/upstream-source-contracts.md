@@ -193,6 +193,14 @@ changing-metadata graph replay or B300 execution. The committed 17-shape
 benchmark saves medians only, so the body's 28-row confidence-interval claim
 cannot be reproduced from that output. Current shape/PDL policy is a later
 contract and must be checked independently.
+The full #5956 FP8 review confirms all-mode indptr validation within the
+single launch, eight-lane shuffle masks and raw zero-word tail stores.
+Sequence/page bounds and valid scale contents remain caller obligations.
+Final-head H100 CI ran the 51-case source suite successfully on CUDA 12.9;
+the tests use numerical tolerance for tail zeros despite a bitwise claim in
+the PR text. Historical 18.2×/14.9× baseline ratios compare different
+numerical/tail-write behavior, and the external paired protocol differs from
+the committed fixed-order, eager benchmark. Neither establishes service gains.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

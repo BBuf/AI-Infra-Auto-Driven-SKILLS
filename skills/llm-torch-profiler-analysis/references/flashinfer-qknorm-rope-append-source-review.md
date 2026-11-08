@@ -1,7 +1,7 @@
 # FlashInfer QK RMSNorm, RoPE and paged append
 
-Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405 and #5952
-diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
+Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405, #5952 and
+#5956 diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU experiment was run.
 
 ## PR #5405 — Experimental packed-QKV fusion
@@ -31,8 +31,8 @@ The closing comment says the feature was covered by CAKE
 [#5956](https://github.com/flashinfer-ai/flashinfer/pull/5956) and
 [#6008](https://github.com/flashinfer-ai/flashinfer/pull/6008). Fresh metadata
 confirms these merged on October 2, October 3 and October 3 respectively.
-The #5952 source review follows below; complete historical reviews of #5956
-and #6008 remain pending. Current availability is established from the frozen
+The #5952 and #5956 source reviews follow below; the complete historical
+review of #6008 remains pending. Current availability is established from the frozen
 mainline implementation, not by treating #5405 as merged.
 
 ### Data and launch contracts
@@ -234,6 +234,130 @@ both arms use BF16-rounded norm weights. These are historical BF16 pipeline
 measurements, not FP8, current shape-policy, end-to-end attention or serving
 measurements. Use the independent numerical tests and an actual consuming
 model when evaluating a port.
+
+## PR #5956 — Standalone CAKE FP8 append
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/5956
+- Title: `feat(cake_fused_qk_rope_append): Cake backend for the fused QK RMSNorm, RoPE, FP8 quantize and paged KV append entry (SM90, SM100)`.
+- State: merged on 2026-10-03; head
+  `14ceb190ff848e62c02a43485252eb97f4b91252`, base
+  `46340689a5ab5665ab39f6281dac4d021d7ae94b`, merge
+  `335c4eb4e90c5c5069abb0340ba66635ad2679e1`.
+- Coverage: complete 5,461-line diff, 12 files, +5,384/-0; body, all 24 issue
+  comments, 15 reviews, 22 inline comments and the final squashed commit.
+  The complete SM100 device source and binding were read; every line of the
+  SM90/SM103 pairs was compared, with only generated identifiers differing.
+  The full three-record manifest was read and all six source hashes verified.
+- Reviewed runtime: `flashinfer/cake_fused_qk_rope_fp8_append.py`, its loader
+  in `flashinfer/jit/`, `flashinfer/rope.py` and all generated CUDA/manifest
+  files in `csrc/cake_fused_qk_rope_fp8_append/`. Reviewed validation:
+  `tests/attention/test_cake_fused_qk_rope_fp8_append.py`,
+  `benchmarks/bench_cake_fused_qk_rope_fp8_append.py` and the timing helper.
+- Motivation: fuse normalization, rotation, FP8 conversion, paged append,
+  indptr validation and status/tail writes into a single launch. The final
+  API is standalone. Early review replies describe a different version
+  stacked on #5405 under `experimental`; those paths and its empty-grid
+  handling are not the final implementation.
+
+### Fused work and caller obligations
+
+The [final wrapper](https://github.com/flashinfer-ai/flashinfer/blob/14ceb190ff848e62c02a43485252eb97f4b91252/flashinfer/cake_fused_qk_rope_fp8_append.py)
+infers heads 8/1 or 64/8 from packed BF16 QKV and the NHD cache. It accepts
+D=128, FP32 weights/cos-sin/scales, I32 metadata and E4M3 Q/K/V output.
+K/V output buffers must be supplied together. Dynamic Q scale layouts and
+unwritten padding match the contracts above; static Q returns an empty
+scale tensor. The three architectures share one runtime-parameterized
+`fp8_e4m3` stage. There is no shape-specific stage selection or PDL in this
+initial PR. The grid is `(T+B, Hkv, 1)` with 96 threads per CTA, 16 bytes of
+static metadata storage and no dynamic shared memory.
+
+In the [device source](https://github.com/flashinfer-ai/flashinfer/blob/14ceb190ff848e62c02a43485252eb97f4b91252/csrc/cake_fused_qk_rope_fp8_append/sm_100a/cake_fused_qk_rope_fp8_append_caf9bdb5445726a94bed_kernel.cu),
+eight lanes handle each head: eight Q groups, one K and one V. Inactive lanes
+still participate in the block-wide validation vote. Every CTA scans all
+request segments, checks indptr endpoints and combines errors with
+`__syncthreads_or`; dynamic prefill additionally checks request length.
+This is part of the compute launch, not a separate validator. The final diff
+contains the following limit on what is validated:
+
+```diff
++    bool bad = begin < 0 || end < begin || end > num_rows;
++    if (dyn_prefill && end - begin > max_seqlen) {
++      bad = 1;
++    }
+```
+
+QKV, norm weights and scalar scales can be read before that vote. Invalid
+indptrs suppress Q/K/V, scale and cache writes; the request/head clearing
+CTAs still write every status flag to -1. Valid calls write flags to 0,
+including empty request segments. Flags describe indptr validation, not
+completion of every CTA or validation of sequence lengths and physical pages.
+Consume them with normal stream ordering. Sequence lengths must include the
+appended rows and keep derived positions within the cos/sin and page-table
+capacities. Unlike #5952's negative-position suppression, this initial FP8
+kernel uses the derived position directly. Its final wrapper also lacks a
+positive-page-size check and a whole-empty-batch no-op; the binding rejects
+a zero grid. Earlier discussion saying the Cake binding returned early
+belongs to the retired stacked version.
+
+Norm math stays FP32 through rotation, with fixed epsilon `1e-6`. All nine
+sum/max shuffle reductions use an eight-lane member mask; the earlier
+full-warp mask would name V/inactive lanes that do not execute the reduction.
+Dynamic scale uses rounded FP32 division of `max(max_abs, 1e-6)` by
+`upper_max`, followed by reciprocal multiplication of Q. K/V also use
+rounded FP32 reciprocals. FP8 stores use RN satfinite E4M3 pairs. This is not
+a promise of byte equality with eager division or BF16 intermediate norms.
+Scale tensor contents remain caller-supplied; host shape checks do not verify
+their finiteness or positivity.
+
+Request/head CTAs clear tails using raw 16-byte zero stores, including when
+K/V token writes go to caller-owned outputs. The author attributes this
+choice to a ptxas 12.9 SM90 miscompile of an all-zero FP8 conversion pack;
+the final source indeed avoids that conversion in its clearing loop.
+Writable-page ownership remains necessary. Current shape/PDL policies below
+are later implementations, not properties of this original three-architecture build.
+
+### Actual validation and measurement coverage
+
+The [final test file](https://github.com/flashinfer-ai/flashinfer/blob/14ceb190ff848e62c02a43485252eb97f4b91252/tests/attention/test_cake_fused_qk_rope_fp8_append.py)
+defines 51 cases: 24 decode, 12 cross-page prefill, six scale-padding boundary
+cases, two ragged/optional-output cases, one smaller upper bound/page case,
+four invalid-metadata cases, graph replay and argument rejection. Its oracle
+uses FP32 unrounded payloads, with FP8 `atol=rtol=0.1`; Q scales use
+`rtol=1e-5, atol=1e-6`. Untouched poison bytes and status flags are checked
+exactly. Contrary to the PR's “tails bitwise” description, expected tail
+zeros pass through the same 0.1 absolute-tolerance comparison. The invalid
+metadata tests cover dynamic prefill 8/1 only. The graph test poisons outputs
+between three replays but leaves QKV and metadata unchanged. It compares
+FP8 bytes with eager execution; floating scale NaNs are normalized first.
+There is no attention consumer, changing-metadata replay or whole-empty
+batch/zero-page numerical test.
+
+The [H100 targeted CI job](https://github.com/flashinfer-ai/flashinfer/actions/runs/37079854496/job/111077995514)
+is attached to final head `14ceb190f`. Its log checks out the PR merge of
+that head into `46340689`, runs this exact file in CUDA 12.9 with
+Torch 2.13-cu129, and reports **51 passed, zero failed/skipped**. This is
+stronger evidence than a test-trigger comment. The body's B200 results,
+73-case external CAKE harness and sanitizer claims remain author reports;
+this refresh did not rerun them or establish H200/B300 coverage.
+
+The [committed benchmark](https://github.com/flashinfer-ai/flashinfer/blob/14ceb190ff848e62c02a43485252eb97f4b91252/benchmarks/bench_cake_fused_qk_rope_fp8_append.py)
+has 20 named shapes, ten warmups and three groups of 30 calls by default.
+It always runs CAKE before stable, recreates buffers per arm/group, and saves
+group medians in `samples_us`, not individual samples. It does not capture
+CUDA Graphs. Its helper is byte-identical to #5405/#5952 and measures the
+earliest-to-latest correlated GPU activity span, including gaps; the
+docstring's “union” wording does not describe that implementation.
+
+The body instead describes an external 44-row paired harness with three
+sessions of 2,000 samples per arm, reports B200/H100 decode/prefill cohorts,
+and compares against a modeled latency/bandwidth floor. Those raw samples,
+floor calculation and internal design document are not supplied by this
+diff. Reported stable/CAKE geometric means of 18.2× on B200 and 14.9× on H100
+for the 24-row cohort are explicitly **report-only**: the stable path has
+BF16 intermediates that fail the stated FP8 contract tolerance and omits tail
+clearing. They are not equivalent-output replacement gains or service
+speedups. Keep external paired results, the committed fixed-order harness,
+kernel correctness and downstream model accuracy separate when profiling.
 
 ## What is available at the frozen mainline
 
