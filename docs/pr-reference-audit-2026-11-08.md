@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty-five additional PRs cited by the new review cards bring the
-TSV to **6,959 objects**; all 66 PRs manually reviewed in this refresh have
+6,934 objects. Twenty-six additional PRs cited by the new review cards bring the
+TSV to **6,960 objects**; all 67 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -453,6 +453,16 @@ ranges. Final-head CI has six AOT jobs and no targeted numerical results.
 The total is now 66 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine
 vLLM and 19 FlashInfer. Only #7813's head/base check is fresh in this increment;
 earlier timestamps are retained. The ledger contains 6,959 objects.
+
+The [indexed finalize prefetch review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-prefetch-review.md)
+completes #7905's 19 files, all discussion and two commits. Complete source
+comparisons cover all sixteen load rewrites and twenty-four unchanged device
+programs; all 720 timing rows are reconciled with actual dispatch. The review
+preserves TP8 small-batch regressions, distinguishes the separate T72 report,
+and verifies that final-head green CI contains AOT jobs but no targeted GPU
+results. The total is now 67 manually reviewed PRs: 27 SGLang, 11 TokenSpeed,
+nine vLLM and 20 FlashInfer. Only #7905's check is new in this increment;
+earlier timestamps remain. The ledger contains 6,960 objects.
 
 ## Local validation of this increment
 

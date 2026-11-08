@@ -474,3 +474,6 @@ additional early/shared-specialized programs. TP8's 56 and deferred
 1536/768 thresholds and exclusion remain in the inspected binding. Use
 this historical review for data-lifetime and validation constraints; it does
 not certify every subsequent generated body or current performance.
+
+The [#7905 prefetch review](flashinfer-moe-finalize-prefetch-review.md) traces
+the next TP4 threshold change to 72 and the packed one-shot operand loads.

@@ -319,6 +319,14 @@ two changed-program B300 regressions, and reports operator timing only.
 Final-head CI again ran AOT only. All 40 historical device files differ from
 the current pin; the data-lifetime review does not certify later bodies.
 
+The [#7905 prefetch review](../skills/llm-torch-profiler-analysis/references/flashinfer-moe-finalize-prefetch-review.md)
+traces the TP4 crossover to T72 and sixteen one-shot packed-load rewrites.
+Residual and norm-weight words cross the poll before conversion, with an
+empty assembly operand dependency rather than a new synchronization barrier.
+Retain 62/59 changed-shape regressions on B300/B200, mostly TP8, and separate
+the reported T72 aggregate from the 720-row table. The revised test mirror
+reuses existing T71/72 cases; final-head CI again has no targeted GPU results.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source
