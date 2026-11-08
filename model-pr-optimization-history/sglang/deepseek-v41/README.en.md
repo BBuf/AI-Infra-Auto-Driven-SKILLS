@@ -16,6 +16,10 @@ compares current visible-tile scheduling and fused head reduction with pending
 #42365/#40860, and records #40160 as closed without merge. It preserves the
 different head-count, scratch-budget, compact-coordinate and validation contracts.
 
+The [merged mHC state review](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-source-review.md)
+covers #42245's final diff, collective ownership and deleted combine-only paths,
+then distinguishes the current TP2/TP4 boundary and cached-statistics behavior.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

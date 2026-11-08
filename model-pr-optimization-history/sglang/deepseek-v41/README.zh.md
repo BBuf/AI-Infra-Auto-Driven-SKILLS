@@ -15,6 +15,10 @@ decoder bounded replay，以及按 query 行数分配的持久 counter。当前 
 并将 #40160 更正为关闭未合并。三者的 head 数、临时显存预算、compact 坐标和验证
 范围各不相同，不能直接互换。
 
+[已合并 mHC 状态机审阅](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-source-review.md)
+覆盖 #42245 最终 diff、collective 责任和已删除的 combine-only 路径，并区分
+当前 TP2/TP4 边界与缓存下一组统计量的后续实现。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

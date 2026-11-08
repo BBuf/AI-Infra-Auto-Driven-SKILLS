@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 21 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 22 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -134,6 +134,16 @@ their current states and separates the current 1 GiB prefill budget and fused
 only the live score prefix; compact scoring instead scans all compact columns
 and restores logical positions before slot mapping. All three full diffs and
 discussions were read and their heads/bases rechecked; no GPU results were rerun.
+
+The [complete merged mHC state review](../skills/llm-torch-profiler-analysis/references/dsv41-mhc-source-review.md)
+corrects #42245's old open status and retired source paths. Its final 19-file
+diff and all discussion establish explicit reduction ownership, state lifetime,
+the 128-row collective quant epilogue and removal of combine-only variants.
+Current boundary callers are reviewed separately because TP2 support, optional
+push planes, cached statistics and new post/norm fusions evolved after the merge.
+Historical intermediate-head test results are not promoted to final-head GPU
+validation, and earlier failed workflow partitions remain distinct from files
+that actually passed inside them.
 
 ## Local validation of this increment
 

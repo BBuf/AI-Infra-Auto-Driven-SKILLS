@@ -215,6 +215,9 @@ Load only relevant references:
   current visible-tile scheduling and fused head reduction, pending dense/compact
   scoring proposals, and the closed grouped-WGMMA prototype. Preserve logical
   versus compact scan lengths, numerical order and current prefill interfaces.
+- [dsv41-mhc-source-review.md](references/dsv41-mhc-source-review.md): merged
+  mHC state/collective ownership refactor, deleted combine-only kernels, cache
+  invalidation and current boundary transport. Check who still owes the sum.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

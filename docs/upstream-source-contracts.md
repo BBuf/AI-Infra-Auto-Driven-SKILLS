@@ -67,6 +67,14 @@ next coefficient statistics. Read the
 [mHC dispatch matrix](../skills/llm-torch-profiler-analysis/references/fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)
 for row/platform/consumer guards and state invalidation.
 
+The [merged mHC refactor review](../skills/llm-torch-profiler-analysis/references/dsv41-mhc-source-review.md)
+traces #42245 through the current boundary transport. The old combine-only
+kernels and `MhcPostFusion` context hook are deleted; later TP2 support, cached
+next statistics and decode/Mega-prefill fusions have their own current gates.
+The [Hopper indexer review](../skills/llm-torch-profiler-analysis/references/dsv41-hopper-indexer-review.md)
+separates the 1 GiB prefill score budget, fused 32-head epilogue and live-prefix
+paged decode from pending dense/compact scoring proposals.
+
 [WO-A dispatch](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4.py)
 selects GEMV, small-batch GEMM or token-major BMM using phase, shape, strides,
 platform and consumer format. Target and DSpark draft need separate checks;
