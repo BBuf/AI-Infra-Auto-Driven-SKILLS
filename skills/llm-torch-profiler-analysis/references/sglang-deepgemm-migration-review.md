@@ -239,5 +239,6 @@ still materializes BF16 scores. Its SGLang consumer was stacked on an older
 version of this migration, whose ordinary path widened the entire score
 width. Savings against that old baseline include removed conversion work;
 they must be remeasured against prefix-only conversion and current BF16
-V4.1 dispatch. This review completes the migration dependency; the full
-SGLang LiteTopK consumer reconciliation remains in progress.
+V4.1 dispatch. The complete [consumer reconciliation](sglang-litetopk-consumer-review.md)
+also covers exact selection, workspace completion, retained graph storage
+and the current DCP/legacy-versus-varlen integration requirements.

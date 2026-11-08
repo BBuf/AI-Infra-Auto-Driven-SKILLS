@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Thirty-four additional PRs cited by the new review cards bring the
-TSV to **6,968 objects**; all 75 PRs manually reviewed in this refresh have
+TSV to **6,968 objects**; all 76 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -556,11 +556,25 @@ graph-owned schedule addresses. Source checks substantiate old-decoder and
 cache-format limitations while qualifying the reviewer's backend list.
 Exact-head base/extra/AMD logs show missing-label gates and skipped tests;
 historical B300/H200 results remain author-reported, including accuracy
-threshold misses and environment failures. The count is now 75: 28 SGLang,
+threshold misses and environment failures. The count at that increment was 75: 28 SGLang,
 11 TokenSpeed, nine vLLM, 26 FlashInfer and one DeepGEMM. Only #44350's
 check is fresh in this increment; previous check timestamps remain. The
-ledger has 6,968 objects. The SGLang LiteTopK consumer diff has been read,
-but its current-source reconciliation is not yet counted as complete.
+ledger had 6,968 objects. The SGLang LiteTopK consumer diff had been read,
+but its current-source reconciliation was not yet counted as complete.
+
+The [SGLang LiteTopK consumer review](../skills/llm-torch-profiler-analysis/references/sglang-litetopk-consumer-review.md)
+completes open #40764: the full 41-file, 5,538-line stacked diff, all three
+commits and body, plus current V4.1 caller comparisons and DSA dispatch.
+It corrects the all-zero workspace claim, qualifies signed-zero ordering
+and page-table assumptions, and traces certified fallback, serial ownership
+and graph-retained storage. Current DCP merge/count semantics and modern
+versus legacy scheduling prevent a blind transplant. Historical B200
+results preserve within-pool regressions, truncated-model limits and the
+changed BF16/FP32 baselines. Exact-head base/extra/AMD checks are label-gated;
+runtime jobs are skipped. The count is now **76**: 29 SGLang, 11 TokenSpeed,
+nine vLLM, 26 FlashInfer and one DeepGEMM. Only #40764's check is fresh in
+this increment; earlier per-entry timestamps remain. It was already in the
+ledger, which remains at **6,968 objects**.
 
 ## Local validation of this increment
 

@@ -223,6 +223,11 @@ Load only relevant references:
   counters and FP4 stage/chunk changes. Include producer overhead when comparing
   selectors; scores still reach HBM. Current `dev` lacks this histogram API and
   has newer wrapper/CC 10.7 contracts. Sanitizer coverage excludes graph replay.
+- [sglang-litetopk-consumer-review.md](references/sglang-litetopk-consumer-review.md):
+  complete opt-in decode consumer review: signed-zero ordering, certified
+  fallback, serial scratch ownership and retained graph storage. Reconcile
+  current DCP selection, legacy/varlen schedules and BF16 DeepSelect before
+  transferring historical kernel gains; final-head runtime CI was skipped.
 - [dsv41-mhc-source-review.md](references/dsv41-mhc-source-review.md): merged
   mHC state/collective ownership refactor, deleted combine-only kernels, cache
   invalidation and current boundary transport. Check who still owes the sum.

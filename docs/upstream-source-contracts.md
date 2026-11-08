@@ -67,7 +67,18 @@ evaluating selector savings. Its graph test zeroes the histogram inside
 capture; the sanitizer path skips that graph section. Current `dev` still
 lacks the histogram argument and has a compatibility wrapper plus newer
 CC 10.7 chunk/ring and TMEM-base handling, which a rebase must preserve.
-The complete SGLang consumer reconciliation remains pending.
+The complete [SGLang consumer review](../skills/llm-torch-profiler-analysis/references/sglang-litetopk-consumer-review.md)
+covers open #40764 at `01e293958e70`: BF16 ordered keys distinguish signed
+zero, and stale/overflowing histograms fall back to exact selection. Shared
+storage is serial; histogram/candidates/packed counts return to zero but
+completion counters can remain nonzero and equal. Graph plans retain old
+storage outside `mem_fraction_static`. Current DSA's DCP path needs global
+selection/merge and local counts, while current V4.1 already selects BF16
+through DeepSelect. Its legacy-versus-varlen schedule must match the actual
+producer and request indices. Historical B200 gains include removed
+whole-width conversion and grouped scheduling, with within-pool losses;
+they are not current service measurements. Final-head runtime CI was skipped
+behind the `run-ci` label gate.
 
 The [SGLang DeepGEMM migration review](../skills/llm-torch-profiler-analysis/references/sglang-deepgemm-migration-review.md)
 completes open #44350 at `3b172a83a636`. It distinguishes live-prefix FP32
