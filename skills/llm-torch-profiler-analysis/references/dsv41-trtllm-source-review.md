@@ -1,6 +1,6 @@
-# DeepSeek V4.1 TRT-LLM attention: merged source review
+# DeepSeek V4.1 TRT-LLM attention: source and PR review
 
-Inspected on 2026-11-08. All three complete PR diffs, bodies, issue comments,
+Inspected on 2026-11-08. All four complete PR diffs, bodies, issue comments,
 reviews and inline discussions below were read. Current callers were checked at
 SGLang `c24285bde97c3e6424cd5d8cb35788889034d8ea`; FlashInfer's counter sizing
 and sparse-attention call were checked at `31c146b16789f112e9b9861bd79247d4701e437a`.
@@ -170,3 +170,126 @@ Current source:
   errors. The 0.7.3 run included another sampling compatibility fix. These
   results cover V4, not a new V4.1 accuracy certification; preserve dependency
   versions and the complete patch set when reproducing them.
+
+## PR #36652 — Pending per-token attention and persistent metadata rewrite
+
+- Link: https://github.com/sgl-project/sglang/pull/36652
+- Title: `[Perf] DSv4/4.1-Flash: Improve TRTLLM-Gen Attention Accuracy and Performance`.
+- State: open, checked again November 8; head
+  `9a9212b1e7054bc4492c1a80837383a769d27854`, base
+  `e3ec98b15e6a82da7e58efff9f8d4448b9f0ae62`; both match the downloaded diff.
+- Diff coverage: full diff read, 3,500 lines, 28 files, +1,774/-618. The body,
+  46 issue comments, 26 reviews and 33 inline comments were read, including
+  superseded findings. Current Q preparation, draft metadata capture, indexer
+  dispatch, counter helper and FlashInfer backend resolver were cross-checked
+  at the source pins above. No GPU tests were run for this review.
+
+The motivation is to remove preparation and scheduling work around the sparse
+attention kernel while retaining the V4.1, DSpark, DP-padding and replay
+contracts added by the merged PRs above. The current mainline counter fix
+already exists; this PR is not the only way to avoid per-call counter allocation.
+Its base predates that merged fix, so the diff still removes the older private
+monkeypatch. Compare the complete heads when porting it.
+
+The implementation changes six related boundaries:
+
+1. **Dense per-token calls.** Decode, target verification, draft extend and
+   prefill pass `[query_rows, 1, heads, 512]`, with a causal length per row.
+   The prefill call no longer supplies `cum_seq_lens_q` or `max_q_len`. Tail
+   and encoder-window rows use their floored SWA lengths, while compressed
+   slots stay full-context. DSpark's noncausal block still reads SWA storage.
+   DP output padding is zeroed in reusable BF16 buffers.
+2. **Shared sparse tables.** `TrtllmSparseTablePool` owns flat int32 parents
+   with stable views. Live columns come from their writer; only required pad
+   rows are made inert again. Separate narrow and wide SWA-length roles avoid
+   a DSpark block leaving stale lengths for the next narrow step. Allocation
+   growth is rejected during capture. The large `p_c128` table stays lazy and
+   follows the largest served chunk's live width, rather than preallocating
+   the maximum context width for every prefill row.
+3. **Indexer output becomes attention input.** A row-stride argument lets
+   `topk_v2` write into the shared table's tail. V4.1's BF16-logit decode
+   writers also use that tail directly. Raw-index output and skipped-indexer
+   variants keep their separate buffers. V4.1 prefill still packs its
+   ratio-1/2 tail; do not describe all tail-copy launches as eliminated.
+   `_tail_refresh_layers` verifies that reuse follows a source of the same
+   compression ratio. The late-layer switch forces an initial pack even
+   when its first indexed layer is not itself an index source.
+4. **Metadata joins the captured draft step.** The TRT-LLM rejection is
+   removed from `glue_draft_metadata`. The shared in-graph builder regenerates
+   the live tables; eager preparation defers work the graph will perform.
+   Request-window and other existing glue exclusions remain. Exact tensor
+   aliases skip self-copies; non-tensor metadata retains its `copy_` behavior.
+5. **Fuse conversions without dropping rounding boundaries.** Q's JIT norm/
+   RoPE kernel gains E4M3 output, replacing the BF16 temporary plus `copy_`
+   when the caller requests that output dtype.
+   The rotated values still round through the input dtype before FP8 packing.
+   The existing compressor norm/RoPE epilogue gains uniform-FP8 storage and
+   replaces `compressor_trtllm.py`; invalid plan rows and non-boundary decode
+   rows are skipped. DSpark commit projection permits strided outputs because
+   the KV writer already accepts their row stride. Encoder replay uses the
+   uniform row layout in its request window and byte-wise copies.
+6. **PDL and capacity remain explicit contracts.** The counter and decode
+   tables account for the maximum adaptive draft width, not just the active
+   width. The counter uses the shared MLA allocator, including its 8,192-row
+   floor. Attention immediately following an index-tail refresh disables PDL
+   because the kernel reads sparse lengths before its dependency wait; reuse
+   layers retain the default. The new backend-choice flag defaults to
+   `trtllm-gen`. FlashInfer's resolver knows SM107, but the unchanged SGLang
+   argument gate still requires SM100/SM103: the flag is not Rubin enablement.
+
+Key excerpts from the complete diff:
+
+```diff
++    // DType round-trip first, so the bits match a DType store followed by .to(e4m3).
++    const auto [bx, by] = cast<fp32x2_t>(cast<DType2>(rotated));
++    tile::Memory<fp8x2_e4m3_t>{lane_id, kWarpThreads}.store(output_ptr + (kHeadDim - kRopeDim), pack_fp8(bx, by));
+```
+
+```diff
++  // Row stride of `page_indices` in elements; > topk when writing a column slice of a wider table.
+```
+
+The row-stride declaration above is described in the diff's `TopKPagedParams`
+comment; its actual binding uses `TensorMatcher(...).with_strides({O, 1})`
+and `.out_stride = O.unwrap()`. The launch-order boundary is:
+
+```diff
++            # The kernel loads sparse_topk_lens before griddepcontrol.wait, so it
++            # must not overlap this layer's tail write (pack or in-place top-k).
++            enable_pdl=False if refreshed else None,
+```
+
+Reviewed files include both norm/RoPE CUDA headers, `topk_v2.cuh`, compressor
+and low-ratio metadata kernels; argument schema/docs; both attention backends
+and metadata-copy helpers; V4.1 pools/request windows; target, DSpark and
+deferred-commit callers. All seven changed test files were read, including
+the deleted manual VarSeq test and the new encoder-replay E2E recipe.
+
+Validation should retain the pool-address/padding/growth tests, same-ratio
+index-source tests, strided top-k sentinels, empty ratio-2 lengths, and actual
+attention comparisons with persistent versus fresh counters. The new counter
+test inspects CUDA graph dependency edge types and has a control that retains
+PDL. Its metadata-poisoning case checks reads beyond the live batch. The
+compressor test permits a mismatch fraction up to `1e-4` and one E4M3 ULP,
+reflecting RMSNorm reduction differences; it is not a byte-identical guarantee
+for every compressor result. The manual long-query VarSeq dispatch assertion
+is removed because the runtime now uses dense rows.
+
+Reported performance must keep the measurement's revision and workload:
+
+- The October 26 head `f6916d88f3` reports GB300 TP4 AgentX per-request decode
+  time about 0.95% lower at c1 and 0.76–1.25% lower at c16 than FlashMLA.
+  Published recipes use simulated acceptance. Later B300 TP2/GB200 TP4 results
+  also favor the PR's decode latency; B300 DEP2 c64 instead favors FlashMLA
+  Mega by about 1.7% on that metric, with output throughput effectively tied.
+- The subsequent metadata changes report 29.2–29.7 µs less attributable time
+  per GB300 TP4 c1 decode step in 40-step Torch profiles. Their estimated 0.6%
+  end-to-end effect was not measured. The attention kernel itself became
+  slower in that profile, while preparation savings outweighed it.
+- Real-acceptance GPQA-Diamond uses 198 questions × four repeats: 0.907 versus
+  FlashMLA's 0.909, paired difference −0.25 percentage points with 95% interval
+  [−1.39, +0.76]. This supports the reported comparison, not proof of identical
+  accuracy. Registered GB300 bounded/encoder BCG runs report GSM8K-200 and
+  MMMU-Pro-200 above their thresholds; some runs include additional patches.
+  These are upstream reports on their stated trees, not a fresh qualification
+  of this PR against the November mainline or installed wheel.

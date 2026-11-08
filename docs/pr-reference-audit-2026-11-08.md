@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 17 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 18 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -118,6 +118,13 @@ separate BF16-to-FP8 conversion. The catalog no longer labels that integration
 as open or attributes the pending #36652 rewrite to main. A duplicated
 619-line dispatch/control section in the overlap catalog now links to its
 canonical counterpart, preserving the section anchor.
+
+The same review also covers the complete 3,500-line pending #36652 rewrite
+and all of its discussion. It separates dense per-token calls, shared sparse
+tables, direct top-k writeback, draft metadata capture, FP8 producer epilogues
+and PDL dependencies from the current mainline. The card preserves revision,
+hardware and acceptance-mode limits on performance reports, including a
+profile-only improvement that has not been measured end to end.
 
 ## Local validation of this increment
 

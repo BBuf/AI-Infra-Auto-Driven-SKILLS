@@ -209,7 +209,8 @@ Load only relevant references:
   and validation gaps. Tile budgets bound score tensors, not whole-model peaks.
 - [dsv41-trtllm-source-review.md](references/dsv41-trtllm-source-review.md):
   merged sparse-attention integration, breakable prefill and public persistent
-  counter API. Distinguish fused KV storage from the remaining Q conversion.
+  counter API, plus the pending per-token/metadata rewrite. Distinguish main's
+  remaining Q conversion from the proposal's fused output and PDL gates.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.
