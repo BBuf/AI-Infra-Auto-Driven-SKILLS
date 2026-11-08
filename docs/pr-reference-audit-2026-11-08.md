@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 22 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 23 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -144,6 +144,13 @@ push planes, cached statistics and new post/norm fusions evolved after the merge
 Historical intermediate-head test results are not promoted to final-head GPU
 validation, and earlier failed workflow partitions remain distinct from files
 that actually passed inside them.
+
+The [TokenSpeed mHC review](../skills/llm-torch-profiler-analysis/references/tokenspeed-mhc-source-review.md)
+covers #1767's full 27-file diff and all discussion, with a fresh head/base
+check. It replaces the stale open-proposal row with the merged implementation:
+communication admission before deferral, stage/Engram handoff completion,
+MegaMHC replay exclusion and current FP8 output layout. CI plans and earlier
+performance reports remain distinct from executed final-head validation.
 
 ## Local validation of this increment
 

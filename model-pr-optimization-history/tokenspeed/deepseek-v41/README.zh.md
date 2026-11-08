@@ -1,5 +1,10 @@
 # TokenSpeed DeepSeek V4.1 模型 PR 优化历史
 
+## 2026-11-08 mHC 源码复核
+
+[#1767 完整复核](../../../skills/llm-torch-profiler-analysis/references/tokenspeed-mhc-source-review.md)
+覆盖已合并的 27 文件 diff、延后归约的归属、MegaMHC 的图重放限制、最终测试与讨论，
+并区分当前 main 后续增加的 FP8 输出。B300 收益和 H20 资源争用报告保留各自实验条件。
 
 ## 2026-10-05 人工 diff 复核
 

@@ -218,6 +218,9 @@ Load only relevant references:
 - [dsv41-mhc-source-review.md](references/dsv41-mhc-source-review.md): merged
   mHC state/collective ownership refactor, deleted combine-only kernels, cache
   invalidation and current boundary transport. Check who still owes the sum.
+- [tokenspeed-mhc-source-review.md](references/tokenspeed-mhc-source-review.md):
+  merged MNNVL post/norm fusion, eager MegaMHC and later FP8 output. Admission,
+  graph-replay restrictions and stream contention determine the observed path.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

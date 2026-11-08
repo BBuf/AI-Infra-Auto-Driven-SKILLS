@@ -105,6 +105,15 @@ the bundled simulator does not automatically ingest them.
 
 ## Compiler and dependency dispatch
 
+TokenSpeed's [merged V4.1 mHC review](../skills/llm-torch-profiler-analysis/references/tokenspeed-mhc-source-review.md)
+separates MNNVL communication fusion from eager MegaMHC. The former admits
+prepared 2/4/8/16-rank BF16 `[T,5120]` inputs through 2048 rows, subject to
+workspace and numerical-policy gates. MegaMHC remains unsupported under CUDA
+graph replay; the V4.1 model excludes it from breakable capture, while its
+low-level eligibility function does not enforce that restriction for new
+direct callers. Current main also has an optional FP8-producing MegaMHC join.
+Do not transfer eager fusion timing or kernel presence to the captured path.
+
 - SGLang kernel roots are `python/sglang/kernels/{aot,jit,ops}`. The current
   [dependency pin](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/pyproject.toml) uses FlashInfer 0.7.3 (cu13).
   Check the actual wheel/image, not just source main.

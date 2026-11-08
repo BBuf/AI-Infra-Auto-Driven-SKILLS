@@ -1,5 +1,11 @@
 # TokenSpeed DeepSeek V4.1 Model PR Optimization History
 
+## 2026-11-08 mHC source review
+
+The [complete #1767 review](../../../skills/llm-torch-profiler-analysis/references/tokenspeed-mhc-source-review.md)
+records the merged 27-file change, deferred reduction ownership, MegaMHC graph
+replay restriction, final tests/discussion and current main's optional FP8 join.
+Historical B300 speedups and H20 contention reports retain their experiment scope.
 
 ## 2026-10-05 Manual Diff Review
 
