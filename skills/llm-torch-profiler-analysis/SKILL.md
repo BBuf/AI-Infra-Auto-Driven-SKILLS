@@ -215,6 +215,11 @@ Load only relevant references:
   current visible-tile scheduling and fused head reduction, pending dense/compact
   scoring proposals, and the closed grouped-WGMMA prototype. Preserve logical
   versus compact scan lengths, numerical order and current prefill interfaces.
+- [deepgemm-litetopk-producer-review.md](references/deepgemm-litetopk-producer-review.md):
+  pending SM100 BF16 logits histogram producer, additive state, bounded shared
+  counters and FP4 stage/chunk changes. Include producer overhead when comparing
+  selectors; scores still reach HBM. Current `dev` lacks this histogram API and
+  has newer wrapper/CC 10.7 contracts. Sanitizer coverage excludes graph replay.
 - [dsv41-mhc-source-review.md](references/dsv41-mhc-source-review.md): merged
   mHC state/collective ownership refactor, deleted combine-only kernels, cache
   invalidation and current boundary transport. Check who still owes the sum.

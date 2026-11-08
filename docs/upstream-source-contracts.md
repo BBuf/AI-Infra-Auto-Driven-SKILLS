@@ -57,6 +57,18 @@ for collective/skew diagnosis.
 
 ## DS V4.1 dispatch and numerical boundaries
 
+The [DeepGEMM LiteTopK producer review](../skills/llm-torch-profiler-analysis/references/deepgemm-litetopk-producer-review.md)
+adds a November 9 comparison against `dev` commit
+`909f68c19cc23c6afd9cc039c0493b00586b66b2`. Open #94 emits an additive
+1024-bin histogram alongside the stored BF16 logits, with a 170-split
+shared-counter budget and seven-stage MXFP4 D128 KV ring. It does not remove
+the score matrix. Include the reported 5/6-token producer overhead when
+evaluating selector savings. Its graph test zeroes the histogram inside
+capture; the sanitizer path skips that graph section. Current `dev` still
+lacks the histogram argument and has a compatibility wrapper plus newer
+CC 10.7 chunk/ring and TMEM-base handling, which a rebase must preserve.
+The complete SGLang consumer/migration reviews remain pending.
+
 [deepseek_v4_mhc.py](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_mhc.py)
 owns current mHC kernel dispatch;
 [deepseek_v4_boundary.py](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_boundary.py)

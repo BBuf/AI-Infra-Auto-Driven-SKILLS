@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Thirty-two additional PRs cited by the new review cards bring the
-TSV to **6,966 objects**; all 73 PRs manually reviewed in this refresh have
+6,934 objects. Thirty-three additional PRs cited by the new review cards bring the
+TSV to **6,967 objects**; all 74 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -533,6 +533,19 @@ small-token branch, missing mixed-rank GPU coverage and distinction between
 27 SGLang, 11 TokenSpeed, nine vLLM and 26 FlashInfer. Only #8864's metadata
 check is fresh in this increment; previous timestamps remain. The ledger
 has 6,966 objects.
+
+The [DeepGEMM LiteTopK producer review](../skills/llm-torch-profiler-analysis/references/deepgemm-litetopk-producer-review.md)
+completes open #94's twelve-file, 983-line diff and all discussion. It corrects
+the catalog's conflation of a producer-side histogram with score-free top-k
+fusion. The card records additive counts, 16-bit window budgeting, FP4 stage
+changes, live-BF16 parity and the sanitizer's graph skip. Current DeepGEMM
+`dev` still lacks this argument and has newer wrapper/CC 10.7/TMEM contracts.
+Exact-head workflow/check/status queries contain no records, so the GPU,
+SASS and performance results remain author-reported. Total: 74 manually
+reviewed PRs, comprising 27 SGLang, 11 TokenSpeed, nine vLLM, 26 FlashInfer
+and one DeepGEMM. Only #94's check is fresh in this increment; previous
+timestamps remain. The ledger has 6,967 objects. Full SGLang consumer and
+migration reviews are still in progress and add nothing to that count.
 
 ## Local validation of this increment
 
