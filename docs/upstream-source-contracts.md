@@ -345,6 +345,16 @@ locally, but neither those checks nor the final AOT-only CI prove GPU occupancy
 or numerical execution. The sixteen measured changed shapes are T65/T71;
 the standard 720-row matrix exercises unchanged programs.
 
+The same review covers #8321's eight early two-shot programs. Default TP4
+T72–128 and TP8 T56–128 read the first four routing indices after PDL wait,
+before the current/clear words; the buffer-byte word is still read earlier.
+Scatter and clearing addresses reuse those sampled words. K8's second index
+group and shared-expert data are not newly hoisted. Original CPU table and
+boundary functions pass locally, but final-head CI runs only AOT builds.
+The 64 published changed timing rows are a subset of the reported 320-shape
+cohort; the other 256 rows and smaller-limit fallbacks lack individual data.
+Current early dispatch matches, while all 48 later whole bodies differ.
+
 The [FlashInfer source-consolidation review](../skills/llm-torch-profiler-analysis/references/flashinfer-comm-source-consolidation-review.md)
 traces #7054 across five communication families. Shared source paths retain
 distinct launch bounds, pipeline depth and module compile definitions; source

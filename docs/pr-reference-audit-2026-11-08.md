@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Twenty-six additional PRs cited by the new review cards bring the
-TSV to **6,962 objects**; all 69 PRs manually reviewed in this refresh have
+6,934 objects. Twenty-nine additional PRs cited by the new review cards bring the
+TSV to **6,963 objects**; all 70 PRs manually reviewed in this refresh have
 head checks matching their reviewed diffs, at the recorded per-PR timestamps. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -484,6 +484,19 @@ rows are separated from 720 unchanged controls, and final-head CI again has
 only AOT results. The total is now 69 manually reviewed PRs: 27 SGLang,
 11 TokenSpeed, nine vLLM and 22 FlashInfer. Only #8139's head/base check is
 fresh in this increment; earlier timestamps remain. The ledger has 6,962 objects.
+
+The prefetch/dispatch review completes #8321's 24-file diff and all discussion.
+Explicit inverse transformations check all eight early bodies against their
+regular two-shot counterparts; the forty retained bodies are unchanged or
+temporary-only rewrites. The review preserves the post-PDL boundary, cached
+first-four routing indices, single control-word sampling and zero-local-token
+clear initialization. Nine original CPU table/boundary cases pass locally;
+T129 is the only new GPU-test token value. The 720-row table has 64 changed
+rows, while 256 other reported changed measurements lack individual data.
+Final-head CI contains six AOT builds and no targeted numerical test job.
+The total is now 70 manually reviewed PRs: 27 SGLang, 11 TokenSpeed, nine vLLM
+and 23 FlashInfer. Only #8321's head/base check is fresh in this increment;
+all previous per-entry timestamps remain. The ledger has 6,963 objects.
 
 ## Local validation of this increment
 

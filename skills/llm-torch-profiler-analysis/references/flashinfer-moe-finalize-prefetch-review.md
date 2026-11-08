@@ -1,7 +1,7 @@
 # FlashInfer indexed finalize: small-token prefetch and dispatch
 
 Reviewed on 2026-11-09 (Asia/Shanghai). This is a historical source review
-of #7905/#8073/#8139, following the [two-shot/deferred lineage](flashinfer-moe-finalize-two-shot-review.md).
+of #7905/#8073/#8139/#8321, following the [two-shot/deferred lineage](flashinfer-moe-finalize-two-shot-review.md).
 Current comparisons use `31c146b16789f112e9b9861bd79247d4701e437a`.
 No GPU execution, SASS comparison, sanitizer or benchmark was run here.
 
@@ -291,8 +291,9 @@ changing the exchange format. This does not relax cross-rank agreement
 between one-shot and two-shot protocols.
 
 The current pin retains the exact inspected class term, small-branch
-predicate, T71 cap and earlier T72/T56 tests. Later two-shot variants and
-all forty changed current device bodies still require separate review.
+predicate, T71 cap and earlier T72/T56 tests. The early two-shot successor
+is reviewed below; other later variants and the changed current device
+bodies still require separate review.
 
 ### Tests and measured coverage
 
@@ -337,3 +338,144 @@ devices have no separate timing rows. Keep these limits and the unchanged
 rank-max committed harness distinct from the sixteen-shape dispatch result.
 For a profile at this boundary, verify class, token count, resident capacity
 and selected program before attributing the gain to a new kernel body.
+
+## PR #8321 — issue first-token routing indices before the current/clear words
+
+- Link: [FlashInfer #8321](https://github.com/flashinfer-ai/flashinfer/pull/8321).
+- State: merged 2026-11-02 at 12:47:48 UTC; head
+  `54b33fede8cfd63baba6d513d884e7266abcd3c1`, API base
+  `3d4c266d9499be1005969e089aad851466717e11`, actual merge-base
+  `3b6e31e5565a2e539ade639507a5d363588fd0b7`, merge
+  `473993f4eb44bc0558c511d7a9444afae2a2a536`.
+- Coverage: full 15,107-line diff fetched; unique changes reviewed across
+  24 files, +11,686/-823. All 40 retained base bodies match #8139; 28 head
+  bodies are byte-identical and twelve TP8 bodies only bijectively rename
+  local temporaries. The eight new early bodies were compared with their
+  same-head regular two-shot counterparts: explicitly undoing each inspected
+  read/scheduling edit reproduces every complete body modulo temporary
+  renaming, preserving dtype-specific arithmetic, constants and assembly.
+  All body prose, structured checks of 720 timing rows and intervals, two
+  issue comments, two reviews, no inline comments and the single commit
+  message are covered.
+- Reviewed files: eight `*_ws{4,8}_o{110,111}_tse_kernel.cu` additions,
+  twelve renamed TP8 bodies, the binding, JIT loader and CPU/GPU dispatch
+  tests. The registry grows from 40 to 48 programs per architecture.
+- Motivation: shorten the first-token input dependency chain for small
+  two-shot batches without changing their rank exchange or epilogues.
+
+### Read order and buffer lifetime
+
+In the [BF16 TP4 early body](https://github.com/flashinfer-ai/flashinfer/blob/54b33fede8cfd63baba6d513d884e7266abcd3c1/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws4_o110_tse_kernel.cu),
+the buffer-byte word `control_0[3]` is still read before
+`griddepcontrol.wait`. After that wait, the kernel reads the first token's
+first four inverse-routing indices, guards the token/slot accesses, and
+feeds the four words into an empty volatile assembly statement. Only then
+does it load the current-epoch and clear-range words `control_0[2]`/`[4]`.
+Thus the new early input reads do not cross the PDL readiness boundary.
+The cached token is `cluster_id`; later published tokens use ordinary
+index loads. K8's second group of four indices and shared-expert data are
+not newly hoisted. All eight early bodies retain this source order.
+
+The first publication substitutes cached indices into the original route
+body. Before scattering, copies of the already loaded current/byte words
+pass through empty `asm` read/write operands, and `scatter_base` is computed
+as `(current % 3) * (bytes / 2)`. The kernel then initializes the ordinary
+read base and dirty-buffer clearing schedule in an unconditional
+`if (step == 0)` after the publication block, before clearing or reduction.
+The dirty slot remains `(current + 2) % 3`; the original clear-budget formula
+and `local_tokens + 2` loop/drain remain intact. A cluster with zero local
+tokens still executes the initialization and drain. Each of the three
+control words is read exactly once; later address calculations are not
+fresh epoch sampling. Cached first indices are reset at each iteration end.
+
+The [TP8 body](https://github.com/flashinfer-ai/flashinfer/blob/54b33fede8cfd63baba6d513d884e7266abcd3c1/csrc/cake_moe_finalize_allreduce_fusion/cake_trtllm_moe_finalize_bfloat16_ws8_o110_tse_kernel.cu)
+uses the same transformation with its existing chunk/owner geometry. The
+FP16 and quantized-output bodies preserve their respective unchanged
+conversion and epilogue operations. Full-file proofs establish the source
+transformation, not emitted load placement, register pressure or hardware
+synchronization: empty assembly supplies compiler operand dependencies.
+The two-shot protocol and BF16 escape encoding are inherited, including
+the [finite-value versus NaN marker limitation](flashinfer-moe-finalize-two-shot-review.md).
+Do not turn the source comment about identical bits into arbitrary-input
+byte-parity or a new numerical-validation claim.
+
+### Selection and boundary tests
+
+The [binding](https://github.com/flashinfer-ai/flashinfer/blob/54b33fede8cfd63baba6d513d884e7266abcd3c1/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_allreduce_fusion_binding.cu)
+adds a TP4/TP8 early table with null TP2 entries and selects:
+
+```diff
++  const void* two_shot_now =
++      (two_shot_early != nullptr &&
++       tokens <= (world_size == 8 ? kTwoShotEarlyMaxTokensWorldSize8
++                                  : kTwoShotEarlyMaxTokensWorldSize4))
++          ? two_shot_early
++          : two_shot;
+```
+
+Both early maxima are 128. This choice is used in the first two-shot branch
+and the TP8 fallback after small-token selection, with deferred selection
+still taking precedence. Default ranges are TP4 T72–128 and TP8 T56–128.
+At `small_token_max=16`, TP8 T17–55 also reaches the early fallback. TP4
+below T72 retains the small/capacity/persistent decision. Early and deferred
+ranges cannot overlap; static assertions enforce this. The current pin
+retains the exact early table, constants and `two_shot_now` expression,
+although later shared-expert deferred selection has changed. All 48
+historical whole device files differ at the current pin; this proof does
+not certify those later bodies.
+
+The [CPU test](https://github.com/flashinfer-ai/flashinfer/blob/54b33fede8cfd63baba6d513d884e7266abcd3c1/tests/cpu/comm/test_cake_moe_finalize_dispatch.py)
+checks table contents/coverage and translates the binding's expressions.
+Executing the original function ASTs with decorators removed and a local
+source/module-record provider passes nine cases: six tables, their union,
+and both world-size boundary cases. The latter assert T128 early, T129
+regular, T16 small and T17 TP8-early/TP4-persistent at capacity zero. This
+is eight boundary assertions, not a full shape/numerical or occupancy test;
+the evaluator does not execute deferred selection.
+
+The [GPU test](https://github.com/flashinfer-ai/flashinfer/blob/54b33fede8cfd63baba6d513d884e7266abcd3c1/tests/comm/test_cake_moe_finalize_allreduce.py)
+adds T128/T129 and the early program mirror. T128 already existed, so the
+actual new token value is only T129: TP4 grows from eight to nine token
+counts and TP8 from ten to eleven. The existing dtype/shape matrix and
+conditional kernel-name assertions remain. Public APIs, the unified MoE
+test, committed benchmark and timer are byte-identical to #8139.
+
+Final-head [run 41436257291](https://github.com/flashinfer-ai/flashinfer/actions/runs/41436257291)
+contains ten jobs, including six successful AOT builds and no targeted
+CPU/GPU test job. Setup checked merge `25140ae35` of this head into the API
+base. H100 was disabled; every A10G/T4 targeted scope was empty; the summary
+downloaded zero JUnit artifacts and skipped its skip-all check. An earlier
+summary failed while waiting for a cancelled run, with its own setup skipped.
+Maintainer approval and the CODEOWNERS-gap attestation supply no numerical
+test result. No GPU test was rerun in this review.
+
+### Measured cohort and controls
+
+The external CUDA 13.4 experiment interleaves previous/new Cake runs and
+uses rank-min CUPTI times, median paired ratios and 95% bootstrap intervals.
+Its standard table has the same 720 shape identities as the earlier
+controls; only 64 TP4/TP8 T128 rows select new programs.
+
+| Printed-row cohort | B300 geometric mean / range | B200 geometric mean / range |
+|---|---|---|
+| Changed 64 | 1.039 / 1.010–1.079 | 1.038 / 1.006–1.080 |
+| Unchanged 656 | about 0.9995 / 0.971–1.031 | about 0.9995 / 0.985–1.015 |
+| All 720 | 1.003 / 0.971–1.079 | 1.003 / 0.985–1.080 |
+
+All 64 changed rows have printed interval lower bounds above one on both
+GPUs. The controls include 302 B300 and 306 B200 ratios below one; 52/48
+intervals respectively lie entirely below one, while 29/28 lie entirely
+above. Retain these unchanged-program fluctuations when interpreting small
+gains; the intervals are per-row, not a simultaneous all-shape guarantee.
+The body reports control means of 0.999; the rounded printed rows recompute
+to 0.999505/0.999453. Underlying unrounded ratios are not published here.
+
+The body separately reports 320 changed measurements: TP4 T72/88/95/96/104/128
+and TP8 T64/65/72/128, each crossed with 32 dtype/K/PDL/output/shared choices.
+It reports geometric means 1.036/1.035 and no ratio below one. Only 64 of
+those rows are published individually; the other 256 cannot be recomputed
+from the table. This is a sampled cohort, not every changed token count:
+TP8 T56–63 and custom-small-limit fallback ranges have no separate rows.
+The committed rank-max TRT/Cake/TRT harness is unchanged and uses a different
+protocol. Neither the table nor source inspection establishes a service
+throughput or model-accuracy improvement.

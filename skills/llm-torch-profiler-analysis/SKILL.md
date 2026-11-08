@@ -320,7 +320,10 @@ Load only relevant references:
   the 720-row tables. Compiler dependencies do not prove instruction placement
   or lower register pressure. #8139 extends TP4/K4/no-shared to T71 only within
   resident-cluster capacity; distinguish its sixteen measured shapes from the
-  unchanged standard matrix. All three final-head runs have AOT results only.
+  unchanged standard matrix. #8321 adds early two-shot through T128: only the
+  first four route indices are hoisted, after PDL wait and before epoch/clear
+  loads. Separate its 64 published changed rows from the 320-shape aggregate.
+  All four final-head runs have AOT results only.
 - [flashinfer-comm-source-consolidation-review.md](references/flashinfer-comm-source-consolidation-review.md):
   merged #7054's five-family source consolidation, compile-definition scope,
   preserved launch-bound variants and Ulysses header-integrity gap. Distinguish
