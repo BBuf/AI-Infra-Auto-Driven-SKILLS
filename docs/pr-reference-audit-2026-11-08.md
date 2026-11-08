@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 58 PRs manually reviewed in this refresh were
+6,934 objects. Twenty additional PRs cited by the new review cards bring the
+TSV to **6,954 objects**; all 61 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -375,9 +375,20 @@ It distinguishes compiler-specific poll/SASS equivalence from source
 deduplication, keeps the rank-max regressions and contradictory final table
 minimum, and records the reported TP4 hang. Current code no longer registers
 that template file. H100 final-head CI confirms six CPU passes/43 GPU skips.
-The manual-review count is 58: 27 SGLang, 11 TokenSpeed, nine vLLM and eleven
-FlashInfer PRs. All 58 reviewed heads/bases still match after fresh API checks.
-The metadata-only ledger remains at 6,951 objects.
+The completed manual-review count was 58.
+
+The same card completes #6057/#6128/#6166: all changed device/host code,
+discussion and commit messages, with predecessor and unchanged supporting
+files compared byte-for-byte. It traces pair/quad gathering, the DSM slot
+ring, occupancy sizing, local polling and TP4-only residual prefetch. The
+review preserves rejected TP2/TP8 variants, different timing cohorts and
+large-token timeouts. Each final-head H100 log confirms six CPU passes and
+43 GPU skips; internal pipeline start announcements are not completed test
+evidence. Current cluster-capacity and shape dispatch are distinguished from
+the retired template. The manual-review count is 61: 27 SGLang, 11 TokenSpeed,
+nine vLLM and fourteen FlashInfer PRs. The three newly reviewed heads/bases
+match their latest API checks; the previous 58 checks retain their recorded
+timestamps. The metadata ledger contains 6,954 objects.
 
 ## Local validation of this increment
 

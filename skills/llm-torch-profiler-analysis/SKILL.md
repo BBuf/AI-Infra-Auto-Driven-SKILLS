@@ -295,6 +295,10 @@ Load only relevant references:
   actual timer; `enable_cupti` alone does not exclude CUDA-event fallback.
   The #5870 template review qualifies compiler-specific SASS equivalence,
   rank-min versus rank-max timing and the retired template source path.
+  The #6057/#6128/#6166 scheduling reviews distinguish pair/quad gathering,
+  local polling and TP4-only residual prefetch, including rejected variants.
+  Apply current per-program cluster-capacity and shape gates before reusing
+  those historical timing or TP2/TP8 conclusions.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

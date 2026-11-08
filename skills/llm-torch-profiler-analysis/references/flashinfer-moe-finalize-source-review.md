@@ -531,3 +531,264 @@ compiles separate program sources, with the shape/occupancy selection above.
 Some symbols remain, so a familiar profiler name does not establish that it
 executes this historical template. Record the source revision and selected
 program before reusing its equivalence or timing conclusions.
+
+## PR #6057 — pair prefetch, DSM slot ring and occupancy-sized grid
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/6057
+- State: merged 2026-10-06; head
+  `047f5352eab172571088437dba7893ec4c56ad62`, API base
+  `cab5c6172454484701dfda0e6fa4fd639909b0b4`, merge-base
+  `613d12e08d3230f79e5d9e57a676164508525486`, merge
+  `55edb4288eb5c82fbfb5f110d1329bd75d0b9849`.
+- Coverage: full 642-line diff, two files, +259/-128, body, thirteen issue
+  comments, one approval, no inline comments and all three commit messages.
+  Both base files match the reviewed #5870 head byte-for-byte.
+- Reviewed files: complete changes to
+  `csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_kernels.cu` and
+  `cake_moe_finalize_allreduce_fusion_binding.cu`, with unchanged loader,
+  benchmark, timer and three test files compared to #5870. The indexed public
+  finalize function and unified dispatch are unchanged; intervening changes
+  elsewhere in `trtllm_ar.py` are not part of this patch.
+- Motivation: expose more independent routed loads, shorten the cluster
+  normalization dependency, and keep more token work resident at large T.
+  Admission, twelve entrypoints and the workspace ABI remain unchanged.
+
+### Data dependencies and launch geometry
+
+The [device change](https://github.com/flashinfer-ai/flashinfer/blob/047f5352eab172571088437dba7893ec4c56ad62/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_kernels.cu)
+consumes routes in pairs. It fetches the next two inverse indices before
+loading the current pair's valid expert rows and scales. Negative indices
+skip both the load and contribution; positive-index validity remains the
+producer's responsibility. Contributions are still scaled, rounded, added
+and rounded in route order. This is load scheduling, not reassociation.
+
+For RMSNorm, thread zero in each CTA writes its FP32 partial into its own
+slot in **all four CTAs'** distributed shared memory. One release/acquire
+cluster barrier makes the four slots available locally; every thread then
+performs the same ordered sum and reciprocal square root:
+
+```diff
++        float cluster_sum = 0.0f;
++        cluster_sum = cluster_sum + rms_slots[rms_parity * 4];
++        cluster_sum = cluster_sum + rms_slots[rms_parity * 4 + 1];
++        cluster_sum = cluster_sum + rms_slots[rms_parity * 4 + 2];
++        cluster_sum = cluster_sum + rms_slots[rms_parity * 4 + 3];
++        float _rsqrt_0 = rsqrtf(cluster_sum / 7168.0f + epsilon);
+```
+
+The two banks occupy 32 bytes from shared-memory offset 136. Alternating
+`rms_parity` prevents the next token from immediately overwriting the bank
+being consumed. Correctness still depends on matching token iterations and
+converged cluster barriers. The old two-barrier reduction/broadcast is gone;
+rank-addition rounding, residual rounding, FP4 conversion and the Lamport
+entry-counter/phase protocol remain as described above.
+
+The [host change](https://github.com/flashinfer-ai/flashinfer/blob/047f5352eab172571088437dba7893ec4c56ad62/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_allreduce_fusion_binding.cu)
+caches `cudaOccupancyMaxActiveBlocksPerMultiprocessor` per device/kernel,
+caps it at four CTAs/SM and launches
+`4 * floor(min(ctas_per_sm * SM_count, 4*T) / 4)` CTAs. The launch still uses
+224 threads/CTA, four CTAs/cluster and 256 dynamic shared-memory bytes.
+At small T the grid is unchanged. This historical calculation does **not**
+query active-cluster occupancy; the current launcher adds that bound.
+
+The second revision polls locally published rank slices at TP2/TP4. TP8
+retains the remote peer diagonal because the author's earlier local-poll
+experiment lost about 4% at T1. That choice is superseded by #6128 below;
+it is not evidence that TP8 fundamentally needs remote polling.
+
+### Timing and correctness evidence
+
+The body describes external paired in-process old/new arms with interleaved,
+counterbalanced passes and geometric means of **rank-min** ratios. The
+committed benchmark is byte-identical to #5870's TRT-LLM/Cake/TRT-LLM harness;
+it does not implement that old/new protocol. Its CUPTI fallback and missing
+raw-sample caveats therefore still apply. Rank-min is also a different
+estimator from the committed iteration-wise rank-max median.
+
+The first revision's TP2 aggregate is 1.673 on B200 and 1.370 on B300.
+TP4/TP8 aggregates are smaller and retain individual regressions: B200 TP4
+minimum 0.994; B300 TP4/TP8 minima 0.980/0.963. The second table compares
+first versus second revision, not main versus final head; its B300 TP4
+minimum is 0.991. Combined B200 TP2/T2048 ratios around 4.19 (K8) and 3.83
+(K4) are operator rank-min results, not service throughput gains.
+
+TP4/TP8 T2048 reportedly hangs intermittently in both Cake and TRT-LLM,
+with ranks inside `cudaDeviceSynchronize`; launch blocking avoids it in the
+reported runs. Only isolated processes that finish before a hard timeout
+contribute results. Keep this completion selection and unresolved failure
+visible. The absence of the newer cluster-capacity bound alone does not
+establish the cause of those historical hangs.
+
+The author reports full dtype/T/K/PDL/profile/shared-expert comparisons,
+arange/adversarial routing, eight-seed FP64 checks at TP2/TP4, 1024 rank-equality
+rows and sanitizer runs. No tests or external precision harness are added
+by this PR. These are historical Blackwell reports, not local reproductions.
+The [final-head H100 job](https://github.com/flashinfer-ai/flashinfer/actions/runs/37415464574/job/112113090954)
+checks out `f2f7cf8`, merging `047f5352` into `49a1cd2f`, and records
+**six CPU passes/43 GPU skips**. All six AOT build/import jobs pass.
+
+Discussion's internal pipelines report 11/29 and then 8/23 passed, including
+environment/compiler failures and B200 timeouts; a later pipeline is only
+announced. The author's attribution of red jobs to infrastructure is not
+independent proof that every failure is unrelated. A successful public H100
+run does not resolve the skipped Blackwell coverage or internal timeouts.
+
+## PR #6128 — local owner-segment polling at TP8
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/6128
+- State: merged 2026-10-06; head
+  `f389e7d5a072d80d5e6a113710d9630a458c91ab`, base/merge-base
+  `ea8135c0bdf641f54214e9ae777d5b75b5133079`, merge
+  `a9d3d64fee145fa2be06e08063de7d6ca1c45095`.
+- Coverage: complete 61-line diff, one file, +12/-23, body, four issue
+  comments, one approval, no inline comments and the commit message.
+- Reviewed file: the full change to `cake_moe_finalize_kernels.cu`; its base
+  matches #6057's head. Binding, loader, benchmark, timer and tests are
+  byte-identical to #6057. Public indexed finalize behavior is unchanged.
+- Motivation: consume each peer's contribution from the local rank's
+  published copy, avoiding repeated remote loads while waiting.
+
+The [poll rewrite](https://github.com/flashinfer-ai/flashinfer/blob/f389e7d5a072d80d5e6a113710d9630a458c91ab/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_kernels.cu)
+loads rank zero explicitly and expands the remaining ranks at compile time:
+
+```diff
++            poll_expand([&](auto _pc) {
++                constexpr int p = 1 + decltype(_pc)::value;
++                asm volatile("ld.volatile.global.v4.b32 {%0, %1, %2, %3}, [%4];" : "=r"(_sysv_poll_group_0[4 * p]), "=r"(_sysv_poll_group_0[(4 * p + 1)]), "=r"(_sysv_poll_group_0[(4 * p + 2)]), "=r"(_sysv_poll_group_0[(4 * p + 3)]) : "l"(workspace_local + (data_base + (long long)(p * total_access * 8) + (long long)(access_1 * 8))) : "memory");
++            }, std::make_index_sequence<WS - 1>{});
+```
+
+All supported world sizes now use local rank slices. Publication to all
+peers, sentinel checks and rank-addition order remain unchanged. Local
+polling still waits for peer publication; it does not remove collective
+arrival skew or establish concurrent workspace safety.
+
+The author attributes #6057's TP8/T1 regression to an earlier rolled-loop
+code generation, reporting sixteen fewer SASS instructions for the new
+straight-line local form. TP2/TP4 SASS is reported unchanged. The diff also
+changes three quant-scale conversions from volatile to ordinary inline
+assembly; the claimed unchanged SASS for all twelve kernels concerns that
+conversion-only change, not the complete TP8 poll rewrite. Neither compiler
+comparison was rerun in this audit.
+
+The external rank-min experiment covers 192 TP8 rows per node class:
+32 dtype/K/PDL/profile/shared-expert combinations at T1/2/4/8/16/128.
+B200 ratios range from 1.097 at T1 to 2.048 at T128; B300 class A reports
+1.070 to 1.990 at those endpoints, while class B reports 1.183 and 1.18328.
+Keep node cohorts separate. The commit message contains earlier values;
+the body is the later report. TP2/TP4 controls are approximately 0.998–1.007.
+The broader correctness claim includes T2048, but the TP8 performance table
+does not. This is not a resolution of #6057's large-token timeout caveat.
+
+No test/harness changes accompany the claimed bit-identical and sanitizer
+results. The [final-head H100 job](https://github.com/flashinfer-ai/flashinfer/actions/runs/37470313974/job/112291973579)
+checks out `6da3119`, merging `f389e7d5` into `ea8135c0`, and passes six CPU
+cases while skipping 43 GPU cases. Six AOT jobs pass. The discussion contains
+an internal pipeline start announcement, with no final result to inspect.
+
+## PR #6166 — four-route gather and TP4 residual prefetch
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/6166
+- State: merged 2026-10-08; head
+  `693ac8b2b84dd52baf4274f74f2577fa3956db01`, API base
+  `b8e81a7dae6c2aa5c9aa19c06e81e9a729271493`, merge-base
+  `a9d3d64fee145fa2be06e08063de7d6ca1c45095`, merge
+  `fb2b35145ef84ba25f56b58b3579ece14c242c0c`.
+- Coverage: full 1598-line diff, one file, +1061/-381, body, ten issue
+  comments, one approval, no inline comments and all three commit messages.
+- Reviewed file: complete changes to `cake_moe_finalize_kernels.cu`, including
+  both gather bodies, poll loops, residual/RMSNorm and quantized tails. The
+  base kernel matches #6128; binding, loader, benchmark, timer, tests and
+  indexed public finalize function remain unchanged.
+- Motivation: overlap independent expert-row loads, and place independent
+  residual loads before the collective wait where their live registers pay off.
+
+The [final template](https://github.com/flashinfer-ai/flashinfer/blob/693ac8b2b84dd52baf4274f74f2577fa3956db01/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_kernels.cu)
+selects the gather body by the world-size template literal:
+
+```diff
++    int use_quad = 1;
++    int quad_ws_lit = WS;
++    if (quad_ws_lit < 4) {
++        use_quad = 0;
++    }
++    if (use_quad == 1) {
+```
+
+Within that TP4/TP8 body, residual prefetch has a separate gate:
+
+```diff
++            int hoist_on = 1;
++            int hoist_ws_max_lit = WS;
++            if (hoist_ws_max_lit > 4) {
++                hoist_on = 0;
++            }
++            if (hoist_on == 1) {
+```
+
+| Historical program | Gather | Residual load |
+|---|---|---|
+| TP2 | Previous two-route body | After polling |
+| TP4 | Four routes at a time | Before polling; addition remains after it |
+| TP8 | Four routes at a time | After polling |
+
+The quad body keeps four valid rows as raw 128-bit words, unpacking each
+just before its scale step, and prefetches the next four indices. It retains
+the exact route order and contribution/addition rounding. Residual loading
+does not depend on rank partials; residual addition does. Gamma loading
+remains after polling. Both bodies retain the local poll, two-bank DSM
+reduction, FP4 scale layout, previous-phase cleaning and entry counter.
+The body selection is compile-time world size, not a runtime T/K threshold.
+
+### Keep rejected variants and measurement cohorts
+
+TP8 residual hoisting was removed after B300 non-quantized T>=128 regressions:
+individual ratio down to 0.93, T128 class means 0.980–0.985 and K4/T2048
+means 0.975–0.980. Quad gathering remains. TP2 quad gathering was removed
+after K4/shared-expert/T>=1024 losses: T2048 class means 0.978–0.991 and
+individual rows down to 0.945. A runtime two-body fallback still lost about
+1.5%, and token-gated hoisting recovered less than 1%. The final TP2 programs
+are reported SASS-identical to the old ones, eight dtype/profile/architecture
+comparisons; the final TP4/TP8 programs match the measured earlier revisions
+in sixteen comparisons. Reported register counts are 56 at TP2/TP4 and 72
+at TP8, retaining four CTAs/SM. These are author compilation reports.
+
+The table mixes TP4 first-revision measurements and TP8 second-revision
+measurements, supported by those reported SASS comparisons. Final-head
+remeasurements cover two B300 nodes and one B200 node: TP4 T1/T16 means
+1.081–1.096/1.089–1.102 on B300 and 1.090/1.096 on B200; unchanged TP2
+controls span 0.995–1.002. The broader table reports TP8 small-T gains around
+4–7%, but node coverage differs by cell. T128 mixes 16-row K4-only sets and
+32-row K4/K8 sets; B300 TP4/K8/T2048 is unmeasured in the table. Do not
+combine these ranges as one uniform full-matrix experiment or serving gain.
+The external paired rank-min protocol is still absent from the unchanged
+committed harness.
+
+The final-head body reports tests on two B300 nodes and one B200 node:
+per node, TP2 dispatch five passes, standalone two passes/four skips and
+unified 22 passes/16 skips; standalone TP4 four passes/two skips and TP8
+six passes. These counts do not establish full unified coverage at TP4/TP8.
+It also reports bit-identical A/B rows, rank equality and zero device errors
+from final-head eight-rank synccheck/memcheck; allocator capability-probe
+host entries are separately qualified. No new tests or raw run artifacts
+are committed in this diff.
+
+The [final-head H100 job](https://github.com/flashinfer-ai/flashinfer/actions/runs/37707230253/job/113084511504)
+checks out `6a9dd3b`, merging `693ac8b2` into `b5e50c20`, and records six CPU
+passes/43 GPU skips. Six AOT jobs pass. All three internal pipeline comments
+only announce starts; they do not provide completed Blackwell results.
+
+### Applying this lineage to a current trace
+
+These three PRs explain useful scheduling choices, not a universal dispatch
+table for the November pin. The current template is retired. Current
+[host selection](https://github.com/flashinfer-ai/flashinfer/blob/31c146b16789f112e9b9861bd79247d4701e437a/csrc/cake_moe_finalize_allreduce_fusion/cake_moe_finalize_allreduce_fusion_binding.cu)
+caps block occupancy at **five** and also bounds resident clusters with
+`cudaOccupancyMaxActiveClusters`. It selects separate small, persistent,
+TP2 quad/large and TP4/TP8 two-shot programs using token count, K, shared
+expert and quantization. In particular, a historical TP2 decision against
+unconditional quad gathering does not mean the current selector never uses
+it. Read the selected program before applying that historical conclusion.
+All successor device bodies and their intermediate PRs are not yet covered
+by this review. Preserve the per-shape fallback, source revision, rank timing
+estimator and resource bounds when turning these precedents into a new edit.

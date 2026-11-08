@@ -273,6 +273,15 @@ and fixes compiler-sensitive poll expansion. Its reported SASS identity is
 within each nvcc version. A/A spread and rank-min analysis do not erase the
 remaining rank-max regressions or TP4 hang; the historical template file has
 since been removed from current source registration.
+The #6057/#6128/#6166 reviews trace paired loads, the alternating DSM slot
+ring, local owner polling and TP4-only residual prefetch. TP8's earlier local
+poll regression was attributed to rolled code generation; TP2 quad and TP8
+residual hoisting were rejected for specific throughput regressions. The
+current launcher caps occupancy at five and also queries active-cluster
+capacity; its shape-selected successor programs differ from that historical
+template. Keep external rank-min timing, missing completed Blackwell CI and
+reported large-token timeouts separate from the six CPU passes/43 GPU skips
+verified for each final-head H100 run.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
