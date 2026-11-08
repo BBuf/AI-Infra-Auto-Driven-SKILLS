@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 47 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 48 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -274,9 +274,17 @@ It distinguishes the FP8 validator/flag-fill launches from the fused kernel,
 documents intermediate rounding and unwritten scale padding, and qualifies
 the historical CUPTI timing span. Frozen-main CAKE API/backend, stage policies
 and two selected generated kernels/bindings establish current availability
-and PDL readiness constraints. The three successor PRs mentioned by the
-closure have verified metadata but pending complete historical diff reviews;
-they do not add to the manual count. The completed manual-review count is 47.
+and PDL readiness constraints. The completed manual-review count was 47.
+
+The same card now includes merged #5952's complete 19-file diff and all
+discussion. All six generated source pairs were compared, with their common
+kernel/binding read in full and every remaining difference inspected. It
+separates the original head/architecture-only dispatch from current policies,
+records cache-tail ownership and empty-input limitations, and checks all 21
+test cases plus the benchmark and timing helper. The 17-shape committed
+harness, median-only output and fixed graph-before-eager ordering limit what
+the PR body's broader performance claims establish. #5956 and #6008 still
+have pending complete historical reviews. The completed manual count is 48.
 
 ## Local validation of this increment
 

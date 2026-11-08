@@ -185,6 +185,14 @@ Python. Padded Q scales remain unwritten. PDL waits protect QKV reads and
 stores, while metadata, weights and scales must already be ready. Explicit
 API availability does not prove a serving model invokes it, and #5405's
 5.75–6.37× BF16 pipeline timings do not measure current CAKE or service gains.
+The full #5952 review establishes the initial CAKE BF16 implementation:
+head/architecture-only JIT selection, register-resident FP32 norm/rotation,
+one ordinary launch and independent K/V redirects with optional tail clearing.
+Its 21-case test source and historical H100/H200/B200 reports do not cover
+changing-metadata graph replay or B300 execution. The committed 17-shape
+benchmark saves medians only, so the body's 28-row confidence-interval claim
+cannot be reproduced from that output. Current shape/PDL policy is a later
+contract and must be checked independently.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

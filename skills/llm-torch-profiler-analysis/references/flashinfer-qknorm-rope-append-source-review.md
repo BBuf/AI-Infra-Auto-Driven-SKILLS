@@ -1,7 +1,7 @@
 # FlashInfer QK RMSNorm, RoPE and paged append
 
-Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405 diff, body
-and all discussion were read. Current-source comparisons use FlashInfer main
+Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405 and #5952
+diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU experiment was run.
 
 ## PR #5405 — Experimental packed-QKV fusion
@@ -31,9 +31,9 @@ The closing comment says the feature was covered by CAKE
 [#5956](https://github.com/flashinfer-ai/flashinfer/pull/5956) and
 [#6008](https://github.com/flashinfer-ai/flashinfer/pull/6008). Fresh metadata
 confirms these merged on October 2, October 3 and October 3 respectively.
-They are closure context here; their complete historical diffs remain a
-separate pending review. Current availability below is established from the
-frozen mainline implementation, not by treating #5405 as merged.
+The #5952 source review follows below; complete historical reviews of #5956
+and #6008 remain pending. Current availability is established from the frozen
+mainline implementation, not by treating #5405 as merged.
 
 ### Data and launch contracts
 
@@ -121,6 +121,119 @@ back to CUDA events. The fused path also clears the last-page tail while the
 baseline only appends; the benchmark checks written token rows, not equivalent
 full-cache side effects. These numbers do not measure FP8, current CAKE,
 attention latency, service throughput or model accuracy.
+
+## PR #5952 — Initial CAKE BF16 implementation
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/5952
+- Title: `feat(cake_fused_qk_rope_append): fused BF16 QK RMSNorm + NeoX RoPE + paged KV append for SM90 / SM100 / SM103`.
+- State: merged on 2026-10-02; head
+  `84f55b0592efeed999238dc3b4fe1b73c50c6546`, base
+  `1b578de52924c973bd229fe4fd147499ead2781d`, merge
+  `a973cfc9245355ce4d036d51cba043c842d2fe1e`.
+- Coverage: complete 7,433-line diff, 19 files, +7,308/-1; body, three issue
+  comments, two reviews, one inline comment and four commits. Generated
+  sources were reviewed by reading the complete SM100 64/8 kernel/binding
+  and comparing every line of all five other pairs: bindings differ only
+  in generated identifiers; kernels additionally change head/warp constants.
+  All remaining differences and the complete six-record manifest were read.
+- Reviewed runtime: `flashinfer/cake_fused_qk_rope_append.py`, its loader in
+  `flashinfer/jit/`, the `flashinfer/rope.py` export, and all twelve CUDA files
+  plus manifest under `csrc/cake_fused_qk_rope_append/`. Reviewed validation:
+  `tests/attention/test_cake_fused_qk_rope_append.py`,
+  `benchmarks/bench_cake_fused_qk_rope_append.py` and the pre-commit exclusion.
+- Motivation: provide an explicit, independent BF16 API that combines Q/K
+  normalization, NeoX rotation, Q output, paged K/V append and tail clearing
+  in one kernel. The comparison with #5405 does not make the two interfaces
+  interchangeable or establish automatic serving-framework adoption.
+
+### Original dispatch and numerical contract
+
+The [original API](https://github.com/flashinfer-ai/flashinfer/blob/84f55b0592efeed999238dc3b4fe1b73c50c6546/flashinfer/cake_fused_qk_rope_append.py)
+accepts packed contiguous BF16 QKV, D=128, heads 8/1 or 64/8, FP32 NeoX
+cos/sin and norm weights, I32 request/page metadata, and contiguous NHD
+BF16 caches. Norm policies are 0/1/2 as above, with configurable epsilon.
+K/V outputs independently redirect writes; clearing is still enabled by
+default, even for requests that append zero rows. Integrators must own the
+affected page tails or disable clearing. Shared prefix pages need particular
+care because clearing beyond one request's length can overwrite another's KV.
+
+The [original loader](https://github.com/flashinfer-ai/flashinfer/blob/84f55b0592efeed999238dc3b4fe1b73c50c6546/flashinfer/jit/cake_fused_qk_rope_append.py)
+chooses one of six JIT modules by head pair and exact architecture 9.0, 10.0
+or 10.3. It validates the manifest and generated-source hashes. There is no
+row-count tuning or PDL variant in this PR. The six records share the same
+algorithm across architectures; 8/1 uses four warps per row, 64/8 eight.
+Each CTA has four warps, giving one or two CTAs per token row respectively.
+The exact launch-plan diff is:
+
+```diff
++    rows_per_cta = max(1, 4 // warps_per_row)
++    ctas_per_row = max(1, warps_per_row // 4)
++    num_row_ctas = ((num_rows + rows_per_cta - 1) // rows_per_cta) * ctas_per_row
+```
+
+The [64/8 device source](https://github.com/flashinfer-ai/flashinfer/blob/84f55b0592efeed999238dc3b4fe1b73c50c6546/csrc/cake_fused_qk_rope_append/sm_100a/cake_fused_qk_rope_append_1a5e46c8842b05e59fbb_kernel.cu)
+loads Q/K into FP32 registers and V as packed bits before finding the request.
+Eight lanes cooperate on a 128-element head. Each lane owns 16 elements;
+RMSNorm reduces lane sums with XOR shuffles 4, 2, 1, then applies `rsqrt`
+and weights. NeoX rotation uses FP32 FMA and rounds at the final BF16 store.
+It does not materialize the intermediate BF16 RMSNorm result of a separate
+pipeline. V is copied without arithmetic. Per-warp request lookup preloads
+up to 256 requests and scans further batches of 32 using ballot/shuffle.
+Additional CTAs clear last-page tails in K/V. This is ordinary CUDA launch,
+not the metadata-before-wait PDL schedule described for current main below.
+
+Metadata contents remain caller preconditions. A row outside all request
+segments, or with negative computed position, leaves its output unwritten;
+the kernel does not validate physical page indices. The final Python API
+does not reject zero page size, and a fully empty batch produces a zero grid
+that the binding rejects. The inline review identified both cases; the
+reviewed final diff does not fix them. These historical edge cases must not
+be mistaken for tested no-op behavior.
+
+### What the tests and timings establish
+
+The [test file](https://github.com/flashinfer-ai/flashinfer/blob/84f55b0592efeed999238dc3b4fe1b73c50c6546/tests/attention/test_cake_fused_qk_rope_append.py)
+defines 21 cases: 12 decode head/policy/page combinations, four cross-page
+prefill cases, ragged requests with empty segments and optional K/V outputs,
+disabled clearing, 300-request lookup, graph replay and argument rejection.
+The reference performs FP32 norm/rotation and casts only at the end; Q/K
+comparisons allow 0.01 tolerance, while V and untouched poison regions are
+checked exactly. Optional-output coverage supplies both K and V, not each
+independently. The graph test replays unchanged inputs/metadata; it does not
+establish correctness after updating sequence lengths or page tables. Fully
+empty batches, zero-sized pages and an attention consumer are not tested.
+The author reports all 21 passed on H100, H200 and B200; the discussion has
+a maintainer approval and test-trigger requests, not new B300 results.
+
+The [committed benchmark](https://github.com/flashinfer-ai/flashinfer/blob/84f55b0592efeed999238dc3b4fe1b73c50c6546/benchmarks/bench_cake_fused_qk_rope_append.py)
+contains 17 named shapes and separates eager calls from manually captured
+one-call CUDA Graph replays. The timing helper is byte-identical to #5405's
+reviewed helper: cold L2, CUPTI device-activity span, CUDA-event fallback.
+Defaults are ten warmups and three groups of 30 calls. Arm order reverses on
+alternate groups, leaving two forward groups and one reversed; every arm
+still runs graph before eager. Saved JSON contains medians of group medians,
+device name and geometry, without raw samples, executed order, baseline SHA
+or confidence intervals. The optional #5405 baseline is loaded by module
+name, not revision. Preserve the actual installed version when reproducing.
+
+Selected historical **graph-mode** numbers from the PR body, in microseconds:
+
+| Shape | GPU | CAKE | #5405 | Separate pipeline |
+|---|---|---:|---:|---:|
+| 8/1, B32, decode | B200 | 2.85 | 5.33 | 11.98 |
+| 64/8, B128, decode | B200 | 8.51 | 10.56 | 21.82 |
+| 64/8, B128, decode | H200 | 11.07 | 12.05 | 20.59 |
+| 64/8, B128, decode | H100 | 14.18 | 16.77 | 21.06 |
+
+The body's 28-row claim and minimum 95% confidence bound of 1.058 are author
+reports; the committed 17-row harness and median-only JSON do not reproduce
+that analysis. Its stable norm-before-RoPE arm runs two RMSNorm operations,
+RoPE and append, despite the body's “3-op” label. Stable append does not clear
+the cache tail. The benchmark itself does not compare correctness, and
+both arms use BF16-rounded norm weights. These are historical BF16 pipeline
+measurements, not FP8, current shape-policy, end-to-end attention or serving
+measurements. Use the independent numerical tests and an actual consuming
+model when evaluating a port.
 
 ## What is available at the frozen mainline
 

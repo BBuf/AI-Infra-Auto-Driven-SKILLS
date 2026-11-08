@@ -258,9 +258,10 @@ Load only relevant references:
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check
   rounding, shape, mode and the actual caller.
 - [flashinfer-qknorm-rope-append-source-review.md](references/flashinfer-qknorm-rope-append-source-review.md):
-  closed experimental #5405 versus current CAKE BF16/FP8 APIs. Check packed
-  layout, scale padding, cache/output ownership and PDL metadata readiness;
-  the historical BF16 microbenchmark does not measure current CAKE or FP8.
+  closed experimental #5405, merged BF16 #5952 and current CAKE BF16/FP8 APIs.
+  Check packed layout, scale padding, cache/output ownership and PDL metadata
+  readiness. Historical graph/eager timings and unchanged-input replay tests
+  do not establish current-policy performance or changing-metadata correctness.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.
