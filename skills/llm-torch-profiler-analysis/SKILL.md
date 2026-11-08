@@ -249,6 +249,12 @@ Load only relevant references:
 - [sglang-query-quantization-source-review.md](references/sglang-query-quantization-source-review.md):
   closed FA3 query/RoPE proposal, native compile versus eager dispatch,
   intermediate rounding and current Qwen3 norm/rotary producer bypasses.
+- [sglang-moe-collective-source-review.md](references/sglang-moe-collective-source-review.md):
+  closed pure MoE reduction/collective proposal versus current CuTe-DSL boundary
+  dispatch. Include the proposal's expert-major gather/copies in timing; check
+  native-layout handoff, producer eligibility, consume-once ownership and shared
+  buffer readiness under speculative decoding in current code. Passing payload
+  tolerance checks do not establish identical model outputs or service gains.
 - [vllm-qknorm-rope-cache-source-review.md](references/vllm-qknorm-rope-cache-source-review.md):
   open generic CUDA QK-norm/cache proposal, homogeneous-layer and range gates,
   stacked partial-RoPE fix and fused-versus-eager numerical baselines. Keep

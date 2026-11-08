@@ -209,6 +209,18 @@ was reproduced from the pure selector; current main separates that rule and
 has later twenty-warp programs. Check the selected stage and actual grid,
 including clearing CTAs retained when tail writes are disabled in #6008.
 
+The [SGLang MoE collective review](../skills/llm-torch-profiler-analysis/references/sglang-moe-collective-source-review.md)
+separates closed #39214 from current CuTe-DSL boundary fusion. The proposal
+gathers dense expert-major rows and converts scales before the pure Cake API;
+those launches and temporary bytes are part of its cost. Its helper accepts
+FP16/BF16, but the actual deferred producer requires BF16. Current main passes
+native permuted rows/indices to `kMoEFinalizeARResidualRMSNorm`, with independent
+producer and consumer eligibility. It prepares one graph-stable workspace and
+withholds early shared-expert loads under speculative decoding. The proposal's
+deterministic-mode exception is not current behavior. Reported TP8 payload
+checks pass tolerance while the per-question score-equality criterion fails;
+neither model-output parity nor serving speedup is established.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported

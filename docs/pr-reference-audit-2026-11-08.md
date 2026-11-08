@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 50 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 51 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -302,8 +302,19 @@ grid. Final-head H100 CI confirms 42 passes, but half are CPU selector tests;
 the numerical fixtures do not cover every generated program. A historical
 page-1024 missing-build error was reproduced from the pure policy, with the
 current rule change recorded separately. The external 28-shape paired report
-is distinguished from the unchanged 17-shape committed harness. All 50
-manually reviewed heads/bases were rechecked and still match.
+is distinguished from the unchanged 17-shape committed harness. The completed
+manual-review count was 50.
+
+The [SGLang MoE collective review](../skills/llm-torch-profiler-analysis/references/sglang-moe-collective-source-review.md)
+covers closed #39214's full seven-file diff and all discussion. It traces
+layout materialization, actual BF16 producer admission, workspace and signature
+gates, consume-once behavior and the shared deterministic-mode override.
+Current main instead uses a native-layout CuTe-DSL boundary provider and keeps
+different speculative shared-load ordering. The card retains the author's
+passing tolerant payload checks and failed per-question score-equality result;
+final-head CI stopped at draft gating, with tests skipped. No performance
+gain is inferred from correctness-campaign durations or dependency API exports.
+All 51 manually reviewed heads/bases were rechecked and still match.
 
 ## Local validation of this increment
 
