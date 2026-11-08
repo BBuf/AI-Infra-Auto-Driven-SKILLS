@@ -892,9 +892,26 @@ def build_remote_profiler_start_payload(
     output_path: Path,
     profile_prefix: Optional[str],
     stage: Optional[str],
+    session_fields: frozenset[str] = frozenset(),
+    num_steps: Optional[int] = None,
 ) -> Optional[dict]:
     if framework == "trtllm":
         return {"output_dir": str(output_path), "activities": ["CPU", "GPU"]}
+    if framework == "vllm":
+        payload = {}
+        if "profile_prefix" in session_fields:
+            label = profile_prefix or "triage-trace"
+            if stage:
+                label = f"{label}-{stage}"
+            if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", label):
+                raise ValueError(
+                    "vLLM profile prefix (including stage suffix) must be 1-128 "
+                    "ASCII letters, digits, '.', '_' or '-', starting alphanumeric."
+                )
+            payload["profile_prefix"] = label
+        if "max_iterations" in session_fields and num_steps is not None:
+            payload["max_iterations"] = max(1, int(num_steps))
+        return payload or None
     if framework != "tokenspeed":
         return None
 
@@ -909,6 +926,41 @@ def build_remote_profiler_start_payload(
         "record_shapes": False,
         "profile_id": profile_id,
     }
+
+
+def vllm_profile_session_fields(url: str) -> frozenset[str]:
+    """Only send session overrides advertised by the running HTTP server.
+
+    Older vLLM servers accept a body but ignore it. If OpenAPI is disabled or
+    unavailable, keep the bodyless launch-configured control path.
+    """
+    spec = try_get_json(url.rstrip("/") + "/openapi.json", timeout=10.0)
+    if not isinstance(spec, dict):
+        return frozenset()
+    operation = spec.get("paths", {}).get("/start_profile", {}).get("post", {})
+    schema = (
+        operation.get("requestBody", {})
+        .get("content", {})
+        .get("application/json", {})
+        .get("schema", {})
+    )
+    pending, seen, fields = [schema], set(), set()
+    while pending:
+        node = pending.pop()
+        if not isinstance(node, dict):
+            continue
+        fields.update(node.get("properties", {}))
+        for key in ("anyOf", "allOf", "oneOf"):
+            pending.extend(node.get(key, []))
+        ref = node.get("$ref", "")
+        if ref.startswith("#/components/schemas/") and ref not in seen:
+            seen.add(ref)
+            pending.append(
+                spec.get("components", {})
+                .get("schemas", {})
+                .get(ref.rsplit("/", 1)[-1], {})
+            )
+    return frozenset(fields)
 
 
 def stop_remote_profiler(url: str, framework: str) -> None:
@@ -930,6 +982,7 @@ def run_remote_profiler(
     profile_prefix: Optional[str] = None,
     stage: Optional[str] = None,
     capture_root: Optional[Path] = None,
+    num_steps: Optional[int] = None,
 ) -> Path:
     framework = canonicalize_framework(framework)
     output_path = ensure_remote_profiler_output_path(output_dir, framework)
@@ -954,11 +1007,25 @@ def run_remote_profiler(
             model=model,
         )
 
+    session_fields = (
+        vllm_profile_session_fields(url) if framework == "vllm" else frozenset()
+    )
+    if (
+        framework == "vllm"
+        and not {"profile_prefix", "max_iterations"} <= session_fields
+    ):
+        print(
+            "Note: vLLM does not advertise all session overrides; unsupported "
+            "prefix/iteration settings remain controlled by the server launch config.",
+            file=sys.stderr,
+        )
     start_payload = build_remote_profiler_start_payload(
         framework=framework,
         output_path=output_path,
         profile_prefix=profile_prefix,
         stage=stage,
+        session_fields=session_fields,
+        num_steps=num_steps,
     )
     start_remote_profiler(url, framework, payload=start_payload)
     stop_error: Optional[BaseException] = None
@@ -1019,10 +1086,6 @@ def run_sglang_profiler(
     output_path.mkdir(parents=True, exist_ok=True)
 
     server_args = try_get_json(url.rstrip("/") + "/server_info", timeout=60.0)
-    if isinstance(server_args, dict) and server_args.get("frontend") == "rust":
-        raise RuntimeError(
-            "SGLang Rust frontend has no HTTP profiler routes; relaunch with the Python frontend or use offline capture."
-        )
     if server_args is not None:
         with open(output_path / "server_args.json", "w", encoding="utf-8") as handle:
             json.dump(server_args, handle)
@@ -1120,6 +1183,7 @@ def run_profiler(
                 else Path(tempfile.mkdtemp(prefix="sglang-torch-profile-"))
             )
             output_root.mkdir(parents=True, exist_ok=True)
+            capture_root = output_root / f"capture-{time.time_ns()}"
             for stage in stages:
                 prompt, max_new_tokens = workload_probe(
                     stage,
@@ -1143,7 +1207,7 @@ def run_profiler(
                 stage_num_steps = max(1, int(num_steps)) + 1
                 run_sglang_profiler(
                     url=url,
-                    output_dir=str(output_root / stage),
+                    output_dir=str(capture_root / stage),
                     num_steps=stage_num_steps,
                     profile_by_stage=False,
                     merge_profiles=merge_profiles,
@@ -1154,7 +1218,7 @@ def run_profiler(
                     probe_delay=probe_delay,
                     start_step=start_step,
                 )
-            return output_root
+            return capture_root
         legacy_max_new_tokens = probe_max_new_tokens or max(64, num_steps * 8)
         legacy_plan = build_probe_plan(
             "legacy",
@@ -1187,7 +1251,7 @@ def run_profiler(
             "--merge-profiles is only supported for SGLang live capture. "
             "Disable it when profiling vLLM, TensorRT-LLM, or TokenSpeed."
         )
-    if profile_prefix and resolved_framework in {"vllm", "trtllm"}:
+    if profile_prefix and resolved_framework == "trtllm":
         print(
             f"Note: {framework_display_name(resolved_framework)} ignores "
             "--profile-prefix on the HTTP profiler control path.",
@@ -1210,6 +1274,7 @@ def run_profiler(
             ),
             probe_delay=probe_delay,
             profile_prefix=profile_prefix,
+            num_steps=num_steps,
         )
     output_root = ensure_remote_profiler_output_path(output_dir, resolved_framework)
     if output_root.suffix in {".json", ".gz"}:
@@ -1239,6 +1304,7 @@ def run_profiler(
             profile_prefix=profile_prefix,
             stage=stage,
             capture_root=capture_root,
+            num_steps=num_steps,
         )
     # Only analyze this invocation's labeled copies, not server originals or
     # earlier captures left in the shared output directory.

@@ -20,6 +20,18 @@ Pass the admin key to `collect-bundle --token` when both keys are configured.
 curl -H "Authorization: Bearer <admin token>" ...
 ```
 
+## Rust ingress — 2026-11-08
+
+The old claim that Rust ingress has no API-key boundary or profile routes is
+obsolete. [Current Rust auth](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/rust/sglang-server/src/api_server/http/auth.rs)
+requires the admin key for `/start_profile` and `/stop_profile` when configured,
+otherwise the API key; `/health*`, `/ready*`, `/metrics*` and OPTIONS are open.
+[Profile routes](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/rust/sglang-server/src/api_server/http/info.rs)
+accept GET/POST and fan out to scheduler ranks, returning plaintext on success.
+[Route assembly](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/rust/sglang-server/src/api_server/http/app.rs)
+includes loads, ready, HiCache and optional metrics. The Python endpoint list
+below does not certify complete Rust parity; check each deployed route.
+
 ## Core Endpoints
 
 ### `/health` and `/health_generate`

@@ -21,7 +21,7 @@ Before running a simulation, collect or verify these inputs:
 | Model name | Resolves to config in `model-config-index.json`; determines entire architecture | Ask user or infer from trace context | — (required) |
 | Config accuracy | Indexed values may differ from actual serving config (e.g. `routed_expert_intermediate_size`, `compress_ratios`) | Ask user to provide `config.json` or verify key params against HuggingFace | Use indexed values with a caveat |
 | GPU type | Determines peak FLOPS for MFU denominator | Ask user | — (required for MFU) |
-| dtype (bf16 / fp8) | Affects peak FLOPS selection; fp8 doubles peak | Ask user | bf16 |
+| dtype (bf16 / fp8) | Select the actual GPU SKU and arithmetic peak; mixed precision needs per-op treatment | Ask user | bf16 |
 | Batch size & seq len | Directly affects FLOPs and tensor shapes | Ask user | B=1, S=1 (decode) |
 | TP / DP / EP | TP splits GEMM FLOPs across GPUs; EP splits expert FLOPs | Ask user | Read the run manifest; otherwise report assumptions explicitly |
 | Measured latency (ms) | Required for MFU numerator; must be per-GPU forward-pass wall-clock | Ask user or extract from a profiler trace | — (optional, no MFU without it) |
@@ -48,6 +48,15 @@ routers, norms, latent projections and backend-dependent shared-expert
 ownership require a run-specific adjustment before interpreting MFU.
 The pinned V4.1 entry is a static target-model template; DSPARK draft, vision,
 Engram/PLE memory traffic and backend dispatch require separate evidence.
+
+Current SGLang `detailed_annotations` can emit `c_` (context) and `g_`
+(generation) aggregates: `sq=ΣNq`, `sk=ΣNkv`, `sqsq=ΣNq²`,
+`sqsk=ΣNq·Nkv`. Verify/draft `Nq` includes speculative width. Mixed batches
+emit both groups; replacing this distribution with average lengths loses
+attention work. Use these values to audit shapes manually against
+[source contracts](../../docs/upstream-source-contracts.md). The simulator
+still accepts a homogeneous B/S shape and does not parse these suffixes or
+model arbitrary sparse attention from their sums.
 
 Kernel-duration sums include overlap and possibly PDL dependency waits. Use
 wall-clock time for a whole-pass MFU denominator, and measured GPU SKU/dtype
@@ -312,7 +321,7 @@ When the static template or trace extraction cannot fully confirm the compute pr
 
 | Limitation | Detail | Workaround |
 |---|---|---|
-| `record_shapes=True` required | Trace must be captured with shape recording enabled; without it, `Input Dims` fields are absent and FLOPs cannot be computed | SGLang live capture and vLLM `torch_profiler_with_stack=true` already enable this; TensorRT-LLM requires a `py_executor.py` override adding `record_shapes=True` |
+| `record_shapes=True` required | Trace must be captured with shape recording enabled; without it, `Input Dims` fields are absent and FLOPs cannot be computed | Enable shape recording explicitly in the deployed profiler: stacks and shapes are distinct settings. SGLang defaults may be disabled by environment; TokenSpeed helper sends `record_shapes=false`. Inspect TensorRT-LLM `_torch/pyexecutor/profiling.py` for a recorded mapping build |
 | CUDA Graph mode | During graph replay, `cpu_op` events may only appear once (at capture time); shape information for replayed iterations is not re-recorded | The script detects graph capture phases and annotates affected ops; use eager-mode traces for full coverage |
 | TP-sliced dimensions | Trace shows post-TP-split dimensions (e.g. `H/TP`), not the full-model view | Use `--tp` in `--compare` mode to scale trace FLOPs back to full-model equivalents |
 | Scope attribution quality | Python scope depends on `with_stack=True`; some frameworks or compiled paths may produce shallow or missing scope chains | Graceful degradation: ops with unresolved scope are categorized as "other" |

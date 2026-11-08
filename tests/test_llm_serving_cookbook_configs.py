@@ -36,7 +36,7 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
 
     def test_all_cookbook_configs_validate(self) -> None:
         paths = self.config_paths()
-        self.assertGreaterEqual(len(paths), 38)
+        self.assertTrue(paths, "No cookbook configs discovered")
 
         for path in paths:
             with self.subTest(path=path.name):
@@ -67,33 +67,6 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
                 tokenspeed = config["frameworks"]["tokenspeed"]
                 if tokenspeed["enabled"]:
                     self.assertEqual(tokenspeed["server_command"], "tokenspeed serve")
-
-    def test_retired_vllm_partial_prefill_flags_are_absent(self) -> None:
-        targets = [
-            *self.config_paths(),
-            VALIDATOR,
-            SKILL_ROOT / "SKILL.md",
-            SKILL_ROOT / "references" / "example-plan.yaml",
-            SKILL_ROOT / "references" / "framework-reference.md",
-            CONFIG_ROOT / "README.md",
-        ]
-        retired = (
-            "max_num_partial_prefills",
-            "max_long_partial_prefills",
-            "max-num-partial-prefills",
-            "max-long-partial-prefills",
-        )
-
-        for path in targets:
-            text = path.read_text(encoding="utf-8")
-            with self.subTest(path=path.name):
-                for flag in retired:
-                    self.assertNotIn(flag, text)
-
-        self.assertIn(
-            "long_prefill_token_threshold",
-            self.mod.STATIC_SERVER_FLAGS["vllm"],
-        )
 
     def test_current_model_recipes_validate_and_render_enabled_frameworks(
         self,

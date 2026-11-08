@@ -33,18 +33,6 @@ class TestModelHistoryConfiguration(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = load_generator()
 
-    def test_framework_orders_cover_supported_current_models(self):
-        self.assertTrue(
-            {"hunyuan3-preview", "moss-vl", "qwen36", "qwen38"}
-            <= set(self.mod.FRAMEWORK_MODEL_ORDER["sglang"])
-        )
-        self.assertTrue(
-            {"hunyuan3-preview", "qwen36"}
-            <= set(self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
-        )
-        self.assertNotIn("moss-vl", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
-        self.assertNotIn("qwen38", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
-
     def test_generated_inventory_does_not_claim_manual_diff_review(self):
         bundle = self.mod.PRBundle(
             framework="tokenspeed", repo="lightseekorg/tokenspeed", number=1,

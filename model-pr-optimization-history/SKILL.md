@@ -22,7 +22,11 @@ executes the candidate before treating end-to-end tests as coverage.
 Generated entries labeled **not a manual audit** are PR discovery inventories.
 Read their full diffs and current callers before making optimization conclusions;
 API file counts and snippets do not establish complete diff coverage. Existing
-manual audit notes retain their original dates.
+manual audit notes retain their original dates. The November source-contract
+refresh does not extend the dossiers' PR coverage automatically. For current
+V4.1 work, follow `deepseek_v4_mhc.py` and `deepseek_v4_boundary.py` as well as
+the historical monolithic model path; a subject-filtered V4.1 inventory can
+miss generic refactors that changed its dispatch.
 
 ## Query
 

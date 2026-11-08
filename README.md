@@ -64,7 +64,9 @@ Dossiers are regenerated from upstream git history with
 `tools/rebuild_model_pr_history_from_git.py`; see
 [`update_prompt.md`](update_prompt.md) for the full refresh procedure and
 [`docs/upstream-source-contracts.md`](docs/upstream-source-contracts.md) for
-the inspected source revisions.
+the inspected source revisions. The [November 8 refresh](docs/refresh-2026-11-08.md)
+records current profiler, V4.1 fusion, compiler and memory contracts, cleanup,
+and the limits of the source audit.
 
 ## Install
 

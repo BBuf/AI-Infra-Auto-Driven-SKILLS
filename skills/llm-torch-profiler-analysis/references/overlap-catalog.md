@@ -1,8 +1,14 @@
 # Overlap Catalog
 
+November 8 update: use the [current mHC boundary matrix](fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)
+and [vLLM compiler guide](vllm-torch-compile-fusions.md) for current dispatch.
+Older dated rows below remain historical precedents, including removed
+vLLM SP/AsyncTP passes and older FlashInfer pins. They are not current CLI
+recommendations or a newly completed review of every PR.
+
 Source-refreshed catalog: PR states below belong to their dated audit, not a
 live status feed. Recheck head/base, merge status and actual caller guards before
-using a row. Frozen2026-10-05 source contracts and general analysis principles are maintained in
+using a row. Current source contracts and general analysis principles are maintained in
 [source contracts](../../../docs/upstream-source-contracts.md) and
 [dispatch and numerical contracts](heuristics.md#establish-dispatch-and-numerical-contracts). Mainline availability is not proof
 that a given deployment executes the path. A split trace is an eligibility or
@@ -45,7 +51,20 @@ rows are mainline provenance with shape/backend guards.
 Closed-unmerged vLLM experiments are retained only when their implementation
 idea remains useful and are labeled as such in the table.
 
-FlashInfer comparison is pinned to `724e238e7deca2d6ffd5668d63ae95c428414f59` (0.7.1/main, 2026-10-04). SGLang and vLLM images pin 0.7.0.post1; `[0.7.1rc]` and `[main]` rows below are unavailable in those pins unless explicitly cherry-picked. Cake backends are experimental/opt-in unless the API allows experimental auto dispatch. Generic CuTe device names require custom-op/stack/caller attribution. Dates attached to merged commits are source commit dates unless explicitly API-audited. API-audited merge dates use UTC and can differ from the linked commit's author or committer date; a commit SHA alone does not establish `merged_at`.
+Historical October FlashInfer comparison is pinned to `724e238e7deca2d6ffd5668d63ae95c428414f59` (0.7.1/main, 2026-10-04). The then-inspected SGLang/vLLM pins were 0.7.0.post1; `[0.7.1rc]` and `[main]` rows below are unavailable in those pins unless explicitly cherry-picked. Cake backends are experimental/opt-in unless the API allows experimental auto dispatch. Generic CuTe device names require custom-op/stack/caller attribution. Dates attached to merged commits are source commit dates unless explicitly API-audited. API-audited merge dates use UTC and can differ from the linked commit's author or committer date; a commit SHA alone does not establish `merged_at`.
+
+## Current residual-statistics scheduling — 2026-11-08
+
+[V4.1 mHC state/dispatch](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_mhc.py)
+now owns the statistics stream and join. `use_stats_stream` permits decode
+or nonempty target verify; Hopper restricts it to M=1 or decode M=2–64.
+`_compute_triplet` joins before post reads coefficients. Opt-in Mega mHC
+prefill supplies the next statistics in the fused boundary, so a missing
+side-stream producer is not necessarily lost overlap. Residual rewrites
+invalidate cached stats; row selection narrows them. See the
+[current matrix](fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)
+for format and seam guards. Historical stream schedules below stay tied to
+their own revisions; compare the dependency tail on the measured run.
 
 ## 1. LLM / SRT kernel-overlap families
 

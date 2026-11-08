@@ -684,8 +684,8 @@ def test_mla_report_formula_matches_latent_storage():
 
 
 def test_post_capture_target_va_bound_preserves_independent_draft_pool():
-    # is_post_capture_kv_active excludes draft workers; only the target emits
-    # VA upper bound. Its backed-byte summary does not include draft allocations.
+    # Legacy EAGLE logs: the target emits a VA bound while the independent
+    # draft pool is physically allocated before the target's final resize.
     parsed = parse_log('''server_args={'tp_size': 1, 'speculative_algorithm': 'EAGLE'}
 [TP0] KV Cache VA upper bound. dtype: torch.bfloat16, #tokens: 10000, K size: 20.00 GB, V size: 20.00 GB
 [TP0] KV Cache is allocated. dtype: torch.bfloat16, #tokens: 10000, K size: 1.00 GB, V size: 1.00 GB
@@ -693,3 +693,21 @@ def test_post_capture_target_va_bound_preserves_independent_draft_pool():
 [TP0] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 28.00 GB, avail mem=42.00 GB
 ''')
     assert decompose_memory(parsed, 80).kv_pool_gib == 30
+
+
+def test_post_capture_dflash_drafts_add_to_target_and_reset_each_round():
+    log = '''server_args={'tp_size': 2, 'speculative_algorithm': 'DFLASH'}
+[TP0] KV Cache VA upper bound. dtype: torch.bfloat16, #tokens: 10000, KV size: 40.00 GB
+[TP0] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 10000, KV size: 30.00 GB, avail mem=40.00 GB
+[TP0] Post-capture KV sizing: draft KV cache allocated. dtype: torch.bfloat16, #tokens: 10000, KV size: 2.00 GB
+[TP1] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 27.00 GB, avail mem=42.00 GB
+[TP1] Post-capture KV sizing: draft KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 1.50 GB
+'''
+    assert decompose_memory(parse_log(log), 80).kv_pool_gib == 32
+    log += '''[TP0] Post-capture KV sizing: KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 28.00 GB, avail mem=42.00 GB
+[TP0] Post-capture KV sizing: draft KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 1.80 GB
+[TP0] Post-capture KV sizing: draft KV cache allocated. dtype: torch.bfloat16, #tokens: 9000, KV size: 0.20 GB
+'''
+    parsed = parse_log(log)
+    assert decompose_memory(parsed, 80).kv_pool_gib == 30
+    assert decompose_memory(parsed, 80, target_rank=1).kv_pool_gib == 28.5

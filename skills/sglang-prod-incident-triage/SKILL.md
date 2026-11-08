@@ -24,13 +24,13 @@ Use one loop:
 
 Do not start with profiling.
 
-As of SGLang `v0.5.21` (2026-09-29), two extra live-server signals matter:
+Version-sensitive live-server signals:
 
 - `--enable-session-radix-cache` plus `/close_session`: agent or RL rollouts
   that forget to close sessions can look like unexplained KV growth
-- the opt-in Rust ingress (`SGLANG_RUST_SERVER=1`) has no API-key boundary; if
-  the incident is auth-related, confirm which server binary is actually
-  serving before blaming application tokens
+- current Rust ingress enforces API/admin keys and supports profiling;
+  older Rust builds differ. Confirm the ingress binary and source revision
+  before interpreting a 401 or 404 (see the endpoint reference).
 
 This skill should work with more focused skills instead of re-implementing them:
 
@@ -71,10 +71,11 @@ Return:
 
 ### 1. Collect a baseline bundle
 
-Confirm the ingress first: Python `/server_info.frontend` is `python`. Rust
-ingress lacks `/v1/loads`, `/metrics`, `/configure_logging`, `/hicache/*`,
-`/set_trace_level`, `/start_profile` and `/ready`; 404 there is an ingress
-limitation. Rust health stays 503 until startup warmup succeeds.
+Confirm the ingress and build first. Current Rust route assembly includes
+load, metrics (when enabled), HiCache, ready and profile controls; Python
+route parity is not universal. A 404 can mean an older build, an unmounted
+optional route or an ingress difference. Record status and response body,
+then consult the actual route module. Health/readiness are different checks.
 
 If a live server is reachable, collect a read-only bundle before anything more
 intrusive:

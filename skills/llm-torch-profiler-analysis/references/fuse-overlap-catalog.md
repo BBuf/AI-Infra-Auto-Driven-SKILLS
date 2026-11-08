@@ -1,8 +1,14 @@
 # Fuse And Overlap Catalog
 
+November 8 update: use the [current mHC boundary matrix](fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)
+and [vLLM compiler guide](vllm-torch-compile-fusions.md) for current dispatch.
+Older dated rows below remain historical precedents, including removed
+vLLM SP/AsyncTP passes and older FlashInfer pins. They are not current CLI
+recommendations or a newly completed review of every PR.
+
 Source-refreshed catalog: PR states below belong to their dated audit, not a
 live status feed. Recheck head/base, merge status and actual caller guards before
-using a row. Frozen2026-10-05 source contracts and general analysis principles are maintained in
+using a row. Current source contracts and general analysis principles are maintained in
 [source contracts](../../../docs/upstream-source-contracts.md) and
 [dispatch and numerical contracts](heuristics.md#establish-dispatch-and-numerical-contracts). Mainline availability is not proof
 that a given deployment executes the path. A split trace is an eligibility or
@@ -60,7 +66,7 @@ kernel rows as mainline, then re-check `v0.5.18`: the MLA gate-projection
 fusion into QKV-A GEMM landed and was reverted (`#33623` / `#34642`), so that
 specific fuse is not current.
 
-FlashInfer comparison is pinned to `724e238e7deca2d6ffd5668d63ae95c428414f59` (0.7.1/main, 2026-10-04). SGLang and vLLM images pin 0.7.0.post1; `[0.7.1rc]` and `[main]` rows below are unavailable in those pins unless explicitly cherry-picked. Cake backends are experimental/opt-in unless the API allows experimental auto dispatch. Generic CuTe device names require custom-op/stack/caller attribution. Dates attached to merged commits are source commit dates unless explicitly API-audited. API-audited merge dates use UTC and can differ from the linked commit's author or committer date; a commit SHA alone does not establish `merged_at`.
+Historical October FlashInfer comparison is pinned to `724e238e7deca2d6ffd5668d63ae95c428414f59` (0.7.1/main, 2026-10-04). The then-inspected SGLang/vLLM pins were 0.7.0.post1; `[0.7.1rc]` and `[main]` rows below are unavailable in those pins unless explicitly cherry-picked. Cake backends are experimental/opt-in unless the API allows experimental auto dispatch. Generic CuTe device names require custom-op/stack/caller attribution. Dates attached to merged commits are source commit dates unless explicitly API-audited. API-audited merge dates use UTC and can differ from the linked commit's author or committer date; a commit SHA alone does not establish `merged_at`.
 
 Current namespace corrections: SGLang `kernels/ops/kimi_k3/` was removed by
 #40922 (merged 2026-09-24); use `ops/communication/` and `ops/attention/`.
@@ -2091,109 +2097,97 @@ git -C "$FLASHINFER_REPO" diff --stat v0.7.0.post1 "$FLASHINFER_REF" -- flashinf
 
 ### Residual mixing and collective epilogues
 
-Classify each boundary by the operations actually fused: residual combine,
-norm, quantization, reduction and expert finalize are separate capabilities.
-Read the caller and next consumer before proposing another fusion. The matrix
-below is a concrete SGLang source example, not a shape policy for other models.
+Source inspection: **2026-11-08**, SGLang `c24285bde97c3e6424cd5d8cb35788889034d8ea`.
+Read [mHC dispatch/state](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_mhc.py),
+[boundary wiring](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_boundary.py), and
+[attention/WO-A callers](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4.py)
+at the same revision. This replaces the October eligibility matrix; historical
+PR rows above do not override current guards. No new GPU timing is claimed.
 
-Source inspection: **2026-10-05**, SGLang main
-[`b1bbd74f287f`](https://github.com/sgl-project/sglang/commit/b1bbd74f287f13ed1276b0403a01ebb55c597e93).
-Use this to interpret single-pass mHC traces and to decide where another fusion
-can remove exposed work. Eligibility below describes the inspected caller,
-not every kernel's standalone capability. No new GPU measurements are included. The September 22 boundaries were
-rechecked against `_hc_combine`, `_hc_post_with_combine` and
-`forward_hc_pre_from_prev`; defaults still disable FlashInfer fused finalize.
-A matrix entry records eligibility, not proof of default dispatch.
+V4.1 combines residual streams using the **previous sublayer's pre** weights.
+The current residual generates post/comb and the next pre weights. This shifted
+ordering prevents reuse of V4's `mhc_fused_post_pre` formula, but permits
+post + next combine/norm/quant, and prefill fusion with next statistics.
 
-### What single-pass overlaps
+`M` means rank-local rows including verification and graph padding, not request
+concurrency. Defaults still disable FlashInfer fused finalize and Mega mHC
+prefill. A supported operation does not establish that the active backend
+returns the required deferred output.
 
-The main branch combines four residual streams with the previous sublayer's
-pre coefficients, applies RMSNorm, then runs attention or MoE. In parallel,
-the statistics branch derives this sublayer's post/comb coefficients and the
-next sublayer's pre coefficients from the current residual. The branches must
-join before post mixing consumes those coefficients.
+| Boundary | Current caller conditions | Fused work / remaining work |
+|---|---|---|
+| Standalone combine + norm | CUDA BF16, mult=4, hidden=5120, contiguous pre columns, compatible BF16 RMSNorm. Blackwell accepts the fused row implementation across row counts; Hopper accepts 1–96 or 4096–65536 rows without quantization and outside batch-invariant mode. | Pre combine preserves the intermediate BF16 cast, then RMSNorm. When a quantized input is requested, the MXFP8 variant covers M≤128; otherwise quantization may remain downstream. |
+| Post + next combine + norm | Blackwell, previous-pre, mult=4, hidden=5120, 1≤M≤1024, no prefill CP or batch-invariant mode, compatible next norm. | Updates residual and returns normalized BF16; additionally emits MXFP8 + FlashInfer 128×4 scales only if next consumer accepts them. This is not limited to the old 128–384 medium window. |
+| Wide post + next combine + norm | Blackwell, 4096≤M≤65536, mult=4, hidden=5120, attention DP1, no prefill CP, compatible next boundary. | Runs after reduction; norm fused, projection quantization may remain separate. |
+| Mega mHC prefill | Opt-in `SGLANG_OPT_DSV41_MEGA_MHC_PREFILL`, SM100, no prefill CP, positive rows, extend boundary with next mHC parameters and fusible norm. | Post + shifted combine + norm + next coefficients; optionally fills DeepGEMM-compatible MXFP8 or Mega MoE input views. It precedes the decode/wide fallback in `_post_fusion`. Warm up DeepGEMM barriers on the capture stream. |
+| Attention collective boundary | Actual `AttnOutput`, compatible communicator, model/layout policy, next norm; specialized collective world sizes TP2/TP4. | All-reduce + post + combine + norm. A request to defer reduction can be declined; output type is dispatch evidence. |
+| MoE collective boundary | Actual `MoEOutput` with `FlashInferTrtllmDeferredFinalizeOutput` and `can_fuse_all_reduce(true_token_rows, hidden)`. Specialized TP2/TP4 and communicator/caller guards still apply. | Expert weighting/sum + shared addition + all-reduce + post. Next combine/norm/MXFP8 epilogue additionally requires next accepts-MXFP8, compatible norm and true token rows≤128. Expanded `gemm2_out` rows are not the token count. |
 
-In the common split-statistics path, `_hc_mix_stats_partial_kernel` produces
-partial projection and sum-of-squares statistics. The reduction/Sinkhorn
-kernel combines the partials, performs RMS scaling, affine/bias transforms,
-pre/post activation and iterative normalization of the combination matrix.
-That is a fused coefficient epilogue, not one kernel containing the attention
-or expert GEMMs. Larger eligible batches can replace the projection with
-DeepGEMM TF32 high/low components, or BF16x3 components for large prefill;
-inspect `_hc_mix_stats` and the selected trace instead of assuming two fixed
-kernel names for every batch.
+`HcNextBoundary.norm_fusable` checks BF16 contiguous weight of width 5120,
+no `cast_x_before_out_mul` and no `variance_size_override`. General fused
+MXFP8 producers reject sequence-parallel rows, accept extend/prefill-graph
+scope, and cap decode/verify at 2048; each concrete producer can impose a
+tighter limit (128 for standalone combine quant, 1024 for decode post/norm).
+Do not promote the broad producer policy into universal kernel coverage.
 
-For `M <= 8`, the side stream waits until the fused input combine/norm has
-finished, reducing competition at the short input dependency. Larger decode
-and verify batches can overlap statistics with the sublayer. Eligible large
-prefill starts statistics after sublayer compute, immediately before its
-all-reduce, to overlap communication. None of these scheduling choices removes
-the coefficient dependency at post mixing.
+State ownership is part of fusion correctness:
 
-### Which operations share a launch
+- `HcState.with_residual` keeps pre but drops cached normalized/quantized input
+  and statistics when Engram or another operation rewrites the residual.
+- `take_rows` narrows per-row normalized input/statistics, but drops the
+  quantized tuple: MXFP8 scales are swizzled per 128-row tile and cannot be
+  sliced like ordinary rows. The next combine rebuilds it.
+- A missing next boundary (including Engram seams or disabled fusions) ends
+  the handoff. Shared-expert replication must be added once after reduction;
+  EP/all-to-all paths cannot inherit a TP-only collective result.
 
-`M` means rank-local kernel rows, including speculative rows and graph padding;
-it is not necessarily request concurrency. These paths are shape-specific.
+For overlap, `use_stats_stream` selects decode or nonempty target verify;
+Hopper restricts this to M=1 or decode M=2–64. `_compute_triplet` waits on the
+stats stream before post consumes coefficients. Cached next statistics from
+Mega mHC can remove that producer entirely. Count dependencies and exposed
+wall-clock tails; do not infer independent work from the number of streams.
 
-| Boundary | Eligible rows / phase | Fused operations | Work remaining outside |
-|---|---|---|---|
-| Standalone sublayer input | `1 <= M <= 96`; also V4.1 prefill-shaped `4096 <= M <= 65536` | Four-stream pre combine + RMSNorm | Coefficient statistics and sublayer compute |
-| Input to an MXFP8-capable attention projection | `1 <= M <= 8` | Pre combine + RMSNorm + MXFP8 quantization; also returns BF16 input | Projection GEMM and coefficient statistics |
-| Attention output, tiny TP4 | `1 <= M <= 8` | TP all-reduce + mHC post + next pre combine + RMSNorm | Statistics producer and following MoE compute |
-| MoE output, tiny TP4 with deferred finalize | `1 <= M <= 8` | Routed-expert weighting/sum + shared output addition + all-reduce + mHC post; eligible next-layer handoff adds pre combine + RMSNorm + MXFP8 quantization | Expert GEMMs, shared-expert GEMMs and statistics producer |
-| Attention / eligible MoE output, medium decode or target verify | `128 <= M <= 384` | All-reduce + post + next pre combine; MoE variant also includes deferred finalize | RMSNorm and quantization remain separate |
-| Output after reduction, large ordinary prefill | `4096 <= M <= 65536` | Post + next pre combine + RMSNorm when a compatible next norm exists; otherwise post + combine | All-reduce and projection quantization remain separate |
+WO-A illustrates a separate producer/consumer check. The specialized V4.1
+BF16 path uses output `[T,2,4096]`, weights `[2,1024,4096]`, contiguous weights
+and prescribed strides: T=1 decode GEMV on Blackwell/Hopper; Blackwell verify
+up to 384 and prefill 4096–65536 can select small-batch or token-major kernels.
+A further Blackwell target-verify BMM path accepts other positive row/group
+counts, covering DSpark shapes. Read `_apply_wo_a_bf16_matmul` before mapping a
+target optimization to a draft trace. Quantized epilogues must match the next
+WO-B consumer, including scale layout and intermediate rounding.
 
-The standalone pre-combine/norm kernel preserves the intermediate BF16 cast
-before RMSNorm. Its small-batch implementation uses four output partitions
-per row for `M <= 8`, two through M=48, then one; large prefill uses one CTA
-per row to avoid repeating the combine and RMS reduction. This is independent
-of the MoE router's one-warp thread model.
+Kernel implementations: [decode post/norm](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/layernorm/mhc_post_combine_norm_decode.py),
+[combine/norm/quant](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/layernorm/hc_combine_norm.py),
+[Mega mHC integration](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/layernorm/mhc_mega.py),
+[collective epilogues](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/communication/all_reduce_mhc.py).
+Validate both eligible and fallback shapes, target/draft, row selection,
+Engram seams, graph reuse and actual-model accuracy before transferring a result.
 
-### Guards to inspect before transferring a result
+### Producer epilogues and sparse metadata — 2026-11-08
 
-- The specialized model paths require BF16 residuals, four HC streams and
-  hidden size 5120 on supported CUDA Blackwell devices. Standalone BF16
-  pre-combine/norm also accepts SM90 when quantization is not requested;
-  the collective and fused MXFP8 paths retain their separate guards. The code also checks
-  contiguity, coefficient dtype, norm semantics and batch-invariant mode.
-- Collective fusions additionally need TP4, attention DP1, a registered
-  compatible communicator and a sublayer that actually reduces its output.
-  Medium batches need the matching fused-finalize communicator configuration.
-- MoE handoff requires the supported deferred-finalize backend, no MoE
-  all-to-all path and no shared-expert TP1 special case. An EP4 run cannot
-  inherit the TP-only MoE fusion claim from a BS1 TP4/EP1 trace.
-- Sequence parallelism and prefill context parallelism exclude these model
-  shortcuts. Large post/combine prefill also checks TileLang-post selection,
-  FlashInfer-mHC selection, norm compatibility and alignment.
-- Quantization is included only when the next consumer accepts the swizzled
-  MXFP8 tuple. BF16 normalized output alone does not prove quantization fused.
-- Cross-layer reuse needs a valid next consumer. Engram, row selection and
-  final-layer handling can invalidate the precomputed combined/normalized
-  input; follow the actual model loop and its buffer lifetime.
+These current source examples complement the residual matrix. They generalize
+to avoiding rereads/launches and repeated metadata work, but retain the
+producer, consumer and lifetime constraints of each implementation.
 
-Missing one launch in a trace is not sufficient evidence of which fusion ran.
-Correlate the caller's state (`combined`, `normalized`, `quantized`,
-`combine_only`, `overlap_only`) with the collective template/epilogue and the
-next consumer. Measure the all-rank join and unprofiled iteration time;
-summing overlapping kernels overstates the removable wall time.
+| Family | Current implementation and dispatch evidence | Trace interpretation / validation |
+|---|---|---|
+| Q-LoRA RMSNorm + MXFP8 | [rmsnorm_mxfp8](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/layernorm/rmsnorm_mxfp8.py) plus [shared quant epilogue](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/kernels/ops/quantization/mxfp8_epilogue.py); model caller requires V4.1 Blackwell, BF16 input/weight, positive rows of width 1280 with contiguous columns, FlashInfer CuTeDSL MXFP8-ready WQ-B and no batch-invariant/deterministic mode. | Returns BF16 for the indexer and quantized data/scales for WQ-B. For M≥1024 and padded width 2048, two warps explicitly preserve the eight-warp reduction order. Check intermediate BF16 rounding, UE8M0 positive rounding including subnormals, FP8 clamp and scale-padding initialization; changing warp count need not change the arithmetic order. |
+| Mega attention → WO-A → WO-B | [_mega_core / _mega_mxfp8_output](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4.py) can consume FP8 attention data/scales and produce a DeepGEMM-compatible MXFP8 pair for WO-B; eligibility includes `wo_b.deepgemm_mxfp8_input` and `fused_mxfp8_rows`. | A separate BF16 round-trip or quant launch can disappear only for the compatible consumer. FlashInfer-swizzled and DeepGEMM-packed scale pairs are not interchangeable; inspect `deepgemm_pair_takes_flashinfer` and the returned wrapper. |
+| Sparse candidate table and scheduler | [SM100 sparse-table producer/consumer](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/layers/attention/dsv4/v41_indexer/sparse_table.py) publishes sorted logical blocks, physical blocks, valid lengths, schedule and a readiness event. Prefill selects source top-k and candidate blocks from the same dense score tiles. | `_row_pair_ids` bounds a quadratic request-start scan by identifying consecutive row pairs, matching DeepGEMM BLOCK_Q=2 and never crossing requests. Changing row grouping requires checking the consumer scheduler. Tail/gather rebuilds the schedule; it cannot be sliced with logits. Missing repeated scheduler kernels can be intentional reuse, not missing work. |
+| Sparse prefill workspace reuse | [SparsePrefillChunkCache / SparsePrefillKVBuffer](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/layers/attention/dsv4/sparse_prefill_utils.py) caches chunk geometry, per-ratio gather layouts and source dequantization; c0/c128 indices are reusable while low-ratio top-k is layer-dependent. | Use live max sequence extent, not graph-padded page-table width; distinguish SWA attention window from storage page size. Reused dequantization is valid only for the current forward/source. `forget_head` prevents stale-address reuse across forwards; per-layer scratch cannot overwrite cached c0/c128 indices. |
 
-### Source map
-
-| Source at the inspected SHA | Read for |
-|---|---|
-| [deepseek_v4.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/models/deepseek_v4.py) | `_hc_combine`, `_hc_mix_stats`, `_get_hc_stats_stream`, `_hc_post_with_combine`, `forward_hc_pre_from_prev` and cross-layer handoff eligibility |
-| [mhc.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/layernorm/mhc.py) | Statistics projection, reduction/Sinkhorn, DeepGEMM and BF16x3 dispatch |
-| [hc_combine_norm.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/layernorm/hc_combine_norm.py) | BF16 rounding, output partitions and optional MXFP8 epilogue |
-| [mhc_post_combine.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/ops/layernorm/mhc_post_combine.py) and [prefill CUDA](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/jit/csrc/deepseek_v4/mhc_post_combine_norm_prefill.cuh) | Post/combine materialization and prefill norm reduction contract |
-| [mhc_post_fusion.py](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/srt/layers/moe/mhc_post_fusion.py) | Scoped deferred-finalize state and statistics stream handoff |
-| [all_reduce_fusion.cuh](https://github.com/sgl-project/sglang/blob/b1bbd74f287f13ed1276b0403a01ebb55c597e93/python/sglang/kernels/jit/csrc/distributed/all_reduce_fusion.cuh) | Collective implementation, output epilogues and buffer/counter constraints |
+Current path migration matters when attributing an old trace: the old
+`ops/layernorm/mxfp8_epilogue.py` split into `layernorm/rmsnorm_mxfp8.py` and
+`quantization/mxfp8_epilogue.py`; the old attention `dsv4/elementwise.py` split
+into `norm_rope.py`, `kv_norm_rope_store.py`, `fp4_indexer_rope.py` and other
+focused modules. Search current callers rather than assuming the old file
+still exists. Historical PR excerpts keep their original paths.
 
 ### Paged KV storage contract
 
 Quantized cache changes span writer, pool, reader and prefill dequantization.
 The following SGLang DeepSeek-V4-family example is pinned to the October 5
-source head in [source contracts](../../../docs/upstream-source-contracts.md).
+source head `b1bbd74f287f13ed1276b0403a01ebb55c597e93` (historical snapshot).
 Other models and readers require their own payload/scale/alignment arithmetic.
 
 | Attention KV layout | Payload per stored token | Scales per token | Total before page padding | Page alignment |
