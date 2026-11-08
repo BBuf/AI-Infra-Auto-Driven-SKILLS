@@ -128,6 +128,10 @@ accepting the ordinary FP8 variant. Current MiMo can retain padded checkpoint
 chunks in QKV projection output; the proposed plain split needs adaptation or
 an explicit layout gate. Historical B200/SM80 attention timings do not validate
 that later mainline layout or establish service throughput.
+The same review covers open #52363's manual Llama/FlashAttention path, which
+keeps CUDA opt-in and checks the token threshold inside the compiled custom
+op. Preserve its bypass/rotation contracts and the above-threshold Q/K-copy
+cost; earlier hardware reports and approval predate the final refactor.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

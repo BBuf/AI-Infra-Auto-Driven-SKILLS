@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 40 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 41 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -226,8 +226,12 @@ benchmark code and all discussion. It distinguishes full rotary from MiMo
 partial rotary, short-slot handling, intermediate rounding and fresh-Q/cache
 ownership. Current MiMo's padded checkpoint chunks require adapting the old
 proposal's plain QKV split. B200/SM80 reports retain their actual reference,
-A/A controls, overlay limitations and corrected discussion claims. Neighboring
-#52363 still has only a metadata check and is not included in the manual count.
+A/A controls, overlay limitations and corrected discussion claims. The same
+review covers all 21 files and all discussion of #52363, including its native
+kernel, descriptor-based manual dispatch, dynamic threshold regression tests,
+engine checks and paired benchmark. It retains the above-threshold copy
+regressions, near-equal E2E result and the pre-refactor dates of earlier
+hardware validation and approval.
 
 ## Local validation of this increment
 

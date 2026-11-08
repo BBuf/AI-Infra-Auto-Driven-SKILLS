@@ -101,6 +101,11 @@ partial-RoPE/value-scaling/DiffKV path. Both remain open. The former needs
 short-slot and FP8 intermediate-rounding checks; the latter's old plain-QKV
 split does not cover current MiMo's padded checkpoint-chunk layout. A
 registered fusion or historical benchmark is not current-model admission.
+The same review covers #52363's separate manual Llama/FlashAttention design:
+descriptor-based admission, graph-owned Q and an in-op runtime threshold
+avoid freezing dispatch when shape guards are skipped. Above 256 tokens,
+compiled fallback adds Q/K copies; reported 257/512/1024-token cases regress
+2–2.5%, while small operator gains coexist with near-equal batch-one E2E latency.
 
 The old `enable_sp` and `fuse_gemm_comms` fields and their sequence-parallel /
 collective pass files have been removed. Do not suggest those switches to a

@@ -1,9 +1,9 @@
-# CUDA RoPE/cache proposals: ordinary GQA and MiMo DiffKV
+# CUDA RoPE/cache proposals: GQA, Llama and MiMo DiffKV
 
-Reviewed on 2026-11-09 (Asia/Shanghai). Both complete final diffs, bodies and
+Reviewed on 2026-11-09 (Asia/Shanghai). All three complete final diffs, bodies and
 all discussion were read, with fresh head/base checks. Current-source
 comparisons use frozen vLLM main
-`b022bb7a4873a47cdcdf474edf3bd499c221f40d`; neither proposed kernel is present
+`b022bb7a4873a47cdcdf474edf3bd499c221f40d`; none of these proposed kernels is present
 there. The [compiler review](vllm-compiler-source-review.md) separately covers
 graph visibility, custom-op resolution and retained Q quantization. No GPU
 experiment was run for this source review.
@@ -193,3 +193,137 @@ Source anchors: [PR-head model integration](https://github.com/vllm-project/vllm
 [current attention wrapper](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/model_executor/layers/attention/attention.py),
 [current FA-DiffKV](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/attention/backends/flash_attn_diffkv.py),
 and [current Triton-DiffKV](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/attention/backends/triton_attn_diffkv.py).
+
+## PR #52363 — Add manual CUDA RoPE KV-cache fusion for Llama
+
+- Link: https://github.com/vllm-project/vllm/pull/52363
+- State: open, unmerged; head `5c1405ecb51286ccdc0f34a5c6630f9ed02ecf48`,
+  base `15a9677306b19201c21f54f668334d1a2531d2d7`.
+- Coverage: all 2,410 final diff lines, 21 files, +1,992/-35; body, all
+  23 issue comments, nine reviews and six inline comments; 29 commits.
+- Reviewed files: CUDA `csrc/rope_kvcache_fusion_kernels.cu`, `ops.h`,
+  `torch_bindings.cpp`, `CMakeLists.txt` and `_custom_ops.py`; Attention,
+  Llama, rotary `base.py`/`fope.py`, attention backend interface and
+  `flash_attn.py`; compilation configuration and pass manager; kernel,
+  rotary, functional-attention and configuration tests; benchmark,
+  Buildkite kernel dependencies and both design documents.
+- Motivation: CUDA Llama can combine rotary and cache writes at the model
+  call site without relying on a compiler pattern spanning those operations.
+  It must still rotate padded Q rows when the cache slot map is shorter.
+
+The final design passes `positions` and the rotary module from Llama into
+`Attention.forward`. Rotary modules expose a `RopeRotation` descriptor:
+positions, the `[cos | sin]` table and rotary style. Ordinary rotary and
+variants that only change the table can provide it. Fourier explicitly
+returns none; MRoPE derives from the base that returns none; LongRoPE has
+no interface. FlashInfer rotary and non-1D positions also retain their original
+forward. The cache conversion helper preserves AITER's cached BF16 path and
+avoids buffer mutation while compiling. Future subclasses that change the
+rotation must override the descriptor, not inherit it blindly.
+
+Attention requires both `supports_kv_cache_update_bypass` and the new
+implementation capability. Only CUDA FlashAttention implements the fused
+writer in this patch: decoder, DCP=1, unquantized cache. The layer additionally
+requires equal Q/K/V head width, activation/cache dtype equality, no KV sharing
+and no attention-output quantization fusion. Normal FlashAttention selection
+admits FP16/BF16. FP8 **weights** in the reported model do not imply FP8 cache
+support. FlashInfer's existing bypass capability alone does not select this
+writer. Unsupported backend configurations receive a one-time warning.
+
+The graph owns a contiguous Q output. The custom op declares that output
+mutable, reads the current layer's cache/slot context, and writes rotated K
+plus V to the cache without changing input Q/K/V or materializing rotated K.
+Attention then receives Q and `None, None`, preserving its wrapper while
+avoiding another cache update. The Q dependency orders attention after the
+hidden cache writes. Current FlashAttention decoder/DCP=1 consumes cached
+K/V; encoder and DCP branches consume the supplied K/V, explaining their
+exclusion. Current Llama still calls rotary and attention separately; the new
+descriptor and writer are absent at the frozen main revision.
+
+The token threshold is a runtime contract. In ordinary vLLM compile mode,
+shape guards are skipped by default (`evaluate_guards=False`); a traced
+Python comparison must not freeze dispatch for all later token counts.
+The compiled graph therefore always calls the custom op, which checks the
+default 256-token bound itself. Eager execution can choose the ordinary path
+before entering the op. Above the bound, the compiled op uses:
+
+```diff
++    query_out.copy_(query)
++    if slot_mapping is None:
++        # Profiling runs have no cache to update.
++        assert attn_metadata is None
++        ops.rotary_embedding(
++            positions, query_out, None, layer.head_size, cos_sin_cache, is_neox
++        )
++        return
++    key = key.clone()
+```
+
+With a slot map, fallback then applies ordinary rotary and the backend cache
+writer. With no map, it only rotates Q and requires absent attention metadata.
+These Q/K copies are real additional work. The patch leaves CUDA opt-in and
+the bound unchanged, keeps the compiler fusion pass ROCm-only, and removes
+CUDA's dependence on custom-rotary registration/default cache-op splitting.
+Thus #57271's compiler admission and this manual route are different designs.
+
+The CUDA kernel uses one block per Q token, rotates its partial or full
+extent, copies the tail, then exits before K/V work for missing or negative
+slots. It uses separate 64-bit token/head/page strides for inputs and K/V
+caches. Large V copies use eight-element vector loads/stores only when width,
+head strides and pointer alignment permit; small or unaligned cases use scalar
+copies. Host checks enforce dimensions, equal storage dtype, device, positive
+strides, contiguous last dimensions and contiguous int64 positions/slots.
+The model supplies distinct Q output storage and valid positive slot/position
+bounds; those ownership/indexing obligations are not relaxed by fusion.
+
+The eight shape cases cover all six allocator cache layouts, partial rotary,
+NeoX/interleaved styles, short/negative maps, padded cross-layer pages and
+head sizes through 256 including an unaligned 82-wide case. Four additional
+storage tests cover independent K/V strides, offsets and guard preservation;
+one test rejects incompatible cache/table dtypes. Kernel comparisons require
+exact Q/cache equality against C++ rotary and the incumbent writer (or explicit
+strided reference stores where that writer cannot represent the layout).
+Only the layer-compact representative invokes opcheck.
+
+Functional tests check backend/dtype admission, real compiled Attention
+graphs, disabled/LongRoPE fallback and threshold crossings in both orders
+with eager and compiled calls. They inspect actual native-op events and
+compare output/cache at tolerance 0.002. TinyLlama engine tests compare greedy
+logprobs with fusion off/on and breakable graphs off/on; these are stronger
+than asserting a flag or counting Python calls during capture. Zero Python
+calls during graph replay does not mean the captured GPU kernel did not run.
+
+The final body reports RTX 5090 D/SM120, CUDA 13.2 and PyTorch 2.14.0 validation
+at the reviewed head: 13 kernel, 12 functional, 197 rotary, 26 compilation and
+four configuration cases passed, with 170 platform/backend skips; three
+compute-sanitizer modes report no errors/hazards. This review did not rerun
+those experiments or establish a complete upstream CI pass.
+
+The benchmark compares one fused call with separate rotary/cache calls using
+independent allocations, balanced/shuffled A/B order, exact pre-timing checks
+and CUDA events. CUDA Graph timing is optional, off by default; ordinary
+host-submitted repetitions can include submission gaps. It excludes attention
+and serving. Final-head 5090 D reports 1.53–1.59x across 24 shape/layout rows.
+Earlier H200 evidence pins `ccde2be37d03` and reports 1.660–1.730x plus a
+single FA3 token-parity case. H100/B200 comments report roughly 1.6–1.7x and
+matching GSM8K aggregate scores for two small models, before the October
+descriptor/bypass refactor; they do not pin validation to the final head.
+
+Keep the limiting results: TinyLlama BF16 batch-one end-to-end latency at
+`d93c77f73` is effectively equal (unfused/fused median ratio 1.006 over six
+interleaved rounds), superseding an earlier two-round 1.0371 report. The
+September discussion reports 2–2.5% regressions for 257/512/1024-token inputs
+from compiled fallback copies. Raising the limit to 2048 restored those
+particular cases near baseline, but head geometry/cache residency changed
+larger-shape behavior, so this is not a universal tuning recommendation.
+The September approval also predates the later refactor. Do not promote these
+operator gains to current-main service-throughput or all-model accuracy claims.
+
+Source anchors: [final CUDA kernel](https://github.com/vllm-project/vllm/blob/5c1405ecb51286ccdc0f34a5c6630f9ed02ecf48/csrc/rope_kvcache_fusion_kernels.cu),
+[final Attention selection and runtime fallback](https://github.com/vllm-project/vllm/blob/5c1405ecb51286ccdc0f34a5c6630f9ed02ecf48/vllm/model_executor/layers/attention/attention.py),
+[rotation descriptor](https://github.com/vllm-project/vllm/blob/5c1405ecb51286ccdc0f34a5c6630f9ed02ecf48/vllm/model_executor/layers/rotary_embedding/base.py),
+[functional and engine tests](https://github.com/vllm-project/vllm/blob/5c1405ecb51286ccdc0f34a5c6630f9ed02ecf48/tests/v1/attention/test_functional_rope_kvcache.py),
+[paired benchmark](https://github.com/vllm-project/vllm/blob/5c1405ecb51286ccdc0f34a5c6630f9ed02ecf48/benchmarks/kernels/benchmark_fused_rope_kvcache.py),
+[current Llama caller](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/model_executor/models/llama.py),
+[current FlashAttention](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/attention/backends/flash_attn.py),
+and [current compile guard policy](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/compilation/wrapper.py).
