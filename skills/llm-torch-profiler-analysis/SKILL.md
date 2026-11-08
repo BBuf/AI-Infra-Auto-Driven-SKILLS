@@ -242,6 +242,10 @@ Load only relevant references:
   short slot maps, rounding and current QKV layout before porting. Manual
   compiled fallback copies Q/K above the threshold; retain measured regressions
   and separate operator/attention timings from service performance.
+- [sglang-fp8-kv-store-source-review.md](references/sglang-fp8-kv-store-source-review.md):
+  merged prefix commits and AMD saturation fix versus open ordinary FP8 stores.
+  Preserve scale-kind rounding, physical-slot rules and source-copy costs;
+  check the current unified MHA view separately before transferring a speedup.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check

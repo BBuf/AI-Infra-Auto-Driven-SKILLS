@@ -33,8 +33,8 @@ in different repositories remain distinct.
 
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
-6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 41 PRs manually reviewed in this refresh were
+6,934 objects. Sixteen additional PRs cited by the new review cards bring the
+TSV to **6,950 objects**; all 44 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -239,8 +239,22 @@ are no longer described as active proposals, and merged PRs record the actual
 merge date. Original heads/dates remain attached to historical implementation
 notes and measurements; these rows explicitly await final-source review.
 The snapshot also refreshes base/merge revisions and change counts. This adds
-**zero** to the 41 complete manual reviews. An unrelated personal-memory
+**zero** to the manual-review count. An unrelated personal-memory
 instruction was removed from the public catalog.
+
+The [SGLang FP8 store review](../skills/llm-torch-profiler-analysis/references/sglang-fp8-kv-store-source-review.md)
+covers the complete six-file #40785, five-file #42982 and seven-file #31652
+diffs and all discussion, including numerical tests and the benchmark harness.
+It documents the prefix writer's asymmetric-row rejection, preserves scale-kind
+and source-dtype rounding, and records the later AMD saturation fix and its
+independent overflow test. Current unified MHA views share prefix commits but
+have a separate ordinary writer not covered by #31652. Benchmark descriptions
+now include layout-copy cost, graph-level versus per-call cache flushing,
+unchanged caller copies and the actual head/configuration of serving reports.
+The final saturation-fix MI300 JIT jobs passed within a failed overall
+workflow; #31652's final-head PR gate failed and its GPU jobs were skipped.
+These three source reviews replace one previously historical catalog row and
+bring the completed manual-review count to 44.
 
 ## Local validation of this increment
 

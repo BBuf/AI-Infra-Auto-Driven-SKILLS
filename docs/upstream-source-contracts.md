@@ -103,6 +103,26 @@ lengths and query×KV lengths. Verify/Draft widths come from speculative shape,
 not acceptance length. These aggregates help check an analytical template;
 the bundled simulator does not automatically ingest them.
 
+## FP8 KV store dispatch
+
+The [SGLang FP8 store review](../skills/llm-torch-profiler-analysis/references/sglang-fp8-kv-store-source-review.md)
+separates merged #40785 prefix commits, merged #42982 saturation, and open
+#31652 ordinary-store fusion. Current DFlash/DSpark prefix calls reach a
+shared helper through the layer router. Its fused FP8 branch requires equal
+K/V row widths, E4M3 storage and resolvable scales; GPU scale parameters use float shadows.
+Preserve tensor-versus-host division semantics and source-dtype rounding
+before clamping to the representable FP8 limit. Prefix commit can write slot
+zero; the proposed ordinary writer must skip that reserved padding slot.
+
+The ordinary proposal admits CUDA SM89+, dense NHD sources, independent K/V
+widths, no DCP mask, and host/absent/scalar FP32 device scales. Its device
+scales are read during graph replay. It only changes the legacy MHA pool;
+current unified `MHAView.set_kv_buffer` is independent and remains unfused.
+Retain caller copies where fallback stores can mutate inputs. Include layout
+copies in prefix-cluster timing, and distinguish graph-level L2 flushing from
+cold destination lines on every ordinary-store call. Historical microbenchmarks
+and small serial-serving reports do not establish current all-path speedups.
+
 ## Compiler and dependency dispatch
 
 The [vLLM compiler review](../skills/llm-torch-profiler-analysis/references/vllm-compiler-source-review.md)
