@@ -174,6 +174,18 @@ pass being unavailable does not establish a model-wide fusion gap. The reported
 H200 service results use an old-wheel overlay and dummy weights, with final-head
 GPU validation pending.
 
+The [FlashInfer QK-norm/append review](../skills/llm-torch-profiler-analysis/references/flashinfer-qknorm-rope-append-source-review.md)
+replaces the obsolete claim that mainline lacks RMSNorm before fused RoPE/KV
+append. Current dedicated CAKE BF16/FP8 APIs accept packed BF16 QKV, D=128,
+head pairs 8/1 or 64/8 and contiguous NHD caches on SM90/100/103. Their stage
+selection and optional-output contracts differ from closed #5405. Current
+FP8 integrates indptr validation/status writes into the compute launch; the
+old dynamic-prefill path launched a separate validator and zeroed flags in
+Python. Padded Q scales remain unwritten. PDL waits protect QKV reads and
+stores, while metadata, weights and scales must already be ready. Explicit
+API availability does not prove a serving model invokes it, and #5405's
+5.75–6.37× BF16 pipeline timings do not measure current CAKE or service gains.
+
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
 the host attribute only on SM90+, while row-padded logits and unsupported

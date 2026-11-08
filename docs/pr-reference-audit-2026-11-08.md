@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 46 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 47 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -266,6 +266,17 @@ and compile-range gate. Source test counts, old-wheel dummy-weight benchmarks
 and missing final-head GPU validation remain separate. Current Step5 and Muse
 Spark model-specific paths are not conflated with the generic compiler pass.
 These two reviews bring the completed manual-review count to 46.
+
+The [FlashInfer QK-norm/append review](../skills/llm-torch-profiler-analysis/references/flashinfer-qknorm-rope-append-source-review.md)
+covers closed #5405's complete 15-file diff and all discussion, including
+its imported CUDA implementation, numerical tests and BF16-only harness.
+It distinguishes the FP8 validator/flag-fill launches from the fused kernel,
+documents intermediate rounding and unwritten scale padding, and qualifies
+the historical CUPTI timing span. Frozen-main CAKE API/backend, stage policies
+and two selected generated kernels/bindings establish current availability
+and PDL readiness constraints. The three successor PRs mentioned by the
+closure have verified metadata but pending complete historical diff reviews;
+they do not add to the manual count. The completed manual-review count is 47.
 
 ## Local validation of this increment
 
