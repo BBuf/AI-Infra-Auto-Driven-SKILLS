@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 24 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 27 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -158,6 +158,16 @@ scoring, cleanup and selection callers. Its merged implementation bounds traffic
 with device lengths while retaining capacity-shaped buffers; candidate consumers
 that can read a partial block keep fully initialized scores. Performance and
 successful request counts are not promoted to answer-accuracy evidence.
+
+The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
+covers the complete #1606/#1607/#1889 diffs and all discussion, with fresh
+head/base checks. Current provider registration, runtime callers and FlashInfer
+contracts distinguish preserved BF16 routing precision, the chain sampler's
+selective reduction and owner-local MHA counter reuse. The old MoE source path
+has moved; the counter owner can now grow during tree binding, and generic
+attention wrappers do not inherit the runtime leaf's reuse. Historical
+FlashInfer 0.6.18 attention measurements are not validation of the current
+0.7.3 dependency.
 
 ## Local validation of this increment
 

@@ -1,5 +1,14 @@
 # TokenSpeed Qwen3 Core Model PR Optimization History
 
+## Shared-operator context (2026-11-08)
+
+The [routing, sampling and MHA source review](../../../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
+covers shared runtime optimizations outside the model-file trace below. Its
+Qwen3-shaped attention measurements exercise repeated attention calls, not a
+complete Qwen3 model or serving TPOT. Counter reuse belongs to the TRT-LLM MHA
+runtime leaf; generic attention wrappers still differ. The MoE note applies
+only when the selected BF16 precomputed-route provider admits the workload.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

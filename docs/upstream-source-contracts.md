@@ -121,6 +121,17 @@ scratch still scales with capacity. The standalone block-max helper retains a
 full-width read, and the native Hopper logits budgets remain 32/128 MiB for
 paged/broadcast scoring. Do not apply Blackwell's newer scoring policy to it.
 
+The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
+reconciles merged routing, sampling and attention changes. BF16 precomputed
+MoE routing still rounds weights to BF16 before passing the unpacked tuple;
+the implementation moved to `ops/moe/flashinfer.py`. The chain sampler skips
+an unused fallback-index reduction, while six other callers retain it; the
+current chain entry point supports two acceptance rules. The runtime TRT-LLM
+MHA leaf reuses completion counters across calls and KV-pool rebinds, with
+tree-binding growth and an oversize fallback. Generic registered wrappers
+still omit the buffer. Attribute removed fills to the actual caller, and keep
+historical wheel-specific microbenchmarks separate from current serving results.
+
 - SGLang kernel roots are `python/sglang/kernels/{aot,jit,ops}`. The current
   [dependency pin](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/pyproject.toml) uses FlashInfer 0.7.3 (cu13).
   Check the actual wheel/image, not just source main.
