@@ -1,7 +1,7 @@
 # FlashInfer QK RMSNorm, RoPE and paged append
 
-Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405, #5952 and
-#5956 diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
+Reviewed on 2026-11-09 (Asia/Shanghai). The complete final #5405, #5952,
+#5956 and #6008 diffs, bodies and all discussion were reviewed. Current-source comparisons use FlashInfer main
 `31c146b16789f112e9b9861bd79247d4701e437a`. No GPU experiment was run.
 
 ## PR #5405 — Experimental packed-QKV fusion
@@ -31,8 +31,7 @@ The closing comment says the feature was covered by CAKE
 [#5956](https://github.com/flashinfer-ai/flashinfer/pull/5956) and
 [#6008](https://github.com/flashinfer-ai/flashinfer/pull/6008). Fresh metadata
 confirms these merged on October 2, October 3 and October 3 respectively.
-The #5952 and #5956 source reviews follow below; the complete historical
-review of #6008 remains pending. Current availability is established from the frozen
+The three successor source reviews follow below. Current availability is established from the frozen
 mainline implementation, not by treating #5405 as merged.
 
 ### Data and launch contracts
@@ -358,6 +357,128 @@ BF16 intermediates that fail the stated FP8 contract tolerance and omits tail
 clearing. They are not equivalent-output replacement gains or service
 speedups. Keep external paired results, the committed fixed-order harness,
 kernel correctness and downstream model accuracy separate when profiling.
+
+## PR #6008 — Shape-selected BF16 programs
+
+- Link: https://github.com/flashinfer-ai/flashinfer/pull/6008
+- Title: `perf(cake_fused_qk_rope_append): per-architecture / per-shape program selection for the fused BF16 QK RMSNorm + NeoX RoPE + paged KV append (SM90 / SM100 / SM103)`.
+- State: merged 2026-10-03; head
+  `8e137c135f3abc9bce887111f8a35d7574244bae`, base
+  `1fc76f71b6e6c1928ffa9acbfe721566e23593ce`, merge
+  `0557a54ee631a93cc8e27eaf48d7df4882cba963`.
+- Coverage: complete 25,166-line, 52-file diff, +20,120/-4,198; body, all
+  seven comments, one review, zero inline comments and the final commit.
+  All 20 generated kernel/binding pairs were compared line by line after
+  normalizing only generated symbols/namespaces: eight device bodies and one
+  binding remain. The common 680-line kernel, 160-line binding and every
+  variant difference were read. All manifest fields, 40 source hashes and
+  specialization constants were checked; the 12 replaced source files match
+  the already reviewed #5952 versions. The wrapper, JIT policy and complete
+  tests were read; benchmark and timing-helper blobs are unchanged from #5952.
+- Motivation: improve request lookup, row parallelism, V ownership and tail
+  clearing without changing the public BF16 API or adding a precision mode.
+  The single approval names earlier head `99e10f39`, not the final head.
+
+### What selects each program
+
+The [host wrapper](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/flashinfer/cake_fused_qk_rope_append.py)
+passes architecture, SM count, total query rows `T`, request count `B` and
+page size to the [JIT policy](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/flashinfer/jit/cake_fused_qk_rope_append.py).
+The [manifest](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/csrc/cake_fused_qk_rope_append/cake_fused_qk_rope_append_manifest.json)
+ships four SM90 stages and eight each for SM100/103. These are 20
+architecture/stage records, not 20 different numerical algorithms. All use
+128-thread CTAs, zero dynamic shared memory and ordinary launches without PDL.
+
+Let `U = 2 * ceil(page_size * Hkv * 128 / 8 / 256)` be the number of 4 KiB
+clearing units per request, and `C = ceil(B * U / 4)` the original clearing
+CTA count. The historical policy is:
+
+| Choice | Exact condition / resulting work |
+| --- | --- |
+| Decode heuristic | `T == B`; it does not inspect every indptr interval. |
+| Twenty warps per 64/8 row | `T <= SMs` and `C <= 16 * (SMs - T)`; five CTAs per row, with 18 Q/K head groups and two V groups. This is a scheduling heuristic, not a measured occupancy guarantee. |
+| Direct request guess | `B >= 257`; also all SM90 8/1 or twenty-warp rows; also SM100/103 64/8 decode and 8/1 decode with `B >= 128`. |
+| V placement | 8/1 direct builds put V on warp 3; twenty-warp builds put it on logical warps 18/19. Other builds retain the original placement. |
+| Two clearing units per warp | SM100/103, 64/8 and `C >= 2048`; one warp clears corresponding K and V chunks, halving clearing CTAs for these even-sized unit counts. |
+
+The decisive added policy excerpt is:
+
+```diff
++        free_sms = num_sms - num_rows
++        w20 = free_sms >= 0 and clear_ctas <= free_sms * c["clear_ctas_per_free_sm"]
++        if w20:
++            out["WARPS_PER_ROW"] = c["w20"]
++            out["V_SUB_BASE"] = c["w20_v_sub_base"]
+```
+
+The [direct variant](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/csrc/cake_fused_qk_rope_append/sm_100a/cake_fused_qk_rope_append_d374e1c215a49809c71a_kernel.cu)
+guesses `min(row, B - 1)`, accepts it only if its indptr interval contains
+the row, then retains the original ballot/scan fallback. Its emitted source
+still preloads the first 256 request records before the ballot tests; direct
+lookup does not mean all metadata loads disappear. The
+[twenty-warp variant](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/csrc/cake_fused_qk_rope_append/sm_100a/cake_fused_qk_rope_append_878eafa5087d58ce2289_kernel.cu)
+changes head/V ownership while retaining eight-lane FP32 norm reductions,
+FP32 NeoX rotation and final BF16 rounding. Inactive head groups still load
+clamped source heads; moving V does not remove every redundant load. The
+[two-unit variant](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/csrc/cake_fused_qk_rope_append/sm_100a/cake_fused_qk_rope_append_d3c33d4c6b33e645e252_kernel.cu)
+shares sequence/page lookup between its K and V clear units. Disabling tail
+clearing does not remove clearing CTAs from this host plan or alter stage
+selection; they launch and skip their writes.
+
+The public contract remains packed BF16, D=128, 8/1 or 64/8 heads, NHD cache,
+independent optional K/V redirects and caller-owned writable pages. The
+direct path reads guessed metadata before testing `req >= 0`: `B=0, T>0`
+passes the wrapper's structural checks but produces `g_req=-1` on Hopper
+8/1. Do not pass it as an “ignored row” case. This is a source-derived
+precondition gap, not a reproduced GPU fault. The review bot's two summaries
+disagree about reachability; the wrapper and device reads establish the gap.
+Whole-empty input still reaches the positive-grid binding check, and zero
+page size is not validated by this wrapper.
+
+There is also a reproducible **CPU policy** limit: SM100, 148 SMs, 64/8,
+`T=B=8`, page size 1024 selects `hq64_hkv8_w20_vsub18_d_u2`, which the
+manifest does not ship, so `stage_for` raises. Running the extracted pure
+selector against its exact manifest reproduced that exception. The CPU
+inventory test stops at page size 128. Frozen main explicitly separates the
+eight-warp two-unit rule from `w20` and supplies later twenty-warp schedules;
+do not carry this historical missing-build conclusion onto current policy.
+Similarly, the legacy no-shape `stage_for(8, 1)` returns a base name absent
+from SM90's inventory; that helper result alone is not a loadability check.
+
+### Tests and performance evidence
+
+The [test file](https://github.com/flashinfer-ai/flashinfer/blob/8e137c135f3abc9bce887111f8a35d7574244bae/tests/attention/test_cake_fused_qk_rope_append.py)
+contains the unchanged 21 CUDA-dependent #5952 cases plus **21 CPU policy
+cases**: 17 table entries, three inventory sweeps and one legacy-name test.
+The added sweep checks membership, not kernel outputs. Applying the exact
+selector to the numerical/replay fixtures reaches three of four SM90
+programs at 132 SMs and four of eight SM100 programs at 148 SMs. It misses
+SM90's 64/8 direct base and SM100's 64/8 direct, direct/u2, u2 and non-direct
+twenty-warp programs. Thus “42 passed” does not prove every generated program
+was numerically exercised. The 300-request decode test named
+`test_large_batch_lookup_fallback` now gets correct direct guesses for every
+row; it does not establish the beyond-256 fallback path. Replay still uses
+unchanged input/metadata and the original 8/1 shape.
+
+The [H100 targeted job](https://github.com/flashinfer-ai/flashinfer/actions/runs/37099576934/job/111136473402)
+checks out merge `69be132d` of final head `8e137c135` into `1fc76f71`, runs
+this file under CUDA 12.9 and reports **42 passed, zero failed/skipped**.
+The B200 42-case result, three-card bit equality and H200/B200 sanitizer
+results with negative controls remain author reports. This refresh did not
+run GPU tests or establish B300 numerical coverage.
+
+The body reports graph-mode paired CUPTI measurements versus #5952, with
+23 gate shapes and 28 reporting shapes. Reported geometric mean ratios are
+1.009×/1.065×/1.066× on B200/H200/H100 for the gate set and
+1.023×/1.071×/1.073× for all 28; one B200 large-decode row reaches 1.30×.
+Its “no regression” statement is tied to the reported paired 95% confidence
+intervals. The committed 17-shape benchmark and timing helper were not
+changed to reproduce that protocol or retain its raw samples. The base
+sources were regenerated; old/new cubins or disassembly are not supplied to
+verify the separate “byte-identical builds” claim. These historical results
+do not establish current-policy or serving-level gains. Profile the selected
+symbol and clear-grid work for the actual shape, then validate its numerical
+and cache-ownership contract before treating the change as a reusable gain.
 
 ## What is available at the frozen mainline
 

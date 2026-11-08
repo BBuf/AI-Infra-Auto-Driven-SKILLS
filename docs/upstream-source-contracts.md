@@ -201,6 +201,13 @@ the tests use numerical tolerance for tail zeros despite a bitwise claim in
 the PR text. Historical 18.2×/14.9× baseline ratios compare different
 numerical/tail-write behavior, and the external paired protocol differs from
 the committed fixed-order, eager benchmark. Neither establishes service gains.
+The complete #6008 BF16 review traces direct guesses, twenty-warps-per-row
+ownership and paired K/V clearing units. Its 42 passing H100 cases include
+21 CPU selector checks, so they do not establish every generated program's
+numerical coverage. The historical page-1024 `w20 + u2` missing-build error
+was reproduced from the pure selector; current main separates that rule and
+has later twenty-warp programs. Check the selected stage and actual grid,
+including clearing CTAs retained when tail writes are disabled in #6008.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

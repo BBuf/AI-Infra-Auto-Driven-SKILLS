@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Seventeen additional PRs cited by the new review cards bring the
-TSV to **6,951 objects**; all 49 PRs manually reviewed in this refresh were
+TSV to **6,951 objects**; all 50 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -293,8 +293,17 @@ and traces eight-lane reductions, fused validation and tail-write ownership.
 Final-head H100 CI logs confirm 51 tests passed on CUDA 12.9. The card
 corrects the tail-byte validation claim and distinguishes external paired
 performance reports from the committed fixed-order harness and its
-numerically different comparator. #6008 remains pending; the completed
-manual-review count is 49.
+numerically different comparator. The completed manual-review count was 49.
+
+The #6008 review covers its complete 52-file diff, seven comments and one
+review, with all 20 generated pairs compared and all 40 source hashes checked.
+It traces the exact shape/architecture policy, row/V ownership and clearing
+grid. Final-head H100 CI confirms 42 passes, but half are CPU selector tests;
+the numerical fixtures do not cover every generated program. A historical
+page-1024 missing-build error was reproduced from the pure policy, with the
+current rule change recorded separately. The external 28-shape paired report
+is distinguished from the unchanged 17-shape committed harness. All 50
+manually reviewed heads/bases were rechecked and still match.
 
 ## Local validation of this increment
 
