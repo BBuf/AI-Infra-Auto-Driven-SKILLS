@@ -1,7 +1,7 @@
-# TokenSpeed V4.1 Hopper index selection
+# TokenSpeed index selection and distributed scoring
 
-Inspected on 2026-11-08. The full PR diff, body and both issue comments were
-read; there are no reviews or inline comments. Current scoring, selection,
+Inspected on 2026-11-08. The full diffs, bodies, comments and reviews for the
+three PRs below were read. Current scoring, selection,
 kernel registration and runtime callers were checked at TokenSpeed
 `7b21034e72bb45d1edef3d3b5483b50b58c4c492`. No GPU experiment was rerun locally.
 
@@ -16,6 +16,7 @@ kernel registration and runtime callers were checked at TokenSpeed
   `tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsv41/deep_gemm.py`,
   `tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsv41/triton.py`,
   `tokenspeed-kernel/test/nvidia/ops/test_dsv41_block_maxima.py`.
+  Both issue comments were read; there are no reviews or inline comments.
 - Motivation: the allocated logits capacity can greatly exceed visible history.
   Full-capacity cleaning/reduction and selection over padded block scores then
   cost much more than the useful work. The previous block-max path also launched
@@ -129,3 +130,141 @@ Current source:
 [native provider admission](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsv41/__init__.py),
 [Hopper scoring/selection](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsv41/deep_gemm.py),
 [cleaner, maxima and finalizer](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsv41/triton.py).
+
+## PR #1877 — Skip empty tiles in the portable DSA scorer
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/1877
+- State: merged 2026-10-11; head `87cbf2b68254a5948722fda9241d631a9a548152`,
+  base `e1207a426191324733eab53a815a00ffafd3847b`,
+  merge `b357a4ec88eef4560f82d86e87e6386bfd360525`. Fresh head/base check matched.
+- Coverage: all 251 diff lines, three files, +177/-41; eight issue comments,
+  three reviews and no inline comments. The final head has an approval; the
+  earlier change request concerned DCO sign-off.
+- Reviewed files:
+  `tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsa/_triton/topk.py`,
+  `tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsa/README.md`,
+  `tokenspeed-kernel/test/ops/test_attention_dsa.py`.
+- Motivation: DCP page tables retain global column positions and mark foreign
+  pages `-1`. The portable FP8 scorer still performed head/channel arithmetic
+  for tiles containing no owned, causally visible keys.
+
+When `page_size % BLOCK_N == 0`, one tile lies inside one page. Loading its
+first page ID under causal/capacity bounds proves whether it contains any
+valid entry. Other page geometries reduce the per-entry validity mask. Empty
+tiles skip Q/K loads and scoring, but still overwrite logits with `-inf`:
+
+```diff
++    # Foreign pages and capacity beyond the causal length can leave a whole
++    # tile empty. Skip Q/K scoring, but still overwrite its logits for Top-K.
++    scores = tl.full((BLOCK_N,), -float("inf"), tl.float32)
++    if has_valid:
+```
+
+Partially valid tiles retain their original head reduction, scales, ReLU and
+per-entry mask. Forced initial/tail windows are set to `+inf` before invalid
+and NaN scores are masked back to `-inf`; a forced position on a foreign page
+must not become a valid local candidate. The kernel signature and compile-time
+axes are unchanged. This reduces scoring arithmetic, not grid size, allocated
+logits or the following Top-K scan. It differs from #1857's bounded cleaner.
+
+Current main retains this implementation. Both its ordinary FP8 decode top-k
+caller and its explicit-row DCP candidate caller use 64-key tiles. The latter
+allocates FP32 logits over the full local-table width, then selects logical
+offsets/scores and rejects invalid candidates. Its registered portable
+NVIDIA/AMD provider does not advertise planned compact pages; on NVIDIA it
+first quantizes queries and folds scales into weights to match the native
+indexer convention. Runtime DCP selection resolves ownership, tiles rows and
+exchanges candidates for global selection. Other selected providers can accept
+compact page plans, so this portable kernel's dense-grid behavior must not be
+generalized to every DCP backend. The runtime logs the selected sparse leaf;
+use that or kernel scopes to establish which path a trace actually contains.
+
+The new test covers page sizes 32 and 128, implicit and explicit request rows,
+foreign pages, partial tails, empty rows and NaN queries. Graph replay changes
+the table from empty to refilled, changes lengths/request mapping and poisons
+all logits with `123.0` before each replay. The reference checks use
+`rtol=atol=2e-4`, not a measured bitwise cross-provider guarantee.
+
+The body reports roughly 8× less Q/K scoring time for one request at 256K
+history with DCP=8 on Hopper, plus single-GPU simulated-shard correctness.
+It supplies no raw timing table, measured revision or E2E result. The final
+head's AMD benchmark comment reports one regression, one improvement, 475
+within budget and one inconclusive case. A later author comment describes
+benchmarks as passing and asks to waive two model-score failures; another
+calls the run flaky. Those statements do not resolve the recorded results
+without CI logs. Automated reviewers explicitly lacked GPUs. This review
+does not certify those runs or convert source equivalence into fresh accuracy
+validation.
+
+Current source:
+[scoring kernel and ordinary decode caller](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsa/_triton/topk.py),
+[portable DCP caller/registration](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsa/triton.py),
+[candidate dispatch and page plans](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/dsa/__init__.py),
+[runtime ownership/selection/exchange](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/layers/attention/dcp/indexer.py).
+
+## PR #1781 — Closed KPool prefill row partitioning proposal
+
+- Link: https://github.com/lightseekorg/tokenspeed/pull/1781
+- State: closed **without merge** on 2026-10-16; head
+  `7eee802c243a26894a5f82bc30001b4fee483cac`, base
+  `c4fec5375cb64db13382c46a75499db2cc168b31`. Fresh head/base check matched.
+  The closing bot cites inactivity; it is not a maintainer rejection of the
+  algorithm or evidence that it shipped through this PR.
+- Coverage: all 287 diff lines, five files, +185/-9; all three issue comments,
+  no reviews or inline comments.
+- Reviewed runtime: `python/tokenspeed/runtime/layers/attention/kpool.py`,
+  `python/tokenspeed/runtime/models/glm53_flash.py`; documentation:
+  `tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/kpool/README.md`;
+  tests: `test/runtime/distributed/test_kpool_prefill_tp_nccl.py`,
+  `tokenspeed-kernel/test/ops/test_kpool_select.py`.
+- Motivation: GLM-5.3-Flash attention TP ranks replicated the same long-prefill
+  KPool query scoring. Assigning distinct query rows could save that duplicated
+  work, at the cost of gathering selected slots and lengths.
+
+The proposed split requires multiple TP ranks, at least one row per rank and
+history exceeding twice the selected pool budget. The exact gate is:
+
+```diff
++        if (
++            tp_size > 1
++            and num_rows >= tp_size
++            and shared_plan.max_num_pools > 2 * topk_pools
++        ):
+```
+
+It partitions contiguous rows nearly evenly, slicing query, weights, positions,
+request IDs, causal lengths and per-row workspace bounds together. Shared
+request boundaries and cache/workspace tables remain global. `_gather_rows`
+pads each rank to the largest slice for `all_gather_single`, then trims in
+rank order; it gathers selected indices and lengths separately. Padding is
+uninitialized but excluded from the reconstructed result. All ranks must use
+the same row counts and group. This is a query-row partition, not head
+sharding or a reduction over partial scores.
+
+Current `KPoolRuntime.select_prefill` still passes the full query and row
+metadata to `kpool_prefill_topk`, with no TP group/rank arguments or result
+gather. Its GLM-5.3-Flash caller likewise supplies no TP mapping. The portable
+kernel accepts explicit per-row request IDs, which permit a slice crossing
+request boundaries, but that API support alone does not activate partitioning.
+Do not describe this closed proposal as an available mainline switch.
+
+The added CUDA test compares split/concatenated selections against the full
+batch across a request boundary; a two-GPU NCCL test checks equal/uneven
+gathered rows and vector/matrix outputs. The body does not report pass counts
+for those tests. It reports TP8 H20 microbenchmarks: at 32K prefix, 128 rows
+improve 1.905→1.051 ms and 257 rows 3.401→1.243 ms. At 8K prefix, eight rows
+regress 0.683→0.827 ms and 17 rows 0.685→0.950 ms; the gate does not establish
+a universal crossover. Three of the four small cases regress; the 2K/17-row
+case improves 1.4%, despite the body's blanket statement about four regressions.
+
+The author also reports two 8×H20 TP8/EP8/MTP3 32K-input/64-output C1 pairs
+with E2E p50 reductions of 7.58% and 7.34%, plus a 60K case whose TTFT improves
+while TPOT worsens 3.8%. Warmups were excluded. These are historical branch
+reports with no measured SHA or answer-accuracy result, not validation of a
+current implementation. The author's gate-tuning question remained open in
+the discussion before automatic closure.
+
+Current source:
+[KPool runtime](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/layers/attention/kpool.py),
+[GLM-5.3-Flash caller](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/python/tokenspeed/runtime/models/glm53_flash.py),
+[portable row metadata/selection](https://github.com/lightseekorg/tokenspeed/blob/7b21034e72bb45d1edef3d3b5483b50b58c4c492/tokenspeed-kernel/python/tokenspeed_kernel/ops/attention/kpool/triton.py).

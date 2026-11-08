@@ -222,8 +222,8 @@ Load only relevant references:
   merged MNNVL post/norm fusion, eager MegaMHC and later FP8 output. Admission,
   graph-replay restrictions and stream contention determine the observed path.
 - [tokenspeed-indexer-source-review.md](references/tokenspeed-indexer-source-review.md):
-  Hopper block-max/cleaner fusion, device-length selection and unwritten tails.
-  Distinguish bounded traffic from capacity-shaped scratch and scoring cost.
+  Hopper cleaner/selection bounds, portable DCP empty-tile skipping and the
+  closed KPool row-partition proposal. Distinguish traffic, scratch and gathers.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   unpacked BF16 MoE routes, selective sampling reductions and owner-local MHA
   counters. Check rounding, acceptance mode and the actual attention caller.

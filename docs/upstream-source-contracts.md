@@ -120,6 +120,11 @@ selection. Only bounded consumers may read its partially initialized outputs;
 scratch still scales with capacity. The standalone block-max helper retains a
 full-width read, and the native Hopper logits budgets remain 32/128 MiB for
 paged/broadcast scoring. Do not apply Blackwell's newer scoring policy to it.
+The same review traces merged portable DSA empty-tile skipping: it preserves
+the dense logits grid and Top-K scan, unlike providers that accept compact page
+plans. The KPool prefill TP row-split proposal is closed without merge; current
+GLM-5.3-Flash still passes full query rows through that runtime call. Its long
+prefill results and small-batch gather regressions remain branch evidence.
 
 The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
 reconciles merged routing, sampling and attention changes. BF16 precomputed

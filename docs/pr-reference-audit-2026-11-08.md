@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 27 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 29 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -158,6 +158,11 @@ scoring, cleanup and selection callers. Its merged implementation bounds traffic
 with device lengths while retaining capacity-shaped buffers; candidate consumers
 that can read a partial block keep fully initialized scores. Performance and
 successful request counts are not promoted to answer-accuracy evidence.
+It also covers #1877's full three-file DCP tile-skipping diff and #1781's full
+five-file KPool row-split diff, including all discussion and current callers.
+The former is merged but retains full-width logits; the latter was closed
+without merge. Benchmark regression comments and unverified accuracy-waiver
+requests remain qualified rather than being reported as a clean test result.
 
 The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
 covers the complete #1606/#1607/#1889 diffs and all discussion, with fresh
