@@ -114,6 +114,11 @@ RoPE/cache writer. Current QK/MRoPE registration also changes V-cache layout
 and validates head dimensions and K consumers. The pending fix's MI355X
 measurements include 128/256-token regressions within the unchanged default
 256-token range; pattern matches on other models are not measured speedups.
+The same review distinguishes #49142's platform-only MLA default proposal
+from #54851's metadata-free DSA capture fix. Current MRV2 builds metadata even
+for PIECEWISE; `for_capture=False` is not proof of an empty forward context.
+Check the captured cache/slot addresses and current independent indexer,
+HiSparse and PCP ownership before diagnosing stale writes or porting the patch.
 
 The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
 traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables

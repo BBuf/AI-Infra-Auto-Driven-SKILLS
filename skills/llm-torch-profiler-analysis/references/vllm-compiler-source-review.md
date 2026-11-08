@@ -1,11 +1,14 @@
 # vLLM RoPE/cache fusion reachability and retained operations
 
 Inspected on 2026-11-09 (Asia/Shanghai), against the November 8 frozen vLLM
-main `b022bb7a4873a47cdcdf474edf3bd499c221f40d`. Both complete final PR diffs,
+main `b022bb7a4873a47cdcdf474edf3bd499c221f40d`. All four complete final PR diffs,
 bodies and all discussion were read; fresh API checks still match the heads
 below. Current configuration ordering, pass registration, all three cache
 fusion files, backend methods and relevant configuration tests were inspected
-separately. This review does not reproduce the reported GPU experiments.
+separately. For the capture-binding proposal, the complete current DSV3.2
+attention class, fused norm/RoPE kernel and wrapper, and relevant capture/slot
+buffer paths were also read. This review does not reproduce the reported GPU
+experiments.
 
 ## Current main: registration is not proof of a fused kernel
 
@@ -219,6 +222,146 @@ match counts do not validate every backend or layout admitted by current main.
 The discussion's conflict notifications and disabled automated review provide
 no additional final-head GPU result.
 
+## PR #49142 — Default MLA fusion without splitting its cache update
+
+- Link: https://github.com/vllm-project/vllm/pull/49142
+- State: open; head `8c1e07b12abb252d49328c85c2312559a14997f6`, base
+  `36f94d5fe8a3953f1ad340de3c5aaec909765243`; fresh head/base still match.
+- Coverage: all 59 diff lines, three files, +20/-6; body, seven issue comments,
+  five reviews and three inline comments; nine commits.
+- Reviewed files: `vllm/config/compilation.py`, `vllm/config/vllm.py` and
+  `tests/compile/test_config.py`. No kernel or serving harness is added.
+- Motivation: an existing MLA RoPE/concat/cache replacement cannot match if
+  Dynamo removes the cache-update op before the pattern pass sees it.
+
+The MLA default resolver changes from graph-visibility conditions to
+`current_platform.is_cuda_alike()`. In the default split builder, an enabled
+MLA flag keeps only its own cache-update op in the graph:
+
+```diff
+                     self.splitting_ops.append("vllm::unified_kv_cache_update")
+-                    self.splitting_ops.append("vllm::unified_mla_kv_cache_update")
++                    if not self.pass_config.fuse_rope_kvcache_cat_mla:
++                        self.splitting_ops.append("vllm::unified_mla_kv_cache_update")
+```
+
+The new assertion verifies that regular cache updates remain split while
+MLA updates do not. This is a platform-only default resolver, unlike #57900's
+explicit-request retention guarded by `_USE_LAYERNAME`; this patch has no
+hoisting check. It affects MLA families sharing the compiler config, including
+CUDA-like platforms beyond the H100 used for the reported experiment. Current
+frozen main still uses the older visibility resolver and unconditionally adds
+the MLA cache split in this branch.
+
+Review explicitly asked why partitioning was no longer needed. The author
+explained that keeping the op visible replaces that prerequisite, then
+reported DeepSeek-V2-Lite dummy-weight startup 22.501→22.717 seconds with
+identical AOT/Inductor counters (zero misses, six hits each). Those counters
+do not demonstrate uncached compilation or absence of per-layer specialization
+on configurations without hoisted layer names. An approval and final-head CI
+trigger are recorded. The author attributes earlier CUDA-graph/startup failures
+to NVML permissions and missing `nvrtc.h`; these comments do not establish a
+clean final-head full CI run.
+
+The body reports one splitting test, four Triton MLA cases and six supported
+fusion cases passing, excluding FlashAttention MLA with FP8 cache. Current
+`test_mla_rope_kvcache_cat_fusion.py` was read separately: it uses a five-row
+synthetic model, DeepSeek-scaled RoPE, NeoX/interleaved forms, BF16 and auto/FP8
+cache, with available backends. It explicitly initializes dense projection
+weights and compares intermediate outputs/cache after one compiled call;
+`FixFunctionalizationPass` preserves noncontiguous slice offsets. This is
+useful operator coverage, not multi-layer serving, repeated CUDA Graph replay,
+HiSparse or task-accuracy validation. Current fused and unfused cache wrappers
+both prepare the layer's cache state, but backend-specific write ownership
+still needs checking before broadening defaults.
+
+Historical serving covers 100 requests on one H100 with DeepSeek-V2-Lite,
+6,400 output / 7,100 total tokens. Reported output throughput is 5,959.83 tok/s
+baseline versus 10,596.56 and 11,135.59 in two candidate runs; mean TPOT is
+0.168 versus 0.094/0.090 ms. The named `bench_mla_serving.py` is not in this
+diff, and concurrency, arrival rate, warmup, precise tested SHA and repeated
+baseline measurements are not specified. Preserve these as historical reports,
+not a general MLA speedup or confirmation of model accuracy.
+
+## PR #54851 — Bind real DSA caches during metadata-free capture
+
+- Link: https://github.com/vllm-project/vllm/pull/54851
+- State: open; head `7d99c3d6881f97f057148ac85313fc8ab241c888`, base
+  `385dce36bcee42309924a5ece951a96db3dce7f2`; fresh head/base still match.
+- Coverage: all 49 diff lines, one file, +26/-1; body, two issue comments,
+  one review and zero inline comments; one commit.
+- Reviewed file: `vllm/models/deepseek_v32/attention.py`. No kernel change,
+  automated regression test or benchmark harness is included.
+- Motivation: if attention Python executes with metadata absent during graph
+  capture, passing absent caches/slots into the captured fused writer can
+  permanently disable its cache writes on replay.
+
+The patch separates PCP from the metadata-free case. PCP still materializes
+KV outside the fused cache writer. Without metadata, an allocated MLA cache
+and non-null persistent slot buffer retain the real cache and scale pointers;
+the indexer cache is retained only when also present and allocated:
+
+```diff
++            if mla_slot is not None and self.kv_cache.numel() > 0:
++                mla_kv_cache = self.kv_cache
++                mla_k_scale = self._k_scale
++            else:
++                mla_kv_cache = None
++                mla_k_scale = None
++                mla_slot = None
+```
+
+The intended lifetime contract is a stable address with changing contents:
+capture uses padded negative slots, and runtime updates that same buffer with
+real slots before replay. A newly allocated replacement slot tensor would not
+repair the address already recorded in the graph. When caches are absent, the
+wrapper instead uses an empty MLA tensor/zero entry stride and no cache slots;
+replay of that launch cannot discover newly bound Python tensors on its own.
+
+### Current caller and capture qualifications
+
+Frozen main still has the `attn_metadata is None or self.use_pcp` branch that
+clears both cache paths and slot mappings. However, current MRV2 capture
+explicitly builds attention metadata for both FULL and PIECEWISE, using
+`for_capture=False` for PIECEWISE, and passes the result into forward context.
+The default model-state implementation calls the metadata builder even when
+that flag is false. Therefore `for_capture=False` alone does not establish
+`attn_metadata is None` or reproduce the reported corruption on current main.
+Inspect the actual runtime context/runner and captured launch before applying
+this diagnosis to a new trace. The body describes the older failing setup;
+the source review establishes a conditional mechanism, not a current GPU repro.
+
+Current `get_dummy_slot_mappings` fills the persistent allocation with
+`PAD_SLOT_ID`; normal slot computation reuses it. Capture also supports a
+custom persistent mapping buffer and pads it before recording. In the current
+fused kernel, Q normalization/top-k clearing can still execute on padded rows,
+and materialized KV outputs may be needed for dense prefill or PCP. Negative
+slots protect cache writes; they do not make the entire launch a no-op.
+
+Current attention also has independent MLA and indexer mappings, shuffled
+indexer cache layouts, HiSparse's separate cache-update ownership and PCP
+gather/write paths. The old patch only handles its earlier single-slot branch;
+a port must preserve these newer contracts instead of blindly rebinding every
+cache. The compiler MLA default change #49142 and this handwritten DSA
+prologue fix operate on different paths and are not interchangeable fixes.
+
+### Validation limits
+
+The author reports a four-node AGX Thor/SM110 TP4 setup using GLM-5.2
+NVFP4-AQLM-hybrid, `TRITON_MLA_SPARSE`, `fp8_ds_mla` and PIECEWISE graphs.
+Baseline `80389cfedd` produced repeated garbage; the patch restored coherent
+greedy short, medium and 2,000-token responses. Device probes reportedly
+show finite indexer/MLA values and context-growing valid top-k counts. This is
+manual smoke/diagnostic evidence, not GSM8K/AIME accuracy or a checked-in
+capture/replay regression. The approximate 10× decode claim compares against
+a corrupt ~0.1 tok/s run and is not a normal kernel-performance baseline.
+
+The separate standalone harness's out-of-bounds-slot failure is explicitly
+not the reported server trigger; this diff adds no bounds check. Similar
+symptoms in other models, DCP/MTP or FULL_AND_PIECEWISE do not establish the
+same cause. The discussion contains a conflict notice and disabled automated
+review, with no human approval or additional final-head test results.
+
 Current source:
 [configuration and splitting](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/config/compilation.py),
 [default resolution and ranges](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/config/vllm.py),
@@ -229,4 +372,11 @@ Current source:
 [MLA RoPE/concat/cache](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/compilation/passes/fusion/mla_rope_kvcache_cat_fusion.py),
 [ROCM_ATTN layout and fallback](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/attention/backends/rocm_attn.py),
 [AITER wrappers](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/_aiter_ops.py),
-[current splitting tests](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/tests/compile/test_config.py).
+[current splitting tests](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/tests/compile/test_config.py),
+[MLA fusion numerical tests](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/tests/compile/passes/test_mla_rope_kvcache_cat_fusion.py),
+[MLA cache preparation and update](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/model_executor/layers/attention/mla_attention.py),
+[DSV3.2 attention caller](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/models/deepseek_v32/attention.py),
+[fused norm/RoPE/cache kernel](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/models/deepseek_v32/common/kernels.py),
+[MRV2 graph capture](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/worker/gpu/cudagraph_utils.py),
+[persistent slot buffers](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/worker/gpu/block_table.py),
+[default attention metadata preparation](https://github.com/vllm-project/vllm/blob/b022bb7a4873a47cdcdf474edf3bd499c221f40d/vllm/v1/worker/gpu/model_states/default.py).

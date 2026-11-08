@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 36 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 38 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -214,8 +214,13 @@ Current config ordering, splitting tests, all three cache-fusion files and
 backend layout methods establish why flags can fail to produce a match and
 why matched Q quantization remains a separate operator. The cards preserve
 128/256-token regressions, pre-rebase measurements and nonidentical outputs.
-Five neighboring RoPE/cache catalog PRs received fresh metadata checks only;
-their full source review remains pending and is not included in the count.
+The same review covers the complete #49142 MLA default and #54851 DSA capture
+binding proposals and all discussion. The first lacks the successor's hoisted
+layer-name guard; its small H100 serving report is qualified. The second's
+metadata-free capture mechanism is distinguished from current MRV2 metadata
+construction, separate indexer slots and HiSparse/PCP ownership. Three remaining
+neighboring catalog PRs received fresh metadata checks only; their full source
+review remains pending and is not included in the count.
 
 ## Local validation of this increment
 

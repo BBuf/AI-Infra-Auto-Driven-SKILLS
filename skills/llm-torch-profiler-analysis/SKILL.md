@@ -235,7 +235,8 @@ Load only relevant references:
   producer cutovers and historical serving/accuracy limits. Residence includes waits.
 - [vllm-compiler-source-review.md](references/vllm-compiler-source-review.md):
   RoPE/cache splitting and custom-op ordering, superseded/open configuration
-  fixes, retained Q quantization and layout/range guards. Check actual matches.
+  fixes, retained Q quantization and layout/range guards; MLA defaults and DSA
+  capture bindings. Check actual matches, metadata and persistent slot ownership.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check

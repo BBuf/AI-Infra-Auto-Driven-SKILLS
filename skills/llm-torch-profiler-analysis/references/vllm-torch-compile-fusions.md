@@ -138,3 +138,8 @@ is not evidence that norm fusion failed.
 - A missing vLLM compile fusion may be intentional when the graph range, backend
   support check, dtype, token count, or AITER / FlashInfer availability does not
   satisfy the pass-specific guard.
+- Distinguish compiler fusion reachability from cache binding inside a captured
+  handwritten kernel. The [MLA/DSA reviews](vllm-compiler-source-review.md)
+  cover #49142's default proposal and #54851's conditional stale-write mechanism.
+  PIECEWISE does not itself imply absent metadata on current MRV2; verify the
+  forward context, persistent slot addresses and actual cache-write owner.
