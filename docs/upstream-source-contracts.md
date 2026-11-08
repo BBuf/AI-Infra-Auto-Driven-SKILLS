@@ -114,6 +114,13 @@ low-level eligibility function does not enforce that restriction for new
 direct callers. Current main also has an optional FP8-producing MegaMHC join.
 Do not transfer eager fusion timing or kernel presence to the captured path.
 
+The [TokenSpeed Hopper indexer review](../skills/llm-torch-profiler-analysis/references/tokenspeed-indexer-source-review.md)
+traces merged #1857's fused cleaner/block maxima through current candidate
+selection. Only bounded consumers may read its partially initialized outputs;
+scratch still scales with capacity. The standalone block-max helper retains a
+full-width read, and the native Hopper logits budgets remain 32/128 MiB for
+paged/broadcast scoring. Do not apply Blackwell's newer scoring policy to it.
+
 - SGLang kernel roots are `python/sglang/kernels/{aot,jit,ops}`. The current
   [dependency pin](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/pyproject.toml) uses FlashInfer 0.7.3 (cu13).
   Check the actual wheel/image, not just source main.

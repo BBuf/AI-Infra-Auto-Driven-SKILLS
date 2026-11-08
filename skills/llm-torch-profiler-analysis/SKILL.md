@@ -221,6 +221,9 @@ Load only relevant references:
 - [tokenspeed-mhc-source-review.md](references/tokenspeed-mhc-source-review.md):
   merged MNNVL post/norm fusion, eager MegaMHC and later FP8 output. Admission,
   graph-replay restrictions and stream contention determine the observed path.
+- [tokenspeed-indexer-source-review.md](references/tokenspeed-indexer-source-review.md):
+  Hopper block-max/cleaner fusion, device-length selection and unwritten tails.
+  Distinguish bounded traffic from capacity-shaped scratch and scoring cost.
 - [fuse-overlap-catalog.md](references/fuse-overlap-catalog.md) and
   [overlap-catalog.md](references/overlap-catalog.md): historical precedents;
   recheck a PR's current state and target revision before borrowing code.

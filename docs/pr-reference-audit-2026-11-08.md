@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 23 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 24 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -151,6 +151,13 @@ check. It replaces the stale open-proposal row with the merged implementation:
 communication admission before deferral, stage/Engram handoff completion,
 MegaMHC replay exclusion and current FP8 output layout. CI plans and earlier
 performance reports remain distinct from executed final-head validation.
+
+The [TokenSpeed Hopper selection review](../skills/llm-torch-profiler-analysis/references/tokenspeed-indexer-source-review.md)
+reads #1857's complete three-file diff, both comments and current admission,
+scoring, cleanup and selection callers. Its merged implementation bounds traffic
+with device lengths while retaining capacity-shaped buffers; candidate consumers
+that can read a partial block keep fully initialized scores. Performance and
+successful request counts are not promoted to answer-accuracy evidence.
 
 ## Local validation of this increment
 
