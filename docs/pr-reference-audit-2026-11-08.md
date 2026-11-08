@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 33 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 34 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -198,6 +198,14 @@ It also covers #1741's full seven-file persistent gfx1250 MoE proposal and
 all discussion. Closed without merge, it is absent from the current regular
 apply callers. The card preserves the unresolved public-launcher activation
 parameter finding and separates architecture-skipped GPU tests from CI plans.
+
+The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
+covers #59737's complete one-file diff, body, 23 issue comments, nine reviews
+and ten inline comments. Current gating, router dispatch and regression code
+show the later host SM90 gate, row-stride fallback and shape-specific producer
+cutovers. The catalog separates this merged change from #45120, now closed
+without merge, and still-open #43190. The latter two received fresh metadata
+checks only and are not added to the manual-review count.
 
 ## Local validation of this increment
 

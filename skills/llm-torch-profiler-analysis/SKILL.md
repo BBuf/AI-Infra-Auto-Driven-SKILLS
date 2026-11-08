@@ -230,6 +230,9 @@ Load only relevant references:
 - [tokenspeed-routing-source-review.md](references/tokenspeed-routing-source-review.md):
   merged V4/V4.1 router, weight-store and expert-finalization changes. Preserve
   FP32 scaling before BF16 storage, original output width and backend admission.
+- [vllm-routing-source-review.md](references/vllm-routing-source-review.md):
+  merged softmax/sigmoid gating PDL, current SM90 and row-stride admission,
+  producer cutovers and historical serving/accuracy limits. Residence includes waits.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check

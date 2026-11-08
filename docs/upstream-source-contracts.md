@@ -105,6 +105,15 @@ the bundled simulator does not automatically ingest them.
 
 ## Compiler and dependency dispatch
 
+The [vLLM routing review](../skills/llm-torch-profiler-analysis/references/vllm-routing-source-review.md)
+traces merged #59737's fused softmax/sigmoid gating PDL. Current main enables
+the host attribute only on SM90+, while row-padded logits and unsupported
+expert counts still use ordinary score/top-k launches. The producer's runtime
+GEMM cutovers are shape-specific; the old M=32/33 boundary is not universal.
+Early residence includes dependency waits and does not prove saved time.
+Historical GB200 reports show modest decode gains and some prefill regressions;
+their kernel overlays and two accuracy repeats do not validate the current build.
+
 TokenSpeed's [merged V4.1 mHC review](../skills/llm-torch-profiler-analysis/references/tokenspeed-mhc-source-review.md)
 separates MNNVL communication fusion from eager MegaMHC. The former admits
 prepared 2/4/8/16-rank BF16 `[T,5120]` inputs through 2048 rows, subject to
