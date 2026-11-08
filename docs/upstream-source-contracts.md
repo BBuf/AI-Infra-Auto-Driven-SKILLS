@@ -136,6 +136,16 @@ KV lengths: selection must already encode causal validity. Current KVP record
 output is a separate, gated evolution of the unsplit dense core. Historical
 H20 results predate the final stride-preserving rebase and need that qualifier.
 
+The [TokenSpeed routing review](../skills/llm-torch-profiler-analysis/references/tokenspeed-routing-source-review.md)
+traces merged #1770 through V4.1's current MoE plan and CUDA finalizer.
+Route scoring, normalization and scale stay FP32 until the BF16 store; default
+MXFP8 quantization selects CuTe only for contiguous inputs already at padded
+width. Deferred routed/shared finalization requires the original hidden width,
+BF16 activations and NVIDIA/provider admission. Main now restores missing
+precomputed weights in `MoELayer.forward`; MegaMoE has a separate finalized
+path. Historical full-active-batch DSpark cycles include draft and verify work
+and must not be quoted as latency per accepted token.
+
 The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
 reconciles merged routing, sampling and attention changes. BF16 precomputed
 MoE routing still rounds weights to BF16 before passing the unpacked tuple;

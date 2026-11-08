@@ -1,5 +1,19 @@
 # TokenSpeed DeepSeek V4 Model PR Optimization History
 
+## November 8 source reconciliation
+
+[PR #1770](https://github.com/lightseekorg/tokenspeed/pull/1770) merged on
+2026-10-17. Its [complete source review](../../../skills/llm-torch-profiler-analysis/references/tokenspeed-routing-source-review.md)
+reads all 31 changed files and discussion, then checks current V4.1 callers:
+FP32 route normalization/scaling before BF16 storage, CuTe router and MXFP8
+layout gates, and BF16 routed/shared finalization with explicit original
+hidden width. Current `MoELayer.forward` supplies missing precomputed weights;
+the original PR's local V4.1 fallback is no longer the shared contract.
+MegaMoE follows a separate finalized path. The reported four-B300 DSpark
+cycles include draft and verify work, not latency per accepted token; they
+do not establish final-head model accuracy. This manually reviewed supplement
+does not turn the older API-extracted history below into full source reviews.
+
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

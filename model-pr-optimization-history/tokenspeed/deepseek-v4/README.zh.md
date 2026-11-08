@@ -1,5 +1,18 @@
 # TokenSpeed DeepSeek V4 模型 PR 优化历史
 
+## 11 月 8 日源码复核
+
+[PR #1770](https://github.com/lightseekorg/tokenspeed/pull/1770) 已于
+2026-10-17 合入。[完整源码审计](../../../skills/llm-torch-profiler-analysis/references/tokenspeed-routing-source-review.md)
+覆盖 31 个文件的完整 diff、全部讨论与当前 V4.1 调用链：路由权重在 FP32
+中归一化、缩放后才存成 BF16；CuTe router 和 MXFP8 量化各自有准入条件；
+BF16 routed/shared finalize 必须传入原始 hidden width，避免输出保留 padding。
+当前 `MoELayer.forward` 统一补齐预计算路由缺失的权重，已不依赖原 PR 中
+V4.1 调用方的局部兜底；MegaMoE 仍走独立的已完成 finalize 路径。
+原 PR 的四卡 B300 DSpark 周期包含 draft 与 verify，不能当成每个接受 token
+的 TPOT，也不能证明最终 head 的模型精度。此处是人工复核补充，后面的历史
+API 提取记录仍需按各条证据范围使用。
+
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

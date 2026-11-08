@@ -34,7 +34,7 @@ in different repositories remain distinct.
 This adds 1,339 objects absent from the initial census: 1,316 PRs (1,286 merged,
 18 closed without merge, 12 open) and 23 issues. The historical union contains
 6,934 objects. Fifteen additional PRs cited by the new review cards bring the
-TSV to **6,949 objects**; all 32 PRs manually reviewed in this refresh were
+TSV to **6,949 objects**; all 33 PRs manually reviewed in this refresh were
 queried again and their heads still match the reviewed diffs. The initial table
 above describes the initial census, not this expanded union. Issue references
 inside quoted titles, code comments and RFC
@@ -170,6 +170,15 @@ provider/facade/runtime paths. It replaces the stale open-proposal entry with
 merged tensor-core tiles, residual scoring and split-LSE semantics. Current
 KVP record output and numerical-policy admission are distinguished from the
 original change; early H20 measurements are not final-rebase validation.
+
+The [TokenSpeed routing review](../skills/llm-torch-profiler-analysis/references/tokenspeed-routing-source-review.md)
+covers #1770's complete 2,374-line, 31-file diff and all 11 issue comments,
+36 reviews and 39 inline comments. It checks current V4.1 callers, plan traits,
+router eligibility, top-k storage, quantization and finalization. The stale
+open-proposal row and moved paths are replaced with merged-source evidence;
+main's centralized missing-weight recovery is distinguished from the original
+local fallback. Historical B300 cycles and AMD CI comments retain their actual
+measurement and validation scope.
 
 The [TokenSpeed operator review](../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
 covers the complete #1606/#1607/#1889 diffs and all discussion, with fresh

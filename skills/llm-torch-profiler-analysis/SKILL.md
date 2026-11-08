@@ -227,6 +227,9 @@ Load only relevant references:
 - [tokenspeed-dsa-source-review.md](references/tokenspeed-dsa-source-review.md):
   merged selected-slot tensor-core attention, residual scoring, split/LSE
   semantics and current KVP callers. Check slot order and actual provider.
+- [tokenspeed-routing-source-review.md](references/tokenspeed-routing-source-review.md):
+  merged V4/V4.1 router, weight-store and expert-finalization changes. Preserve
+  FP32 scaling before BF16 storage, original output width and backend admission.
 - [tokenspeed-operator-source-review.md](references/tokenspeed-operator-source-review.md):
   FP32 row-CTA MV, unpacked BF16 MoE routes, selective sampling reductions and
   owner-local MHA counters, plus a closed AMD persistent-MoE proposal. Check
