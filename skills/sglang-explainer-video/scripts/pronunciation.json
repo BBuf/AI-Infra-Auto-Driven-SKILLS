@@ -112,11 +112,19 @@
     "SamplingParams": "Sampling Params",
     "DSPARK": "DSpark",
     "SLA": "S L A",
-    "Day-0": "Day zero"
+    "Day-0": "Day zero",
+    "wgmma": "WG MMA",
+    "cooperative": "co operative",
+    "warpgroup": "warp group",
+    "warpgroups": "warp groups",
+    "Gumbel": "Gumbell",
+    "Gumbel-max": "Gumbell max",
+    "Philox": "Fylox"
   },
   "parts": {
     "ack": "A C K",
     "sglang": "SGLang",
+    "dspark": "DSpark",
     "flashmla": "Flash MLA",
     "flashinfer": "Flash Infer",
     "topk": "top k",
