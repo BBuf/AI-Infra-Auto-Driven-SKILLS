@@ -1,13 +1,5 @@
 # TokenSpeed Qwen3 Core 模型 PR 优化历史
 
-## 共有算子补充（2026-11-08）
-
-[路由、采样与 MHA 源码审查](../../../skills/llm-torch-profiler-analysis/references/tokenspeed-operator-source-review.md)
-覆盖下方模型文件追溯之外的共有运行时优化。其中 Qwen3 形状的 attention
-测量只运行多层 attention 调用，不能代表完整模型或服务 TPOT。计数器复用
-属于 TRT-LLM MHA runtime leaf，通用 attention wrapper 仍有不同路径；
-MoE 结论仅适用于实际选中且满足条件的 BF16 预计算路由实现。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

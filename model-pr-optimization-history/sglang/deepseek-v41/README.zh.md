@@ -1,24 +1,5 @@
 # SGLang DeepSeek V4.1 模型 PR 优化历史
 
-11 月 8 日补充：[六个逐份审阅的 open kernel PR](../../../skills/llm-torch-profiler-analysis/references/dsv41-open-pr-review.md)
-覆盖 mHC overlap、FP8 KV scale 下限，以及 Hopper indexer 的打分、临时显存预算、
-K tile 复用和选择/写回融合。卡片记录完整 diff 覆盖，并区分实验分支性能数据和
-尚待验证的上游移植。下方历史文件覆盖表与卡片保留原有审计范围。
-
-[已合并 TRT-LLM attention 审阅](../../../skills/llm-torch-profiler-analysis/references/dsv41-trtllm-source-review.md)
-覆盖 #41603、#44326、#48467：uniform-FP8 存储、支持 breakable prefill 的
-decoder bounded replay，以及按 query 行数分配的持久 counter。当前 main 的
-实现与 #36652 尚未合并的后端重构分别说明。
-
-[Hopper indexer 审阅](../../../skills/llm-torch-profiler-analysis/references/dsv41-hopper-indexer-review.md)
-对照当前按有效 tile 调度、融合 head reduction 的实现与待合并的 #42365/#40860，
-并将 #40160 更正为关闭未合并。三者的 head 数、临时显存预算、compact 坐标和验证
-范围各不相同，不能直接互换。
-
-[已合并 mHC 状态机审阅](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-source-review.md)
-覆盖 #42245 最终 diff、collective 责任和已删除的 combine-only 路径，并区分
-当前 TP2/TP4 边界与缓存下一组统计量的后续实现。
-
 ## 模型实现文件覆盖
 
 | 文件 | git 追溯到的 PR |

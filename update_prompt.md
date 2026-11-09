@@ -1,6 +1,8 @@
 # Refresh the skills from source
 
 刷新目标由用户指定；不要把历史机器、日期、模型矩阵或 PR 当成当前环境。
+保留现有 skill 的用途、流程和参考入口，把源码结论更新到已有文档。
+PR 审阅笔记、diff 和批量状态清单留在仓库外；除非用户明确要求，不新增独立审阅文档。
 
 1. 在干净分支/worktree 工作，记录仓库基线。对相关上游冻结 SHA，阅读调用方、
    dispatch、实现与验证接口。更新 `docs/upstream-source-contracts.md`，不只改日期。

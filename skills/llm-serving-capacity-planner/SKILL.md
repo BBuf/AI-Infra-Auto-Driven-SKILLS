@@ -135,8 +135,8 @@ For deployments actually using FlashInfer's Cake MoE all-reduce with an omitted
 all-reduce output, account separately for its live and retired scratch sinks.
 They grow geometrically and retain addresses used by CUDA graphs; they are not
 KV cache or necessarily reclaimable when a request ends. Startup KV logs alone
-cannot identify this allocation history. See the
-[scratch lifetime review](../llm-torch-profiler-analysis/references/flashinfer-moe-collective-source-review.md#pr-5894--retain-scratch-addresses-used-by-captured-graphs).
+cannot identify this allocation history. The address-retention behavior was
+introduced in [FlashInfer #5894](https://github.com/flashinfer-ai/flashinfer/pull/5894).
 
 ### KV Head Replication
 

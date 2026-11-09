@@ -1,25 +1,5 @@
 # SGLang DeepSeek V4.1 Model PR Optimization History
 
-November 8 supplement: [six manually reviewed open kernel PRs](../../../skills/llm-torch-profiler-analysis/references/dsv41-open-pr-review.md)
-cover mHC overlap, FP8 KV scale floors and Hopper indexer scoring, tile budgets,
-K reuse and selection/writeback. The cards record complete diff coverage and
-separate experimental-branch measurements from pending upstream validation.
-The historical file coverage and cards below retain their original scope.
-
-The [merged TRT-LLM attention review](../../../skills/llm-torch-profiler-analysis/references/dsv41-trtllm-source-review.md)
-covers #41603, #44326 and #48467: uniform-FP8 storage, decoder bounded replay
-with breakable prefill, and persistent query-row-sized counters. It separates
-current mainline behavior from the pending backend rewrite in #36652.
-
-The [Hopper indexer review](../../../skills/llm-torch-profiler-analysis/references/dsv41-hopper-indexer-review.md)
-compares current visible-tile scheduling and fused head reduction with pending
-#42365/#40860, and records #40160 as closed without merge. It preserves the
-different head-count, scratch-budget, compact-coordinate and validation contracts.
-
-The [merged mHC state review](../../../skills/llm-torch-profiler-analysis/references/dsv41-mhc-source-review.md)
-covers #42245's final diff, collective ownership and deleted combine-only paths,
-then distinguishes the current TP2/TP4 boundary and cached-statistics behavior.
-
 ## Implementation File Coverage
 
 | File | Git-traced PRs |

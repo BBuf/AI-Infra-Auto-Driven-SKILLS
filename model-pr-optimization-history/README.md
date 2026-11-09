@@ -13,9 +13,6 @@ the directory acts as one queryable knowledge base for model-family PR evidence.
   keyword snippets.
 - `open-pr-watch.md`: generated watch list for current open PRs that may affect
   benchmark, profiler, and model-history guidance.
-- `pr-reference-status.tsv`: timestamped metadata for the explicit/qualified
-  reference census. Read the [audit scope](../docs/pr-reference-audit-2026-11-08.md)
-  before interpreting its counts; this is not a full-diff review ledger.
 
 Each model history is bilingual when practical (`README.zh.md` and
 `README.en.md`) and should be grounded in inspected PR diffs, source files, and

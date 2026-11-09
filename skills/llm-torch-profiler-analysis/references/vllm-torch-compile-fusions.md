@@ -85,9 +85,10 @@ disables explicit ordinary/QK cache fusion and extracts both cache-update ops.
 An explicit MLA flag can survive while its required op is outside the graph.
 Custom rotary registration also precedes optimization-level resolution, so the
 ordinary/QK default resolvers can remain false even with partition opt-ins.
-The [complete compiler review](vllm-compiler-source-review.md) explains this
-ordering and the proposed fix: #57349 is closed without merge and superseded
-by still-open #57900. Neither is current-main behavior at this pinned SHA.
+The proposed ordering fix in [#57349](https://github.com/vllm-project/vllm/pull/57349)
+was closed without merge and superseded by open
+[#57900](https://github.com/vllm-project/vllm/pull/57900). Neither patch is
+present at this pinned SHA.
 
 Ordinary and combined QK cache fusion use a default compile-range upper bound
 of 256 tokens. The #57900 MI355X report improves 1–64-token latency but regresses
@@ -95,15 +96,16 @@ at 128/256; it leaves that bound unchanged. Its Qwen3 QK-norm and Kimi MLA
 pattern-match reports have no corresponding performance measurements. A
 remaining Q-quant kernel is expected in the quantized-query patterns above.
 
-The [CUDA kernel proposal review](vllm-rope-cache-kernel-review.md) separates
-#57271's ordinary full-width GQA writer from #58798's model-selected MiMo
-partial-RoPE/value-scaling/DiffKV path. Both remain open. The former needs
+The open CUDA proposals have different callers:
+[#57271](https://github.com/vllm-project/vllm/pull/57271) supplies an ordinary
+full-width GQA writer, while [#58798](https://github.com/vllm-project/vllm/pull/58798)
+targets MiMo partial-RoPE/value-scaling/DiffKV. The former needs
 short-slot and FP8 intermediate-rounding checks; the latter's old plain-QKV
 split does not cover current MiMo's padded checkpoint-chunk layout. A
 registered fusion or historical benchmark is not current-model admission.
-The same review covers #52363's separate manual Llama/FlashAttention design:
+The separate manual [Llama/FlashAttention proposal #52363](https://github.com/vllm-project/vllm/pull/52363) uses
 descriptor-based admission, graph-owned Q and an in-op runtime threshold
-avoid freezing dispatch when shape guards are skipped. Above 256 tokens,
+to avoid freezing dispatch when shape guards are skipped. Above 256 tokens,
 compiled fallback adds Q/K copies; reported 257/512/1024-token cases regress
 2–2.5%, while small operator gains coexist with near-equal batch-one E2E latency.
 
@@ -151,7 +153,8 @@ is not evidence that norm fusion failed.
   support check, dtype, token count, or AITER / FlashInfer availability does not
   satisfy the pass-specific guard.
 - Distinguish compiler fusion reachability from cache binding inside a captured
-  handwritten kernel. The [MLA/DSA reviews](vllm-compiler-source-review.md)
-  cover #49142's default proposal and #54851's conditional stale-write mechanism.
+  handwritten kernel: [#49142](https://github.com/vllm-project/vllm/pull/49142)
+  proposes MLA defaults, while [#54851](https://github.com/vllm-project/vllm/pull/54851)
+  addresses a conditional stale-write mechanism.
   PIECEWISE does not itself imply absent metadata on current MRV2; verify the
   forward context, persistent slot addresses and actual cache-write owner.
