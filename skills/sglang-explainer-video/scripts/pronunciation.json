@@ -119,7 +119,9 @@
     "warpgroups": "warp groups",
     "Gumbel": "Gumbell",
     "Gumbel-max": "Gumbell max",
-    "Philox": "Fylox"
+    "Philox": "Fylox",
+    "IEEE": "I triple E",
+    "expf": "exp F"
   },
   "parts": {
     "ack": "A C K",
@@ -138,7 +140,8 @@
     "dit": "D I T",
     "v2": "V two",
     "ctas": "CTAs",
-    "deepinfer": "Deep Infer"
+    "deepinfer": "Deep Infer",
+    "expf": "exp F"
   },
   "approved": ["SGLang", "MTP", "PR", "dB", "Kimi", "WRITE"],
   "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"],

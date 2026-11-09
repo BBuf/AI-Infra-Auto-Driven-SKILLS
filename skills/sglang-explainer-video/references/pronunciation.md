@@ -255,6 +255,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | ex2 (ex2.approx, same video) | X2 | 硬件近似的指数 (ex2_approx_ftz stays on screen) |
 | issue_fill (ring refill helper, same video) | Essue Fail | 由最后读完的那个 warp 发起 (issue_fill stays on screen) |
 | 奇偶位 (mbarrier parity bit, same video) | line_asr heard 其偶位 (qí, not jī) in 2 clauses; seg_check also cut 奇 \| 偶位 | 那一位比特翻转 / 只看这一位; 按轮数的奇偶 → 这一轮用一套，下一轮用另一套 |
+| IEEE (IEEE division, PR 48942 video 2026-11-09) | HEE / EEE (IEEE, and I E E E: AEE) | lexicon → I triple E, the usual English reading: heard IEEE in the carrier and in 「除法按 IEEE 精确舍入」; OK~ (EEEE) in the shorter 「除法按 IEEE 舍入」 |
+| expf (C float exp, same video) | XF in the carrier; EXPS / XX in 「有的调用 expf，…」 | lexicon + `parts` → exp F: heard EXPF in the carrier and in both lines tried, so `__expf` / `__nv_expf` read right too (E X P F failed in the carrier) |
 
 Also OK~ in that video, listen on the render: warp / warps ("World" / "Works"), grid ("Grip"), tile ("他").
 

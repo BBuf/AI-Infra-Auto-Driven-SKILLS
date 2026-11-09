@@ -279,3 +279,11 @@ def test_dspark_markov_walk_terms():
     assert spoken("加一个 Gumbel 噪声，Gumbel-max 技巧") == "加一个 Gumbell 噪声，Gumbell max 技巧"
     assert spoken("随机数来自 Philox。") == "随机数来自 Fylox。"
     assert spoken("SGLANG_DSPARK_OPT_INT8_MARKOV_WALK") == "SGLang DSpark opt INT8 markov walk"
+
+
+def test_ieee_and_expf_are_respelled():
+    # PR 48942 video (2026-11-09): IEEE was heard HEE (I E E E: AEE), expf EXPS / XX in a
+    # sentence; I triple E and exp F transcribe back, also inside __expf / __nv_expf.
+    assert spoken("除法按 IEEE 精确舍入") == "除法按 I triple E 精确舍入"
+    assert spoken("有的调用 expf，有的调用快速版的 exp") == "有的调用 exp F，有的调用快速版的 exp"
+    assert spoken("有的调用 __expf") == "有的调用 exp F"
