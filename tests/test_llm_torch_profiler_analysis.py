@@ -199,17 +199,8 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 ["worker.trace.json"],
             )
 
-    def test_sglang_rust_and_declared_v2_fail_before_control_requests(self):
+    def test_sglang_declared_v2_fails_before_control_requests(self):
         common = sys.modules["profile_common"]
-        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
-            common, "try_get_json", return_value={"frontend": "rust"}
-        ), mock.patch.object(common.request, "urlopen") as control:
-            with self.assertRaisesRegex(RuntimeError, "Rust frontend"):
-                common.run_sglang_profiler(
-                    "http://server", tmp, 5, False, False, "triage",
-                    common.ProbePlan("x", 1, 1, 1, 0), 0,
-                )
-            control.assert_not_called()
         with mock.patch.object(common, "resolve_framework", return_value="sglang"), \
              mock.patch.object(common, "run_sglang_profiler") as capture:
             with self.assertRaisesRegex(ValueError, "profiler v1"):
@@ -219,10 +210,56 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 )
             capture.assert_not_called()
 
-    def test_sglang_merge_uses_profile_id_without_prefix(self):
+    def test_capture_rejects_escaping_labels_before_contacting_server(self):
+        common = sys.modules["profile_common"]
+        plan = common.ProbePlan("x", 1, 0, 1, 0)
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(common.request, "urlopen") as control:
+            for label in ["../run", "/tmp/run", "a\\b", "a\0b", ".."]:
+                with self.subTest(label=label):
+                    for framework in ["sglang", "tokenspeed", "vllm"]:
+                        with self.assertRaisesRegex(ValueError, "Profile labels"):
+                            if framework == "sglang":
+                                common.run_sglang_profiler(
+                                    "http://server", tmp, 5, False, False, label, plan, 0,
+                                )
+                            else:
+                                common.run_remote_profiler(
+                                    "http://server", tmp, framework, plan, 0,
+                                    profile_prefix=label,
+                                )
+            control.assert_not_called()
+            self.assertEqual(list(Path(tmp).iterdir()), [])
+
+    def test_sglang_stage_capture_requires_positive_steps(self):
+        common = sys.modules["profile_common"]
+        with mock.patch.object(common.request, "urlopen") as control:
+            for steps in [None, 0, -1]:
+                with self.subTest(steps=steps), self.assertRaisesRegex(ValueError, "positive"):
+                    common.run_sglang_profiler(
+                        "http://server", None, steps, True, False, "run",
+                        common.ProbePlan("x", 1, 0, 1, 0), 0,
+                    )
+            control.assert_not_called()
+
+    def test_sglang_failed_probe_still_stops_capture(self):
+        common = sys.modules["profile_common"]
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(common, "try_get_json", return_value=None), \
+             mock.patch.object(common.request, "urlopen"), \
+             mock.patch.object(common, "send_probe_requests", side_effect=RuntimeError("probe failed")), \
+             mock.patch.object(common, "stop_remote_profiler") as stop:
+            with self.assertRaisesRegex(RuntimeError, "probe failed"):
+                common.run_sglang_profiler(
+                    "http://server", tmp, 5, False, False, "run",
+                    common.ProbePlan("x", 1, 1, 1, 0), 0,
+                )
+            stop.assert_called_once_with("http://server", "sglang")
+
+    def test_sglang_rust_capture_uses_mergeable_profile_id(self):
         common = sys.modules["profile_common"]
         with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
-            common, "try_get_json", return_value={"frontend": "python"}
+            common, "try_get_json", return_value={"frontend": "rust"}
         ), mock.patch.object(common.request, "urlopen") as control, \
              mock.patch.object(common, "wait_for_profiler_artifact", return_value=Path(tmp)):
             common.run_sglang_profiler(
@@ -283,6 +320,60 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 "vllm", Path("/shared/traces"), None, "decode"
             )
         )
+
+    def test_vllm_capture_negotiates_session_overrides_without_restarting(self):
+        common = sys.modules["profile_common"]
+        schema = {
+            "paths": {"/start_profile": {"post": {"requestBody": {
+                "content": {"application/json": {"schema": {"anyOf": [
+                    {"$ref": "#/components/schemas/StartProfileRequest"},
+                    {"type": "null"},
+                ]}}}
+            }}}},
+            "components": {"schemas": {"StartProfileRequest": {"properties": {
+                "profile_prefix": {}, "max_iterations": {}, "profiler_kwargs": {}
+            }}}},
+        }
+        # Current, old, and OpenAPI-disabled servers all remain usable. A
+        # bodyless old endpoint must never be reported as honoring overrides.
+        for spec, expected in [
+            (schema, {"profile_prefix": "run-decode", "max_iterations": 7}),
+            ({"paths": {}}, None),
+            (None, None),
+        ]:
+            with self.subTest(spec=spec), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                payloads = []
+
+                def post(url, payload=None, **kwargs):
+                    if url.endswith("/start_profile"):
+                        payloads.append(payload)
+                    else:
+                        (root / "dp0_pp0_tp0.trace.json").write_text(
+                            json.dumps({"traceEvents": [{"name": "new"}]})
+                        )
+
+                with (
+                    mock.patch.object(common, "try_get_json", return_value=spec),
+                    mock.patch.object(common, "discover_openai_model", return_value="model"),
+                    mock.patch.object(common, "post_json", side_effect=post),
+                ):
+                    result = common.run_remote_profiler(
+                        "http://server", str(root), "vllm",
+                        common.ProbePlan("x", 1, 0, 1, 0), 0,
+                        profile_prefix="run", stage="decode", num_steps=7,
+                    )
+                self.assertEqual(payloads, [expected])
+                self.assertEqual(len(common.discover_trace_files(result, recursive=True)), 1)
+
+    def test_vllm_invalid_prefix_fails_before_starting_capture(self):
+        common = sys.modules["profile_common"]
+        for prefix in ["../run", "中文", "x" * 128]:
+            with self.subTest(prefix=prefix), self.assertRaises(ValueError):
+                common.build_remote_profiler_start_payload(
+                    "vllm", Path("/shared"), prefix, "decode",
+                    frozenset({"profile_prefix"}), 5,
+                )
 
     def test_dsv41_kernel_categories_keep_math_and_communication_distinct(self):
         classify = self.mod.kernel_helpers.classify_kernel
@@ -492,6 +583,9 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
 
         def fake_run_sglang_profiler(**kwargs):
             calls.append(kwargs)
+            path = Path(kwargs["output_dir"])
+            path.mkdir(parents=True)
+            (path / "TP-0.trace.json").write_text('{"traceEvents": []}')
             return Path(kwargs["output_dir"])
 
         with (
@@ -500,6 +594,9 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 profile_common, "run_sglang_profiler", fake_run_sglang_profiler
             ),
         ):
+            old = Path(tmpdir) / "prefill" / "old.trace.json"
+            old.parent.mkdir()
+            old.write_text('{"traceEvents": []}')
             result = profile_common.run_profiler(
                 url="http://127.0.0.1:30000",
                 output_dir=tmpdir,
@@ -519,7 +616,10 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                 decode_input_len=1,
                 decode_output_len=321,
             )
-            self.assertEqual(result, Path(tmpdir).resolve())
+            self.assertEqual(result.parent, Path(tmpdir).resolve())
+            self.assertEqual(len(profile_common.discover_trace_files(result, recursive=True)), 2)
+            self.assertTrue(old.exists())
+            self.assertNotIn(old, profile_common.discover_trace_files(result, recursive=True))
 
         self.assertEqual([call["num_steps"] for call in calls], [8, 8])
         self.assertEqual([call["profile_by_stage"] for call in calls], [False, False])

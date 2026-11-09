@@ -79,8 +79,13 @@ the visible boundary kernel.
 V4 currently starts each half at `mhc_pre_big_fuse*`: attention-pre then
 FFN-pre, two anchors per layer. Fused post+pre removes `mhc_post_tilelang`
 for small-token SGLang traces; retain that old anchor only for verified unfused
-traces or the >32-token path. V4.1 uses previous-sublayer pre-mix and disables
-that cross-layer fused path, so it always requires explicit anchor evidence.
+traces or the >32-token path. V4.1 uses previous-sublayer pre-mix, which cannot
+reuse V4's fused-post-pre formula. Its current `deepseek_v4_mhc.py` dispatch
+still carries fused post/combine/norm/quant across eligible boundaries; opt-in
+Mega mHC prefill also produces the next coefficients. Engram seams and row
+selection can invalidate cached inputs. It always needs explicit anchor
+and cadence evidence; a vanished stats/norm launch is not a missing layer.
+See the [current boundary matrix](../llm-torch-profiler-analysis/references/fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues).
 FlashMLA's `flash_fwd_mla_combine` depends on backend and split count; SM100
 SGLang V3 defaults to TRT-LLM MLA, while DSA models use DSA.
 

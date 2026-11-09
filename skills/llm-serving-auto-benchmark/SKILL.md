@@ -76,7 +76,7 @@ default.
 
 ## Source and experiment contracts
 
-Use the [2026-09-18 source contracts](../../docs/upstream-source-contracts.md)
+Use the [source contracts](../../docs/upstream-source-contracts.md)
 for current profiler APIs, branch-specific defaults and KV sizing semantics.
 Before combining PRs or claiming kernel performance/accuracy equivalence, use
 [paired-validation.md](references/paired-validation.md). It distinguishes
@@ -156,8 +156,10 @@ falling back to its generic prefill `4090->1` and decode `1->2048` defaults.
 - Consult the [source contracts](../../docs/upstream-source-contracts.md) for
   exact inspected revisions. Preserve installed-image `--help` and effective
   environment values; do not copy a historical release's defaults forward.
-- SGLang main and dsv4.1 differ on FlashInfer fused finalize at the inspected
-  heads. A numerical default change is part of the experiment, not noise.
+- Current SGLang main uses `SGLANG_FLASHINFER_MOE_FUSED_FINALIZE=False`;
+  the deleted historical `dsv4.1` branch used True. Record that numerical
+  difference when reproducing an old result. Main now pins FlashInfer 0.7.3;
+  inspect the installed wheel and actual producer/consumer dispatch.
   The current kernel roots are `python/sglang/kernels/{aot,jit,ops}`.
 - SGLang's native `/generate` and OpenAI-compatible paths are different
   benchmark lanes. Use one common endpoint/client when comparing frameworks;
@@ -518,10 +520,13 @@ vllm bench serve --backend openai-chat \
 
 or with the same OpenAI-compatible client used for the other frameworks.
 When TokenSpeed is a likely leader and profiler handoff will be needed, the
-control server can arm torch profiling for the same request shape (CONTROL_PORT defaults to the serving port + 1; override with --control-port):
+gateway can arm torch profiling for the same request shape when its installed
+SMG wheel exposes the control route. Set `CONTROL_URL` to that verified URL;
+current `serve` uses a headless engine plus SMG, not the retired Python
+`--control-port` sidecar. Do not infer the URL by adding one to the serve port:
 
 ```bash
-curl -X POST "http://127.0.0.1:${CONTROL_PORT}/start_profile" \
+curl -X POST "${CONTROL_URL}/start_profile" \
   -H 'Content-Type: application/json' \
   -d '{"output_dir":"/artifacts/tokenspeed_profile","num_steps":5,"activities":["CPU","GPU"],"with_stack":true,"profile_id":"ts-bench"}'
 # Drive the same workload with the common client, then POST /stop_profile if needed.

@@ -120,12 +120,23 @@ The inspected SGLang source reserves runtime headroom from **pre-model-load
 free memory**: `headroom = pre_model_load_memory * (1 - mem_fraction_static)`.
 The KV budget starts from currently free memory minus this headroom and other
 model-specific reservations. It is not `post_weight_free * fraction`.
-Post-capture sizing may update the pool again. Use final logged capacity and
+Post-capture sizing may update target and eligible DFlash-family draft pools
+in one round. Sum target plus distinct draft-owner summaries per rank; a new
+target summary resets the round. VA upper bounds reserve address space rather
+than physical bytes. Keep independent pools and recurrent state separate.
+Use final logged capacity and
 rank-local evidence; see [source contracts](../../docs/upstream-source-contracts.md).
 
 The default is auto-resolved from the hardware and configuration. Read the
 resolved value from `server_args={...}`. A lower value increases runtime
 headroom at the cost of KV capacity. Do not infer 0.88 when it is absent.
+
+For deployments actually using FlashInfer's Cake MoE all-reduce with an omitted
+all-reduce output, account separately for its live and retired scratch sinks.
+They grow geometrically and retain addresses used by CUDA graphs; they are not
+KV cache or necessarily reclaimable when a request ends. Startup KV logs alone
+cannot identify this allocation history. The address-retention behavior was
+introduced in [FlashInfer #5894](https://github.com/flashinfer-ai/flashinfer/pull/5894).
 
 ### KV Head Replication
 

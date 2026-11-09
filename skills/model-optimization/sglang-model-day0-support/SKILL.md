@@ -67,7 +67,17 @@ For each gap, record:
 - interaction risks with state, graph capture, parallel layout, or protocol.
 
 Use public model-family PR history when available. Do not infer support from a
-shared architecture name alone.
+shared architecture name alone. Map runtime ownership as well as model files:
+current V4.1 separates [mHC state/dispatch](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_mhc.py)
+from [boundary wiring](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/python/sglang/srt/models/deepseek_v4_boundary.py).
+A Day-0 kernel replacement must preserve residual rewrites, row selection,
+quantized-scale layout, graph-stream initialization and target/draft pool
+ownership. Include fallback/guard-negative cases in the validation matrix;
+a loaded model alone does not exercise the optimized path.
+Check quantization formulas independently of the optimized writer's reference,
+and test overlap-sensitive accuracy under actual concurrent execution. An
+experiment's flags and results do not validate a port with different dispatch
+conditions or numerical behavior.
 
 ### 3. Classify the work
 

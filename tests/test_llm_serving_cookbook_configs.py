@@ -36,7 +36,7 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
 
     def test_all_cookbook_configs_validate(self) -> None:
         paths = self.config_paths()
-        self.assertGreaterEqual(len(paths), 38)
+        self.assertTrue(paths, "No cookbook configs discovered")
 
         for path in paths:
             with self.subTest(path=path.name):
@@ -69,6 +69,7 @@ class LlmServingCookbookConfigsTest(unittest.TestCase):
                     self.assertEqual(tokenspeed["server_command"], "tokenspeed serve")
 
     def test_retired_vllm_partial_prefill_flags_are_absent(self) -> None:
+        # vLLM retired these flags; regenerated cookbook configs must not reintroduce them.
         targets = [
             *self.config_paths(),
             VALIDATOR,

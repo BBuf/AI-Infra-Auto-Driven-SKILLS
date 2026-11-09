@@ -558,7 +558,16 @@ def parse_log(text: str) -> ParsedLog:
         if "Post-capture KV sizing:" in line:
             m = re.search(r"KV size: ([\d.]+) GB", line)
             if m:
-                result.post_capture_allocations[rank] = float(m[1])
+                if "draft KV cache allocated." in line:
+                    # DFlash-family pools follow the target resize. Each
+                    # distinct backing owner emits one additional draft line.
+                    result.post_capture_allocations[rank] = (
+                        result.post_capture_allocations.get(rank, 0) + float(m[1])
+                    )
+                else:
+                    # A target summary begins a new resize round. Do not add
+                    # it to a previous round's target/draft allocations.
+                    result.post_capture_allocations[rank] = float(m[1])
 
         # Load weight begin
         ck = parse_load_weight_begin(line)
@@ -940,9 +949,9 @@ def decompose_memory(
             target_rank, 0
         ) + parsed.mamba_allocations.get(target_rank, 0)
         if target_rank in parsed.post_capture_allocations:
-            # Main emits a VA upper bound for the target, not an allocation.
-            # Any regular allocation lines alongside that belong to independent
-            # draft pools and must survive the target-only final resize.
+            # VA bounds are reservations, not physical allocations. Regular
+            # allocations beside them belong to independently backed pools;
+            # target and resize-coupled drafts are in post_capture_allocations.
             if target_rank not in parsed.kv_va_ranks:
                 bd.kv_pool_gib = parsed.mamba_allocations.get(target_rank, 0)
             bd.kv_pool_gib += parsed.post_capture_allocations[target_rank]
@@ -1358,7 +1367,7 @@ def format_tuning_suggestions(
     # KV head replication
     if mc and mc.num_key_value_heads > 0 and mc.num_key_value_heads < tp_size:
         suggestions.append(
-            "3. KV head replication detected (kv_heads < tp_size, KV replicated across all TP ranks)\n"
+            "3. KV head replication detected (kv_heads < tp_size, each head replicated across a TP subgroup)\n"
             "   Consider EP (Expert Parallelism) to reduce TP size and KV replication overhead"
         )
 

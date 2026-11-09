@@ -79,7 +79,10 @@ if the remote server enables `SGLANG_PROFILE_V2=1`; the helper refuses this
 incompatible flow before issuing control requests. `/server_info` does not
 expose remote environment variables. Native v2 needs `profile_by_stage:true`
 and `num_steps`, without `start_step`, `merge_profiles` or `/stop_profile`.
-The Rust frontend has no HTTP profiler routes; use Python or offline capture.
+Current Rust ingress also supports start/stop with the same scheduler control.
+Older images may lack these routes; check the actual response. Keyed servers
+need the configured admin/API credential; the bundled helper has no auth flag,
+so use authenticated native control and offline analysis for those captures.
 The host launcher explicitly sets `SGLANG_PROFILE_V2=0`.
 The helper puts its label in `profile_id`, so merging can discover rank files.
 SGLang can emit stage-specific traces; its scheduler stop counter may require
@@ -92,9 +95,13 @@ iteration controls differ:
 
 - **vLLM:** launch with
   `--profiler-config '{"profiler":"torch","torch_profiler_dir":"/shared/profiles/run-001","max_iterations":5,"ignore_frontend":true}'`.
-  Start/stop has no per-request output/steps body. Configure iteration limits
-  and optional profiler warmup at server launch. The helper's `--num-steps`
-  controls probe planning, not vLLM's internal profile schedule.
+  Current start accepts per-session `profile_prefix`, `max_iterations`,
+  `delay_iterations` and `profiler_kwargs`. The helper checks `/openapi.json`
+  and sends a stage-qualified prefix and `--num-steps` as `max_iterations`
+  only when advertised. Older/OpenAPI-disabled servers retain bodyless control
+  and launch-configured limits. Output directory and optional profiler warmup
+  remain launch settings for this helper; probe steps do not override a
+  warmup/wait/active schedule or guarantee a pure decode window.
   `torch_profiler_with_stack` defaults true in the inspected source. Frontend
   traces can contain no kernels; select GPU-worker traces for GPU analysis.
   `active_iterations` only takes effect with a warmup/wait schedule; use
@@ -115,11 +122,16 @@ iteration controls differ:
 - **TokenSpeed:** the helper sends `output_dir`, CPU/GPU activities,
   `with_stack=true`, `record_shapes=false`, and a stage-qualified `profile_id`.
   Current servers expose start/stop; verify the deployed image. Proton's
-  native Hatchet artifacts are not Torch Chrome traces. The control sidecar
-  uses `--control-port` or serve port + 1; external pinned gateway wheels
-  control JSON forwarding, so validate payload fields on the installed image.
+  native Hatchet artifacts are not Torch Chrome traces. Current `serve` uses
+  SMG plus a headless Rust-hosted engine; the old Python control sidecar was
+  removed. Resolve the actual gateway/control URL and validate forwarding on
+  the installed pinned wheels. Do not assume serving port + 1.
   `EXPERT_LOAD` writes `.expert-load.pt`, not Chrome traces.
   `TOKENSPEED_CUPTI_GRAPH_WARMUP=1` can leave zero GPU events in later captures.
+  Current Torch capture requires process-global `profile_all_threads` support
+  for Rust-owned forward threads. AMD capture needs
+  `HSA_TOOLS_DISABLE_REGISTER=0`; Proton cannot combine with GPU/CUDA_PROFILER,
+  and expert-load recording refuses online EPLB. See the source contracts.
 
 ```bash
 python3 scripts/analyze_llm_torch_profile.py \
@@ -137,7 +149,8 @@ sessions still need separate output directories.
 
 Native alternatives include SGLang graph-capture traces under
 `graph_capture_profile/`, `MEM` snapshots, and `CUDA_PROFILER` with nsys;
-vLLM `capture_torch_profiler`, CUDA/NVTX and Proton Chrome export;
+vLLM CUDA/NVTX and Proton Chrome export (the old `capture_torch_profiler`
+option is deprecated and has no effect);
 TRT-LLM `TLLM_PROFILE_START_STOP`/`TLLM_TORCH_PROFILE_TRACE`; and TokenSpeed
 VizTracer/Proton plus `tokenspeed merge-traces`. Graph-capture and VizTracer
 artifacts are excluded from default runtime-trace discovery. Pass a file
@@ -159,8 +172,14 @@ MEM and expert-load outputs require their own readers.
    warp configuration before attributing a bimodal duration to arithmetic.
 5. Consult source dispatch before proposing fusion. Existing routed-expert
    activation/quant does not establish shared-expert coverage. Match rounding,
-   clamp, scale/layout, padding and graph reuse contracts.
-6. Time changes without profiling; run kernel correctness and actual-model
+   clamp, scale/layout, padding and graph reuse contracts. Check a quantization
+   oracle against an independent formula: a kernel and its reference can share
+   the same scale-floor error.
+6. Follow state ownership across fused boundaries: cached normalized rows,
+   quantized values/scales and next coefficients can become invalid after a
+   residual rewrite or row selection. V4.1 Engram/late-layer selection are
+   concrete examples; fewer launches do not prove equivalent semantics.
+7. Time changes without profiling; run kernel correctness and actual-model
    accuracy on the candidate path. NCU replay/resource metrics help explain a
    kernel but can perturb or serialize the multi-stream behavior being studied.
 
@@ -169,6 +188,11 @@ Retain unknown locations as unknown. Kernel names and eager similarities are
 hints; inspect the concrete producer, consumer and backend. The script's three
 tables are observations and candidates, not proof that an optimization is safe
 or already active in a different framework.
+
+Capture labels must be filename components: the helper rejects path separators
+and NUL before contacting the server. Live capture requires positive `num_steps`.
+SGLang v1/v2 default to stacks on and shapes off; request shapes explicitly when
+needed. Verify emitted phases and filenames against the deployed server.
 
 ## References and output
 

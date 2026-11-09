@@ -16,25 +16,25 @@
 | `docs/src/snippets/configs/MiniMaxAI/minimax-h3.jsx` | no direct PR-number commit |
 | `docs/src/snippets/configs/MiniMaxAI/minimax-m3-benchmarks.jsx` | no direct PR-number commit |
 | `docs/src/snippets/configs/MiniMaxAI/minimax-m3.jsx` | no direct PR-number commit |
-| `python/sglang/kernels/jit/csrc/minimax/fused_gemma_qknorm_rope.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/minimax/fused_store_kv_index.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
-| `python/sglang/kernels/jit/csrc/minimax/per_token_quant_ue8m0.cuh` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/attention/minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
-| `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#36549](https://github.com/sgl-project/sglang/pull/36549) |
-| `python/sglang/kernels/ops/attention/minimax_qknorm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/__init__.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/common/index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/common/utils.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
+| `python/sglang/kernels/jit/csrc/minimax/fused_gemma_qknorm_rope.cuh` | no verified PR-number commit |
+| `python/sglang/kernels/jit/csrc/minimax/fused_store_kv_index.cuh` | no verified PR-number commit |
+| `python/sglang/kernels/jit/csrc/minimax/minimax_decode_topk.cuh` | [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
+| `python/sglang/kernels/jit/csrc/minimax/per_token_quant_ue8m0.cuh` | no verified PR-number commit |
+| `python/sglang/kernels/ops/attention/minimax_decode_topk.py` | [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
+| `python/sglang/kernels/ops/attention/minimax_m3_qk_norm_rope.py` | [#36549](https://github.com/sgl-project/sglang/pull/36549) |
+| `python/sglang/kernels/ops/attention/minimax_qknorm_rope.py` | no verified PR-number commit |
+| `python/sglang/kernels/ops/attention/minimax_sparse/__init__.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/common/index.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/common/utils.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/decode/flash_with_topk_idx.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
 | `python/sglang/kernels/ops/attention/minimax_sparse/decode/indexer_cp.py` | [#41488](https://github.com/sgl-project/sglang/pull/41488) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36546](https://github.com/sgl-project/sglang/pull/36546) |
-| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#36546](https://github.com/sgl-project/sglang/pull/36546) |
-| `python/sglang/kernels/ops/kvcache/minimax_store_kv_index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/layernorm/minimax_m3_rmsnorm.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/moe/minimax_m3_swiglu.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `python/sglang/kernels/ops/quantization/minimax_quant_ue8m0.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/decode/topk_sparse.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/flash_with_topk_idx.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#36546](https://github.com/sgl-project/sglang/pull/36546) |
+| `python/sglang/kernels/ops/attention/minimax_sparse/prefill/topk_sparse.py` | [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#36546](https://github.com/sgl-project/sglang/pull/36546) |
+| `python/sglang/kernels/ops/kvcache/minimax_store_kv_index.py` | no verified PR-number commit |
+| `python/sglang/kernels/ops/layernorm/minimax_m3_rmsnorm.py` | no verified PR-number commit |
+| `python/sglang/kernels/ops/moe/minimax_m3_swiglu.py` | no verified PR-number commit |
+| `python/sglang/kernels/ops/quantization/minimax_quant_ue8m0.py` | no verified PR-number commit |
 | `python/sglang/srt/arg_groups/model_overrides/minimax_m2.py` | no direct PR-number commit |
 | `python/sglang/srt/arg_groups/model_overrides/minimax_m3.py` | no direct PR-number commit |
 | `python/sglang/srt/configs/minimax_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
@@ -44,17 +44,17 @@
 | `python/sglang/srt/layers/attention/minimax_sparse_backend.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36546](https://github.com/sgl-project/sglang/pull/36546), [#41488](https://github.com/sgl-project/sglang/pull/41488), [#41497](https://github.com/sgl-project/sglang/pull/41497) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/gluon_prefill.py` | [#36546](https://github.com/sgl-project/sglang/pull/36546) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/indexer_cp.py` | [#41488](https://github.com/sgl-project/sglang/pull/41488) |
-| `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29250](https://github.com/sgl-project/sglang/pull/29250), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36546](https://github.com/sgl-project/sglang/pull/36546), [#41488](https://github.com/sgl-project/sglang/pull/41488) |
+| `python/sglang/srt/layers/attention/minimax_sparse_ops/minimax_sparse.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29250](https://github.com/sgl-project/sglang/pull/29250), [#30793](https://github.com/sgl-project/sglang/pull/30793), [#30971](https://github.com/sgl-project/sglang/pull/30971), [#31446](https://github.com/sgl-project/sglang/pull/31446), [#36527](https://github.com/sgl-project/sglang/pull/36527), [#36546](https://github.com/sgl-project/sglang/pull/36546), [#41488](https://github.com/sgl-project/sglang/pull/41488) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/msa.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29250](https://github.com/sgl-project/sglang/pull/29250), [#30971](https://github.com/sgl-project/sglang/pull/30971) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/naive/flash_with_topk_idx.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/naive/topk_sparse.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712) |
-| `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
+| `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_flash_with_topk_idx.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_fp8_attn_gemm.py` | [#30971](https://github.com/sgl-project/sglang/pull/30971) |
 | `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_msa_fp8_parity.py` | [#30971](https://github.com/sgl-project/sglang/pull/30971) |
-| `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
+| `python/sglang/srt/layers/attention/minimax_sparse_ops/tests/test_sparse_gqa.py` | [#28712](https://github.com/sgl-project/sglang/pull/28712), [#30793](https://github.com/sgl-project/sglang/pull/30793) |
 | `python/sglang/srt/layers/moe/moe_runner/triton_utils/configs/minimax_m3_gfx950_mxfp8_compact_moe.json` | [#28712](https://github.com/sgl-project/sglang/pull/28712) |
 | `python/sglang/srt/models/minimax_m2.py` | [#12129](https://github.com/sgl-project/sglang/pull/12129), [#12798](https://github.com/sgl-project/sglang/pull/12798), [#13297](https://github.com/sgl-project/sglang/pull/13297), [#13659](https://github.com/sgl-project/sglang/pull/13659), [#13892](https://github.com/sgl-project/sglang/pull/13892), [#14047](https://github.com/sgl-project/sglang/pull/14047), [#14416](https://github.com/sgl-project/sglang/pull/14416), [#16483](https://github.com/sgl-project/sglang/pull/16483), [#18217](https://github.com/sgl-project/sglang/pull/18217), [#19577](https://github.com/sgl-project/sglang/pull/19577), [#19995](https://github.com/sgl-project/sglang/pull/19995), [#20067](https://github.com/sgl-project/sglang/pull/20067), ... (24 total) |
-| `python/sglang/srt/models/minimax_m3.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#29630](https://github.com/sgl-project/sglang/pull/29630), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32099](https://github.com/sgl-project/sglang/pull/32099), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#33962](https://github.com/sgl-project/sglang/pull/33962), [#34542](https://github.com/sgl-project/sglang/pull/34542), [#35357](https://github.com/sgl-project/sglang/pull/35357), [#36557](https://github.com/sgl-project/sglang/pull/36557), [#36576](https://github.com/sgl-project/sglang/pull/36576), [#37254](https://github.com/sgl-project/sglang/pull/37254), [#41198](https://github.com/sgl-project/sglang/pull/41198) |
+| `python/sglang/srt/models/minimax_m3.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32099](https://github.com/sgl-project/sglang/pull/32099), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#33962](https://github.com/sgl-project/sglang/pull/33962), [#34542](https://github.com/sgl-project/sglang/pull/34542), [#35357](https://github.com/sgl-project/sglang/pull/35357), [#36557](https://github.com/sgl-project/sglang/pull/36557), [#36576](https://github.com/sgl-project/sglang/pull/36576), [#37254](https://github.com/sgl-project/sglang/pull/37254), [#41198](https://github.com/sgl-project/sglang/pull/41198) |
 | `python/sglang/srt/models/minimax_m3_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715), [#31989](https://github.com/sgl-project/sglang/pull/31989), [#32941](https://github.com/sgl-project/sglang/pull/32941), [#36576](https://github.com/sgl-project/sglang/pull/36576), [#37254](https://github.com/sgl-project/sglang/pull/37254) |
 | `python/sglang/srt/models/minimax_vl_common.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
 | `python/sglang/srt/multimodal/processors/minimax_m3_vl.py` | [#28715](https://github.com/sgl-project/sglang/pull/28715) |
@@ -76,14 +76,14 @@
 | `test/registered/amd/test_minimax_rocm_verify.py` | [#41497](https://github.com/sgl-project/sglang/pull/41497) |
 | `test/registered/e2e/models/test_minimax_m25_basic.py` | no direct PR-number commit |
 | `test/registered/e2e/models_large/test_minimax_m25.py` | no direct PR-number commit |
-| `test/registered/kernels/benchmark/attention/bench_minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/benchmark/attention/bench_minimax_qknorm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/benchmark/kvcache/bench_minimax_store_kv_index.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/attention/test_minimax_decode_topk.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630), [#36560](https://github.com/sgl-project/sglang/pull/36560) |
-| `test/registered/kernels/ops/attention/test_minimax_decode_topk_page_table.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/attention/test_minimax_m3_qk_norm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/attention/test_minimax_qknorm_rope.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
-| `test/registered/kernels/ops/gemm/test_minimax_fused_qkv_index_gemm.py` | [#29630](https://github.com/sgl-project/sglang/pull/29630) |
+| `test/registered/kernels/benchmark/attention/bench_minimax_decode_topk.py` | no verified PR-number commit |
+| `test/registered/kernels/benchmark/attention/bench_minimax_qknorm_rope.py` | no verified PR-number commit |
+| `test/registered/kernels/benchmark/kvcache/bench_minimax_store_kv_index.py` | no verified PR-number commit |
+| `test/registered/kernels/ops/attention/test_minimax_decode_topk.py` | [#36560](https://github.com/sgl-project/sglang/pull/36560) |
+| `test/registered/kernels/ops/attention/test_minimax_decode_topk_page_table.py` | no verified PR-number commit |
+| `test/registered/kernels/ops/attention/test_minimax_m3_qk_norm_rope.py` | no verified PR-number commit |
+| `test/registered/kernels/ops/attention/test_minimax_qknorm_rope.py` | no verified PR-number commit |
+| `test/registered/kernels/ops/gemm/test_minimax_fused_qkv_index_gemm.py` | no verified PR-number commit |
 | ... | 12 more files omitted from table; all were used for git tracing. |
 
 ## PR Coverage Summary

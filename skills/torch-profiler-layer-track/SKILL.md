@@ -15,6 +15,12 @@ First read the [kernel attribution and timing principles](../llm-torch-profiler-
 Fused mHC/AR can remove old anchors; graph-launch host gaps and synthetic lane
 counts do not establish GPU idle time or runtime stream counts.
 
+For current DS V4.1, fused post/combine/norm and optional Mega mHC prefill can
+remove separate norm/statistics anchors. Engram and row selection can split
+that pattern again. Verify the measured phase's cadence against the
+[current boundary dispatch](../llm-torch-profiler-analysis/references/fuse-overlap-catalog.md#residual-mixing-and-collective-epilogues)
+before adding layer labels; never reuse a V4 or old V4.1 anchor count blindly.
+
 ## Establish what the labels mean
 
 Use the user's existing local trace, including a Desktop copy when requested.

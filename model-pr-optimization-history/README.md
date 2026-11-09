@@ -26,8 +26,10 @@ implementation at the audited heads.
 
 All four framework trees are rebuilt by
 `tools/rebuild_model_pr_history_from_git.py` from upstream git history. Merged
-PRs that already have an audited card keep that card verbatim; only new or
-still-open PRs are fetched again. Hand-written dated notes (a source-head
+PRs that already have an audited card keep that card verbatim; new and unmerged
+PRs are fetched again, including closed PRs that may have reopened. Persisted
+open/closed/error cache entries expire between runs; `--refetch-existing` also
+bypasses the merged cache. Hand-written dated notes (a source-head
 refresh, a backfill audit, or a reviewed kernel addendum) sit between the title
 and `Implementation File Coverage` and survive regeneration. Read them first.
 

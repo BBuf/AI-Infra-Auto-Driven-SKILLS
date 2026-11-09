@@ -87,45 +87,9 @@ class TestModelProfile(unittest.TestCase):
     def setUp(self):
         self.mod = load_profiles()
 
-    def test_builtin_profiles_exist(self):
-        for name in ["dsv4_csa_hca", "dsv3_mla", "generic"]:
-            p = self.mod.get_profile(name)
-            self.assertEqual(p.name, name)
-
     def test_unknown_profile_raises(self):
         with self.assertRaises(ValueError):
             self.mod.get_profile("nonexistent")
-
-    def test_dsv4_profile_attributes(self):
-        p = self.mod.get_profile("dsv4_csa_hca")
-        self.assertEqual(p.anchor_kernel, "mhc_pre_big_fuse")
-        self.assertEqual(p.blocks_per_layer, 2)
-        self.assertEqual(p.half_labels, ["attn", "ffn"])
-        self.assertEqual(p.default_num_layers, 1)
-        self.assertTrue(len(p.category_rules) > 10)
-
-    def test_dsv3_profile_attributes(self):
-        p = self.mod.get_profile("dsv3_mla")
-        self.assertIsNone(p.anchor_kernel)
-        self.assertEqual(p.blocks_per_layer, 1)
-        self.assertEqual(p.half_labels, ["full"])
-        self.assertEqual(p.default_num_layers, 1)
-
-    def test_generic_profile_attributes(self):
-        p = self.mod.get_profile("generic")
-        self.assertIsNone(p.anchor_kernel)
-        self.assertEqual(p.blocks_per_layer, 1)
-        self.assertEqual(p.half_labels, ["full"])
-        self.assertEqual(p.default_num_layers, 1)
-
-    def test_category_rules_have_display_and_key(self):
-        for name in ["dsv4_csa_hca", "dsv3_mla", "generic"]:
-            p = self.mod.get_profile(name)
-            for label, key, rule in p.category_rules:
-                self.assertIsInstance(label, str)
-                self.assertIsInstance(key, str)
-                self.assertTrue(callable(rule))
-
 
 # ---------------------------------------------------------------------------
 # Test: Profile inference

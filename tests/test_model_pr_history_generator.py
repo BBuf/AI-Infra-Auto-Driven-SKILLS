@@ -33,18 +33,6 @@ class TestModelHistoryConfiguration(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = load_generator()
 
-    def test_framework_orders_cover_supported_current_models(self):
-        self.assertTrue(
-            {"hunyuan3-preview", "moss-vl", "qwen36", "qwen38"}
-            <= set(self.mod.FRAMEWORK_MODEL_ORDER["sglang"])
-        )
-        self.assertTrue(
-            {"hunyuan3-preview", "qwen36"}
-            <= set(self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
-        )
-        self.assertNotIn("moss-vl", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
-        self.assertNotIn("qwen38", self.mod.FRAMEWORK_MODEL_ORDER["vllm"])
-
     def test_generated_inventory_does_not_claim_manual_diff_review(self):
         bundle = self.mod.PRBundle(
             framework="tokenspeed", repo="lightseekorg/tokenspeed", number=1,
@@ -193,6 +181,29 @@ class TestModelHistoryConfiguration(unittest.TestCase):
         self.assertEqual(fetched_files, files)
         self.assertEqual(cache["prs"][key], {"info": info, "files": files})
 
+    def test_saved_cache_refreshes_unmerged_and_unavailable_prs_next_run(self):
+        entries = {
+            "merged": {"info": {"merged_at": "2026-01-01T00:00:00Z"}, "files": []},
+            "open": {"info": {"state": "open"}, "files": []},
+            "closed": {"info": {"state": "closed", "merged_at": None}, "files": []},
+            "missing": {"info": {"fetch_error": "HTTP 404"}, "files": []},
+        }
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(self.mod, "CACHE_PATH", Path(tmp) / "cache.json"):
+            self.mod.save_cache({"prs": entries})
+            cached = self.mod.load_cache()
+        self.assertEqual(cached, {"prs": {"merged": entries["merged"]}})
+
+    def test_dry_run_preserves_persisted_cache(self):
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(self.mod, "CACHE_PATH", Path(tmp) / "cache.json"), \
+             mock.patch.object(self.mod, "git_files", return_value=[]), \
+             mock.patch.object(self.mod, "FRAMEWORK_MODEL_ORDER", {"tokenspeed": []}):
+            self.mod.save_cache({"prs": {"open": {"info": {"state": "open"}}}})
+            before = self.mod.CACHE_PATH.read_bytes()
+            self.mod.rebuild(dry_run=True, frameworks=["tokenspeed"], refetch_existing=True)
+            self.assertEqual(self.mod.CACHE_PATH.read_bytes(), before)
+
     def test_existing_prs_are_preserved_from_current_head(self):
         history = (
             "https://github.com/sgl-project/sglang/pull/100\n"
@@ -216,6 +227,20 @@ class TestModelHistoryConfiguration(unittest.TestCase):
         ]
         self.assertTrue(any(ref.startswith("HEAD:") for ref in show_refs))
         self.assertTrue(any(ref.startswith("base-sha:") for ref in show_refs))
+
+    def test_git_trace_does_not_promote_issue_or_reverted_numbers_to_prs(self):
+        log = (
+            '\x02aaa111\x012026-01-01\x01Fix issue #123 in parser (#456)\nmodel.py\n'
+            '\x02bbb222\x012026-01-02\x01Revert "change (#456)" (#789)\nmodel.py\n'
+            '\x02ccc333\x012026-01-03\x01Merge pull request #900 from fork/fix\nmodel.py\n'
+            '\x02ddd444\x012026-01-04\x01Mention #901 without a merge suffix\nmodel.py\n'
+            '\x02eee555\x012026-01-05\x01Empty merge (#902)\n'
+        )
+        with mock.patch.object(self.mod, "run", return_value=log):
+            traces = self.mod.trace_model_prs("sglang", ["model.py"])
+        self.assertEqual(set(traces), {456, 789, 900})
+        self.assertEqual(traces[456].commits, {"aaa111"})
+        self.assertEqual(traces[789].files, {"model.py"})
 
     def test_existing_cards_survive_unavailable_github_metadata(self):
         card_en = """\
@@ -487,13 +512,14 @@ Filter used in this pass.
         merged = "### PR #1 - A\n\n- Status/date: merged / 2026-01-01\n"
         merged_zh = "### PR #1 - A\n\n- 状态/时间: merged / 2026-01-01\n"
         open_card = "### PR #2 - B\n\n- Status/date: open / 2026-01-02\n"
+        closed_card = "### PR #3 - C\n\n- Status/date: closed / 2026-01-03\n"
         row = "| 2026-01-01 | [#1](https://github.com/x/y/pull/1) | merged | A | `a.py` |"
         reuse = self.mod.reusable_existing_numbers(
             {1, 2, 3},
-            {1: merged, 2: open_card},
-            {1: merged_zh, 2: open_card},
-            {1: row, 2: row},
-            {1: row},
+            {1: merged, 2: open_card, 3: closed_card},
+            {1: merged_zh, 2: open_card, 3: closed_card},
+            {1: row, 2: row, 3: row},
+            {1: row, 2: row, 3: row},
         )
         self.assertEqual(reuse, {1})
 

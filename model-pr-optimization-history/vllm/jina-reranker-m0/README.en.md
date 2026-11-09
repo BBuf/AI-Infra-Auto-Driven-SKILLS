@@ -11,12 +11,12 @@
 | `examples/pooling/token_embed/jina_reranker_v3_offline.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800) |
 | `examples/pooling/token_embed/jina_reranker_v3_online.py` | [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/entrypoints/pooling/scoring/test_jina_ranking_io_processor_unit.py` | [#49963](https://github.com/vllm-project/vllm/pull/49963), [#56415](https://github.com/vllm-project/vllm/pull/56415) |
-| `tests/models/language/pooling/test_jina_embeddings_v5.py` | [#50337](https://github.com/vllm-project/vllm/pull/50337), [#50352](https://github.com/vllm-project/vllm/pull/50352), [#50688](https://github.com/vllm-project/vllm/pull/50688) |
+| `tests/models/language/pooling/test_jina_embeddings_v5.py` | [#50352](https://github.com/vllm-project/vllm/pull/50352), [#50688](https://github.com/vllm-project/vllm/pull/50688) |
 | `tests/models/language/pooling/test_jina_reranker_v3.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800), [#47590](https://github.com/vllm-project/vllm/pull/47590) |
 | `tests/models/language/pooling_mteb_test/test_bge_reranker_v2_gemma.py` | no direct PR-number commit |
-| `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#38633](https://github.com/vllm-project/vllm/pull/38633), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#50917](https://github.com/vllm-project/vllm/pull/50917) |
+| `tests/models/language/pooling_mteb_test/test_jina.py` | [#26687](https://github.com/vllm-project/vllm/pull/26687), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#50917](https://github.com/vllm-project/vllm/pull/50917) |
 | `tests/models/multimodal/pooling/test_jinavl_reranker.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#20907](https://github.com/vllm-project/vllm/pull/20907), [#31445](https://github.com/vllm-project/vllm/pull/31445), [#57347](https://github.com/vllm-project/vllm/pull/57347) |
-| `vllm/model_executor/models/jina.py` | [#38633](https://github.com/vllm-project/vllm/pull/38633), [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#52037](https://github.com/vllm-project/vllm/pull/52037) |
+| `vllm/model_executor/models/jina.py` | [#38800](https://github.com/vllm-project/vllm/pull/38800), [#39575](https://github.com/vllm-project/vllm/pull/39575), [#50688](https://github.com/vllm-project/vllm/pull/50688), [#52037](https://github.com/vllm-project/vllm/pull/52037) |
 | `vllm/model_executor/models/jina_vl.py` | [#20260](https://github.com/vllm-project/vllm/pull/20260), [#53553](https://github.com/vllm-project/vllm/pull/53553) |
 
 ## PR Coverage Summary
