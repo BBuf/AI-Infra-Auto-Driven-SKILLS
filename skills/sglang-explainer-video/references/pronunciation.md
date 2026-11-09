@@ -128,6 +128,7 @@ voice changes.
 | 一行一行人工 (行 = line, Claude Code review video 2026-10-28, user review) | 一航一航人工 | The 行人 (pedestrian) exception fired on 行人工, so the second 行 stayed xíng (poly_probe 6/6 wrong) → exception is now 人(?!工), plus a 一行一行 → 一航一航 rule (0/6 wrong) |
 | SLA (service-level agreement, 2026-11-08; unprimed Whisper on each line) | S L A | slot / SWAT in both lines tried (「通过 SLA 的候选」, 「满足 SLA 的候选」) → **SLA** in both |
 | Day-0 (Day-0 support, same date) | Day zero | D-0 / 对零 / Dailing; `Day 0` with a space fails too → **Day Zero**. Write the hyphen in the narration: `Day 0` is two tokens, so the lexicon entry never sees it. pron_check compares the transcript with the written form (`day0`), and Whisper writes `Day Zero` (`dayzero`), so `--meta` reports the respelled take as a FAIL. That is a false positive, like KiB above: listen once and move on |
+| fused before top k (`init_dcp_fused_topk`, `DcpFusedTopK`; PR 48895 video, 2026-11-09) | as written | Whisper writes Fuse Top K in the take and in the carrier, so `--meta` reports the identifier as a FAIL. The voice elides the d before t the way a speaker does, and `fused` alone passes. Respellings were worse: fusd → Fast Top K, fyoozd → FilesTopK, fused- → Fuse Top-K. A false positive, like Day-0 above: leave it |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
 kernel, attention, indexer, backend, CUDA graph, FP8/FP4/NVFP4, TP8, H200/B200/GB300, Triton, PyTorch,
@@ -484,8 +485,17 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 直接读进片段寄存器 (same video) | 读 \| 进片 \| 段 | 直接读到片段寄存器里 |
 | 哪 7 块走流式，是在 H100 上实测挑的 (same video) | 走流 \| 式, 上实 \| 测 | 流式的 7 块，是根据 H100 上的实测挑出来的 |
 | 把 W2 分给所有 SM (same video) | 分 88 ms 给 | 把 W2 分配到所有 SM 上 |
+| 为什么按分数线性分桶 (PR 48895 video, 2026-11-09) | 按分 \| 数线性 (分数线 is a cutoff score) | 为什么按分数等距分桶 |
+| 窗口大小加标志位 (same video) | 加标 \| 志位 | 窗口大小和标志位 |
+| 两到三轮定出分界值 (same video) | 出分 \| 界值 | 两到三轮确定分界值 |
+| 改成谓词指令，省掉了编译器生成的分支 (same video) | 成谓词, 编译 \| 器生 \| 成 | 改用谓词指令，省掉了编译出来的分支 |
+| 再从全局内存读回这些候选的分数 (same video) | 内 100 ms 存读, in the re-take only: the first take of the same clause cut 内存 \| 读 | 再把这些候选的分数，从全局内存里读回来 |
+| metadata 里预先分配好的张量 (same video, re-take) | 里预 88 ms 先 (line_asr: 领域先) | 这个张量，是在 metadata 里提前分配好的 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
+seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
+上下 | 文长度 came back with no pause and read as written; leave such hits. Run seg_check again after every re-take: a line
+re-voiced for a change at its end came back with a new cut (内 | 存读) earlier in the line.
 
 ## Listening to whole lines (line_asr.py)
 
@@ -517,6 +527,8 @@ places where a digit and the character next to it form another number:
 | 一个记最大比较值，一个记计数 (same video) | 一个G最大比较值 (记 heard as a letter) | 一个存最大比较值，一个存计数 |
 | 读这一对数 / 每一对数 (same video) | seg_check: 这一 \| 对数, and 对数 is "logarithm" | 读这两个数 / 每个请求的这两个数 |
 | 64 行重新排序 (same video) | 64行中心排序 | 调整了每块 W2 里 64 行的顺序 |
+| 而清零的写，排在… (PR 48895 video, 2026-11-09) | 清零的血 (写 used as a noun after 的; 血 also reads xiě) | 而清零这一步，排在… |
+| 到顶或到底的那一端不检查 (same video) | 到底或到底 (顶 dǐng heard as 底) | 到了第一名或最后一名的那一端，不检查 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a
