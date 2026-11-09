@@ -8,7 +8,9 @@ are the registration/gating authority. The previous MiniMax-specific pass is
 not registered in this snapshot. Transformers norm canonicalization now adds
 `AddRMSNormFusionPass` before AR+RMS matching and `RMSNormReshapeFusionPass`
 afterward, exposing remaining norms to quant fusion. Current CUDA C++ sources
-are under `csrc/libtorch_stable/`.
+are under `csrc/`: vLLM #60721 (2026-10-12) moved the former
+`csrc/libtorch_stable/` tree back. Status-audited PR rows keep the path the
+PR head used.
 
 Use this file when the fuse-pattern table reports split kernels in a trace and
 you need to decide whether the shape is already covered by vLLM's

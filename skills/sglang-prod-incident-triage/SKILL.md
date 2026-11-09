@@ -72,7 +72,8 @@ Return:
 ### 1. Collect a baseline bundle
 
 Confirm the ingress and build first. Current Rust route assembly includes
-load, metrics (when enabled), HiCache, ready and profile controls; Python
+load, metrics (when enabled), HiCache and profile controls but no `/ready`
+route (it is only exempt from auth), so `/ready` returns 404 there; Python
 route parity is not universal. A 404 can mean an older build, an unmounted
 optional route or an ingress difference. Record status and response body,
 then consult the actual route module. Health/readiness are different checks.

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -102,6 +103,15 @@ def gh_search_open_prs(repo: str, _terms: list[str], per_page: int) -> list[dict
 
 
 def http_fetch_open_prs(repo: str, per_page: int) -> list[dict[str, Any]]:
+    # Reading every open-PR page takes dozens of requests per repository, which can
+    # exhaust the 60/hour anonymous quota; use the standard token variables if set.
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "ai-infra-auto-driven-skills-open-pr-watch",
+    }
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     items: list[dict[str, Any]] = []
     page = 1
     while True:
@@ -116,17 +126,21 @@ def http_fetch_open_prs(repo: str, per_page: int) -> list[dict[str, Any]]:
         )
         req = request.Request(
             f"https://api.github.com/repos/{repo}/pulls?{query}",
-            headers={
-                "Accept": "application/vnd.github+json",
-                "User-Agent": "ai-infra-auto-driven-skills-open-pr-watch",
-            },
+            headers=headers,
         )
         try:
             with request.urlopen(req, timeout=30.0) as resp:
                 batch = json.loads(resp.read().decode("utf-8"))
-        except (OSError, error.HTTPError, json.JSONDecodeError) as exc:
+        except error.HTTPError as exc:
+            hint = ""
+            if exc.code in (403, 429) and not token:
+                hint = " (likely the anonymous rate limit; run `gh auth login` or set GH_TOKEN/GITHUB_TOKEN)"
             raise RuntimeError(
-                f"anonymous REST fallback failed for {repo} at page {page}: {exc}"
+                f"REST fallback failed for {repo} at page {page}: {exc}{hint}"
+            ) from exc
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError(
+                f"REST fallback failed for {repo} at page {page}: {exc}"
             ) from exc
         items.extend(batch)
         if len(batch) < per_page:

@@ -29,8 +29,10 @@ otherwise the API key; `/health*`, `/ready*`, `/metrics*` and OPTIONS are open.
 [Profile routes](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/rust/sglang-server/src/api_server/http/info.rs)
 accept GET/POST and fan out to scheduler ranks, returning plaintext on success.
 [Route assembly](https://github.com/sgl-project/sglang/blob/c24285bde97c3e6424cd5d8cb35788889034d8ea/rust/sglang-server/src/api_server/http/app.rs)
-includes loads, ready, HiCache and optional metrics. The Python endpoint list
-below does not certify complete Rust parity; check each deployed route.
+includes loads, HiCache and optional metrics. It mounts no `/ready` route:
+`/ready*` appears only in the auth exemption list, so a Rust ingress answers
+404 there. The Python endpoint list below does not certify complete Rust
+parity; check each deployed route.
 
 ## Core Endpoints
 
@@ -45,7 +47,7 @@ Both use the same handler and run one-token generation by default. They return
 
 ### `/ready`
 
-No generation. Returns 503 while paused, draining or not Up. `/ready` 503 with
+Python ingress only (see the Rust note above). No generation. Returns 503 while paused, draining or not Up. `/ready` 503 with
 `/health` 200 points to paused/draining state. Added by #37488.
 
 ### `/model_info`

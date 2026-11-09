@@ -45,6 +45,21 @@ class OpenPrWatchTest(unittest.TestCase):
         self.assertEqual(rows, [{"number": 1}])
         self.assertIn("page=2", fetch.call_args.args[0].full_url)
 
+    def test_rest_fallback_sends_token_and_explains_rate_limit(self) -> None:
+        page = mock.MagicMock()
+        page.__enter__.return_value.read.return_value = b"[]"
+        with mock.patch.dict(self.mod.os.environ, {"GH_TOKEN": "t0ken"}, clear=False), \
+             mock.patch.object(self.mod.request, "urlopen", return_value=page) as fetch:
+            self.mod.http_fetch_open_prs("owner/repo", 100)
+        self.assertEqual(fetch.call_args.args[0].get_header("Authorization"), "Bearer t0ken")
+
+        limited = self.mod.error.HTTPError("https://api.github.com", 403, "rate limit", {}, None)
+        env = {k: v for k, v in self.mod.os.environ.items() if k not in ("GH_TOKEN", "GITHUB_TOKEN")}
+        with mock.patch.dict(self.mod.os.environ, env, clear=True), \
+             mock.patch.object(self.mod.request, "urlopen", side_effect=limited):
+            with self.assertRaisesRegex(RuntimeError, "anonymous rate limit"):
+                self.mod.http_fetch_open_prs("owner/repo", 100)
+
     def test_one_failed_repository_cannot_produce_a_complete_report(self) -> None:
         with mock.patch.object(self.mod, "gh_search_open_prs", side_effect=[[], RuntimeError("offline")]), \
              mock.patch.object(self.mod, "http_fetch_open_prs", side_effect=RuntimeError("offline")):
