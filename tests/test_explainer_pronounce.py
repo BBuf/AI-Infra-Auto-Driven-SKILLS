@@ -170,6 +170,12 @@ def test_ack_is_spelled():
     assert spoken("单边 RDMA WRITE") == "单边 RDMA WRITE"
 
 
+def test_fastokens_stays_as_written():
+    # PR 48928 video (2026-11-14): the voice reads fastokens as "fast tokens", which is the
+    # reading meant; pron_check fails only on the doubled t Whisper writes. Approved, no respelling.
+    assert spoken("换成 fastokens 分段编码") == "换成 fastokens 分段编码"
+
+
 def test_version_two_after_a_product_name_is_er():
     # Edge reads "Humanize 2 把关系" as 两把 (the classifier pulls 2 to 两); a version number is 二
     assert spoken("Humanize 2 把关系倒了过来") == "Humanize 二把关系倒了过来"
