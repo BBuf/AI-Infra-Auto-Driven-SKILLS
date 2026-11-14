@@ -139,7 +139,9 @@ compared the voice's own reading with SG Laang / SG Lahng / SG Leng / S G Lang a
 (2026-10-16). Whisper writes it as SGLine / SGLAM; that is an ASR artifact, so ignore it.
 **MTP** is approved too: Qwen3-ASR transcribes Xiaoxiao's MTP correctly, while Whisper writes MPP for every
 spelling, even Em Tee Pee. Also approved: **Kimi** (user's ear), **PR** (letters, R as 阿尔, the usual Chinese
-reading), **dB** (read 分贝), and **WRITE** (RDMA WRITE: Whisper writes the homophone "Right").
+reading), **dB** (read 分贝), **WRITE** (RDMA WRITE: Whisper writes the homophone "Right"), and **fastokens**
+(Whisper hears "Fast Tokens", which is the reading meant; the string compare fails only on the doubled t — PR 48928 video,
+2026-11-14).
 
 Still **OK~** with no respelling that passes; listen on the render: Claude ("Cloud" — every respelling was
 worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, worse), Lean ("Lin"), README (spoken "read me" since the DeepInfer video; Whisper: Remi → REME), TopK ("Talk K"), FLUX.2 (fine in most sentences).
@@ -159,6 +161,10 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | e (as in e 的负 80 次方) | 一 | 累积衰减的对数最多到负 80 (keep e<sup>−80</sup> on screen) |
 | config (model config, PR 28185 video 2026-10-27) | 看Fake (config / Config / con fig / kon fig all fail; configuration passes) | 模型配置 (config.json stays on screen) |
 | flush (flush cache, same video) | Flash (in context) | 整个 radix 树被清空时 (flush stays on screen) |
+| config again (pipeline config, PR 49570 video 2026-11-14) | 看Fake | pipeline 配置 / 配置 (config stays on screen) |
+| thinking (PR 48928 video 2026-11-14) | finting (no respelling passed; think alone is OK~ "Fink") | 思考模式 (thinking stays in the code on screen) |
+| segments (encode segments, same video) | Sediments (OK~) | 分段编码接口 (encode_segments stays on screen) |
+| PIL (PIL 图片, PR 49570 video) | Pill in the carrier, Pure in the line | 还是图片对象的输入 (PIL stays in the code on screen) |
 | 1M (as in 128K 到 1M token, PD security blog video 2026-10-27) | EM | 100 万 (keep 1M on screen) |
 | diff (Claude Code review video, 2026-10-28) | Dev / Dave's (diff, Diff, dif all fail) | 改动 / 这次的改动 (diff stays on screen) |
 | skill (same video; the singular re-measured 2026-11-08) | Scale (skill, Skill, skil all fail). 2026-11-08: speel / Speal / Scale / Steel depending on the sentence, and two takes of the same sentence came back different. The plural **skills** read right in all five sentences tried | the plural skills (这些 skills / 一组 skills), or reword (技能); the singular stays on screen |
@@ -488,6 +494,12 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 哪 7 块走流式，是在 H100 上实测挑的 (same video) | 走流 \| 式, 上实 \| 测 | 流式的 7 块，是根据 H100 上的实测挑出来的 |
 | 把 W2 分给所有 SM (same video) | 分 88 ms 给 | 把 W2 分配到所有 SM 上 |
 | 为什么按分数线性分桶 (PR 48895 video, 2026-11-09) | 按分 \| 数线性 (分数线 is a cutoff score) | 为什么按分数等距分桶 |
+| 原因是同一步归一化 (PR 49570 video, 2026-11-14) | 同一 \| 步 | 原因是：归一化这一步 |
+| 有两个地方会做归一化 / 靠那次猜测补上归一化 (same video) | 做归 \| 一化, 上归 \| 一化 | 归一化可能发生在两个地方 / 把归一化补上了 |
+| 拿一个像素算一遍。像素值 170 … 换算回像素值 (same video) | 像 \| 素算, 像 \| 素值, 回像 \| 素值 | 拿一个具体的数算一遍：170 … 换算回 0 到 255 |
+| 注释里也写明了：范围没办法从数值里推出来 (same video) | 写 \| 明了, 推 \| 出来 (数值 heard 竖子) | 注释里也说了：光看数字，是判断不了范围的 |
+| 每个请求都从头切一遍 (PR 48928 video, 2026-11-14) | 从 \| 头切 | 每个请求都要重新切一遍 |
+| 区间是按字符数算的 (same video) | 字 \| 符数 \| 算 | 区间用的是字符的个数 |
 | 窗口大小加标志位 (same video) | 加标 \| 志位 | 窗口大小和标志位 |
 | 两到三轮定出分界值 (same video) | 出分 \| 界值 | 两到三轮确定分界值 |
 | 改成谓词指令，省掉了编译器生成的分支 (same video) | 成谓词, 编译 \| 器生 \| 成 | 改用谓词指令，省掉了编译出来的分支 |
@@ -531,6 +543,8 @@ places where a digit and the character next to it form another number:
 | 64 行重新排序 (same video) | 64行中心排序 | 调整了每块 W2 里 64 行的顺序 |
 | 而清零的写，排在… (PR 48895 video, 2026-11-09) | 清零的血 (写 used as a noun after 的; 血 also reads xiě) | 而清零这一步，排在… |
 | 到顶或到底的那一端不检查 (same video) | 到底或到底 (顶 dǐng heard as 底) | 到了第一名或最后一名的那一端，不检查 |
+| 平均首字延迟 (PR 48928 video, 2026-11-14) | 首次延迟 (字 heard as 次) | 平均首 token 延迟 |
+| 归一化之后，亮图必中 (PR 49570 video, 2026-11-14) | 样图必重 (亮图 heard as 样图) | 只要图够亮就会出错 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a
