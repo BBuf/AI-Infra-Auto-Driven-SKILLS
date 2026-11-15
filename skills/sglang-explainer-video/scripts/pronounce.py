@@ -186,6 +186,15 @@ def map_back(spoken, spans, words):
     return out
 
 
+def must_reword(text):
+    """[(wording, advice)] for narration the voice misreads and no respelling can fix (`reword`)."""
+    return [
+        (m.group(0), advice)
+        for rx, advice in data().get("reword", [])
+        for m in re.finditer(rx, text)
+    ]
+
+
 def changes(text):
     """[(written, spoken)] for the tokens that get rewritten — for logs and pron_check."""
     return [(w, s) for w, s in segments(text) if w != s]

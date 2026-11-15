@@ -1,5 +1,5 @@
 {
-  "_doc": "Spoken forms for zh-CN-XiaoxiaoNeural (see references/pronunciation.md). lexicon: whole-token respellings, case-sensitive. parts/acronyms: pieces of snake_case identifiers. patterns: [regex, replacement] applied first. approved: terms confirmed right as the voice reads them (by the user's ear, or by a second ASR when Whisper alone mishears) (pron_check reports them as OK, never respells them). Add an entry only after pron_check.py --asr shows the written form fails and the respelling passes.",
+  "_doc": "Spoken forms for zh-CN-XiaoxiaoNeural (see references/pronunciation.md). lexicon: whole-token respellings, case-sensitive. parts/acronyms: pieces of snake_case identifiers. patterns: [regex, replacement] applied first. reword: [regex, advice] for wordings the voice misreads and no respelling can fix (the same characters need the other reading elsewhere); pron_check reports each hit and the narration must be rewritten. approved: terms confirmed right as the voice reads them (by the user's ear, or by a second ASR when Whisper alone mishears) (pron_check reports them as OK, never respells them). Add an entry only after pron_check.py --asr shows the written form fails and the respelling passes.",
   "patterns": [
     ["#(\\d+)", "\\1"],
     ["(?<![\\w.])1e-(\\d+)(?![\\w.])", "10 的负 \\1 次方"],
@@ -146,6 +146,9 @@
   },
   "approved": ["SGLang", "MTP", "PR", "dB", "Kimi", "WRITE", "fastokens"],
   "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"],
+  "reword": [
+    ["(?<![归交退奉偿])还给", "the voice reads 还给 as huán gěi (give back) every time. Meaning \"also gave\": write 还附带了 / 另外给了 / 也给出了. Meaning \"give back\": write 归还给 / 交还给"]
+  ],
   "tones": {
     "_doc": "Tone-only polyphones that tone_take.py grades in the recorded take (respelling cannot fix them: no common single-reading homophone, and Edge rejects SSML). readings: tone -> pinyin. default: the tone meant unless the character sits inside one of words[tone]. controls: single-reading characters of each tone, same final where possible, swapped in to build same-line references. Add a character only after tone_take.py --calibrate judges its controls right in >= 90 % of cases.",
     "切": {

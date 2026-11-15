@@ -53,3 +53,10 @@ def test_xhs_body_names_the_links_in_plain_text():
 
 def test_links_not_required_when_the_video_is_not_about_sglang():
     assert C.link_problems("DeepSeek 的推理引擎怎么省显存。配音为 AI 语音合成。", xhs=False) == []
+
+
+def test_model_name_is_matched_loosely():
+    assert C.names_model("GLM-5.3-Flash一半回答变感叹号", "GLM-5.3")
+    assert C.names_model("glm 5.3 flash 的 KV cache", "GLM-5.3-Flash")
+    assert C.names_model("DeepSeek首token延迟降了近一半", "deepseek")
+    assert not C.names_model("一半回答满屏感叹号，只因一个NaN", "GLM-5.3")

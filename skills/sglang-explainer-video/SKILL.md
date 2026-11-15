@@ -86,7 +86,8 @@ not enough on its own:
 
 Then write `$P/capture/understanding.md`: the problem; the algorithm step by step; every changed code path
 (`file:function` → what changed and why); the numbers with their conditions (hardware, model, workload);
-the caveats the author states. This is the coverage checklist for Step 3.
+the model the PR involves (the one the bug shows up on, or the one it was measured on: the title and the description
+will name it, `references/publishing.md`); the caveats the author states. This is the coverage checklist for Step 3.
 
 Then put the SGLang brand on the project (frame.md, CJK/bilingual caption skin, ending block, logos). The theme is
 `sglang-orange` unless the video is about a Kimi / Moonshot model or the user asks for a different look; then use
@@ -310,8 +311,9 @@ cp $P/cover_bili.png ~/Desktop/SGLang_PR<N>_讲解_封面_B站.png
 ## 10. Publish (only when the user asks)
 
 Follow `references/publishing.md`: the user picks each file in the native dialog, the agent fills the rest.
-The title and the description are written for this video, from its own hook, and end with the same source and
-cookbook links as the last frame (§Title and description).
+The title and the description are written for this video, from its own hook; they name the model the PR involves
+(DeepSeek, GLM, Qwen, …), which draws more views; and they end with the same source and cookbook links as the last
+frame (§Title and description).
 Bilibili: 含AI生成内容 · 分区 人工智能 · ~8 tags · 1440×1080 B站 cover. 小红书: **always 标记 SGLang** via
 添加组件 → 标记地点或标记朋友 → 用户 → SGLang (official, orange SGL avatar) — never an @ in the body — plus topics
 #人工智能 #大模型 #SGLang and 笔记含AI合成内容.
