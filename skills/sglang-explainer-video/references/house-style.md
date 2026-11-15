@@ -48,12 +48,47 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 - Groups are clauses (split at ，。；：！？, max ~26 Han-width); never split after 、 or inside a term.
 - Translation: natural English for an engineer, same facts, keep the English terms as-is.
 
-## Cover (theme sglang-orange: design "A · brand orange")
+## Cover (one design per video)
 
-`scripts/make_cover.py` renders it; never redesign it per video (pick a theme instead, §Themes). Reference renders:
-`assets/brand/cover-example-pr.png` (PR) and `assets/brand/cover-example-article.png` (article).
-In the video frame the meta line and badge sit above the caption band and the text dissolves
-just before the crossfade; the still PNG keeps the full layout.
+Every video gets its own cover, designed from what that video is about (user, 2026-11-15: 「封面不能和之前的视频封面风格太像了，
+每个视频都应该根据内容生产不同设计风格的封面，这样才更加吸引人」). One template wears out in a feed: the brand-orange cover ran
+for 19 videos, and the graphite cover that replaced it ran for five more before the user said they all looked alike.
+
+- **Start from the content.** Picture what the bug or the speed-up looks like, and let that decide the ground, the type
+  and the composition. Two examples from 2026-11-15:
+  - PR 47013 (half the answers turn into "!!!!"): a paper poster in black serif type; the title runs off the page as
+    a row of red "!", above ten answer cards, five of them filled with "!".
+  - PR 49263 (the same command sometimes crashes): a canvas cut on the diagonal into a pale half where the launch
+    works and a black half where it crashes; the title crosses the cut and changes colour with it.
+- **It must not look like the recent covers.**
+  - Before designing, look at them: `cover_kit.py wall --out wall.png` tiles the newest covers, and
+    `references/cover-log.md` lists what each one used.
+  - The new cover differs from each of the last five in at least three of these: ground colour, accent colour, type
+    (serif / sans / mono, and its weight), composition, illustration technique.
+  - After rendering, run the wall again with `--add $P/cover_bili.png`. If the new tile could be taken for one of its
+    neighbours, redesign it. Then add a row to `cover-log.md`.
+- **What every SGLang cover keeps:**
+  - The hook the audience searches for is the largest line (消费级显卡, 一串感叹号), with the term written out in full
+    (「MoE 大模型」, not 「MoE」).
+  - A small series tag top-left: 「SGLang PR 讲解 · #N」 for PRs, 「SGLang 技术解读」 for articles. It marks the video
+    as SGLang's and matches the 小红书 标记. Nothing else of the brand is required: not the logo, not the orange.
+  - Numbers and claims come from the PR / article. A drawing that is not data is labelled 「示意」.
+  - Bundled fonts only (§Visuals).
+- **How to build it.** The design lives in the project's `work/make_cover.py`: a `css(width, dy)` function, a
+  `body(prefix)` function and the GSAP reveal steps. `scripts/cover_kit.py` turns them into the animated frame 1
+  (`compositions/frames/00-cover.html`) and both stills (`cover.png` 1920×1080, `cover_bili.png` 1440×1080). Keep the
+  cover's content inside y 135–880. That clears the caption band in the video, and the stills move the same layout
+  down 40 px so it sits centred in Bilibili's crop.
+- **The cover is frame 1 of the video,** with the narration introducing the topic. A visual subject is on screen
+  within 0.3 s, the reveals follow the cover narration's cues, and the text dissolves just before the crossfade.
+- **Bilibili cover** (`cover_bili.png`): Bilibili keeps ONE cover image and crops it to 4:3 (home feed) and a centred
+  1440×810 16:9 band (personal space); a separate image per ratio does not stick. So upload the 1440×1080 `_B站`
+  cover, which keeps every element inside y 135–945. Leave 「双比例同步改动」 on and check both saved crops.
+- The body frames keep the theme (§Themes). Only the cover changes from video to video.
+
+**The brand-orange cover "A"** (`scripts/make_cover.py`; reference renders `assets/brand/cover-example-pr.png`,
+`cover-example-article.png`, `cover-example-bili.png`) is the series template used through 2026-10. Use it only when
+the user asks for the series look. Its layout is fixed:
 
 - Full-bleed SGLang orange `#D55816`; SGL wordmark (`assets/brand/sglang-logo.png`) on a peach `#FADDCD`
   card with a 5 px rust `#A5300F` border, top-left.
@@ -63,20 +98,6 @@ just before the crossfade; the still PNG keeps the full layout.
 - The logo's node-graph motif (two nodes + `</>` box) oversized at right, peach, 22 % opacity.
 - Badge bottom-right in the logo-"L" style (peach fill, rust outline, trailing rust stripes): `#<PR number>`
   for PRs, one short keyword for articles (e.g. `Diffusion`).
-- The cover is frame 1 of the video (with narration introducing the topic) and also exported as a still PNG.
-- **Bilibili cover** (`make_cover.py --png-bili`, reference `assets/brand/cover-example-bili.png`): Bilibili
-  keeps ONE cover image and crops it to 4:3 (home feed) and a centred 1440×810 16:9 band (personal space);
-  a separate image per ratio does not stick. The 1920×1080 still loses its right-hand badge in the 4:3
-  crop, so upload the 1440×1080 `_B站` cover, which keeps logo, title and badge inside y 135–945. Leave
-  「双比例同步改动」 on and check both saved crops.
-
-**A designed cover on request** (user, Paged Experts video, 2026-11-04: 「封面需要强调下消费级显卡…封面图做得有设计感一些，不要强求用 sglang 风格的封面」).
-When the user asks for it, an SGLang video may replace cover A with a project-local design. The Paged Experts video's
-`work/make_cover_pe.py` wrote the animated `00-cover.html` and both stills from one markup: a graphite ground with a
-faint grid, one accent colour, the hook words the audience searches for as the largest line (消费级显卡), a line-art
-illustration of the mechanism (GPU card, slot strip, PCIe lane, RAM stick), and a small 「SGLang PR 讲解 · #N」 tag so
-the 小红书 标记 still fits. The 1440×1080 still keeps everything inside y 135–945; the frame keeps content above y 880
-and fades its text before the crossfade. The body frames keep the theme.
 
 ## Visuals (body frames)
 
@@ -91,18 +112,18 @@ and fades its text before the crossfade. The body frames keep the theme.
 ## Themes
 
 Every video uses one theme, picked once at Step 2 (`apply_brand.py --theme`) and read again by
-`make_cover.py` from `.hyperframes/theme`. The default stays **sglang-orange** (cover A + the code-editorial
-remix above).
+`make_cover.py` from `.hyperframes/theme`. The default stays **sglang-orange** (the code-editorial remix above).
+The theme sets the body frames; the cover is designed per video (§Cover).
 
 **Subject is not SGLang's own work → no SGLang branding at all** (user, 2026-10-20, DeepSeek DeepInfer video:
 「这个视频和 sglang 没有任何关系，不要出现 sglang 和对应风格」). Decide this at Step 2, before any narration or cover:
-- no "SGLang 技术解读" in the opening line, no SGLang logo / series label / orange / follow strip, and no SGLang
+- no "SGLang 技术解读" in the opening line, no SGLang logo / series label / orange / ending links, and no SGLang
   mentions in narration or on screen;
 - build a project-local theme from the subject's own site instead: read its CSS variables in the browser, write
   `frame.md` and `.hyperframes/caption-skin.html` by hand (as kimi-dark does), and render the cover with a project
   script (the DeepInfer video's `work/make_cover_ds.py`: deepseek.com's sky-blue wash, glass cards, DM Sans);
 - never draw the subject's official logo; label the cover 「技术解读」 so it cannot pass as an official video;
-- `check_frames.mjs` then reports the missing follow strip on the last frame — expected, ignore it.
+- `check_frames.mjs` then reports the missing ending block on the last frame — expected, ignore it.
 
 **kimi-dark** (added 2026-10 for the Kimi K3 video, after the user said the 19 orange covers had become 审美疲劳):
 - When to use it: a video about a Moonshot / Kimi model, or when the user asks for a different look. Don't
@@ -112,7 +133,8 @@ remix above).
 - Diagram palette: a muted semantic palette sampled from Moonshot's official architecture figure (blue, green,
   slate, brick, grey, rose). The Video direction fixes what each colour means for the video.
 - Files: `assets/themes/kimi-dark/{frame.md, caption-skin.html, follow-strip.html}`.
-- Cover: `make_cover.py --theme kimi-dark --title-zh <short title> --subtitle <one line> --title-en <mono line>
+- Cover template (the K3 video's; a new video still designs its own cover inside this look, §Cover):
+  `make_cover.py --theme kimi-dark --title-zh <short title> --subtitle <one line> --title-en <mono line>
   --stats "2.8T=参数;16 / 896=每个 token 激活的专家" [--visual right.svg]`.
   - Layout: SGL logo chip plus the series pill, a 150 px title, light stat numbers, and an optional right-hand
     SVG. The K3 video drew its own redraw of the official block diagram.
@@ -126,25 +148,34 @@ remix above).
 - Only the PR author (name + @login + avatar) and the PR link. No reviewers, approvers, commit counts or status.
 - The name is on screen only — the narration does not read it.
 
-## Follow strip (last frame of every video)
+## Ending links (last frame of every video)
 
-Every SGLang video ends with links that invite viewers to follow the project, as asked by the user.
+Every SGLang video ends by pointing the viewer at SGLang's code and docs, so someone who watched to the end knows
+where to go next (user, 2026-11-15: 「结尾部分一定要有 sglang 相关的源码，cookbook 之类的链接，吸引人关注」). The last frame
+carries the ending block that `apply_brand.py` copies to the project's `assets/brand/follow-strip.html` (the theme's
+colours; reference render of the orange one: `assets/brand/follow-strip-example.png`). It has two parts.
 
-- The last frame shows the fixed strip that `apply_brand.py` copies to the project's `assets/brand/follow-strip.html`
-  (the theme's colours; reference render of the orange one: `assets/brand/follow-strip-example.png`):
-  - 关注 SGLang
-  - GitHub `github.com/sgl-project/sglang`
-  - 博客 `sglang.io/blog`
-  - 文档 `docs.sglang.io`
-- Where it goes: on the author page in PR videos; on the summary / links frame in article videos.
-- Placement: a bar at y 792–872 (peach in sglang-orange, #1B1B1B in kimi-dark), just above the caption band. The frame's own content ends above y≈770.
-- Timing: the strip rises in by the start of the frame's last clause and stays until the end. The 2 s hold
-  after the last line keeps it readable.
-- Copy it verbatim:
-  - Do not restyle, translate or shorten the URLs.
-  - Do not narrate it.
-  - Do not add other channels (X, Discord, …) unless the user asks.
-- `check_frames.mjs` fails when the last frame lacks the strip or any of its three URLs.
+- **Links card** (`#fs-links`, y 652–768): two rows, different for every video.
+  - 「源码」: the code the video explains, as `github.com/sgl-project/sglang/blob/main/<path>`. For a PR that is its
+    main changed file. Link a directory (`/tree/main/<dir>`) when the change spans several files or the URL is longer
+    than 112 characters.
+  - 「Cookbook」 or 「文档」: the page a viewer would open next, in this order of preference:
+    1. the cookbook page of the model the video is about (`docs.sglang.io/cookbook/autoregressive/<Vendor>/<Model>`);
+    2. the docs page of the feature the video is about;
+    3. the cookbook home, `cookbook.sglang.io`.
+- **Follow strip** (`#fs-follow`, y 792–872), the same on every video:
+  关注 SGLang · GitHub `github.com/sgl-project/sglang` · 博客 `sglang.io/blog` · 文档 `docs.sglang.io`.
+- **Only links that open.** Take the cookbook / docs page from `docs.sglang.io/sitemap.xml` and the source path from
+  `main`, never from memory: pages move and PRs rename files. Then run `check_links.py --project $P`, which opens
+  every link on the last frame.
+- Where it goes: on the author page in PR videos; on the summary / links frame in article videos. Write the two
+  links into that frame's Scene text so the worker has them. The frame's own content ends above y≈630.
+- Timing: the strip is on from the start of the frame. The links card rises in by the start of the frame's last
+  clause. Both stay until the end; the 2 s hold after the last line keeps them readable.
+- Do not restyle the block and do not narrate it. Do not add other channels (X, Discord, …) unless the user asks.
+- The same links close the B站 简介 and the 小红书 body (`publishing.md` §Title and description).
+- `check_frames.mjs` fails when the last frame lacks the strip, the links card, a source link or a cookbook / docs
+  link.
 
 ## Delivery
 
@@ -178,5 +209,5 @@ narration: yes
 <what the video explains, for whom>
 
 ## Notes
-- House style: references/house-style.md (English terms read right, bilingual captions, Xiaoxiao voice, cover A, no PR status).
+- House style: references/house-style.md (English terms read right, bilingual captions, Xiaoxiao voice, a cover designed for this video, ending links, no PR status).
 ```

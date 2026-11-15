@@ -16,11 +16,14 @@ share a stage (same diagram before/after, two code frames) on the same worker.
   assets/article/figN.png — allowed: <img> inside a hairline card, object-fit: contain, never cropped or filtered.>
 - <Code frames: the <code-*> block is installed at compositions/<block>.html; fill it from the packet's
   ### Source excerpt and fit its timing to the Scene window (you may inline an adapted copy).>
-- <Worker holding the LAST frame only: frame <id> is the video's last frame. Paste the SGLang follow strip from
-  <PROJECT_DIR>/assets/brand/follow-strip.html verbatim (apply_brand.py put the theme's variant there): its CSS goes
-  into your <style>, its <div> inside #root.
-  It sits at y 792–872, so keep that frame's own content above y≈770. Reveal it by the start of the last
-  clause and keep it to the end. Never edit its text or URLs, and never narrate it.>
+- <Worker holding the LAST frame only: frame <id> is the video's last frame. Paste the SGLang ending block from
+  <PROJECT_DIR>/assets/brand/follow-strip.html (apply_brand.py put the theme's variant there): its CSS goes into
+  your <style>, its two <div>s inside #root.
+  - #fs-links (y 652–768) is this video's links card. Replace its two example URLs with the 源码 and
+    Cookbook / 文档 links named in the packet's Scene text, and set the second label to match. Change nothing else.
+  - #fs-follow (y 792–872) is the fixed follow strip. Never edit its text or URLs.
+  Keep that frame's own content above y≈630. The strip is on from the start of the frame; reveal the links card by
+  the start of the last clause; keep both to the end. Never narrate either.>
 - Read only: the role file, your packets, frame.md (<theme line, see below>) and the assets named above (the
   last-frame worker also reads follow-strip.html). Never open STORYBOARD.md, SCRIPT.md, capture/*, or other
   workers' frames.
@@ -75,7 +78,7 @@ earlier film. The project's `dispatch.py` keeps the full list.
   trimmed to the frame end). `data-start` inside a frame is frame-local; `hf lint`'s
   `nested_media_start_basis_ambiguous` warning on chained copies is expected.
 - `check_frames.mjs` treats the highest-numbered frame on disk as the last frame, so mid-run it reports "missing
-  follow strip" on whatever frame is newest. Tell workers to ignore it unless they hold the real last frame.
+  follow strip" (or "ending links card") on whatever frame is newest. Tell workers to ignore it unless they hold the real last frame.
 - Excerpt line ranges come from the orchestrator. If a Scene line names a code line that is not in the packet's
   excerpt, the worker should report it, not paraphrase. The fix is upstream: correct the range in `frames.py`
   and regenerate the packet. In the 24GB video, a range was off by one and dropped the `copy_` line the narration

@@ -12,6 +12,8 @@ things the sites accept without a word, or that already went wrong once:
   B站 简介 carries the AI-voice line (配音为 AI 语音合成)
   no 「#」 right before a digit in the 小红书 body (it opens the topic popup)
   no PR status (OPEN / merged / 已合并 ...) in any text
+  an SGLang video's B站 简介 carries a source link and a cookbook / docs link, and the 小红书 body names
+      both (源码, Cookbook / 文档), the same ones as the video's last frame
 
 It prints the video's duration and both text lengths: compare them with what the sites show after submit
 (references/publishing.md §Checks).
@@ -32,6 +34,8 @@ STATUS = re.compile(
 )
 HASH_DIGIT = re.compile(r"#\s*\d")
 AI_VOICE = re.compile(r"AI\s*语音合成|AI\s*配音")
+SOURCE_LINK = re.compile(r"github\.com/sgl-project/[\w.-]+/(blob|tree)/\S+")
+DOCS_LINK = re.compile(r"cookbook\.sglang\.io|docs\.sglang\.io/\S+")
 
 
 def xhs_len(s):
@@ -48,6 +52,28 @@ def text_problems(text, *, xhs):
         m = HASH_DIGIT.search(text)
         if m:
             out.append(f"「#」 before a digit opens the topic popup: {m.group(0)!r}")
+    return out
+
+
+def link_problems(text, *, xhs):
+    """An SGLang video's text closes with the source and the cookbook / docs page (publishing.md)."""
+    if (
+        "SGLang" not in text
+    ):  # a video about someone else's project carries no SGLang links
+        return []
+    out = []
+    if xhs:  # 小红书 takes links as plain names
+        if "源码" not in text:
+            out.append("no 源码 line")
+        if not re.search(r"Cookbook|文档", text):
+            out.append("no Cookbook / 文档 line")
+    else:
+        if not SOURCE_LINK.search(text):
+            out.append("no source link (github.com/sgl-project/<repo>/blob|tree/…)")
+        if not DOCS_LINK.search(text):
+            out.append(
+                "no cookbook / docs link (cookbook.sglang.io or docs.sglang.io/…)"
+            )
     return out
 
 
@@ -109,12 +135,12 @@ def main():
         d = open(a.bili_desc, encoding="utf-8").read().strip()
         check(0 < len(d) <= 2000, f"B站 简介 {len(d)}/2000")
         check(bool(AI_VOICE.search(d)), "B站 简介 has the AI-voice line")
-        for p in text_problems(d, xhs=False):
+        for p in text_problems(d, xhs=False) + link_problems(d, xhs=False):
             check(False, f"B站 简介: {p}")
     if a.xhs_body:
         b = open(a.xhs_body, encoding="utf-8").read().strip()
         check(0 < len(b) <= 1000, f"小红书 body {len(b)}/1000")
-        for p in text_problems(b, xhs=True):
+        for p in text_problems(b, xhs=True) + link_problems(b, xhs=True):
             check(False, f"小红书 body: {p}")
     print(f"{'✓' if not bad else '✗'} publish_check: {len(bad)} problem(s)")
     sys.exit(1 if bad else 0)

@@ -22,23 +22,48 @@ button, the user picks the file in the native dialog and replies 「好了」, a
 Copy the deliverables into one folder so the user always picks from the same place:
 `~/Desktop/小红书上传/NN_<slug>.mp4`, `NN_<slug>_封面.png`, `NN_<slug>_封面_B站.png` (NN = publish order).
 
+## Title and description (written for each video)
+
+The title, the 简介 and the 小红书 body are written from this video's own hook, the same way its cover is designed
+from its content (user, 2026-11-15: 「标题和简介这些也要注意根据不同的视频去自适应的做好」). One pattern on every upload,
+such as 「【SGLang PR 讲解】… | PR #N」, makes the videos hard to tell apart in a feed.
+
+- **Find the hook first.** It is what a viewer would stop for: the symptom (一半回答变成一串感叹号), the number
+  (首 token 延迟降了近一半), or something they already search for (the model, the GPU, the tool). The title leads
+  with it.
+- **Vary the form.** Read the last five titles in the publish ledger. The new title does not repeat their sentence
+  pattern: after two questions, write a statement, a number or a contrast.
+- **Keep it findable.** 「SGLang」 appears once in the B站 title. The PR number goes at the end of the title or in the
+  简介. There is no fixed prefix or bracket tag.
+- **The description follows the story's own shape:**
+  - a bug: what goes wrong → why → the fix → the result;
+  - a speed-up: the number and its conditions → what changed → what stayed the same;
+  - a feature or refactor: what you can do now → how it is put together.
+  Its first sentence is the hook in plain words, not 「本期讲解 PR #N」.
+- **It ends with the links,** the same ones as the video's last frame (`house-style.md` §Ending links): PR, 源码,
+  Cookbook or 文档, then GitHub.
+  - B站 takes full URLs.
+  - 小红书 takes them as plain names, for example 「源码：sgl-project/sglang 仓库 python/…/mla_buffer.py」 and
+    「Cookbook：SGLang Cookbook · GLM-5.3-Flash」.
+- Numbers and claims come from the video. The AI-voice line stays (§Hard rules).
+- `publish_check.py` fails an SGLang text without the source and cookbook / docs links; `check_links.py --text`
+  opens the URLs.
+
 ## Bilibili (`member.bilibili.com/platform/upload/video/frame`)
 
 - **Viewport:** call `resize_window 1280x1000` first. The pane is narrow and the app resets the size every turn.
-- **标题 (≤ 80 chars):**
-  - PR: 「【SGLang PR 讲解】<一句问题> | PR #N」
-  - Article: 「<标题>：<一句问题> | SGLang 技术解读（中英字幕）」
+- **标题 (≤ 80 chars):** this video's own (§Title and description).
 - **创作声明:** pick 含AI生成内容, then Escape and click a blank spot to close the dropdown.
 - **分区:** pick 人工智能. Bilibili often preselects vlog or 科技数码. The 人工智能 option sits off-screen inside the
   list, so `scrollIntoView` the `p.item-cont-main` whose text is 人工智能 before clicking it.
 - **Tags:** remove the auto tags (原创, 影视剪辑, 学习, 英语, 教育…) from right to left. Then add about 8 tags, each as
   type → wait 1 s → Enter → wait 1.5 s. Batching faster drops every other tag.
 - **简介 (quill `.ql-editor`), in this order:**
-  - one summary sentence;
-  - 内容：… ;
-  - 结果（取自 PR / 原文）：… ;
+  - the hook in one sentence;
+  - the story in its own shape (§Title and description);
+  - the result, with where the numbers come from (取自 PR / 原文 / 自测);
   - the AI-voice line;
-  - full links (原文 / Cookbook / PR).
+  - full links: PR, 源码, Cookbook or 文档, GitHub (原文 for an article video).
 - **Typing the 简介:** focus `.ql-editor`, then `document.execCommand('insertText', false, line)` and
   `execCommand('insertParagraph')` for each line. The counter under the box (`N/2000`) must then show the
   draft's length. Never use `quill.setText(body)`: it changes only the view, so 7 videos went live with an
@@ -55,11 +80,13 @@ Copy the deliverables into one folder so the user always picks from the same pla
   - Call `resize_window 1440x1000`. The cover editor needs the width.
   - Focus fields through JS (`input[placeholder="填写标题会有更多赞哦"]`, `.tiptap.ProseMirror`), not by
     coordinates. A pane resize mid-batch makes coordinate clicks miss.
-- **标题:** ≤ 20 characters, with ASCII counted as half.
+- **标题:** ≤ 20 characters, with ASCII counted as half. It is this video's hook, cut to fit, and need not match
+  the B站 title.
 - **正文:**
   - Same content as the Bilibili description.
   - No 「#」 directly before digits, because it opens the topic popup. Write 「PR 44051」.
-  - Write links as plain text, e.g. 「PR：sgl-project/sglang PR 44051」, 「原文：SGLang Blog · <slug>」.
+  - Write links as plain text, e.g. 「PR：sgl-project/sglang PR 44051」, 「源码：sgl-project/sglang 仓库 <path>」,
+    「Cookbook：SGLang Cookbook · <Model>」, 「原文：SGLang Blog · <slug>」.
 - **话题 (5–6 topics, at the end of the body):**
   - For each: type `#词` → wait 1.5 s → check `.item.is-selected` is the exact topic → Enter. The topic becomes
     `a.tiptap-topic`.
@@ -108,6 +135,7 @@ said plainly.
 $SEV_PY -I $SEV_SKILL/scripts/publish_check.py --video ~/Desktop/小红书上传/NN_<slug>.mp4 \
     --render $P/renders/video.mp4 --cover ~/Desktop/小红书上传/NN_<slug>_封面_B站.png \
     --bili-title "<B站标题>" --xhs-title "<小红书标题>" --bili-desc desc.txt --xhs-body body.txt
+$SEV_PY -I $SEV_SKILL/scripts/check_links.py --text desc.txt     # every URL in the 简介 opens
 ```
 
 Fix every ✗ first. Note the duration and both text lengths it prints; the later checks compare against them.
