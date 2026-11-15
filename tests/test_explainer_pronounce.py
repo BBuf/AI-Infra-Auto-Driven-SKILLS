@@ -170,6 +170,11 @@ def test_ack_is_spelled():
     assert spoken("单边 RDMA WRITE") == "单边 RDMA WRITE"
 
 
+def test_nan_is_spelled():
+    # PR 47013 video (2026-11-14): NaN was read as one syllable (Whisper: 9 / 难); spelled N A N passes.
+    assert spoken("掩码挡不住 NaN。") == "掩码挡不住 N A N。"
+
+
 def test_fastokens_stays_as_written():
     # PR 48928 video (2026-11-14): the voice reads fastokens as "fast tokens", which is the
     # reading meant; pron_check fails only on the doubled t Whisper writes. Approved, no respelling.
@@ -213,7 +218,7 @@ def test_row_after_duoshao_and_wave_respelling():
 
 def test_scientific_notation_is_read_as_powers_of_ten():
     # pron_check --asr FAILed 「NaN 换成负 1e30」 (PR 47641 video); 「10 的 30 次方」 passed.
-    assert spoken("NaN 换成负 1e30，排到最后") == "NaN 换成负 10 的 30 次方，排到最后"
+    assert spoken("NaN 换成负 1e30，排到最后") == "N A N 换成负 10 的 30 次方，排到最后"
     assert spoken("相对误差 1.5e-6 以内") == "相对误差 1.5 乘 10 的负 6 次方以内"
     assert spoken("容差 1e-5") == "容差 10 的负 5 次方"
     assert spoken("常量 1e30f 不变") == "常量 1e30f 不变"
