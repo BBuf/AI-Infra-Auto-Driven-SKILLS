@@ -244,6 +244,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | IEEE (same video) | HEE | 浮点标准 |
 | e4m3 (FP8 e4m3, same video) | 一4M3 (the lone e again) | 这种 FP8 / 输出的 FP8 (e4m3 stays on screen) |
 | NaN (same video) | 9 | 无效的值 |
+| NaN again (PR 47013 video, 2026-11-14: the term is the subject, so it cannot be reworded away) | written form: 9 in the carrier, 难 in a sentence (read as one syllable); nan / Nan the same | `lexicon`: NaN → N A N (heard NAN in the carrier and in 「掩码挡不住 NaN，零乘以 NaN 还是 NaN」) |
+| compile (torch compile written with a space, PR 49263 video) | 看PAL, same as the parallel compile row | write torch.compile in the narration: the dotted form reads right |
 | wave in a sentence (一个 wave 放得下几行 CTA, same video) | WIM in one take (the carrier passes as Wave) | GPU 一轮能同时放下几行 CTA (wave stays in the kicker) |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |
 | Three.js (also respelled Three J S) | Free.js / FreeJS | 网页 3D 场景 / 在浏览器里漫游的 3D 房子 (Three.js stays on screen) |
@@ -500,6 +502,13 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 注释里也写明了：范围没办法从数值里推出来 (same video) | 写 \| 明了, 推 \| 出来 (数值 heard 竖子) | 注释里也说了：光看数字，是判断不了范围的 |
 | 每个请求都从头切一遍 (PR 48928 video, 2026-11-14) | 从 \| 头切 | 每个请求都要重新切一遍 |
 | 区间是按字符数算的 (same video) | 字 \| 符数 \| 算 | 区间用的是字符的个数 |
+| 分配器从来不会把它分给真实的 token (PR 47013 video, 2026-11-14) | 从来不 \| 会 | 分配器不会把它分给真实的 token |
+| 端到端的 TTFT 和 TPOT (same video) | 端 \| 到端 \| 的 | 整条链路上的 TTFT 和 TPOT |
+| 报了一个错：流正在录制 (PR 49263 video, 2026-11-14) | 流正 \| 在 | 报了一个错，意思是：这条流在录制当中 |
+| 录制外面包着一层 freeze gc (same video) | 外面 \| 包着 (面包) | 录制的外层套了一个 freeze gc |
+| 录制过程中新创建的对象 (same video) | 中新创 \| 建 | 录制开始之后才创建的对象 |
+| 调用方如果本来就关着 (same video) | 调 \| 用方 | 如果调用它的代码本来就关着 |
+| 总结一下：析构函数什么时候运行 (same video) | 析 \| 构函 \| 数 | 析构函数在什么时候运行 |
 | 窗口大小加标志位 (same video) | 加标 \| 志位 | 窗口大小和标志位 |
 | 两到三轮定出分界值 (same video) | 出分 \| 界值 | 两到三轮确定分界值 |
 | 改成谓词指令，省掉了编译器生成的分支 (same video) | 成谓词, 编译 \| 器生 \| 成 | 改用谓词指令，省掉了编译出来的分支 |
@@ -545,6 +554,7 @@ places where a digit and the character next to it form another number:
 | 到顶或到底的那一端不检查 (same video) | 到底或到底 (顶 dǐng heard as 底) | 到了第一名或最后一名的那一端，不检查 |
 | 平均首字延迟 (PR 48928 video, 2026-11-14) | 首次延迟 (字 heard as 次) | 平均首 token 延迟 |
 | 归一化之后，亮图必中 (PR 49570 video, 2026-11-14) | 样图必重 (亮图 heard as 样图) | 只要图够亮就会出错 |
+| 带 RoPE 的那个 writer (PR 47013 video, 2026-11-14) | 但 Rope 的那个 (带 heard as 但) | 有 RoPE 的那个 writer |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a
