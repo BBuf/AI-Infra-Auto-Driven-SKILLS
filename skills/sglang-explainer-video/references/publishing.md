@@ -31,6 +31,16 @@ such as 「【SGLang PR 讲解】… | PR #N」, makes the videos hard to tell a
 - **Find the hook first.** It is what a viewer would stop for: the symptom (一半回答变成一串感叹号), the number
   (首 token 延迟降了近一半), or something they already search for (the model, the GPU, the tool). The title leads
   with it.
+- **Name the model.** Videos whose title and description carry the name of the model the PR involves (DeepSeek,
+  GLM, Qwen, Kimi, …) get more views than those that do not (user, 2026-11-15, from the account's own numbers). So:
+  - Find the model in the PR: the one the bug shows up on, or the one in the benchmark conditions. Write it down in
+    `capture/understanding.md` at Step 2.
+  - Put its name in the B站 title, the 小红书 title, the opening lines of the 简介 and of the 小红书 body, and the tags.
+    Early in the title is better than in a trailing bracket.
+  - Say truthfully how the model is involved: the bug hits it (GLM-5.3-Flash 一半回答变成感叹号) or the numbers were
+    measured on it (在 Qwen3-8B 上实测). Never name a model the PR does not mention.
+  - A PR with no model in it (a pure refactor, a tool) names the hardware or the feature people search for instead.
+  - `publish_check.py --model "<name>"` fails a title or text that leaves the name out.
 - **Vary the form.** Read the last five titles in the publish ledger. The new title does not repeat their sentence
   pattern: after two questions, write a statement, a number or a contrast.
 - **Keep it findable.** 「SGLang」 appears once in the B站 title. The PR number goes at the end of the title or in the
@@ -134,7 +144,8 @@ said plainly.
 ```bash
 $SEV_PY -I $SEV_SKILL/scripts/publish_check.py --video ~/Desktop/小红书上传/NN_<slug>.mp4 \
     --render $P/renders/video.mp4 --cover ~/Desktop/小红书上传/NN_<slug>_封面_B站.png \
-    --bili-title "<B站标题>" --xhs-title "<小红书标题>" --bili-desc desc.txt --xhs-body body.txt
+    --bili-title "<B站标题>" --xhs-title "<小红书标题>" --bili-desc desc.txt --xhs-body body.txt \
+    --model "<the model the PR involves, as the titles write it>"
 $SEV_PY -I $SEV_SKILL/scripts/check_links.py --text desc.txt     # every URL in the 简介 opens
 ```
 

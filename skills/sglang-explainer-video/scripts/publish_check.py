@@ -12,6 +12,8 @@ things the sites accept without a word, or that already went wrong once:
   B站 简介 carries the AI-voice line (配音为 AI 语音合成)
   no 「#」 right before a digit in the 小红书 body (it opens the topic popup)
   no PR status (OPEN / merged / 已合并 ...) in any text
+  with --model: both titles, the 简介 and the 小红书 body name the model the PR involves (titles and
+      descriptions that carry the model's name get more views)
   an SGLang video's B站 简介 carries a source link and a cookbook / docs link, and the 小红书 body names
       both (源码, Cookbook / 文档), the same ones as the video's last frame
 
@@ -20,7 +22,7 @@ It prints the video's duration and both text lengths: compare them with what the
 
     $SEV_PY -I $SEV_SKILL/scripts/publish_check.py --video ~/Desktop/小红书上传/NN_slug.mp4 \\
         --render $P/renders/video.mp4 --cover ~/Desktop/小红书上传/NN_slug_封面_B站.png \\
-        --bili-title "..." --xhs-title "..." --bili-desc desc.txt --xhs-body body.txt
+        --bili-title "..." --xhs-title "..." --bili-desc desc.txt --xhs-body body.txt --model "GLM-5.3"
 """
 
 import argparse
@@ -77,6 +79,15 @@ def link_problems(text, *, xhs):
     return out
 
 
+def names_model(text, model):
+    """Does the text carry the model's name? Case, spaces and hyphens are ignored (GLM 5.3 = glm-5.3)."""
+
+    def squash(t):
+        return re.sub(r"[\s\-_]", "", t).lower()
+
+    return squash(model) in squash(text)
+
+
 def probe(path, entries):
     r = subprocess.run(
         ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries"]
@@ -99,6 +110,7 @@ def main():
     ap.add_argument("--xhs-title")
     ap.add_argument("--bili-desc", help="file with the B站 简介")
     ap.add_argument("--xhs-body", help="file with the 小红书 body")
+    ap.add_argument("--model", help="the model the PR involves, as the titles write it")
     a = ap.parse_args()
     bad = []
 
@@ -124,24 +136,32 @@ def main():
     if a.cover:
         w, h = probe(a.cover, "stream=width,height")
         check((w, h) == ("1440", "1080"), f"cover {w}×{h} (want 1440×1080)")
+    named = []  # (where, text) pairs that must carry the model's name
     if a.bili_title is not None:
+        named.append(("B站 title", a.bili_title))
         check(len(a.bili_title) <= 80, f"B站 title {len(a.bili_title)}/80")
         for p in text_problems(a.bili_title, xhs=False):
             check(False, f"B站 title: {p}")
     if a.xhs_title is not None:
+        named.append(("小红书 title", a.xhs_title))
         n = xhs_len(a.xhs_title)
         check(n <= 20, f"小红书 title {n:g}/20")
     if a.bili_desc:
         d = open(a.bili_desc, encoding="utf-8").read().strip()
+        named.append(("B站 简介", d))
         check(0 < len(d) <= 2000, f"B站 简介 {len(d)}/2000")
         check(bool(AI_VOICE.search(d)), "B站 简介 has the AI-voice line")
         for p in text_problems(d, xhs=False) + link_problems(d, xhs=False):
             check(False, f"B站 简介: {p}")
     if a.xhs_body:
         b = open(a.xhs_body, encoding="utf-8").read().strip()
+        named.append(("小红书 body", b))
         check(0 < len(b) <= 1000, f"小红书 body {len(b)}/1000")
         for p in text_problems(b, xhs=True) + link_problems(b, xhs=True):
             check(False, f"小红书 body: {p}")
+    if a.model:
+        for where, text in named:
+            check(names_model(text, a.model), f"{where} names the model ({a.model})")
     print(f"{'✓' if not bad else '✗'} publish_check: {len(bad)} problem(s)")
     sys.exit(1 if bad else 0)
 

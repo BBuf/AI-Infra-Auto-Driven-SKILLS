@@ -298,3 +298,11 @@ def test_ieee_and_expf_are_respelled():
     assert spoken("除法按 IEEE 精确舍入") == "除法按 I triple E 精确舍入"
     assert spoken("有的调用 expf，有的调用快速版的 exp") == "有的调用 exp F，有的调用快速版的 exp"
     assert spoken("有的调用 __expf") == "有的调用 exp F"
+
+
+def test_haigei_must_be_reworded():
+    # 还给 is read huán gěi every time (PR 49263 video): "also gave" has to be written another way
+    assert [w for w, _ in P.must_reword("PR 里还给了一个最小复现：在录制窗口里。")] == ["还给"]
+    assert P.must_reword("PR 里还附带了一个最小复现。") == []
+    assert P.must_reword("录制结束之后，把这块显存归还给系统。") == []
+    assert P.must_reword("零乘以 NaN，结果还是 NaN。") == []

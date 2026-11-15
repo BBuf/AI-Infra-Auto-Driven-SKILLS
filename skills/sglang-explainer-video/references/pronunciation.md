@@ -285,6 +285,25 @@ Measured in the DeepInfer video (2026-10-20, `poly_probe.py`, 6 takes each): 「
 the same clause then flips (「重算段只重建」 4/6, 6/6 after the respelling). Reword the narration instead: 重算 → 重新计算,
 重算段 → 回放段, 重建 → 重新生成, 重启 → 重新拉起.
 
+**还给 is always read huán gěi** (user's ear, PR 49263 video 2026-11-15: 「PR 里还给了一个最小复现」 was read huán gěi le,
+"gave back", where the line means hái, "also gave"). Measured with `poly_probe.py` (6 takes, 孩/骸 vs 环/桓):
+
+| Line | Wanted | Wrong takes |
+| --- | --- | --- |
+| PR 里还给了一个最小复现 | hái | 6/6 |
+| 把这块显存还给系统 (control) | huán | 0/6 |
+| PR 里还附带了一个最小复现 | hái | 0/6 |
+
+The voice takes 还给 as the word "give back" whatever the sentence means, and a respelling cannot tell the two senses
+apart. So this is a must-reword entry (`reword` in pronunciation.json): `pron_check.py` fails any narration line with a
+bare 还给, with or without `--asr`.
+- Meaning "also gave": write 还附带了 / 另外给了 / 也给出了.
+- Meaning "give back": write 归还给 / 交还给, which the check lets through.
+
+The delivered take was graded the same way (the clause cut from the recording against the 孩/骸 and 环/桓 variants): the old
+take sat with huán, the re-voiced one with hái. Add a wording to `reword` when a misread is measured and the same characters
+need the other reading in other sentences; when one reading is always right, use `patterns` instead.
+
 **长 in 长上下文 and 擅长 is respelled to 常** (user's ear, model-release video 2026-10-24: 「长上下文推理」 was heard
 as zhǎng). Measured with `poly_probe.py` (6 takes, 常/肠 vs 掌/涨): 「RL 框架、长上下文推理」 4/6 wrong as written, 「它尤其擅长参数化建模」
 4/6 and 6/6 wrong; 0/6 for both after the `patterns` rules 长(?=上下文) → 常 and (?<=擅)长 → 常. Already right as written

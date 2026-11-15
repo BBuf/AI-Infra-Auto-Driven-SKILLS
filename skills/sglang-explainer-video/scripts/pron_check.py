@@ -11,7 +11,7 @@ A term is OK when an unbiased Whisper pass writes it back (case/spaces ignored),
 primed with the term does (plausible; listen once), FAIL when neither does — then add a respelling to
 pronunciation.json (the tool tries a few and prints the first that passes) or reword the line.
 Verdicts are cached per voice + spoken form in $SEV_WS/pron_cache.json. Without --asr only the
-rewrites and the pause check run. ASR needs mlx-whisper (Apple Silicon; setup_env.sh installs it).
+rewrites, the must-reword list (pronunciation.json `reword`, e.g. 还给) and the pause check run. ASR needs mlx-whisper (Apple Silicon; setup_env.sh installs it).
 """
 
 import argparse
@@ -232,6 +232,14 @@ def main():
                 print(
                     f"  line {lid}: " + " · ".join(f"{w} → {s.strip()}" for w, s in ch)
                 )
+        hits = [
+            (lid, w, adv) for lid, t in lines for w, adv in pronounce.must_reword(t)
+        ]
+        if hits:
+            print("· wordings to rewrite (misread, and a respelling cannot fix them):")
+            for lid, w, adv in hits:
+                print(f"  FAIL line {lid}: {w} — {adv}")
+            bad += len(hits)
         if asr:
             print(f"· terms ({a.voice}, carrier sentence):")
             bad += check_terms(lines, a.voice, asr)
