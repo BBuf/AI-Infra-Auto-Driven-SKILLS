@@ -1,8 +1,23 @@
 <!--
-  SGLang follow strip, Kimi dark theme variant (same text, URLs, ids and position as the skill's
-  assets/brand/follow-strip.html; only the colours change for the #121212 ground).
-  Paste the CSS into the frame's <style> and the <div> inside #root after the frame's content.
-  Sits at y 792–872; end the frame's own content above y≈770.
+  SGLang ending block: required on the LAST frame of every SGLang video (house-style.md §Ending links).
+  It has two parts, both fixed in place:
+
+  - #fs-links (y 652–768): this video's own links. Row 1 is the source the video explains (a file or
+    directory in an sgl-project repository); row 2 is the cookbook or docs page a viewer would open next.
+    Replace the two example URLs with the ones the frame packet gives you, and set row 2's label to
+    「Cookbook」 or 「文档」 to match. Write each URL without "https://". A URL longer than 112 characters
+    does not fit the row: link the containing directory instead.
+  - #fs-follow (y 792–872): the fixed follow strip. Do not edit its text or URLs.
+
+  How to use it:
+  - Paste the CSS rules into the frame's own style element (inside #root, frame contract) and the two
+    divs inside #root, after the frame's own content.
+  - Layout: end the frame's own content above y≈630.
+  - Timing: the strip is on from the start of the frame. Reveal the links card by the start of the frame's
+    last clause and keep both on screen until the frame ends (the last voice line has a 2 s hold):
+      tl.fromTo("#fs-follow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.2);
+      tl.fromTo("#fs-links", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, T);
+  - Do not narrate either part. check_frames.mjs fails a last frame without them.
 -->
 <style>
 #fs-follow{position:absolute;left:96px;top:792px;width:1728px;height:80px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:48px;padding:0 40px;background:#1B1B1B;border:1px solid rgba(255,255,255,0.12);border-radius:16px;white-space:nowrap;}
@@ -10,7 +25,15 @@
 .fs-follow-item{display:flex;align-items:baseline;gap:14px;}
 .fs-follow-lab{font-family:"Noto Sans SC",sans-serif;font-weight:450;font-size:24px;line-height:1;color:rgba(255,255,255,0.50);}
 .fs-follow-url{font-family:"JetBrains Mono","Noto Sans SC",monospace;font-weight:400;font-size:28px;line-height:1;color:#D6D6D6;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
+#fs-links{position:absolute;left:96px;top:652px;width:1728px;height:116px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:0 32px;background:#1B1B1B;border:1px solid rgba(255,255,255,0.12);border-radius:16px;white-space:nowrap;}
+.fs-links-row{display:flex;align-items:center;gap:20px;height:40px;}
+.fs-links-lab{flex:none;width:132px;height:40px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,0.10);font-family:"Noto Sans SC",sans-serif;font-weight:500;font-size:24px;line-height:1;color:#EDEDED;}
+.fs-links-url{font-family:"JetBrains Mono","Noto Sans SC",monospace;font-weight:400;font-size:22px;line-height:1;color:#D6D6D6;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;}
 </style>
+<div id="fs-links">
+  <div class="fs-links-row"><span class="fs-links-lab">源码</span><span class="fs-links-url">github.com/sgl-project/sglang/blob/main/python/sglang/srt/model_executor/runner/base_cuda_graph_runner.py</span></div>
+  <div class="fs-links-row"><span class="fs-links-lab">Cookbook</span><span class="fs-links-url">docs.sglang.io/cookbook/autoregressive/GLM/GLM-5.3-Flash</span></div>
+</div>
 <div id="fs-follow">
   <span id="fs-follow-kicker">关注 SGLang</span>
   <span class="fs-follow-item"><span class="fs-follow-lab">GitHub</span><span class="fs-follow-url">github.com/sgl-project/sglang</span></span>

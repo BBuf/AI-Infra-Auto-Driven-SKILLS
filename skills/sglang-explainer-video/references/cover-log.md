@@ -1,0 +1,16 @@
+# Cover log
+
+One row per cover design, newest last. Read the last five rows before designing a cover, and add a row after
+delivering one (`house-style.md` §Cover). A new cover differs from each of the last five in at least three of the
+columns from "Ground" to "Picture".
+
+| Date | Video | Ground | Accent | Type | Composition | Picture |
+| --- | --- | --- | --- | --- | --- | --- |
+| through 2026-10 | 19 PR / article videos (template "A") | SGLang orange `#D55816`, full bleed | peach | white sans, heavy; italic serif English line | logo card and series label top-left, title mid-left, badge bottom-right | the logo's node graph, faint, at right |
+| 2026-10 | Kimi videos (kimi-dark template) | flat black `#121212` | Kimi blue | light sans, 150 px title | title and stat numbers left, figure right | redraw of the model's block diagram |
+| 2026-11-04 | PR 42557 Paged Experts | graphite with a faint grid | one accent | heavy sans, hook words largest | title left, illustration right | line art: GPU card, slot strip, PCIe lane, RAM stick |
+| 2026-11-09 | PR 48942 | graphite | orange | heavy sans, two-line title | title and stats left, illustration right | node diagram of the two code paths |
+| 2026-11-14 | PR 49570 | graphite | orange | heavy sans, two-line title | title and stats left, illustration right | before / after pictures |
+| 2026-11-14 | PR 48928 | graphite | orange | heavy sans, two-line title | title and stats left, illustration right | bar chart |
+| 2026-11-15 | PR 47013 | warm paper `#EFE9DC` | vermilion `#E23D28` | black serif (Noto Serif SC 900), Garamond numerals | poster: full-width title, rule, a row of ten cards, one line of text | the title runs off the page as a row of "!"; five of the ten answer cards are filled with "!" |
+| 2026-11-15 | PR 49263 | diagonal split: pale mint `#DDF1E4` / near-black `#15111A` | green on the light half, red on the dark half | heavy sans, centred, changes colour across the cut | centred title over two terminal cards, one per half | glitch on 「时崩？」; recording progress cells that stop at a red one |

@@ -1,6 +1,6 @@
 ---
 name: sglang-explainer-video
-description: Turn an SGLang PR (number or URL) or a technical article (Markdown path) into a Chinese explainer video that fully explains every algorithm and code change (length follows the material, no time cap) — natural edge-tts narration, word-synced bilingual 中文/English captions, the orange "SGLang PR 讲解 / SGLang 技术解读" cover and SGLang-brand visuals by default (or the kimi-dark theme) — built on HyperFrames' pr-to-video pipeline and delivered to ~/Desktop. Use when the user sends an sgl-project/sglang PR number or link, or an article file, and asks for a video (做个视频, 讲解视频, PR 视频, 文章转视频).
+description: Turn an SGLang PR (number or URL) or a technical article (Markdown path) into a Chinese explainer video that fully explains every algorithm and code change (length follows the material, no time cap) — natural edge-tts narration, word-synced bilingual 中文/English captions, a cover designed for each video, SGLang-brand visuals by default (or the kimi-dark theme), and ending links to the source and the cookbook — built on HyperFrames' pr-to-video pipeline and delivered to ~/Desktop. Use when the user sends an sgl-project/sglang PR number or link, or an article file, and asks for a video (做个视频, 讲解视频, PR 视频, 文章转视频).
 ---
 
 # SGLang explainer video
@@ -88,7 +88,7 @@ Then write `$P/capture/understanding.md`: the problem; the algorithm step by ste
 (`file:function` → what changed and why); the numbers with their conditions (hardware, model, workload);
 the caveats the author states. This is the coverage checklist for Step 3.
 
-Then put the SGLang brand on the project (frame.md, CJK/bilingual caption skin, follow strip, logos). The theme is
+Then put the SGLang brand on the project (frame.md, CJK/bilingual caption skin, ending block, logos). The theme is
 `sglang-orange` unless the video is about a Kimi / Moonshot model or the user asks for a different look; then use
 `--theme kimi-dark` (`references/house-style.md` §Themes):
 
@@ -104,12 +104,15 @@ article makes → lessons → summary), **with the Core principle above overridi
 Before moving on, tick every item of `capture/understanding.md` against the storyboard; add frames for
 anything uncovered. Then apply the house style:
 
-- **Frame 1 is always the cover** `compositions/frames/00-cover.html` (built by `make_cover.py`, not a worker),
+- **Frame 1 is always the cover** `compositions/frames/00-cover.html` (built in Step 6, not by a worker),
   `status: animated`. Frame N's file is `NN-<slug>.html` with `NN = N-1`.
 - PR videos end on the **author page** (name/@login/avatar on screen, never spoken; the PR link; no status).
-- **Every video's last frame carries the SGLang follow strip** (the project's `assets/brand/follow-strip.html`: 关注 SGLang ·
-  GitHub · 博客 · 文档) at y 792–872, so plan that frame's content to end above y≈770. It is on screen only, not
-  narrated (house style §Follow strip).
+- **Every video's last frame carries the SGLang ending block** (the project's `assets/brand/follow-strip.html`), at
+  y 652–872, so plan that frame's content to end above y≈630 (house style §Ending links):
+  - a links card with this video's own links: the source it explains, and the cookbook or docs page to open next;
+  - the fixed follow strip (关注 SGLang · GitHub · 博客 · 文档).
+  - Pick the two links now and write them into that frame's Scene text. Take them from `main` and from
+    `docs.sglang.io/sitemap.xml`, never from memory. The block is on screen only, not narrated.
 - Chinese narration, English technical terms, one idea per frame (≲ 60 汉字, ~11 s); as many frames as the
   material needs — no whole-film cap. Long films get section kickers (e.g. 「① 问题」「② 算法」「③ 代码」) so
   viewers keep their place.
@@ -210,18 +213,34 @@ carry `- asset_candidates: assets/article/figN.png — …`.
 
 ## 6. Cover
 
-```bash
-$SEV_PY -I $SEV_SKILL/scripts/make_cover.py --project $P --series "SGLang PR 讲解" --badge "#<N>" \
-  --title-zh "<一句中文问题/主张>" --title-en "<PR title>" --meta "<file> · +A / −D · @<author>" \
-  --duration <frame-1 voice s> --cue-title <s> --cue-meta <s> --png $P/cover.png --png-bili $P/cover_bili.png
-```
+Every video gets its own cover design (house style §Cover). Do not reuse the previous video's.
 
-Article: `--series "SGLang 技术解读" --badge "<one keyword>"`. The design is fixed per theme (house style §Cover,
-§Themes). A kimi-dark project takes `--title-zh <short title> --subtitle <one line> --title-en <mono line>
---stats "<num>=<label>;…" [--visual <right-column .svg>]` instead of `--badge/--meta`; the theme is read from
-`.hyperframes/theme`.
-`--png-bili` renders the same design at 1440×1080 with every element inside the centred 16:9 band — the
-cover to upload to Bilibili, which crops one image to both 4:3 and 16:9 (house style §Cover).
+1. Look at what has been used: `references/cover-log.md`, and the newest covers side by side.
+   ```bash
+   $SEV_PY $SEV_SKILL/scripts/cover_kit.py wall --out $P/cover_wall.png
+   ```
+2. Design this video's cover from its content: what the bug or the speed-up looks like. It differs from each of
+   the last five covers in at least three of ground colour, accent colour, type, composition and illustration
+   technique. It keeps the hook as the largest line and the small tag 「SGLang PR 讲解 · #N」 top-left.
+3. Write the design as `$P/work/make_cover.py`: `css(width, dy)`, `body(prefix)`, the reveal steps and the list of
+   text to fade. `cover_kit.py`'s docstring shows the shape. Keep the content inside y 135–880.
+   ```bash
+   $SEV_PY $P/work/make_cover.py png                       # cover.png (1920×1080) + cover_bili.png (1440×1080)
+   $SEV_PY $P/work/make_cover.py frame <frame-1 voice s>   # compositions/frames/00-cover.html
+   ```
+   Time the reveals to the cover narration's word cues in `audio_meta.json`.
+4. Compare, then log it:
+   ```bash
+   $SEV_PY $SEV_SKILL/scripts/cover_kit.py wall --out $P/cover_wall.png --add $P/cover_bili.png
+   ```
+   If the new tile could be taken for a neighbour, redesign it. Then add its row to `references/cover-log.md` and
+   ship that with the video's other skill updates.
+
+`cover_bili.png` is the cover to upload to Bilibili, which crops one image to both 4:3 and 16:9.
+
+The series template "A" (`scripts/make_cover.py --project $P --series "SGLang PR 讲解" --badge "#<N>" --title-zh …
+--title-en … --meta … --duration <frame-1 voice s> --png $P/cover.png --png-bili $P/cover_bili.png`) is only for a
+video whose user asks for the series look.
 
 ## 7. Captions (bilingual)
 
@@ -272,7 +291,15 @@ Read **every** sheet of the rendered MP4 (not Studio snapshots): 乱码, wrong c
 mistranslated terms, captions out of sync, content under the caption band, stray status lines. Fix, re-render,
 re-check. Before delivering, make sure this video's pronunciation fixes are in the skill (§4 "Keep the
 pronunciation lexicon growing"). The same applies after the user's review: a word they say was misread becomes
-a lexicon entry plus a skill PR, not a one-off edit in the project. Then copy to the Desktop:
+a lexicon entry plus a skill PR, not a one-off edit in the project.
+
+Open the links the ending shows (and, once they are drafted, the publish texts):
+
+```bash
+$SEV_PY -I $SEV_SKILL/scripts/check_links.py --project $P [--text desc.txt body.txt]
+```
+
+Then copy to the Desktop:
 
 ```bash
 cp $P/renders/video.mp4 ~/Desktop/SGLang_PR<N>_讲解_中英字幕.mp4
@@ -283,6 +310,8 @@ cp $P/cover_bili.png ~/Desktop/SGLang_PR<N>_讲解_封面_B站.png
 ## 10. Publish (only when the user asks)
 
 Follow `references/publishing.md`: the user picks each file in the native dialog, the agent fills the rest.
+The title and the description are written for this video, from its own hook, and end with the same source and
+cookbook links as the last frame (§Title and description).
 Bilibili: 含AI生成内容 · 分区 人工智能 · ~8 tags · 1440×1080 B站 cover. 小红书: **always 标记 SGLang** via
 添加组件 → 标记地点或标记朋友 → 用户 → SGLang (official, orange SGL avatar) — never an @ in the body — plus topics
 #人工智能 #大模型 #SGLang and 笔记含AI合成内容.
@@ -310,7 +339,8 @@ $SEV_PY -I $SEV_SKILL/scripts/retime_frames.py --project $P --ref-meta $P/audio_
 re-maps each frame's timeline onto the new take (piecewise-linear, anchors = matched clause starts). Frames are
 found through STORYBOARD.md `- src:` (so `19b-*.html` works). `--chain` handles a project whose built take was
 lost by an earlier retime: the new anchors are composed through each frame's existing WARP. Re-make the cover
-(`make_cover.py`) with the new frame-1 cues — or let retime warp `00-cover` too when the cover is custom.
+frame (`work/make_cover.py frame <new frame-1 voice s>`, with its cues moved to the new take), or let retime warp
+`00-cover` too.
 Then retranslate changed caption groups, re-subset fonts, re-assemble, and re-render.
 
 **Re-voicing a finished video** (new voice, same frames) is one command per project:
@@ -332,7 +362,8 @@ lexicon, and only then render. A batch of 13 published videos (132 min) took abo
 
 ## References
 
-- `references/house-style.md` — narration, term glossary, captions, cover, author page, brief template.
+- `references/house-style.md` — narration, term glossary, captions, cover, author page, ending links, brief template.
+- `references/cover-log.md` — what each cover so far looked like; read it before designing one, add a row after.
 - `references/pronunciation.md` — English terms and Chinese polyphones read right: spoken-form rules, lexicon,
   `pron_check.py`, `poly_probe.py`, `hang_take.py`, `tone_take.py`.
 - `references/worker-dispatch.md` — the dispatch context to paste into every frame worker.

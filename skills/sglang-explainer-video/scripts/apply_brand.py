@@ -12,9 +12,9 @@ Theme kimi-dark (house-style.md §Themes):
 1. writes assets/themes/kimi-dark/frame.md as the project's frame.md (no preset remix);
 2. installs that theme's dark caption skin and stages the JetBrains Mono faces it uses.
 
-Both themes then copy the theme's SGLang follow strip to assets/brand/follow-strip.html (the
-last-frame worker pastes it from there), copy the SGLang logos into assets/sglang/, and record
-the theme in .hyperframes/theme for make_cover.py.
+Both themes then copy the theme's SGLang ending block (links card + follow strip) to
+assets/brand/follow-strip.html (the last-frame worker pastes it from there), copy the SGLang logos
+into assets/sglang/, and record the theme in .hyperframes/theme for make_cover.py.
 """
 
 import argparse
