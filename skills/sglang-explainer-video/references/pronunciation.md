@@ -245,6 +245,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | e4m3 (FP8 e4m3, same video) | 一4M3 (the lone e again) | 这种 FP8 / 输出的 FP8 (e4m3 stays on screen) |
 | NaN (same video) | 9 | 无效的值 |
 | NaN again (PR 47013 video, 2026-11-14: the term is the subject, so it cannot be reworded away) | written form: 9 in the carrier, 难 in a sentence (read as one syllable); nan / Nan the same | `lexicon`: NaN → N A N (heard NAN in the carrier and in 「掩码挡不住 NaN，零乘以 NaN 还是 NaN」) |
+| NEXTN (SGLang's MTP draft algorithm name, DGX Spark article video 2026-11-15) | heard 「Next Done」 in the carrier (OK~), 「Next End」 for NextN | `lexicon`: NEXTN → Next N (Next / N both OK); captions keep NEXTN |
 | compile (torch compile written with a space, PR 49263 video) | 看PAL, same as the parallel compile row | write torch.compile in the narration: the dotted form reads right |
 | wave in a sentence (一个 wave 放得下几行 CTA, same video) | WIM in one take (the carrier passes as Wave) | GPU 一轮能同时放下几行 CTA (wave stays in the kicker) |
 | SparsePrefillChunkCache (class name in a sentence) | Sparse Refill Chunk Cache | 每个 chunk 自己的缓存对象 (the class name stays on screen) |

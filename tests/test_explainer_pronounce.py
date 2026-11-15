@@ -306,3 +306,8 @@ def test_haigei_must_be_reworded():
     assert P.must_reword("PR 里还附带了一个最小复现。") == []
     assert P.must_reword("录制结束之后，把这块显存归还给系统。") == []
     assert P.must_reword("零乘以 NaN，结果还是 NaN。") == []
+
+
+def test_nextn_is_read_as_next_n():
+    # NEXTN was heard as "Next Done" (DGX Spark article video): the voice reads "Next N" cleanly
+    assert spoken("Ling 自带一个 NEXTN 预测层。") == "Ling 自带一个 Next N 预测层。"
