@@ -208,12 +208,14 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | j (a loop index read alone) | (nothing heard) | 下标 / 下标小于 N |
 | key (dequant memo key, DSV4.1 + K3 sharing video 2026-10-23) | T (fourth video in a row) | 缓存键 / 索引键 (key stays on screen) |
 | key (u32 sort key, MoE router video PR 47641, 2026-11-02) | P / T in 9 of 11 lines (fifth video in a row) | 键 / 整数键 (key stays on screen) |
+| key (the attention key: query 和 key 做点积; indexer epilogue video PR 45807 + 46003, 2026-11-16) | T (sixth video in a row; Key heard T too) | K (heard K). Now a `reword` rule, so pron_check flags key before TTS |
 | topk inside a function name (fused topk, biased grouped topk, topk softmax pack; same video) | Talk | top k (the identifier stays on screen) |
 | 1e30 (as in NaN 换成负 1e30, same video) | 负1乘以10的30次方: Edge expands it itself, so the token never appears and pron_check FAILs; the 「1 乘以」 also sounds clumsy | `patterns`: 1eN → 10 的 N 次方, 1e-N → 10 的负 N 次方, x.ye-N → x.y 乘 10 的负 N 次方 |
 | SIMT (tiny GEMM video PR 47683) | SIMP for SIMT, S I M T and S-I-M-T alike (OK~) | no respelling: Whisper merges the letters; keep SIMT |
 | N_TILE / tile (K × (4 + N_TILE) / 128, same video) | NTAO for N tile, N Tile, N-tile and NTile; tile alone Tao or 他 | 每个 CTA 的行数 (N_TILE stays in the on-screen formula) |
 | r (第 r 份写进第 r 个 CTA, same video) | 二: the letter sounds like 第二份 | 第几份就写进第几个 CTA |
 | FFMA (CUDA perf guide video PR 48380, 2026-11-05) | FFMV | lexicon → F F M A (passes: FFMA) |
+| FMA (浮点融合成一条 FMA; indexer epilogue video PR 45807 + 46003, 2026-11-16) | FMV | lexicon → F M A (passes) |
 | DFLASH (speculative algorithm, DCP explainer video 2026-11-06) | Flash (the D is dropped) | lexicon → DFlash: heard D-Flash 2/2 |
 | EP2 (expert parallel 2, same video) | EPR | lexicon → EP 2: heard EP2 2/2 |
 | fi_a2a (--dcp-comm-backend value, same video) | FiA to A | lexicon → F I A2A: heard FIA2A 2/2 |
