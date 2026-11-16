@@ -311,3 +311,16 @@ def test_haigei_must_be_reworded():
 def test_nextn_is_read_as_next_n():
     # NEXTN was heard as "Next Done" (DGX Spark article video): the voice reads "Next N" cleanly
     assert spoken("Ling 自带一个 NEXTN 预测层。") == "Ling 自带一个 Next N 预测层。"
+
+
+def test_fma_is_spelled_and_ffma_still_works():
+    # FMA was heard FMV (indexer epilogue video PR 45807 + 46003); FFMA keeps its own entry
+    assert spoken("免得被合成一条 FMA。") == "免得被合成一条 F M A。"
+    assert spoken("一条 FFMA 指令") == "一条 F F M A 指令"
+
+
+def test_key_must_be_reworded():
+    # key is heard T / P in every take: the attention key is written K, other keys 键
+    assert [w for w, _ in P.must_reword("每个 head 用 query 和这个位置的 key 做点积。")] == ["key"]
+    assert P.must_reword("每个 head 用 query 和这个位置的 K 做点积。") == []
+    assert P.must_reword("用 sort_key 和 key_cache 排序") == []

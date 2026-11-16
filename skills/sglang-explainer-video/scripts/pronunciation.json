@@ -35,6 +35,7 @@
     "ack": "A C K",
     "ACK": "A C K",
     "FFMA": "F F M A",
+    "FMA": "F M A",
     "DFLASH": "DFlash",
     "EP2": "EP 2",
     "fi_a2a": "F I A2A",
@@ -148,7 +149,8 @@
   "approved": ["SGLang", "MTP", "PR", "dB", "Kimi", "WRITE", "fastokens"],
   "acronyms": ["mtp", "dsa", "kv", "mla", "mha", "gqa", "mqa", "qkv", "ffn", "mlp", "tp", "ep", "dp", "pp", "pd", "sm", "gpu", "cpu", "cuda", "rl", "llm", "api", "id", "hf", "bs", "nvfp", "mxfp", "fp", "bf", "gdn", "kda", "cta"],
   "reword": [
-    ["(?<![归交退奉偿])还给", "the voice reads 还给 as huán gěi (give back) every time. Meaning \"also gave\": write 还附带了 / 另外给了 / 也给出了. Meaning \"give back\": write 归还给 / 交还给"]
+    ["(?<![归交退奉偿])还给", "the voice reads 还给 as huán gěi (give back) every time. Meaning \"also gave\": write 还附带了 / 另外给了 / 也给出了. Meaning \"give back\": write 归还给 / 交还给"],
+    ["(?<![A-Za-z_])[Kk]ey(?![A-Za-z_])", "Edge says key as T or P in every take (six videos in a row). The attention key: write K (query 和 K 做点积). A dict, cache or sort key: write 键 / 缓存键 / 整数键. key stays on screen and in code"]
   ],
   "tones": {
     "_doc": "Tone-only polyphones that tone_take.py grades in the recorded take (respelling cannot fix them: no common single-reading homophone, and Edge rejects SSML). readings: tone -> pinyin. default: the tone meant unless the character sits inside one of words[tone]. controls: single-reading characters of each tone, same final where possible, swapped in to build same-line references. Add a character only after tone_take.py --calibrate judges its controls right in >= 90 % of cases.",
