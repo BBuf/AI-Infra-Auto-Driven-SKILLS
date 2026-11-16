@@ -22,6 +22,25 @@ button, the user picks the file in the native dialog and replies 「好了」, a
 Copy the deliverables into one folder so the user always picks from the same place:
 `~/Desktop/小红书上传/NN_<slug>.mp4`, `NN_<slug>_封面.png`, `NN_<slug>_封面_B站.png` (NN = publish order).
 
+## When the in-app browser cannot reach a site
+
+The in-app browser's traffic can leave through a different route from the shell's (on the user's machine, a
+proxy rule for the app's helper process sends it through an overseas node). A site can then fail in the pane
+while `curl` from the shell gets 200: `navigate` reports 「denied or failed」 and the page is `chrome-error://`.
+On 2026-11-16 the US nodes could not reach `member.bilibili.com` while 小红书 still worked.
+
+- Do not change the user's proxy configuration to get past it. A hot reload drops live connections, including
+  the session's own.
+- Do the site that works first, then ask the user. The usual answer is the Chrome extension (Claude in Chrome)
+  in the user's own Chrome, whose traffic reaches the site directly:
+  - The user signs in to the site in Chrome themselves (QR code or SMS). Check the account before filling the
+    form, e.g. B站 `api.bilibili.com/x/web-interface/nav` → `mid` / `uname`.
+  - The video is over the extension's 10 MB `file_upload` limit. Click the upload button by its `find` ref; it
+    opens Chrome's native dialog, where the user picks the file (or a local picker helper does it).
+  - The cover is under 10 MB: `file_upload` it straight into the file input, no dialog.
+  - The same field-by-field checks apply (§Checks). Close the tab you opened when done; a page that asks to
+    confirm leaving stays open, and you tell the user.
+
 ## Title and description (written for each video)
 
 The title, the 简介 and the 小红书 body are written from this video's own hook, the same way its cover is designed
@@ -78,9 +97,16 @@ such as 「【SGLang PR 讲解】… | PR #N」, makes the videos hard to tell a
   `execCommand('insertParagraph')` for each line. The counter under the box (`N/2000`) must then show the
   draft's length. Never use `quill.setText(body)`: it changes only the view, so 7 videos went live with an
   empty 简介.
-- **封面:**
-  - Open 封面设置 → 上传封面, and the user picks `NN_<slug>_封面_B站.png`.
-  - Verify the two `x/vu/web/cover/up` responses, one 1440×1080 and one 1440×810, by opening both URLs.
+- **封面 (the 封面制作 dialog, redesigned 2026-11):**
+  - 添加封面 opens 封面制作. Upload `NN_<slug>_封面_B站.png` through its 上传封面 file input: the user picks it in
+    the native dialog, or in Chrome the extension's `file_upload` sets the input directly (the cover is under 10 MB).
+  - Only the 首页推荐封面 (4:3) takes the new image; the 个人空间封面 (16:9) keeps the video's first frame. Tick
+    「双比例同步改动」 and the 16:9 becomes a centre crop of the same cover.
+  - 完成 sits below the visible area. Dispatch mousedown / mouseup / click on `div.button.submit` (text 完成).
+  - Verify the two `x/vu/web/cover/up` responses, one 1440×1080 and one 1440×810, by opening both URLs, or after
+    submit download the stored `archive.cover` (1440×810) and look at it.
+- **加入合集:** a click on the option's `find` ref can leave the field at 请选择合集. Open the dropdown and click the
+  option by screenshot coordinates, then read the field back (check 2 `collection`).
 - **Submit:** 立即投稿 → 「稿件投递成功」.
 - **BV id:** read it from `member.bilibili.com/x/web/archives?status=is_pubing,pubed,not_pubed&pn=1&ps=3`.
 
