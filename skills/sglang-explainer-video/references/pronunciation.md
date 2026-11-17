@@ -243,6 +243,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | if constexpr (same video) | F / Constax Bear | 所有分支都在编译期决定 |
 | threads per row / rows per CTA (same video) | FREDS / Rose | 每行线程数 / 每个 CTA 的行数 (threads_per_row, rows_per_cta on screen) |
 | in bound (in_bound, same video) | 另一部分 | 越界判断 |
+| full (full top-k; Hopper indexer video PR 50719, 2026-11-17) | FOR (OK~ in the carrier) | 全量 top-k (full top-k stays on screen) |
+| LiteTopK in a list (decode、LiteTopK 和候选消费都不开, same video) | Laptop K in the take (Lighttop K, OK~, in the carrier and in its own clause) | give it its own clause: decode、候选消费，还有 LiteTopK，都不开 |
 | IEEE (same video) | HEE | 浮点标准 |
 | e4m3 (FP8 e4m3, same video) | 一4M3 (the lone e again) | 这种 FP8 / 输出的 FP8 (e4m3 stays on screen) |
 | NaN (same video) | 9 | 无效的值 |
