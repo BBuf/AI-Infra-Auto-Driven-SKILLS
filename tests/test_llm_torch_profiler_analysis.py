@@ -254,7 +254,7 @@ class LlmTorchProfilerAnalysisTest(unittest.TestCase):
                     "http://server", tmp, 5, False, False, "run",
                     common.ProbePlan("x", 1, 1, 1, 0), 0,
                 )
-            stop.assert_called_once_with("http://server", "sglang")
+            stop.assert_called_once_with("http://server", "sglang", auth=None)
 
     def test_sglang_rust_capture_uses_mergeable_profile_id(self):
         common = sys.modules["profile_common"]

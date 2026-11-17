@@ -80,9 +80,35 @@ incompatible flow before issuing control requests. `/server_info` does not
 expose remote environment variables. Native v2 needs `profile_by_stage:true`
 and `num_steps`, without `start_step`, `merge_profiles` or `/stop_profile`.
 Current Rust ingress also supports start/stop with the same scheduler control.
-Older images may lack these routes; check the actual response. Keyed servers
-need the configured admin/API credential; the bundled helper has no auth flag,
-so use authenticated native control and offline analysis for those captures.
+Older images may lack these routes; check the actual response. For keyed
+servers, supply the names of environment variables holding the credentials:
+
+```bash
+python3 scripts/analyze_llm_torch_profile.py \
+  --framework sglang --url http://127.0.0.1:30000 \
+  --output-dir /shared/profiles/mapping \
+  --api-key-env SGLANG_API_KEY --admin-key-env SGLANG_ADMIN_KEY \
+  --record-shapes
+```
+
+`--api-key-env` authenticates metadata, model discovery, warmup and probe
+requests. `--admin-key-env` authenticates start/stop; when omitted, control
+uses the API key. These options also apply to vLLM, TensorRT-LLM and TokenSpeed,
+including mapping/formal captures. The variables must already contain the
+server's bearer credentials. Omit the flags for unkeyed servers. Credential
+values are not CLI arguments or saved configuration; they are not forwarded
+on HTTP redirects, so use the final server URL.
+
+`--record-shapes` and `--no-record-shapes` explicitly set shape recording.
+SGLang sends `record_shapes` in its start request; TokenSpeed uses the same
+field. vLLM sends it inside `profiler_kwargs` only when OpenAPI advertises that
+session override. Older/OpenAPI-disabled vLLM and TensorRT-LLM HTTP control
+reject an explicit shapes override before warmup or start; use launch settings
+or a recorded mapping build there. Without either shapes flag, existing
+behavior is preserved: SGLang/vLLM use server defaults and TokenSpeed requests
+`record_shapes=false`. Shape recording can add overhead; keep attribution
+captures separate from formal timing when needed.
+
 The host launcher explicitly sets `SGLANG_PROFILE_V2=0`.
 The helper puts its label in `profile_id`, so merging can discover rank files.
 SGLang can emit stage-specific traces; its scheduler stop counter may require

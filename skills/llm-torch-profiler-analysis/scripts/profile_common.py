@@ -11,7 +11,7 @@ import sys
 import tempfile
 import time
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -61,6 +61,50 @@ class ProbePlan:
     capture_requests: int
     warmup_max_new_tokens: int
     warmup_requests: int
+
+
+@dataclass(frozen=True)
+class ProfilerAuth:
+    api_key: Optional[str] = field(default=None, repr=False)
+    admin_key: Optional[str] = field(default=None, repr=False)
+
+    @classmethod
+    def from_env(
+        cls, api_key_env: Optional[str] = None, admin_key_env: Optional[str] = None
+    ) -> "ProfilerAuth":
+        def read(name: Optional[str]) -> Optional[str]:
+            if name is None:
+                return None
+            value = os.environ.get(name)
+            if not value or not value.strip() or any(c in value for c in "\r\n"):
+                raise ValueError(
+                    f"Credential environment variable {name!r} is missing or invalid."
+                )
+            return value
+
+        return cls(read(api_key_env), read(admin_key_env))
+
+    def authorize(self, req: request.Request, *, admin: bool = False) -> None:
+        key = (self.admin_key or self.api_key) if admin else self.api_key
+        if key:
+            # urllib copies regular headers when following redirects. Keep
+            # credentials on this request instead of forwarding them elsewhere.
+            req.add_unredirected_header("Authorization", f"Bearer {key}")
+
+
+def add_auth_arguments(parser) -> None:
+    parser.add_argument(
+        "--api-key-env",
+        default=None,
+        metavar="NAME",
+        help="Environment variable containing the inference API bearer key.",
+    )
+    parser.add_argument(
+        "--admin-key-env",
+        default=None,
+        metavar="NAME",
+        help="Environment variable containing the profiler control bearer key; defaults to the API key.",
+    )
 
 
 @lru_cache(maxsize=65536)
@@ -223,9 +267,14 @@ def load_server_args(path: Path) -> Optional[dict]:
     return None
 
 
-def try_get_json(url: str, timeout: float = 60.0) -> Optional[object]:
+def try_get_json(
+    url: str, timeout: float = 60.0, *, auth: Optional[ProfilerAuth] = None
+) -> Optional[object]:
+    req = request.Request(url)
+    if auth:
+        auth.authorize(req)
     try:
-        with request.urlopen(url, timeout=timeout) as response:
+        with request.urlopen(req, timeout=timeout) as response:
             raw = response.read()
     except Exception:
         return None
@@ -416,12 +465,12 @@ def detect_framework_from_path(path: Path) -> Optional[str]:
 
 
 def detect_framework_from_url(
-    url: str, output_dir: Optional[str] = None
+    url: str, output_dir: Optional[str] = None, *, auth: Optional[ProfilerAuth] = None
 ) -> Optional[str]:
     hint = detect_framework_from_text(output_dir or "")
     if hint:
         return hint
-    server_info = try_get_json(url.rstrip("/") + "/server_info")
+    server_info = try_get_json(url.rstrip("/") + "/server_info", auth=auth)
     if isinstance(server_info, dict) and (
         "internal_states" in server_info
         or "tokenizer_path" in server_info
@@ -429,7 +478,7 @@ def detect_framework_from_url(
         or "decode" in server_info
     ):
         return "sglang"
-    models = try_get_json(url.rstrip("/") + "/v1/models")
+    models = try_get_json(url.rstrip("/") + "/v1/models", auth=auth)
     if isinstance(models, dict) and isinstance(models.get("data"), list):
         # OpenAI-compatible model listing alone does not identify an engine.
         owners = {
@@ -448,6 +497,7 @@ def resolve_framework(
     input_path: Optional[Path] = None,
     url: Optional[str] = None,
     server_args: Optional[dict] = None,
+    auth: Optional[ProfilerAuth] = None,
 ) -> str:
     explicit = canonicalize_framework(requested)
     if explicit != "auto":
@@ -456,7 +506,9 @@ def resolve_framework(
         detect_framework_from_server_args(server_args),
         detect_framework_from_path(input_path) if input_path else None,
         (
-            detect_framework_from_url(url, str(input_path) if input_path else None)
+            detect_framework_from_url(
+                url, str(input_path) if input_path else None, auth=auth
+            )
             if url
             else None
         ),
@@ -630,7 +682,12 @@ def discover_trace_targets(
 
 
 def post_json(
-    url: str, payload: Optional[dict] = None, timeout: float = 60.0
+    url: str,
+    payload: Optional[dict] = None,
+    timeout: float = 60.0,
+    *,
+    auth: Optional[ProfilerAuth] = None,
+    admin: bool = False,
 ) -> Optional[dict]:
     req = request.Request(
         url=url,
@@ -638,6 +695,8 @@ def post_json(
         headers={"Content-Type": "application/json"},
         method="POST",
     )
+    if auth:
+        auth.authorize(req, admin=admin)
     with request.urlopen(req, timeout=timeout) as response:
         raw = response.read()
     return json.loads(raw.decode("utf-8")) if raw else None
@@ -650,6 +709,7 @@ def send_probe_request(
     sampling_seed: int,
     framework: str,
     model: Optional[str] = None,
+    auth: Optional[ProfilerAuth] = None,
 ) -> None:
     framework = canonicalize_framework(framework)
     if framework == "sglang":
@@ -662,10 +722,10 @@ def send_probe_request(
             },
             "stream": False,
         }
-        post_json(url.rstrip("/") + "/generate", payload, timeout=300.0)
+        post_json(url.rstrip("/") + "/generate", payload, timeout=300.0, auth=auth)
         return
 
-    resolved_model = model or discover_openai_model(url)
+    resolved_model = model or discover_openai_model(url, auth=auth)
     chat_payload = {
         "model": resolved_model,
         "messages": [{"role": "user", "content": prompt}],
@@ -674,7 +734,12 @@ def send_probe_request(
         "stream": False,
     }
     try:
-        post_json(url.rstrip("/") + "/v1/chat/completions", chat_payload, timeout=300.0)
+        post_json(
+            url.rstrip("/") + "/v1/chat/completions",
+            chat_payload,
+            timeout=300.0,
+            auth=auth,
+        )
         return
     except Exception:
         completion_payload = {
@@ -688,6 +753,7 @@ def send_probe_request(
             url.rstrip("/") + "/v1/completions",
             completion_payload,
             timeout=300.0,
+            auth=auth,
         )
 
 
@@ -707,6 +773,7 @@ def send_probe_requests(
     framework: str,
     model: Optional[str] = None,
     sampling_seed_offset: int = 0,
+    auth: Optional[ProfilerAuth] = None,
 ) -> None:
     request_count = max(0, int(request_count))
     seed_offset = max(0, int(sampling_seed_offset))
@@ -719,6 +786,7 @@ def send_probe_requests(
             sampling_seed=probe_index,
             framework=framework,
             model=model,
+            auth=auth,
         )
 
 
@@ -794,8 +862,8 @@ def expand_profile_workload(profile_workload: str) -> List[str]:
     return [workload]
 
 
-def discover_openai_model(url: str) -> str:
-    payload = try_get_json(url.rstrip("/") + "/v1/models", timeout=60.0)
+def discover_openai_model(url: str, *, auth: Optional[ProfilerAuth] = None) -> str:
+    payload = try_get_json(url.rstrip("/") + "/v1/models", timeout=60.0, auth=auth)
     if not isinstance(payload, dict):
         raise RuntimeError(f"Could not read {url.rstrip('/')}/v1/models")
     data = payload.get("data")
@@ -861,10 +929,20 @@ def wait_for_profiler_artifact(
 
 
 def start_remote_profiler(
-    url: str, framework: str, payload: Optional[dict] = None
+    url: str,
+    framework: str,
+    payload: Optional[dict] = None,
+    *,
+    auth: Optional[ProfilerAuth] = None,
 ) -> None:
     try:
-        post_json(url.rstrip("/") + "/start_profile", payload=payload, timeout=60.0)
+        post_json(
+            url.rstrip("/") + "/start_profile",
+            payload=payload,
+            timeout=60.0,
+            auth=auth,
+            admin=True,
+        )
     except Exception as exc:
         if framework == "vllm":
             raise RuntimeError(
@@ -903,8 +981,13 @@ def build_remote_profiler_start_payload(
     stage: Optional[str],
     session_fields: frozenset[str] = frozenset(),
     num_steps: Optional[int] = None,
+    record_shapes: Optional[bool] = None,
 ) -> Optional[dict]:
     if framework == "trtllm":
+        if record_shapes is not None:
+            raise ValueError(
+                "TensorRT-LLM HTTP profiler control does not expose record_shapes; use a recorded mapping build."
+            )
         return {"output_dir": str(output_path), "activities": ["CPU", "GPU"]}
     if framework == "vllm":
         payload = {}
@@ -920,6 +1003,12 @@ def build_remote_profiler_start_payload(
             payload["profile_prefix"] = label
         if "max_iterations" in session_fields and num_steps is not None:
             payload["max_iterations"] = max(1, int(num_steps))
+        if record_shapes is not None:
+            if "profiler_kwargs" not in session_fields:
+                raise ValueError(
+                    "The vLLM server does not advertise profiler_kwargs; configure shapes at server launch or use a server exposing session overrides."
+                )
+            payload["profiler_kwargs"] = {"record_shapes": record_shapes}
         return payload or None
     if framework != "tokenspeed":
         return None
@@ -932,18 +1021,20 @@ def build_remote_profiler_start_payload(
         "output_dir": str(output_path),
         "activities": ["CPU", "GPU"],
         "with_stack": True,
-        "record_shapes": False,
+        "record_shapes": False if record_shapes is None else record_shapes,
         "profile_id": profile_id,
     }
 
 
-def vllm_profile_session_fields(url: str) -> frozenset[str]:
+def vllm_profile_session_fields(
+    url: str, *, auth: Optional[ProfilerAuth] = None
+) -> frozenset[str]:
     """Only send session overrides advertised by the running HTTP server.
 
     Older vLLM servers accept a body but ignore it. If OpenAPI is disabled or
     unavailable, keep the bodyless launch-configured control path.
     """
-    spec = try_get_json(url.rstrip("/") + "/openapi.json", timeout=10.0)
+    spec = try_get_json(url.rstrip("/") + "/openapi.json", timeout=10.0, auth=auth)
     if not isinstance(spec, dict):
         return frozenset()
     operation = spec.get("paths", {}).get("/start_profile", {}).get("post", {})
@@ -972,9 +1063,13 @@ def vllm_profile_session_fields(url: str) -> frozenset[str]:
     return frozenset(fields)
 
 
-def stop_remote_profiler(url: str, framework: str) -> None:
+def stop_remote_profiler(
+    url: str, framework: str, *, auth: Optional[ProfilerAuth] = None
+) -> None:
     try:
-        post_json(url.rstrip("/") + "/stop_profile", timeout=300.0)
+        post_json(
+            url.rstrip("/") + "/stop_profile", timeout=300.0, auth=auth, admin=True
+        )
     except Exception as exc:
         raise RuntimeError(
             f"Failed to stop {framework_display_name(framework)} profiler via "
@@ -992,6 +1087,8 @@ def run_remote_profiler(
     stage: Optional[str] = None,
     capture_root: Optional[Path] = None,
     num_steps: Optional[int] = None,
+    auth: Optional[ProfilerAuth] = None,
+    record_shapes: Optional[bool] = None,
 ) -> Path:
     validate_profile_label(profile_prefix)
     validate_profile_label(stage)
@@ -1004,22 +1101,14 @@ def run_remote_profiler(
         )
     before_traces = snapshot_trace_files(output_path)
     model = (
-        discover_openai_model(url)
+        discover_openai_model(url, auth=auth)
         if framework in {"vllm", "trtllm", "tokenspeed"}
         else None
     )
-    if probe_plan.warmup_requests > 0:
-        send_probe_requests(
-            url=url,
-            prompt=probe_plan.prompt,
-            max_new_tokens=probe_plan.warmup_max_new_tokens,
-            request_count=probe_plan.warmup_requests,
-            framework=framework,
-            model=model,
-        )
-
     session_fields = (
-        vllm_profile_session_fields(url) if framework == "vllm" else frozenset()
+        vllm_profile_session_fields(url, auth=auth)
+        if framework == "vllm"
+        else frozenset()
     )
     if (
         framework == "vllm"
@@ -1037,8 +1126,19 @@ def run_remote_profiler(
         stage=stage,
         session_fields=session_fields,
         num_steps=num_steps,
+        record_shapes=record_shapes,
     )
-    start_remote_profiler(url, framework, payload=start_payload)
+    if probe_plan.warmup_requests > 0:
+        send_probe_requests(
+            url=url,
+            prompt=probe_plan.prompt,
+            max_new_tokens=probe_plan.warmup_max_new_tokens,
+            request_count=probe_plan.warmup_requests,
+            framework=framework,
+            model=model,
+            auth=auth,
+        )
+    start_remote_profiler(url, framework, payload=start_payload, auth=auth)
     stop_error: Optional[BaseException] = None
     try:
         if probe_plan.capture_requests > 0:
@@ -1053,10 +1153,11 @@ def run_remote_profiler(
                 framework=framework,
                 model=model,
                 sampling_seed_offset=probe_plan.warmup_requests,
+                auth=auth,
             )
     finally:
         try:
-            stop_remote_profiler(url, framework)
+            stop_remote_profiler(url, framework, auth=auth)
         except BaseException as exc:  # pragma: no cover - preserve original failure
             stop_error = exc
     if stop_error is not None:
@@ -1088,6 +1189,8 @@ def run_sglang_profiler(
     probe_plan: ProbePlan,
     probe_delay: float,
     start_step: Optional[int] = None,
+    auth: Optional[ProfilerAuth] = None,
+    record_shapes: Optional[bool] = None,
 ) -> Path:
     validate_profile_label(profile_prefix)
     if num_steps is None or num_steps < 1:
@@ -1099,7 +1202,9 @@ def run_sglang_profiler(
     output_path = output_root / str(time.time())
     output_path.mkdir(parents=True, exist_ok=True)
 
-    server_args = try_get_json(url.rstrip("/") + "/server_info", timeout=60.0)
+    server_args = try_get_json(
+        url.rstrip("/") + "/server_info", timeout=60.0, auth=auth
+    )
     if server_args is not None:
         with open(output_path / "server_args.json", "w", encoding="utf-8") as handle:
             json.dump(server_args, handle)
@@ -1114,6 +1219,8 @@ def run_sglang_profiler(
     }
     if start_step is not None:
         payload["start_step"] = int(start_step)
+    if record_shapes is not None:
+        payload["record_shapes"] = record_shapes
 
     if probe_plan.warmup_requests > 0:
         send_probe_requests(
@@ -1122,6 +1229,7 @@ def run_sglang_profiler(
             max_new_tokens=probe_plan.warmup_max_new_tokens,
             request_count=probe_plan.warmup_requests,
             framework="sglang",
+            auth=auth,
         )
 
     req = request.Request(
@@ -1129,6 +1237,8 @@ def run_sglang_profiler(
         data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"},
     )
+    if auth:
+        auth.authorize(req, admin=True)
     with request.urlopen(req, timeout=300.0):
         pass
 
@@ -1142,12 +1252,13 @@ def run_sglang_profiler(
                 request_count=probe_plan.capture_requests,
                 framework="sglang",
                 sampling_seed_offset=probe_plan.warmup_requests,
+                auth=auth,
             )
         finally:
             # A failed probe must not leave this invocation recording forever.
             # Automatic step completion may already have stopped the profiler.
             try:
-                stop_remote_profiler(url, "sglang")
+                stop_remote_profiler(url, "sglang", auth=auth)
             except RuntimeError:
                 pass
 
@@ -1175,6 +1286,8 @@ def run_profiler(
     decode_input_len: int = DEFAULT_DECODE_INPUT_LEN,
     decode_output_len: int = DEFAULT_DECODE_OUTPUT_LEN,
     sglang_profile_v2: bool = False,
+    auth: Optional[ProfilerAuth] = None,
+    record_shapes: Optional[bool] = None,
 ) -> Path:
     validate_profile_label(profile_prefix)
     if num_steps is None or num_steps < 1:
@@ -1182,6 +1295,7 @@ def run_profiler(
     resolved_framework = resolve_framework(
         framework,
         url=url,
+        auth=auth,
         input_path=(
             Path(framework_hint_path).expanduser().resolve()
             if framework_hint_path
@@ -1238,6 +1352,8 @@ def run_profiler(
                     probe_plan=probe_plan,
                     probe_delay=probe_delay,
                     start_step=start_step,
+                    auth=auth,
+                    record_shapes=record_shapes,
                 )
             return capture_root
         legacy_max_new_tokens = probe_max_new_tokens or max(64, num_steps * 8)
@@ -1259,6 +1375,8 @@ def run_profiler(
             probe_plan=legacy_plan,
             probe_delay=probe_delay,
             start_step=start_step,
+            auth=auth,
+            record_shapes=record_shapes,
         )
     if start_step is not None:
         raise ValueError("--start-step is only supported for SGLang live capture.")
@@ -1296,6 +1414,8 @@ def run_profiler(
             probe_delay=probe_delay,
             profile_prefix=profile_prefix,
             num_steps=num_steps,
+            auth=auth,
+            record_shapes=record_shapes,
         )
     output_root = ensure_remote_profiler_output_path(output_dir, resolved_framework)
     if output_root.suffix in {".json", ".gz"}:
@@ -1326,6 +1446,8 @@ def run_profiler(
             stage=stage,
             capture_root=capture_root,
             num_steps=num_steps,
+            auth=auth,
+            record_shapes=record_shapes,
         )
     # Only analyze this invocation's labeled copies, not server originals or
     # earlier captures left in the shared output directory.
