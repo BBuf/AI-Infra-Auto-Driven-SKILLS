@@ -17,6 +17,8 @@ from profile_common import (
     DEFAULT_PREFILL_OUTPUT_LEN,
     DEFAULT_WARMUP_STEPS,
     PROFILE_WORKLOAD_CHOICES,
+    ProfilerAuth,
+    add_auth_arguments,
     discover_trace_targets,
     framework_display_name,
     load_server_args,
@@ -89,6 +91,13 @@ def build_triage_parser() -> argparse.ArgumentParser:
             "the native start_profile.output_dir. "
             "For TokenSpeed this is passed as start_profile.output_dir."
         ),
+    )
+    add_auth_arguments(parser)
+    parser.add_argument(
+        "--record-shapes",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Explicitly enable/disable shape recording when the remote profiler supports it; omitted preserves existing defaults.",
     )
     parser.add_argument(
         "--profile-prefix",
@@ -288,10 +297,14 @@ def resolve_profile_targets(
         raise ValueError(f"{label} trace requires exactly one of input path or URL.")
 
     if url:
+        auth = ProfilerAuth.from_env(
+            getattr(args, "api_key_env", None), getattr(args, "admin_key_env", None)
+        )
         framework = resolve_framework(
             args.framework,
             input_path=Path(output_dir).resolve() if output_dir else None,
             url=url,
+            auth=auth,
         )
         target_dir = run_profiler(
             url=url,
@@ -314,6 +327,8 @@ def resolve_profile_targets(
             prefill_output_len=args.prefill_output_len,
             decode_input_len=args.decode_input_len,
             decode_output_len=args.decode_output_len,
+            auth=auth,
+            record_shapes=getattr(args, "record_shapes", None),
         )
         traces, server_args = discover_trace_targets(target_dir, all_traces=False)
         resolved_framework = resolve_framework(
@@ -321,6 +336,7 @@ def resolve_profile_targets(
             input_path=target_dir,
             url=url,
             server_args=server_args,
+            auth=auth,
         )
         return traces, server_args, resolved_framework
 
