@@ -172,12 +172,13 @@ Mapping rules:
 - **Generic GEMM kernels** (gemm_fp8, gemm_bf16): time is distributed to remaining unassigned projection GEMM operators by FLOPs share
 - **Overhead kernels** (allreduce, moe_align, moe_sort, other): rows preserved, FLOPs/MFU marked as N/A
 
-**FP8 kernel MFU correction**: Kernels in categories `moe` (fused_moe_kernel)
-and `gemm_fp8` use fp8 math internally even when `--dtype bf16` is specified.
-For these kernels, the MFU denominator uses the GPU's fp8 peak FLOPS
-(2x bf16 peak) instead of bf16 peak. The resulting MFU is marked with a
-superscript `⁸` (for example, `63.7%⁸`) to show that the fp8 denominator was
-used. `gemm_bf16` kernels still use the bf16 peak FLOPS denominator.
+**FP8 kernel MFU correction**: Only the `gemm_fp8` category automatically uses
+the GPU's separately recorded FP8 peak when it is available, even when
+`--dtype bf16` is specified. The resulting MFU is marked with a superscript
+`⁸` (for example, `63.7%⁸`). Other categories, including `moe`, use the peak
+selected by `--dtype`; a generic `fused_moe_kernel` name does not establish
+FP8 arithmetic. Verify the actual dispatch and operand precision before
+interpreting MFU. Do not assume every GPU's FP8 peak is twice its BF16 peak.
 
 #### Method B: `--kernel-detail` (operator-level MFU, legacy)
 
