@@ -173,5 +173,6 @@ empty GPU interval as an unfused kernel. Scheduler dispatch, phase graph
 coverage, metadata glue graphs, replay-stream joins and CPU frontend work can
 all expose gaps. Check worker step annotations and CUPTI completeness first.
 PDL kernel time includes dependency waits; overlap duration alone does not
-establish removable latency. FlashInfer main at 0.7.1 is newer than the
-0.7.0.post1 framework pins: source existence does not prove installed dispatch.
+establish removable latency. Dependency pins vary by framework revision;
+consult the dated [source contracts](../../../docs/upstream-source-contracts.md)
+and installed wheel. Source existence does not prove installed dispatch.
