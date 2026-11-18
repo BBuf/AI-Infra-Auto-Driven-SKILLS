@@ -163,6 +163,9 @@ check command; ask it to change only what the finding names.
   three-line prompt was cut for the whole frame). Size bodies from the line count, or leave the height auto.
 - Never `pkill -f <generic script name>` in a worker: two workers named their preview script `shot.mjs` and one killed
   the other's run. Stop only the PIDs you started.
+  The user's own tools run on the same Mac: on 2026-11-18 a worker cleaning up its previews killed a
+  `chrome-headless-shell` that belonged to the user's own node studio. Never kill a browser, node or any process by
+  name or pattern (chrome, chrome-headless-shell, node, preview); note the PID your launcher prints and kill only that.
 - Don't put the same sentence in the title slot and again right under it: when a frame's Scene shows a tagline that
   equals the frame title, let the title carry it.
 - A code-panel title bar laid out with `display:flex` drops the space between `·` and a function-name `<span>`

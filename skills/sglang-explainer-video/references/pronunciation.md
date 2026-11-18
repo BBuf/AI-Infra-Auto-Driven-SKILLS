@@ -248,6 +248,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | gemm1_alpha / gemm1_clamp_limit (Kimi-K3 video PR 46392, 2026-11-18) | GAME 1 Alpha / GAM1 Clamp Limit (FAIL, no respelling passed) | reword: 两个通用的参数，一个叫 alpha，一个叫 clamp limit (the field names stay on screen) |
 | nightly (nightly CI, streaming video PR 50741, same day) | Natalie (FAIL, no respelling passed) | reword: 每天夜里跑的 CI |
 | Kimi-K3 (PR 46392 video) | Timi K3 in the carrier (FAIL), right in the take | no change: Kimi is approved by ear and the in-take check passes; a hyphenated Kimi-K3 FAIL is this known Whisper miss |
+| all-to-all (Engram video PR 50471, 2026-11-18) | out to out (OK~ in the carrier) | 不用再做集合通信 (all-reduce / all-to-all stay on screen) |
+| Full KV (SWA cache video PR 50059, same day) | FOR (OK~), the same miss as full top-k | 全量 KV / 全量注意力的 KV (Full KV stays on screen) |
 | IEEE (same video) | HEE | 浮点标准 |
 | e4m3 (FP8 e4m3, same video) | 一4M3 (the lone e again) | 这种 FP8 / 输出的 FP8 (e4m3 stays on screen) |
 | NaN (same video) | 9 | 无效的值 |
@@ -544,6 +546,10 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 放进了两个通用字段 (PR 46392 video, 2026-11-18) | 通用字 \| 段 | 放进了两个通用的参数里 |
 | 在不同模型和平台上 (PR 50741 video, same day) | 和平 \| 台上 (和平 = "peace") | 在不同的模型、不同的平台上 |
 | 间隔用的是已有的请求等待超时 (same video) | 已 \| 有的 | 间隔直接沿用请求等待超时这个现成的参数 |
+| 已有的 per_node 只在…共享 (PR 50471 video, 2026-11-18) | 已 \| 有的 | 原来的 per_node 只在…共享 |
+| 没命中的轮数 / 上一轮没命中 / 未命中链 (PR 50059 video, same day) | 没命 \| 中, 中链 | 没有命中的轮数 / 没有命中 / 都没有命中的链 |
+| 受保护的长度还停在分支点，所以… / 又只能匹配到分支点，又分叉 (same video) | 分 \| 支点 in both lines | 受保护的范围只到分支点 / 匹配又只能停在分支点那里 |
+| prompt 末尾被插进缓存 (same video) | 插进 \| 缓存 cut as 进缓 | prompt 末尾被放回缓存里 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
@@ -586,6 +592,7 @@ places where a digit and the character next to it form another number:
 | 归一化之后，亮图必中 (PR 49570 video, 2026-11-14) | 样图必重 (亮图 heard as 样图) | 只要图够亮就会出错 |
 | 输入是 8 的时候 (PR 46392 video, 2026-11-18) | 输入 18 的时候 (是 8 is shì bā, next to 十八) | 输入等于 8 的时候 |
 | 留一个低频检查来兜底 (PR 50741 video, same day) | 由一个 (留 liú heard as 由 yóu) | 保留一个低频检查来兜底 |
+| 查一层 16K 个 token (PR 50471 video, 2026-11-18) | 16KG Token (K 个 fused into KG) | 查一层 16K token |
 | 带 RoPE 的那个 writer (PR 47013 video, 2026-11-14) | 但 Rope 的那个 (带 heard as 但) | 有 RoPE 的那个 writer |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
