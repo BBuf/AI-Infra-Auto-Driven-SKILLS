@@ -69,6 +69,9 @@ Theme lines for the `frame.md (<theme line>)` slot (`.hyperframes/theme` records
 Append these lessons to every dispatch, after the template above. Each one cost a fix and a re-render in an
 earlier film. The project's `dispatch.py` keeps the full list.
 
+- sglang-orange text: #D55816 text on a peach tile #F9E6DB is 3.32:1 and fails `hf check` (4.5:1). Keep #D55816
+  for lines, borders, brackets and fills; orange TEXT uses #B14912 (6.5:1 on the tile). Nine marker tags in
+  the PR 50059 rework had to be recoloured after assembly.
 - No whole-frame camera drift: never tween scale/x/y on a frame-wide wrapper (no slow push-in). Workers kept
   adding `fromTo('#fNN-cam', {scale:1}, {scale:1.01x})`; grep for `-cam` after a wave.
 - On SVG elements, give `transformOrigin` on **both** sides of a `fromTo`. Set only on the "to" side, it trips

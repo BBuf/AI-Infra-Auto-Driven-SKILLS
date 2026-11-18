@@ -550,6 +550,9 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 没命中的轮数 / 上一轮没命中 / 未命中链 (PR 50059 video, same day) | 没命 \| 中, 中链 | 没有命中的轮数 / 没有命中 / 都没有命中的链 |
 | 受保护的长度还停在分支点，所以… / 又只能匹配到分支点，又分叉 (same video) | 分 \| 支点 in both lines | 受保护的范围只到分支点 / 匹配又只能停在分支点那里 |
 | prompt 末尾被插进缓存 (same video) | 插进 \| 缓存 cut as 进缓 | prompt 末尾被放回缓存里 |
+| 所以下一轮不用从头算 (PR 50059 rework, 2026-11-18) | 从 \| 头算 | 所以下一轮不用全部重新算 |
+| 检查点就停在了分支点，/ 只能退回到分支点，/ 只能退回到分支点那里 (same rework) | 分 \| 支点 when 分支点 follows 在了 / 到 | 停在分支点那里 / 只能从分支点那里重算 |
+| 都没有放进缓存树 (same rework) | 放进 \| 缓存 cut as 进缓 | 都没有进缓存树 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
