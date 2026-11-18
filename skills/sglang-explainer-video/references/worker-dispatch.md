@@ -69,6 +69,9 @@ Theme lines for the `frame.md (<theme line>)` slot (`.hyperframes/theme` records
 Append these lessons to every dispatch, after the template above. Each one cost a fix and a re-render in an
 earlier film. The project's `dispatch.py` keeps the full list.
 
+- sglang-orange text: #D55816 text on a peach tile #F9E6DB is 3.32:1 and fails `hf check` (4.5:1). Keep #D55816
+  for lines, borders, brackets and fills; orange TEXT uses #B14912 (6.5:1 on the tile). Nine marker tags in
+  the PR 50059 rework had to be recoloured after assembly.
 - No whole-frame camera drift: never tween scale/x/y on a frame-wide wrapper (no slow push-in). Workers kept
   adding `fromTo('#fNN-cam', {scale:1}, {scale:1.01x})`; grep for `-cam` after a wave.
 - On SVG elements, give `transformOrigin` on **both** sides of a `fromTo`. Set only on the "to" side, it trips
@@ -163,6 +166,9 @@ check command; ask it to change only what the finding names.
   three-line prompt was cut for the whole frame). Size bodies from the line count, or leave the height auto.
 - Never `pkill -f <generic script name>` in a worker: two workers named their preview script `shot.mjs` and one killed
   the other's run. Stop only the PIDs you started.
+  The user's own tools run on the same Mac: on 2026-11-18 a worker cleaning up its previews killed a
+  `chrome-headless-shell` that belonged to the user's own node studio. Never kill a browser, node or any process by
+  name or pattern (chrome, chrome-headless-shell, node, preview); note the PID your launcher prints and kill only that.
 - Don't put the same sentence in the title slot and again right under it: when a frame's Scene shows a tagline that
   equals the frame title, let the title carry it.
 - A code-panel title bar laid out with `display:flex` drops the space between `·` and a function-name `<span>`
