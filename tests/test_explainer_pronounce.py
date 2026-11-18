@@ -324,3 +324,12 @@ def test_key_must_be_reworded():
     assert [w for w, _ in P.must_reword("每个 head 用 query 和这个位置的 key 做点积。")] == ["key"]
     assert P.must_reword("每个 head 用 query 和这个位置的 K 做点积。") == []
     assert P.must_reword("用 sort_key 和 key_cache 排序") == []
+
+
+def test_nightly_and_gemm1_fields_must_be_reworded():
+    # nightly was heard Natalie and gemm1_alpha GAME 1 Alpha with no respelling passing
+    # (streaming video PR 50741, Kimi-K3 video PR 46392): both are described in Chinese instead
+    assert [w for w, _ in P.must_reword("用 nightly CI 二分，正好落在这个 commit 上。")] == ["nightly"]
+    assert P.must_reword("拿每天夜里跑的 CI 结果二分。") == []
+    assert [w for w, _ in P.must_reword("放进了 gemm1_alpha 和 gemm1_clamp_limit 这两个通用字段。")] == ["gemm1_alpha", "gemm1_clamp_limit"]
+    assert P.must_reword("放进了两个通用的参数里，一个叫 alpha，一个叫 clamp limit。") == []
