@@ -245,6 +245,9 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | in bound (in_bound, same video) | 另一部分 | 越界判断 |
 | full (full top-k; Hopper indexer video PR 50719, 2026-11-17) | FOR (OK~ in the carrier) | 全量 top-k (full top-k stays on screen) |
 | LiteTopK in a list (decode、LiteTopK 和候选消费都不开, same video) | Laptop K in the take (Lighttop K, OK~, in the carrier and in its own clause) | give it its own clause: decode、候选消费，还有 LiteTopK，都不开 |
+| gemm1_alpha / gemm1_clamp_limit (Kimi-K3 video PR 46392, 2026-11-18) | GAME 1 Alpha / GAM1 Clamp Limit (FAIL, no respelling passed) | reword: 两个通用的参数，一个叫 alpha，一个叫 clamp limit (the field names stay on screen) |
+| nightly (nightly CI, streaming video PR 50741, same day) | Natalie (FAIL, no respelling passed) | reword: 每天夜里跑的 CI |
+| Kimi-K3 (PR 46392 video) | Timi K3 in the carrier (FAIL), right in the take | no change: Kimi is approved by ear and the in-take check passes; a hyphenated Kimi-K3 FAIL is this known Whisper miss |
 | IEEE (same video) | HEE | 浮点标准 |
 | e4m3 (FP8 e4m3, same video) | 一4M3 (the lone e again) | 这种 FP8 / 输出的 FP8 (e4m3 stays on screen) |
 | NaN (same video) | 9 | 无效的值 |
@@ -538,6 +541,9 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 改成谓词指令，省掉了编译器生成的分支 (same video) | 成谓词, 编译 \| 器生 \| 成 | 改用谓词指令，省掉了编译出来的分支 |
 | 再从全局内存读回这些候选的分数 (same video) | 内 100 ms 存读, in the re-take only: the first take of the same clause cut 内存 \| 读 | 再把这些候选的分数，从全局内存里读回来 |
 | metadata 里预先分配好的张量 (same video, re-take) | 里预 88 ms 先 (line_asr: 领域先) | 这个张量，是在 metadata 里提前分配好的 |
+| 放进了两个通用字段 (PR 46392 video, 2026-11-18) | 通用字 \| 段 | 放进了两个通用的参数里 |
+| 在不同模型和平台上 (PR 50741 video, same day) | 和平 \| 台上 (和平 = "peace") | 在不同的模型、不同的平台上 |
+| 间隔用的是已有的请求等待超时 (same video) | 已 \| 有的 | 间隔直接沿用请求等待超时这个现成的参数 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
@@ -578,6 +584,8 @@ places where a digit and the character next to it form another number:
 | 到顶或到底的那一端不检查 (same video) | 到底或到底 (顶 dǐng heard as 底) | 到了第一名或最后一名的那一端，不检查 |
 | 平均首字延迟 (PR 48928 video, 2026-11-14) | 首次延迟 (字 heard as 次) | 平均首 token 延迟 |
 | 归一化之后，亮图必中 (PR 49570 video, 2026-11-14) | 样图必重 (亮图 heard as 样图) | 只要图够亮就会出错 |
+| 输入是 8 的时候 (PR 46392 video, 2026-11-18) | 输入 18 的时候 (是 8 is shì bā, next to 十八) | 输入等于 8 的时候 |
+| 留一个低频检查来兜底 (PR 50741 video, same day) | 由一个 (留 liú heard as 由 yóu) | 保留一个低频检查来兜底 |
 | 带 RoPE 的那个 writer (PR 47013 video, 2026-11-14) | 但 Rope 的那个 (带 heard as 但) | 有 RoPE 的那个 writer |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
