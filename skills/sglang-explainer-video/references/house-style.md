@@ -46,6 +46,9 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 
 - Bilingual: Chinese karaoke line (word-synced highlight) + English line under it, every group translated.
 - Groups are clauses (split at ，。；：！？, max ~26 Han-width); never split after 、 or inside a term.
+- A clause wider than ~26 Han-width is cut wherever the width runs out, mid-phrase (「降到大约 / 2.4 毫秒」, 「top-k 加 /
+  起来」 in the PR 45893 video). Read `caption_groups.json` after the first build and give such clauses a comma in the
+  narration, then re-voice those lines.
 - Translation: natural English for an engineer, same facts, keep the English terms as-is.
 
 ## Cover (one design per video)

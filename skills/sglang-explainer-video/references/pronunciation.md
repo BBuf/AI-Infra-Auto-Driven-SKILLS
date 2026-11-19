@@ -268,6 +268,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | warpgroup / warpgroups (same video) | workgroup (OK~) | lexicon → warp group(s): two words the voice knows; still heard workgroup, accepted |
 | cooperative (cooperative launch, same video) | Coopertive | lexicon → co operative: heard Cooperative; also reaches enable_cooperative through the identifier rule |
 | Gumbel (Gumbel-max sampling, same video) | Gumbo (Gumbel, Gumble) | lexicon → Gumbell (heard Gumbell); Gumbel-max → Gumbell max (OK~ Gunbel Max) |
+| naive as the first word of a line (naive 后端由 Python 分配…, PR 50374 video, 2026-11-19) | 9E (FAIL); the same word mid-sentence (naive 是 kernel 自己…) passed in two other lines | reword so naive is not the first word: 另一个后端 naive，由 Python 分配… |
 | Philox (Philox4x32 RNG, same video) | Felix (OK~) | lexicon → Fylox: heard Fylox |
 | dspark (part of SGLANG_DSPARK_* env names, same video) | SGLand Spark (the D is dropped, like DSPARK) | `parts` → DSpark |
 | γ (draft length, same video) | read as Gamma in 3/3 lines (Whisper: Gamma, once 干嘛) | keep γ in narration; captions show γ |
@@ -551,6 +552,7 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 受保护的长度还停在分支点，所以… / 又只能匹配到分支点，又分叉 (same video) | 分 \| 支点 in both lines | 受保护的范围只到分支点 / 匹配又只能停在分支点那里 |
 | prompt 末尾被插进缓存 (same video) | 插进 \| 缓存 cut as 进缓 | prompt 末尾被放回缓存里 |
 | 所以下一轮不用从头算 (PR 50059 rework, 2026-11-18) | 从 \| 头算 | 所以下一轮不用全部重新算 |
+| 就跳过这次预计算 (PR 45893 video, 2026-11-19) | 预计 \| 算 reported; the voice's 预 \| 计算 is the intended split, reworded anyway | 就跳过这次预先计算 |
 | 检查点就停在了分支点，/ 只能退回到分支点，/ 只能退回到分支点那里 (same rework) | 分 \| 支点 when 分支点 follows 在了 / 到 | 停在分支点那里 / 只能从分支点那里重算 |
 | 都没有放进缓存树 (same rework) | 放进 \| 缓存 cut as 进缓 | 都没有进缓存树 |
 
@@ -596,6 +598,8 @@ places where a digit and the character next to it form another number:
 | 输入是 8 的时候 (PR 46392 video, 2026-11-18) | 输入 18 的时候 (是 8 is shì bā, next to 十八) | 输入等于 8 的时候 |
 | 留一个低频检查来兜底 (PR 50741 video, same day) | 由一个 (留 liú heard as 由 yóu) | 保留一个低频检查来兜底 |
 | 查一层 16K 个 token (PR 50471 video, 2026-11-18) | 16KG Token (K 个 fused into KG) | 查一层 16K token |
+| CTA 怎么一批批换上去 (PR 50374 video, 2026-11-19) | CTA 怎么 EPP 换上去 (一批批 right after a letter acronym heard as letters) | CTA 怎么一批一批地换上去 |
+| 快了 4% 左右 (PR 45893 video, same day) | 跨了 4% (快 kuài heard as 跨 kuà) | 提速大约 4% |
 | 带 RoPE 的那个 writer (PR 47013 video, 2026-11-14) | 但 Rope 的那个 (带 heard as 但) | 有 RoPE 的那个 writer |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any

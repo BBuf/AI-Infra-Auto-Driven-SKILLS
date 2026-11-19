@@ -280,6 +280,9 @@ $SEV_PY -I $SEV_SKILL/scripts/subset_fonts.py --project $P   # re-run after ANY 
 A failed frame goes back to its worker once with the exact finding (SendMessage). `lint`/`check` errors you
 fix yourself with the smallest edit. `id_requires_css_escape` warnings and transition-time `content_overlap`
 infos are expected.
+Contrast warnings that all carry one timestamp inside a crossfade window come from the outgoing frame fading out
+(PR 50374: 39 warnings at one instant, on text drawn in solid ink). Check the named elements' own colours and fix only
+a warning at a time when one frame is alone on screen.
 
 ## 9. Render, QA, deliver
 
