@@ -94,6 +94,11 @@
     "GEMM": "G E M M",
     "mma": "MMA",
     "V2": "V two",
+    "1stage": "one stage",
+    "2stage": "two stage",
+    "1shot": "one shot",
+    "2shot": "two shot",
+    "MI450": "M I 450",
     "SANA": "Sana",
     "epilogue": "eppy log",
     "launch": "lawnch",
@@ -159,7 +164,9 @@
     ["(?<![归交退奉偿])还给", "the voice reads 还给 as huán gěi (give back) every time. Meaning \"also gave\": write 还附带了 / 另外给了 / 也给出了. Meaning \"give back\": write 归还给 / 交还给"],
     ["(?<![A-Za-z_])[Kk]ey(?![A-Za-z_])", "Edge says key as T or P in every take (six videos in a row). The attention key: write K (query 和 K 做点积). A dict, cache or sort key: write 键 / 缓存键 / 整数键. key stays on screen and in code"],
     ["(?<![A-Za-z_])nightly(?![A-Za-z_])", "Whisper hears nightly as Natalie and no respelling passed (PR 50741 video, 2026-11-18). Say 每天夜里跑的 CI / 每晚跑的 CI; nightly stays on screen"],
-    ["(?<![A-Za-z_])gemm1_\\w+", "GEMM1 is heard GAME 1 / GAM1 and no respelling passed (Kimi-K3 video PR 46392, 2026-11-18). Describe the field instead (两个通用的参数，一个叫 alpha，一个叫 clamp limit); the identifier stays on screen"]
+    ["(?<![A-Za-z_])gemm1_\\w+", "GEMM1 is heard GAME 1 / GAM1 and no respelling passed (Kimi-K3 video PR 46392, 2026-11-18). Describe the field instead (两个通用的参数，一个叫 alpha，一个叫 clamp limit); the identifier stays on screen"],
+    ["放行", "Edge reads 放行 as fàng háng (hang_take WRONG in the PR 46654 video and again in custom allreduce ② on 2026-11-22). Write 才能过 / 才让通过 / 不再推迟; 放行 stays on screen"],
+    ["(?i)custom allreduce", "After custom the voice runs into allreduce: Whisper heard Custom Bowery Deuce / Boreduce / Ball Reduce / or Reduce for every spelling tried (allreduce, all reduce, All-Reduce, AllReduce; custom allreduce series, 2026-11-22). Say 自定义 allreduce; custom allreduce stays on screen"]
   ],
   "tones": {
     "_doc": "Tone-only polyphones that tone_take.py grades in the recorded take (respelling cannot fix them: no common single-reading homophone, and Edge rejects SSML). readings: tone -> pinyin. default: the tone meant unless the character sits inside one of words[tone]. controls: single-reading characters of each tone, same final where possible, swapped in to build same-line references. Add a character only after tone_take.py --calibrate judges its controls right in >= 90 % of cases.",

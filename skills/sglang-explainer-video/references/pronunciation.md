@@ -131,11 +131,14 @@ voice changes.
 | dtype（PR 51494 视频 2026-11-21） | D type | 原样 Whisper 只听到 Type；`D type` 在句中听到 Dtype / D-Type |
 | FLUX.1（同一视频） | FLUX 1 | 原样听成 Flex1（FAIL）；改写后仍写 Flex1，但 `FLUX` 单独测听到 Flux，是 Whisper 对 FLUX 的拼写习惯，算 OK~ |
 | addmm（`addmm_`，同一视频） | add M M | 原样只听到 M；`add mm` 听成 MBM；`add M M` 听到 add M（OK~） |
+| 1stage / 2stage（v1 的两种算法，custom allreduce ② 2026-11-22） | one stage / two stage | 原样在载体句里听成 E-Stage / 二stage（OK~，读成「一 stage」「二 stage」）；改写后整句听到 One Stage / Two Stage |
+| 1shot / 2shot（v2 的 one-shot / two-shot，同一系列） | one shot / two shot | 同上的数字 + 英文粘连；`2shot push` 原样听成 二Shot；改写后听到 Two Shot Push |
+| MI450（AMD GPU，同一系列 ⑤） | M I 450 | 原样听成 MY450；逐字母后听到 M I |
 | Wan / Wan2.2（通义万相的视频模型，同一视频） | 万 | 原样 Edge 读成英文 wan，Whisper 写成 One / 1 / 望，「Wan 是 bf16」听成「1 是 BF16」。中文社区就叫它万相，`patterns` 加 `(?<![A-Za-z])Wan(?![a-z])` → 万。改写后 `--meta` 仍报 FAIL：Whisper 把「万二点二」写成 12.2、把「万」写成 One，是假阳性（同 Qwen） |
 | 放行（release，PR 46654 视频 2026-11-21） | 改写 | 「放行的判断」「从来不放行」两处 hang_take 都判 WRONG（Edge 读成 fàng háng）；改成「要不要等」「提前结束等待」，不再出现 行 |
 | min bs / max new tokens（同一视频） | 改写 | min 听成 main、new 听成 Nu，没有能过的改写 → 旁白改说「最小 batch 门槛」「一个 token 都不生成」，标识符只放画面 |
 | SLA (service-level agreement, 2026-11-08; unprimed Whisper on each line) | S L A | slot / SWAT in both lines tried (「通过 SLA 的候选」, 「满足 SLA 的候选」) → **SLA** in both |
-| Day-0 (Day-0 support, same date) | Day zero | D-0 / 对零 / Dailing; `Day 0` with a space fails too → **Day Zero**. Write the hyphen in the narration: `Day 0` is two tokens, so the lexicon entry never sees it. pron_check compares the transcript with the written form (`day0`), and Whisper writes `Day Zero` (`dayzero`), so `--meta` reports the respelled take as a FAIL. That is a false positive, like KiB above: listen once and move on |
+| Day-0 (Day-0 support, same date) | Day zero | D-0 / 对零 / Dailing; `Day 0` with a space fails too → **Day Zero**. Write the hyphen in the narration: `Day 0` is two tokens, so the lexicon entry never sees it. Whisper writes `Day Zero` (`dayzero`), not the written form (`day0`). Since 2026-11-22 `pron_check --meta` also accepts a term when its lexicon spoken form is in the transcript (1stage → One Stage), so a respelled take no longer reports this false FAIL |
 | fused before top k (`init_dcp_fused_topk`, `DcpFusedTopK`; PR 48895 video, 2026-11-09) | as written | Whisper writes Fuse Top K in the take and in the carrier, so `--meta` reports the identifier as a FAIL. The voice elides the d before t the way a speaker does, and `fused` alone passes. Respellings were worse: fusd → Fast Top K, fyoozd → FilesTopK, fused- → Fuse Top-K. A false positive, like Day-0 above: leave it |
 
 These read right as written: PR, DSA, MLA, MTP, KV cache, fused, prefill, decode, batch, token,
@@ -609,6 +612,8 @@ places where a digit and the character next to it form another number:
 | CTA 怎么一批批换上去 (PR 50374 video, 2026-11-19) | CTA 怎么 EPP 换上去 (一批批 right after a letter acronym heard as letters) | CTA 怎么一批一批地换上去 |
 | 快了 4% 左右 (PR 45893 video, same day) | 跨了 4% (快 kuài heard as 跨 kuà) | 提速大约 4% |
 | 带 RoPE 的那个 writer (PR 47013 video, 2026-11-14) | 但 Rope 的那个 (带 heard as 但) | 有 RoPE 的那个 writer |
+| 这是 custom allreduce 演进系列（custom allreduce 系列 2026-11-22，四种拼写都试过） | Custom Bowery Deuce / Boreduce / Ball Reduce / or Reduce；演进 4/4 听成「眼镜」 | 这是自定义 allreduce 系列（`reword` 规则会报出 custom allreduce） |
+| 人齐了才放行（同一系列 ②） | hang_take WRONG：放行读成 fàng háng（PR 46654 视频里也一样） | 意思是人到齐了才能过（`reword` 规则会报出 放行） |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a
