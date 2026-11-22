@@ -333,3 +333,15 @@ def test_nightly_and_gemm1_fields_must_be_reworded():
     assert P.must_reword("拿每天夜里跑的 CI 结果二分。") == []
     assert [w for w, _ in P.must_reword("放进了 gemm1_alpha 和 gemm1_clamp_limit 这两个通用字段。")] == ["gemm1_alpha", "gemm1_clamp_limit"]
     assert P.must_reword("放进了两个通用的参数里，一个叫 alpha，一个叫 clamp limit。") == []
+
+
+def test_terms_from_the_hy4_and_pr51494_videos():
+    # Hy4 was read 「嗨 4」 and 残差 cán chāi (poly_probe 6/6) in the Hy4 flash video (2026-11-21);
+    # dtype was heard Type, FLUX.1 Flex1 and addmm M in the PR 51494 video; Wan is 万 (通义万相)
+    assert spoken("Hy4 flash 和 Hy3 preview") == "H Y 4 flash 和 H Y 3 preview"
+    assert spoken("加到残差流上") == "加到残插流上"
+    assert spoken("两个矩阵的 dtype 不一样") == "两个矩阵的 D type 不一样"
+    assert spoken("FLUX.1 的 45 个中有 18 个") == "FLUX 1 的 45 个中有 18 个"
+    assert spoken("main 就用原地的 addmm") == "main 就用原地的 add M M"
+    assert spoken("Wan 不一样，Wan2.2 I2V") == "万不一样，万2.2 I2V"
+    assert spoken("Swan 和 Wanda") == "Swan 和 Wanda"
