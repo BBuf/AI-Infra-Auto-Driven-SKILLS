@@ -345,3 +345,17 @@ def test_terms_from_the_hy4_and_pr51494_videos():
     assert spoken("main 就用原地的 addmm") == "main 就用原地的 add M M"
     assert spoken("Wan 不一样，Wan2.2 I2V") == "万不一样，万2.2 I2V"
     assert spoken("Swan 和 Wanda") == "Swan 和 Wanda"
+
+
+def test_terms_from_the_custom_allreduce_series():
+    # custom allreduce series (2026-11-22): 1stage / 2stage were read 「一 stage」「二 stage」, 2shot 「二 shot」, MI450 heard MY450
+    assert spoken("第一种叫 1stage，第二种叫 2stage") == "第一种叫 one stage，第二种叫 two stage"
+    assert spoken("1shot push 和 2shot push") == "one shot push 和 two shot push"
+    assert spoken("MI450 的跨机互连") == "M I 450 的跨机互连"
+
+
+def test_fangxing_and_custom_allreduce_must_be_reworded():
+    # 放行 read fàng háng in two videos; custom allreduce was never heard right in any spelling
+    assert [w for w, _ in P.must_reword("原来只有一个条件能提前放行。")] == ["放行"]
+    assert [w for w, _ in P.must_reword("这是 custom allreduce 系列的第一期。")] == ["custom allreduce"]
+    assert P.must_reword("这是自定义 allreduce 系列的第一期，人到齐了才能过。") == []

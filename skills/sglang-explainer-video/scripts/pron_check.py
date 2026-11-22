@@ -170,6 +170,7 @@ def check_meta(meta_path, hf, asr):
                 if (
                     w not in pronounce.data().get("approved", [])
                     and norm(w) not in norm(t)
+                    and not (sp != w and norm(sp) in norm(t))  # a lexicon respelling (1stage → one stage) heard as respelled
                     and not said_han
                 ):
                     tb = tb or asr(
