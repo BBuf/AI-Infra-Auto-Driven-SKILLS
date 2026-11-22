@@ -126,6 +126,14 @@ voice changes.
 | wave (SM wave, PR 47684 video 2026-11-01) | WAVE | Web in the carrier (OK~; Wave → Weil, waive → Weil FAIL) → **Wave**; plural waves already reads right |
 | 24 只要 (a number right before 只要/只有/只需…, same video, user review) | 24，只要 | Edge takes 只 as a classifier after a number: 二十四只（zhī）要, 6/6 takes (poly_probe, want 纸/指 vs avoid 知/织) → pattern `(?<=\d) ?只(?=[要有需用是剩占能会在])` → 「，只」: 0/6. Also write the comma in the narration, or the caption splits at the spoken pause into a group with no punctuation |
 | 一行一行人工 (行 = line, Claude Code review video 2026-10-28, user review) | 一航一航人工 | The 行人 (pedestrian) exception fired on 行人工, so the second 行 stayed xíng (poly_probe 6/6 wrong) → exception is now 人(?!工), plus a 一行一行 → 一航一航 rule (0/6 wrong) |
+| 残差（residual，Hy4 flash 视频 2026-11-21） | 残插 | line_asr 两句都听成「残拆」；poly_probe 测 6/6 读成 cán chāi（出差的差）→ `patterns` 加 残差 → 残插，as spoken 0/6 |
+| Hy4 / Hy3（腾讯混元的模型名，同一视频） | H Y 4 / H Y 3 | 原样读成「嗨 4」；lexicon 改成逐字母后 pron_check 听到 HY4 / HY3 |
+| dtype（PR 51494 视频 2026-11-21） | D type | 原样 Whisper 只听到 Type；`D type` 在句中听到 Dtype / D-Type |
+| FLUX.1（同一视频） | FLUX 1 | 原样听成 Flex1（FAIL）；改写后仍写 Flex1，但 `FLUX` 单独测听到 Flux，是 Whisper 对 FLUX 的拼写习惯，算 OK~ |
+| addmm（`addmm_`，同一视频） | add M M | 原样只听到 M；`add mm` 听成 MBM；`add M M` 听到 add M（OK~） |
+| Wan / Wan2.2（通义万相的视频模型，同一视频） | 万 | 原样 Edge 读成英文 wan，Whisper 写成 One / 1 / 望，「Wan 是 bf16」听成「1 是 BF16」。中文社区就叫它万相，`patterns` 加 `(?<![A-Za-z])Wan(?![a-z])` → 万。改写后 `--meta` 仍报 FAIL：Whisper 把「万二点二」写成 12.2、把「万」写成 One，是假阳性（同 Qwen） |
+| 放行（release，PR 46654 视频 2026-11-21） | 改写 | 「放行的判断」「从来不放行」两处 hang_take 都判 WRONG（Edge 读成 fàng háng）；改成「要不要等」「提前结束等待」，不再出现 行 |
+| min bs / max new tokens（同一视频） | 改写 | min 听成 main、new 听成 Nu，没有能过的改写 → 旁白改说「最小 batch 门槛」「一个 token 都不生成」，标识符只放画面 |
 | SLA (service-level agreement, 2026-11-08; unprimed Whisper on each line) | S L A | slot / SWAT in both lines tried (「通过 SLA 的候选」, 「满足 SLA 的候选」) → **SLA** in both |
 | Day-0 (Day-0 support, same date) | Day zero | D-0 / 对零 / Dailing; `Day 0` with a space fails too → **Day Zero**. Write the hyphen in the narration: `Day 0` is two tokens, so the lexicon entry never sees it. pron_check compares the transcript with the written form (`day0`), and Whisper writes `Day Zero` (`dayzero`), so `--meta` reports the respelled take as a FAIL. That is a false positive, like KiB above: listen once and move on |
 | fused before top k (`init_dcp_fused_topk`, `DcpFusedTopK`; PR 48895 video, 2026-11-09) | as written | Whisper writes Fuse Top K in the take and in the carrier, so `--meta` reports the identifier as a FAIL. The voice elides the d before t the way a speaker does, and `fused` alone passes. Respellings were worse: fusd → Fast Top K, fyoozd → FilesTopK, fused- → Fuse Top-K. A false positive, like Day-0 above: leave it |

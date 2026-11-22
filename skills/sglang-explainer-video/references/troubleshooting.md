@@ -6,6 +6,7 @@
 | `init` writes into `~/.claude/skills` | init refreshes global skills | `HYPERFRAMES_SKIP_SKILLS=1` (set by `env.sh`); skills come from the pinned workspace checkout |
 | `fetch-pr: gh pr view "owner/repo#N" failed … not a git repository` | gh can't resolve `owner/repo#N` outside a checkout | pass the full PR URL |
 | edge-tts `WSServerHandshakeError: 403` | Oct 2026: legacy `speech.platform.bing.com` refuses synthesis | `edge_tts_engine.py` points `WSS_URL` at `api.msedgeservices.com` (rany2/edge-tts#491); `EDGE_TTS_LEGACY_HOST=1` to disable once upstream ships the fix |
+| `NoAudioReceived` in the engine (or `403` from `python -m edge_tts`) partway through a take, every host and proxy setting | 2026-11-21: the service started requiring `Sec-MS-GEC-Version: 2-…`; edge-tts 7.2.8 still sent `1-…` (25 of 27 lines had gone through minutes earlier) | upgrade the venv to edge-tts ≥ 7.3.1 (`setup_env.sh` now installs it), then re-run the take; the `api.msedgeservices.com` override above still applies |
 | Voice says 下划线 / 井号 / 乘 / 正 5% | `_`, `#`, `×`, `+` reached edge-tts | `pronounce.py` rewrites them (identifier rule, `patterns`); check the engine log's `· X→Y` list |
 | An English term is misread ("Flesh and Fur", "Deep Seat", "Mouse") | Xiaoxiao blurs run-together / rare words | `pron_check.py --asr` → add the respelling it suggests to `pronunciation.json` (`references/pronunciation.md`) |
 | `<phoneme>` / `<sub>` / `<break>` in the text → `NoAudioReceived` | the free Edge endpoint rejects inline SSML | respell in `pronunciation.json` instead |
