@@ -566,6 +566,10 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 就跳过这次预计算 (PR 45893 video, 2026-11-19) | 预计 \| 算 reported; the voice's 预 \| 计算 is the intended split, reworded anyway | 就跳过这次预先计算 |
 | 检查点就停在了分支点，/ 只能退回到分支点，/ 只能退回到分支点那里 (same rework) | 分 \| 支点 when 分支点 follows 在了 / 到 | 停在分支点那里 / 只能从分支点那里重算 |
 | 都没有放进缓存树 (same rework) | 放进 \| 缓存 cut as 进缓 | 都没有进缓存树 |
+| 专家太多，显存放不下 (PR 51279 video, 2026-11-23) | 显存 \| 放 reported as cutting 存放 | 专家太多，显存装不下 |
+| 路由到的专家 / 每层会路由到 32 到 40 个专家 (same video) | 由到 cuts 路由 (three times) | 被选中的专家 / 每层会选中 32 到 40 个专家 |
+| 只有第二层用的是 softmax (same video) | 层用 cuts 第二层 | 只有后一层的路由是 softmax |
+| Qwen3-30B 的 GPTQ 版本 (same video) | 版本 cuts Q版 | Qwen3-30B，GPTQ 量化 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
@@ -614,6 +618,9 @@ places where a digit and the character next to it form another number:
 | 带 RoPE 的那个 writer (PR 47013 video, 2026-11-14) | 但 Rope 的那个 (带 heard as 但) | 有 RoPE 的那个 writer |
 | 这是 custom allreduce 演进系列（custom allreduce 系列 2026-11-22，四种拼写都试过） | Custom Bowery Deuce / Boreduce / Ball Reduce / or Reduce；演进 4/4 听成「眼镜」 | 这是自定义 allreduce 系列（`reword` 规则会报出 custom allreduce） |
 | 人齐了才放行（同一系列 ②） | hang_take WRONG：放行读成 fàng háng（PR 46654 视频里也一样） | 意思是人到齐了才能过（`reword` 规则会报出 放行） |
+| 腾位置用的是 LRU (PR 51279 video, 2026-11-23) | 同位置 (腾 téng heard as tóng) | 要挤掉哪个 slot，用的是 LRU |
+| sigmoid、分组或者带 bias 的路由 (same video, sigmoid opens the line) | pron_check --meta FAIL: SipMode | 路由用的是 sigmoid、分组，或者带 bias 的层 (mid-line, passes) |
+| 每一对相邻的 paged MoE 层 (same video) | MO一层 (the spelled-out E fuses with 层) | 把相邻的两层 MoE 配成一对 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a
