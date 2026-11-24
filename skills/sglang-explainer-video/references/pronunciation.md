@@ -134,6 +134,9 @@ voice changes.
 | 1stage / 2stage（v1 的两种算法，custom allreduce ② 2026-11-22） | one stage / two stage | 原样在载体句里听成 E-Stage / 二stage（OK~，读成「一 stage」「二 stage」）；改写后整句听到 One Stage / Two Stage |
 | 1shot / 2shot（v2 的 one-shot / two-shot，同一系列） | one shot / two shot | 同上的数字 + 英文粘连；`2shot push` 原样听成 二Shot；改写后听到 Two Shot Push |
 | MI450（AMD GPU，同一系列 ⑤） | M I 450 | 原样听成 MY450；逐字母后听到 M I |
+| Xtrace（GPU kernel 追踪工具，Xtrace 论文视频 2026-11-24） | X Trace | 原样在载体句里听成 stress（FAIL）；`X-Trace` 和 `X Trace` 都听到 X Trace |
+| CuTeDSL（同一视频） | Cute DSL | 载体句里原样听到 CUTE DSL，可整段 take 里听成 CUT DSL（`--meta` FAIL）；改写后整句听到 CuteDSL |
+| epilogue 的 `--meta` FAIL（同一视频） | eppy log（不变） | take 里 Whisper 写成 epilog，正是这条改写要的读法，`--meta` 仍报 FAIL：假阳性，不用改 |
 | Wan / Wan2.2（通义万相的视频模型，同一视频） | 万 | 原样 Edge 读成英文 wan，Whisper 写成 One / 1 / 望，「Wan 是 bf16」听成「1 是 BF16」。中文社区就叫它万相，`patterns` 加 `(?<![A-Za-z])Wan(?![a-z])` → 万。改写后 `--meta` 仍报 FAIL：Whisper 把「万二点二」写成 12.2、把「万」写成 One，是假阳性（同 Qwen） |
 | 放行（release，PR 46654 视频 2026-11-21） | 改写 | 「放行的判断」「从来不放行」两处 hang_take 都判 WRONG（Edge 读成 fàng háng）；改成「要不要等」「提前结束等待」，不再出现 行 |
 | min bs / max new tokens（同一视频） | 改写 | min 听成 main、new 听成 Nu，没有能过的改写 → 旁白改说「最小 batch 门槛」「一个 token 都不生成」，标识符只放画面 |
@@ -243,6 +246,8 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | parallel compile (parallel_compile, same video and rmsnorm video PR 47503) | 看PAL | 并行编译 (parallel_compile on screen) |
 | spill (in the recorded take, same video) | Steel / Spear | 寄存器溢出 / 溢出 |
 | 1.96 GHz (same video) | 1.96千MHz | 每秒 19.6 亿个周期 (keep ≈ 1.96 GHz on screen) |
+| IR（中间表示，Xtrace 论文视频 2026-11-24） | I2：R 被听成「二」，`I R` 也一样（FAIL） | 中间表示（IR 只放画面） |
+| INIT / RECORD（Xtrace 的两种探针，同一视频） | Innate；`in-it` 听成 Linit | 初始化探针 / 记录探针（INIT、RECORD 只放画面） |
 | r (RMSNorm's 1/rms, rmsnorm video PR 47503) | 二 (again) | 这个倒数 / 乘倒数的结果 (r stays in the on-screen formulas) |
 | RMSNorm / rmsnorm (same video, user review 2026-11-05: 「有些单词也没有连起来读」) | Whisper wrote 「每一层有两处，而MSNorm」 for the take (a pause, then the R); rmsnorm → Rim Snorm (OK~) | lexicon → RMS Norm / RMS norm; also don't put it after a clause that ends on a count (两处 RMSNorm → RMSNorm 有两处). The re-voiced line still came back as 而MSNorm once in a whole-soundtrack transcription, but the line alone and the word alone transcribe as RMSNorm, and its R onset sits with the RMS references (+4.5, same as three other RMSNorm lines; 而 references far off). That one is Whisper's context, not the voice |
 | PR 47683 (a PR number inside a line, both videos) | 476、83 / P2476、83 in 2 of 3 takes: Edge reads it as a number and breaks it | pattern (?<=PR )(\d{4,6}) → digits in Chinese (fn:digits_zh): PR 四七六八三, no break in 3/3 |
@@ -570,6 +575,11 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 路由到的专家 / 每层会路由到 32 到 40 个专家 (same video) | 由到 cuts 路由 (three times) | 被选中的专家 / 每层会选中 32 到 40 个专家 |
 | 只有第二层用的是 softmax (same video) | 层用 cuts 第二层 | 只有后一层的路由是 softmax |
 | Qwen3-30B 的 GPTQ 版本 (same video) | 版本 cuts Q版 | Qwen3-30B，GPTQ 量化 |
+| 往 kernel 里插探针记时间 / 为什么插探针会改变 kernel (Xtrace paper video, 2026-11-24) | 插探 \| 针, 针会 | 插入探针，记录时间 / 为什么插入探针，会改变 kernel |
+| 编译器生成的已经是另一个 kernel (same video) | 器生 cuts 编译器 and 生成 | 编译器编出来的，已经是另一个 kernel |
+| 在那一刻闲着的寄存器 (same video) | 刻闲 cuts 那一刻 and 闲着 | 当时没在用的寄存器 |
+| 两条指令抢同一个执行单元 / 开销和最优解一样 / scoreboard 不够用时 (same video) | 抢同, 优解, 够用 | 要用同一个 / 最优的方案 / 不够的时候 |
+| 从显存搬进来 (same video) | 进来， cuts 搬进 | 从显存加载 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
@@ -621,6 +631,9 @@ places where a digit and the character next to it form another number:
 | 腾位置用的是 LRU (PR 51279 video, 2026-11-23) | 同位置 (腾 téng heard as tóng) | 要挤掉哪个 slot，用的是 LRU |
 | sigmoid、分组或者带 bias 的路由 (same video, sigmoid opens the line) | pron_check --meta FAIL: SipMode | 路由用的是 sigmoid、分组，或者带 bias 的层 (mid-line, passes) |
 | 每一对相邻的 paged MoE 层 (same video) | MO一层 (the spelled-out E fuses with 层) | 把相邻的两层 MoE 配成一对 |
+| 不是 9.9 亿种 (Xtrace paper video, 2026-11-24) | 9.91 种 (亿 yì heard as 一 after a decimal) | 不是将近 10 亿种 |
+| 哪些寄存器能借？ (same video) | 能见 (借 jiè heard as 见 at the end of a question) | 哪些寄存器可以借用？ |
+| FlashAttention-4 是正 0.21 (same video) | 似是 -0.21 (正 dropped, the number written as negative) | FlashAttention-4 的相关系数是 0.21，大于零 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a

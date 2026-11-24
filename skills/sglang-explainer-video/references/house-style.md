@@ -49,6 +49,10 @@ Every rule here came from a correction on a delivered video. Apply all of them b
 - A clause wider than ~26 Han-width is cut wherever the width runs out, mid-phrase (「降到大约 / 2.4 毫秒」, 「top-k 加 /
   起来」 in the PR 45893 video). Read `caption_groups.json` after the first build and give such clauses a comma in the
   narration, then re-voice those lines.
+- The overflow cut lands after the last 、 inside a list, so a short list can still split: 「一个 producer warp 负责从显存加载
+  Q、K、 / V 的 tile」 and 「CUDA、HIP、CuTeDSL、Triton、 / TileLang 和 FlyDSL」 (Xtrace paper video, 2026-11-24). Scan the
+  groups that end in 、 as well as those with no punctuation; put a comma before the list (「一个 producer warp，负责…」) or
+  split it into two clauses.
 - Translation: natural English for an engineer, same facts, keep the English terms as-is.
 
 ## Cover (one design per video)
