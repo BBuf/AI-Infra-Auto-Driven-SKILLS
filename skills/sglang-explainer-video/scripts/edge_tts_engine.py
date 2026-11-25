@@ -120,6 +120,41 @@ async def synth(text, voice, rate, mp3_path):
     return words
 
 
+def _transient(e):
+    """5xx handshakes and dropped streams from the Edge service pass after a short wait (2026-11-24: one 500 at line 81
+    of 96 killed the whole take)."""
+    status = getattr(e, "status", None)
+    if isinstance(status, int) and status >= 500:
+        return True
+    return (
+        type(e).__name__
+        in (
+            "NoAudioReceived",
+            "ServerDisconnectedError",
+            "ClientConnectorError",
+            "ClientOSError",
+            "TimeoutError",
+            "WSServerHandshakeError",
+        )
+        and status != 403
+    )
+
+
+async def synth_retry(text, voice, rate, mp3_path, tries=4):
+    for i in range(tries):
+        try:
+            return await synth(text, voice, rate, mp3_path)
+        except Exception as e:  # noqa: BLE001 - re-raised unless transient
+            if i == tries - 1 or not _transient(e):
+                raise
+            wait = 3 * 2**i
+            print(
+                f"  ! {type(e).__name__} {getattr(e, 'status', '')}: retry in {wait}s",
+                file=sys.stderr,
+            )
+            await asyncio.sleep(wait)
+
+
 def duration(path):
     r = subprocess.run(
         [
@@ -178,7 +213,7 @@ def main():
             with tempfile.TemporaryDirectory() as td:
                 mp3 = os.path.join(td, "line.mp3")
                 words = pronounce.map_back(
-                    spoken, spans, asyncio.run(synth(spoken, voice, rate, mp3))
+                    spoken, spans, asyncio.run(synth_retry(spoken, voice, rate, mp3))
                 )
                 af = (
                     ["-af", f"apad=pad_dur={pad_last}"]
