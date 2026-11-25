@@ -137,6 +137,7 @@ voice changes.
 | Xtrace（GPU kernel 追踪工具，Xtrace 论文视频 2026-11-24） | X Trace | 原样在载体句里听成 stress（FAIL）；`X-Trace` 和 `X Trace` 都听到 X Trace |
 | CuTeDSL（同一视频） | Cute DSL | 载体句里原样听到 CUTE DSL，可整段 take 里听成 CUT DSL（`--meta` FAIL）；改写后整句听到 CuteDSL |
 | epilogue 的 `--meta` FAIL（同一视频） | eppy log（不变） | take 里 Whisper 写成 epilog，正是这条改写要的读法，`--meta` 仍报 FAIL：假阳性，不用改 |
+| TLA+（形式化验证语言，RSInfer 视频 2026-11-24） | TLA plus（`patterns`） | Edge 把 + 读成「加」，line_asr 听到「TLA加形式化验证」；token 规则切不出带 + 的词，所以写成 `patterns` 规则 `(?<![A-Za-z])TLA\+` → TLA plus，改写后整句听到 TLA plus |
 | Wan / Wan2.2（通义万相的视频模型，同一视频） | 万 | 原样 Edge 读成英文 wan，Whisper 写成 One / 1 / 望，「Wan 是 bf16」听成「1 是 BF16」。中文社区就叫它万相，`patterns` 加 `(?<![A-Za-z])Wan(?![a-z])` → 万。改写后 `--meta` 仍报 FAIL：Whisper 把「万二点二」写成 12.2、把「万」写成 One，是假阳性（同 Qwen） |
 | 放行（release，PR 46654 视频 2026-11-21） | 改写 | 「放行的判断」「从来不放行」两处 hang_take 都判 WRONG（Edge 读成 fàng háng）；改成「要不要等」「提前结束等待」，不再出现 行 |
 | min bs / max new tokens（同一视频） | 改写 | min 听成 main、new 听成 Nu，没有能过的改写 → 旁白改说「最小 batch 门槛」「一个 token 都不生成」，标识符只放画面 |
@@ -248,6 +249,7 @@ worse), Godot (bare form heard "Golded"; "Go dough" was read as Chinese 勾斗, 
 | 1.96 GHz (same video) | 1.96千MHz | 每秒 19.6 亿个周期 (keep ≈ 1.96 GHz on screen) |
 | IR（中间表示，Xtrace 论文视频 2026-11-24） | I2：R 被听成「二」，`I R` 也一样（FAIL） | 中间表示（IR 只放画面） |
 | INIT / RECORD（Xtrace 的两种探针，同一视频） | Innate；`in-it` 听成 Linit | 初始化探针 / 记录探针（INIT、RECORD 只放画面） |
+| epoch 边界（RSInfer 视频 2026-11-24） | 又听成 iPad（FAIL，同上面 epoch 那行） | 调度步的边界（epoch 只放画面） |
 | r (RMSNorm's 1/rms, rmsnorm video PR 47503) | 二 (again) | 这个倒数 / 乘倒数的结果 (r stays in the on-screen formulas) |
 | RMSNorm / rmsnorm (same video, user review 2026-11-05: 「有些单词也没有连起来读」) | Whisper wrote 「每一层有两处，而MSNorm」 for the take (a pause, then the R); rmsnorm → Rim Snorm (OK~) | lexicon → RMS Norm / RMS norm; also don't put it after a clause that ends on a count (两处 RMSNorm → RMSNorm 有两处). The re-voiced line still came back as 而MSNorm once in a whole-soundtrack transcription, but the line alone and the word alone transcribe as RMSNorm, and its R onset sits with the RMS references (+4.5, same as three other RMSNorm lines; 而 references far off). That one is Whisper's context, not the voice |
 | PR 47683 (a PR number inside a line, both videos) | 476、83 / P2476、83 in 2 of 3 takes: Edge reads it as a number and breaks it | pattern (?<=PR )(\d{4,6}) → digits in Chinese (fn:digits_zh): PR 四七六八三, no break in 3/3 |
@@ -580,6 +582,11 @@ kernel PR videos (2026-11-02) the user asked that every line follow Chinese read
 | 在那一刻闲着的寄存器 (same video) | 刻闲 cuts 那一刻 and 闲着 | 当时没在用的寄存器 |
 | 两条指令抢同一个执行单元 / 开销和最优解一样 / scoreboard 不够用时 (same video) | 抢同, 优解, 够用 | 要用同一个 / 最优的方案 / 不够的时候 |
 | 从显存搬进来 (same video) | 进来， cuts 搬进 | 从显存加载 |
+| 最费时间的 / 改代码 / 改调度策略 (RSInfer video, 2026-11-24) | 最费 cuts 费时间; 改代 cuts 代码; 改调 cuts 调度 | 耗时最多的 / 修改代码 / 修改（或优化）调度策略 |
+| 第一堵墙 / 第三堵墙 (same video) | 第一堵 cuts 堵墙 | 第一道墙（titles changed too） |
+| 测出来的数不可信 (same video) | 可信。 cuts 不可 | 测出来的数靠不住 |
+| 再卸上游的算子 / 一个候选想留下 / 写明了边界 / 拦下过问题 (same video) | 卸上, 一个候, 选想, 明了 | 再卸载上游的算子 / 候选版本想要留下 / 明确写了边界 / 拦下了问题 |
+| 所有人和 AI / 权重要 26.62 秒 / 配上冷启动盲测 / 关键子系统 (same video) | 人和 cuts 所有人; 权重 cuts 重要 (+100 ms pause); 上冷; 关键子 | 人类和 AI 贡献者 / 权重，需要 26.62 秒 / 和冷启动的盲测配在一起 / 关键的子系统 |
 
 Natural cuts (两 | 个数, 第几 | 行, 取 | 出来, 再分 | 给, 7168个) are not reported.
 seg_check does report some cuts that leave the reading alone. In the PR 48895 video, 分 | 界值, 融合路 | 径, 本 | 卡槽 | 位 and
@@ -634,6 +641,8 @@ places where a digit and the character next to it form another number:
 | 不是 9.9 亿种 (Xtrace paper video, 2026-11-24) | 9.91 种 (亿 yì heard as 一 after a decimal) | 不是将近 10 亿种 |
 | 哪些寄存器能借？ (same video) | 能见 (借 jiè heard as 见 at the end of a question) | 哪些寄存器可以借用？ |
 | FlashAttention-4 是正 0.21 (same video) | 似是 -0.21 (正 dropped, the number written as negative) | FlashAttention-4 的相关系数是 0.21，大于零 |
+| 编新的 CUDA 扩展 (RSInfer video, 2026-11-24) | 编辑的 | 编译新的 CUDA 扩展 |
+| 加载编译好的库，重新录图 (same video) | 编译好的cru（库 lost） | 加载编译好的扩展 |
 
 Rule for the narration: a single digit right after 是 or 为 makes another word (after a letter variable such as K, any
 number does: K 是 63 → K163), and so does a 时 that closes a

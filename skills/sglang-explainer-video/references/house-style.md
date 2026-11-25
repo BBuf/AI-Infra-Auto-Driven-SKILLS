@@ -53,6 +53,9 @@ Every rule here came from a correction on a delivered video. Apply all of them b
   Q、K、 / V 的 tile」 and 「CUDA、HIP、CuTeDSL、Triton、 / TileLang 和 FlyDSL」 (Xtrace paper video, 2026-11-24). Scan the
   groups that end in 、 as well as those with no punctuation; put a comma before the list (「一个 producer warp，负责…」) or
   split it into two clauses.
+  The RSInfer video (2026-11-24) hit it on 9 lines of 96 in the first take: list both the unit names and the costs
+  as clause chunks (「它们持有显存池和权重，KV、GDN 和 SWA 的缓存池，…」) and read `caption_groups.json` right after the
+  first take, before the frames are built.
 - Translation: natural English for an engineer, same facts, keep the English terms as-is.
 
 ## Cover (one design per video)
